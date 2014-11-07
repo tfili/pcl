@@ -1,7 +1,6 @@
 *.vcxproj
 *.vcxproj.filters
 CMakeFiles/
-*.cmake
 *.pc
 *.dir/
 CMakeCache.txt
