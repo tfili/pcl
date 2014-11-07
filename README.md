@@ -1,3 +1,17 @@
+AGI BUILD INSTRUCTIONS
+======================
+
+cd dependencies/flann-1.8.4
+cmake -G "Visual Studio 12 Win64"
+
+Load dependencies/flann-1.8.4/flann.sln in Visual Studio 2013 and build debug and release.
+
+cd ../..
+cmake -DBOOST_ROOT=<path to boost> -G "Visual Studio 12 Win64"
+
+Load PCL.sln in Visual Studio 2013 and build debug and release.
+
+
 pcl
 ===
 
