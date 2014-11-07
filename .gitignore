@@ -10,7 +10,8 @@ CMakeCache.txt
 *.suo
 *.opensdf
 bin/
-include/
+/include/
 lib/
+/pcl/
 pcl.dot
 x64/
