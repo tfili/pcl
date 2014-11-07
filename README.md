@@ -16,6 +16,13 @@ Now that we build the dependency we can build PCL
 
 Load PCL.sln in Visual Studio 2013 and build debug and release.
 
+Then we need to get all the headers ready for use. Run the following bash script
+```
+    ./CopyHeaders.sh
+```
+
+Now you can copy the ```pcl/``` directory to where you need to include it.
+
 pcl
 ===
 
