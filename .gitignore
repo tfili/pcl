@@ -4,6 +4,7 @@ CMakeFiles/
 *.pc
 *.dir/
 CMakeCache.txt
+*.cmake
 *.sdf
 *.sln
 *.suo
