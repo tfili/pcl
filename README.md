@@ -1,3 +1,28 @@
+AGI BUILD INSTRUCTIONS
+======================
+Enter the following commands to build Flann
+```
+    cd dependencies/flann-1.8.4
+    cmake -G "Visual Studio 12 Win64"
+```
+
+Load dependencies/flann-1.8.4/flann.sln in Visual Studio 2013 and build debug and release.
+
+Now that we build the dependency we can build PCL
+```
+    cd ../..
+    cmake -DBOOST_ROOT=<path to boost> -G "Visual Studio 12 Win64"
+```
+
+Load PCL.sln in Visual Studio 2013 and build debug and release.
+
+Then we need to get all the headers ready for use. Run the following bash script
+```
+    ./CopyHeaders.sh
+```
+
+Now you can copy the ```pcl/``` directory to where you need to include it.
+
 pcl
 ===
 

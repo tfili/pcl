@@ -1,0 +1,17 @@
+*.vcxproj
+*.vcxproj.filters
+CMakeFiles/
+*.pc
+*.dir/
+CMakeCache.txt
+*.cmake
+*.sdf
+*.sln
+*.suo
+*.opensdf
+bin/
+/include/
+lib/
+/pcl/
+pcl.dot
+x64/
