@@ -10,7 +10,7 @@ namespace pcl
     class TrainingExample
     {
       public:
-        std::vector<boost::shared_ptr<pcl::IntegralImage2D<float, 1> > > iimages_; //also pointer to the respective integral image
+        std::vector<boost::shared_ptr<pcl::IntegralImage2D<double, 1> > > iimages_; //also pointer to the respective integral image
         int row_, col_;
         int wsize_;
         int label_;
@@ -29,7 +29,7 @@ namespace pcl
         int wsizex1_, wsizey1_;
         int wsizex2_, wsizey2_;
 
-        float threshold_;
+        double threshold_;
         int used_ii_;
 
         FeatureType()
@@ -70,16 +70,16 @@ namespace pcl
     class RFTreeNode
     {
       public:
-        float threshold;
+        double threshold;
         FeatureType feature;
         std::vector<RFTreeNode> sub_nodes;
-        float value;
-        float variance;
+        double value;
+        double variance;
 
         Eigen::Vector3d trans_mean_;
         Eigen::Vector3d rot_mean_;
 
-        float purity_;
+        double purity_;
         Eigen::Matrix3d covariance_trans_;
         Eigen::Matrix3d covariance_rot_;
 

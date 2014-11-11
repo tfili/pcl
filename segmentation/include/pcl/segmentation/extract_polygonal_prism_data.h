@@ -162,7 +162,7 @@ namespace pcl
         * \param[in] vpz the Z coordinate of the viewpoint
         */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -171,7 +171,7 @@ namespace pcl
 
       /** \brief Get the viewpoint. */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz) const
+      getViewPoint (double &vpx, double &vpy, double &vpz) const
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -202,7 +202,7 @@ namespace pcl
       double height_limit_max_;
 
       /** \brief Values describing the data acquisition viewpoint. Default: 0,0,0. */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** \brief Class getName method. */
       virtual std::string 

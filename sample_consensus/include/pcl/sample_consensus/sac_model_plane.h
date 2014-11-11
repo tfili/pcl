@@ -58,7 +58,7 @@ namespace pcl
     // Calculate the distance from the point to the plane
     Eigen::Vector4f pp (p.x, p.y, p.z, 1);
     // use normalized coefficients to calculate the scalar projection 
-    float distance_to_plane = pp.dot(model_coefficients);
+    double distance_to_plane = pp.dot(model_coefficients);
 
 
     //TODO: Why doesn't getVector4Map work here?

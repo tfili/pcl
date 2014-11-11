@@ -145,8 +145,8 @@ namespace pcl
 
         if (b_show_statistics_)
         {
-          float bytes_per_XYZ = static_cast<float> (compressed_point_data_len_) / static_cast<float> (point_count_);
-          float bytes_per_color = static_cast<float> (compressed_color_data_len_) / static_cast<float> (point_count_);
+          double bytes_per_XYZ = static_cast<double> (compressed_point_data_len_) / static_cast<double> (point_count_);
+          double bytes_per_color = static_cast<double> (compressed_color_data_len_) / static_cast<double> (point_count_);
 
           PCL_INFO ("*** POINTCLOUD ENCODING ***\n");
           PCL_INFO ("Frame ID: %d\n", frame_ID_);
@@ -155,15 +155,15 @@ namespace pcl
           else
             PCL_INFO ("Encoding Frame: Prediction frame\n");
           PCL_INFO ("Number of encoded points: %ld\n", point_count_);
-          PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0f * sizeof(float)) * 100.0f);
+          PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0f * sizeof(double)) * 100.0f);
           PCL_INFO ("XYZ bytes per point: %f bytes\n", bytes_per_XYZ);
           PCL_INFO ("Color compression percentage: %f%%\n", bytes_per_color / (sizeof (int)) * 100.0f);
           PCL_INFO ("Color bytes per point: %f bytes\n", bytes_per_color);
-          PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<float> (point_count_) * (sizeof (int) + 3.0f  * sizeof (float)) / 1024);
+          PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<double> (point_count_) * (sizeof (int) + 3.0f  * sizeof (double)) / 1024);
           PCL_INFO ("Size of compressed point cloud: %d kBytes\n", (compressed_point_data_len_ + compressed_color_data_len_) / (1024));
           PCL_INFO ("Total bytes per point: %f\n", bytes_per_XYZ + bytes_per_color);
-          PCL_INFO ("Total compression percentage: %f\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0f * sizeof(float)) * 100.0f);
-          PCL_INFO ("Compression ratio: %f\n\n", static_cast<float> (sizeof (int) + 3.0f * sizeof (float)) / static_cast<float> (bytes_per_XYZ + bytes_per_color));
+          PCL_INFO ("Total compression percentage: %f\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0f * sizeof(double)) * 100.0f);
+          PCL_INFO ("Compression ratio: %f\n\n", static_cast<double> (sizeof (int) + 3.0f * sizeof (double)) / static_cast<double> (bytes_per_XYZ + bytes_per_color));
         }
       } else {
         if (b_show_statistics_)
@@ -229,8 +229,8 @@ namespace pcl
 
       if (b_show_statistics_)
       {
-        float bytes_per_XYZ = static_cast<float> (compressed_point_data_len_) / static_cast<float> (point_count_);
-        float bytes_per_color = static_cast<float> (compressed_color_data_len_) / static_cast<float> (point_count_);
+        double bytes_per_XYZ = static_cast<double> (compressed_point_data_len_) / static_cast<double> (point_count_);
+        double bytes_per_color = static_cast<double> (compressed_color_data_len_) / static_cast<double> (point_count_);
 
         PCL_INFO ("*** POINTCLOUD DECODING ***\n");
         PCL_INFO ("Frame ID: %d\n", frame_ID_);
@@ -239,15 +239,15 @@ namespace pcl
         else
           PCL_INFO ("Encoding Frame: Prediction frame\n");
         PCL_INFO ("Number of encoded points: %ld\n", point_count_);
-        PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0f * sizeof (float)) * 100.0f);
+        PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0f * sizeof (double)) * 100.0f);
         PCL_INFO ("XYZ bytes per point: %f bytes\n", bytes_per_XYZ);
         PCL_INFO ("Color compression percentage: %f%%\n", bytes_per_color / (sizeof (int)) * 100.0f);
         PCL_INFO ("Color bytes per point: %f bytes\n", bytes_per_color);
-        PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<float> (point_count_) * (sizeof (int) + 3.0f * sizeof (float)) / 1024.0f);
-        PCL_INFO ("Size of compressed point cloud: %f kBytes\n", static_cast<float> (compressed_point_data_len_ + compressed_color_data_len_) / 1024.0f);
+        PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<double> (point_count_) * (sizeof (int) + 3.0f * sizeof (double)) / 1024.0f);
+        PCL_INFO ("Size of compressed point cloud: %f kBytes\n", static_cast<double> (compressed_point_data_len_ + compressed_color_data_len_) / 1024.0f);
         PCL_INFO ("Total bytes per point: %d bytes\n", static_cast<int> (bytes_per_XYZ + bytes_per_color));
-        PCL_INFO ("Total compression percentage: %f%%\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0f * sizeof (float)) * 100.0f);
-        PCL_INFO ("Compression ratio: %f\n\n", static_cast<float> (sizeof (int) + 3.0f * sizeof (float)) / static_cast<float> (bytes_per_XYZ + bytes_per_color));
+        PCL_INFO ("Total compression percentage: %f%%\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0f * sizeof (double)) * 100.0f);
+        PCL_INFO ("Compression ratio: %f\n\n", static_cast<double> (sizeof (int) + 3.0f * sizeof (double)) / static_cast<double> (bytes_per_XYZ + bytes_per_color));
       }
     }
 
@@ -467,7 +467,7 @@ namespace pcl
 
         // configure color & point coding
         color_coder_.setBitDepth (color_bit_depth);
-        point_coder_.setPrecision (static_cast<float> (point_resolution));
+        point_coder_.setPrecision (static_cast<double> (point_resolution));
       }
     }
 
@@ -541,9 +541,9 @@ namespace pcl
       else
       {
         // calculate center of lower voxel corner
-        newPoint.x = static_cast<float> ((static_cast<double> (key_arg.x) + 0.5) * this->resolution_ + this->min_x_);
-        newPoint.y = static_cast<float> ((static_cast<double> (key_arg.y) + 0.5) * this->resolution_ + this->min_y_);
-        newPoint.z = static_cast<float> ((static_cast<double> (key_arg.z) + 0.5) * this->resolution_ + this->min_z_);
+        newPoint.x = static_cast<double> ((static_cast<double> (key_arg.x) + 0.5) * this->resolution_ + this->min_x_);
+        newPoint.y = static_cast<double> ((static_cast<double> (key_arg.y) + 0.5) * this->resolution_ + this->min_y_);
+        newPoint.z = static_cast<double> ((static_cast<double> (key_arg.z) + 0.5) * this->resolution_ + this->min_z_);
 
         // add point to point cloud
         output_->points.push_back (newPoint);

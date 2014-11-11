@@ -56,7 +56,7 @@ namespace pcl
   namespace geometry
   {
     /** @return the euclidean distance between 2 points */
-    template <typename PointT> inline float 
+    template <typename PointT> inline double 
     distance (const PointT& p1, const PointT& p2)
     {
       Eigen::Vector3f diff = p1 -p2;
@@ -64,7 +64,7 @@ namespace pcl
     }
 
     /** @return the squared euclidean distance between 2 points */
-    template<typename PointT> inline float 
+    template<typename PointT> inline double 
     squaredDistance (const PointT& p1, const PointT& p2)
     {
       Eigen::Vector3f diff = p1 -p2;
@@ -83,7 +83,7 @@ namespace pcl
     {
       Eigen::Vector3f po = point - plane_origin;
       const Eigen::Vector3f normal = plane_normal.getVector3fMapConst ();
-      float lambda = normal.dot(po);
+      double lambda = normal.dot(po);
       projected.getVector3fMap () = point.getVector3fMapConst () - (lambda * normal);
     }
 
@@ -98,7 +98,7 @@ namespace pcl
              const Eigen::Vector3f& plane_normal, Eigen::Vector3f& projected)
     {
       Eigen::Vector3f po = point - plane_origin;
-      float lambda = plane_normal.dot(po);
+      double lambda = plane_normal.dot(po);
       projected = point - (lambda * plane_normal);
     }
   }

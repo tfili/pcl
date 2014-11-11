@@ -21,7 +21,7 @@
 // http://www.opengl.org/registry/specs/ARB/vertex_buffer_object.txt
 // .SECTION Caveats
 // Since most GPUs don't support double format all double data is converted to
-// float and then uploaded.
+// double and then uploaded.
 // DON'T PLAY WITH IT YET.
 
 #ifndef __vtkVertexBufferObject_h

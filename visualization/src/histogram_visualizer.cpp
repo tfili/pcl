@@ -217,7 +217,7 @@ pcl::visualization::PCLHistogramVisualizer::setBackgroundColor (const double &r,
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLHistogramVisualizer::setGlobalYRange (float minp, float maxp)
+pcl::visualization::PCLHistogramVisualizer::setGlobalYRange (double minp, double maxp)
 {
   for (RenWinInteractMap::iterator am_it = wins_.begin (); am_it != wins_.end (); ++am_it)
   {
@@ -404,9 +404,9 @@ pcl::visualization::PCLHistogramVisualizer::addFeatureHistogram (
   for (unsigned int d = 0; d < cloud.fields[field_idx].count; ++d)
   {
     xy[0] = d;
-    float data;
-    // TODO: replace float with the real data type
-    memcpy (&data, &cloud.data[cloud.fields[field_idx].offset + d * sizeof (float)], sizeof (float));
+    double data;
+    // TODO: replace double with the real data type
+    memcpy (&data, &cloud.data[cloud.fields[field_idx].offset + d * sizeof (double)], sizeof (double));
     xy[1] = data;
     xy_array->SetTuple (d, xy);
   }
@@ -464,9 +464,9 @@ pcl::visualization::PCLHistogramVisualizer::addFeatureHistogram (
   for (unsigned int d = 0; d < cloud.fields[field_idx].count; ++d)
   {
     xy[0] = d;
-    float data;
-    // TODO: replace float with the real data type
-    memcpy (&data, &cloud.data[index * fsize + cloud.fields[field_idx].offset + d * sizeof (float)], sizeof (float));
+    double data;
+    // TODO: replace double with the real data type
+    memcpy (&data, &cloud.data[index * fsize + cloud.fields[field_idx].offset + d * sizeof (double)], sizeof (double));
     xy[1] = data;
     xy_array->SetTuple (d, xy);
   }
@@ -511,8 +511,8 @@ pcl::visualization::PCLHistogramVisualizer::updateFeatureHistogram (
   for (unsigned int d = 0; d < cloud.fields[field_idx].count; ++d)
   {
     xy[0] = d;
-    float data;
-    memcpy (&data, &cloud.data[cloud.fields[field_idx].offset + d * sizeof (float)], sizeof (float));
+    double data;
+    memcpy (&data, &cloud.data[cloud.fields[field_idx].offset + d * sizeof (double)], sizeof (double));
     xy[1] = data;
     xy_array->SetTuple (d, xy);
   }
@@ -562,8 +562,8 @@ pcl::visualization::PCLHistogramVisualizer::updateFeatureHistogram (
   for (unsigned int d = 0; d < cloud.fields[field_idx].count; ++d)
   {
     xy[0] = d;
-    float data;
-    memcpy (&data, &cloud.data[index * fsize + cloud.fields[field_idx].offset + d * sizeof (float)], sizeof (float));
+    double data;
+    memcpy (&data, &cloud.data[index * fsize + cloud.fields[field_idx].offset + d * sizeof (double)], sizeof (double));
     xy[1] = data;
     xy_array->SetTuple (d, xy);
   }

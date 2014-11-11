@@ -86,8 +86,8 @@ namespace pcl
         int     lid;                    // label id, which number of this type of part is this
         int     nr_parts;               // the number of parts in this tree
         int     parts_lid[NUM_PARTS];   // Indicate the used parts
-        float   total_dist_error;       // sum of all distance errors
-        float   norm_dist_error;         // total_dist_error/nr_parts
+        double   total_dist_error;       // sum of all distance errors
+        double   norm_dist_error;         // total_dist_error/nr_parts
 
         Eigen::Vector4f  mean;          // mean in xyz
         Eigen::Matrix3f  cov;           // covariance in 3x3 matrix
@@ -178,13 +178,13 @@ namespace pcl
        * @return it returns the distance error from the ideal parent child distance, it returns -1.0 if it goes over threshold
        * @todo what if child is second link in stead of first link (ea forearm in stead of elbow for arm)
        **/
-      inline float
+      inline double
       evaluateBlobs (Blob2& parent, Blob2& child, int child_nr)
       {
-        float root = sqrt(pow(parent.mean(0) - child.mean(0), 2) +
+        double root = sqrt(pow(parent.mean(0) - child.mean(0), 2) +
                           pow(parent.mean(1) - child.mean(1), 2) +
                           pow(parent.mean(2) - child.mean(2), 2));
-        float offset = fabs(LUT_ideal_length[(int)parent.label][child_nr] - root);
+        double offset = fabs(LUT_ideal_length[(int)parent.label][child_nr] - root);
         if(offset > LUT_max_length_offset[(int)parent.label][child_nr])
           return -1.0;
         else
@@ -200,16 +200,16 @@ namespace pcl
        * @return it returns the distance error from the ideal parent child distance, it returns -1.0 if it goes over threshold
        * @todo what if child is second link in stead of first link (ea forearm in stead of elbow for arm)
        **/
-      inline float
+      inline double
       evaluateBlobs (Blob2& parent,
                      Blob2& child,
                      int child_nr,
                      PersonAttribs::Ptr person_attribs)
       {
-        float root = sqrt(pow(parent.mean(0) - child.mean(0), 2) +
+        double root = sqrt(pow(parent.mean(0) - child.mean(0), 2) +
                           pow(parent.mean(1) - child.mean(1), 2) +
                           pow(parent.mean(2) - child.mean(2), 2));
-        float offset = fabs(person_attribs->part_ideal_length_[(int)parent.label][child_nr] - root);
+        double offset = fabs(person_attribs->part_ideal_length_[(int)parent.label][child_nr] - root);
         if(offset > person_attribs->max_length_offset_[(int)parent.label][child_nr])
           return -1.0;
         else
@@ -246,10 +246,10 @@ namespace pcl
         }
         // go over all parents in this vector
         for(size_t p = 0; p < sorted[parent_label].size(); p++){
-          float best_value = std::numeric_limits<float>::max(); 
+          double best_value = std::numeric_limits<double>::max(); 
           int best_child_id = NO_CHILD;
           int best_child_lid = 0;                               // this must be as low as possible, still overruled by id
-          float value = 0.0;
+          double value = 0.0;
 
           // go over all children in this vector
           for(size_t c = 0; c < sorted[child_label].size(); c++){
@@ -306,10 +306,10 @@ namespace pcl
         }
         // go over all parents in this vector
         for(size_t p = 0; p < sorted[parent_label].size(); p++){
-          float best_value = std::numeric_limits<float>::max();
+          double best_value = std::numeric_limits<double>::max();
           int best_child_id = NO_CHILD;
           int best_child_lid = 0;                               // this must be as low as possible, still overruled by id
-          float value = 0.0;
+          double value = 0.0;
 
           // go over all children in this vector
           for(size_t c = 0; c < sorted[child_label].size(); c++){

@@ -330,7 +330,7 @@ ON_DECL
 bool ON_IsValid( double x );
 
 ON_DECL
-bool ON_IsValidFloat( float x );
+bool ON_IsValidFloat( double x );
 
 /*
 class ON_CLASS ON_TimeLimit
@@ -393,27 +393,27 @@ private:
 
 
 ON_DECL
-float ON_ArrayDotProduct( // returns AoB
+double ON_ArrayDotProduct( // returns AoB
           int,           // size of arrays (can be zero)
-          const float*, // A[]
-          const float*  // B[]
+          const double*, // A[]
+          const double*  // B[]
           );
 
 ON_DECL
 void   ON_ArrayScale( 
           int,           // size of arrays (can be zero)
-          float,        // a
-          const float*, // A[]
-          float*        // returns a*A[]
+          double,        // a
+          const double*, // A[]
+          double*        // returns a*A[]
           );
 
 ON_DECL
 void   ON_Array_aA_plus_B( 
           int,           // size of arrays (can be zero)
-          float,        // a
-          const float*, // A[]
-          const float*, // B[]
-          float*        // returns a*A[] + B[]
+          double,        // a
+          const double*, // A[]
+          const double*, // B[]
+          double*        // returns a*A[] + B[]
           );
 
 ON_DECL
@@ -557,7 +557,7 @@ ON_BOOL32 ON_IsValidPointList(
         ON_BOOL32, // true for homogeneous rational points
         int,  // count
         int,  // stride
-        const float*
+        const double*
         );
 
 ON_DECL
@@ -647,7 +647,7 @@ ON_DECL
 bool ON_SwapPointListCoordinates( 
         int, // count
         int, // stride
-        float*,
+        double*,
         int, int // coordinates to swap
         );
 
@@ -673,7 +673,7 @@ bool ON_TransformPointList(
         ON_BOOL32, // true for homogeneous rational points
         int,  // count
         int,  // stride
-        float*,
+        double*,
         const ON_Xform&
         );
 
@@ -702,7 +702,7 @@ ON_BOOL32 ON_TransformVectorList(
        int,  // dim
        int,  // count
        int,  // stride
-       float*,
+       double*,
        const ON_Xform&
        );
 
@@ -1852,7 +1852,7 @@ ON_DECL double ON_Max(double a, double b);
 
 // If performance is important, then
 // you are better off using ((b<a)?a:b)
-ON_DECL float ON_Max(float a, float b);
+ON_DECL double ON_Max(double a, double b);
 
 // If performance is important, then
 // you are better off using ((b<a)?a:b)
@@ -1864,7 +1864,7 @@ ON_DECL double ON_Min(double a, double b);
 
 // If performance is important, then
 // you are better off using ((a<b)?a:b)
-ON_DECL float ON_Min(float a, float b);
+ON_DECL double ON_Min(double a, double b);
 
 // If performance is important, then
 // you are better off using ((a<b)?a:b)
@@ -2016,26 +2016,26 @@ ON_DECL double ON_Length3d( double x, double y, double z );
 
 /*
 Description:
-  Convert a double x to the largest float f such that
+  Convert a double x to the largest double f such that
   the mathematical value of f is at most the value of x.
 Parameters:
   x - [in]
 Returns
-  The largest float f such that the mathematical value
+  The largest double f such that the mathematical value
   of f is at most the value of x.
 */
-ON_DECL float ON_FloatFloor(double x);
+ON_DECL double ON_FloatFloor(double x);
 
 /*
 Description:
-  Convert a double x to the smallest float f such that
+  Convert a double x to the smallest double f such that
   the mathematical value of f is at least the value of x.
 Parameters:
   x - [in]
 Returns
-  The smallest float f such that the mathematical value
+  The smallest double f such that the mathematical value
   of f is at least the value of x.
 */
-ON_DECL float ON_FloatCeil(double x);
+ON_DECL double ON_FloatCeil(double x);
 
 #endif

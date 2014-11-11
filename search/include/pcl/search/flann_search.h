@@ -68,7 +68,7 @@ namespace pcl
       * \code
       * // Feature and distance type
       * typedef SHOT352 FeatureT;
-      * typedef flann::L2<float> DistanceT;
+      * typedef flann::L2<double> DistanceT;
       * 
       * // Search and index types
       * typedef search::FlannSearch<FeatureT, DistanceT> SearchT;
@@ -89,7 +89,7 @@ namespace pcl
       * 
       * // Do search
       * std::vector<std::vector<int> > k_indices;
-      * std::vector<std::vector<float> > k_sqr_distances;
+      * std::vector<std::vector<double> > k_sqr_distances;
       * search.nearestKSearch (*query, std::vector<int> (), 2, k_indices, k_sqr_distances);
       * \endcode
       *
@@ -97,7 +97,7 @@ namespace pcl
       * \author Anders Glent Buch (multiple randomized kd tree interface)
       * \ingroup search
       */
-    template<typename PointT, typename FlannDistance=flann::L2_Simple <float> >
+    template<typename PointT, typename FlannDistance=flann::L2_Simple <double> >
     class FlannSearch: public Search<PointT>
     {
       using Search<PointT>::input_;
@@ -114,8 +114,8 @@ namespace pcl
         typedef boost::shared_ptr<std::vector<int> > IndicesPtr;
         typedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
 
-        typedef boost::shared_ptr<flann::Matrix <float> > MatrixPtr;
-        typedef boost::shared_ptr<const flann::Matrix <float> > MatrixConstPtr;
+        typedef boost::shared_ptr<flann::Matrix <double> > MatrixPtr;
+        typedef boost::shared_ptr<const flann::Matrix <double> > MatrixConstPtr;
 
         typedef flann::NNIndex< FlannDistance > Index;
         typedef boost::shared_ptr<flann::NNIndex <FlannDistance > > IndexPtr;
@@ -270,7 +270,7 @@ namespace pcl
           * \return number of neighbors found
           */
         int
-        nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
+        nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const;
 
 
         /** \brief Search for the k-nearest neighbors for the given query point.
@@ -282,7 +282,7 @@ namespace pcl
           */
         virtual void
         nearestKSearch (const PointCloud& cloud, const std::vector<int>& indices, int k, 
-                        std::vector< std::vector<int> >& k_indices, std::vector< std::vector<float> >& k_sqr_distances) const;
+                        std::vector< std::vector<int> >& k_indices, std::vector< std::vector<double> >& k_sqr_distances) const;
 
         /** \brief Search for all the nearest neighbors of the query point in a given radius.
           * \param[in] point the given query point
@@ -296,7 +296,7 @@ namespace pcl
           */
         int
         radiusSearch (const PointT& point, double radius, 
-                      std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
+                      std::vector<int> &k_indices, std::vector<double> &k_sqr_distances,
                       unsigned int max_nn = 0) const;
 
         /** \brief Search for the k-nearest neighbors for the given query point.
@@ -309,7 +309,7 @@ namespace pcl
           */
         virtual void
         radiusSearch (const PointCloud& cloud, const std::vector<int>& indices, double radius, std::vector< std::vector<int> >& k_indices,
-                std::vector< std::vector<float> >& k_sqr_distances, unsigned int max_nn=0) const;
+                std::vector< std::vector<double> >& k_sqr_distances, unsigned int max_nn=0) const;
 
         /** \brief Provide a pointer to the point representation to use to convert points into k-D vectors.
           * \param[in] point_representation the const boost shared pointer to a PointRepresentation
@@ -350,7 +350,7 @@ namespace pcl
 
         /** Epsilon for approximate NN search.
           */
-        float eps_;
+        double eps_;
         
         /** Number of checks to perform for approximate NN search using the multiple randomized tree index
          */

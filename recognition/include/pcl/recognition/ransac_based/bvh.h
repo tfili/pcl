@@ -85,19 +85,19 @@ namespace pcl
               return static_cast<bool> (a->getCentroid ()[0] < b->getCentroid ()[0]);
             }
 
-            float*
+            double*
             getBounds ()
             {
               return (bounds_);
             }
 
-            float*
+            double*
             getCentroid ()
             {
               return (centroid_);
             }
 
-            const float*
+            const double*
             getCentroid () const
             {
               return (centroid_);
@@ -111,9 +111,9 @@ namespace pcl
 
           protected:
             /** These are the bounds of the object.*/
-            float bounds_[6];
+            double bounds_[6];
             /** This is the centroid. */
-            float centroid_[3];
+            double centroid_[3];
             /** This is the user-defined data object. */
             UserData data_;
         };
@@ -128,7 +128,7 @@ namespace pcl
             Node (std::vector<BoundedObject*>& sorted_objects, int first_id, int last_id)
             {
               // Initialize the bounds of the node
-              memcpy (bounds_, sorted_objects[first_id]->getBounds (), 6*sizeof (float));
+              memcpy (bounds_, sorted_objects[first_id]->getBounds (), 6*sizeof (double));
 
               // Expand the bounds of the node
               for ( int i = first_id + 1 ; i <= last_id ; ++i )
@@ -191,7 +191,7 @@ namespace pcl
 
             /** \brief Returns true if 'box' intersects or touches (with a side or a vertex) this node. */
             inline bool
-            intersect(const float box[6]) const
+            intersect(const double box[6]) const
             {
               if ( box[1] < bounds_[0] || box[3] < bounds_[2] || box[5] < bounds_[4] ||
                    box[0] > bounds_[1] || box[2] > bounds_[3] || box[4] > bounds_[5] )
@@ -210,7 +210,7 @@ namespace pcl
             friend class BVH;
 
           protected:
-            float bounds_[6];
+            double bounds_[6];
             Node* children_[2];
             BoundedObject* object_;
         };
@@ -270,7 +270,7 @@ namespace pcl
         /** \brief Pushes back in 'intersected_objects' the bounded objects intersected by the input 'box' and returns true.
           * Returns false if no objects are intersected. */
         inline bool
-        intersect(const float box[6], std::list<BoundedObject*>& intersected_objects) const
+        intersect(const double box[6], std::list<BoundedObject*>& intersected_objects) const
         {
           if ( !root_ )
             return false;

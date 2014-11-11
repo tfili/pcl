@@ -70,13 +70,13 @@ class TestMeshConversion : public ::testing::Test
       pcl::PointXYZRGBNormal pt;
       for (unsigned int i=0; i<18; ++i)
       {
-        pt.x = static_cast <float> (10 * i);
-        pt.y = static_cast <float> (20 * i);
-        pt.z = static_cast <float> (30 * i);
+        pt.x = static_cast <double> (10 * i);
+        pt.y = static_cast <double> (20 * i);
+        pt.z = static_cast <double> (30 * i);
 
-        pt.normal_x = static_cast <float> (100 * i);
-        pt.normal_y = static_cast <float> (200 * i);
-        pt.normal_z = static_cast <float> (300 * i);
+        pt.normal_x = static_cast <double> (100 * i);
+        pt.normal_y = static_cast <double> (200 * i);
+        pt.normal_z = static_cast <double> (300 * i);
 
         pt.r = static_cast <uint8_t> (1 * i);
         pt.g = static_cast <uint8_t> (2 * i);

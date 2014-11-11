@@ -284,7 +284,7 @@ void ICCVTutorial<FeatureType>::findCorrespondences (typename pcl::PointCloud<Fe
   // Find the index of the best match for each keypoint, and store it in "correspondences_out"
   const int k = 1;
   std::vector<int> k_indices (k);
-  std::vector<float> k_squared_distances (k);
+  std::vector<double> k_squared_distances (k);
   for (int i = 0; i < static_cast<int> (source->size ()); ++i)
   {
     descriptor_kdtree.nearestKSearch (*source, i, k, k_indices, k_squared_distances);

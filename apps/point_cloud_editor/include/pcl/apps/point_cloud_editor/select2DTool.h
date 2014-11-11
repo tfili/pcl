@@ -104,14 +104,14 @@ class Select2DTool : public ToolInterface
     draw () const;
 
     /// The default size in pixels of the rubberband tool outline
-    static const float DEFAULT_TOOL_DISPLAY_SIZE_;
+    static const double DEFAULT_TOOL_DISPLAY_SIZE_;
 
     /// The default color of the rubberband tool - red component
-    static const float DEFAULT_TOOL_DISPLAY_COLOR_RED_;
+    static const double DEFAULT_TOOL_DISPLAY_COLOR_RED_;
     /// The default color of the rubberband tool - green component
-    static const float DEFAULT_TOOL_DISPLAY_COLOR_GREEN_;
+    static const double DEFAULT_TOOL_DISPLAY_COLOR_GREEN_;
     /// The default color of the rubberband tool - blue component
-    static const float DEFAULT_TOOL_DISPLAY_COLOR_BLUE_;
+    static const double DEFAULT_TOOL_DISPLAY_COLOR_BLUE_;
 
 
   private:

@@ -99,7 +99,7 @@ namespace pcl
 
         struct Histogram
         {
-          float label_prob[NUM_PARTS];
+          double label_prob[NUM_PARTS];
         };
 
         ////////////////////////////////////////////////

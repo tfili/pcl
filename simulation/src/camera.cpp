@@ -33,9 +33,9 @@ pcl::simulation::Camera::updatePose ()
 
 void
 pcl::simulation::Camera::setParameters (int width, int height,
-                                        float fx, float fy,
-                                        float cx, float cy,
-                                        float z_near, float z_far)
+                                        double fx, double fy,
+                                        double cx, double cy,
+                                        double z_near, double z_far)
 {
   width_ = width;
   height_ = height;
@@ -46,7 +46,7 @@ pcl::simulation::Camera::setParameters (int width, int height,
   z_near_ = z_near;
   z_far_ = z_far;
 
-  float z_nf = (z_near_-z_far_);
+  double z_nf = (z_near_-z_far_);
   projection_matrix_ <<  2.0f*fx_/width_,  0,                 1.0f-(2.0f*cx_/width_),     0,
                          0,                2.0f*fy_/height_,  1.0f-(2.0f*cy_/height_),    0,
                          0,                0,                (z_far_+z_near_)/z_nf,  2.0f*z_near_*z_far_/z_nf,

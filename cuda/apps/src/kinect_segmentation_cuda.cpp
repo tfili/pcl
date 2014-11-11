@@ -156,8 +156,8 @@ class Segmentation
         pt.x = cloud->points[i].x;
         pt.y = cloud->points[i].y;
         pt.z = cloud->points[i].z;
-        // Pack RGB into a float
-        pt.rgb = *(float*)(&cloud->points[i].rgb);
+        // Pack RGB into a double
+        pt.rgb = *(double*)(&cloud->points[i].rgb);
         data_host.points[i] = pt;
       }
       data_host.width = cloud->width;
@@ -168,7 +168,7 @@ class Segmentation
       // we got a cloud in device..
 
       boost::shared_ptr<typename Storage<float4>::type> normals;
-      float focallength = 580/2.0;
+      double focallength = 580/2.0;
       {
         ScopeTimeCPU time ("Normal Estimation");
         normals = computePointNormals<Storage, typename PointIterator<Storage,PointXYZRGB>::type > (data->points.begin (), data->points.end (), focallength, data, 0.05, 30);
@@ -184,7 +184,7 @@ class Segmentation
     template <template <typename> class Storage> void 
     cloud_cb (const boost::shared_ptr<openni_wrapper::Image>& image,
               const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, 
-              float constant)
+              double constant)
     {
       static unsigned count = 0;
       static double last = getTime ();
@@ -218,7 +218,7 @@ class Segmentation
       }
 
       boost::shared_ptr<typename Storage<float4>::type> normals;
-      float focallength = 580/2.0;
+      double focallength = 580/2.0;
       {
         ScopeTimeCPU time ("Normal Estimation");
         if (normal_method == 1)
@@ -368,7 +368,7 @@ class Segmentation
       {
         pcl::Grabber* filegrabber = 0;
 
-        float frames_per_second = 1;
+        double frames_per_second = 1;
         bool repeat = false;
 
         std::string path = "./frame_0.pcd";
@@ -402,13 +402,13 @@ class Segmentation
         if (use_device)
         {
           std::cerr << "[Segmentation] Using GPU..." << std::endl;
-          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&Segmentation::cloud_cb<Device>, this, _1, _2, _3);
+          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&Segmentation::cloud_cb<Device>, this, _1, _2, _3);
           c = grabber->registerCallback (f);
         }
         else
         {
 //          std::cerr << "[Segmentation] Using CPU..." << std::endl;
-//          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&Segmentation::cloud_cb<Host>, this, _1, _2, _3);
+//          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&Segmentation::cloud_cb<Host>, this, _1, _2, _3);
 //          c = grabber->registerCallback (f);
         }
 

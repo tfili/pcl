@@ -159,16 +159,16 @@ pcl::SHOTEstimationOMP<PointInT, PointNT, PointOutT, PointRFT>::computeFeature (
     // Allocate enough space to hold the results
     // \note This resize is irrelevant for a radiusSearch ().
     std::vector<int> nn_indices (k_);
-    std::vector<float> nn_dists (k_);
+    std::vector<double> nn_dists (k_);
 
     if (!isFinite ((*input_)[(*indices_)[idx]]) || lrf_is_nan || this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices,
                                                                                            nn_dists) == 0)
     {
       // Copy into the resultant cloud
       for (int d = 0; d < shot.size (); ++d)
-        output.points[idx].descriptor[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].descriptor[d] = std::numeric_limits<double>::quiet_NaN ();
       for (int d = 0; d < 9; ++d)
-        output.points[idx].rf[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].rf[d] = std::numeric_limits<double>::quiet_NaN ();
 
       output.is_dense = false;
       continue;
@@ -221,7 +221,7 @@ pcl::SHOTColorEstimationOMP<PointInT, PointNT, PointOutT, PointRFT>::computeFeat
     // Allocate enough space to hold the results
     // \note This resize is irrelevant for a radiusSearch ().
     std::vector<int> nn_indices (k_);
-    std::vector<float> nn_dists (k_);
+    std::vector<double> nn_dists (k_);
 
     bool lrf_is_nan = false;
     const PointRFT& current_frame = (*frames_)[idx];
@@ -240,9 +240,9 @@ pcl::SHOTColorEstimationOMP<PointInT, PointNT, PointOutT, PointRFT>::computeFeat
     {
       // Copy into the resultant cloud
       for (int d = 0; d < shot.size (); ++d)
-        output.points[idx].descriptor[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].descriptor[d] = std::numeric_limits<double>::quiet_NaN ();
       for (int d = 0; d < 9; ++d)
-        output.points[idx].rf[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].rf[d] = std::numeric_limits<double>::quiet_NaN ();
 
       output.is_dense = false;
       continue;

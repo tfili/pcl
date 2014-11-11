@@ -109,7 +109,7 @@ namespace pcl
       clone () const;
 
     protected:
-      float getDistance (const PointT& point) const;
+      double getDistance (const PointT& point) const;
       void transformPoint (const PointT& pointIn, PointT& pointOut) const;
     private:
       /**

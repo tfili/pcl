@@ -88,16 +88,16 @@ pcl::io::LZFDepth16ImageReader::read (
       memcpy (&val, &uncompressed_data[depth_idx], sizeof (unsigned short));
       if (val == 0)
       {
-        pt.x = pt.y = pt.z = std::numeric_limits<float>::quiet_NaN ();
+        pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
         cloud.is_dense = false;
         continue;
       }
 
-      pt.z = static_cast<float> (val * z_multiplication_factor_);
-      pt.x = (static_cast<float> (u) - static_cast<float> (parameters_.principal_point_x)) 
-        * pt.z * static_cast<float> (constant_x);
-      pt.y = (static_cast<float> (v) - static_cast<float> (parameters_.principal_point_y)) 
-        * pt.z * static_cast<float> (constant_y);
+      pt.z = static_cast<double> (val * z_multiplication_factor_);
+      pt.x = (static_cast<double> (u) - static_cast<double> (parameters_.principal_point_x)) 
+        * pt.z * static_cast<double> (constant_x);
+      pt.y = (static_cast<double> (v) - static_cast<double> (parameters_.principal_point_y)) 
+        * pt.z * static_cast<double> (constant_y);
     }
   }
   cloud.sensor_origin_.setZero ();
@@ -157,7 +157,7 @@ pcl::io::LZFDepth16ImageReader::readOMP (const std::string &filename,
     memcpy (&val, &uncompressed_data[depth_idx], sizeof (unsigned short));
     if (val == 0)
     {
-      pt.x = pt.y = pt.z = std::numeric_limits<float>::quiet_NaN ();
+      pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
       if (cloud.is_dense)
       {
 #ifdef _OPENMP
@@ -171,11 +171,11 @@ pcl::io::LZFDepth16ImageReader::readOMP (const std::string &filename,
       continue;
     }
 
-    pt.z = static_cast<float> (val * z_multiplication_factor_);
-    pt.x = (static_cast<float> (u) - static_cast<float> (parameters_.principal_point_x)) 
-      * pt.z * static_cast<float> (constant_x);
-    pt.y = (static_cast<float> (v) - static_cast<float> (parameters_.principal_point_y)) 
-      * pt.z * static_cast<float> (constant_y);
+    pt.z = static_cast<double> (val * z_multiplication_factor_);
+    pt.x = (static_cast<double> (u) - static_cast<double> (parameters_.principal_point_x)) 
+      * pt.z * static_cast<double> (constant_x);
+    pt.y = (static_cast<double> (v) - static_cast<double> (parameters_.principal_point_y)) 
+      * pt.z * static_cast<double> (constant_y);
     
   }
   cloud.sensor_origin_.setZero ();

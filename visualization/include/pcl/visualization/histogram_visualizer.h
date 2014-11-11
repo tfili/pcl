@@ -182,7 +182,7 @@ namespace pcl
            * \param[in] maxp the maximum Y range
            */
         void 
-        setGlobalYRange (float minp, float maxp);
+        setGlobalYRange (double minp, double maxp);
 
         /** \brief Update all window positions on screen so that they fit. */
         void 

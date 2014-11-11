@@ -55,7 +55,7 @@ TEST (PCL, VectorAverage_mean)
   weights.push_back (0.312427f);
   
   Eigen::Vector3f correct_mean (0.0f, 0.0f, 0.0f);
-  float weigth_sum = 0.0f;
+  double weigth_sum = 0.0f;
   for (unsigned int i = 0; i < points.size (); ++i)
   {
     correct_mean += weights[i]*points[i];
@@ -63,7 +63,7 @@ TEST (PCL, VectorAverage_mean)
   }
   correct_mean /= weigth_sum;
   
-  pcl::VectorAverage<float, 3> va;
+  pcl::VectorAverage<double, 3> va;
   for (unsigned int i=0; i<points.size(); ++i)
     va.add(points[i], weights[i]);
   Eigen::Vector3f mean = va.getMean();

@@ -66,7 +66,7 @@ pcl::isPointIn2DPolygon (const PointT &point, const pcl::PointCloud<PointT> &pol
   // Hessian form (D = nc . p_plane (centroid here) + p)
   model_coefficients[3] = -1 * model_coefficients.dot (xyz_centroid);
 
-  float distance_to_plane = model_coefficients[0] * point.x +
+  double distance_to_plane = model_coefficients[0] * point.x +
                             model_coefficients[1] * point.y +
                             model_coefficients[2] * point.z +
                             model_coefficients[3];
@@ -210,7 +210,7 @@ pcl::ExtractPolygonalPrismData<PointT>::segment (pcl::PointIndices &output)
   vp -= planar_hull_->points[0].getVector4fMap ();
   vp[3] = 0;
   // Dot product between the (viewpoint - point) and the plane normal
-  float cos_theta = vp.dot (model_coefficients);
+  double cos_theta = vp.dot (model_coefficients);
   // Flip the plane normal
   if (cos_theta < 0)
   {

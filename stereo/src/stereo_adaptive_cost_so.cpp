@@ -64,36 +64,36 @@ pcl::AdaptiveCostSOStereoMatching::compute_impl (unsigned char* ref_img, unsigne
   //int n = radius_ * 2 + 1;
   //int sad_max = std::numeric_limits<int>::max ();
  
-  float **acc = new float *[width_];
+  double **acc = new double *[width_];
   for (int d = 0; d < width_; d++)
   {
-    acc[d] = new float[max_disp_];
-    memset (acc[d], 0, sizeof (float) * max_disp_);
+    acc[d] = new double[max_disp_];
+    memset (acc[d], 0, sizeof (double) * max_disp_);
   }
  
   //data structures for Scanline Optimization
-  float **fwd = new float *[width_];
-  float **bck = new float *[width_];
+  double **fwd = new double *[width_];
+  double **bck = new double *[width_];
   for(int d=0; d<width_; d++)
   {
-    fwd[d] = new float[max_disp_];
-    memset ( fwd[d], 0, sizeof(float)*max_disp_);
-    bck[d] = new float[max_disp_];
-    memset ( bck[d], 0, sizeof(float)*max_disp_);
+    fwd[d] = new double[max_disp_];
+    memset ( fwd[d], 0, sizeof(double)*max_disp_);
+    bck[d] = new double[max_disp_];
+    memset ( bck[d], 0, sizeof(double)*max_disp_);
   }
  
   //spatial distance init
-  float *ds = new float[ 2*radius_+1 ];
+  double *ds = new double[ 2*radius_+1 ];
   for (int j = -radius_; j <= radius_; j++)
-    ds[j+radius_] = static_cast<float> (exp (- abs (j) / gamma_s_));
+    ds[j+radius_] = static_cast<double> (exp (- abs (j) / gamma_s_));
   
   //LUT for color distance weight computation
-  float lut[256];
+  double lut[256];
   for (int j = 0; j < 256; j++)
-    lut[j] = float (exp (-j / gamma_c_));
+    lut[j] = double (exp (-j / gamma_c_));
  
   //left weight array alloc
-  float *wl = new float [ 2*radius_+1 ];
+  double *wl = new double [ 2*radius_+1 ];
  
   for (int y = radius_ + 1; y < height_ - radius_; y++)
   {
@@ -104,14 +104,14 @@ pcl::AdaptiveCostSOStereoMatching::compute_impl (unsigned char* ref_img, unsigne
  
       for (int d = 0; d < max_disp_; d++)
       {
-        float sumw  = 0.0;
-        float num = 0.0; 
+        double sumw  = 0.0;
+        double num = 0.0; 
  
         for (int j = -radius_; j <= radius_; j++)
         {
-          float weight_r = lut[ abs(trg_img[(y+j)*width_+x-d-x_off_] - trg_img[y*width_+x-d-x_off_]) ] * ds[j+radius_];
+          double weight_r = lut[ abs(trg_img[(y+j)*width_+x-d-x_off_] - trg_img[y*width_+x-d-x_off_]) ] * ds[j+radius_];
           int sad = abs (ref_img[(y+j)*width_+x] - trg_img[(y+j)*width_+x-d-x_off_]);
-          num += wl[j+radius_] * weight_r * static_cast<float> (sad);
+          num += wl[j+radius_] * weight_r * static_cast<double> (sad);
           sumw += wl[j+radius_] * weight_r;
         }
         
@@ -126,17 +126,17 @@ pcl::AdaptiveCostSOStereoMatching::compute_impl (unsigned char* ref_img, unsigne
 
     for (int x = x_off_ + max_disp_+2; x<width_; x++)
     {
-      float c_min = fwd[x-1][0];
+      double c_min = fwd[x-1][0];
       for (int d = 1; d < max_disp_; d++)
         if (fwd[x-1][d] < c_min)
           c_min = fwd[x-1][d];
  
-      fwd[x][0] =  acc[x][0] - c_min + std::min (fwd[x-1][0], std::min (fwd[x-1][1] + static_cast<float> (smoothness_weak_), c_min + static_cast<float> (smoothness_strong_)));
+      fwd[x][0] =  acc[x][0] - c_min + std::min (fwd[x-1][0], std::min (fwd[x-1][1] + static_cast<double> (smoothness_weak_), c_min + static_cast<double> (smoothness_strong_)));
       for (int d = 1; d < max_disp_ - 1; d++)
       {
-        fwd[x][d] = acc[x][d] - c_min + std::min (std::min (fwd[x-1][d], fwd[x-1][d-1] + static_cast<float> (smoothness_weak_)), std::min (fwd[x-1][d+1] + static_cast<float> (smoothness_weak_), c_min + static_cast<float> (smoothness_strong_)));
+        fwd[x][d] = acc[x][d] - c_min + std::min (std::min (fwd[x-1][d], fwd[x-1][d-1] + static_cast<double> (smoothness_weak_)), std::min (fwd[x-1][d+1] + static_cast<double> (smoothness_weak_), c_min + static_cast<double> (smoothness_strong_)));
       } 
-      fwd[x][max_disp_-1] = acc[x][max_disp_-1] - c_min + std::min (fwd[x-1][max_disp_-1], std::min(fwd[x-1][max_disp_-2] + static_cast<float> (smoothness_weak_), c_min + static_cast<float> (smoothness_strong_)));
+      fwd[x][max_disp_-1] = acc[x][max_disp_-1] - c_min + std::min (fwd[x-1][max_disp_-1], std::min(fwd[x-1][max_disp_-2] + static_cast<double> (smoothness_weak_), c_min + static_cast<double> (smoothness_strong_)));
     }//x
  
     //Backward
@@ -146,21 +146,21 @@ pcl::AdaptiveCostSOStereoMatching::compute_impl (unsigned char* ref_img, unsigne
     for (int x = width_-2; x > max_disp_ + x_off_; x--)
     {
       
-      float c_min = bck[x+1][0];
+      double c_min = bck[x+1][0];
       for (int d = 1; d < max_disp_; d++)
        if (bck[x+1][d] < c_min)
         c_min = bck[x+1][d];
  
-      bck[x][0] =  acc[x][0] - c_min + std::min (bck[x+1][0], std::min (bck[x+1][1] + static_cast<float> (smoothness_weak_), c_min + static_cast<float> (smoothness_strong_)));
+      bck[x][0] =  acc[x][0] - c_min + std::min (bck[x+1][0], std::min (bck[x+1][1] + static_cast<double> (smoothness_weak_), c_min + static_cast<double> (smoothness_strong_)));
        for (int d = 1; d < max_disp_ - 1; d++)
-       bck[x][d] = acc[x][d] - c_min + std::min (std::min(bck[x+1][d], bck[x+1][d-1] + static_cast<float> (smoothness_weak_)), std::min (bck[x+1][d+1] + static_cast<float> (smoothness_weak_), c_min + static_cast<float> (smoothness_strong_)));
-      bck[x][max_disp_-1] = acc[x][max_disp_-1] - c_min + std::min (bck[x+1][max_disp_-1], std::min (bck[x+1][max_disp_-2] + static_cast<float> (smoothness_weak_), c_min + static_cast<float> (smoothness_strong_)));
+       bck[x][d] = acc[x][d] - c_min + std::min (std::min(bck[x+1][d], bck[x+1][d-1] + static_cast<double> (smoothness_weak_)), std::min (bck[x+1][d+1] + static_cast<double> (smoothness_weak_), c_min + static_cast<double> (smoothness_strong_)));
+      bck[x][max_disp_-1] = acc[x][max_disp_-1] - c_min + std::min (bck[x+1][max_disp_-1], std::min (bck[x+1][max_disp_-2] + static_cast<double> (smoothness_weak_), c_min + static_cast<double> (smoothness_strong_)));
     }//x
  
     //last scan
     for (int x = x_off_ + max_disp_ + 1; x < width_; x++)
     {
-      float c_min = std::numeric_limits<float>::max ();
+      double c_min = std::numeric_limits<double>::max ();
       short int dbest = 0;
   
       for (int d = 0; d < max_disp_; d++)

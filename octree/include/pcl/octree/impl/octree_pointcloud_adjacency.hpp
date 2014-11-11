@@ -54,8 +54,8 @@ template<typename PointT, typename LeafContainerT, typename BranchContainerT> vo
 pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT, BranchContainerT>::addPointsFromInputCloud ()
 {
   //double t1,t2;
-  float minX = std::numeric_limits<float>::max (), minY = std::numeric_limits<float>::max (), minZ = std::numeric_limits<float>::max ();
-  float maxX = -std::numeric_limits<float>::max(), maxY = -std::numeric_limits<float>::max(), maxZ = -std::numeric_limits<float>::max();
+  double minX = std::numeric_limits<double>::max (), minY = std::numeric_limits<double>::max (), minZ = std::numeric_limits<double>::max ();
+  double maxX = -std::numeric_limits<double>::max(), maxY = -std::numeric_limits<double>::max(), maxZ = -std::numeric_limits<double>::max();
   
   for (size_t i = 0; i < input_->size (); ++i)
   {
@@ -241,7 +241,7 @@ pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT, BranchContainerT>
       boost::tie (edge, edge_added) = add_edge (u,v,voxel_adjacency_graph);
       
       PointT p_v = voxel_adjacency_graph[v];
-      float dist = (p_v.getVector3fMap () - p_u.getVector3fMap ()).norm ();
+      double dist = (p_v.getVector3fMap () - p_u.getVector3fMap ()).norm ();
       voxel_adjacency_graph[edge] = dist;
       
     }
@@ -261,15 +261,15 @@ pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT, BranchContainerT>
                          camera_pos.y,
                          camera_pos.z);
   
-  Eigen::Vector3f leaf_centroid(static_cast<float> ((static_cast<double> (key.x) + 0.5f) * this->resolution_ + this->min_x_),
-                                static_cast<float> ((static_cast<double> (key.y) + 0.5f) * this->resolution_ + this->min_y_), 
-                                static_cast<float> ((static_cast<double> (key.z) + 0.5f) * this->resolution_ + this->min_z_));
+  Eigen::Vector3f leaf_centroid(static_cast<double> ((static_cast<double> (key.x) + 0.5f) * this->resolution_ + this->min_x_),
+                                static_cast<double> ((static_cast<double> (key.y) + 0.5f) * this->resolution_ + this->min_y_), 
+                                static_cast<double> ((static_cast<double> (key.z) + 0.5f) * this->resolution_ + this->min_z_));
   Eigen::Vector3f direction = sensor - leaf_centroid;
   
-  float norm = direction.norm ();
+  double norm = direction.norm ();
   direction.normalize ();
-  float precision = 1.0f;
-  const float step_size = static_cast<const float> (resolution_) * precision;
+  double precision = 1.0f;
+  const double step_size = static_cast<const double> (resolution_) * precision;
   const int nsteps = std::max (1, static_cast<int> (norm / step_size));
   
   OctreeKey prev_key = key;

@@ -101,7 +101,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &source,
   print_highlight (stderr, "Computing ");
 
 #define Scalar double
-//#define Scalar float
+//#define Scalar double
 
   TransformationEstimationLM<PointNormal, PointNormal, Scalar>::Ptr te (new TransformationEstimationLM<PointNormal, PointNormal, Scalar>);
   //TransformationEstimationSVD<PointNormal, PointNormal, Scalar>::Ptr te (new TransformationEstimationSVD<PointNormal, PointNormal, Scalar>);

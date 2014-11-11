@@ -51,7 +51,7 @@ pcl::getPointCloudDifference (
 {
   // We're interested in a single nearest neighbor only
   std::vector<int> nn_indices (1);
-  std::vector<float> nn_distances (1);
+  std::vector<double> nn_distances (1);
 
   // The src indices that do not have a neighbor in tgt
   std::vector<int> src_indices;

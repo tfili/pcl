@@ -22,7 +22,7 @@ class Mesh
 typedef boost::shared_ptr<Mesh> MeshPtr;
 
 PointCloudPtr
-smoothPointCloud (const PointCloudPtr & input, float radius, int polynomial_order)
+smoothPointCloud (const PointCloudPtr & input, double radius, int polynomial_order)
 {
   pcl::MovingLeastSquares<PointT, NormalT> mls;
   mls.setSearchMethod (pcl::KdTreeFLANN<PointT>::Ptr (new pcl::KdTreeFLANN<PointT>));
@@ -40,7 +40,7 @@ smoothPointCloud (const PointCloudPtr & input, float radius, int polynomial_orde
 }
 
 SurfaceElementsPtr
-computeSurfaceElements (const PointCloudPtr & input, float radius, int polynomial_order)
+computeSurfaceElements (const PointCloudPtr & input, double radius, int polynomial_order)
 {
   pcl::MovingLeastSquares<PointT, NormalT> mls;
   mls.setSearchMethod (pcl::KdTreeFLANN<PointT>::Ptr (new pcl::KdTreeFLANN<PointT>));
@@ -76,7 +76,7 @@ computeConvexHull (const PointCloudPtr & input)
 
 
 MeshPtr
-computeConcaveHull (const PointCloudPtr & input, float alpha)
+computeConcaveHull (const PointCloudPtr & input, double alpha)
 {
   pcl::ConcaveHull<PointT> concave_hull;
   concave_hull.setInputCloud (input);
@@ -89,8 +89,8 @@ computeConcaveHull (const PointCloudPtr & input, float alpha)
 }
 
 pcl::PolygonMesh::Ptr
-greedyTriangulation (const SurfaceElementsPtr & surfels, float radius, float mu, int max_nearest_neighbors, 
-                     float max_surface_angle, float min_angle, float max_angle)
+greedyTriangulation (const SurfaceElementsPtr & surfels, double radius, double mu, int max_nearest_neighbors, 
+                     double max_surface_angle, double min_angle, double max_angle)
 
 {
   pcl::GreedyProjectionTriangulation<pcl::PointNormal> gpt;
@@ -113,7 +113,7 @@ greedyTriangulation (const SurfaceElementsPtr & surfels, float radius, float mu,
 
 
 pcl::PolygonMesh::Ptr
-marchingCubesTriangulation (const SurfaceElementsPtr & surfels, float leaf_size, float iso_level)
+marchingCubesTriangulation (const SurfaceElementsPtr & surfels, double leaf_size, double iso_level)
 {
   pcl::MarchingCubesGreedy<SurfelT> marching_cubes;
   marching_cubes.setSearchMethod (pcl::KdTree<SurfelT>::Ptr (new pcl::KdTreeFLANN<SurfelT> ()));

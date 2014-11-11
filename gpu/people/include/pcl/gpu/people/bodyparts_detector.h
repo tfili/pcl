@@ -137,7 +137,7 @@ namespace pcl
           boost::shared_ptr<device::MultiTreeLiveProc> impl_;
           
           int max_cluster_size_;
-          float cluster_tolerance_;
+          double cluster_tolerance_;
 
           BlobMatrix blob_matrix_;
 
@@ -146,7 +146,7 @@ namespace pcl
           std::vector<int>              dst_labels_;
           std::vector<int>              region_sizes_;
           std::vector<int>              remap_;
-          std::vector<float>            means_storage_;
+          std::vector<double>            means_storage_;
           DeviceArray2D<int>            comps_;
           DeviceArray2D<unsigned char>  edges_;
 

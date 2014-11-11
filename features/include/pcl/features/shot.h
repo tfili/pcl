@@ -115,15 +115,15 @@ namespace pcl
       virtual void
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
-                        const std::vector<float> &sqr_dists,
+                        const std::vector<double> &sqr_dists,
                         Eigen::VectorXf &shot) = 0;
 
         /** \brief Set the radius used for local reference frame estimation if the frames are not set by the user */
       virtual void
-      setLRFRadius (float radius) { lrf_radius_ = radius; }
+      setLRFRadius (double radius) { lrf_radius_ = radius; }
 
         /** \brief Get the radius used for local reference frame estimation */
-      virtual float
+      virtual double
       getLRFRadius () const { return lrf_radius_; }
 
     protected:
@@ -143,7 +143,7 @@ namespace pcl
         */
       void
       interpolateSingleChannel (const std::vector<int> &indices,
-                                const std::vector<float> &sqr_dists,
+                                const std::vector<double> &sqr_dists,
                                 const int index,
                                 std::vector<double> &binDistance,
                                 const int nr_bins,
@@ -173,7 +173,7 @@ namespace pcl
       Eigen::VectorXf shot_;
 
       /** \brief The radius used for the LRF computation */
-      float lrf_radius_;
+      double lrf_radius_;
 
       /** \brief The squared search radius. */
       double sqradius_;
@@ -263,7 +263,7 @@ namespace pcl
       virtual void
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
-                        const std::vector<float> &sqr_dists,
+                        const std::vector<double> &sqr_dists,
                         Eigen::VectorXf &shot);
     protected:
       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
@@ -349,7 +349,7 @@ namespace pcl
       virtual void
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
-                        const std::vector<float> &sqr_dists,
+                        const std::vector<double> &sqr_dists,
                         Eigen::VectorXf &shot);
     protected:
       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
@@ -372,7 +372,7 @@ namespace pcl
         */
       void
       interpolateDoubleChannel (const std::vector<int> &indices,
-                                const std::vector<float> &sqr_dists,
+                                const std::vector<double> &sqr_dists,
                                 const int index,
                                 std::vector<double> &binDistanceShape,
                                 std::vector<double> &binDistanceColor,
@@ -399,10 +399,10 @@ namespace pcl
         * \param[out] B2 the second color-opponent dimension
         */
       static void
-      RGB2CIELAB (unsigned char R, unsigned char G, unsigned char B, float &L, float &A, float &B2);
+      RGB2CIELAB (unsigned char R, unsigned char G, unsigned char B, double &L, double &A, double &B2);
 
-      static float sRGB_LUT[256];
-      static float sXYZ_LUT[4000];
+      static double sRGB_LUT[256];
+      static double sXYZ_LUT[4000];
   };
 }
 

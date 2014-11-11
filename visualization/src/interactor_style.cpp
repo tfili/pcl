@@ -883,7 +883,7 @@ pcl::visualization::PCLVisualizerInteractorStyle::OnKeyDown ()
           for (actor->InitPathTraversal (); vtkAssemblyPath* path = actor->GetNextPath (); )
           {
             vtkSmartPointer<vtkActor> apart = reinterpret_cast <vtkActor*> (path->GetLastNode ()->GetViewProp ());
-            float psize = apart->GetProperty ()->GetPointSize ();
+            double psize = apart->GetProperty ()->GetPointSize ();
             if (psize < 63.0f)
               apart->GetProperty ()->SetPointSize (psize + 1.0f);
           }
@@ -904,7 +904,7 @@ pcl::visualization::PCLVisualizerInteractorStyle::OnKeyDown ()
           for (actor->InitPathTraversal (); vtkAssemblyPath* path = actor->GetNextPath (); )
           {
             vtkSmartPointer<vtkActor> apart = static_cast<vtkActor*> (path->GetLastNode ()->GetViewProp ());
-            float psize = apart->GetProperty ()->GetPointSize ();
+            double psize = apart->GetProperty ()->GetPointSize ();
             if (psize > 1.0f)
               apart->GetProperty ()->SetPointSize (psize - 1.0f);
           }

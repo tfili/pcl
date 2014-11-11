@@ -94,7 +94,7 @@ namespace pcl
       clone () const;
 
     protected:
-      float
+      double
       getDistance (const PointT& point) const;
 
     private:

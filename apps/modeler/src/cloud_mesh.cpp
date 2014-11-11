@@ -250,7 +250,7 @@ pcl::modeler::CloudMesh::transform(double tx, double ty, double tz, double rx, d
   rx *= M_PI/180;
   ry *= M_PI/180;
   rz *= M_PI/180;
-  Eigen::Affine3f affine_transform = pcl::getTransformation (float (tx), float (ty), float (tz), float (rx), float (ry), float (rz));
+  Eigen::Affine3f affine_transform = pcl::getTransformation (double (tx), double (ty), double (tz), double (rx), double (ry), double (rz));
   CloudMesh::PointCloud transform_cloud = mean_cloud;
   pcl::transformPointCloudWithNormals(mean_cloud, transform_cloud, affine_transform.matrix());
 

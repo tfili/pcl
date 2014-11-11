@@ -98,7 +98,7 @@ namespace pcl
             * \param output
             */
           void 
-          detectKeypoints (const std::vector<float> &intensity_data, 
+          detectKeypoints (const std::vector<double> &intensity_data, 
                            pcl::PointCloud<pcl::PointUV> &output);
 
           /** \brief Applies non-max-suppression. 
@@ -117,7 +117,7 @@ namespace pcl
             * \param[out] output the resultant keypoints after non-max-supression
             */
           void
-          applyNonMaxSuppression (const std::vector<float>& intensity_data, 
+          applyNonMaxSuppression (const std::vector<double>& intensity_data, 
                                   const pcl::PointCloud<pcl::PointUV> &input, 
                                   pcl::PointCloud<pcl::PointUV> &output);
 
@@ -131,7 +131,7 @@ namespace pcl
             * \param[in] im the pixels to compute the score at
             */
           virtual int 
-          computeCornerScore (const float* im) const = 0;
+          computeCornerScore (const double* im) const = 0;
 
           /** \brief Sets the threshold for corner detection.
             * \param[in] threshold the threshold used for corner detection.
@@ -178,7 +178,7 @@ namespace pcl
             * \param[in] im the image to detect keypoints in 
             */
           virtual void 
-          detect (const float* im, 
+          detect (const double* im, 
                   std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > &) const = 0;
 
         protected:
@@ -234,7 +234,7 @@ namespace pcl
             * \param scores
             */
           void 
-          computeCornerScores (const float* im, 
+          computeCornerScores (const double* im, 
                                const std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > & corners_all, 
                                std::vector<ScoreIndex> & scores);
 
@@ -295,7 +295,7 @@ namespace pcl
             * \param im 
             */
           int 
-          computeCornerScore (const float* im) const;
+          computeCornerScore (const double* im) const;
 
           /** \brief Detects points of interest (i.e., keypoints) in the given image
             * \param[in] im the image to detect keypoints in 
@@ -309,7 +309,7 @@ namespace pcl
             * \param[out] corners_all the resultant set of keypoints detected
             */
           void 
-          detect (const float* im, std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > &corners_all) const;
+          detect (const double* im, std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > &corners_all) const;
 
         protected:
           /** \brief Initializes the sample pattern. */
@@ -377,7 +377,7 @@ namespace pcl
             * \param im 
             */
           int 
-          computeCornerScore (const float* im) const;
+          computeCornerScore (const double* im) const;
 
           /** \brief Detects points of interest (i.e., keypoints) in the given image
             * \param[in] im the image to detect keypoints in 
@@ -391,7 +391,7 @@ namespace pcl
             * \param[out] corners_all the resultant set of keypoints detected
             */
           void 
-          detect (const float* im, std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > &corners_all) const;
+          detect (const double* im, std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > &corners_all) const;
 
         protected:
           /** \brief Initializes the sample pattern. */
@@ -455,7 +455,7 @@ namespace pcl
             * \param im 
             */
           int 
-          computeCornerScore (const float* im) const;
+          computeCornerScore (const double* im) const;
 
           /** \brief Detects points of interest (i.e., keypoints) in the given image
             * \param[in] im the image to detect keypoints in 
@@ -469,7 +469,7 @@ namespace pcl
             * \param[out] corners_all the resultant set of keypoints detected
             */
           void 
-          detect (const float* im, std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > &corners_all) const;
+          detect (const double* im, std::vector<pcl::PointUV, Eigen::aligned_allocator<pcl::PointUV> > &corners_all) const;
 
         protected:
           /** \brief Initializes the sample pattern. */
@@ -803,7 +803,7 @@ namespace pcl
     * agast.compute (keypoints);
     * \endcode
     *
-    * \note This is a specialized version for PointXYZ clouds, and operates on depth (z) as float. The output keypoints are of the PointXY type.
+    * \note This is a specialized version for PointXYZ clouds, and operates on depth (z) as double. The output keypoints are of the PointXY type.
     * \note The AGAST keypoint type used is 7_12s.
     *
     * \author Stefan Holzer, Radu B. Rusu

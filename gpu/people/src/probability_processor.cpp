@@ -55,15 +55,15 @@ pcl::gpu::people::ProbabilityProcessor::SelectLabel (const Depth& depth, Labels&
 
 /** \brief This will combine two probabilities according their weight **/
 void
-pcl::gpu::people::ProbabilityProcessor::CombineProb ( const Depth& depth, pcl::device::LabelProbability& probIn1, float weight1,
-              pcl::device::LabelProbability& probIn2, float weight2, pcl::device::LabelProbability& probOut)
+pcl::gpu::people::ProbabilityProcessor::CombineProb ( const Depth& depth, pcl::device::LabelProbability& probIn1, double weight1,
+              pcl::device::LabelProbability& probIn2, double weight2, pcl::device::LabelProbability& probOut)
 {
   impl_->CUDA_CombineProb(depth, probIn1, weight1, probIn2, weight2, probOut);
 }
 
 /** \brief This will sum a probability multiplied with it's weight **/
 void
-pcl::gpu::people::ProbabilityProcessor::WeightedSumProb ( const Depth& depth, pcl::device::LabelProbability& probIn, float weight, pcl::device::LabelProbability& probOut)
+pcl::gpu::people::ProbabilityProcessor::WeightedSumProb ( const Depth& depth, pcl::device::LabelProbability& probIn, double weight, pcl::device::LabelProbability& probOut)
 {
   impl_->CUDA_WeightedSumProb(depth, probIn, weight, probOut);
 }
@@ -72,7 +72,7 @@ pcl::gpu::people::ProbabilityProcessor::WeightedSumProb ( const Depth& depth, pc
 int
 pcl::gpu::people::ProbabilityProcessor::GaussianBlur( const Depth&                    depth,
                                                       pcl::device::LabelProbability&  probIn,
-                                                      DeviceArray<float>&             kernel,
+                                                      DeviceArray<double>&             kernel,
                                                       pcl::device::LabelProbability&  probOut)
 {
   return impl_->CUDA_GaussianBlur( depth, probIn, kernel, probOut);
@@ -82,7 +82,7 @@ pcl::gpu::people::ProbabilityProcessor::GaussianBlur( const Depth&              
 int
 pcl::gpu::people::ProbabilityProcessor::GaussianBlur( const Depth&                    depth,
                                                       pcl::device::LabelProbability&  probIn,
-                                                      DeviceArray<float>&             kernel,
+                                                      DeviceArray<double>&             kernel,
                                                       pcl::device::LabelProbability&  probTemp,
                                                       pcl::device::LabelProbability&  probOut)
 {
@@ -90,21 +90,21 @@ pcl::gpu::people::ProbabilityProcessor::GaussianBlur( const Depth&              
 }
 
 /** \brief This will create a Gaussian Kernel **/
-float*
-pcl::gpu::people::ProbabilityProcessor::CreateGaussianKernel ( float sigma,
+double*
+pcl::gpu::people::ProbabilityProcessor::CreateGaussianKernel ( double sigma,
                                                                int kernelSize)
 {
-  float* f;
-  f = static_cast<float*> (malloc(kernelSize * sizeof(float)));
-  float sigma_sq = static_cast<float> (pow (sigma,2.f));
-  float mult = static_cast<float> (1/sqrt (2*M_PI*sigma_sq));
-  int mid = static_cast<int> (floor (static_cast<float> (kernelSize)/2.f));
+  double* f;
+  f = static_cast<double*> (malloc(kernelSize * sizeof(double)));
+  double sigma_sq = static_cast<double> (pow (sigma,2.f));
+  double mult = static_cast<double> (1/sqrt (2*M_PI*sigma_sq));
+  int mid = static_cast<int> (floor (static_cast<double> (kernelSize)/2.f));
 
   // Create a symmetric kernel, could also be solved in CUDA kernel but let's do it here :D
-  float sum = 0;
+  double sum = 0;
   for(int i = 0; i < kernelSize; i++)
   {
-    f[i] = static_cast<float> (mult * exp (-(pow (i-mid,2.f)/2*sigma_sq)));
+    f[i] = static_cast<double> (mult * exp (-(pow (i-mid,2.f)/2*sigma_sq)));
     sum += f[i];
   }
 

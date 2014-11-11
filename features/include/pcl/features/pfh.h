@@ -103,7 +103,7 @@ namespace pcl
         nr_subdiv_ (5), 
         pfh_histogram_ (),
         pfh_tuple_ (),
-        d_pi_ (1.0f / (2.0f * static_cast<float> (M_PI))), 
+        d_pi_ (1.0f / (2.0f * static_cast<double> (M_PI))), 
         feature_map_ (),
         key_list_ (),
         // Default 1GB memory size. Need to set it to something more conservative.
@@ -169,7 +169,7 @@ namespace pcl
         */
       bool 
       computePairFeatures (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, 
-                           int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4);
+                           int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4);
 
       /** \brief Estimate the PFH (Point Feature Histograms) individual signatures of the three angular (f1, f2, f3)
         * features for a given point based on its spatial neighborhood of 3D points with normals
@@ -205,7 +205,7 @@ namespace pcl
       int f_index_[3];
 
       /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-      float d_pi_; 
+      double d_pi_; 
 
       /** \brief Internal hashmap, used to optimize efficiency of redundant computations. */
       std::map<std::pair<int, int>, Eigen::Vector4f, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4f> > feature_map_;

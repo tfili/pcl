@@ -73,7 +73,7 @@ bool show_normals = false, normals_changed = false;
 bool show_adjacency = false;
 bool show_supervoxels = false;
 bool show_help = true;
-float normals_scale;
+double normals_scale;
 
 /** \brief Callback for setting options in the visualizer via keyboard.
  *  \param[in] event_arg Registered keyboard event  */
@@ -243,17 +243,17 @@ LCCPSegmentation Parameters: \n\
 
   ///  Default values of parameters before parsing
   // Supervoxel Stuff
-  float voxel_resolution = 0.0075f;
-  float seed_resolution = 0.03f;
-  float color_importance = 0.0f;
-  float spatial_importance = 1.0f;
-  float normal_importance = 4.0f;
+  double voxel_resolution = 0.0075f;
+  double seed_resolution = 0.03f;
+  double color_importance = 0.0f;
+  double spatial_importance = 1.0f;
+  double normal_importance = 4.0f;
   bool use_single_cam_transform = false;
   bool use_supervoxel_refinement = false;
 
   // LCCPSegmentation Stuff
-  float concavity_tolerance_threshold = 10;
-  float smoothness_threshold = 0.1;
+  double concavity_tolerance_threshold = 10;
+  double smoothness_threshold = 0.1;
   uint32_t min_segment_size = 0;
   bool use_extended_convexity = false;
   bool use_sanity_criterion = false;

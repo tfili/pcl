@@ -367,7 +367,7 @@ NCVStatus nppiStDecimate_32s_C1R(Ncv32s *d_src, Ncv32u srcStep,
 
 
 /**
- * Downsamples (decimates) an image using the nearest neighbor algorithm. 32-bit float pixels, single channel.
+ * Downsamples (decimates) an image using the nearest neighbor algorithm. 32-bit double pixels, single channel.
  * \see nppiStDecimate_32u_C1R
  */
 NCV_EXPORTS
@@ -400,7 +400,7 @@ NCVStatus nppiStDecimate_64s_C1R(Ncv64s *d_src, Ncv32u srcStep,
 
 
 /**
- * Downsamples (decimates) an image using the nearest neighbor algorithm. 64-bit float pixels, single channel.
+ * Downsamples (decimates) an image using the nearest neighbor algorithm. 64-bit double pixels, single channel.
  * \see nppiStDecimate_32u_C1R
  */
 NCV_EXPORTS
@@ -439,7 +439,7 @@ NCVStatus nppiStDecimate_32s_C1R_host(Ncv32s *h_src, Ncv32u srcStep,
 
 
 /**
- * Downsamples (decimates) an image using the nearest neighbor algorithm. 32-bit float pixels, single channel. Host implementation.
+ * Downsamples (decimates) an image using the nearest neighbor algorithm. 32-bit double pixels, single channel. Host implementation.
  * \see nppiStDecimate_32u_C1R_host
  */
 NCV_EXPORTS
@@ -469,7 +469,7 @@ NCVStatus nppiStDecimate_64s_C1R_host(Ncv64s *h_src, Ncv32u srcStep,
 
 
 /**
- * Downsamples (decimates) an image using the nearest neighbor algorithm. 64-bit float pixels, single channel. Host implementation.
+ * Downsamples (decimates) an image using the nearest neighbor algorithm. 64-bit double pixels, single channel. Host implementation.
  * \see nppiStDecimate_32u_C1R_host
  */
 NCV_EXPORTS
@@ -551,7 +551,7 @@ NCVStatus nppiStTranspose_32s_C1R(Ncv32s *d_src, Ncv32u srcStride,
 
 
 /**
- * Transposes an image. 32-bit float pixels, single channel
+ * Transposes an image. 32-bit double pixels, single channel
  * \see nppiStTranspose_32u_C1R
  */
 NCV_EXPORTS
@@ -578,7 +578,7 @@ NCVStatus nppiStTranspose_64s_C1R(Ncv64s *d_src, Ncv32u srcStride,
 
 
 /**
- * Transposes an image. 64-bit float pixels, single channel
+ * Transposes an image. 64-bit double pixels, single channel
  * \see nppiStTranspose_32u_C1R
  */
 NCV_EXPORTS
@@ -621,7 +621,7 @@ NCVStatus nppiStTranspose_32s_C1R_host(Ncv32s *h_src, Ncv32u srcStride,
 
 
 /**
- * Transposes an image. 32-bit float pixels, single channel. Host implementation
+ * Transposes an image. 32-bit double pixels, single channel. Host implementation
  * \see nppiStTranspose_32u_C1R_host
  */
 NCV_EXPORTS
@@ -648,7 +648,7 @@ NCVStatus nppiStTranspose_64s_C1R_host(Ncv64s *h_src, Ncv32u srcStride,
 
 
 /**
- * Transposes an image. 64-bit float pixels, single channel. Host implementation
+ * Transposes an image. 64-bit double pixels, single channel. Host implementation
  * \see nppiStTranspose_32u_C1R_host
  */
 NCV_EXPORTS
@@ -819,7 +819,7 @@ NCVStatus nppsStCompactGetSize_32s(Ncv32u srcLen, Ncv32u *pBufsize, cudaDevicePr
 
 
 /**
- * Calculates the size of the temporary buffer for vector compaction. 32-bit float values
+ * Calculates the size of the temporary buffer for vector compaction. 32-bit double values
  * \see nppsStCompactGetSize_32u
  */
 NCVStatus nppsStCompactGetSize_32f(Ncv32u srcLen, Ncv32u *pBufsize, cudaDeviceProp &devProp);
@@ -858,7 +858,7 @@ NCVStatus nppsStCompact_32s(Ncv32s *d_src, Ncv32u srcLen,
 
 
 /**
- * Compacts the input vector by removing elements of specified value. 32-bit float values
+ * Compacts the input vector by removing elements of specified value. 32-bit double values
  * \see nppsStCompact_32u
  */
 NCV_EXPORTS
@@ -894,7 +894,7 @@ NCVStatus nppsStCompact_32s_host(Ncv32s *h_src, Ncv32u srcLen,
 
 
 /**
- * Compacts the input vector by removing elements of specified value. 32-bit float values. Host implementation
+ * Compacts the input vector by removing elements of specified value. 32-bit double values. Host implementation
  * \see nppsStCompact_32u_host
  */
 NCV_EXPORTS

@@ -66,9 +66,9 @@ pcl::MTLReader::fillRGBfromXYZ (const std::vector<std::string>& split_line,
   {
     try
     {
-      xyz[0] = boost::lexical_cast<float> (split_line[2]);
-      xyz[1] = boost::lexical_cast<float> (split_line[3]);
-      xyz[2] = boost::lexical_cast<float> (split_line[4]);
+      xyz[0] = boost::lexical_cast<double> (split_line[2]);
+      xyz[1] = boost::lexical_cast<double> (split_line[3]);
+      xyz[2] = boost::lexical_cast<double> (split_line[4]);
     }
     catch (boost::bad_lexical_cast &)
     {
@@ -80,7 +80,7 @@ pcl::MTLReader::fillRGBfromXYZ (const std::vector<std::string>& split_line,
     {
       try
       {
-        xyz[0] = xyz[1] = xyz[2] = boost::lexical_cast<float> (split_line[2]);
+        xyz[0] = xyz[1] = xyz[2] = boost::lexical_cast<double> (split_line[2]);
       }
       catch (boost::bad_lexical_cast &)
       {
@@ -102,9 +102,9 @@ pcl::MTLReader::fillRGBfromRGB (const std::vector<std::string>& split_line,
   {
     try
     {
-      rgb.r = boost::lexical_cast<float> (split_line[1]);
-      rgb.g = boost::lexical_cast<float> (split_line[2]);
-      rgb.b = boost::lexical_cast<float> (split_line[3]);
+      rgb.r = boost::lexical_cast<double> (split_line[1]);
+      rgb.g = boost::lexical_cast<double> (split_line[2]);
+      rgb.b = boost::lexical_cast<double> (split_line[3]);
     }
     catch (boost::bad_lexical_cast &)
     {
@@ -117,7 +117,7 @@ pcl::MTLReader::fillRGBfromRGB (const std::vector<std::string>& split_line,
     {
       try
       {
-        rgb.r = rgb.g = rgb.b = boost::lexical_cast<float> (split_line[1]);
+        rgb.r = rgb.g = rgb.b = boost::lexical_cast<double> (split_line[1]);
       }
       catch (boost::bad_lexical_cast &)
       {
@@ -279,7 +279,7 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
         {
           try
           {
-            materials_.back ().tex_d = boost::lexical_cast<float> (st[2]);
+            materials_.back ().tex_d = boost::lexical_cast<double> (st[2]);
           }
           catch (boost::bad_lexical_cast &)
           {
@@ -294,7 +294,7 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
         {
           try
           {
-            materials_.back ().tex_d = boost::lexical_cast<float> (st[1]);
+            materials_.back ().tex_d = boost::lexical_cast<double> (st[1]);
           }
           catch (boost::bad_lexical_cast &)
           {
@@ -312,7 +312,7 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
       {
         try
         {
-          materials_.back ().tex_d = boost::lexical_cast<float> (st[1]);
+          materials_.back ().tex_d = boost::lexical_cast<double> (st[1]);
         }
         catch (boost::bad_lexical_cast &)
         {
@@ -585,10 +585,10 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
         {
           for (int i = 1, f = 0; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&cloud.data[point_idx * cloud.point_step + cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++point_idx;
         }
@@ -607,10 +607,10 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
         {
           for (int i = 1, f = normal_x_field; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&cloud.data[normal_idx * cloud.point_step + cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++normal_idx;
         }
@@ -719,10 +719,10 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
         {
           for (int i = 1, f = 0; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[v_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++v_idx;
         }
@@ -740,10 +740,10 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
         {
           for (int i = 1, f = normal_x_field; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[vn_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++vn_idx;
         }
@@ -761,7 +761,7 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
         {
           Eigen::Vector3f c (0, 0, 0);
           for (std::size_t i = 1; i < st.size (); ++i)
-            c[i-1] = boost::lexical_cast<float> (st[i]);
+            c[i-1] = boost::lexical_cast<double> (st[i]);
           if (c[2] == 0)
             coordinates.push_back (Eigen::Vector2f (c[0], c[1]));
           else
@@ -908,10 +908,10 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
         {
           for (int i = 1, f = 0; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[v_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++v_idx;
         }
@@ -930,10 +930,10 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
         {
           for (int i = 1, f = normal_x_field; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[vn_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++vn_idx;
         }
@@ -1042,8 +1042,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
           fs << "v ";
           v_written = true;
         }
-        float value;
-        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -1083,8 +1083,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
           fs << "vn ";
           v_written = true;
     	  }
-        float value;
-        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -1224,8 +1224,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
            // write vertices beginning with v
           fs << "v ";
 
-        float value;
-        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -1262,8 +1262,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
             // write vertices beginning with vn
             fs << "vn ";
 
-          float value;
-          memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+          double value;
+          memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
           fs << value;
           if (++nxyz == 3)
             break;

@@ -126,7 +126,7 @@ namespace pcl
   };
 
   typedef PolynomialCalculationsT<double> PolynomialCalculationsd;
-  typedef PolynomialCalculationsT<float>  PolynomialCalculations;
+  typedef PolynomialCalculationsT<double>  PolynomialCalculations;
 
 }  // end namespace
 

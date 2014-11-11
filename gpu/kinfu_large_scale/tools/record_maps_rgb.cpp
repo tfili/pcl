@@ -210,7 +210,7 @@ writeToDisk (const boost::shared_ptr<const MapsBuffer::MapsRgb>& map_rbg)
 }
 
 void
-grabberMapsCallBack(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, float)
+grabberMapsCallBack(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, double)
 {  
   MapsBuffer::MapsRgb rgb_depth;
   rgb_depth.time_stamp_ = pcl::getTime();  
@@ -254,7 +254,7 @@ grabAndSend ()
   pcl::Grabber* interface = new pcl::OpenNIGrabber ();
   //boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr& )> f = boost::bind(&grabberCallBack, _1);
 
-  boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant)> f = boost::bind (&grabberMapsCallBack, _1, _2, _3);
+  boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double constant)> f = boost::bind (&grabberMapsCallBack, _1, _2, _3);
 
 
   interface->registerCallback (f);

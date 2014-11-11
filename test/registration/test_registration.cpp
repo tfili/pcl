@@ -100,9 +100,9 @@ TEST (PCL, findFeatureCorrespondences)
   feature0.height = feature1.height = feature2.height = feature3.height = 1;
   feature0.is_dense = feature1.is_dense = feature2.is_dense = feature3.is_dense = true;
 
-  for (float x = -5.0f; x <= 5.0f; x += 0.2f)
+  for (double x = -5.0f; x <= 5.0f; x += 0.2f)
   {
-    for (float y = -5.0f; y <= 5.0f; y += 0.2f)
+    for (double y = -5.0f; y <= 5.0f; y += 0.2f)
     {
       FeatureT f;
       f.histogram[0] = x;
@@ -201,15 +201,15 @@ TEST (PCL, IterativeClosestPoint)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-sampleRandomTransform (Eigen::Affine3f &trans, float max_angle, float max_trans)
+sampleRandomTransform (Eigen::Affine3f &trans, double max_angle, double max_trans)
 {
     // Sample random transform
-    Eigen::Vector3f axis((float)rand() / RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
+    Eigen::Vector3f axis((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
     axis.normalize();
-    float angle = (float)rand() / RAND_MAX * max_angle;
-    Eigen::Vector3f translation((float)rand() / RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
+    double angle = (double)rand() / RAND_MAX * max_angle;
+    Eigen::Vector3f translation((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
     translation *= max_trans;
-    Eigen::Affine3f rotation(Eigen::AngleAxis<float>(angle, axis));
+    Eigen::Affine3f rotation(Eigen::AngleAxis<double>(angle, axis));
     trans = Eigen::Translation3f(translation) * rotation;
 }
 
@@ -631,7 +631,7 @@ TEST (PCL, SampleConsensusInitialAlignment)
 {
   // Transform the source cloud by a large amount
   Eigen::Vector3f initial_offset (100, 0, 0);
-  float angle = static_cast<float> (M_PI) / 2.0f;
+  double angle = static_cast<double> (M_PI) / 2.0f;
   Eigen::Quaternionf initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);
@@ -721,7 +721,7 @@ TEST (PCL, SampleConsensusPrerejective)
   
   // Transform the source cloud by a large amount
   Eigen::Vector3f initial_offset (100, 0, 0);
-  float angle = static_cast<float> (M_PI) / 2.0f;
+  double angle = static_cast<double> (M_PI) / 2.0f;
   Eigen::Quaternionf initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);
@@ -778,7 +778,7 @@ TEST (PCL, SampleConsensusPrerejective)
   
   // Check output consistency and quality of alignment
   EXPECT_EQ (static_cast<int> (cloud_reg.points.size ()), static_cast<int> (cloud_source.points.size ()));
-  float inlier_fraction = static_cast<float> (reg.getInliers ().size ()) / static_cast<float> (cloud_source.points.size ());
+  double inlier_fraction = static_cast<double> (reg.getInliers ().size ()) / static_cast<double> (cloud_source.points.size ());
   EXPECT_GT (inlier_fraction, 0.95f);
   
   // Check again, for all possible caching schemes
@@ -803,7 +803,7 @@ TEST (PCL, SampleConsensusPrerejective)
 
     // Check output consistency and quality of alignment
     EXPECT_EQ (int (cloud_reg.points.size ()), int (cloud_source.points.size ()));
-    inlier_fraction = static_cast<float> (reg.getInliers ().size ()) / static_cast<float> (cloud_source.points.size ());
+    inlier_fraction = static_cast<double> (reg.getInliers ().size ()) / static_cast<double> (cloud_source.points.size ());
     EXPECT_GT (inlier_fraction, 0.95f);
   }
 }
@@ -841,11 +841,11 @@ TEST (PCL, PyramidFeatureHistogram)
   ppf_estimator.compute (*ppf_signature_target);
 
 
-  vector<pair<float, float> > dim_range_input, dim_range_target;
-  for (size_t i = 0; i < 3; ++i) dim_range_input.push_back (pair<float, float> (static_cast<float> (-M_PI), static_cast<float> (M_PI)));
-  dim_range_input.push_back (pair<float, float> (0.0f, 1.0f));
-  for (size_t i = 0; i < 3; ++i) dim_range_target.push_back (pair<float, float> (static_cast<float> (-M_PI) * 10.0f, static_cast<float> (M_PI) * 10.0f));
-  dim_range_target.push_back (pair<float, float> (0.0f, 50.0f));
+  vector<pair<double, double> > dim_range_input, dim_range_target;
+  for (size_t i = 0; i < 3; ++i) dim_range_input.push_back (pair<double, double> (static_cast<double> (-M_PI), static_cast<double> (M_PI)));
+  dim_range_input.push_back (pair<double, double> (0.0f, 1.0f));
+  for (size_t i = 0; i < 3; ++i) dim_range_target.push_back (pair<double, double> (static_cast<double> (-M_PI) * 10.0f, static_cast<double> (M_PI) * 10.0f));
+  dim_range_target.push_back (pair<double, double> (0.0f, 50.0f));
 
 
   PyramidFeatureHistogram<PPFSignature>::Ptr pyramid_source (new PyramidFeatureHistogram<PPFSignature> ()),
@@ -860,12 +860,12 @@ TEST (PCL, PyramidFeatureHistogram)
   pyramid_target->setTargetDimensionRange (dim_range_target);
   pyramid_target->compute ();
 
-  float similarity_value = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_source, pyramid_target);
+  double similarity_value = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_source, pyramid_target);
   EXPECT_NEAR (similarity_value, 0.74101555347442627, 1e-4);
 
-  vector<pair<float, float> > dim_range_target2;
-  for (size_t i = 0; i < 3; ++i) dim_range_target2.push_back (pair<float, float> (static_cast<float> (-M_PI) * 5.0f, static_cast<float> (M_PI) * 5.0f));
-    dim_range_target2.push_back (pair<float, float> (0.0f, 20.0f));
+  vector<pair<double, double> > dim_range_target2;
+  for (size_t i = 0; i < 3; ++i) dim_range_target2.push_back (pair<double, double> (static_cast<double> (-M_PI) * 5.0f, static_cast<double> (M_PI) * 5.0f));
+    dim_range_target2.push_back (pair<double, double> (0.0f, 20.0f));
 
   pyramid_source->setTargetDimensionRange (dim_range_target2);
   pyramid_source->compute ();
@@ -873,13 +873,13 @@ TEST (PCL, PyramidFeatureHistogram)
   pyramid_target->setTargetDimensionRange (dim_range_target2);
   pyramid_target->compute ();
 
-  float similarity_value2 = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_source, pyramid_target);
+  double similarity_value2 = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_source, pyramid_target);
   EXPECT_NEAR (similarity_value2, 0.80097091197967529, 1e-4);
 
 
-  vector<pair<float, float> > dim_range_target3;
-  for (size_t i = 0; i < 3; ++i) dim_range_target3.push_back (pair<float, float> (static_cast<float> (-M_PI) * 2.0f, static_cast<float> (M_PI) * 2.0f));
-  dim_range_target3.push_back (pair<float, float> (0.0f, 10.0f));
+  vector<pair<double, double> > dim_range_target3;
+  for (size_t i = 0; i < 3; ++i) dim_range_target3.push_back (pair<double, double> (static_cast<double> (-M_PI) * 2.0f, static_cast<double> (M_PI) * 2.0f));
+  dim_range_target3.push_back (pair<double, double> (0.0f, 10.0f));
 
   pyramid_source->setTargetDimensionRange (dim_range_target3);
   pyramid_source->compute ();
@@ -887,7 +887,7 @@ TEST (PCL, PyramidFeatureHistogram)
   pyramid_target->setTargetDimensionRange (dim_range_target3);
   pyramid_target->compute ();
 
-  float similarity_value3 = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_source, pyramid_target);
+  double similarity_value3 = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_source, pyramid_target);
   EXPECT_NEAR (similarity_value3, 0.87623238563537598, 1e-3);
 }
 
@@ -899,7 +899,7 @@ TEST (PCL, PPFRegistration)
 {
   // Transform the source cloud by a large amount
   Eigen::Vector3f initial_offset (100, 0, 0);
-  float angle = M_PI/6;
+  double angle = M_PI/6;
   Eigen::Quaternionf initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);

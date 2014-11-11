@@ -40,8 +40,8 @@ namespace pcl
 
         int tes_level_;
         int resolution_;
-        float radius_sphere_;
-        float view_angle_;
+        double radius_sphere_;
+        double view_angle_;
         bool gen_organized_;
         boost::function<bool
         (const Eigen::Vector3f &)> campos_constraints_func_;
@@ -76,13 +76,13 @@ namespace pcl
         }
 
         void
-        setRadiusSphere (float r)
+        setRadiusSphere (double r)
         {
           radius_sphere_ = r;
         }
 
         void
-        setViewAngle (float a)
+        setViewAngle (double a)
         {
           view_angle_ = a;
         }
@@ -96,7 +96,7 @@ namespace pcl
 
           model.views_.reset (new std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr>);
           model.poses_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
-          model.self_occlusions_.reset (new std::vector<float>);
+          model.self_occlusions_.reset (new std::vector<double>);
           model.assembled_.reset (new pcl::PointCloud<pcl::PointXYZ>);
           uniform_sampling (model_path, 100000, *model.assembled_, model_scale_);
 
@@ -168,7 +168,7 @@ namespace pcl
               //read entropy as well
               std::stringstream entropy_file;
               entropy_file << pathmodel.str () << "/" << file_replaced2;
-              float entropy = 0;
+              double entropy = 0;
               PersistenceUtils::readFloatFromFile (entropy_file.str (), entropy);
               model.self_occlusions_->push_back (entropy);
 
@@ -208,7 +208,7 @@ namespace pcl
 
             std::vector<typename PointCloud<PointInT>::Ptr> views_xyz_orig;
             std::vector < Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > poses;
-            std::vector<float> entropies;
+            std::vector<double> entropies;
 
             render_views.getViews (views_xyz_orig);
             render_views.getPoses (poses);
@@ -216,7 +216,7 @@ namespace pcl
 
             model.views_.reset (new std::vector<typename PointCloud<PointInT>::Ptr> ());
             model.poses_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > ());
-            model.self_occlusions_.reset (new std::vector<float> ());
+            model.self_occlusions_.reset (new std::vector<double> ());
 
             for (size_t i = 0; i < views_xyz_orig.size (); i++)
             {

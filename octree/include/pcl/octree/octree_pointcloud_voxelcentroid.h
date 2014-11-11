@@ -108,7 +108,7 @@ namespace pcl
           if (point_counter_)
           {
             centroid_arg = point_sum_;
-            centroid_arg /= static_cast<float> (point_counter_);
+            centroid_arg /= static_cast<double> (point_counter_);
           }
           else
           {

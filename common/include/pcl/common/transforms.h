@@ -68,7 +68,7 @@ namespace pcl
                        const Eigen::Affine3f &transform,
                        bool copy_all_fields = true)
   {
-    return (transformPointCloud<PointT, float> (cloud_in, cloud_out, transform, copy_all_fields));
+    return (transformPointCloud<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Apply an affine transform defined by an Eigen Transform
@@ -94,7 +94,7 @@ namespace pcl
                        const Eigen::Affine3f &transform,
                        bool copy_all_fields = true)
   {
-    return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Apply an affine transform defined by an Eigen Transform
@@ -123,7 +123,7 @@ namespace pcl
                        const Eigen::Affine3f &transform,
                        bool copy_all_fields = true)
   {
-    return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
@@ -147,7 +147,7 @@ namespace pcl
                                   const Eigen::Affine3f &transform,
                                   bool copy_all_fields = true)
   {
-    return (transformPointCloudWithNormals<PointT, float> (cloud_in, cloud_out, transform, copy_all_fields));
+    return (transformPointCloudWithNormals<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
@@ -173,7 +173,7 @@ namespace pcl
                                   const Eigen::Affine3f &transform,
                                   bool copy_all_fields = true)
   {
-    return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
@@ -203,7 +203,7 @@ namespace pcl
                                   const Eigen::Affine3f &transform,
                                   bool copy_all_fields = true)
   {
-    return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Apply a rigid transform defined by a 4x4 matrix
@@ -231,7 +231,7 @@ namespace pcl
                        const Eigen::Matrix4f &transform,
                        bool copy_all_fields = true)
   {
-    return (transformPointCloud<PointT, float> (cloud_in, cloud_out, transform, copy_all_fields));
+    return (transformPointCloud<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Apply a rigid transform defined by a 4x4 matrix
@@ -261,7 +261,7 @@ namespace pcl
                        const Eigen::Matrix4f &transform,
                        bool copy_all_fields = true)
   {
-    return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Apply a rigid transform defined by a 4x4 matrix
@@ -290,7 +290,7 @@ namespace pcl
                        const Eigen::Matrix4f &transform,
                        bool copy_all_fields = true)
   {
-    return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
@@ -320,7 +320,7 @@ namespace pcl
                                   const Eigen::Matrix4f &transform,
                                   bool copy_all_fields = true)
   {
-    return (transformPointCloudWithNormals<PointT, float> (cloud_in, cloud_out, transform, copy_all_fields));
+    return (transformPointCloudWithNormals<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
@@ -353,7 +353,7 @@ namespace pcl
                                   const Eigen::Matrix4f &transform,
                                   bool copy_all_fields = true)
   {
-    return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
@@ -386,7 +386,7 @@ namespace pcl
                                   const Eigen::Matrix4f &transform,
                                   bool copy_all_fields = true)
   {
-    return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform, copy_all_fields));
+    return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
   }
 
   /** \brief Apply a rigid transform defined by a 3D offset and a quaternion
@@ -412,7 +412,7 @@ namespace pcl
                        const Eigen::Quaternionf &rotation,
                        bool copy_all_fields = true)
   {
-    return (transformPointCloud<PointT, float> (cloud_in, cloud_out, offset, rotation, copy_all_fields));
+    return (transformPointCloud<PointT, double> (cloud_in, cloud_out, offset, rotation, copy_all_fields));
   }
 
   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
@@ -439,7 +439,7 @@ namespace pcl
                                   const Eigen::Quaternionf &rotation,
                                   bool copy_all_fields = true)
   {
-    return (transformPointCloudWithNormals<PointT, float> (cloud_in, cloud_out, offset, rotation, copy_all_fields));
+    return (transformPointCloudWithNormals<PointT, double> (cloud_in, cloud_out, offset, rotation, copy_all_fields));
   }
 
   /** \brief Transform a point with members x,y,z
@@ -456,7 +456,7 @@ namespace pcl
   transformPoint (const PointT &point, 
                   const Eigen::Affine3f &transform)
   {
-    return (transformPoint<PointT, float> (point, transform));
+    return (transformPoint<PointT, double> (point, transform));
   }
 
   /** \brief Transform a point with members x,y,z,normal_x,normal_y,normal_z
@@ -473,7 +473,7 @@ namespace pcl
   transformPointWithNormal (const PointT &point, 
                   const Eigen::Affine3f &transform)
   {
-    return (transformPointWithNormal<PointT, float> (point, transform));
+    return (transformPointWithNormal<PointT, double> (point, transform));
   }
 
   /** \brief Calculates the principal (PCA-based) alignment of the point cloud
@@ -491,7 +491,7 @@ namespace pcl
   getPrincipalTransformation (const pcl::PointCloud<PointT> &cloud, 
                               Eigen::Affine3f &transform)
   {
-    return (getPrincipalTransformation<PointT, float> (cloud, transform));
+    return (getPrincipalTransformation<PointT, double> (cloud, transform));
   }
 }
 

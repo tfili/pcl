@@ -115,7 +115,7 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API 
-    cutReadFilef( const char* filename, float** data, unsigned int* len, 
+    cutReadFilef( const char* filename, double** data, unsigned int* len, 
                   bool verbose = false);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -208,8 +208,8 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API 
-    cutWriteFilef( const char* filename, const float* data, unsigned int len,
-                   const float epsilon, bool verbose = false);
+    cutWriteFilef( const char* filename, const double* data, unsigned int len,
+                   const double epsilon, bool verbose = false);
 
     ////////////////////////////////////////////////////////////////////////////
     //! Write a data file \filename containing double precision floating point 
@@ -222,7 +222,7 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API 
-    cutWriteFiled( const char* filename, const float* data, unsigned int len,
+    cutWriteFiled( const char* filename, const double* data, unsigned int len,
                    const double epsilon, bool verbose = false);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -349,7 +349,7 @@ extern "C" {
                      unsigned int* w, unsigned int* h);
 
     ////////////////////////////////////////////////////////////////////////////
-    //! Load PGM image file (with float as data element type)
+    //! Load PGM image file (with double as data element type)
     //! @param file  name of the image file
     //! @param data  handle to the data read
     //! @param w     width of the image
@@ -360,7 +360,7 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API
-        cutLoadPGMf( const char* file, float** data,
+        cutLoadPGMf( const char* file, double** data,
                      unsigned int* w, unsigned int* h);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -425,7 +425,7 @@ extern "C" {
                  unsigned int w, unsigned int h);
 
     ////////////////////////////////////////////////////////////////////////////
-    //! Save PGM image file (with float as data element type)
+    //! Save PGM image file (with double as data element type)
     //! @param file  name of the image file
     //! @param data  handle to the data read
     //! @param w     width of the image
@@ -433,7 +433,7 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API
-    cutSavePGMf( const char* file, float* data,
+    cutSavePGMf( const char* file, double* data,
                  unsigned int w, unsigned int h);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -472,7 +472,7 @@ extern "C" {
                             const char* arg_name, int* val);
 
     ////////////////////////////////////////////////////////////////////////////
-    //! Get the value of a command line argument of type float
+    //! Get the value of a command line argument of type double
     //! @return CUTTrue if command line argument \a arg_name has been given and
     //!         is of the requested type, otherwise CUTFalse
     //! @param argc  argc as passed to main()
@@ -483,7 +483,7 @@ extern "C" {
     DLL_MAPPING
     CUTBoolean CUTIL_API
     cutGetCmdLineArgumentf( const int argc, const char** argv, 
-                            const char* arg_name, float* val);
+                            const char* arg_name, double* val);
 
     ////////////////////////////////////////////////////////////////////////////
     //! Get the value of a command line argument of type string
@@ -528,7 +528,7 @@ extern "C" {
     cutCheckCondition( int val, const char* file, const int line);
 
     ////////////////////////////////////////////////////////////////////////////
-    //! Compare two float arrays
+    //! Compare two double arrays
     //! @return  CUTTrue if \a reference and \a data are identical, 
     //!          otherwise CUTFalse
     //! @param reference  handle to the reference data / gold image
@@ -537,7 +537,7 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API 
-    cutComparef( const float* reference, const float* data,
+    cutComparef( const double* reference, const double* data,
                  const unsigned int len);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -565,7 +565,7 @@ extern "C" {
     DLL_MAPPING
     CUTBoolean CUTIL_API
     cutCompareuit( const unsigned int* reference, const unsigned int* data,
-                const unsigned int len, const float epsilon, const float threshold );
+                const unsigned int len, const double epsilon, const double threshold );
 
     ////////////////////////////////////////////////////////////////////////////
     //! Compare two unsigned char arrays
@@ -593,7 +593,7 @@ extern "C" {
     DLL_MAPPING
     CUTBoolean CUTIL_API
     cutCompareubt( const unsigned char* reference, const unsigned char* data,
-                 const unsigned int len, const float epsilon, const float threshold );
+                 const unsigned int len, const double epsilon, const double threshold );
 
     ////////////////////////////////////////////////////////////////////////////////
     //! Compare two integer arrays witha n epsilon tolerance for equality
@@ -607,10 +607,10 @@ extern "C" {
     DLL_MAPPING
     CUTBoolean CUTIL_API
     cutCompareube( const unsigned char* reference, const unsigned char* data,
-                 const unsigned int len, const float epsilon );
+                 const unsigned int len, const double epsilon );
 
     ////////////////////////////////////////////////////////////////////////////
-    //! Compare two float arrays with an epsilon tolerance for equality
+    //! Compare two double arrays with an epsilon tolerance for equality
     //! @return  CUTTrue if \a reference and \a data are identical, 
     //!          otherwise CUTFalse
     //! @param reference  handle to the reference data / gold image
@@ -620,11 +620,11 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API 
-    cutComparefe( const float* reference, const float* data,
-                  const unsigned int len, const float epsilon );
+    cutComparefe( const double* reference, const double* data,
+                  const unsigned int len, const double epsilon );
 
     ////////////////////////////////////////////////////////////////////////////////
-    //! Compare two float arrays with an epsilon tolerance for equality and a 
+    //! Compare two double arrays with an epsilon tolerance for equality and a 
     //!     threshold for # pixel errors
     //! @return  CUTTrue if \a reference and \a data are identical, 
     //!          otherwise CUTFalse
@@ -635,11 +635,11 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API
-    cutComparefet( const float* reference, const float* data,
-                 const unsigned int len, const float epsilon, const float threshold );
+    cutComparefet( const double* reference, const double* data,
+                 const unsigned int len, const double epsilon, const double threshold );
 
     ////////////////////////////////////////////////////////////////////////////
-    //! Compare two float arrays using L2-norm with an epsilon tolerance for 
+    //! Compare two double arrays using L2-norm with an epsilon tolerance for 
     //! equality
     //! @return  CUTTrue if \a reference and \a data are identical, 
     //!          otherwise CUTFalse
@@ -650,8 +650,8 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API 
-    cutCompareL2fe( const float* reference, const float* data,
-                    const unsigned int len, const float epsilon );
+    cutCompareL2fe( const double* reference, const double* data,
+                    const unsigned int len, const double epsilon );
 
 	////////////////////////////////////////////////////////////////////////////////
     //! Compare two PPM image files with an epsilon tolerance for equality
@@ -665,7 +665,7 @@ extern "C" {
     ////////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API
-	cutComparePPM( const char *src_file, const char *ref_file, const float epsilon, const float threshold, bool verboseErrors = false );
+	cutComparePPM( const char *src_file, const char *ref_file, const double epsilon, const double threshold, bool verboseErrors = false );
 
 
     ////////////////////////////////////////////////////////////////////////////
@@ -719,7 +719,7 @@ extern "C" {
     //! @param name  name of the timer to return the time of
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
-    float CUTIL_API 
+    double CUTIL_API 
     cutGetTimerValue( const unsigned int name);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -730,7 +730,7 @@ extern "C" {
     //! @param name  name of the timer to return the time of
     ////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
-    float CUTIL_API 
+    double CUTIL_API 
     cutGetAverageTimerValue( const unsigned int name);
 
     ////////////////////////////////////////////////////////////////////////////

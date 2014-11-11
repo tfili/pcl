@@ -62,15 +62,15 @@ typedef SampleConsensusModelNormalParallelPlane<PointXYZ, Normal>::Ptr SampleCon
 PointCloud<PointXYZ>::Ptr cloud_ (new PointCloud<PointXYZ> ());
 PointCloud<Normal>::Ptr normals_ (new PointCloud<Normal> ());
 std::vector<int> indices_;
-float plane_coeffs_[] = {-0.8964f, -0.5868f, -1.208f};
+double plane_coeffs_[] = {-0.8964f, -0.5868f, -1.208f};
 
 template <typename ModelType, typename SacType>
 void verifyPlaneSac (ModelType& model,
                      SacType& sac,
                      unsigned int inlier_number = 2000,
-                     float tol = 1e-1f,
-                     float refined_tol = 1e-1f,
-                     float proj_tol = 1e-3f)
+                     double tol = 1e-1f,
+                     double refined_tol = 1e-1f,
+                     double proj_tol = 1e-3f)
 {
   // Algorithm tests
   bool result = sac.computeModel ();
@@ -252,8 +252,8 @@ TEST (SampleConsensusModelNormalParallelPlane, RANSAC)
 
   for (unsigned idx = 0; idx < cloud.size (); ++idx)
   {
-    cloud.points[idx].x = static_cast<float> ((rand () % 200) - 100);
-    cloud.points[idx].y = static_cast<float> ((rand () % 200) - 100);
+    cloud.points[idx].x = static_cast<double> ((rand () % 200) - 100);
+    cloud.points[idx].y = static_cast<double> ((rand () % 200) - 100);
     cloud.points[idx].z = 0.0f;
 
     normals.points[idx].normal_x = 0.0f;
@@ -265,8 +265,8 @@ TEST (SampleConsensusModelNormalParallelPlane, RANSAC)
   SampleConsensusModelNormalParallelPlanePtr model (new SampleConsensusModelNormalParallelPlane<PointXYZ, Normal> (cloud.makeShared ()));
   model->setInputNormals (normals.makeShared ());
 
-  const float max_angle_rad = 0.01f;
-  const float angle_eps = 0.001f;
+  const double max_angle_rad = 0.01f;
+  const double angle_eps = 0.001f;
   model->setEpsAngle (max_angle_rad);
 
   // Test true axis

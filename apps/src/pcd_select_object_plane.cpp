@@ -107,7 +107,7 @@ class ObjectSelection
         ne.compute (normals);
 
         // Save the distance map for the plane comparator
-        float *map=ne.getDistanceMap ();// This will be deallocated with the IntegralImageNormalEstimation object...
+        double *map=ne.getDistanceMap ();// This will be deallocated with the IntegralImageNormalEstimation object...
         distance_map_.assign(map, map+input->size() ); //...so we must copy the data out
         plane_comparator_->setDistanceMap(distance_map_.data());
       }
@@ -414,7 +414,7 @@ class ObjectSelection
         return;
 
       vector<int> indices (1);
-      vector<float> distances (1);
+      vector<double> distances (1);
 
       // Get the point that was picked
       PointT picked_pt;
@@ -619,7 +619,7 @@ class ObjectSelection
     typename EdgeAwarePlaneComparator<PointT, Normal>::Ptr plane_comparator_;
     PointIndices::Ptr plane_indices_;
     unsigned char* rgb_data_;
-    std::vector<float> distance_map_;
+    std::vector<double> distance_map_;
 
     // Results
     typename PointCloud<PointT>::Ptr plane_;

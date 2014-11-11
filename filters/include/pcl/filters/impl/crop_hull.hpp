@@ -95,14 +95,14 @@ template<typename PointT> Eigen::Vector3f
 pcl::CropHull<PointT>::getHullCloudRange ()
 {
   Eigen::Vector3f cloud_min (
-    std::numeric_limits<float> ().max (),
-    std::numeric_limits<float> ().max (),
-    std::numeric_limits<float> ().max ()
+    std::numeric_limits<double> ().max (),
+    std::numeric_limits<double> ().max (),
+    std::numeric_limits<double> ().max ()
   );
   Eigen::Vector3f cloud_max (
-    -std::numeric_limits<float> ().max (),
-    -std::numeric_limits<float> ().max (),
-    -std::numeric_limits<float> ().max ()
+    -std::numeric_limits<double> ().max (),
+    -std::numeric_limits<double> ().max (),
+    -std::numeric_limits<double> ().max ()
   );
   for (size_t index = 0; index < indices_->size (); index++)
   {
@@ -299,25 +299,25 @@ pcl::CropHull<PointT>::rayTriangleIntersect (const PointT& point,
   const Eigen::Vector3f u = b - a;
   const Eigen::Vector3f v = c - a;
   const Eigen::Vector3f n = u.cross (v);
-  const float n_dot_ray = n.dot (ray);
+  const double n_dot_ray = n.dot (ray);
 
   if (std::fabs (n_dot_ray) < 1e-9)
     return (false);
 
-  const float r = n.dot (a - p) / n_dot_ray;
+  const double r = n.dot (a - p) / n_dot_ray;
 
   if (r < 0)
     return (false);
 
   const Eigen::Vector3f w = p + r * ray - a;
-  const float denominator = u.dot (v) * u.dot (v) - u.dot (u) * v.dot (v);
-  const float s_numerator = u.dot (v) * w.dot (v) - v.dot (v) * w.dot (u);
-  const float s = s_numerator / denominator;
+  const double denominator = u.dot (v) * u.dot (v) - u.dot (u) * v.dot (v);
+  const double s_numerator = u.dot (v) * w.dot (v) - v.dot (v) * w.dot (u);
+  const double s = s_numerator / denominator;
   if (s < 0 || s > 1)
     return (false);
 
-  const float t_numerator = u.dot (v) * w.dot (u) - u.dot (u) * w.dot (v);
-  const float t = t_numerator / denominator;
+  const double t_numerator = u.dot (v) * w.dot (u) - u.dot (u) * w.dot (v);
+  const double t = t_numerator / denominator;
   if (t < 0 || s+t > 1)
     return (false);
   

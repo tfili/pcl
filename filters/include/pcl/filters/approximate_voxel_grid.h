@@ -82,7 +82,7 @@ namespace pcl
       //p2_[f_idx_++] = boost::fusion::at_key<Key> (p1_);
       typedef typename pcl::traits::datatype<PointT, Key>::type T;
       const uint8_t* data_ptr = reinterpret_cast<const uint8_t*>(&p1_) + pcl::traits::offset<PointT, Key>::value;
-      p2_[f_idx_++] = static_cast<float> (*reinterpret_cast<const T*>(data_ptr));
+      p2_[f_idx_++] = static_cast<double> (*reinterpret_cast<const T*>(data_ptr));
     }
 
     private:
@@ -191,7 +191,7 @@ namespace pcl
         * \param[in] lz the leaf size for Z
         */
       inline void
-      setLeafSize (float lx, float ly, float lz)
+      setLeafSize (double lx, double ly, double lz)
       {
         setLeafSize (Eigen::Vector3f (lx, ly, lz));
       }

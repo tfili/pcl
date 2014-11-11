@@ -49,7 +49,7 @@ namespace pcl
 
     struct DisparityBoundSmoothing
     {
-      DisparityBoundSmoothing (int width, int height, int window_size, float focal_length, float baseline, float disparity_threshold, float *data, float *raw_data)
+      DisparityBoundSmoothing (int width, int height, int window_size, double focal_length, double baseline, double disparity_threshold, double *data, double *raw_data)
         : width_ (width), height_ (height), window_size_ (window_size)
         , focal_length_(focal_length), baseline_(baseline), disparity_threshold_(disparity_threshold)
         , data_(data), raw_data_(raw_data)
@@ -57,34 +57,34 @@ namespace pcl
   
       int width_, height_;
       int window_size_;
-      float focal_length_;
-      float baseline_;
-      float disparity_threshold_;
-      float *data_;
-      float *raw_data_;
+      double focal_length_;
+      double baseline_;
+      double disparity_threshold_;
+      double *data_;
+      double *raw_data_;
 
       // helper function
       inline __host__ __device__ 
-        float disparity2depth (float disparity)
+        double disparity2depth (double disparity)
       {
         return baseline_ * focal_length_ / disparity;
       }
 
       // helper function
       inline __host__ __device__
-        float depth2disparity (float depth)
+        double depth2disparity (double depth)
       {
         return baseline_ * focal_length_ / depth;
       }
 
       // clampToDisparityBounds
       inline __host__ __device__
-        float clampToDisparityBounds (float avg_depth, float depth)
+        double clampToDisparityBounds (double avg_depth, double depth)
       {
-        float disparity = depth2disparity (depth);
-        float avg_disparity = depth2disparity (avg_depth);
-        float min_disparity = disparity - disparity_threshold_;
-        float max_disparity = disparity + disparity_threshold_;
+        double disparity = depth2disparity (depth);
+        double avg_disparity = depth2disparity (avg_depth);
+        double min_disparity = disparity - disparity_threshold_;
+        double max_disparity = disparity + disparity_threshold_;
 
         if (avg_disparity > max_disparity)
           return disparity2depth (max_disparity);
@@ -96,9 +96,9 @@ namespace pcl
   
       // actual kernel operator
       inline __host__ __device__
-      float operator () (int idx)
+      double operator () (int idx)
       {
-        float depth = data_ [idx];
+        double depth = data_ [idx];
 #ifdef __CUDACC__        
         if (depth == 0 | isnan(depth) | isinf(depth))
           return 0;
@@ -123,7 +123,7 @@ namespace pcl
         bounds.z = clamp (bounds.z, 0, height_-1);
         bounds.w = clamp (bounds.w, 0, height_-1);
     
-        float average_depth = depth;
+        double average_depth = depth;
         int counter = 1;
         // iterate over all pixels in the rectangular region
         for (int y = bounds.z; y <= bounds.w; ++y)
@@ -132,7 +132,7 @@ namespace pcl
           {
             // find index in point cloud from x,y pixel positions
             int otherIdx = ((int)y) * width_ + ((int)x);
-            float otherDepth = data_[otherIdx];
+            double otherDepth = data_[otherIdx];
 
             // ignore invalid points
             if (otherDepth == 0)
@@ -153,11 +153,11 @@ namespace pcl
     // This version requires a pre-computed map of float3 (nr_valid_points, min_allowable_depth, max_allowable_depth);
     struct DisparityClampedSmoothing
     {
-      DisparityClampedSmoothing (float* data, float3* disparity_helper_map, int width, int height, int window_size) 
+      DisparityClampedSmoothing (double* data, float3* disparity_helper_map, int width, int height, int window_size) 
         : data_(data), disparity_helper_map_(disparity_helper_map), width_(width), height_(height), window_size_(window_size)
       {}
 
-      float* data_;
+      double* data_;
       float3* disparity_helper_map_;
       int width_;
       int height_;
@@ -165,14 +165,14 @@ namespace pcl
 
       template <typename Tuple>
       inline __host__ __device__
-        float operator () (Tuple t)
+        double operator () (Tuple t)
       {
-        float depth = thrust::get<0> (t);
+        double depth = thrust::get<0> (t);
         int idx = thrust::get<1> (t);
         float3 dhel = disparity_helper_map_[idx];
         int nr = (int) dhel.x;
-        float min_d = dhel.y;
-        float max_d = dhel.z;
+        double min_d = dhel.y;
+        double max_d = dhel.z;
 #ifdef __CUDACC__        
         if (depth == 0 | isnan(depth) | isinf(depth))
           return 0.0f;
@@ -214,28 +214,28 @@ namespace pcl
 
     struct DisparityHelperMap
     {
-      DisparityHelperMap (float* data, int width, int height, int window_size, float baseline, float focal_length, float disp_thresh) 
+      DisparityHelperMap (double* data, int width, int height, int window_size, double baseline, double focal_length, double disp_thresh) 
         : data_(data), width_(width), height_(height), window_size_(window_size), baseline_(baseline), focal_length_(focal_length), disp_thresh_(disp_thresh)
       {}
 
-      float* data_;
+      double* data_;
       int width_;
       int height_;
       int window_size_;
-      float baseline_;
-      float focal_length_;
-      float disp_thresh_;
+      double baseline_;
+      double focal_length_;
+      double disp_thresh_;
 
       // helper function
       inline __host__ __device__ 
-        float disparity2depth (float disparity)
+        double disparity2depth (double disparity)
       {
         return baseline_ * focal_length_ / disparity;
       }
 
       // helper function
       inline __host__ __device__
-        float depth2disparity (float depth)
+        double depth2disparity (double depth)
       {
         return baseline_ * focal_length_ / depth;
       }
@@ -243,7 +243,7 @@ namespace pcl
       inline __host__ __device__
         float3 operator () (int idx)
       {
-        float disparity = depth2disparity (data_ [idx]);
+        double disparity = depth2disparity (data_ [idx]);
 #ifdef __CUDACC__         
         if (disparity == 0 | isnan(disparity) | isinf(disparity))
           return make_float3 (0,0,0);
@@ -276,7 +276,7 @@ namespace pcl
           {
             // find index in point cloud from x,y pixel positions
             int otherIdx = ((int)y) * width_ + ((int)x);
-            float otherDepth = data_[otherIdx];
+            double otherDepth = data_[otherIdx];
 
             // ignore invalid points
             if (otherDepth > 0)
@@ -284,7 +284,7 @@ namespace pcl
           }
         }
         
-        return make_float3 ((float) counter, 
+        return make_float3 ((double) counter, 
                             disparity2depth (disparity + disp_thresh_),
                             disparity2depth (disparity - disp_thresh_));
       }

@@ -50,8 +50,8 @@
 
 namespace Eigen
 {
-  typedef Eigen::Matrix<float, 6, 1> Vector6f;
-  typedef Eigen::Matrix<float, 6, 6> Matrix6f;
+  typedef Eigen::Matrix<double, 6, 1> Vector6f;
+  typedef Eigen::Matrix<double, 6, 6> Matrix6f;
 }
 
 namespace pcl
@@ -189,14 +189,14 @@ namespace pcl
           * \param[in] convergence_threshold The new convergence threshold (default = 0.0).
           */
         void
-        setConvergenceThreshold (float convergence_threshold);
+        setConvergenceThreshold (double convergence_threshold);
 
         /** \brief Get the convergence threshold for the compute() method.
           * \details When the compute() method computes the new poses relative to the old poses, it will determine the length of the difference vector.
           * When the average length of all difference vectors becomes less than the convergence_threshold the convergence is assumed to be met.
           * \return The current convergence threshold (default = 0.0).
           */
-        inline float
+        inline double
         getConvergenceThreshold () const;
 
         /** \brief Add a new point cloud to the SLAM graph.
@@ -334,7 +334,7 @@ namespace pcl
         int max_iterations_;
 
         /** \brief The convergence threshold for the summed vector lengths of all poses. */
-        float convergence_threshold_;
+        double convergence_threshold_;
     };
   }
 }

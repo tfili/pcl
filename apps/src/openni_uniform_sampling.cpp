@@ -66,7 +66,7 @@ class OpenNIUniformSampling
     typedef Cloud::ConstPtr CloudConstPtr;
 
     OpenNIUniformSampling (const std::string& device_id = "", 
-                       float leaf_size = 0.05)
+                       double leaf_size = 0.05)
     : viewer ("PCL OpenNI PassThrough Viewer")
     , device_id_(device_id)
     {
@@ -181,7 +181,7 @@ main (int argc, char ** argv)
     return 1;
   }
 
-  float leaf_res = 0.05f;
+  double leaf_res = 0.05f;
   pcl::console::parse_argument (argc, argv, "-leaf", leaf_res);
   PCL_INFO ("Using %f as a leaf size for UniformSampling.\n", leaf_res);
 

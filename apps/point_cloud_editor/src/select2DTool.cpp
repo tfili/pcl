@@ -41,11 +41,11 @@
 #include <pcl/apps/point_cloud_editor/cloud.h>
 #include <pcl/apps/point_cloud_editor/selection.h>
 
-const float Select2DTool::DEFAULT_TOOL_DISPLAY_SIZE_ = 2.0f;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_SIZE_ = 2.0f;
 
-const float Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_RED_ = 1.0f;
-const float Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_GREEN_ = 1.0f;
-const float Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_BLUE_ = 1.0f;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_RED_ = 1.0f;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_GREEN_ = 1.0f;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_BLUE_ = 1.0f;
 
 
 Select2DTool::Select2DTool (SelectionPtr selection_ptr, CloudPtr cloud_ptr)
@@ -124,13 +124,13 @@ Select2DTool::isInSelectBox (const Point3D& pt,
                              const GLfloat* project,
                              const GLint* viewport) const
 {
-  float w = pt.z * project[11];
-  float x = (pt.x * project[0] + pt.z * project[8]) / w;
-  float y = (pt.y * project[5] + pt.z * project[9]) / w;
-  float min_x = std::min(origin_x_, final_x_)/(viewport[2]*0.5) - 1.0;
-  float max_x = std::max(final_x_, origin_x_)/(viewport[2]*0.5) - 1.0;
-  float max_y = (viewport[3] - std::min(origin_y_, final_y_))/(viewport[3]*0.5) - 1.0;
-  float min_y = (viewport[3] - std::max(origin_y_, final_y_))/(viewport[3]*0.5) - 1.0;
+  double w = pt.z * project[11];
+  double x = (pt.x * project[0] + pt.z * project[8]) / w;
+  double y = (pt.y * project[5] + pt.z * project[9]) / w;
+  double min_x = std::min(origin_x_, final_x_)/(viewport[2]*0.5) - 1.0;
+  double max_x = std::max(final_x_, origin_x_)/(viewport[2]*0.5) - 1.0;
+  double max_y = (viewport[3] - std::min(origin_y_, final_y_))/(viewport[3]*0.5) - 1.0;
+  double min_y = (viewport[3] - std::max(origin_y_, final_y_))/(viewport[3]*0.5) - 1.0;
   // Check the left and right sides
   if ((x < min_x) || (x > max_x))
     return (false);

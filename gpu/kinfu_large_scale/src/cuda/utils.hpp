@@ -55,16 +55,16 @@ namespace pcl
           
       template<typename T> struct numeric_limits;
 
-      template<> struct numeric_limits<float>
+      template<> struct numeric_limits<double>
       {
-        __device__ __forceinline__ static float 
+        __device__ __forceinline__ static double 
         quiet_NaN() { return __int_as_float(0x7fffffff); /*CUDART_NAN_F*/ };
-        __device__ __forceinline__ static float 
+        __device__ __forceinline__ static double 
         epsilon() { return 1.192092896e-07f/*FLT_EPSILON*/; };
 
-        __device__ __forceinline__ static float 
+        __device__ __forceinline__ static double 
         min() { return 1.175494351e-38f/*FLT_MIN*/; };
-        __device__ __forceinline__ static float 
+        __device__ __forceinline__ static double 
         max() { return 3.402823466e+38f/*FLT_MAX*/; };
       };
 
@@ -74,14 +74,14 @@ namespace pcl
         max() { return SHRT_MAX; };
       };
         
-      __device__ __forceinline__ float
+      __device__ __forceinline__ double
       dot(const float3& v1, const float3& v2)
       {
         return v1.x * v2.x + v1.y*v2.y + v1.z*v2.z;
       }
 
       __device__ __forceinline__ float3&
-      operator+=(float3& vec, const float& v)
+      operator+=(float3& vec, const double& v)
       {
         vec.x += v;  vec.y += v;  vec.z += v; return vec;
       }
@@ -93,7 +93,7 @@ namespace pcl
       }
       
       __device__ __forceinline__ float3&
-      operator*=(float3& vec, const float& v)
+      operator*=(float3& vec, const double& v)
       {
         vec.x *= v;  vec.y *= v;  vec.z *= v; return vec;
       }
@@ -105,12 +105,12 @@ namespace pcl
       }
 
       __device__ __forceinline__ float3
-      operator*(const float3& v1, const float& v)
+      operator*(const float3& v1, const double& v)
       {
         return make_float3(v1.x * v, v1.y * v, v1.z * v);
       }
 
-      __device__ __forceinline__ float
+      __device__ __forceinline__ double
       norm(const float3& v)
       {
         return sqrt(dot(v, v));
@@ -128,48 +128,48 @@ namespace pcl
         return make_float3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
       }
 
-      __device__ __forceinline__ void computeRoots2(const float& b, const float& c, float3& roots)
+      __device__ __forceinline__ void computeRoots2(const double& b, const double& c, float3& roots)
       {
         roots.x = 0.f;
-        float d = b * b - 4.f * c;
+        double d = b * b - 4.f * c;
         if (d < 0.f) // no real roots!!!! THIS SHOULD NOT HAPPEN!
           d = 0.f;
 
-        float sd = sqrtf(d);
+        double sd = sqrtf(d);
 
         roots.z = 0.5f * (b + sd);
         roots.y = 0.5f * (b - sd);
       }
 
       __device__ __forceinline__ void 
-      computeRoots3(float c0, float c1, float c2, float3& roots)
+      computeRoots3(double c0, double c1, double c2, float3& roots)
       {
-        if ( fabsf(c0) < numeric_limits<float>::epsilon())// one root is 0 -> quadratic equation
+        if ( fabsf(c0) < numeric_limits<double>::epsilon())// one root is 0 -> quadratic equation
         {
           computeRoots2 (c2, c1, roots);
         }
         else
         {
-          const float s_inv3 = 1.f/3.f;
-          const float s_sqrt3 = sqrtf(3.f);
+          const double s_inv3 = 1.f/3.f;
+          const double s_sqrt3 = sqrtf(3.f);
           // Construct the parameters used in classifying the roots of the equation
           // and in solving the equation for the roots in closed form.
-          float c2_over_3 = c2 * s_inv3;
-          float a_over_3 = (c1 - c2*c2_over_3)*s_inv3;
+          double c2_over_3 = c2 * s_inv3;
+          double a_over_3 = (c1 - c2*c2_over_3)*s_inv3;
           if (a_over_3 > 0.f)
             a_over_3 = 0.f;
 
-          float half_b = 0.5f * (c0 + c2_over_3 * (2.f * c2_over_3 * c2_over_3 - c1));
+          double half_b = 0.5f * (c0 + c2_over_3 * (2.f * c2_over_3 * c2_over_3 - c1));
 
-          float q = half_b * half_b + a_over_3 * a_over_3 * a_over_3;
+          double q = half_b * half_b + a_over_3 * a_over_3 * a_over_3;
           if (q > 0.f)
             q = 0.f;
 
           // Compute the eigenvalues by solving for the roots of the polynomial.
-          float rho = sqrtf(-a_over_3);
-          float theta = atan2f (sqrtf (-q), half_b)*s_inv3;
-          float cos_theta = __cosf (theta);
-          float sin_theta = __sinf (theta);
+          double rho = sqrtf(-a_over_3);
+          double theta = atan2f (sqrtf (-q), half_b)*s_inv3;
+          double cos_theta = __cosf (theta);
+          double sin_theta = __sinf (theta);
           roots.x = c2_over_3 + 2.f * rho * cos_theta;
           roots.y = c2_over_3 - rho * (cos_theta + s_sqrt3 * sin_theta);
           roots.z = c2_over_3 - rho * (cos_theta - s_sqrt3 * sin_theta);
@@ -217,7 +217,7 @@ namespace pcl
           */
           if(!isMuchSmallerThan(src.x, src.z) || !isMuchSmallerThan(src.y, src.z))
           {   
-            float invnm = rsqrtf(src.x*src.x + src.y*src.y);
+            double invnm = rsqrtf(src.x*src.x + src.y*src.y);
             perp.x = -src.y * invnm;
             perp.y =  src.x * invnm;
             perp.z = 0.0f;
@@ -228,7 +228,7 @@ namespace pcl
           */
           else
           {   
-            float invnm = rsqrtf(src.z * src.z + src.y * src.y);
+            double invnm = rsqrtf(src.z * src.z + src.y * src.y);
             perp.x = 0.0f;
             perp.y = -src.z * invnm;
             perp.z =  src.y * invnm;
@@ -238,20 +238,20 @@ namespace pcl
         }
 
         __device__ __forceinline__ 
-        Eigen33(volatile float* mat_pkg_arg) : mat_pkg(mat_pkg_arg) {}                      
+        Eigen33(volatile double* mat_pkg_arg) : mat_pkg(mat_pkg_arg) {}                      
         __device__ __forceinline__ void 
         compute(Mat33& tmp, Mat33& vec_tmp, Mat33& evecs, float3& evals)
         {
           // Scale the matrix so its entries are in [-1,1].  The scaling is applied
           // only when at least one matrix entry has magnitude larger than 1.
 
-          float max01 = fmaxf( fabsf(mat_pkg[0]), fabsf(mat_pkg[1]) );
-          float max23 = fmaxf( fabsf(mat_pkg[2]), fabsf(mat_pkg[3]) );
-          float max45 = fmaxf( fabsf(mat_pkg[4]), fabsf(mat_pkg[5]) );
-          float m0123 = fmaxf( max01, max23);
-          float scale = fmaxf( max45, m0123);
+          double max01 = fmaxf( fabsf(mat_pkg[0]), fabsf(mat_pkg[1]) );
+          double max23 = fmaxf( fabsf(mat_pkg[2]), fabsf(mat_pkg[3]) );
+          double max45 = fmaxf( fabsf(mat_pkg[4]), fabsf(mat_pkg[5]) );
+          double m0123 = fmaxf( max01, max23);
+          double scale = fmaxf( max45, m0123);
 
-          if (scale <= numeric_limits<float>::min())
+          if (scale <= numeric_limits<double>::min())
             scale = 1.f;
 
           mat_pkg[0] /= scale;
@@ -264,28 +264,28 @@ namespace pcl
           // The characteristic equation is x^3 - c2*x^2 + c1*x - c0 = 0.  The
           // eigenvalues are the roots to this equation, all guaranteed to be
           // real-valued, because the matrix is symmetric.
-          float c0 = m00() * m11() * m22() 
+          double c0 = m00() * m11() * m22() 
               + 2.f * m01() * m02() * m12()
               - m00() * m12() * m12() 
               - m11() * m02() * m02() 
               - m22() * m01() * m01();
-          float c1 = m00() * m11() - 
+          double c1 = m00() * m11() - 
               m01() * m01() + 
               m00() * m22() - 
               m02() * m02() + 
               m11() * m22() - 
               m12() * m12();
-          float c2 = m00() + m11() + m22();
+          double c2 = m00() + m11() + m22();
 
           computeRoots3(c0, c1, c2, evals);
 
-          if(evals.z - evals.x <= numeric_limits<float>::epsilon())
+          if(evals.z - evals.x <= numeric_limits<double>::epsilon())
           {                                   
             evecs[0] = make_float3(1.f, 0.f, 0.f);
             evecs[1] = make_float3(0.f, 1.f, 0.f);
             evecs[2] = make_float3(0.f, 0.f, 1.f);
           }
-          else if (evals.y - evals.x <= numeric_limits<float>::epsilon() )
+          else if (evals.y - evals.x <= numeric_limits<double>::epsilon() )
           {
             // first and second equal                
             tmp[0] = row0();  tmp[1] = row1();  tmp[2] = row2();
@@ -295,9 +295,9 @@ namespace pcl
             vec_tmp[1] = cross(tmp[0], tmp[2]);
             vec_tmp[2] = cross(tmp[1], tmp[2]);
 
-            float len1 = dot (vec_tmp[0], vec_tmp[0]);
-            float len2 = dot (vec_tmp[1], vec_tmp[1]);
-            float len3 = dot (vec_tmp[2], vec_tmp[2]);
+            double len1 = dot (vec_tmp[0], vec_tmp[0]);
+            double len2 = dot (vec_tmp[1], vec_tmp[1]);
+            double len3 = dot (vec_tmp[2], vec_tmp[2]);
 
             if (len1 >= len2 && len1 >= len3)
             {
@@ -315,7 +315,7 @@ namespace pcl
             evecs[1] = unitOrthogonal(evecs[2]);
             evecs[0] = cross(evecs[1], evecs[2]);
           }
-          else if (evals.z - evals.y <= numeric_limits<float>::epsilon() )
+          else if (evals.z - evals.y <= numeric_limits<double>::epsilon() )
           {
             // second and third equal                                    
             tmp[0] = row0();  tmp[1] = row1();  tmp[2] = row2();
@@ -325,9 +325,9 @@ namespace pcl
             vec_tmp[1] = cross(tmp[0], tmp[2]);
             vec_tmp[2] = cross(tmp[1], tmp[2]);
 
-            float len1 = dot(vec_tmp[0], vec_tmp[0]);
-            float len2 = dot(vec_tmp[1], vec_tmp[1]);
-            float len3 = dot(vec_tmp[2], vec_tmp[2]);
+            double len1 = dot(vec_tmp[0], vec_tmp[0]);
+            double len2 = dot(vec_tmp[1], vec_tmp[1]);
+            double len3 = dot(vec_tmp[2], vec_tmp[2]);
 
             if (len1 >= len2 && len1 >= len3)
             {
@@ -355,11 +355,11 @@ namespace pcl
             vec_tmp[1] = cross(tmp[0], tmp[2]);
             vec_tmp[2] = cross(tmp[1], tmp[2]);
 
-            float len1 = dot(vec_tmp[0], vec_tmp[0]);
-            float len2 = dot(vec_tmp[1], vec_tmp[1]);
-            float len3 = dot(vec_tmp[2], vec_tmp[2]);
+            double len1 = dot(vec_tmp[0], vec_tmp[0]);
+            double len2 = dot(vec_tmp[1], vec_tmp[1]);
+            double len3 = dot(vec_tmp[2], vec_tmp[2]);
 
-            float mmax[3];
+            double mmax[3];
 
             unsigned int min_el = 2;
             unsigned int max_el = 2;
@@ -454,26 +454,26 @@ namespace pcl
           evals *= scale;
         }
       private:
-        volatile float* mat_pkg;
+        volatile double* mat_pkg;
 
-        __device__  __forceinline__ float m00() const { return mat_pkg[0]; }
-        __device__  __forceinline__ float m01() const { return mat_pkg[1]; }
-        __device__  __forceinline__ float m02() const { return mat_pkg[2]; }
-        __device__  __forceinline__ float m10() const { return mat_pkg[1]; }
-        __device__  __forceinline__ float m11() const { return mat_pkg[3]; }
-        __device__  __forceinline__ float m12() const { return mat_pkg[4]; }
-        __device__  __forceinline__ float m20() const { return mat_pkg[2]; }
-        __device__  __forceinline__ float m21() const { return mat_pkg[4]; }
-        __device__  __forceinline__ float m22() const { return mat_pkg[5]; }
+        __device__  __forceinline__ double m00() const { return mat_pkg[0]; }
+        __device__  __forceinline__ double m01() const { return mat_pkg[1]; }
+        __device__  __forceinline__ double m02() const { return mat_pkg[2]; }
+        __device__  __forceinline__ double m10() const { return mat_pkg[1]; }
+        __device__  __forceinline__ double m11() const { return mat_pkg[3]; }
+        __device__  __forceinline__ double m12() const { return mat_pkg[4]; }
+        __device__  __forceinline__ double m20() const { return mat_pkg[2]; }
+        __device__  __forceinline__ double m21() const { return mat_pkg[4]; }
+        __device__  __forceinline__ double m22() const { return mat_pkg[5]; }
 
         __device__  __forceinline__ float3 row0() const { return make_float3( m00(), m01(), m02() ); }
         __device__  __forceinline__ float3 row1() const { return make_float3( m10(), m11(), m12() ); }
         __device__  __forceinline__ float3 row2() const { return make_float3( m20(), m21(), m22() ); }
 
-        __device__  __forceinline__ static bool isMuchSmallerThan (float x, float y)
+        __device__  __forceinline__ static bool isMuchSmallerThan (double x, double y)
         {
             // copied from <eigen>/include/Eigen/src/Core/NumTraits.h
-            const float prec_sqr = numeric_limits<float>::epsilon() * numeric_limits<float>::epsilon(); 
+            const double prec_sqr = numeric_limits<double>::epsilon() * numeric_limits<double>::epsilon(); 
             return x * x <= prec_sqr * y * y;
         }
       };   

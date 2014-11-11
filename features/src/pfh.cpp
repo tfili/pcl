@@ -44,7 +44,7 @@
 bool
 pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, 
                           const Eigen::Vector4f &p2, const Eigen::Vector4f &n2,
-                          float &f1, float &f2, float &f3, float &f4)
+                          double &f1, double &f2, double &f3, double &f4)
 {
   Eigen::Vector4f dp2p1 = p2 - p1;
   dp2p1[3] = 0.0f;
@@ -60,10 +60,10 @@ pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
   Eigen::Vector4f n1_copy = n1,
                   n2_copy = n2;
   n1_copy[3] = n2_copy[3] = 0.0f;
-  float angle1 = n1_copy.dot (dp2p1) / f4;
+  double angle1 = n1_copy.dot (dp2p1) / f4;
 
   // Make sure the same point is selected as 1 and 2 for each pair
-  float angle2 = n2_copy.dot (dp2p1) / f4;
+  double angle2 = n2_copy.dot (dp2p1) / f4;
   if (acos (fabs (angle1)) > acos (fabs (angle2)))
   {
     // switch p1 and p2
@@ -80,7 +80,7 @@ pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
   // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
   Eigen::Vector4f v = dp2p1.cross3 (n1_copy);
   v[3] = 0.0f;
-  float v_norm = v.norm ();
+  double v_norm = v.norm ();
   if (v_norm == 0.0f)
   {
     PCL_DEBUG ("[pcl::computePairFeatures] Norm of Delta x U is 0!\n");
@@ -106,7 +106,7 @@ pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
 bool
 pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, const Eigen::Vector4i &colors1,
                              const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, const Eigen::Vector4i &colors2,
-                             float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7)
+                             double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7)
 {
   Eigen::Vector4f dp2p1 = p2 - p1;
   dp2p1[3] = 0.0f;
@@ -122,7 +122,7 @@ pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n
   Eigen::Vector4f n1_copy = n1,
       n2_copy = n2;
   n1_copy[3] = n2_copy[3] = 0.0f;
-  float angle1 = n1_copy.dot (dp2p1) / f4;
+  double angle1 = n1_copy.dot (dp2p1) / f4;
 
   f3 = angle1;
 
@@ -130,7 +130,7 @@ pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n
   // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
   Eigen::Vector4f v = dp2p1.cross3 (n1_copy);
   v[3] = 0.0f;
-  float v_norm = v.norm ();
+  double v_norm = v.norm ();
   if (v_norm == 0.0f)
   {
     PCL_DEBUG ("Norm of Delta x U is 0!\n");
@@ -151,9 +151,9 @@ pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n
 
   // everything before was standard 4D-Darboux frame feature pair
   // now, for the experimental color stuff
-  f5 = (colors2[0] != 0) ? static_cast<float> (colors1[0]) / colors2[0] : 1.0f;
-  f6 = (colors2[1] != 0) ? static_cast<float> (colors1[1]) / colors2[1] : 1.0f;
-  f7 = (colors2[2] != 0) ? static_cast<float> (colors1[2]) / colors2[2] : 1.0f;
+  f5 = (colors2[0] != 0) ? static_cast<double> (colors1[0]) / colors2[0] : 1.0f;
+  f6 = (colors2[1] != 0) ? static_cast<double> (colors1[1]) / colors2[1] : 1.0f;
+  f7 = (colors2[2] != 0) ? static_cast<double> (colors1[2]) / colors2[2] : 1.0f;
 
   // make sure the ratios are in the [-1, 1] interval
   if (f5 > 1.0f) f5 = - 1.0f / f5;

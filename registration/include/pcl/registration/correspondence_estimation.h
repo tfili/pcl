@@ -59,7 +59,7 @@ namespace pcl
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class CorrespondenceEstimationBase: public PCLBase<PointSource>
     {
       public:
@@ -374,7 +374,7 @@ namespace pcl
       * \author Radu B. Rusu, Michael Dixon, Dirk Holz
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class CorrespondenceEstimation : public CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>
     {
       public:

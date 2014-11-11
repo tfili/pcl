@@ -84,7 +84,7 @@ namespace pcl
 
       /** \brief Constructor        
         */
-      StandaloneMarchingCubes (int voxels_x = 512, int voxels_y = 512, int voxels_z = 512, float volume_size = 3.0f);
+      StandaloneMarchingCubes (int voxels_x = 512, int voxels_y = 512, int voxels_z = 512, double volume_size = 3.0f);
       
       /** \brief Destructor
         */
@@ -158,7 +158,7 @@ namespace pcl
       int voxels_z_;
 
       /** Tsdf volume size in meters. Should match the ones in internal.h */
-      float volume_size_;
+      double volume_size_;
       
       /** Mesh counter used to name the output meshes */
       int mesh_counter_;

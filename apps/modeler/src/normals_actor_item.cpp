@@ -88,9 +88,9 @@ pcl::modeler::NormalsActorItem::createNormalLines()
       data->SetValue(2*j*3 + 0, p.x);
       data->SetValue(2*j*3 + 1, p.y);
       data->SetValue(2*j*3 + 2, p.z);
-      data->SetValue(2*j*3 + 3, float (p.x + p.normal_x*scale_));
-      data->SetValue(2*j*3 + 4, float (p.y + p.normal_y*scale_));
-      data->SetValue(2*j*3 + 5, float (p.z + p.normal_z*scale_));
+      data->SetValue(2*j*3 + 3, double (p.x + p.normal_x*scale_));
+      data->SetValue(2*j*3 + 4, double (p.y + p.normal_y*scale_));
+      data->SetValue(2*j*3 + 5, double (p.z + p.normal_z*scale_));
 
       lines->InsertNextCell(2);
       lines->InsertCellPoint(2*j);
@@ -110,9 +110,9 @@ pcl::modeler::NormalsActorItem::createNormalLines()
       data->SetValue (2*j*3 + 0, p.x);
       data->SetValue (2*j*3 + 1, p.y);
       data->SetValue (2*j*3 + 2, p.z);
-      data->SetValue (2*j*3 + 3, float (p.x + p.normal_x*scale_));
-      data->SetValue (2*j*3 + 4, float (p.y + p.normal_y*scale_));
-      data->SetValue (2*j*3 + 5, float (p.z + p.normal_z*scale_));
+      data->SetValue (2*j*3 + 3, double (p.x + p.normal_x*scale_));
+      data->SetValue (2*j*3 + 4, double (p.y + p.normal_y*scale_));
+      data->SetValue (2*j*3 + 5, double (p.z + p.normal_z*scale_));
 
       lines->InsertNextCell(2);
       lines->InsertCellPoint(2*j);

@@ -15,7 +15,7 @@ typedef pcl::PointXYZ PointType;
 // --------------------
 // -----Parameters-----
 // --------------------
-float angular_resolution = 0.5f;
+double angular_resolution = 0.5f;
 pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 bool setUnseenToMaxRange = false;
 
@@ -28,7 +28,7 @@ printUsage (const char* progName)
   std::cout << "\n\nUsage: "<<progName<<" [options] <scene.pcd>\n\n"
             << "Options:\n"
             << "-------------------------------------------\n"
-            << "-r <float>   angular resolution in degrees (default "<<angular_resolution<<")\n"
+            << "-r <double>   angular resolution in degrees (default "<<angular_resolution<<")\n"
             << "-c <int>     coordinate frame (default "<< (int)coordinate_frame<<")\n"
             << "-m           Treat all unseen points to max range\n"
             << "-h           this help\n"
@@ -93,9 +93,9 @@ main (int argc, char** argv)
   else
   {
     cout << "\nNo *.pcd file given => Genarating example point cloud.\n\n";
-    for (float x=-0.5f; x<=0.5f; x+=0.01f)
+    for (double x=-0.5f; x<=0.5f; x+=0.01f)
     {
-      for (float y=-0.5f; y<=0.5f; y+=0.01f)
+      for (double y=-0.5f; y<=0.5f; y+=0.01f)
       {
         PointType point;  point.x = x;  point.y = y;  point.z = 2.0f - y;
         point_cloud.points.push_back (point);
@@ -107,8 +107,8 @@ main (int argc, char** argv)
   // -----------------------------------------------
   // -----Create RangeImage from the PointCloud-----
   // -----------------------------------------------
-  float noise_level = 0.0;
-  float min_range = 0.0f;
+  double noise_level = 0.0;
+  double min_range = 0.0f;
   int border_size = 1;
   boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
   pcl::RangeImage& range_image = *range_image_ptr;   
@@ -173,7 +173,7 @@ main (int argc, char** argv)
   // ------------------------------------
   pcl::visualization::RangeImageVisualizer* range_image_borders_widget = NULL;
   range_image_borders_widget =
-    pcl::visualization::RangeImageVisualizer::getRangeImageBordersWidget (range_image, -std::numeric_limits<float>::infinity (), std::numeric_limits<float>::infinity (), false,
+    pcl::visualization::RangeImageVisualizer::getRangeImageBordersWidget (range_image, -std::numeric_limits<double>::infinity (), std::numeric_limits<double>::infinity (), false,
                                                                           border_descriptions, "Range image with borders");
   // -------------------------------------
   

@@ -92,14 +92,14 @@ pcl::recognition::ORROctreeZProjection::clear ()
 //=========================================================================================================================================
 
 void
-pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, float eps_front, float eps_back)
+pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, double eps_front, double eps_back)
 {
   this->clear();
 
   // Compute the bounding box of the full leaves
   const vector<ORROctree::Node*>& full_leaves = input.getFullLeaves ();
   vector<ORROctree::Node*>::const_iterator fl_it = full_leaves.begin ();
-  float full_leaves_bounds[4];
+  double full_leaves_bounds[4];
 
   if ( full_leaves.empty() )
     return;
@@ -170,7 +170,7 @@ pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, float eps
   }
 
   int len, maxlen, id_z1, id_z2;
-  float cur_min, best_min, cur_max, best_max;
+  double cur_min, best_min, cur_max, best_max;
 
   // Now, at each occupied (i, j) position, get the longest connected component consisting of neighboring full leaves
   for ( list<Set*>::iterator current_set = full_sets_.begin () ; current_set != full_sets_.end () ; ++current_set )

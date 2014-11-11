@@ -95,7 +95,7 @@ TEST (PCL_GPU, bruteForceRadiusSeachGPU)
         sizes.push_back(results_device.size());      
     }
         
-    float avg_size = std::accumulate(sizes.begin(), sizes.end(), (size_t)0) * (1.f/sizes.size());;
+    double avg_size = std::accumulate(sizes.begin(), sizes.end(), (size_t)0) * (1.f/sizes.size());;
 
     cout << "avg_result_size = " << avg_size << endl;
     ASSERT_GT(avg_size, 5);    

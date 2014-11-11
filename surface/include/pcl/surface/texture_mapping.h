@@ -128,7 +128,7 @@ namespace pcl
         * \param[in] f
         */
       inline void
-      setF (float f)
+      setF (double f)
       {
         f_ = f;
       }
@@ -139,7 +139,7 @@ namespace pcl
         * \param[in] z data point z
         */
       inline void
-      setVectorField (float x, float y, float z)
+      setVectorField (double x, double y, double z)
       {
         vector_field_ = Eigen::Vector3f (x, y, z);
         // normalize vector field
@@ -222,8 +222,8 @@ namespace pcl
             focal_y = cam.focal_length;
 
           // project point on image frame
-          UV_coordinates[0] = static_cast<float> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
-          UV_coordinates[1] = 1.0f - static_cast<float> (((focal_y * (pt.y / pt.z) + cy) / sizeY)); //vertical
+          UV_coordinates[0] = static_cast<double> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
+          UV_coordinates[1] = 1.0f - static_cast<double> (((focal_y * (pt.y / pt.z) + cy) / sizeY)); //vertical
 
           // point is visible!
           if (UV_coordinates[0] >= 0.0 && UV_coordinates[0] <= 1.0 && UV_coordinates[1] >= 0.0 && UV_coordinates[1]
@@ -335,7 +335,7 @@ namespace pcl
 
     protected:
       /** \brief mesh scale control. */
-      float f_;
+      double f_;
 
       /** \brief vector field */
       Eigen::Vector3f vector_field_;

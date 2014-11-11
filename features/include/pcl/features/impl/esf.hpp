@@ -50,7 +50,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
 pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
-    PointCloudIn &pc, std::vector<float> &hist)
+    PointCloudIn &pc, std::vector<double> &hist)
 {
   const int binsize = 64;
   unsigned int sample_size = 20000;
@@ -58,7 +58,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
   int maxindex = static_cast<int> (pc.points.size ());
 
   int index1, index2, index3;
-  std::vector<float> d2v, d1v, d3v, wt_d3;
+  std::vector<double> d2v, d1v, d3v, wt_d3;
   std::vector<int> wt_d2;
   d1v.reserve (sample_size);
   d2v.reserve (sample_size * 3);
@@ -66,22 +66,22 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
   wt_d2.reserve (sample_size * 3);
   wt_d3.reserve (sample_size);
 
-  float h_in[binsize] = {0};
-  float h_out[binsize] = {0};
-  float h_mix[binsize] = {0};
-  float h_mix_ratio[binsize] = {0};
+  double h_in[binsize] = {0};
+  double h_out[binsize] = {0};
+  double h_mix[binsize] = {0};
+  double h_mix_ratio[binsize] = {0};
 
-  float h_a3_in[binsize] = {0};
-  float h_a3_out[binsize] = {0};
-  float h_a3_mix[binsize] = {0};
+  double h_a3_in[binsize] = {0};
+  double h_a3_out[binsize] = {0};
+  double h_a3_mix[binsize] = {0};
 
-  float h_d3_in[binsize] = {0};
-  float h_d3_out[binsize] = {0};
-  float h_d3_mix[binsize] = {0};
+  double h_d3_in[binsize] = {0};
+  double h_d3_out[binsize] = {0};
+  double h_d3_mix[binsize] = {0};
 
-  float ratio=0.0;
-  float pih = static_cast<float>(M_PI) / 2.0f;
-  float a,b,c,s;
+  double ratio=0.0;
+  double pih = static_cast<double>(M_PI) / 2.0f;
+  double a,b,c,s;
   int th1,th2,th3;
   int vxlcnt = 0;
   int pcnt1,pcnt2,pcnt3;
@@ -189,29 +189,29 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
     if (vxlcnt_sum <= 21)
     {
       wt_d3.push_back (0);
-      h_a3_out[th1] += static_cast<float> (pcnt3) / 32.0f;
-      h_a3_out[th2] += static_cast<float> (pcnt1) / 32.0f;
-      h_a3_out[th3] += static_cast<float> (pcnt2) / 32.0f;
+      h_a3_out[th1] += static_cast<double> (pcnt3) / 32.0f;
+      h_a3_out[th2] += static_cast<double> (pcnt1) / 32.0f;
+      h_a3_out[th3] += static_cast<double> (pcnt2) / 32.0f;
     }
     else
       if (p_cnt - vxlcnt_sum < 4)
       {
-        h_a3_in[th1] += static_cast<float> (pcnt3) / 32.0f;
-        h_a3_in[th2] += static_cast<float> (pcnt1) / 32.0f;
-        h_a3_in[th3] += static_cast<float> (pcnt2) / 32.0f;
+        h_a3_in[th1] += static_cast<double> (pcnt3) / 32.0f;
+        h_a3_in[th2] += static_cast<double> (pcnt1) / 32.0f;
+        h_a3_in[th3] += static_cast<double> (pcnt2) / 32.0f;
         wt_d3.push_back (1);
       }
       else
       {
-        h_a3_mix[th1] += static_cast<float> (pcnt3) / 32.0f;
-        h_a3_mix[th2] += static_cast<float> (pcnt1) / 32.0f;
-        h_a3_mix[th3] += static_cast<float> (pcnt2) / 32.0f;
-        wt_d3.push_back (static_cast<float> (vxlcnt_sum) / static_cast<float> (p_cnt));
+        h_a3_mix[th1] += static_cast<double> (pcnt3) / 32.0f;
+        h_a3_mix[th2] += static_cast<double> (pcnt1) / 32.0f;
+        h_a3_mix[th3] += static_cast<double> (pcnt2) / 32.0f;
+        wt_d3.push_back (static_cast<double> (vxlcnt_sum) / static_cast<double> (p_cnt));
       }
   }
   // Normalizing, get max
-  float maxd2 = 0;
-  float maxd3 = 0;
+  double maxd2 = 0;
+  double maxd3 = 0;
 
   for (size_t nn_idx = 0; nn_idx < sample_size; ++nn_idx)
   {
@@ -263,8 +263,8 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
       h_mix[static_cast<int>(pcl_round (d2v[nn_idx] / maxd2 * (binsize-1)))]++ ;
   }
 
-  //float weights[10] = {1,  1,  1,  1,  1,  1,  1,  1 , 1 ,  1};
-  float weights[10] = {0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f,  1.0f, 2.0f, 2.0f, 2.0f};
+  //double weights[10] = {1,  1,  1,  1,  1,  1,  1,  1 , 1 ,  1};
+  double weights[10] = {0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f,  1.0f, 2.0f, 2.0f, 2.0f};
 
   hist.reserve (binsize * 10);
   for (int i = 0; i < binsize; i++)
@@ -290,7 +290,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
   for (int i = 0; i < binsize; i++)
     hist.push_back (h_mix_ratio[i]*0.5f * weights[9]);
 
-  float sm = 0;
+  double sm = 0;
   for (size_t i = 0; i < hist.size (); i++)
     sm += hist[i];
 
@@ -303,7 +303,7 @@ template <typename PointInT, typename PointOutT> int
 pcl::ESFEstimation<PointInT, PointOutT>::lci (
     const int x1, const int y1, const int z1, 
     const int x2, const int y2, const int z2, 
-    float &ratio, int &incnt, int &pointcount)
+    double &ratio, int &incnt, int &pointcount)
 {
   int voxelcount = 0;
   int voxel_in = 0;
@@ -413,7 +413,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::lci (
   if (voxel_in <= 7)
     return (1);
 
-  ratio = static_cast<float>(voxel_in) / static_cast<float>(voxelcount);
+  ratio = static_cast<double>(voxel_in) / static_cast<double>(voxelcount);
   return (2);
 }
 
@@ -478,12 +478,12 @@ pcl::ESFEstimation<PointInT, PointOutT>::cleanup9 (PointCloudIn &cluster)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
 pcl::ESFEstimation<PointInT, PointOutT>::scale_points_unit_sphere (
-    const pcl::PointCloud<PointInT> &pc, float scalefactor, Eigen::Vector4f& centroid)
+    const pcl::PointCloud<PointInT> &pc, double scalefactor, Eigen::Vector4f& centroid)
 {
   pcl::compute3DCentroid (pc, centroid);
   pcl::demeanPointCloud (pc, centroid, local_cloud_);
 
-  float max_distance = 0, d;
+  double max_distance = 0, d;
   pcl::PointXYZ cog (0, 0, 0);
 
   for (size_t i = 0; i < local_cloud_.points.size (); ++i)
@@ -493,7 +493,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::scale_points_unit_sphere (
       max_distance = d;
   }
 
-  float scale_factor = 1.0f / max_distance * scalefactor;
+  double scale_factor = 1.0f / max_distance * scalefactor;
 
   Eigen::Affine3f matrix = Eigen::Affine3f::Identity();
   matrix.scale (scale_factor);
@@ -533,8 +533,8 @@ template <typename PointInT, typename PointOutT> void
 pcl::ESFEstimation<PointInT, PointOutT>::computeFeature (PointCloudOut &output)
 {
   Eigen::Vector4f xyz_centroid;
-  std::vector<float> hist;
-  scale_points_unit_sphere (*surface_, static_cast<float>(GRIDSIZE_H), xyz_centroid);
+  std::vector<double> hist;
+  scale_points_unit_sphere (*surface_, static_cast<double>(GRIDSIZE_H), xyz_centroid);
   this->voxelize9 (local_cloud_);
   this->computeESF (local_cloud_, hist);
   this->cleanup9 (local_cloud_);

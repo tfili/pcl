@@ -181,19 +181,19 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::derivatives (const Flo
   grad_y = FloatImage (src.width, src.height);
 
   int height = src.height, width = src.width;
-  float *row0 = new float [src.width + 2];
-  float *row1 = new float [src.width + 2];
-  float *trow0 = row0; ++trow0;
-  float *trow1 = row1; ++trow1;
-  const float* src_ptr = &(src.points[0]);
+  double *row0 = new double [src.width + 2];
+  double *row1 = new double [src.width + 2];
+  double *trow0 = row0; ++trow0;
+  double *trow1 = row1; ++trow1;
+  const double* src_ptr = &(src.points[0]);
 
   for (int y = 0; y < height; y++)
   {
-    const float* srow0 = src_ptr + (y > 0 ? y-1 : height > 1 ? 1 : 0) * width;
-    const float* srow1 = src_ptr + y * width;
-    const float* srow2 = src_ptr + (y < height-1 ? y+1 : height > 1 ? height-2 : 0) * width;
-    float* grad_x_row = &(grad_x.points[y * width]);
-    float* grad_y_row = &(grad_y.points[y * width]);
+    const double* srow0 = src_ptr + (y > 0 ? y-1 : height > 1 ? 1 : 0) * width;
+    const double* srow1 = src_ptr + y * width;
+    const double* srow2 = src_ptr + (y < height-1 ? y+1 : height > 1 ? height-2 : 0) * width;
+    double* grad_x_row = &(grad_x.points[y * width]);
+    double* grad_y_row = &(grad_y.points[y * width]);
 
     // do vertical convolution
     for (int x = 0; x < width; x++)
@@ -290,7 +290,7 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::convolveRows (const Fl
       for (int k = kernel_last_, l = i - kernel_size_2_; k > -1; --k, ++l)
         result+= kernel_[k] * (*input) (l,j);
 
-      output (i,j) = static_cast<float> (result);
+      output (i,j) = static_cast<double> (result);
     }
 
     for (int i = last; i < width; ++i)
@@ -322,7 +322,7 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::convolveCols (const Fl
       double result = 0;
       for (int k = kernel_last_, l = j - kernel_size_2_; k > -1; --k, ++l)
         result += kernel_[k] * (*input) (i,l);
-      output (i,j) = static_cast<float> (result);
+      output (i,j) = static_cast<double> (result);
     }
 
     for (int j = last; j < height; ++j)
@@ -418,19 +418,19 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::spatialGradient (const
 
   for (int y = 0; y < track_height_; y++)
   {
-    const float* img_ptr = &(img.points[0]) + (y + location[1])*step + location[0];
-    const float* grad_x_ptr = &(grad_x.points[0]) + (y + location[1])*step + location[0];
-    const float* grad_y_ptr = &(grad_y.points[0]) + (y + location[1])*step + location[0];
+    const double* img_ptr = &(img.points[0]) + (y + location[1])*step + location[0];
+    const double* grad_x_ptr = &(grad_x.points[0]) + (y + location[1])*step + location[0];
+    const double* grad_y_ptr = &(grad_y.points[0]) + (y + location[1])*step + location[0];
 
-    float* win_ptr = win.data () + y*win.cols ();
-    float* grad_x_win_ptr = grad_x_win.data () + y*grad_x_win.cols ();
-    float* grad_y_win_ptr = grad_y_win.data () + y*grad_y_win.cols ();
+    double* win_ptr = win.data () + y*win.cols ();
+    double* grad_x_win_ptr = grad_x_win.data () + y*grad_x_win.cols ();
+    double* grad_y_win_ptr = grad_y_win.data () + y*grad_y_win.cols ();
 
     for (int x =0; x < track_width_; ++x, ++grad_x_ptr, ++grad_y_ptr)
     {
       *win_ptr++  = img_ptr[x]*weight[0] + img_ptr[x+1]*weight[1] + img_ptr[x+step]*weight[2] + img_ptr[x+step+1]*weight[3];
-      float ixval = grad_x_ptr[0]*weight[0] + grad_x_ptr[1]*weight[1] + grad_x_ptr[step]*weight[2] + grad_x_ptr[step+1]*weight[3];
-      float iyval = grad_y_ptr[0]*weight[0] + grad_y_ptr[1]*weight[1] + grad_y_ptr[step]*weight[2] + grad_y_ptr[step+1]*weight[3];
+      double ixval = grad_x_ptr[0]*weight[0] + grad_x_ptr[1]*weight[1] + grad_x_ptr[step]*weight[2] + grad_x_ptr[step+1]*weight[3];
+      double iyval = grad_y_ptr[0]*weight[0] + grad_y_ptr[1]*weight[1] + grad_y_ptr[step]*weight[2] + grad_y_ptr[step+1]*weight[3];
       //!!! store those
       *grad_x_win_ptr++ = ixval;
       *grad_y_win_ptr++ = iyval;
@@ -456,14 +456,14 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::mismatchVector (const 
   b.setZero ();
   for (int y = 0; y < track_height_; y++)
   {
-    const float* next_ptr = &(next.points[0]) + (y + location[1])*step + location[0];
-    const float* prev_ptr = prev.data () + y*prev.cols ();
-    const float* prev_grad_x_ptr = prev_grad_x.data () + y*prev_grad_x.cols ();
-    const float* prev_grad_y_ptr = prev_grad_y.data () + y*prev_grad_y.cols ();
+    const double* next_ptr = &(next.points[0]) + (y + location[1])*step + location[0];
+    const double* prev_ptr = prev.data () + y*prev.cols ();
+    const double* prev_grad_x_ptr = prev_grad_x.data () + y*prev_grad_x.cols ();
+    const double* prev_grad_y_ptr = prev_grad_y.data () + y*prev_grad_y.cols ();
 
     for (int x = 0; x < track_width_; ++x, ++prev_grad_y_ptr, ++prev_grad_x_ptr)
     {
-      float diff = next_ptr[x]*weight[0] + next_ptr[x+1]*weight[1]
+      double diff = next_ptr[x]*weight[0] + next_ptr[x+1]*weight[1]
       + next_ptr[x+step]*weight[2] + next_ptr[x+step+1]*weight[3] - prev_ptr[x];
       b[0] += *prev_grad_x_ptr * diff;
       b[1] += *prev_grad_y_ptr * diff;
@@ -496,7 +496,7 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::track (const PointClou
     Eigen::ArrayXXf prev_win (track_height_, track_width_);
     Eigen::ArrayXXf grad_x_win (track_height_, track_width_);
     Eigen::ArrayXXf grad_y_win (track_height_, track_width_);
-    float ratio (1./(1 << level));
+    double ratio (1./(1 << level));
     for (int ptidx = 0; ptidx < nb_points; ptidx++)
     {
       Eigen::Array2f prev_pt (prev_keypoints->points[ptidx].u * ratio,
@@ -522,8 +522,8 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::track (const PointClou
         continue;
       }
 
-      float a = prev_pt[0] - iprev_point[0];
-      float b = prev_pt[1] - iprev_point[1];
+      double a = prev_pt[0] - iprev_point[0];
+      double b = prev_pt[1] - iprev_point[1];
       Eigen::Array4f weight;
       weight[0] = (1.f - a)*(1.f - b);
       weight[1] = a*(1.f - b);
@@ -533,10 +533,10 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::track (const PointClou
       Eigen::Array3f covar = Eigen::Array3f::Zero ();
       spatialGradient (prev, grad_x, grad_y, iprev_point, weight, prev_win, grad_x_win, grad_y_win, covar);
 
-      float det = covar[0]*covar[2] - covar[1]*covar[1];
-      float min_eigenvalue = (covar[2] + covar[0] - std::sqrt ((covar[0]-covar[2])*(covar[0]-covar[2]) + 4.f*covar[1]*covar[1]))/2.f;
+      double det = covar[0]*covar[2] - covar[1]*covar[1];
+      double min_eigenvalue = (covar[2] + covar[0] - std::sqrt ((covar[0]-covar[2])*(covar[0]-covar[2]) + 4.f*covar[1]*covar[1]))/2.f;
 
-      if (min_eigenvalue < min_eigenvalue_threshold_ || det < std::numeric_limits<float>::epsilon ())
+      if (min_eigenvalue < min_eigenvalue_threshold_ || det < std::numeric_limits<double>::epsilon ())
       {
         status[ptidx] = -2;
         continue;

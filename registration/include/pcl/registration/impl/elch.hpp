@@ -251,14 +251,14 @@ pcl::registration::ELCH<PointT>::compute ()
   for (size_t i = 0; i < num_vertices (*loop_graph_); i++)
   {
     Eigen::Vector3f t2;
-    t2[0] = loop_transform_ (0, 3) * static_cast<float> (weights[0][i]);
-    t2[1] = loop_transform_ (1, 3) * static_cast<float> (weights[1][i]);
-    t2[2] = loop_transform_ (2, 3) * static_cast<float> (weights[2][i]);
+    t2[0] = loop_transform_ (0, 3) * static_cast<double> (weights[0][i]);
+    t2[1] = loop_transform_ (1, 3) * static_cast<double> (weights[1][i]);
+    t2[2] = loop_transform_ (2, 3) * static_cast<double> (weights[2][i]);
 
     Eigen::Affine3f bl (loop_transform_);
     Eigen::Quaternionf q (bl.rotation ());
     Eigen::Quaternionf q2;
-    q2 = Eigen::Quaternionf::Identity ().slerp (static_cast<float> (weights[3][i]), q);
+    q2 = Eigen::Quaternionf::Identity ().slerp (static_cast<double> (weights[3][i]), q);
 
     //TODO use rotation from branch start
     Eigen::Translation3f t3 (t2);

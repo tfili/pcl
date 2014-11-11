@@ -102,7 +102,7 @@ namespace pcl
       void
       computePointPrincipalCurvatures (const pcl::PointCloud<PointNT> &normals,
                                        int p_idx, const std::vector<int> &indices,
-                                       float &pcx, float &pcy, float &pcz, float &pc1, float &pc2);
+                                       double &pcx, double &pcy, double &pcz, double &pc1, double &pc2);
 
     protected:
 

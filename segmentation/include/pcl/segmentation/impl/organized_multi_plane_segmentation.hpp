@@ -57,7 +57,7 @@ projectToPlaneFromViewpoint (pcl::PointCloud<PointT>& cloud, Eigen::Vector4f& no
   {
     Eigen::Vector3f pt (cloud.points[i].x, cloud.points[i].y, cloud.points[i].z);
     //Eigen::Vector3f intersection = (vp, pt, norm, centroid);
-    float u = norm.dot ((centroid - vp)) / norm.dot ((pt - vp));
+    double u = norm.dot ((centroid - vp)) / norm.dot ((pt - vp));
     Eigen::Vector3f intersection (vp + u * (pt - vp));
     projected_cloud[i].x = intersection[0];
     projected_cloud[i].y = intersection[1];
@@ -109,7 +109,7 @@ pcl::OrganizedMultiPlaneSegmentation<PointT, PointNT, PointLT>::segment (std::ve
   }
 
   // Calculate range part of planes' hessian normal form
-  std::vector<float> plane_d (input_->points.size ());
+  std::vector<double> plane_d (input_->points.size ());
   
   for (unsigned int i = 0; i < input_->size (); ++i)
     plane_d[i] = input_->points[i].getVector3fMap ().dot (normals_->points[i].getNormalVector3fMap ());
@@ -119,8 +119,8 @@ pcl::OrganizedMultiPlaneSegmentation<PointT, PointNT, PointLT>::segment (std::ve
   compare_->setPlaneCoeffD (plane_d);
   compare_->setInputCloud (input_);
   compare_->setInputNormals (normals_);
-  compare_->setAngularThreshold (static_cast<float> (angular_threshold_));
-  compare_->setDistanceThreshold (static_cast<float> (distance_threshold_), true);
+  compare_->setAngularThreshold (static_cast<double> (angular_threshold_));
+  compare_->setDistanceThreshold (static_cast<double> (distance_threshold_), true);
 
   // Set up the output
   OrganizedConnectedComponentSegmentation<PointT,pcl::Label> connected_component (compare_);
@@ -151,7 +151,7 @@ pcl::OrganizedMultiPlaneSegmentation<PointT, PointNT, PointLT>::segment (std::ve
       plane_params[3] = -1 * plane_params.dot (clust_centroid);
 
       vp -= clust_centroid;
-      float cos_theta = vp.dot (plane_params);
+      double cos_theta = vp.dot (plane_params);
       if (cos_theta < 0)
       {
         plane_params *= -1;
@@ -160,8 +160,8 @@ pcl::OrganizedMultiPlaneSegmentation<PointT, PointNT, PointLT>::segment (std::ve
       }
       
       // Compute the curvature surface change
-      float curvature;
-      float eig_sum = clust_cov.coeff (0) + clust_cov.coeff (4) + clust_cov.coeff (8);
+      double curvature;
+      double eig_sum = clust_cov.coeff (0) + clust_cov.coeff (4) + clust_cov.coeff (8);
       if (eig_sum != 0)
         curvature = fabsf (eigen_value / eig_sum);
       else

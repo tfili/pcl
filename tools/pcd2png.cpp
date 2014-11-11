@@ -82,7 +82,7 @@ printHelp (int, char **argv)
   std::cout << "                - intensity"                                                  << std::endl;
   std::cout << "     --scale  : Apply scaling to extracted data (only for z, curvature, and"  << std::endl;
   std::cout << "                intensity fields). Supported options:"                        << std::endl;
-  std::cout << "                - <float> : Scale by a fixed number"                          << std::endl;
+  std::cout << "                - <double> : Scale by a fixed number"                          << std::endl;
   std::cout << "                - auto    : Auto-scale to the full range"                     << std::endl;
   std::cout << "                - no      : No scaling"                                       << std::endl;
   std::cout << "                If the option is omitted then default scaling (depends on"    << std::endl;
@@ -151,7 +151,7 @@ parseScaleOption (int argc, char** argv, T& pcie)
   {
     try
     {
-      float factor = boost::lexical_cast<float> (scaling);
+      double factor = boost::lexical_cast<double> (scaling);
       pcie.setScalingMethod(pcie.SCALING_FIXED_FACTOR);
       pcie.setScalingFactor(factor);
     }

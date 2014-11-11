@@ -93,7 +93,7 @@ pcl::CPPFEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
           Eigen::Affine3f transform_mg = Eigen::Translation3f ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
 
           Eigen::Vector3f model_point_transformed = transform_mg * model_point;
-          float angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
+          double angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
           if (sin (angle) * model_point_transformed(2) < 0.0f)
             angle *= (-1);
           p.alpha_m = -angle;
@@ -101,7 +101,7 @@ pcl::CPPFEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
         else
         {
           PCL_ERROR ("[pcl::%s::computeFeature] Computing pair feature vector between points %lu and %lu went wrong.\n", getClassName ().c_str (), i, j);
-          p.f1 = p.f2 = p.f3 = p.f4 = p.f5 = p.f6 = p.f7 = p.f8 = p.f9 = p.f10 = p.alpha_m = std::numeric_limits<float>::quiet_NaN ();
+          p.f1 = p.f2 = p.f3 = p.f4 = p.f5 = p.f6 = p.f7 = p.f8 = p.f9 = p.f10 = p.alpha_m = std::numeric_limits<double>::quiet_NaN ();
           output.is_dense = false;
         }
       }
@@ -109,7 +109,7 @@ pcl::CPPFEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
       // in the following computations
       else
       {
-        p.f1 = p.f2 = p.f3 = p.f4 = p.f5 = p.f6 = p.f7 = p.f8 = p.f9 = p.f10 = p.alpha_m = std::numeric_limits<float>::quiet_NaN ();
+        p.f1 = p.f2 = p.f3 = p.f4 = p.f5 = p.f6 = p.f7 = p.f8 = p.f9 = p.f10 = p.alpha_m = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
       }
 

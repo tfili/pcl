@@ -479,21 +479,21 @@ TEST (PCL, TransformationEstimationPointToPlaneLLS)
   pcl::PointCloud<pcl::PointNormal>::Ptr src (new pcl::PointCloud<pcl::PointNormal>);
   src->height = 1;
   src->is_dense = true;
-  for (float x = -5.0f; x <= 5.0f; x += 0.5f)
-    for (float y = -5.0f; y <= 5.0f; y += 0.5f)
+  for (double x = -5.0f; x <= 5.0f; x += 0.5f)
+    for (double y = -5.0f; y <= 5.0f; y += 0.5f)
     {
       pcl::PointNormal p;
       p.x = x;
       p.y = y;
       p.z = 0.1f * powf (x, 2.0f) + 0.2f * p.x * p.y - 0.3f * y + 1.0f;
-      float & nx = p.normal[0];
-      float & ny = p.normal[1];
-      float & nz = p.normal[2];
+      double & nx = p.normal[0];
+      double & ny = p.normal[1];
+      double & nz = p.normal[2];
       nx = -0.2f * p.x - 0.2f;
       ny = 0.6f * p.y - 0.2f;
       nz = 1.0f;
 
-      float magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
+      double magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
       nx /= magnitude;
       ny /= magnitude;
       nz /= magnitude;
@@ -528,9 +528,9 @@ TEST (PCL, TransformationEstimationLM)
   CloudXYZPtr      target (new CloudXYZ ());
   pcl::transformPointCloud (*source, *target, T_ref);
 
-  // Test the float precision first
+  // Test the double precision first
   Eigen::Matrix4f T_LM_float;
-  const pcl::registration::TransformationEstimationLM<PointXYZ, PointXYZ, float> trans_est_lm_float;
+  const pcl::registration::TransformationEstimationLM<PointXYZ, PointXYZ, double> trans_est_lm_float;
   trans_est_lm_float.estimateRigidTransformation (*source, *target, T_LM_float);
 
   const Eigen::Quaternionf   R_LM_1_float (T_LM_float.topLeftCorner  <3, 3> ());
@@ -607,27 +607,27 @@ TEST (PCL, TransformationEstimationLM)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, TransformationEstimationPointToPlane)
 {
-  pcl::registration::TransformationEstimationPointToPlane<pcl::PointNormal, pcl::PointNormal, float> transform_estimator_float;
+  pcl::registration::TransformationEstimationPointToPlane<pcl::PointNormal, pcl::PointNormal, double> transform_estimator_float;
 
   // Create a test cloud
   pcl::PointCloud<pcl::PointNormal>::Ptr src (new pcl::PointCloud<pcl::PointNormal>);
   src->height = 1;
   src->is_dense = true;
-  for (float x = -5.0f; x <= 5.0f; x += 0.5f)
-    for (float y = -5.0f; y <= 5.0f; y += 0.5f)
+  for (double x = -5.0f; x <= 5.0f; x += 0.5f)
+    for (double y = -5.0f; y <= 5.0f; y += 0.5f)
     {
       pcl::PointNormal p;
       p.x = x;
       p.y = y;
       p.z = 0.1f * powf (x, 2.0f) + 0.2f * p.x * p.y - 0.3f * y + 1.0f;
-      float & nx = p.normal[0];
-      float & ny = p.normal[1];
-      float & nz = p.normal[2];
+      double & nx = p.normal[0];
+      double & ny = p.normal[1];
+      double & nz = p.normal[2];
       nx = -0.2f * p.x - 0.2f;
       ny = 0.6f * p.y - 0.2f;
       nz = 1.0f;
 
-      float magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
+      double magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
       nx /= magnitude;
       ny /= magnitude;
       nz /= magnitude;

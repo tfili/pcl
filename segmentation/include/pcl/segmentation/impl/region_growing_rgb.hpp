@@ -75,7 +75,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::~RegionGrowingRGB ()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT, typename NormalT> float
+template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::getPointColorThreshold () const
 {
   return (powf (color_p2p_threshold_, 0.5f));
@@ -83,13 +83,13 @@ pcl::RegionGrowingRGB<PointT, NormalT>::getPointColorThreshold () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT> void
-pcl::RegionGrowingRGB<PointT, NormalT>::setPointColorThreshold (float thresh)
+pcl::RegionGrowingRGB<PointT, NormalT>::setPointColorThreshold (double thresh)
 {
   color_p2p_threshold_ = thresh * thresh;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT, typename NormalT> float
+template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::getRegionColorThreshold () const
 {
   return (powf (color_r2r_threshold_, 0.5f));
@@ -97,13 +97,13 @@ pcl::RegionGrowingRGB<PointT, NormalT>::getRegionColorThreshold () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT> void
-pcl::RegionGrowingRGB<PointT, NormalT>::setRegionColorThreshold (float thresh)
+pcl::RegionGrowingRGB<PointT, NormalT>::setRegionColorThreshold (double thresh)
 {
   color_r2r_threshold_ = thresh * thresh;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT, typename NormalT> float
+template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::getDistanceThreshold () const
 {
   return (powf (distance_threshold_, 0.5f));
@@ -111,7 +111,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::getDistanceThreshold () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT> void
-pcl::RegionGrowingRGB<PointT, NormalT>::setDistanceThreshold (float thresh)
+pcl::RegionGrowingRGB<PointT, NormalT>::setDistanceThreshold (double thresh)
 {
   distance_threshold_ = thresh * thresh;
 }
@@ -273,7 +273,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::findPointNeighbours ()
 {
   int point_number = static_cast<int> (indices_->size ());
   std::vector<int> neighbours;
-  std::vector<float> distances;
+  std::vector<double> distances;
 
   point_neighbours_.resize (input_->points.size (), neighbours);
   point_distances_.resize (input_->points.size (), distances);
@@ -294,14 +294,14 @@ template <typename PointT, typename NormalT> void
 pcl::RegionGrowingRGB<PointT, NormalT>::findSegmentNeighbours ()
 {
   std::vector<int> neighbours;
-  std::vector<float> distances;
+  std::vector<double> distances;
   segment_neighbours_.resize (number_of_segments_, neighbours);
   segment_distances_.resize (number_of_segments_, distances);
 
   for (int i_seg = 0; i_seg < number_of_segments_; i_seg++)
   {
     std::vector<int> nghbrs;
-    std::vector<float> dist;
+    std::vector<double> dist;
     findRegionsKNN (i_seg, region_neighbour_number_, nghbrs, dist);
     segment_neighbours_[i_seg].swap (nghbrs);
     segment_distances_[i_seg].swap (dist);
@@ -310,10 +310,10 @@ pcl::RegionGrowingRGB<PointT, NormalT>::findSegmentNeighbours ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT,typename NormalT> void
-pcl::RegionGrowingRGB<PointT, NormalT>::findRegionsKNN (int index, int nghbr_number, std::vector<int>& nghbrs, std::vector<float>& dist)
+pcl::RegionGrowingRGB<PointT, NormalT>::findRegionsKNN (int index, int nghbr_number, std::vector<int>& nghbrs, std::vector<double>& dist)
 {
-  std::vector<float> distances;
-  float max_dist = std::numeric_limits<float>::max ();
+  std::vector<double> distances;
+  double max_dist = std::numeric_limits<double>::max ();
   distances.resize (clusters_.size (), max_dist);
 
   int number_of_points = num_pts_in_segment_[index];
@@ -339,7 +339,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::findRegionsKNN (int index, int nghbr_num
     }
   }// next point
 
-  std::priority_queue<std::pair<float, int> > segment_neighbours;
+  std::priority_queue<std::pair<double, int> > segment_neighbours;
   for (int i_seg = 0; i_seg < number_of_segments_; i_seg++)
   {
     if (distances[i_seg] < max_dist)
@@ -385,9 +385,9 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
   }
   for (int i_seg = 0; i_seg < number_of_segments_; i_seg++)
   {
-    segment_color[i_seg][0] = static_cast<unsigned int> (static_cast<float> (segment_color[i_seg][0]) / static_cast<float> (num_pts_in_segment_[i_seg]));
-    segment_color[i_seg][1] = static_cast<unsigned int> (static_cast<float> (segment_color[i_seg][1]) / static_cast<float> (num_pts_in_segment_[i_seg]));
-    segment_color[i_seg][2] = static_cast<unsigned int> (static_cast<float> (segment_color[i_seg][2]) / static_cast<float> (num_pts_in_segment_[i_seg]));
+    segment_color[i_seg][0] = static_cast<unsigned int> (static_cast<double> (segment_color[i_seg][0]) / static_cast<double> (num_pts_in_segment_[i_seg]));
+    segment_color[i_seg][1] = static_cast<unsigned int> (static_cast<double> (segment_color[i_seg][1]) / static_cast<double> (num_pts_in_segment_[i_seg]));
+    segment_color[i_seg][2] = static_cast<unsigned int> (static_cast<double> (segment_color[i_seg][2]) / static_cast<double> (num_pts_in_segment_[i_seg]));
   }
 
   // now it is time to find out if there are segments with a similar color
@@ -397,7 +397,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
 
   segment_labels_.resize (number_of_segments_, -1);
 
-  float dist_thresh = distance_threshold_;
+  double dist_thresh = distance_threshold_;
   int homogeneous_region_number = 0;
   int curr_homogeneous_region = 0;
   for (int i_seg = 0; i_seg < number_of_segments_; i_seg++)
@@ -425,7 +425,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
       }
       if ( segment_labels_[index] == -1 )
       {
-        float difference = calculateColorimetricalDifference (segment_color[i_seg], segment_color[index]);
+        double difference = calculateColorimetricalDifference (segment_color[i_seg], segment_color[index]);
         if (difference < color_r2r_threshold_)
         {
           segment_labels_[index] = curr_homogeneous_region;
@@ -457,7 +457,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
     counter[index] += 1;
   }
 
-  std::vector< std::vector< std::pair<float, int> > > region_neighbours;
+  std::vector< std::vector< std::pair<double, int> > > region_neighbours;
   findRegionNeighbours (region_neighbours, final_segments);
 
   int final_segment_number = homogeneous_region_number;
@@ -468,7 +468,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
       if ( region_neighbours[i_reg].empty () )
         continue;
       int nearest_neighbour = region_neighbours[i_reg][0].second;
-      if ( region_neighbours[i_reg][0].first == std::numeric_limits<float>::max () )
+      if ( region_neighbours[i_reg][0].first == std::numeric_limits<double>::max () )
         continue;
       int reg_index = segment_labels_[nearest_neighbour];
       int num_seg_in_reg = num_seg_in_homogeneous_region[i_reg];
@@ -490,7 +490,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
       {
         if ( segment_labels_[ region_neighbours[reg_index][i_nghbr].second ] == reg_index )
         {
-          region_neighbours[reg_index][i_nghbr].first = std::numeric_limits<float>::max ();
+          region_neighbours[reg_index][i_nghbr].first = std::numeric_limits<double>::max ();
           region_neighbours[reg_index][i_nghbr].second = 0;
         }
       }
@@ -499,7 +499,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
       {
         if ( segment_labels_[ region_neighbours[i_reg][i_nghbr].second ] != reg_index )
         {
-          std::pair<float, int> pair;
+          std::pair<double, int> pair;
           pair.first = region_neighbours[i_reg][i_nghbr].first;
           pair.second = region_neighbours[i_reg][i_nghbr].second;
           region_neighbours[reg_index].push_back (pair);
@@ -516,19 +516,19 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT, typename NormalT> float
+template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::calculateColorimetricalDifference (std::vector<unsigned int>& first_color, std::vector<unsigned int>& second_color) const
 {
-  float difference = 0.0f;
-  difference += float ((first_color[0] - second_color[0]) * (first_color[0] - second_color[0]));
-  difference += float ((first_color[1] - second_color[1]) * (first_color[1] - second_color[1]));
-  difference += float ((first_color[2] - second_color[2]) * (first_color[2] - second_color[2]));
+  double difference = 0.0f;
+  difference += double ((first_color[0] - second_color[0]) * (first_color[0] - second_color[0]));
+  difference += double ((first_color[1] - second_color[1]) * (first_color[1] - second_color[1]));
+  difference += double ((first_color[2] - second_color[2]) * (first_color[2] - second_color[2]));
   return (difference);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT> void
-pcl::RegionGrowingRGB<PointT, NormalT>::findRegionNeighbours (std::vector< std::vector< std::pair<float, int> > >& neighbours_out, std::vector< std::vector<int> >& regions_in)
+pcl::RegionGrowingRGB<PointT, NormalT>::findRegionNeighbours (std::vector< std::vector< std::pair<double, int> > >& neighbours_out, std::vector< std::vector<int> >& regions_in)
 {
   int region_number = static_cast<int> (regions_in.size ());
   neighbours_out.clear ();
@@ -542,11 +542,11 @@ pcl::RegionGrowingRGB<PointT, NormalT>::findRegionNeighbours (std::vector< std::
     {
       int curr_segment = regions_in[i_reg][i_seg];
       int nghbr_number = static_cast<int> (segment_neighbours_[curr_segment].size ());
-      std::pair<float, int> pair;
+      std::pair<double, int> pair;
       for (int i_nghbr = 0; i_nghbr < nghbr_number; i_nghbr++)
       {
         int segment_index = segment_neighbours_[curr_segment][i_nghbr];
-        if ( segment_distances_[curr_segment][i_nghbr] == std::numeric_limits<float>::max () )
+        if ( segment_distances_[curr_segment][i_nghbr] == std::numeric_limits<double>::max () )
           continue;
         if (segment_labels_[segment_index] != i_reg)
         {
@@ -624,35 +624,35 @@ pcl::RegionGrowingRGB<PointT, NormalT>::validatePoint (int initial_seed, int poi
   nghbr_color[0] = input_->points[nghbr].r;
   nghbr_color[1] = input_->points[nghbr].g;
   nghbr_color[2] = input_->points[nghbr].b;
-  float difference = calculateColorimetricalDifference (point_color, nghbr_color);
+  double difference = calculateColorimetricalDifference (point_color, nghbr_color);
   if (difference > color_p2p_threshold_)
     return (false);
 
-  float cosine_threshold = cosf (theta_threshold_);
+  double cosine_threshold = cosf (theta_threshold_);
 
   // check the angle between normals if needed
   if (normal_flag_)
   {
-    float data[4];
+    double data[4];
     data[0] = input_->points[point].data[0];
     data[1] = input_->points[point].data[1];
     data[2] = input_->points[point].data[2];
     data[3] = input_->points[point].data[3];
 
-    Eigen::Map<Eigen::Vector3f> initial_point (static_cast<float*> (data));
-    Eigen::Map<Eigen::Vector3f> initial_normal (static_cast<float*> (normals_->points[point].normal));
+    Eigen::Map<Eigen::Vector3f> initial_point (static_cast<double*> (data));
+    Eigen::Map<Eigen::Vector3f> initial_normal (static_cast<double*> (normals_->points[point].normal));
     if (smooth_mode_flag_ == true)
     {
-      Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<float*> (normals_->points[nghbr].normal));
-      float dot_product = fabsf (nghbr_normal.dot (initial_normal));
+      Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
+      double dot_product = fabsf (nghbr_normal.dot (initial_normal));
       if (dot_product < cosine_threshold)
         return (false);
     }
     else
     {
-      Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<float*> (normals_->points[nghbr].normal));
-      Eigen::Map<Eigen::Vector3f> initial_seed_normal (static_cast<float*> (normals_->points[initial_seed].normal));
-      float dot_product = fabsf (nghbr_normal.dot (initial_seed_normal));
+      Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
+      Eigen::Map<Eigen::Vector3f> initial_seed_normal (static_cast<double*> (normals_->points[initial_seed].normal));
+      double dot_product = fabsf (nghbr_normal.dot (initial_seed_normal));
       if (dot_product < cosine_threshold)
         return (false);
     }
@@ -665,20 +665,20 @@ pcl::RegionGrowingRGB<PointT, NormalT>::validatePoint (int initial_seed, int poi
   // check the residual if needed
   if (residual_flag_)
   {
-    float data_p[4];
+    double data_p[4];
     data_p[0] = input_->points[point].data[0];
     data_p[1] = input_->points[point].data[1];
     data_p[2] = input_->points[point].data[2];
     data_p[3] = input_->points[point].data[3];
-    float data_n[4];
+    double data_n[4];
     data_n[0] = input_->points[nghbr].data[0];
     data_n[1] = input_->points[nghbr].data[1];
     data_n[2] = input_->points[nghbr].data[2];
     data_n[3] = input_->points[nghbr].data[3];
-    Eigen::Map<Eigen::Vector3f> nghbr_point (static_cast<float*> (data_n));
-    Eigen::Map<Eigen::Vector3f> initial_point (static_cast<float*> (data_p));
-    Eigen::Map<Eigen::Vector3f> initial_normal (static_cast<float*> (normals_->points[point].normal));
-    float residual = fabsf (initial_normal.dot (initial_point - nghbr_point));
+    Eigen::Map<Eigen::Vector3f> nghbr_point (static_cast<double*> (data_n));
+    Eigen::Map<Eigen::Vector3f> initial_point (static_cast<double*> (data_p));
+    Eigen::Map<Eigen::Vector3f> initial_normal (static_cast<double*> (normals_->points[point].normal));
+    double residual = fabsf (initial_normal.dot (initial_point - nghbr_point));
     if (residual > residual_threshold_)
       is_a_seed = false;
   }

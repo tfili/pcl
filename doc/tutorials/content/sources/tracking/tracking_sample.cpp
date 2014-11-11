@@ -66,7 +66,7 @@ void filterPassThrough (const CloudConstPtr &cloud, Cloud &result)
 void gridSampleApprox (const CloudConstPtr &cloud, Cloud &result, double leaf_size)
 {
   pcl::ApproximateVoxelGrid<pcl::PointXYZRGBA> grid;
-  grid.setLeafSize (static_cast<float> (leaf_size), static_cast<float> (leaf_size), static_cast<float> (leaf_size));
+  grid.setLeafSize (static_cast<double> (leaf_size), static_cast<double> (leaf_size), static_cast<double> (leaf_size));
   grid.setInputCloud (cloud);
   grid.filter (result);
 }

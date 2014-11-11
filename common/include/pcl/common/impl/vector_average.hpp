@@ -84,7 +84,7 @@ namespace pcl
                                                     Eigen::Matrix<real, dimension, 1>& eigen_vector2, Eigen::Matrix<real, dimension, 1>& eigen_vector3) const
   {
     // The following step is necessary for cases where the values in the covariance matrix are small
-    // In this case float accuracy is nor enough to calculate the eigenvalues and eigenvectors.
+    // In this case double accuracy is nor enough to calculate the eigenvalues and eigenvectors.
     //Eigen::Matrix<double, dimension, dimension> tmp_covariance = covariance_.template cast<double>();
     //Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, dimension, dimension> > ei_symm(tmp_covariance);
     //eigen_values = ei_symm.eigenvalues().template cast<real>();
@@ -107,7 +107,7 @@ namespace pcl
   inline void VectorAverage<real, dimension>::doPCA(Eigen::Matrix<real, dimension, 1>& eigen_values) const
   {
     // The following step is necessary for cases where the values in the covariance matrix are small
-    // In this case float accuracy is nor enough to calculate the eigenvalues and eigenvectors.
+    // In this case double accuracy is nor enough to calculate the eigenvalues and eigenvectors.
     //Eigen::Matrix<double, dimension, dimension> tmp_covariance = covariance_.template cast<double>();
     //Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, dimension, dimension> > ei_symm(tmp_covariance, false);
     //eigen_values = ei_symm.eigenvalues().template cast<real>();
@@ -120,7 +120,7 @@ namespace pcl
   inline void VectorAverage<real, dimension>::getEigenVector1(Eigen::Matrix<real, dimension, 1>& eigen_vector1) const
   {
     // The following step is necessary for cases where the values in the covariance matrix are small
-    // In this case float accuracy is nor enough to calculate the eigenvalues and eigenvectors.
+    // In this case double accuracy is nor enough to calculate the eigenvalues and eigenvectors.
     //Eigen::Matrix<double, dimension, dimension> tmp_covariance = covariance_.template cast<double>();
     //Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, dimension, dimension> > ei_symm(tmp_covariance);
     //eigen_values = ei_symm.eigenvalues().template cast<real>();
@@ -137,30 +137,30 @@ namespace pcl
 
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Special cases for real=float & dimension=3 -> Partial specialization does not work with class templates. :( //
+  // Special cases for real=double & dimension=3 -> Partial specialization does not work with class templates. :( //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////
-  // float //
+  // double //
   ///////////
   template <>
-  inline void VectorAverage<float, 3>::doPCA(Eigen::Matrix<float, 3, 1>& eigen_values, Eigen::Matrix<float, 3, 1>& eigen_vector1,
-                                            Eigen::Matrix<float, 3, 1>& eigen_vector2, Eigen::Matrix<float, 3, 1>& eigen_vector3) const
+  inline void VectorAverage<double, 3>::doPCA(Eigen::Matrix<double, 3, 1>& eigen_values, Eigen::Matrix<double, 3, 1>& eigen_vector1,
+                                            Eigen::Matrix<double, 3, 1>& eigen_vector2, Eigen::Matrix<double, 3, 1>& eigen_vector3) const
   {
     //cout << "Using specialized 3x3 version of doPCA!\n";
-    Eigen::Matrix<float, 3, 3> eigen_vectors;
+    Eigen::Matrix<double, 3, 3> eigen_vectors;
     eigen33(covariance_, eigen_vectors, eigen_values);
     eigen_vector1 = eigen_vectors.col(0);
     eigen_vector2 = eigen_vectors.col(1);
     eigen_vector3 = eigen_vectors.col(2);
   }
   template <>
-  inline void VectorAverage<float, 3>::doPCA(Eigen::Matrix<float, 3, 1>& eigen_values) const
+  inline void VectorAverage<double, 3>::doPCA(Eigen::Matrix<double, 3, 1>& eigen_values) const
   {
     //cout << "Using specialized 3x3 version of doPCA!\n";
     computeRoots (covariance_, eigen_values);
   }
   template <>
-  inline void VectorAverage<float, 3>::getEigenVector1(Eigen::Matrix<float, 3, 1>& eigen_vector1) const
+  inline void VectorAverage<double, 3>::getEigenVector1(Eigen::Matrix<double, 3, 1>& eigen_vector1) const
   {
     //cout << "Using specialized 3x3 version of doPCA!\n";
     Eigen::Vector3f::Scalar eigen_value;

@@ -57,7 +57,7 @@ public:
   /// @param mean the number of points to use for mean distance estimation.
   /// @param threshold the standard deviation multiplier threshold
   DenoiseCommand (SelectionPtr selection_ptr, CloudPtr cloud_ptr,
-                  float mean, float threshold)
+                  double mean, double threshold)
     : selection_ptr_(selection_ptr), cloud_ptr_(cloud_ptr), mean_(mean),
       threshold_(threshold), removed_indices_(cloud_ptr)
   {
@@ -104,10 +104,10 @@ private:
   CloudPtr cloud_ptr_;
 
   /// The number of points to use for mean distance estimation.
-  float mean_;
+  double mean_;
 
   /// The standard deviation multiplier threshold
-  float threshold_;
+  double threshold_;
 
   /// A copy buffer which backs up the noisy point removed after denoising.
   CopyBuffer removed_points_;

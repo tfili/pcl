@@ -108,20 +108,20 @@ namespace pcl
         * \param[in] sigma_color the new value to be set
         */
       inline void
-      setSigmaColor (const float &sigma_color) { sigma_color_ = sigma_color; }
+      setSigmaColor (const double &sigma_color) { sigma_color_ = sigma_color; }
 
       /** \brief Returns the current sigma color value */
-      inline float
+      inline double
       getSigmaColor () const { return (sigma_color_); }
 
       /** \brief Method that sets the sigma depth parameter
         * \param[in] sigma_depth the new value to be set
         */
       inline void
-      setSigmaDepth (const float &sigma_depth) { sigma_depth_ = sigma_depth; }
+      setSigmaDepth (const double &sigma_depth) { sigma_depth_ = sigma_depth; }
 
       /** \brief Returns the current sigma depth value */
-      inline float
+      inline double
       getSigmaDepth () const { return (sigma_depth_); }
 
       /** \brief Method that sets the projection matrix to be used when unprojecting the points in the depth image
@@ -153,7 +153,7 @@ namespace pcl
 
     private:
       int window_size_;
-      float sigma_color_, sigma_depth_;
+      double sigma_color_, sigma_depth_;
       Eigen::Matrix3f projection_matrix_, unprojection_matrix_;
 
     public:

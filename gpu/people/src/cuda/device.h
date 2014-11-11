@@ -48,17 +48,17 @@ namespace pcl
   namespace device
   {
     template<typename Point> 
-    __device__ __forceinline__ float sqnorm(const Point& p1, const Point& p2) 
+    __device__ __forceinline__ double sqnorm(const Point& p1, const Point& p2) 
     { 
-        float dx = (p1.x - p2.x);
-        float dy = (p1.y - p2.y);
-        float dz = (p1.z - p2.z);
+        double dx = (p1.x - p2.x);
+        double dy = (p1.y - p2.y);
+        double dz = (p1.z - p2.z);
         return dx * dx + dy * dy + dz * dz; 
     }
 
     __device__ __forceinline__ float3 computePoint(unsigned short depth, int x, int y, const Intr& intr)
     {                  
-       float z = depth * 0.001f; // mm -> meters
+       double z = depth * 0.001f; // mm -> meters
        float3 result;
        
        result.x = z * (x - intr.cx) / intr.fx;

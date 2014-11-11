@@ -96,13 +96,13 @@ namespace pcl
       
       /** \brief Set the tolerance in meters for difference in depth values between neighboring points. */
       inline void
-      setDepthDisconThreshold (const float th)
+      setDepthDisconThreshold (const double th)
       {
         th_depth_discon_ = th;
       }
 
       /** \brief Get the tolerance in meters for difference in depth values between neighboring points. */
-      inline float
+      inline double
       getDepthDisconThreshold () const
       {
         return (th_depth_discon_);
@@ -170,7 +170,7 @@ namespace pcl
         * (The value is set for 1 meter and is adapted with respect to depth value linearly. 
         * (e.g. 2.0*th_depth_discon_ in 2 meter depth)) 
         */
-      float th_depth_discon_;
+      double th_depth_discon_;
 
       /** \brief The max search distance for deciding occluding and occluded edges */
       int max_search_neighbors_;
@@ -225,13 +225,13 @@ namespace pcl
       
       /** \brief Set the low threshold value for RGB Canny edge detection */
       inline void
-      setRGBCannyLowThreshold (const float th)
+      setRGBCannyLowThreshold (const double th)
       {
         th_rgb_canny_low_ = th;
       }
 
       /** \brief Get the low threshold value for RGB Canny edge detection */
-      inline float
+      inline double
       getRGBCannyLowThreshold () const
       {
         return (th_rgb_canny_low_);
@@ -239,13 +239,13 @@ namespace pcl
 
       /** \brief Set the high threshold value for RGB Canny edge detection */
       inline void
-      setRGBCannyHighThreshold (const float th)
+      setRGBCannyHighThreshold (const double th)
       {
         th_rgb_canny_high_ = th;
       }
 
       /** \brief Get the high threshold value for RGB Canny edge detection */
-      inline float
+      inline double
       getRGBCannyHighThreshold () const
       {
         return (th_rgb_canny_high_);
@@ -259,10 +259,10 @@ namespace pcl
       extractEdges (pcl::PointCloud<PointLT>& labels) const;
 
       /** \brief The low threshold value for RGB Canny edge detection (default: 40.0) */
-      float th_rgb_canny_low_;
+      double th_rgb_canny_low_;
 
       /** \brief The high threshold value for RGB Canny edge detection (default: 100.0) */
-      float th_rgb_canny_high_;
+      double th_rgb_canny_high_;
   };
 
   template <typename PointT, typename PointNT, typename PointLT>
@@ -332,13 +332,13 @@ namespace pcl
 
       /** \brief Set the low threshold value for high curvature Canny edge detection */
       inline void
-      setHCCannyLowThreshold (const float th)
+      setHCCannyLowThreshold (const double th)
       {
         th_hc_canny_low_ = th;
       }
 
       /** \brief Get the low threshold value for high curvature Canny edge detection */
-      inline float
+      inline double
       getHCCannyLowThreshold () const
       {
         return (th_hc_canny_low_);
@@ -346,13 +346,13 @@ namespace pcl
 
       /** \brief Set the high threshold value for high curvature Canny edge detection */
       inline void
-      setHCCannyHighThreshold (const float th)
+      setHCCannyHighThreshold (const double th)
       {
         th_hc_canny_high_ = th;
       }
 
       /** \brief Get the high threshold value for high curvature Canny edge detection */
-      inline float
+      inline double
       getHCCannyHighThreshold () const
       {
         return (th_hc_canny_high_);
@@ -369,10 +369,10 @@ namespace pcl
       PointCloudNConstPtr normals_;
 
       /** \brief The low threshold value for high curvature Canny edge detection (default: 0.4) */
-      float th_hc_canny_low_;
+      double th_hc_canny_low_;
 
       /** \brief The high threshold value for high curvature Canny edge detection (default: 1.1) */
-      float th_hc_canny_high_;
+      double th_hc_canny_high_;
   };
 
   template <typename PointT, typename PointNT, typename PointLT>

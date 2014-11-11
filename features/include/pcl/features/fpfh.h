@@ -97,7 +97,7 @@ namespace pcl
       FPFHEstimation () : 
         nr_bins_f1_ (11), nr_bins_f2_ (11), nr_bins_f3_ (11), 
         hist_f1_ (), hist_f2_ (), hist_f3_ (), fpfh_histogram_ (),
-        d_pi_ (1.0f / (2.0f * static_cast<float> (M_PI)))
+        d_pi_ (1.0f / (2.0f * static_cast<double> (M_PI)))
       {
         feature_name_ = "FPFHEstimation";
       };
@@ -117,7 +117,7 @@ namespace pcl
         */
       bool 
       computePairFeatures (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, 
-                           int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4);
+                           int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4);
 
       /** \brief Estimate the SPFH (Simple Point Feature Histograms) individual signatures of the three angular
         * (f1, f2, f3) features for a given point based on its spatial neighborhood of 3D points with normals
@@ -150,7 +150,7 @@ namespace pcl
                                 const Eigen::MatrixXf &hist_f2, 
                                 const Eigen::MatrixXf &hist_f3, 
                                 const std::vector<int> &indices, 
-                                const std::vector<float> &dists, 
+                                const std::vector<double> &dists, 
                                 Eigen::VectorXf &fpfh_histogram);
 
       /** \brief Set the number of subdivisions for each angular feature interval.
@@ -215,7 +215,7 @@ namespace pcl
       Eigen::VectorXf fpfh_histogram_;
 
       /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-      float d_pi_; 
+      double d_pi_; 
   };
 }
 

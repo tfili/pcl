@@ -51,10 +51,10 @@ PointCloud<PointXYZ> cloud, cloud_big;
 void
 init ()
 {
-  float resolution = 0.1f;
-  for (float z = -0.5f; z <= 0.5f; z += resolution)
-    for (float y = -0.5f; y <= 0.5f; y += resolution)
-      for (float x = -0.5f; x <= 0.5f; x += resolution)
+  double resolution = 0.1f;
+  for (double z = -0.5f; z <= 0.5f; z += resolution)
+    for (double y = -0.5f; y <= 0.5f; y += resolution)
+      for (double x = -0.5f; x <= 0.5f; x += resolution)
         cloud.points.push_back (PointXYZ (x, y, z));
   cloud.width = static_cast<uint32_t> (cloud.points.size ());
   cloud.height = 1;
@@ -64,9 +64,9 @@ init ()
   srand (static_cast<unsigned int> (time (NULL)));
   // Randomly create a new point cloud
   for (size_t i = 0; i < cloud_big.width * cloud_big.height; ++i)
-    cloud_big.points.push_back (PointXYZ (static_cast<float> (1024 * rand () / (RAND_MAX + 1.0)), 
-                                          static_cast<float> (1024 * rand () / (RAND_MAX + 1.0)),
-                                          static_cast<float> (1024 * rand () / (RAND_MAX + 1.0))));
+    cloud_big.points.push_back (PointXYZ (static_cast<double> (1024 * rand () / (RAND_MAX + 1.0)), 
+                                          static_cast<double> (1024 * rand () / (RAND_MAX + 1.0)),
+                                          static_cast<double> (1024 * rand () / (RAND_MAX + 1.0))));
 }
 
 /* Test for KdTree nearestKSearch */TEST (PCL, KdTree_nearestKSearch)
@@ -75,15 +75,15 @@ init ()
   kdtree->setInputCloud (cloud.makeShared ());
   PointXYZ test_point (0.01f, 0.01f, 0.01f);
   unsigned int no_of_neighbors = 20;
-  multimap<float, int> sorted_brute_force_result;
+  multimap<double, int> sorted_brute_force_result;
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {
-    float distance = euclideanDistance (cloud.points[i], test_point);
+    double distance = euclideanDistance (cloud.points[i], test_point);
     sorted_brute_force_result.insert (make_pair (distance, static_cast<int> (i)));
   }
-  float max_dist = 0.0f;
+  double max_dist = 0.0f;
   unsigned int counter = 0;
-  for (multimap<float, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end ()
+  for (multimap<double, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end ()
       && counter < no_of_neighbors; ++it)
   {
     max_dist = max (max_dist, it->first);
@@ -92,7 +92,7 @@ init ()
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   kdtree->nearestKSearch (test_point, no_of_neighbors, k_indices, k_distances);
@@ -136,18 +136,18 @@ TEST (PCL, KdTree_differentPointT)
 
   copyPointCloud (cloud_big, cloud_rgb);
 
-  std::vector< std::vector< float > > dists;
+  std::vector< std::vector< double > > dists;
   std::vector< std::vector< int > > indices;
   kdtree->nearestKSearchT (cloud_rgb, std::vector<int> (),no_of_neighbors,indices,dists);
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   vector<int> k_indices_t;
   k_indices_t.resize (no_of_neighbors);
-  vector<float> k_distances_t;
+  vector<double> k_distances_t;
   k_distances_t.resize (no_of_neighbors);
 
   for (size_t i = 0; i < cloud_rgb.points.size (); ++i)
@@ -174,13 +174,13 @@ TEST (PCL, KdTree_multipointKnnSearch)
   //kdtree->initSearchDS ();
   kdtree->setInputCloud (cloud_big.makeShared ());
 
-  std::vector< std::vector< float > > dists;
+  std::vector< std::vector< double > > dists;
   std::vector< std::vector< int > > indices;
   kdtree->nearestKSearch (cloud_big, std::vector<int> (),no_of_neighbors,indices,dists);
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   for (size_t i = 0; i < cloud_big.points.size (); ++i)

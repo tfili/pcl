@@ -85,13 +85,13 @@ printHelp (int, char **argv)
 }
 
 void
-display_score_image (const float* score_buffer)
+display_score_image (const double* score_buffer)
 {
   int npixels = range_likelihood_->getWidth () * range_likelihood_->getHeight ();
   uint8_t* score_img = new uint8_t[npixels * 3];
 
-  float min_score = score_buffer[0];
-  float max_score = score_buffer[0];
+  double min_score = score_buffer[0];
+  double max_score = score_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (score_buffer[i] < min_score) min_score = score_buffer[i];
@@ -99,7 +99,7 @@ display_score_image (const float* score_buffer)
   }
   for (int i=0; i < npixels; i++)
   {
-    float d = (score_buffer[i]-min_score)/(max_score-min_score);
+    double d = (score_buffer[i]-min_score)/(max_score-min_score);
     score_img[3*i+0] = 0;
     score_img[3*i+1] = static_cast<unsigned char> (d*255);
     score_img[3*i+2] = 0;
@@ -110,13 +110,13 @@ display_score_image (const float* score_buffer)
   delete [] score_img;
 }
 
-void display_depth_image (const float* depth_buffer, int width, int height)
+void display_depth_image (const double* depth_buffer, int width, int height)
 {
   int npixels = width * height;
   uint8_t* depth_img = new uint8_t[npixels * 3];
 
-  float min_depth = depth_buffer[0];
-  float max_depth = depth_buffer[0];
+  double min_depth = depth_buffer[0];
+  double max_depth = depth_buffer[0];
   for (int i = 1; i < npixels; ++i)
   {
     if (depth_buffer[i] < min_depth) min_depth = depth_buffer[i];
@@ -125,12 +125,12 @@ void display_depth_image (const float* depth_buffer, int width, int height)
 
   for (int i = 0; i < npixels; ++i)
   {
-    float zn = 0.7f;
-    float zf = 20.0f;
-    float d = depth_buffer[i];
-    float z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
-    float b = 0.075f;
-    float f = 580.0f;
+    double zn = 0.7f;
+    double zf = 20.0f;
+    double d = depth_buffer[i];
+    double z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
+    double b = 0.075f;
+    double f = 580.0f;
     int kd = static_cast<int>(1090 - b*f/z*8);
     if (kd < 0) kd = 0;
     else if (kd > 2047) kd = 2047;
@@ -187,8 +187,8 @@ void display_depth_image (const float* depth_buffer, int width, int height)
 void
 display ()
 {
-  float* reference = new float[range_likelihood_->getRowHeight () * range_likelihood_->getColWidth ()];
-  const float* depth_buffer = range_likelihood_->getDepthBuffer ();
+  double* reference = new double[range_likelihood_->getRowHeight () * range_likelihood_->getColWidth ()];
+  const double* depth_buffer = range_likelihood_->getDepthBuffer ();
   // Copy one image from our last as a reference.
   for (int i = 0, n = 0; i < range_likelihood_->getRowHeight (); ++i)
   {
@@ -199,8 +199,8 @@ display ()
     }
   }
 
-  float* reference_vis = new float[range_likelihood_visualization_->getRowHeight () * range_likelihood_visualization_->getColWidth ()];
-  const float* depth_buffer_vis = range_likelihood_visualization_->getDepthBuffer ();
+  double* reference_vis = new double[range_likelihood_visualization_->getRowHeight () * range_likelihood_visualization_->getColWidth ()];
+  const double* depth_buffer_vis = range_likelihood_visualization_->getDepthBuffer ();
   // Copy one image from our last as a reference.
   for (int i = 0, n = 0; i < range_likelihood_visualization_->getRowHeight (); ++i)
   {
@@ -211,7 +211,7 @@ display ()
   }
 
   std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > poses;
-  std::vector<float> scores;
+  std::vector<double> scores;
 
   // Render a single pose for visualization
   poses.clear ();
@@ -402,7 +402,7 @@ main (int argc, char** argv)
   
   for (int i = 0; i < 2048; ++i)
   {
-    float v = static_cast<float> (i / 2048.0);
+    double v = static_cast<double> (i / 2048.0);
     v = powf(v, 3)* 6;
     t_gamma[i] = static_cast<uint16_t> (v*6*256);
   }  

@@ -88,12 +88,12 @@ pcl::io::PointCloudImageExtractorFromNormalField<PointT>::extractImpl (const Poi
 
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {
-    float x;
-    float y;
-    float z;
-    pcl::getFieldValue<PointT, float> (cloud.points[i], offset_x, x);
-    pcl::getFieldValue<PointT, float> (cloud.points[i], offset_y, y);
-    pcl::getFieldValue<PointT, float> (cloud.points[i], offset_z, z);
+    double x;
+    double y;
+    double z;
+    pcl::getFieldValue<PointT, double> (cloud.points[i], offset_x, x);
+    pcl::getFieldValue<PointT, double> (cloud.points[i], offset_y, y);
+    pcl::getFieldValue<PointT, double> (cloud.points[i], offset_z, z);
     img.data[i * 3 + 0] = static_cast<unsigned char>((x + 1.0) * 127);
     img.data[i * 3 + 1] = static_cast<unsigned char>((y + 1.0) * 127);
     img.data[i * 3 + 2] = static_cast<unsigned char>((z + 1.0) * 127);
@@ -256,16 +256,16 @@ pcl::io::PointCloudImageExtractorWithScaling<PointT>::extractImpl (const PointCl
   img.data.resize (img.step * img.height);
   unsigned short* data = reinterpret_cast<unsigned short*>(&img.data[0]);
 
-  float scaling_factor = scaling_factor_;
-  float data_min = 0.0f;
+  double scaling_factor = scaling_factor_;
+  double data_min = 0.0f;
   if (scaling_method_ == SCALING_FULL_RANGE)
   {
-    float min = std::numeric_limits<float>::infinity();
-    float max = -std::numeric_limits<float>::infinity();
+    double min = std::numeric_limits<double>::infinity();
+    double max = -std::numeric_limits<double>::infinity();
     for (size_t i = 0; i < cloud.points.size (); ++i)
     {
-      float val;
-      pcl::getFieldValue<PointT, float> (cloud.points[i], offset, val);
+      double val;
+      pcl::getFieldValue<PointT, double> (cloud.points[i], offset, val);
       if (val < min)
         min = val;
       if (val > max)
@@ -277,8 +277,8 @@ pcl::io::PointCloudImageExtractorWithScaling<PointT>::extractImpl (const PointCl
 
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {
-    float val;
-    pcl::getFieldValue<PointT, float> (cloud.points[i], offset, val);
+    double val;
+    pcl::getFieldValue<PointT, double> (cloud.points[i], offset, val);
     if (scaling_method_ == SCALING_NO)
     {
       data[i] = val;

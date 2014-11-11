@@ -62,7 +62,7 @@ namespace pcl
       struct PCL_EXPORTS Parameters
       {
         Parameters() : max_correspondence_distance_error(0.2f) {}
-        float max_correspondence_distance_error;  // As a fraction
+        double max_correspondence_distance_error;  // As a fraction
       };
 
       //! A result of the pose estimation process
@@ -75,7 +75,7 @@ namespace pcl
         {}
 
         Eigen::Affine3f transformation;   //!< The estimated transformation between the two coordinate systems
-        float score;                         //!< An estimate in [0,1], how good the estimated pose is 
+        double score;                         //!< An estimate in [0,1], how good the estimated pose is 
         std::vector<int> correspondence_indices;  //!< The indices of the used correspondences
 
         struct IsBetter 

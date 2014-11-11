@@ -17,7 +17,7 @@ namespace pcl
 
     ::pcl::PCLHeader header;
 
-    std::vector<float> values;
+    std::vector<double> values;
 
   public:
     typedef boost::shared_ptr< ::pcl::ModelCoefficients> Ptr;

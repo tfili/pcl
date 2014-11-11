@@ -51,7 +51,7 @@ namespace pcl
         typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
         typedef typename pcl::PointCloud<PointInT>::ConstPtr ConstPointInTPtr;
 
-        typedef Distance<float> DistT;
+        typedef Distance<double> DistT;
         typedef Model<PointInT> ModelT;
 
         /** \brief Directory where the trained structure will be saved */
@@ -75,7 +75,7 @@ namespace pcl
         int ICP_iterations_;
 
         bool noisify_;
-        float noise_;
+        double noise_;
 
         class flann_model
         {
@@ -83,7 +83,7 @@ namespace pcl
           ModelT model;
           int view_id;
           int descriptor_id;
-          std::vector<float> descr;
+          std::vector<double> descr;
 
           bool
           operator< (const flann_model &other) const
@@ -126,11 +126,11 @@ namespace pcl
 
         };
 
-        flann::Matrix<float> flann_data_;
+        flann::Matrix<double> flann_data_;
         flann::Index<DistT> * flann_index_;
         std::vector<flann_model> flann_models_;
 
-        std::vector<flann::Matrix<float> > single_categories_data_;
+        std::vector<flann::Matrix<double> > single_categories_data_;
         std::vector<flann::Index<DistT> *> single_categories_index_;
         std::vector<boost::shared_ptr<std::vector<int> > > single_categories_pointers_to_models_;
         std::map<std::string, int> category_to_vectors_indices_;
@@ -151,12 +151,12 @@ namespace pcl
         loadFeaturesAndCreateFLANN ();
 
         inline void
-        convertToFLANN (const std::vector<flann_model> &models, flann::Matrix<float> &data)
+        convertToFLANN (const std::vector<flann_model> &models, flann::Matrix<double> &data)
         {
           data.rows = models.size ();
           data.cols = models[0].descr.size (); // number of histogram bins
 
-          flann::Matrix<float> flann_data (new float[models.size () * models[0].descr.size ()], models.size (), models[0].descr.size ());
+          flann::Matrix<double> flann_data (new double[models.size () * models[0].descr.size ()], models.size (), models[0].descr.size ());
 
           for (size_t i = 0; i < data.rows; ++i)
             for (size_t j = 0; j < data.cols; ++j)
@@ -168,12 +168,12 @@ namespace pcl
         }
 
         inline void
-        convertToFLANN (const std::vector<flann_model> &models, boost::shared_ptr<std::vector<int> > & indices, flann::Matrix<float> &data)
+        convertToFLANN (const std::vector<flann_model> &models, boost::shared_ptr<std::vector<int> > & indices, flann::Matrix<double> &data)
         {
           data.rows = indices->size ();
           data.cols = models[0].descr.size (); // number of histogram bins
 
-          flann::Matrix<float> flann_data(new float[indices->size () * models[0].descr.size ()],indices->size(),models[0].descr.size ());
+          flann::Matrix<double> flann_data(new double[indices->size () * models[0].descr.size ()],indices->size(),models[0].descr.size ());
 
           for (size_t i = 0; i < data.rows; ++i)
             for (size_t j = 0; j < data.cols; ++j)
@@ -185,7 +185,7 @@ namespace pcl
         }
 
         void
-        nearestKSearch (flann::Index<DistT> * index, const flann_model &model, int k, flann::Matrix<int> &indices, flann::Matrix<float> &distances);
+        nearestKSearch (flann::Index<DistT> * index, const flann_model &model, int k, flann::Matrix<int> &indices, flann::Matrix<double> &distances);
 
         void
         getPose (ModelT & model, int view_id, Eigen::Matrix4f & pose_matrix);
@@ -204,7 +204,7 @@ namespace pcl
         boost::shared_ptr<std::vector<ModelT> > models_;
         boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms_;
 
-        std::vector<float> descriptor_distances_;
+        std::vector<double> descriptor_distances_;
 
       public:
 
@@ -221,7 +221,7 @@ namespace pcl
         }
 
         void
-        getDescriptorDistances (std::vector<float> & ds)
+        getDescriptorDistances (std::vector<double> & ds)
         {
           ds = descriptor_distances_;
         }
@@ -244,7 +244,7 @@ namespace pcl
         }
 
         void
-        setNoise (float n)
+        setNoise (double n)
         {
           noisify_ = true;
           noise_ = n;

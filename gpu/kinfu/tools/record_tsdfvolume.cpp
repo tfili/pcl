@@ -58,7 +58,7 @@ using namespace std;
 namespace pc = pcl::console;
 
 typedef pcl::PointXYZ    PointT;
-typedef float            VoxelT;
+typedef double            VoxelT;
 typedef short            WeightT;
 
 string cloud_file  = "cloud.pcd";
@@ -92,8 +92,8 @@ public:
     pcl::device::initVolume (device_volume_);
 
     // truncation distance
-    Eigen::Vector3f voxel_size = volume_size.array() / volume_res.array().cast<float>();
-    trunc_dist_ = max ((float)min_trunc_dist, 2.1f * max (voxel_size[0], max (voxel_size[1], voxel_size[2])));
+    Eigen::Vector3f voxel_size = volume_size.array() / volume_res.array().cast<double>();
+    trunc_dist_ = max ((double)min_trunc_dist, 2.1f * max (voxel_size[0], max (voxel_size[1], voxel_size[2])));
   };
 
   /** \brief Creates the TSDF volume on the GPU
@@ -127,7 +127,7 @@ private:
 
   Eigen::Vector3f volume_size_;
 
-  float trunc_dist_;
+  double trunc_dist_;
 
 };
 
@@ -137,13 +137,13 @@ DeviceVolume::createFromDepth (const pcl::device::PtrStepSz<const unsigned short
 {
   using namespace pcl;
 
-  typedef Eigen::Matrix<float, 3, 3, Eigen::RowMajor> Matrix3frm;
+  typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> Matrix3frm;
 
   const int rows = 480;
   const int cols = 640;
 
   // scale depth values
-  gpu::DeviceArray2D<float> device_depth_scaled;
+  gpu::DeviceArray2D<double> device_depth_scaled;
   device_depth_scaled.create (rows, cols);
 
   // upload depth map on GPU
@@ -185,7 +185,7 @@ DeviceVolume::getVolume (pcl::TSDFVolume<VoxelT, WeightT>::Ptr &volume)
   for(int i = 0; i < (int) volume->size(); ++i)
   {
     short2 *elem = (short2*)&volume_vec[i];
-    volume_vec[i]  = (float)(elem->x)/pcl::device::DIVISOR;
+    volume_vec[i]  = (double)(elem->x)/pcl::device::DIVISOR;
     weights_vec[i] = (short)(elem->y);
   }
 
@@ -248,8 +248,8 @@ convertDepthRGBToCloud (const pcl::device::PtrStepSz<const unsigned short> &dept
     // iterate over row and store values
     for (int x = 0; x < depth.cols; ++x)
     {
-      float u = (x - intr.cx) / intr.fx;
-      float v = (y - intr.cy) / intr.fy;
+      double u = (x - intr.cx) / intr.fx;
+      double v = (y - intr.cy) / intr.fy;
 
       PointT &point = cloud->at (x, y);
 
@@ -261,7 +261,7 @@ convertDepthRGBToCloud (const pcl::device::PtrStepSz<const unsigned short> &dept
       uint8_t g = *(rgb24_row_ptr + 1);
       uint8_t b = *(rgb24_row_ptr + 2);
       uint32_t rgb = ((uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b);
-      point.rgb = *reinterpret_cast<float*>(&rgb);
+      point.rgb = *reinterpret_cast<double*>(&rgb);
 
       point.r = *((const char*)rgb24.data + y*rgb24.step + x*rgb24.elem_size);
       point.g = *((const char*)rgb24.data + y*rgb24.step + x*rgb24.elem_size + 1);
@@ -295,7 +295,7 @@ captureCloud (pcl::gpu::CaptureOpenNI &capture,
   }
 
   // get intrinsics from capture
-  float f = capture.depth_focal_length_VGA;
+  double f = capture.depth_focal_length_VGA;
   intr = pcl::device::Intr (f, f, depth.cols/2, depth.rows/2);
 
   // generate point cloud

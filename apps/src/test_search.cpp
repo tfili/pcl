@@ -23,7 +23,7 @@ main (int argc, char ** argv)
   if (use_pcd_file)
     pcl::console::parse (argc, argv, "-pcd", pcd_path);
 
-  float radius = -1;
+  double radius = -1;
   if (pcl::console::find_switch (argc, argv, "-radius"))
     pcl::console::parse (argc, argv, "-radius", radius);
 
@@ -46,9 +46,9 @@ main (int argc, char ** argv)
     cloud->resize (1000000);
     for (unsigned idx = 0; idx < cloud->size (); ++idx)
     {
-      (*cloud)[idx].x = static_cast<float> (rand () / RAND_MAX);
-      (*cloud)[idx].y = static_cast<float> (rand () / RAND_MAX);
-      (*cloud)[idx].z = static_cast<float> (rand () / RAND_MAX);
+      (*cloud)[idx].x = static_cast<double> (rand () / RAND_MAX);
+      (*cloud)[idx].y = static_cast<double> (rand () / RAND_MAX);
+      (*cloud)[idx].z = static_cast<double> (rand () / RAND_MAX);
     }
   }
 
@@ -59,9 +59,9 @@ main (int argc, char ** argv)
   query.z = 0.5;
 
   vector<int> kd_indices;
-  vector<float> kd_distances;
+  vector<double> kd_distances;
   vector<int> bf_indices;
-  vector<float> bf_distances;
+  vector<double> bf_distances;
 
   double start, stop;
   double kd_setup;

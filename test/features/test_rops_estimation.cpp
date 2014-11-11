@@ -49,7 +49,7 @@ std::vector <pcl::Vertices> triangles;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (ROPSFeature, FeatureExtraction)
 {
-  float support_radius = 0.0285f;
+  double support_radius = 0.0285f;
   unsigned int number_of_partition_bins = 5;
   unsigned int number_of_rotations = 3;
 
@@ -76,7 +76,7 @@ TEST (ROPSFeature, FeatureExtraction)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (ROPSFeature, InvalidParameters)
 {
-  float support_radius = 0.0285f;
+  double support_radius = 0.0285f;
   unsigned int number_of_partition_bins = 5;
   unsigned int number_of_rotations = 3;
 

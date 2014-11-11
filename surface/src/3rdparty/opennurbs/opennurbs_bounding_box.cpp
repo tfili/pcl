@@ -153,14 +153,14 @@ ON_ClippingRegion::ON_ClippingRegion()
 void ON_ClippingRegion::SetClipPlaneTolerance( double clip_plane_tolerance )
 {
   if ( clip_plane_tolerance > 0.0 && clip_plane_tolerance < 3.402823466e+38 )
-    m_clip_plane_tolerance = (float)clip_plane_tolerance;
+    m_clip_plane_tolerance = (double)clip_plane_tolerance;
   else
     m_clip_plane_tolerance = 0.0;
 }
 
 double ON_ClippingRegion::ClipPlaneTolerance() const
 {
-  return (float)m_clip_plane_tolerance;
+  return (double)m_clip_plane_tolerance;
 }
 
 int ON_ClippingRegion::InViewFrustum( 
@@ -201,7 +201,7 @@ int ON_ClippingRegion::InViewFrustum(
   ) const
 {
   const double* xform;
-  const float* cv;
+  const double* cv;
   double x, w;
   unsigned int out, all_out, some_out;
   int i;
@@ -370,7 +370,7 @@ int ON_ClippingRegion::InClipPlaneRegion(
   ) const
 {
   const ON_PlaneEquation* cpeqn;
-  const float* cv;
+  const double* cv;
   double x;
   unsigned int out, all_out, some_out, cpbit;
   int i, j;
@@ -589,7 +589,7 @@ int ON_ClippingRegion::IsVisible( int count, const ON_3fPoint* p ) const
 {
   const double* xform;
   const ON_PlaneEquation* cpeqn;
-  const float* cv;
+  const double* cv;
   double x, w;
   unsigned int out, all_out, some_out, cpbit;
   int i, j;
@@ -1888,7 +1888,7 @@ bool ON_GetPointListBoundingBox(
 }
 
 bool ON_GetPointListBoundingBox( 
-    int dim, int is_rat, int count, int stride, const float* points, 
+    int dim, int is_rat, int count, int stride, const double* points, 
     ON_BoundingBox& tight_bbox,
     int bGrowBox,
     const ON_Xform* xform
@@ -2183,7 +2183,7 @@ OUTPUT:
 
 
 ON_BoundingBox ON_PointListBoundingBox(
-    int dim, int is_rat, int count, int stride, const float* points
+    int dim, int is_rat, int count, int stride, const double* points
     )
 {
   ON_BoundingBox bbox;
@@ -2193,8 +2193,8 @@ ON_BoundingBox ON_PointListBoundingBox(
 
 
 bool ON_GetPointListBoundingBox( 
-    int dim, int is_rat, int count, int stride, const float* points, 
-    float* boxmin, float* boxmax,
+    int dim, int is_rat, int count, int stride, const double* points, 
+    double* boxmin, double* boxmax,
     int bGrowBox
     )
 /*****************************************************************************
@@ -2216,7 +2216,7 @@ OUTPUT:
 {
   // OBSOLETE
   // bounding box workhorse
-  float x;
+  double x;
   double w;
   int j;
   bool rc = false;
@@ -2253,7 +2253,7 @@ OUTPUT:
               continue;
             w = 1.0/points[dim];
             for ( j = 0; j < dim; j++ ) {
-              x = (float)(w*points[j]);
+              x = (double)(w*points[j]);
               if (boxmin[j] > x) 
                 boxmin[j] = x; 
               else if (boxmax[j] < x) 

@@ -76,13 +76,13 @@ namespace pcl
             typedef DeviceArray<PointType> Queries;
 
             /** \brief Point Radiuses for batch query  */
-            typedef DeviceArray<float> Radiuses;            
+            typedef DeviceArray<double> Radiuses;            
 
             /** \brief Point Indices for batch query  */
             typedef DeviceArray<int> Indices;    
             
             /** \brief Point Sqrt distances array type */
-            typedef DeviceArray<float> ResultSqrDists;
+            typedef DeviceArray<double> ResultSqrDists;
             
             const PointCloud*   cloud_;
             
@@ -104,14 +104,14 @@ namespace pcl
               * \param[out] out indeces of points within give sphere
               * \param[in] max_nn maximum numver of results returned
               */
-            void radiusSearchHost(const PointType& center, float radius, std::vector<int>& out, int max_nn = INT_MAX);
+            void radiusSearchHost(const PointType& center, double radius, std::vector<int>& out, int max_nn = INT_MAX);
 
             /** \brief Performs approximate neares neighbor search on CPU. It call \a internalDownload if nessesary
               * \param[in]  query 3D point for which neighbour is be fetched             
               * \param[out] out_index neighbour index
               * \param[out] sqr_dist square distance to the neighbour returned
               */
-            void approxNearestSearchHost(const PointType& query, int& out_index, float& sqr_dist);
+            void approxNearestSearchHost(const PointType& query, int& out_index, double& sqr_dist);
 
             /** \brief Performs batch radius search on GPU
               * \param[in] centers array of centers 
@@ -119,7 +119,7 @@ namespace pcl
               * \param[in] max_results max number of returned points for each querey
               * \param[out] result results packed to signle array
               */
-            void radiusSearch(const Queries& centers, float radius, int max_results, NeighborIndices& result) const;
+            void radiusSearch(const Queries& centers, double radius, int max_results, NeighborIndices& result) const;
 
             /** \brief Performs batch radius search on GPU
               * \param[in] centers array of centers 
@@ -136,7 +136,7 @@ namespace pcl
               * \param[in] max_results max number of returned points for each querey
               * \param[out] result results packed to signle array
               */
-            void radiusSearch(const Queries& centers, const Indices& indices, float radius, int max_results, NeighborIndices& result) const;
+            void radiusSearch(const Queries& centers, const Indices& indices, double radius, int max_results, NeighborIndices& result) const;
 
             /** \brief Batch approximate nearest search on GPU
               * \param[in] queries array of centers
@@ -165,7 +165,7 @@ namespace pcl
         * \param[out] result indeces of points within give sphere
         * \param[in] buffer buffer for intermediate results. Keep reference to it between calls to eliminate internal allocations
         */             
-        PCL_EXPORTS void bruteForceRadiusSearchGPU(const Octree::PointCloud& cloud, const Octree::PointType& query, float radius, DeviceArray<int>& result, DeviceArray<int>& buffer);
+        PCL_EXPORTS void bruteForceRadiusSearchGPU(const Octree::PointCloud& cloud, const Octree::PointType& query, double radius, DeviceArray<int>& result, DeviceArray<int>& buffer);
     }
 }
 

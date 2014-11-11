@@ -386,11 +386,11 @@ namespace pcl
         * \param[in] iso_level the iso level.
         */
       inline void
-      setIsoLevel (float iso_level)
+      setIsoLevel (double iso_level)
       { iso_level_ = iso_level; }
 
       /** \brief Method that returns the iso level of the surface to be extracted. */
-      inline float
+      inline double
       getIsoLevel ()
       { return iso_level_; }
 
@@ -420,19 +420,19 @@ namespace pcl
         * the grid limits.
         */
       inline void
-      setPercentageExtendGrid (float percentage)
+      setPercentageExtendGrid (double percentage)
       { percentage_extend_grid_ = percentage; }
 
       /** \brief Method that gets the parameter that defines how much free space should be left inside the grid between
         * the bounding box of the point cloud and the grid limits, as a percentage of the bounding box.
         */
-      inline float
+      inline double
       getPercentageExtendGrid ()
       { return percentage_extend_grid_; }
 
     protected:
       /** \brief The data structure storing the 3D grid */
-      std::vector<float> grid_;
+      std::vector<double> grid_;
 
       /** \brief The grid resolution */
       int res_x_, res_y_, res_z_;
@@ -442,10 +442,10 @@ namespace pcl
 
       /** \brief Parameter that defines how much free space should be left inside the grid between
         * the bounding box of the point cloud and the grid limits, as a percentage of the bounding box.*/
-      float percentage_extend_grid_;
+      double percentage_extend_grid_;
 
       /** \brief The iso level to be extracted. */
-      float iso_level_;
+      double iso_level_;
 
       /** \brief Convert the point cloud into voxel data. */
       virtual void
@@ -459,7 +459,7 @@ namespace pcl
         * \param[out] output The interpolated point along the edge
         */
       void
-      interpolateEdge (Eigen::Vector3f &p1, Eigen::Vector3f &p2, float val_p1, float val_p2, Eigen::Vector3f &output);
+      interpolateEdge (Eigen::Vector3f &p1, Eigen::Vector3f &p2, double val_p1, double val_p2, Eigen::Vector3f &output);
 
 
       /** \brief Calculate out the corresponding polygons in the leaf node
@@ -468,7 +468,7 @@ namespace pcl
         * \param cloud point cloud to store the vertices of the polygon
        */
       void
-      createSurface (std::vector<float> &leaf_node,
+      createSurface (std::vector<double> &leaf_node,
                      Eigen::Vector3i &index_3d,
                      pcl::PointCloud<PointNT> &cloud);
 
@@ -480,7 +480,7 @@ namespace pcl
       /** \brief Method that returns the scalar value at the given grid position.
         * \param[in] pos The 3D position in the grid
         */
-      virtual float
+      virtual double
       getGridValue (Eigen::Vector3i pos);
 
       /** \brief Method that returns the scalar values of the neighbors of a given 3D position in the grid.
@@ -488,7 +488,7 @@ namespace pcl
         * \param[out] leaf the set of values
         */
       void
-      getNeighborList1D (std::vector<float> &leaf,
+      getNeighborList1D (std::vector<double> &leaf,
                          Eigen::Vector3i &index3d);
 
       /** \brief Class get name method. */

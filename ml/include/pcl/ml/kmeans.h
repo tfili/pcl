@@ -82,7 +82,7 @@ namespace pcl
 
       typedef std::set<PointId> SetPoints; // set of points
 
-      typedef std::vector<float> Point;
+      typedef std::vector<double> Point;
 
       // ClusterId -> (PointId, PointId, PointId, .... )
       typedef std::vector<SetPoints> ClustersToPoints;
@@ -149,10 +149,10 @@ namespace pcl
       computeCentroids();
 
       // distance between two points
-      float distance(const Point& x, const Point& y)
+      double distance(const Point& x, const Point& y)
       {
-        float total = 0.0;
-        float diff;
+        double total = 0.0;
+        double diff;
     
         Point::const_iterator cpx=x.begin(); 
         Point::const_iterator cpy=y.begin();

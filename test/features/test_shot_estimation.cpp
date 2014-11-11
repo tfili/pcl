@@ -845,13 +845,13 @@ TEST (PCL,SHOTShapeAndColorEstimationOpenMP)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL,3DSCEstimation)
 {
-  float meshRes = 0.002f;
+  double meshRes = 0.002f;
   //size_t nBinsL = 4;
   //size_t nBinsK = 4;
   //size_t nBinsJ = 4;
-  float radius = 20.0f * meshRes;
-  float rmin = radius / 10.0f;
-  float ptDensityRad = radius / 5.0f;
+  double radius = 20.0f * meshRes;
+  double rmin = radius / 10.0f;
+  double ptDensityRad = radius / 5.0f;
 
   PointCloud<PointXYZ>::Ptr cloudptr = cloud.makeShared ();
 
@@ -926,10 +926,10 @@ TEST (PCL,3DSCEstimation)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, USCEstimation)
 {
-  float meshRes = 0.002f;
-  float radius = 20.0f * meshRes;
-  float rmin = radius / 10.0f;
-  float ptDensityRad = radius / 5.0f;
+  double meshRes = 0.002f;
+  double radius = 20.0f * meshRes;
+  double rmin = radius / 10.0f;
+  double ptDensityRad = radius / 5.0f;
 
   // estimate
   UniqueShapeContext<PointXYZ, UniqueShapeContext1960> uscd;

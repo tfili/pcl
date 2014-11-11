@@ -67,7 +67,7 @@ namespace pcl
         typedef typename TrackerBase::PointCloudIn PointCloudIn;
         typedef typename PointCloudIn::Ptr PointCloudInPtr;
         typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-        typedef pcl::PointCloud<float> FloatImage;
+        typedef pcl::PointCloud<double> FloatImage;
         typedef FloatImage::Ptr FloatImagePtr;
         typedef FloatImage::ConstPtr FloatImageConstPtr;
 
@@ -112,20 +112,20 @@ namespace pcl
           * \param[in] accuracy desired accuracy.
           */
         inline void
-        setAccuracy (float accuracy) { accuracy_ = accuracy; }
+        setAccuracy (double accuracy) { accuracy_ = accuracy; }
 
         /// \return the accuracy
-        inline float
+        inline double
         getAccuracy () const { return (accuracy_); }
 
         /** Set epsilon
           * \param[in] epsilon desired epsilon.
           */
         inline void
-        setEpsilon (float epsilon) { epsilon_ = epsilon; }
+        setEpsilon (double epsilon) { epsilon_ = epsilon; }
 
         /// \return the epsilon
-        inline float
+        inline double
         getEpsilon () const { return (epsilon_); }
 
         /** \brief Set the maximum number of points to track. Only the first keypoints_nbr_
@@ -346,11 +346,11 @@ namespace pcl
         /// \brief maximum number of iterations
         unsigned int max_iterations_;
         /// \brief accuracy criterion to stop iterating
-        float accuracy_;
-        float min_eigenvalue_threshold_;
+        double accuracy_;
+        double min_eigenvalue_threshold_;
         /// \brief epsilon for subpixel computation
-        float epsilon_;
-        float max_residue_;
+        double epsilon_;
+        double max_residue_;
         /// \brief number of hardware threads
         unsigned int threads_;
         /// \brief intensity accessor
@@ -362,7 +362,7 @@ namespace pcl
         /// \brief computed transformation between tracked points
         Eigen::Affine3f motion_;
         /// \brief smoothing kernel
-        Eigen::Array<float, 5, 1> kernel_;
+        Eigen::Array<double, 5, 1> kernel_;
         /// \brief smoothing kernel half size
         int kernel_size_2_;
         /// \brief index of last element in kernel

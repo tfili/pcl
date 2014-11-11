@@ -85,7 +85,7 @@ pcl::GreedyProjectionTriangulation<PointInT>::reconstructPolygons (std::vector<p
 
   // Variables to hold the results of nearest neighbor searches
   std::vector<int> nnIdx (nnn_);
-  std::vector<float> sqrDists (nnn_);
+  std::vector<double> sqrDists (nnn_);
 
   // current number of connected components
   int part_index = 0;
@@ -172,7 +172,7 @@ pcl::GreedyProjectionTriangulation<PointInT>::reconstructPolygons (std::vector<p
       u_ = nc.cross (v_);
 
       // Projecting point onto the surface 
-      float dist = nc.dot (coords_[R_]);
+      double dist = nc.dot (coords_[R_]);
       proj_qp_ = coords_[R_] - dist * nc;
 
       // Converting coords, calculating angles and saving the projected near boundary edges
@@ -350,7 +350,7 @@ pcl::GreedyProjectionTriangulation<PointInT>::reconstructPolygons (std::vector<p
       u_ = nc.cross (v_);
 
       // Projecting point onto the surface
-      float dist = nc.dot (coords_[R_]);
+      double dist = nc.dot (coords_[R_]);
       proj_qp_ = coords_[R_] - dist * nc;
 
       // Converting coords, calculating angles and saving the projected near boundary edges

@@ -575,7 +575,7 @@ pcl::segmentation::grabcut::GaussianFitter::fit (Gaussian& g, std::size_t total_
   }
   else
   {
-    const float count_f = static_cast<float> (count_);
+    const double count_f = static_cast<double> (count_);
 
     // Compute mean of gaussian
     g.mu.r = sum_[0]/count_f;
@@ -611,7 +611,7 @@ pcl::segmentation::grabcut::GaussianFitter::fit (Gaussian& g, std::size_t total_
 
     // The weight of the gaussian is the fraction of the number of pixels in this Gaussian to the number
     // of pixels in all the gaussians of this GMM.
-    g.pi = count_f / static_cast<float> (total_count);
+    g.pi = count_f / static_cast<double> (total_count);
 
     if (compute_eigens)
     {
@@ -625,10 +625,10 @@ pcl::segmentation::grabcut::GaussianFitter::fit (Gaussian& g, std::size_t total_
   }
 }
 
-float
+double
 pcl::segmentation::grabcut::GMM::probabilityDensity (const Color &c)
 {
-  float result = 0;
+  double result = 0;
 
   for (std::size_t i=0; i < gaussians_.size (); ++i)
     result += gaussians_[i].pi * probabilityDensity (i, c);
@@ -636,24 +636,24 @@ pcl::segmentation::grabcut::GMM::probabilityDensity (const Color &c)
   return (result);
 }
 
-float
+double
 pcl::segmentation::grabcut::GMM::probabilityDensity (std::size_t i, const Color &c)
 {
-  float result = 0;
+  double result = 0;
   const pcl::segmentation::grabcut::Gaussian &G = gaussians_[i];
   if (G.pi > 0 )
   {
     if (G.determinant > 0)
     {
-      float r = c.r - G.mu.r;
-      float g = c.g - G.mu.g;
-      float b = c.b - G.mu.b;
+      double r = c.r - G.mu.r;
+      double g = c.g - G.mu.g;
+      double b = c.b - G.mu.b;
 
-      float d = r * (r*G.inverse (0,0) + g*G.inverse (1,0) + b*G.inverse (2,0)) +
+      double d = r * (r*G.inverse (0,0) + g*G.inverse (1,0) + b*G.inverse (2,0)) +
                 g * (r*G.inverse (0,1) + g*G.inverse (1,1) + b*G.inverse (2,1)) +
                 b * (r*G.inverse (0,2) + g*G.inverse (1,2) + b*G.inverse (2,2));
 
-      result = static_cast<float> (1.0/(sqrt (G.determinant)) * exp (-0.5*d));
+      result = static_cast<double> (1.0/(sqrt (G.determinant)) * exp (-0.5*d));
     }
   }
 
@@ -710,8 +710,8 @@ pcl::segmentation::grabcut::buildGMMs (const Image& image,
     Gaussian& fg = foreground_GMM[n_fore];
 
     // Compute splitting points
-    float split_background = bg.eigenvector[0] * bg.mu.r + bg.eigenvector[1] * bg.mu.g + bg.eigenvector[2] * bg.mu.b;
-    float split_foreground = fg.eigenvector[0] * fg.mu.r + fg.eigenvector[1] * fg.mu.g + fg.eigenvector[2] * fg.mu.b;
+    double split_background = bg.eigenvector[0] * bg.mu.r + bg.eigenvector[1] * bg.mu.g + bg.eigenvector[2] * bg.mu.b;
+    double split_foreground = fg.eigenvector[0] * fg.mu.r + fg.eigenvector[1] * fg.mu.g + fg.eigenvector[2] * fg.mu.b;
 
     // Split clusters nBack and nFore, place split portion into cluster i
     for (int idx = 0; idx < indices_size; ++idx)
@@ -792,11 +792,11 @@ pcl::segmentation::grabcut::learnGMMs (const Image& image,
     if (hard_segmentation[idx] == SegmentationForeground)
     {
       std::size_t k = 0;
-      float max = 0;
+      double max = 0;
 
       for (std::size_t i = 0; i < foreground_GMM.getK (); i++)
       {
-        float p = foreground_GMM.probabilityDensity (i, c);
+        double p = foreground_GMM.probabilityDensity (i, c);
         if (p > max)
         {
           k = i;
@@ -808,11 +808,11 @@ pcl::segmentation::grabcut::learnGMMs (const Image& image,
     else
     {
       std::size_t k = 0;
-      float max = 0;
+      double max = 0;
 
       for (std::size_t i = 0; i < background_GMM.getK (); i++)
       {
-        float p = background_GMM.probabilityDensity (i, c);
+        double p = background_GMM.probabilityDensity (i, c);
         if (p > max)
         {
           k = i;

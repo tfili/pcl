@@ -113,7 +113,7 @@ namespace pcl
         * \param[in] resolution side length of voxels
         */
       inline void
-      setResolution (float resolution)
+      setResolution (double resolution)
       {
         // Prevents unnessary voxel initiations
         if (resolution_ != resolution)
@@ -127,7 +127,7 @@ namespace pcl
       /** \brief Get voxel grid resolution.
         * \return side length of voxels
         */
-      inline float
+      inline double
       getResolution () const
       {
         return (resolution_);
@@ -194,10 +194,10 @@ namespace pcl
       static void
       convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Affine3f &trans)
       {
-        trans = Eigen::Translation<float, 3>(float (x (0)), float (x (1)), float (x (2))) *
-                Eigen::AngleAxis<float>(float (x (3)), Eigen::Vector3f::UnitX ()) *
-                Eigen::AngleAxis<float>(float (x (4)), Eigen::Vector3f::UnitY ()) *
-                Eigen::AngleAxis<float>(float (x (5)), Eigen::Vector3f::UnitZ ());
+        trans = Eigen::Translation<double, 3>(double (x (0)), double (x (1)), double (x (2))) *
+                Eigen::AngleAxis<double>(double (x (3)), Eigen::Vector3f::UnitX ()) *
+                Eigen::AngleAxis<double>(double (x (4)), Eigen::Vector3f::UnitY ()) *
+                Eigen::AngleAxis<double>(double (x (5)), Eigen::Vector3f::UnitZ ());
       }
 
       /** \brief Convert 6 element transformation vector to transformation matrix.
@@ -420,7 +420,7 @@ namespace pcl
       //double fitness_epsilon_;
 
       /** \brief The side length of voxels. */
-      float resolution_;
+      double resolution_;
 
       /** \brief The maximum step length. */
       double step_size_;

@@ -69,12 +69,12 @@ pcl::SHOTLocalReferenceFrameEstimationOMP<PointInT, PointOutT>::computeFeature (
     PointOutT& output_rf = output[i];
 
     //output_rf.confidence = getLocalRF ((*indices_)[i], rf);
-    //if (output_rf.confidence == std::numeric_limits<float>::max ())
+    //if (output_rf.confidence == std::numeric_limits<double>::max ())
 
     std::vector<int> n_indices;
-    std::vector<float> n_sqr_distances;
+    std::vector<double> n_sqr_distances;
     this->searchForNeighbors ((*indices_)[i], search_parameter_, n_indices, n_sqr_distances);
-    if (getLocalRF ((*indices_)[i], rf) == std::numeric_limits<float>::max ())
+    if (getLocalRF ((*indices_)[i], rf) == std::numeric_limits<double>::max ())
     {
       output.is_dense = false;
     }

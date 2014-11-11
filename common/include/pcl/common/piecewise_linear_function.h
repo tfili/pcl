@@ -51,27 +51,27 @@ namespace pcl
     public:
       // =====CONSTRUCTOR & DESTRUCTOR=====
       //! Constructor
-      PiecewiseLinearFunction (float factor, float offset);
+      PiecewiseLinearFunction (double factor, double offset);
       
       // =====PUBLIC METHODS=====
       //! Get the list of known data points
-      std::vector<float>& 
+      std::vector<double>& 
       getDataPoints () 
       { 
         return data_points_;
       }
       
       //! Get the value of the function at the given point
-      inline float 
-      getValue (float point) const;
+      inline double 
+      getValue (double point) const;
       
       // =====PUBLIC MEMBER VARIABLES=====
       
     protected:
       // =====PROTECTED MEMBER VARIABLES=====
-      std::vector<float> data_points_;
-      float factor_;
-      float offset_;
+      std::vector<double> data_points_;
+      double factor_;
+      double offset_;
   };
 
 }  // end namespace pcl

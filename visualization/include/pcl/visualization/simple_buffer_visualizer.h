@@ -90,10 +90,10 @@ namespace pcl
         }
   
         /** \brief add a new value at the end of the buffer. 
-          * \param[in] val the float value to add.
+          * \param[in] val the double value to add.
           */
         void
-        addValue (const float val)
+        addValue (const double val)
         {
           // remove front value
           values_.pop_front();
@@ -132,7 +132,7 @@ namespace pcl
           * \note This functionality does not work yet at time of commit (see http://dev.pointclouds.org/issues/829)
           */
         void
-        setAutomaticBackgroundColorControl (const bool value = true, const float threshold = 0.0f)
+        setAutomaticBackgroundColorControl (const bool value = true, const double threshold = 0.0f)
         {
           control_background_color_ = value;
 
@@ -192,8 +192,8 @@ namespace pcl
 
           handle_y_scale_ = false;      
 
-          min_ =  -1.0f; // numeric_limits<float>::max( );
-          max_ =  1.0f; // numeric_limits<float>::min( );  
+          min_ =  -1.0f; // numeric_limits<double>::max( );
+          max_ =  1.0f; // numeric_limits<double>::min( );  
         }
     
         /** \brief visualizer object */
@@ -203,7 +203,7 @@ namespace pcl
         PointCloud<VFHSignature308> cloud_;
     
         /** \brief buffer of values */
-        std::deque<float> values_;
+        std::deque<double> values_;
      
         /** \brief number of values stored in the buffer 
           * \note ([2-308])
@@ -214,13 +214,13 @@ namespace pcl
         bool control_background_color_;
     
         /** \brief threshold to turn the background orange if latest value is lower. */
-        float lowest_threshold_;
+        double lowest_threshold_;
 
         /** \brief boolean used to know if we need to change the backgroud color in case of low values. True means we do it ourselves. */
         bool handle_y_scale_;
     
-        /** \brief float tracking the minimal and maximal values ever observed. */
-        float min_, max_;
+        /** \brief double tracking the minimal and maximal values ever observed. */
+        double min_, max_;
     };    
   }  
 }

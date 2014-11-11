@@ -97,7 +97,7 @@ namespace pcl
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelCylinder)
       * // Eigen::Vector3f pt_on_axis, axis_direction;
-      * // float radius;
+      * // double radius;
       *
       * pcl::ModelCoefficients cylinder_coeff;
       * cylinder_coeff.values.resize (7);    // We need 7 values
@@ -126,7 +126,7 @@ namespace pcl
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelSphere)
       * // Eigen::Vector3f sphere_center;
-      * // float radius;
+      * // double radius;
       *
       * pcl::ModelCoefficients sphere_coeff;
       * sphere_coeff.values.resize (4);    // We need 4 values
@@ -205,7 +205,7 @@ namespace pcl
       *
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelCircle2D)
-      * // float x, y, radius;
+      * // double x, y, radius;
       *
       * pcl::ModelCoefficients circle_coeff;
       * circle_coeff.values.resize (3);    // We need 3 values
@@ -227,7 +227,7 @@ namespace pcl
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelCone)
       * // Eigen::Vector3f cone_apex, axis_direction;
-      * // float angle;
+      * // double angle;
       * // Note: The height of the cone is set using the magnitude of the axis_direction vector.
       *
       * pcl::ModelCoefficients cone_coeff;

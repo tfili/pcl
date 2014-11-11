@@ -79,7 +79,7 @@ namespace pcl
         * \param[in] distance TSDF truncation distance 
         */
       void
-      setTsdfTruncDist (float distance);
+      setTsdfTruncDist (double distance);
 
       /** \brief Returns tsdf volume container that point to data in GPU memroy */
       DeviceArray2D<int> 
@@ -98,7 +98,7 @@ namespace pcl
       getVoxelSize() const;
       
       /** \brief Returns tsdf truncation distance in meters */
-      float
+      double
       getTsdfTruncDist () const;
      
       /** \brief Resets tsdf volume data to uninitialized state */
@@ -137,14 +137,14 @@ namespace pcl
         * \param[out] tsdf Array with tsdf values. if volume resolution is 512x512x512, so for voxel (x,y,z) tsdf value can be retrieved as volume[512*512*z + 512*y + x];
         */
       void
-      downloadTsdf (std::vector<float>& tsdf) const;
+      downloadTsdf (std::vector<double>& tsdf) const;
 
       /** \brief Downloads TSDF volume and according voxel weights from GPU memory
         * \param[out] tsdf Array with tsdf values. if volume resolution is 512x512x512, so for voxel (x,y,z) tsdf value can be retrieved as volume[512*512*z + 512*y + x];
         * \param[out] weights Array with tsdf voxel weights. Same size and access index as for tsdf. A weight of 0 indicates the voxel was never used.
         */
       void
-      downloadTsdfAndWeighs(std::vector<float>& tsdf, std::vector<short>& weights) const;
+      downloadTsdfAndWeighs(std::vector<double>& tsdf, std::vector<short>& weights) const;
 
     private:
       /** \brief tsdf volume size in meters */
@@ -157,7 +157,7 @@ namespace pcl
       DeviceArray2D<int> volume_;
 
       /** \brief tsdf truncation distance */
-      float tranc_dist_;
+      double tranc_dist_;
 
 public:
 EIGEN_MAKE_ALIGNED_OPERATOR_NEW

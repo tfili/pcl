@@ -88,7 +88,7 @@ namespace pcl
         * (depth dependent if useDepthDependentSmoothing is true)
         */
       void
-      setNormalSmoothingSize (float normal_smoothing_size)
+      setNormalSmoothingSize (double normal_smoothing_size)
       {
         normal_smoothing_size_ = normal_smoothing_size;
       }
@@ -107,7 +107,7 @@ namespace pcl
         * depth changes
         */
       void 
-      setMaxDepthChangeFactor (float max_depth_change_factor)
+      setMaxDepthChangeFactor (double max_depth_change_factor)
       {
         max_depth_change_factor_ = max_depth_change_factor;
       }
@@ -131,16 +131,16 @@ namespace pcl
     private:
 
       /** the threshold used to detect depth discontinuities */
-      //float distance_threshold_;
+      //double distance_threshold_;
 
       /** \brief Smooth data based on depth (true/false). */
       bool use_depth_dependent_smoothing_;
 
       /** \brief Threshold for detecting depth discontinuities */
-      float max_depth_change_factor_;
+      double max_depth_change_factor_;
 
       /** \brief */
-      float normal_smoothing_size_;
+      double normal_smoothing_size_;
   };
 }
 

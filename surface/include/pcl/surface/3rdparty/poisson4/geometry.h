@@ -199,13 +199,13 @@ namespace pcl
     class PCL_EXPORTS CoredMeshData
     {
       public:
-        std::vector<Point3D<float> > inCorePoints;
+        std::vector<Point3D<double> > inCorePoints;
         virtual void resetIterator( void ) = 0;
 
-        virtual int addOutOfCorePoint( const Point3D<float>& p ) = 0;
+        virtual int addOutOfCorePoint( const Point3D<double>& p ) = 0;
         virtual int addPolygon( const std::vector< CoredVertexIndex >& vertices ) = 0;
 
-        virtual int nextOutOfCorePoint( Point3D<float>& p )=0;
+        virtual int nextOutOfCorePoint( Point3D<double>& p )=0;
         virtual int nextPolygon( std::vector< CoredVertexIndex >& vertices ) = 0;
 
         virtual int outOfCorePointCount(void)=0;
@@ -217,17 +217,17 @@ namespace pcl
       public:
         struct Vertex
         {
-            Point3D< float > start , end;
-            float value;
+            Point3D< double > start , end;
+            double value;
             Vertex( void ) { ; }
-            Vertex( Point3D< float > s , Point3D< float > e , float v ) { start = s , end = e , value = v; }
-            Vertex( Point3D< float > s , Point3D< float > e , Point3D< float > p )
+            Vertex( Point3D< double > s , Point3D< double > e , double v ) { start = s , end = e , value = v; }
+            Vertex( Point3D< double > s , Point3D< double > e , Point3D< double > p )
             {
               start = s , end = e;
               // < p , e-s > = < s + v*(e-s) , e-s >
               // < p , e-s > - < s , e-s > = v || e-s || ^2
               // v = < p-s , e-s > / || e-s ||^2
-              Point3D< float > p1 = p-s , p2 = e-s;
+              Point3D< double > p1 = p-s , p2 = e-s;
               value = ( p1[0] * p2[0] + p1[1] * p2[1] + p1[2] * p2[2] ) / ( p2[0] * p2[0] + p2[1] * p2[1] + p2[2] * p2[2] );
             }
         };
@@ -246,7 +246,7 @@ namespace pcl
 
     class PCL_EXPORTS CoredVectorMeshData : public CoredMeshData
     {
-        std::vector<Point3D<float> > oocPoints;
+        std::vector<Point3D<double> > oocPoints;
         std::vector< std::vector< int > > polygons;
         int polygonIndex;
         int oocPointIndex;
@@ -255,10 +255,10 @@ namespace pcl
 
         void resetIterator(void);
 
-        int addOutOfCorePoint( const Point3D<float>& p );
+        int addOutOfCorePoint( const Point3D<double>& p );
         int addPolygon( const std::vector< CoredVertexIndex >& vertices );
 
-        int nextOutOfCorePoint( Point3D<float>& p );
+        int nextOutOfCorePoint( Point3D<double>& p );
         int nextPolygon( std::vector< CoredVertexIndex >& vertices );
 
         int outOfCorePointCount(void);
@@ -294,10 +294,10 @@ namespace pcl
 
         void resetIterator(void);
 
-        int addOutOfCorePoint(const Point3D<float>& p);
+        int addOutOfCorePoint(const Point3D<double>& p);
         int addPolygon( const std::vector< CoredVertexIndex >& vertices );
 
-        int nextOutOfCorePoint(Point3D<float>& p);
+        int nextOutOfCorePoint(Point3D<double>& p);
         int nextPolygon( std::vector< CoredVertexIndex >& vertices );
 
         int outOfCorePointCount(void);

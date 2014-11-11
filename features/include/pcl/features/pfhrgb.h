@@ -61,7 +61,7 @@ namespace pcl
 
 
       PFHRGBEstimation ()
-        : nr_subdiv_ (5), pfhrgb_histogram_ (), pfhrgb_tuple_ (), d_pi_ (1.0f / (2.0f * static_cast<float> (M_PI)))
+        : nr_subdiv_ (5), pfhrgb_histogram_ (), pfhrgb_tuple_ (), d_pi_ (1.0f / (2.0f * static_cast<double> (M_PI)))
       {
         feature_name_ = "PFHRGBEstimation";
       }
@@ -69,7 +69,7 @@ namespace pcl
       bool
       computeRGBPairFeatures (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
                               int p_idx, int q_idx,
-                              float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7);
+                              double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7);
 
       void
       computePointPFHRGBSignature (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
@@ -93,7 +93,7 @@ namespace pcl
       int f_index_[7];
 
       /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-      float d_pi_;
+      double d_pi_;
   };
 }
 

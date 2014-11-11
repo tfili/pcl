@@ -67,7 +67,7 @@ namespace pcl
 
 		template <int N> struct Histogram
 		{
-			float histogram[N];
+			double histogram[N];
 		};
 
 		typedef Histogram<125> PFHSignature125;
@@ -77,31 +77,31 @@ namespace pcl
 
         struct PPFSignature
         {
-            float f1, f2, f3, f4;
-            float alpha_m;
+            double f1, f2, f3, f4;
+            double alpha_m;
         };
 
         struct PPFRGBSignature
         {
-            float f1, f2, f3, f4;
-            float r_ratio, g_ratio, b_ratio;
-            float alpha_m;
+            double f1, f2, f3, f4;
+            double r_ratio, g_ratio, b_ratio;
+            double alpha_m;
         };
 	
         struct PrincipalCurvatures
         {
             union
             {
-                float principal_curvature[3];
+                double principal_curvature[3];
                 struct
                 {
-                    float principal_curvature_x;
-                    float principal_curvature_y;
-                    float principal_curvature_z;
+                    double principal_curvature_x;
+                    double principal_curvature_y;
+                    double principal_curvature_z;
                 };
             };
-            float pc1;
-            float pc2;
+            double pc1;
+            double pc2;
         };
 
         // normals estimation
@@ -110,11 +110,11 @@ namespace pcl
         void flipNormalTowardsViewpoint(const PointCloud& cloud, const Indices& indices, const float3& vp, Normals& normals);
 
         // pfh estimation        
-        void repackToAosForPfh(const PointCloud& cloud, const Normals& normals, const NeighborIndices& neighbours, DeviceArray2D<float>& data_rpk, int& max_elems_rpk);
-        void computePfh125(const DeviceArray2D<float>& data_rpk, int max_elems_rpk, const NeighborIndices& neighbours, DeviceArray2D<PFHSignature125>& features);
+        void repackToAosForPfh(const PointCloud& cloud, const Normals& normals, const NeighborIndices& neighbours, DeviceArray2D<double>& data_rpk, int& max_elems_rpk);
+        void computePfh125(const DeviceArray2D<double>& data_rpk, int max_elems_rpk, const NeighborIndices& neighbours, DeviceArray2D<PFHSignature125>& features);
 
-        void repackToAosForPfhRgb(const PointCloud& cloud, const Normals& normals, const NeighborIndices& neighbours, DeviceArray2D<float>& data_rpk, int& max_elems_rpk);
-        void computePfhRgb250(const DeviceArray2D<float>& data_rpk, int max_elems_rpk, const NeighborIndices& neighbours, DeviceArray2D<PFHRGBSignature250>& features);
+        void repackToAosForPfhRgb(const PointCloud& cloud, const Normals& normals, const NeighborIndices& neighbours, DeviceArray2D<double>& data_rpk, int& max_elems_rpk);
+        void computePfhRgb250(const DeviceArray2D<double>& data_rpk, int max_elems_rpk, const NeighborIndices& neighbours, DeviceArray2D<PFHRGBSignature250>& features);
 
 
         // fpfh estimation
@@ -134,7 +134,7 @@ namespace pcl
 
         //PrincipalCurvatures estimation
         void computePointPrincipalCurvatures(const Normals& normals, const Indices& indices, const NeighborIndices& neighbours, 
-            DeviceArray<PrincipalCurvatures>& output, DeviceArray2D<float>& proj_normals_buf);
+            DeviceArray<PrincipalCurvatures>& output, DeviceArray2D<double>& proj_normals_buf);
 
 
         //vfh estimation
@@ -162,14 +162,14 @@ namespace pcl
         };
 
 		//spinimages estimation
-		void computeSpinImagesOrigigNormal(bool radial, bool angular, float support_angle_cos, const Indices& indices, const PointCloud& input_cloud, const Normals& input_normals,
-			const PointCloud& surface, const Normals& normals, const NeighborIndices& neighbours, int min_neighb, int image_width, float bin_size, PtrStep<float> output);
+		void computeSpinImagesOrigigNormal(bool radial, bool angular, double support_angle_cos, const Indices& indices, const PointCloud& input_cloud, const Normals& input_normals,
+			const PointCloud& surface, const Normals& normals, const NeighborIndices& neighbours, int min_neighb, int image_width, double bin_size, PtrStep<double> output);
 
-		void computeSpinImagesCustomAxes(bool radial, bool angular, float support_angle_cos, const Indices& indices, const PointCloud& input_cloud, const Normals& input_normals,
-			const PointCloud& surface, const Normals& normals, const NeighborIndices& neighbours, int min_neighb, int image_width, float bin_size, const float3& rotation_axis, PtrStep<float> output);
+		void computeSpinImagesCustomAxes(bool radial, bool angular, double support_angle_cos, const Indices& indices, const PointCloud& input_cloud, const Normals& input_normals,
+			const PointCloud& surface, const Normals& normals, const NeighborIndices& neighbours, int min_neighb, int image_width, double bin_size, const float3& rotation_axis, PtrStep<double> output);
 
-		void computeSpinImagesCustomAxesCloud(bool radial, bool angular, float support_angle_cos, const Indices& indices, const PointCloud& input_cloud, const Normals& input_normals,
-			const PointCloud& surface, const Normals& normals, const NeighborIndices& neighbours, int min_neighb, int image_width, float bin_size, const Normals& rotation_axes_cloud, PtrStep<float> output);
+		void computeSpinImagesCustomAxesCloud(bool radial, bool angular, double support_angle_cos, const Indices& indices, const PointCloud& input_cloud, const Normals& input_normals,
+			const PointCloud& surface, const Normals& normals, const NeighborIndices& neighbours, int min_neighb, int image_width, double bin_size, const Normals& rotation_axes_cloud, PtrStep<double> output);
 
 		void computeMask(const NeighborIndices& neighbours, int min_neighb, DeviceArray<unsigned char>& mask);
     }

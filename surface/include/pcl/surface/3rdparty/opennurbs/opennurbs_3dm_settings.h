@@ -165,8 +165,8 @@ private:
   // view (not a detail view and not a page view),
   // then the text will be scaled by m_world_view_text_scale.
   // The default is 1.0. Values <= 0.0 are not valid.
-  float m_world_view_text_scale;
-  float m_world_view_hatch_scale;
+  double m_world_view_text_scale;
+  double m_world_view_hatch_scale;
   
 private:
   // If m_bEnableAnnotationScaling is false:

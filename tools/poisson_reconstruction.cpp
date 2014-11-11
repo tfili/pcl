@@ -53,7 +53,7 @@ using namespace pcl::console;
 int default_depth = 8;
 int default_solver_divide = 8;
 int default_iso_divide = 8;
-float default_point_weight = 4.0f;
+double default_point_weight = 4.0f;
 
 void
 printHelp (int, char **argv)
@@ -87,7 +87,7 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, PolygonMesh &output,
-         int depth, int solver_divide, int iso_divide, float point_weight)
+         int depth, int solver_divide, int iso_divide, double point_weight)
 {
   PointCloud<PointNormal>::Ptr xyz_cloud (new pcl::PointCloud<PointNormal> ());
   fromPCLPointCloud2 (*input, *xyz_cloud);
@@ -162,7 +162,7 @@ main (int argc, char** argv)
   parse_argument (argc, argv, "-iso_divide", iso_divide);
   print_info ("Setting iso_divide to: "); print_value ("%d\n", iso_divide);
 
-  float point_weight = default_point_weight;
+  double point_weight = default_point_weight;
   parse_argument (argc, argv, "-point_weight", point_weight);
   print_info ("Setting point_weight to: "); print_value ("%f\n", point_weight);
 

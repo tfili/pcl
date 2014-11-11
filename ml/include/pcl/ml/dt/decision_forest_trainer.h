@@ -163,7 +163,7 @@ namespace pcl
         * \param[in] thres The threshold values.
         */
       void
-      setThresholds(std::vector<float> & thres)
+      setThresholds(std::vector<double> & thres)
       {
         decision_tree_trainer_.setThresholds(thres);
       }

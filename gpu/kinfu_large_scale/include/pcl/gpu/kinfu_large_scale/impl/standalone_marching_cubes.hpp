@@ -42,7 +42,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 template <typename PointT>
-pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::StandaloneMarchingCubes (int new_voxels_x, int new_voxels_y, int new_voxels_z, float new_volume_size)
+pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::StandaloneMarchingCubes (int new_voxels_x, int new_voxels_y, int new_voxels_z, double new_volume_size)
 {
   voxels_x_ = new_voxels_x;
   voxels_y_ = new_voxels_y;
@@ -98,7 +98,7 @@ pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::getMeshesFromTSDFVector (con
   
   int max_iterations = std::min( tsdf_clouds.size (), tsdf_offsets.size () ); //Safety check
   PCL_INFO ("There are %d cubes to be processed \n", max_iterations);
-  float cell_size = volume_size_ / voxels_x_;
+  double cell_size = volume_size_ / voxels_x_;
 
   int mesh_counter = 0;
   
@@ -109,9 +109,9 @@ pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::getMeshesFromTSDFVector (con
     //Making cloud local
     Eigen::Affine3f cloud_transform; 
     
-    float originX = (tsdf_offsets[i]).x();
-    float originY = (tsdf_offsets[i]).y();
-    float originZ = (tsdf_offsets[i]).z();
+    double originX = (tsdf_offsets[i]).x();
+    double originY = (tsdf_offsets[i]).y();
+    double originZ = (tsdf_offsets[i]).z();
     
     cloud_transform.linear ().setIdentity ();
     cloud_transform.translation ()[0] = -originX;

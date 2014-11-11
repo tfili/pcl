@@ -52,7 +52,7 @@ int main (int argc, char** argv)
   queries_device.upload(query_host);
 
   // Take two identical radiuses
-  std::vector<float> radius;
+  std::vector<double> radius;
   radius.push_back(10.0);
   radius.push_back(10.0);
   radius.push_back(10.0);

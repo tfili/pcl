@@ -129,8 +129,8 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
       pcl::Vertices apoly_in = plg->polygons[i];
       SinglePoly apoly;
       apoly.nvertices_ = apoly_in.vertices.size ();
-      apoly.vertices_ = new float[3*apoly_in.vertices.size ()];
-      apoly.colors_ = new float[4*apoly_in.vertices.size ()]; 
+      apoly.vertices_ = new double[3*apoly_in.vertices.size ()];
+      apoly.colors_ = new double[4*apoly_in.vertices.size ()]; 
 
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
@@ -159,8 +159,8 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
       pcl::Vertices apoly_in = plg->polygons[i];
       SinglePoly apoly;
       apoly.nvertices_ = apoly_in.vertices.size ();
-      apoly.vertices_ = new float [3*apoly_in.vertices.size ()];
-      apoly.colors_ = new float [4*apoly_in.vertices.size ()];
+      apoly.vertices_ = new double [3*apoly_in.vertices.size ()];
+      apoly.colors_ = new double [4*apoly_in.vertices.size ()];
 
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
@@ -213,8 +213,8 @@ pcl::simulation::PolygonMeshModel::draw ()
 pcl::simulation::PointCloudModel::PointCloudModel (GLenum mode, pcl::PointCloud<pcl::PointXYZRGB>::Ptr pc) : mode_ (mode)
 {
   nvertices_ = pc->points.size ();
-  vertices_ = new float[3*nvertices_];
-  colors_ = new float[4*nvertices_];
+  vertices_ = new double[3*nvertices_];
+  colors_ = new double[4*nvertices_];
 
   for (size_t i = 0; i < pc->points.size (); ++i)
   {
@@ -243,7 +243,7 @@ pcl::simulation::PointCloudModel::draw ()
   glEnableClientState (GL_VERTEX_ARRAY);
   glEnableClientState (GL_COLOR_ARRAY);
 
-  float att[3] = {0.0f, 0.25f, 0.0f};
+  double att[3] = {0.0f, 0.25f, 0.0f};
   glPointParameterf(GL_POINT_SIZE_MIN, 1.0f);
   glPointParameterf(GL_POINT_SIZE_MAX, 500.0f); 
   glPointParameterfv(GL_POINT_DISTANCE_ATTENUATION, att);
@@ -263,7 +263,7 @@ pcl::simulation::PointCloudModel::draw ()
 pcl::simulation::Quad::Quad ()
 {
   // vertex pos: xyz , texture coord: uv
-  const static float vertices[20] = {-1.0, -1.0, 0.0, 0.0, 0.0,
+  const static double vertices[20] = {-1.0, -1.0, 0.0, 0.0, 0.0,
                                      -1.0,  1.0, 0.0, 0.0, 1.0,
                                       1.0,  1.0, 0.0, 1.0, 1.0,
                                       1.0, -1.0, 0.0, 1.0, 0.0 };
@@ -285,8 +285,8 @@ pcl::simulation::Quad::render ()
   glBindBuffer (GL_ARRAY_BUFFER, quad_vbo_);
   glEnableVertexAttribArray (0);
   glEnableVertexAttribArray (1);
-  glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof (float)*5, 0);
-  glVertexAttribPointer (1, 2, GL_FLOAT, GL_FALSE, sizeof (float)*5, (const GLvoid*)12);
+  glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof (double)*5, 0);
+  glVertexAttribPointer (1, 2, GL_FLOAT, GL_FALSE, sizeof (double)*5, (const GLvoid*)12);
 
   glDrawArrays (GL_QUADS, 0, 4);
 
@@ -299,7 +299,7 @@ pcl::simulation::TexturedQuad::TexturedQuad (int width, int height) : width_ (wi
 {
   program_ = gllib::Program::loadProgramFromFile ("single_texture.vert", "single_texture.frag");
   program_->use ();
-  Eigen::Matrix<float, 4, 4> MVP;
+  Eigen::Matrix<double, 4, 4> MVP;
   MVP.setIdentity();
   program_->setUniform ("MVP", MVP);
   glUseProgram (0);

@@ -96,10 +96,10 @@ TEST (PCL, Organized_Neighbor_Pointcloud_Nearest_K_Neighbour_Search)
 	search::OrganizedNeighbor<PointXYZ> organizedNeighborSearch;
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   // typical focal length from kinect
   const double oneOverFocalLength = 0.0018;
@@ -129,7 +129,7 @@ TEST (PCL, Organized_Neighbor_Pointcloud_Nearest_K_Neighbour_Search)
         y = double (ypos * oneOverFocalLength * z);
         x = double (xpos * oneOverFocalLength * z);
 
-        cloudIn->points.push_back (PointXYZ (float (x), float (y), float (z)));
+        cloudIn->points.push_back (PointXYZ (double (x), double (y), double (z)));
       }
 
     unsigned int searchIdx = rand()%(cloudIn->width * cloudIn->height);
@@ -171,7 +171,7 @@ TEST (PCL, Organized_Neighbor_Pointcloud_Nearest_K_Neighbour_Search)
     while (pointCandidates.size ())
     {
       k_indices_bruteforce.push_back (pointCandidates.top ().pointIdx_);
-      k_sqr_distances_bruteforce.push_back (float (pointCandidates.top ().pointDistance_));
+      k_sqr_distances_bruteforce.push_back (double (pointCandidates.top ().pointDistance_));
 
       pointCandidates.pop ();
     }
@@ -206,10 +206,10 @@ TEST (PCL, Organized_Neighbor_Pointcloud_Neighbours_Within_Radius_Search)
 	search::OrganizedNeighbor<PointXYZ> organizedNeighborSearch;
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   // typical focal length from kinect
   const double oneOverFocalLength = 0.0018;
@@ -238,7 +238,7 @@ TEST (PCL, Organized_Neighbor_Pointcloud_Neighbours_Within_Radius_Search)
         y = ypos*oneOverFocalLength*z;
         x = xpos*oneOverFocalLength*z;
 
-        cloudIn->points[idx++]= PointXYZ (float (x), float (y), float (z));
+        cloudIn->points[idx++]= PointXYZ (double (x), double (y), double (z));
       }
 
     unsigned int randomIdx = rand()%(cloudIn->width * cloudIn->height);
@@ -277,7 +277,7 @@ TEST (PCL, Organized_Neighbor_Pointcloud_Neighbours_Within_Radius_Search)
     }
 
 		std::vector<int> cloudNWRSearch;
-		std::vector<float> cloudNWRRadius;
+		std::vector<double> cloudNWRRadius;
 
     // execute organized search
     organizedNeighborSearch.setInputCloud (cloudIn);

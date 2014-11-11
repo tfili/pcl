@@ -258,11 +258,11 @@ const double ON_Viewport::DefaultFarDist = 1000.0;
 const double ON_Viewport::DefaultMinNearDist = 0.0001;
 const double ON_Viewport::DefaultMinNearOverFar = 0.0001;
 
-// For 32 bit float based OpenGL drivers, the value of
+// For 32 bit double based OpenGL drivers, the value of
 // the ON_Viewport::DefaultMinNearOverFar constant must 
 // be <0.01 and >= 0.0001.  
 // If you change this value, you need to retest RR 8902 on OpenGL
-// drivers that (internally) use float precision transformations.
+// drivers that (internally) use double precision transformations.
 // Some OpenGL drivers, like the Microsoft software emulation
 // driver for XP crash in some cases when near/far > 1e8.
 //
@@ -1713,7 +1713,7 @@ bool ON_Viewport::SetFrustum(
          && (frus_near <= 1.0e-8 || frus_far > 1.0001e8*frus_near) 
        )
     {
-      ON_ERROR("ON_Viewport::SetFrustum - Beyond float precision perspective frus_near/frus_far values - will crash MS OpenGL");
+      ON_ERROR("ON_Viewport::SetFrustum - Beyond double precision perspective frus_near/frus_far values - will crash MS OpenGL");
     }
 
     if ( FrustumIsLeftRightSymmetric() && frus_left != -frus_right )

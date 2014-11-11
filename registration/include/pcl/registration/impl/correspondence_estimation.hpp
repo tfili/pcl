@@ -135,7 +135,7 @@ pcl::registration::CorrespondenceEstimation<PointSource, PointTarget, Scalar>::d
   correspondences.resize (indices_->size ());
 
   std::vector<int> index (1);
-  std::vector<float> distance (1);
+  std::vector<double> distance (1);
   pcl::Correspondence corr;
   unsigned int nr_valid_correspondences = 0;
   
@@ -196,9 +196,9 @@ pcl::registration::CorrespondenceEstimation<PointSource, PointTarget, Scalar>::d
 
   correspondences.resize (indices_->size());
   std::vector<int> index (1);
-  std::vector<float> distance (1);
+  std::vector<double> distance (1);
   std::vector<int> index_reciprocal (1);
-  std::vector<float> distance_reciprocal (1);
+  std::vector<double> distance_reciprocal (1);
   pcl::Correspondence corr;
   unsigned int nr_valid_correspondences = 0;
   int target_idx = 0;

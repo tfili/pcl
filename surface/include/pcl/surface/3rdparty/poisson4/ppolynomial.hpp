@@ -432,8 +432,8 @@ namespace pcl
       fwrite(&samples,sizeof(int),1,fp);
       for(int i=0;i<samples;i++){
         double x=min+i*(max-min)/(samples-1);
-        float v=(*this)(x);
-        fwrite(&v,sizeof(float),1,fp);
+        double v=(*this)(x);
+        fwrite(&v,sizeof(double),1,fp);
       }
     }
 

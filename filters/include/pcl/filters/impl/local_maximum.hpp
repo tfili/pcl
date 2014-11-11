@@ -128,7 +128,7 @@ pcl::LocalMaximum<PointT>::applyFilterIndices (std::vector<int> &indices)
 
     // Perform the radius search in the projected cloud
     std::vector<int> radius_indices;
-    std::vector<float> radius_dists;
+    std::vector<double> radius_dists;
     PointT p = cloud_projected->points[(*indices_)[iii]];
     if (searcher_->radiusSearch (p, radius_, radius_indices, radius_dists) == 0)
     {
@@ -143,7 +143,7 @@ pcl::LocalMaximum<PointT>::applyFilterIndices (std::vector<int> &indices)
     }
 
     // Check to see if a neighbor is higher than the query point
-    float query_z = input_->points[(*indices_)[iii]].z;
+    double query_z = input_->points[(*indices_)[iii]].z;
     for (size_t k = 1; k < radius_indices.size (); ++k)  // k = 1 is the first neighbor
     {
       if (input_->points[radius_indices[k]].z > query_z)

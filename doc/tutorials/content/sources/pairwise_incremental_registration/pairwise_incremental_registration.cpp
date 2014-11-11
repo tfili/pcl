@@ -101,7 +101,7 @@ public:
   }
 
   // Override the copyToFloatArray method to define our feature vector
-  virtual void copyToFloatArray (const PointNormalT &p, float * out) const
+  virtual void copyToFloatArray (const PointNormalT &p, double * out) const
   {
     // < x, y, z, curvature >
     out[0] = p.x;
@@ -244,7 +244,7 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
   // Instantiate our custom point representation (defined above) ...
   MyPointRepresentation point_representation;
   // ... and weight the 'curvature' dimension so that it is balanced against x, y, and z
-  float alpha[4] = {1.0, 1.0, 1.0, 1.0};
+  double alpha[4] = {1.0, 1.0, 1.0, 1.0};
   point_representation.setRescaleValues (alpha);
 
   //

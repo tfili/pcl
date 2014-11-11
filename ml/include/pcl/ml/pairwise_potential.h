@@ -54,15 +54,15 @@ namespace pcl
     public:
 
       /** \brief Constructor for DenseCrf class */
-      PairwisePotential (const std::vector<float> &feature, const int D, const int N, const float w);
+      PairwisePotential (const std::vector<double> &feature, const int D, const int N, const double w);
 
       /** \brief Deconstructor for DenseCrf class */
       ~PairwisePotential () {};
 
       /** \brief  */
       void
-      compute (std::vector<float> &out, const std::vector<float> &in,
-               std::vector<float> &tmp, int value_size) const;
+      compute (std::vector<double> &out, const std::vector<double> &in,
+               std::vector<double> &tmp, int value_size) const;
 
     protected:
       /** \brief Permutohedral lattice */
@@ -72,15 +72,15 @@ namespace pcl
       int N_;
 
       /** \brief weight */
-      float w_;
+      double w_;
 
       /** \brief norm */
-      std::vector<float> norm_;
+      std::vector<double> norm_;
 
       //DBUG
     public:
-      std::vector<float> bary_;
-      std::vector<float> features_;
+      std::vector<double> bary_;
+      std::vector<double> features_;
 
   };
 }

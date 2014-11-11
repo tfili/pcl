@@ -57,22 +57,22 @@ class TrackBall
     
     void update(int s_x, int s_y);
     
-    void getRotationMatrix(float (&rot)[MATRIX_SIZE]);
+    void getRotationMatrix(double (&rot)[MATRIX_SIZE]);
     
     void reset();
     
   private:
     
-    void getPointFromScreenPoint(int s_x, int s_y, float &x, float &y, float &z);
+    void getPointFromScreenPoint(int s_x, int s_y, double &x, double &y, double &z);
 
     /// the quaternion representing the current orientation of the trackball
-    boost::math::quaternion<float> quat_;
+    boost::math::quaternion<double> quat_;
     
     /// the original mouse screen coordinates converted to a 3d point
-    float origin_x_, origin_y_, origin_z_;
+    double origin_x_, origin_y_, origin_z_;
     
     /// the radius of the trackball squared
-    float radius_sqr_;
+    double radius_sqr_;
         
 }; // class TrackBall
 

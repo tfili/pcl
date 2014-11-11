@@ -92,7 +92,7 @@ namespace pcl
       stop ();
       
       /** \brief Obtain the number of frames per second (FPS). */
-      virtual float 
+      virtual double 
       getFramesPerSecond () const;
 
       /** \brief Get the version number of the currently opened device

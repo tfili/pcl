@@ -57,7 +57,7 @@ KdTreePtr tree;
 TEST (PCL, computePointNormal)
 {
   Eigen::Vector4f plane_parameters;
-  float curvature;
+  double curvature;
 
   PointCloud<PointXYZ> c;
   
@@ -94,7 +94,7 @@ TEST (PCL, computePointNormal)
 TEST (PCL, NormalEstimation)
 {
   Eigen::Vector4f plane_parameters;
-  float curvature;
+  double curvature;
 
   NormalEstimation<PointXYZ, Normal> n;
 
@@ -106,7 +106,7 @@ TEST (PCL, NormalEstimation)
   EXPECT_NEAR (fabs (plane_parameters[3]), 0.0622552, 1e-4);
   EXPECT_NEAR (curvature, 0.0693136, 1e-4);
 
-  float nx, ny, nz;
+  double nx, ny, nz;
   // computePointNormal (indices)
   n.computePointNormal (cloud, indices, nx, ny, nz, curvature);
   EXPECT_NEAR (fabs (nx), 0.035592, 1e-4);

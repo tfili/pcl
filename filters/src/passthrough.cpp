@@ -119,17 +119,17 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     // @todo fixme
     if (input_->fields[distance_idx].datatype != pcl::PCLPointField::FLOAT32)
     {
-      PCL_ERROR ("[pcl::%s::downsample] Distance filtering requested, but distances are not float/double in the dataset! Only FLOAT32/FLOAT64 distances are supported right now.\n", getClassName ().c_str ());
+      PCL_ERROR ("[pcl::%s::downsample] Distance filtering requested, but distances are not double/double in the dataset! Only FLOAT32/FLOAT64 distances are supported right now.\n", getClassName ().c_str ());
       output.width = output.height = 0;
       output.data.clear ();
       return;
     }
 
-    float badpt = std::numeric_limits<float>::quiet_NaN ();
+    double badpt = std::numeric_limits<double>::quiet_NaN ();
     // Check whether we need to store filtered valued in place
     if (keep_organized_)
     {
-      float distance_value = 0;
+      double distance_value = 0;
       // Go over all points
       for (int cp = 0; cp < nr_points; ++cp, xyz_offset += input_->point_step)
       {
@@ -138,7 +138,7 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
 
         // Get the distance value
         memcpy (&distance_value, &input_->data[cp * input_->point_step + input_->fields[distance_idx].offset],
-                sizeof (float));
+                sizeof (double));
 
         if (filter_limit_negative_)
         {
@@ -146,9 +146,9 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
           if ((distance_value < filter_limit_max_) && (distance_value > filter_limit_min_))
           {
             // Unoptimized memcpys: assume fields x, y, z are in random order
-            memcpy (&output.data[xyz_offset[0]], &badpt, sizeof (float));
-            memcpy (&output.data[xyz_offset[1]], &badpt, sizeof (float));
-            memcpy (&output.data[xyz_offset[2]], &badpt, sizeof (float));
+            memcpy (&output.data[xyz_offset[0]], &badpt, sizeof (double));
+            memcpy (&output.data[xyz_offset[1]], &badpt, sizeof (double));
+            memcpy (&output.data[xyz_offset[2]], &badpt, sizeof (double));
             continue;
           }
           else
@@ -163,9 +163,9 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
           if ((distance_value > filter_limit_max_) || (distance_value < filter_limit_min_))
           {
             // Unoptimized memcpys: assume fields x, y, z are in random order
-            memcpy (&output.data[xyz_offset[0]], &badpt, sizeof (float));
-            memcpy (&output.data[xyz_offset[1]], &badpt, sizeof (float));
-            memcpy (&output.data[xyz_offset[2]], &badpt, sizeof (float));
+            memcpy (&output.data[xyz_offset[0]], &badpt, sizeof (double));
+            memcpy (&output.data[xyz_offset[1]], &badpt, sizeof (double));
+            memcpy (&output.data[xyz_offset[2]], &badpt, sizeof (double));
             continue;
           }
           else
@@ -180,12 +180,12 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     else
     {
       // Go over all points
-      float distance_value = 0;
+      double distance_value = 0;
       for (int cp = 0; cp < nr_points; ++cp, xyz_offset += input_->point_step)
       {
         // Get the distance value
         memcpy (&distance_value, &input_->data[cp * input_->point_step + input_->fields[distance_idx].offset],
-                sizeof(float));
+                sizeof(double));
 
         // Remove NAN/INF/-INF values. We expect passthrough to output clean valid data.
         if (!pcl_isfinite (distance_value))
@@ -223,9 +223,9 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
         }
 
         // Unoptimized memcpys: assume fields x, y, z are in random order
-        memcpy (&pt[0], &input_->data[xyz_offset[0]], sizeof(float));
-        memcpy (&pt[1], &input_->data[xyz_offset[1]], sizeof(float));
-        memcpy (&pt[2], &input_->data[xyz_offset[2]], sizeof(float));
+        memcpy (&pt[0], &input_->data[xyz_offset[0]], sizeof(double));
+        memcpy (&pt[1], &input_->data[xyz_offset[1]], sizeof(double));
+        memcpy (&pt[2], &input_->data[xyz_offset[2]], sizeof(double));
 
         // Check if the point is invalid
         if (!pcl_isfinite (pt[0]) || !pcl_isfinite (pt[1]) || !pcl_isfinite (pt[2]))
@@ -251,9 +251,9 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     for (int cp = 0; cp < nr_points; ++cp, xyz_offset += input_->point_step)
     {
       // Unoptimized memcpys: assume fields x, y, z are in random order
-      memcpy (&pt[0], &input_->data[xyz_offset[0]], sizeof(float));
-      memcpy (&pt[1], &input_->data[xyz_offset[1]], sizeof(float));
-      memcpy (&pt[2], &input_->data[xyz_offset[2]], sizeof(float));
+      memcpy (&pt[0], &input_->data[xyz_offset[0]], sizeof(double));
+      memcpy (&pt[1], &input_->data[xyz_offset[1]], sizeof(double));
+      memcpy (&pt[2], &input_->data[xyz_offset[2]], sizeof(double));
 
       // Check if the point is invalid
       if (!pcl_isfinite (pt[0]) || !pcl_isfinite (pt[1]) || !pcl_isfinite (pt[2]))

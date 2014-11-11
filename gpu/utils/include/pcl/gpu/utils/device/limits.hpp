@@ -196,9 +196,9 @@ namespace pcl
             static const bool is_signed = false;
         };
 
-        template<> struct numeric_limits<float>
+        template<> struct numeric_limits<double>
         {
-            typedef float type;
+            typedef double type;
             __device__ __forceinline__ static type min() { return 1.175494351e-38f/*FLT_MIN*/; };
             __device__ __forceinline__ static type max() { return 3.402823466e+38f/*FLT_MAX*/; };
             __device__ __forceinline__ static type epsilon() { return 1.192092896e-07f/*FLT_EPSILON*/; };

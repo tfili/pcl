@@ -95,10 +95,10 @@ namespace pcl
         * \param[in] threshold the threshold
         */
       inline void
-      setThreshold (float threshold) { threshold_ = threshold; }
+      setThreshold (double threshold) { threshold_ = threshold; }
 
       /** \brief Get the threshold for shadow points rejection */
-      inline float 
+      inline double 
       getThreshold () const { return threshold_; }
 
     protected:
@@ -122,7 +122,7 @@ namespace pcl
 
       /** \brief Threshold for shadow point rejection
         */
-      float threshold_;
+      double threshold_;
   };
 }
 

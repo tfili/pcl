@@ -37,7 +37,7 @@
 #define PCL_CUDA_FILTER_H_
 
 #include <pcl_cuda/pcl_cuda_base.h>
-#include <float.h>
+#include <double.h>
 
 namespace pcl_cuda
 {

@@ -81,7 +81,7 @@ pcl::ihs::OfflineIntegration::OfflineIntegration (Base* parent)
   integration_->setMinDirections (2);
 
 
-  Base::setVisibilityConfidenceNormalization (static_cast <float> (integration_->getMinDirections ()));
+  Base::setVisibilityConfidenceNormalization (static_cast <double> (integration_->getMinDirections ()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +249,7 @@ pcl::ihs::OfflineIntegration::loadTransform (const std::string& filename,
    }
  }
 
- transform = tr.cast<float> ();
+ transform = tr.cast<double> ();
 
  return (true);
 }

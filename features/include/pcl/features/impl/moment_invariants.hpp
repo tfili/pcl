@@ -48,13 +48,13 @@
 template <typename PointInT, typename PointOutT> void
 pcl::MomentInvariantsEstimation<PointInT, PointOutT>::computePointMomentInvariants (
       const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices,
-      float &j1, float &j2, float &j3)
+      double &j1, double &j2, double &j3)
 {
   // Estimate the XYZ centroid
   compute3DCentroid (cloud, indices, xyz_centroid_);
 
   // Initalize the centralized moments
-  float mu200 = 0, mu020 = 0, mu002 = 0, mu110 = 0, mu101 = 0, mu011  = 0;
+  double mu200 = 0, mu020 = 0, mu002 = 0, mu110 = 0, mu101 = 0, mu011  = 0;
 
   // Iterate over the nearest neighbors set
   for (size_t nn_idx = 0; nn_idx < indices.size (); ++nn_idx)
@@ -81,13 +81,13 @@ pcl::MomentInvariantsEstimation<PointInT, PointOutT>::computePointMomentInvarian
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
 pcl::MomentInvariantsEstimation<PointInT, PointOutT>::computePointMomentInvariants (
-      const pcl::PointCloud<PointInT> &cloud, float &j1, float &j2, float &j3)
+      const pcl::PointCloud<PointInT> &cloud, double &j1, double &j2, double &j3)
 {
   // Estimate the XYZ centroid
   compute3DCentroid (cloud, xyz_centroid_);
 
   // Initalize the centralized moments
-  float mu200 = 0, mu020 = 0, mu002 = 0, mu110 = 0, mu101 = 0, mu011  = 0;
+  double mu200 = 0, mu020 = 0, mu002 = 0, mu110 = 0, mu101 = 0, mu011  = 0;
 
   // Iterate over the nearest neighbors set
   for (size_t nn_idx = 0; nn_idx < cloud.points.size (); ++nn_idx )
@@ -118,7 +118,7 @@ pcl::MomentInvariantsEstimation<PointInT, PointOutT>::computeFeature (PointCloud
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   output.is_dense = true;
   // Save a few cycles by not checking every point for NaN/Inf values if the cloud is set to dense
@@ -129,7 +129,7 @@ pcl::MomentInvariantsEstimation<PointInT, PointOutT>::computeFeature (PointCloud
     {
       if (this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
-        output.points[idx].j1 = output.points[idx].j2 = output.points[idx].j3 = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].j1 = output.points[idx].j2 = output.points[idx].j3 = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }
@@ -146,7 +146,7 @@ pcl::MomentInvariantsEstimation<PointInT, PointOutT>::computeFeature (PointCloud
       if (!isFinite ((*input_)[(*indices_)[idx]]) ||
           this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
-        output.points[idx].j1 = output.points[idx].j2 = output.points[idx].j3 = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].j1 = output.points[idx].j2 = output.points[idx].j3 = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }

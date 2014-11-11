@@ -24,7 +24,7 @@ namespace pcl
 
         typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
 
-        float
+        double
         computeMeshResolution (PointInTPtr & input)
         {
           typedef typename pcl::KdTree<PointInT>::Ptr KdTreeInPtr;
@@ -32,28 +32,28 @@ namespace pcl
           tree->setInputCloud (input);
 
           std::vector<int> nn_indices (9);
-          std::vector<float> nn_distances (9);
+          std::vector<double> nn_distances (9);
           std::vector<int> src_indices;
 
-          float sum_distances = 0.0;
-          std::vector<float> avg_distances (input->points.size ());
+          double sum_distances = 0.0;
+          std::vector<double> avg_distances (input->points.size ());
           // Iterate through the source data set
           for (size_t i = 0; i < input->points.size (); ++i)
           {
             tree->nearestKSearch (input->points[i], 9, nn_indices, nn_distances);
 
-            float avg_dist_neighbours = 0.0;
+            double avg_dist_neighbours = 0.0;
             for (size_t j = 1; j < nn_indices.size (); j++)
               avg_dist_neighbours += sqrtf (nn_distances[j]);
 
-            avg_dist_neighbours /= static_cast<float> (nn_indices.size ());
+            avg_dist_neighbours /= static_cast<double> (nn_indices.size ());
 
             avg_distances[i] = avg_dist_neighbours;
             sum_distances += avg_dist_neighbours;
           }
 
           std::sort (avg_distances.begin (), avg_distances.end ());
-          float avg = avg_distances[static_cast<int> (avg_distances.size ()) / 2 + 1];
+          double avg = avg_distances[static_cast<int> (avg_distances.size ()) / 2 + 1];
           return avg;
         }
 
@@ -64,13 +64,13 @@ namespace pcl
         bool remove_outliers_;
 
         //this values are used when CMR=false
-        float grid_resolution_;
-        float normal_radius_;
+        double grid_resolution_;
+        double normal_radius_;
 
         //this are used when CMR=true
-        float factor_normals_;
-        float factor_voxel_grid_;
-        float mesh_resolution_;
+        double factor_normals_;
+        double factor_voxel_grid_;
+        double mesh_resolution_;
 
         PreProcessorAndNormalEstimator ()
         {
@@ -78,14 +78,14 @@ namespace pcl
         }
 
         void
-        setFactorsForCMR (float f1, float f2)
+        setFactorsForCMR (double f1, double f2)
         {
           factor_voxel_grid_ = f1;
           factor_normals_ = f2;
         }
 
         void
-        setValuesForCMRFalse (float f1, float f2)
+        setValuesForCMRFalse (double f1, double f2)
         {
           grid_resolution_ = f1;
           normal_radius_ = f2;
@@ -121,7 +121,7 @@ namespace pcl
           if (do_voxel_grid_)
           {
             pcl::ScopeTime t ("Voxel grid...");
-            float voxel_grid_size = grid_resolution_;
+            double voxel_grid_size = grid_resolution_;
             if (compute_mesh_resolution_)
             {
               voxel_grid_size = mesh_resolution_ * factor_voxel_grid_;
@@ -148,7 +148,7 @@ namespace pcl
           {
             pcl::ScopeTime t ("remove_outliers_...");
             PointInTPtr out2 (new pcl::PointCloud<PointInT> ());
-            float radius = normal_radius_;
+            double radius = normal_radius_;
             if (compute_mesh_resolution_)
             {
               radius = mesh_resolution_ * factor_normals_;
@@ -174,7 +174,7 @@ namespace pcl
             return;
           }
 
-          float radius = normal_radius_;
+          double radius = normal_radius_;
           if (compute_mesh_resolution_)
           {
             radius = mesh_resolution_ * factor_normals_;
@@ -274,7 +274,7 @@ namespace pcl
 
               NaNs = true;
 
-              out->points[i].x = out->points[i].y = out->points[i].z = std::numeric_limits<float>::quiet_NaN ();
+              out->points[i].x = out->points[i].y = out->points[i].z = std::numeric_limits<double>::quiet_NaN ();
             }
 
             if (NaNs)

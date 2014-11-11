@@ -111,7 +111,7 @@ pcl::PCA<PointT>::update (const PointT& input_point, FLAG flag)
 
   Eigen::Vector3f input (input_point.x, input_point.y, input_point.z);
   const size_t n = eigenvectors_.cols ();// number of eigen vectors
-  Eigen::VectorXf meanp = (float(n) * (mean_.head<3>() + input)) / float(n + 1);
+  Eigen::VectorXf meanp = (double(n) * (mean_.head<3>() + input)) / double(n + 1);
   Eigen::VectorXf a = eigenvectors_.transpose() * (input - mean_.head<3>());
   Eigen::VectorXf y = (eigenvectors_ * a) + mean_.head<3>();
   Eigen::VectorXf h = y - input;
@@ -119,15 +119,15 @@ pcl::PCA<PointT>::update (const PointT& input_point, FLAG flag)
     h.normalize ();
   else
     h.setZero ();
-  float gamma = h.dot(input - mean_.head<3>());
+  double gamma = h.dot(input - mean_.head<3>());
   Eigen::MatrixXf D = Eigen::MatrixXf::Zero (a.size() + 1, a.size() + 1);
   D.block(0,0,n,n) = a * a.transpose();
-  D /=  float(n)/float((n+1) * (n+1));
+  D /=  double(n)/double((n+1) * (n+1));
   for(std::size_t i=0; i < a.size(); i++) {
-    D(i,i)+= float(n)/float(n+1)*eigenvalues_(i);
-    D(D.rows()-1,i) = float(n) / float((n+1) * (n+1)) * gamma * a(i);
+    D(i,i)+= double(n)/double(n+1)*eigenvalues_(i);
+    D(D.rows()-1,i) = double(n) / double((n+1) * (n+1)) * gamma * a(i);
     D(i,D.cols()-1) = D(D.rows()-1,i);
-    D(D.rows()-1,D.cols()-1) = float(n)/float((n+1) * (n+1)) * gamma * gamma;
+    D(D.rows()-1,D.cols()-1) = double(n)/double((n+1) * (n+1)) * gamma * gamma;
   }
 
   Eigen::MatrixXf R(D.rows(), D.cols());

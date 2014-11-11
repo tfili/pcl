@@ -85,7 +85,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::setNumberOfRotations (unsigned int nu
   if (number_of_rotations != 0)
   {
     number_of_rotations_ = number_of_rotations;
-    step_ = 90.0f / static_cast <float> (number_of_rotations_ + 1);
+    step_ = 90.0f / static_cast <double> (number_of_rotations_ + 1);
   }
 }
 
@@ -98,7 +98,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::getNumberOfRotations () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::setSupportRadius (float support_radius)
+pcl::ROPSEstimation <PointInT, PointOutT>::setSupportRadius (double support_radius)
 {
   if (support_radius > 0.0f)
   {
@@ -108,7 +108,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::setSupportRadius (float support_radiu
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointInT, typename PointOutT> float
+template <typename PointInT, typename PointOutT> double
 pcl::ROPSEstimation <PointInT, PointOutT>::getSupportRadius () const
 {
   return (support_radius_);
@@ -161,10 +161,10 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeFeature (PointCloudOut &output
     axis[0].x = 1.0f; axis[0].y = 0.0f; axis[0].z = 0.0f;
     axis[1].x = 0.0f; axis[1].y = 1.0f; axis[1].z = 0.0f;
     axis[2].x = 0.0f; axis[2].y = 0.0f; axis[2].z = 1.0f;
-    std::vector <float> feature;
+    std::vector <double> feature;
     for (unsigned int i_axis = 0; i_axis < 3; i_axis++)
     {
-      float theta = step_;
+      double theta = step_;
       do
       {
         //rotate local surface and get bounding box
@@ -179,7 +179,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeFeature (PointCloudOut &output
           distribution_matrix.resize (number_of_bins_, number_of_bins_);
           getDistributionMatrix (i_proj, min, max, rotated_cloud, distribution_matrix);
 
-          std::vector <float> moments;
+          std::vector <double> moments;
           computeCentralMoments (distribution_matrix, moments);
 
           feature.insert (feature.end (), moments.begin (), moments.end ());
@@ -189,10 +189,10 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeFeature (PointCloudOut &output
       } while (theta < 90.0f);
     }
 
-    float norm = 0.0f;
+    double norm = 0.0f;
     for (unsigned int i_dim = 0; i_dim < feature_size; i_dim++)
       norm += feature[i_dim];
-    if (abs (norm) < std::numeric_limits <float>::epsilon ())
+    if (abs (norm) < std::numeric_limits <double>::epsilon ())
       norm = 1.0f / norm;
     else
       norm = 1.0f;
@@ -223,7 +223,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::buildListOfPointsTriangles ()
 template <typename PointInT, typename PointOutT> void
 pcl::ROPSEstimation <PointInT, PointOutT>::getLocalSurface (const PointInT& point, std::set <unsigned int>& local_triangles, std::vector <int>& local_points) const
 {
-  std::vector <float> distances;
+  std::vector <double> distances;
   tree_->radiusSearch (point, support_radius_, local_points, distances);
 
   const unsigned int number_of_indices = static_cast <unsigned int> (local_points.size ());
@@ -238,12 +238,12 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
   const unsigned int number_of_triangles = static_cast <unsigned int> (local_triangles.size ());
 
   std::vector <Eigen::Matrix3f> scatter_matrices (number_of_triangles);
-  std::vector <float> triangle_area (number_of_triangles);
-  std::vector <float> distance_weight (number_of_triangles);
+  std::vector <double> triangle_area (number_of_triangles);
+  std::vector <double> distance_weight (number_of_triangles);
 
-  float total_area = 0.0f;
-  const float coeff = 1.0f / 12.0f;
-  const float coeff_1_div_3 = 1.0f / 3.0f;
+  double total_area = 0.0f;
+  const double coeff = 1.0f / 12.0f;
+  const double coeff_1_div_3 = 1.0f / 3.0f;
 
   Eigen::Vector3f feature_point (point.x, point.y, point.z);
 
@@ -260,7 +260,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
       pt[i_vertex] (2) = surface_->points[index].z;
     }
 
-    const float curr_area = ((pt[1] - pt[0]).cross (pt[2] - pt[0])).norm ();
+    const double curr_area = ((pt[1] - pt[0]).cross (pt[2] - pt[0])).norm ();
     triangle_area[i_triangle] = curr_area;
     total_area += curr_area;
 
@@ -278,18 +278,18 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
     scatter_matrices[i_triangle] = coeff * curr_scatter_matrix;
   }
 
-  if (abs (total_area) < std::numeric_limits <float>::epsilon ())
+  if (abs (total_area) < std::numeric_limits <double>::epsilon ())
     total_area = 1.0f / total_area;
   else
     total_area = 1.0f;
 
   Eigen::Matrix3f overall_scatter_matrix;
   overall_scatter_matrix.setZero ();
-  std::vector<float> total_weight (number_of_triangles);
-  const float denominator = 1.0f / 6.0f;
+  std::vector<double> total_weight (number_of_triangles);
+  const double denominator = 1.0f / 6.0f;
   for (unsigned int i_triangle = 0; i_triangle < number_of_triangles; i_triangle++)
   {
-    float factor = distance_weight[i_triangle] * triangle_area[i_triangle] * total_area;
+    double factor = distance_weight[i_triangle] * triangle_area[i_triangle] * total_area;
     overall_scatter_matrix += factor * scatter_matrices[i_triangle];
     total_weight[i_triangle] = factor * denominator;
   }
@@ -297,8 +297,8 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
   Eigen::Vector3f v1, v2, v3;
   computeEigenVectors (overall_scatter_matrix, v1, v2, v3);
 
-  float h1 = 0.0f;
-  float h3 = 0.0f;
+  double h1 = 0.0f;
+  double h3 = 0.0f;
   for (it = local_triangles.begin (), i_triangle = 0; it != local_triangles.end (); it++, i_triangle++)
   {
     Eigen::Vector3f pt[3];
@@ -310,8 +310,8 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
       pt[i_vertex] (2) = surface_->points[index].z;
     }
 
-    float factor1 = 0.0f;
-    float factor3 = 0.0f;
+    double factor1 = 0.0f;
+    double factor3 = 0.0f;
     for (unsigned int i_pt = 0; i_pt < 3; i_pt++)
     {
       Eigen::Vector3f vec = pt[i_pt] - feature_point;
@@ -402,15 +402,15 @@ pcl::ROPSEstimation <PointInT, PointOutT>::transformCloud (const PointInT& point
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::rotateCloud (const PointInT& axis, const float angle, const PointCloudIn& cloud, PointCloudIn& rotated_cloud, Eigen::Vector3f& min, Eigen::Vector3f& max) const
+pcl::ROPSEstimation <PointInT, PointOutT>::rotateCloud (const PointInT& axis, const double angle, const PointCloudIn& cloud, PointCloudIn& rotated_cloud, Eigen::Vector3f& min, Eigen::Vector3f& max) const
 {
   Eigen::Matrix3f rotation_matrix;
-  const float x = axis.x;
-  const float y = axis.y;
-  const float z = axis.z;
-  const float rad = M_PI / 180.0f;
-  const float cosine = cos (angle * rad);
-  const float sine = sin (angle * rad);
+  const double x = axis.x;
+  const double y = axis.y;
+  const double z = axis.z;
+  const double rad = M_PI / 180.0f;
+  const double cosine = cos (angle * rad);
+  const double sine = sin (angle * rad);
   rotation_matrix << cosine + (1 - cosine) * x * x,      (1 - cosine) * x * y - sine * z,    (1 - cosine) * x * z + sine * y,
                      (1 - cosine) * y * x + sine * z,    cosine + (1 - cosine) * y * y,      (1 - cosine) * y * z - sine * x,
                      (1 - cosine) * z * x - sine * y,    (1 - cosine) * z * y + sine * x,    cosine + (1 - cosine) * z * z;
@@ -422,12 +422,12 @@ pcl::ROPSEstimation <PointInT, PointOutT>::rotateCloud (const PointInT& axis, co
   rotated_cloud.height = 1;
   rotated_cloud.points.resize (number_of_points, PointInT ());
 
-  min (0) = std::numeric_limits <float>::max ();
-  min (1) = std::numeric_limits <float>::max ();
-  min (2) = std::numeric_limits <float>::max ();
-  max (0) = -std::numeric_limits <float>::max ();
-  max (1) = -std::numeric_limits <float>::max ();
-  max (2) = -std::numeric_limits <float>::max ();
+  min (0) = std::numeric_limits <double>::max ();
+  min (1) = std::numeric_limits <double>::max ();
+  min (2) = std::numeric_limits <double>::max ();
+  max (0) = -std::numeric_limits <double>::max ();
+  max (1) = -std::numeric_limits <double>::max ();
+  max (2) = -std::numeric_limits <double>::max ();
 
   for (unsigned int i_point = 0; i_point < number_of_points; i_point++)
   {
@@ -466,8 +466,8 @@ pcl::ROPSEstimation <PointInT, PointOutT>::getDistributionMatrix (const unsigned
     {0, 2},
     {1, 2}};
 
-  const float u_bin_length = (max (coord[projection][0]) - min (coord[projection][0])) / number_of_bins_;
-  const float v_bin_length = (max (coord[projection][1]) - min (coord[projection][1])) / number_of_bins_;
+  const double u_bin_length = (max (coord[projection][0]) - min (coord[projection][0])) / number_of_bins_;
+  const double v_bin_length = (max (coord[projection][1]) - min (coord[projection][1])) / number_of_bins_;
 
   for (unsigned int i_point = 0; i_point < number_of_points; i_point++)
   {
@@ -476,54 +476,54 @@ pcl::ROPSEstimation <PointInT, PointOutT>::getDistributionMatrix (const unsigned
       cloud.points[i_point].y,
       cloud.points[i_point].z);
 
-    const float u_length = point (coord[projection][0]) - min[coord[projection][0]];
-    const float v_length = point (coord[projection][1]) - min[coord[projection][1]];
+    const double u_length = point (coord[projection][0]) - min[coord[projection][0]];
+    const double v_length = point (coord[projection][1]) - min[coord[projection][1]];
 
-    const float u_ratio = u_length / u_bin_length;
+    const double u_ratio = u_length / u_bin_length;
     unsigned int row = static_cast <unsigned int> (u_ratio);
     if (row == number_of_bins_) row--;
 
-    const float v_ratio = v_length / v_bin_length;
+    const double v_ratio = v_length / v_bin_length;
     unsigned int col = static_cast <unsigned int> (v_ratio);
     if (col == number_of_bins_) col--;
 
     matrix (row, col) += 1.0f;
   }
 
-  matrix /= static_cast <float> (number_of_points);
+  matrix /= static_cast <double> (number_of_points);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::computeCentralMoments (const Eigen::MatrixXf& matrix, std::vector <float>& moments) const
+pcl::ROPSEstimation <PointInT, PointOutT>::computeCentralMoments (const Eigen::MatrixXf& matrix, std::vector <double>& moments) const
 {
-  float mean_i = 0.0f;
-  float mean_j = 0.0f;
+  double mean_i = 0.0f;
+  double mean_j = 0.0f;
 
   for (unsigned int i = 0; i < number_of_bins_; i++)
     for (unsigned int j = 0; j < number_of_bins_; j++)
     {
-      const float m = matrix (i, j);
-      mean_i += static_cast <float> (i + 1) * m;
-      mean_j += static_cast <float> (j + 1) * m;
+      const double m = matrix (i, j);
+      mean_i += static_cast <double> (i + 1) * m;
+      mean_j += static_cast <double> (j + 1) * m;
     }
 
   const unsigned int number_of_moments_to_compute = 4;
-  const float power[number_of_moments_to_compute][2] = {
+  const double power[number_of_moments_to_compute][2] = {
     {1.0f, 1.0f},
     {2.0f, 1.0f},
     {1.0f, 2.0f},
     {2.0f, 2.0f}};
 
-  float entropy = 0.0f;
+  double entropy = 0.0f;
   moments.resize (number_of_moments_to_compute + 1, 0.0f);
   for (unsigned int i = 0; i < number_of_bins_; i++)
   {
-    const float i_factor = static_cast <float> (i + 1) - mean_i;
+    const double i_factor = static_cast <double> (i + 1) - mean_i;
     for (unsigned int j = 0; j < number_of_bins_; j++)
     {
-      const float j_factor = static_cast <float> (j + 1) - mean_j;
-      const float m = matrix (i, j);
+      const double j_factor = static_cast <double> (j + 1) - mean_j;
+      const double m = matrix (i, j);
       if (m > 0.0f)
         entropy -= m * log (m);
       for (unsigned int i_moment = 0; i_moment < number_of_moments_to_compute; i_moment++)

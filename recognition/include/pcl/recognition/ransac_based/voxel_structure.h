@@ -46,7 +46,7 @@ namespace pcl
   namespace recognition
   {
     /** \brief This class is a box in R3 built of voxels ordered in a regular rectangular grid. Each voxel is of type T. */
-    template<class T, typename REAL = float>
+    template<class T, typename REAL = double>
     class VoxelStructure
     {
     public:
@@ -113,9 +113,9 @@ namespace pcl
       inline void
       computeVoxelCenter (const int id3[3], REAL center[3]) const
       {
-        center[0] = min_center_[0] + static_cast<float> (id3[0])*spacing_[0];
-        center[1] = min_center_[1] + static_cast<float> (id3[1])*spacing_[1];
-        center[2] = min_center_[2] + static_cast<float> (id3[2])*spacing_[2];
+        center[0] = min_center_[0] + static_cast<double> (id3[0])*spacing_[0];
+        center[1] = min_center_[1] + static_cast<double> (id3[1])*spacing_[1];
+        center[2] = min_center_[2] + static_cast<double> (id3[2])*spacing_[2];
       }
 
       /** \brief Returns the total number of voxels. */
@@ -126,7 +126,7 @@ namespace pcl
       }
 
       /** \brief Returns the bounds of the voxel structure, which is pointer to the internal array of 6 doubles: (min_x, max_x, min_y, max_y, min_z, max_z). */
-      inline const float*
+      inline const double*
       getBounds() const
       {
         return (bounds_);

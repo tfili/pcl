@@ -55,7 +55,7 @@ namespace pcl
       * \author Alexandru-Eugen Ichim
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename MatScalar = float>
+    template <typename PointSource, typename PointTarget, typename MatScalar = double>
     class TransformationEstimationPointToPlaneWeighted : public TransformationEstimationPointToPlane<PointSource, PointTarget, MatScalar>
     {
       typedef pcl::PointCloud<PointSource> PointCloudSource;

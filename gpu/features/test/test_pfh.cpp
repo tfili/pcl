@@ -108,7 +108,7 @@ TEST(PCL_FeaturesGPU, pfh_low_level)
         
         size_t FSize = sizeof(PFHSignature125)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -187,7 +187,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level1)
         
         size_t FSize = sizeof(PFHSignature125)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -265,7 +265,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level2)
         
         size_t FSize = sizeof(PFHSignature125)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -343,7 +343,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level3)
         
         size_t FSize = sizeof(PFHSignature125)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -421,7 +421,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level4)
         
         size_t FSize = sizeof(PFHSignature125)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -520,7 +520,7 @@ TEST(PCL_FeaturesGPU, pfhrgb)
         
         size_t FSize = sizeof(PFHRGBSignature250)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);

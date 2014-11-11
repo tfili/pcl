@@ -661,7 +661,7 @@ pcl::ihs::OpenGLViewer::stopTimer ()
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::OpenGLViewer::setVisibilityConfidenceNormalization (const float vis_conf_norm)
+pcl::ihs::OpenGLViewer::setVisibilityConfidenceNormalization (const double vis_conf_norm)
 {
   boost::mutex::scoped_lock lock (mutex_vis_);
 
@@ -936,8 +936,8 @@ pcl::ihs::OpenGLViewer::drawMeshes ()
           {
             const unsigned int n = pcl::ihs::countDirections (mesh.vertices [i].directions);
             const unsigned int index = static_cast <unsigned int> (
-                                         static_cast <float> (colormap_.cols ()) *
-                                         static_cast <float> (n) / vis_conf_norm_);
+                                         static_cast <double> (colormap_.cols ()) *
+                                         static_cast <double> (n) / vis_conf_norm_);
 
             colors.col (i) = colormap_.col (index < 256 ? index : 255);
           }
@@ -1046,7 +1046,7 @@ pcl::ihs::OpenGLViewer::initializeGL ()
 void
 pcl::ihs::OpenGLViewer::setupViewport (const int w, const int h)
 {
-  const float aspect_ratio = 4./3.;
+  const double aspect_ratio = 4./3.;
 
   // Use the biggest possible area of the window to draw to
   //    case 1 (w < w_scaled):        case 2 (w >= w_scaled):
@@ -1056,8 +1056,8 @@ pcl::ihs::OpenGLViewer::setupViewport (const int w, const int h)
   //    |   | | h_sc  | h             |-------------|  v
   //    |---| v       |                    <---> w_sc
   //    |---|         v               <----- w ----->
-  const float w_scaled = h * aspect_ratio;
-  const float h_scaled = w / aspect_ratio;
+  const double w_scaled = h * aspect_ratio;
+  const double h_scaled = w / aspect_ratio;
 
   if (w < w_scaled)
   {

@@ -15,34 +15,34 @@
 struct ObjectRecognitionParameters
 {
   // Filter parameters
-  float min_depth;
-  float max_depth;
-  float downsample_leaf_size;
-  float outlier_rejection_radius;
+  double min_depth;
+  double max_depth;
+  double downsample_leaf_size;
+  double outlier_rejection_radius;
   int outlier_rejection_min_neighbors;
 
   // Segmentation parameters
-  float plane_inlier_distance_threshold;
+  double plane_inlier_distance_threshold;
   int max_ransac_iterations;
-  float cluster_tolerance;
+  double cluster_tolerance;
   int min_cluster_size;
   int max_cluster_size;
 
   // Feature estimation parameters
-  float surface_normal_radius;
-  float keypoints_min_scale;
-  float keypoints_nr_octaves;
-  float keypoints_nr_scales_per_octave;
-  float keypoints_min_contrast;
-  float local_descriptor_radius;
+  double surface_normal_radius;
+  double keypoints_min_scale;
+  double keypoints_nr_octaves;
+  double keypoints_nr_scales_per_octave;
+  double keypoints_min_contrast;
+  double local_descriptor_radius;
 
   // Registration parameters
-  float initial_alignment_min_sample_distance;
-  float initial_alignment_max_correspondence_distance;
+  double initial_alignment_min_sample_distance;
+  double initial_alignment_max_correspondence_distance;
   int initial_alignment_nr_iterations;
-  float icp_max_correspondence_distance;
-  float icp_outlier_rejection_threshold;
-  float icp_transformation_epsilon;
+  double icp_max_correspondence_distance;
+  double icp_outlier_rejection_threshold;
+  double icp_transformation_epsilon;
   int icp_max_iterations;
 };
 

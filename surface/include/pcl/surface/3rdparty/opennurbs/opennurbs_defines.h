@@ -195,8 +195,8 @@
 //     occures.
 //   * No possibility of a valid calculation would generate
 //     ON_UNSET_VALUE.
-//   * float f = (float)ON_UNSET_VALUE would create an invalid
-//     float and generate an exception.
+//   * double f = (double)ON_UNSET_VALUE would create an invalid
+//     double and generate an exception.
 */
 #define ON_UNSET_VALUE -1.23432101234321e+308
 
@@ -204,7 +204,7 @@
 // ON_UNSET_FLOAT is used to indicate a texture coordinate
 // value cannot be calculated or is not well defined.  
 // In hindsight, this value should have been ON_FLT_QNAN
-// because many calculation convert float texture coordinates
+// because many calculation convert double texture coordinates
 // to doubles and the "unset"ness attribute is lost.
 */
 #define ON_UNSET_FLOAT -1.234321e+38f
@@ -217,9 +217,9 @@ extern ON_EXTERN_DECL const double ON_DBL_QNAN;
 extern ON_EXTERN_DECL const double ON_DBL_PINF;
 extern ON_EXTERN_DECL const double ON_DBL_NINF;
 
-extern ON_EXTERN_DECL const float  ON_FLT_QNAN;
-extern ON_EXTERN_DECL const float  ON_FLT_PINF;
-extern ON_EXTERN_DECL const float  ON_FLT_NINF;
+extern ON_EXTERN_DECL const double  ON_FLT_QNAN;
+extern ON_EXTERN_DECL const double  ON_FLT_PINF;
+extern ON_EXTERN_DECL const double  ON_FLT_NINF;
 
 /*
 Description:
@@ -245,7 +245,7 @@ ON_DECL
 void ON_DBL_SNAN( double* x );
 
 ON_DECL
-void ON_FLT_SNAN( float* x );
+void ON_FLT_SNAN( double* x );
 
 ON_END_EXTERNC
 

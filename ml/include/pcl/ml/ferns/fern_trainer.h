@@ -149,8 +149,8 @@ namespace pcl
         */
       static void
       createThresholdsUniform (const size_t num_of_thresholds,
-                               std::vector<float> & values,
-                               std::vector<float> & thresholds);
+                               std::vector<double> & values,
+                               std::vector<double> & thresholds);
 
     private:
 

@@ -51,14 +51,14 @@ pcl::TransformationFromCorrespondences::reset ()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 inline void
 pcl::TransformationFromCorrespondences::add (const Eigen::Vector3f& point, const Eigen::Vector3f& corresponding_point,
-                                             float weight)
+                                             double weight)
 {
   if (weight==0.0f)
     return;
   
   ++no_of_samples_;
   accumulated_weight_ += weight;
-  float alpha = weight/accumulated_weight_;
+  double alpha = weight/accumulated_weight_;
   
   Eigen::Vector3f diff1 = point - mean1_, diff2 = corresponding_point - mean2_;
   covariance_ = (1.0f-alpha)*(covariance_ + alpha * (diff2 * diff1.transpose()));
@@ -71,16 +71,16 @@ pcl::TransformationFromCorrespondences::add (const Eigen::Vector3f& point, const
 inline Eigen::Affine3f
 pcl::TransformationFromCorrespondences::getTransformation ()
 {
-  //Eigen::JacobiSVD<Eigen::Matrix<float, 3, 3> > svd (covariance_, Eigen::ComputeFullU | Eigen::ComputeFullV);
-  Eigen::JacobiSVD<Eigen::Matrix<float, 3, 3> > svd (covariance_, Eigen::ComputeFullU | Eigen::ComputeFullV);
-  const Eigen::Matrix<float, 3, 3>& u = svd.matrixU(),
+  //Eigen::JacobiSVD<Eigen::Matrix<double, 3, 3> > svd (covariance_, Eigen::ComputeFullU | Eigen::ComputeFullV);
+  Eigen::JacobiSVD<Eigen::Matrix<double, 3, 3> > svd (covariance_, Eigen::ComputeFullU | Eigen::ComputeFullV);
+  const Eigen::Matrix<double, 3, 3>& u = svd.matrixU(),
                                    & v = svd.matrixV();
-  Eigen::Matrix<float, 3, 3> s;
+  Eigen::Matrix<double, 3, 3> s;
   s.setIdentity();
   if (u.determinant()*v.determinant() < 0.0f)
     s(2,2) = -1.0f;
   
-  Eigen::Matrix<float, 3, 3> r = u * s * v.transpose();
+  Eigen::Matrix<double, 3, 3> r = u * s * v.transpose();
   Eigen::Vector3f t = mean2_ - r*mean1_;
   
   Eigen::Affine3f ret;

@@ -91,7 +91,7 @@ public:
   // informtion should be destroyed.
   int m_fcount;  // single precision vertex count
   int m_dcount;  // double precision vertex count
-  ON__UINT32 m_fCRC; // crc of float vertex array
+  ON__UINT32 m_fCRC; // crc of double vertex array
   ON__UINT32 m_dCRC; // crc of double vertex array
 
   ON_3dPointArray m_dV; // double precision mesh vertices
@@ -656,7 +656,7 @@ ON_BOOL32 ON_Mesh::IsValid( ON_TextLog* text_logx ) const
 
   if ( HasVertexNormals() ) 
   {
-    float x;
+    double x;
     for ( vi = 0; vi < vertex_count; vi++ ) {
       x = m_N[vi][0]*m_N[vi][0] + m_N[vi][1]*m_N[vi][1] + m_N[vi][2]*m_N[vi][2];
       if ( x < 0.985 || x > 1.015 )
@@ -749,7 +749,7 @@ ON_BOOL32 ON_Mesh::IsValid( ON_TextLog* text_logx ) const
     //const ON_3fPoint* fV = m_V.Array();
     for ( fi = 0; fi < facet_count; fi++ ) 
     {
-      // This test was too harsh for float precision meshes
+      // This test was too harsh for double precision meshes
       // with nearly degnerate faces after they are transformed
       // by a transform with a reasonable sized translation 
       // component.
@@ -762,7 +762,7 @@ ON_BOOL32 ON_Mesh::IsValid( ON_TextLog* text_logx ) const
       //    if ( !m_F[fi].IsValid( vertex_count) )
       //      text_log->Print("ON_Mesh.m_F[%d].vi[] has invalid vertex indices.\n",fi);
       //    else
-      //      text_log->Print("ON_Mesh.m_F[%d] has degenerate float precision vertex locations.\n",fi);
+      //      text_log->Print("ON_Mesh.m_F[%d] has degenerate double precision vertex locations.\n",fi);
       //  }
       //  return ON_MeshIsNotValid(bSilentError);
       //}
@@ -1104,7 +1104,7 @@ bool ON_Mesh::Write_2( int Vcount, ON_BinaryArchive& file ) const
       // and m_C[] arrays in little endian byte order because 3dm archives
       // are always in little endian byte order.
       //
-      // This code assumes sizeof(ON_Color)=4, sizeof(float)=4 
+      // This code assumes sizeof(ON_Color)=4, sizeof(double)=4 
       // and sizeof(double)=8.
       // If this is not the case, then changing the 4's and 8's below
       // will not work.  You will have to copy the mesh definition
@@ -1238,7 +1238,7 @@ bool ON_Mesh::Read_2( int vcount, ON_BinaryArchive& file )
     
     if ( e == ON::big_endian ) 
     {
-      // This code assumes sizeof(ON_Color)=4, sizeof(float)=4 
+      // This code assumes sizeof(ON_Color)=4, sizeof(double)=4 
       // and sizeof(double)=8.
       // If this is not the case, then changing the 4's and 8's below
       // will not work.  You will have to read the compressed
@@ -1751,16 +1751,16 @@ int ON_Mesh::Dimension() const
 #pragma warning( disable : 4189 ) 
 #endif
 
-float ON_FloatFloor(double x)
+double ON_FloatFloor(double x)
 {
   // If x is a NaN, you get what you deserve.
   //
   // If x is a finite valid double in the range -3.402823466e+38
   // to +3.402823466e+38, then returned value of f is the largest
-  // float value that is mathematically less than or equal to the
+  // double value that is mathematically less than or equal to the
   // value of x.
   //
-  // If x is not in the float range or x is a NaN, then you get
+  // If x is not in the double range or x is a NaN, then you get
   // what you deserve.
   //
   // ON_FLOAT_EPSILON = 1.192092896e-07 is the smallest number such that
@@ -1768,21 +1768,21 @@ float ON_FloatFloor(double x)
   //
   // If x < 0, then (1.0 + 0.5*1.192092896e-07)*x rounds x down so
   // that converting the double precision mantissa cannot create a
-  // float value that is mathematically larger than the value of x.  
+  // double value that is mathematically larger than the value of x.  
   //
   // If x > 0, then (1.0 - 0.5*1.192092896e-07)*x rounds x down so
   // that converting the double precision mantissa cannot create a
-  // float value that is mathematically larger than the value of x.  
+  // double value that is mathematically larger than the value of x.  
   // 
   const double e = (x < 0.0) ? (1.0 + 0.5*ON_FLOAT_EPSILON) : (1.0 - 0.5*ON_FLOAT_EPSILON);
-  float f;
-  f = (float)(e*x);
+  double f;
+  f = (double)(e*x);
   return f;
 }
 
-float ON_FloatCeil(double x)
+double ON_FloatCeil(double x)
 {
-  float f = (x != 0.0) ? (-ON_FloatFloor(-x)) : ((float)x);
+  double f = (x != 0.0) ? (-ON_FloatFloor(-x)) : ((double)x);
   return f;
 }
 
@@ -1801,7 +1801,7 @@ ON_BOOL32 ON_Mesh::GetBBox( // returns true if successful
     if ( m_vbox[0][0] > m_vbox[1][0] ) 
     {
       // const lie - cache mesh bounding box
-      float* fbbox[2] = {const_cast<float*>(&m_vbox[0][0]),const_cast<float*>(&m_vbox[1][0])};
+      double* fbbox[2] = {const_cast<double*>(&m_vbox[0][0]),const_cast<double*>(&m_vbox[1][0])};
       while ( HasDoublePrecisionVertices() && DoublePrecisionVerticesAreValid() )
       {
         double dbbox[2][3];
@@ -1813,8 +1813,8 @@ ON_BOOL32 ON_Mesh::GetBBox( // returns true if successful
                 );
         if (!rc)
           break;
-        // make sure we round min doubles down to the nearest float
-        // and max doubles up to the nearest float.
+        // make sure we round min doubles down to the nearest double
+        // and max doubles up to the nearest double.
         fbbox[0][0] = ON_FloatFloor(dbbox[0][0]);
         fbbox[0][1] = ON_FloatFloor(dbbox[0][1]);
         fbbox[0][2] = ON_FloatFloor(dbbox[0][2]);
@@ -2083,7 +2083,7 @@ ON_BOOL32 ON_Mesh::SwapCoordinates(
   }
   if ( rc )
   {
-    float x;
+    double x;
     if ( m_vbox[0][0] <= m_vbox[1][0] ) {
       x = m_vbox[0][i]; m_vbox[0][i] = m_vbox[0][j]; m_vbox[0][j] = x;
       x = m_vbox[1][i]; m_vbox[1][i] = m_vbox[1][j]; m_vbox[1][j] = x;
@@ -2174,9 +2174,9 @@ int ON_MeshIsManifold_CompareV( const void* a, const void* b )
 {
   return memcmp(a,b,sizeof(ON_3fPoint));
   /*
-  float d;
-  const float* fa = (const float*)a;
-  const float* fb = (const float*)b;
+  double d;
+  const double* fa = (const double*)a;
+  const double* fb = (const double*)b;
   if ( 0.0f == (d = (*fa++ - *fb++)) )
   {
     if ( 0.0f == (d = (*fa++ - *fb++)) )
@@ -2980,7 +2980,7 @@ bool ON_Mesh::SetVertexNormal(
   // use double precision for unitizing normal
   ON_3dVector unit_vector = normal;
   const bool bUnitVector = unit_vector.Unitize();
-  ON_3fVector v((float)unit_vector.x, (float)unit_vector.y, (float)unit_vector.z);
+  ON_3fVector v((double)unit_vector.x, (double)unit_vector.y, (double)unit_vector.z);
   int normal_count = m_N.Count();
   if ( vertex_index >= 0 ) {
     if ( vertex_index < normal_count ) {
@@ -3009,7 +3009,7 @@ bool ON_Mesh::SetTextureCoord(
        double s, double t    // texture coordinates
        )
 {
-  ON_2fPoint tc((float)s,(float)t);
+  ON_2fPoint tc((double)s,(double)t);
   bool rc = false;
   int vertex_count = m_T.Count();
   if ( vertex_index >= 0 ) {
@@ -3214,7 +3214,7 @@ bool ON_Mesh::UnitizeVertexNormals()
   bool rc = HasVertexNormals();
   if ( rc ) {
     const int vertex_count = VertexCount();
-    float* n = &m_N[0][0];
+    double* n = &m_N[0][0];
     int i;
     ON_3dVector N;
     for ( i = 0; i < vertex_count; i++ ) {
@@ -3223,9 +3223,9 @@ bool ON_Mesh::UnitizeVertexNormals()
       N.z = n[2];
       if ( !N.Unitize() )
         rc = false;
-      *n++ = (float)N.x;
-      *n++ = (float)N.y;
-      *n++ = (float)N.z;
+      *n++ = (double)N.x;
+      *n++ = (double)N.y;
+      *n++ = (double)N.z;
     }
   }
   return rc;
@@ -3236,7 +3236,7 @@ bool ON_Mesh::UnitizeFaceNormals()
   bool rc = HasFaceNormals();
   if ( rc ) {
     const int face_count = FaceCount();
-    float* n = &m_FN[0][0];
+    double* n = &m_FN[0][0];
     int i;
     ON_3dVector N;
     for ( i = 0; i < face_count; i++ ) {
@@ -3245,9 +3245,9 @@ bool ON_Mesh::UnitizeFaceNormals()
       N.z = n[2];
       if ( !N.Unitize() )
         rc = false;
-      *n++ = (float)N.x;
-      *n++ = (float)N.y;
-      *n++ = (float)N.z;
+      *n++ = (double)N.x;
+      *n++ = (double)N.y;
+      *n++ = (double)N.z;
     }
   }
   return rc;
@@ -3597,7 +3597,7 @@ struct tagMESHPOINTS
 
 static int CompareMeshPoint(const void* a,const void* b,void* ptr)
 {
-  float d;
+  double d;
   const struct tagMESHPOINTS * mp = (const struct tagMESHPOINTS *)ptr;
 
   // use bogus pointer to convert a,b into vertex indices
@@ -5591,8 +5591,8 @@ bool ON_Mesh::NormalizeTextureCoordinates()
       m_T.SetCount(0);
       for (ti = 0; ti < vertex_count; ti++ )
       {
-        t0.x = (float)udom.NormalizedParameterAt(S[ti].x);
-        t0.y = (float)vdom.NormalizedParameterAt(S[ti].y);
+        t0.x = (double)udom.NormalizedParameterAt(S[ti].x);
+        t0.y = (double)vdom.NormalizedParameterAt(S[ti].y);
         m_T.Append(t0);
       }
       m_packed_tex_domain[0].Set(0.0,1.0);
@@ -5689,12 +5689,12 @@ bool ON_Mesh::TransposeTextureCoordinates()
 	    }	
 	    double s = TD[0].ParameterAt(y);
 	    double t = TD[1].ParameterAt(x);
-	    m_T[i].Set((float)s,(float)t);
+	    m_T[i].Set((double)s,(double)t);
     }
   }
   else
   {
-    float f;
+    double f;
 	  for(i=0; i<vcnt; i++)
     {
 		  ON_2fPoint& tc = m_T[i];
@@ -5733,9 +5733,9 @@ bool ON_Mesh::ReverseTextureCoordinates( int dir )
       ON_2fPoint& tc = m_T[i];
       s = 1.0 - tex_dom.NormalizedParameterAt(tc[dir]);
       if ( dir )
-        tc.y = (float)tex_dom.ParameterAt(s);
+        tc.y = (double)tex_dom.ParameterAt(s);
       else
-        tc.x = (float)tex_dom.ParameterAt(s);
+        tc.x = (double)tex_dom.ParameterAt(s);
     }
   }
   else
@@ -9385,10 +9385,10 @@ bool ON_Mesh::HasSynchronizedDoubleAndSinglePrecisionVertices() const
   const ON_3dPoint* DV = dv->m_dV.Array();
   while (count--)
   {
-    // Compare float values.
-    P.x = (float)DV->x;
-    P.y = (float)DV->y;
-    P.z = (float)DV->z;
+    // Compare double values.
+    P.x = (double)DV->x;
+    P.y = (double)DV->y;
+    P.z = (double)DV->z;
     if ( !(P.x == FV->x && P.y == FV->y && P.z == FV->z) )
       return false;
   }
@@ -9448,9 +9448,9 @@ void ON_Mesh::UpdateSinglePrecisionVertices()
   const ON_3dPoint* dV = dv->m_dV.Array();
   while(count--)
   {
-    fV->x = (float)dV->x;
-    fV->y = (float)dV->y;
-    fV->z = (float)dV->z;
+    fV->x = (double)dV->x;
+    fV->y = (double)dV->y;
+    fV->z = (double)dV->z;
     fV++;
     dV++;
   }
@@ -9475,20 +9475,20 @@ void ON_Mesh::UpdateDoublePrecisionVertices()
   {
     // double precision vertices already existed
     // and there is a reasonable chance that 
-    // a subset of the float precision vertices
+    // a subset of the double precision vertices
     // have been modified.  So, attempt to
     // keep the precision on double vertices
-    // that alread agree with the float vertices
-    // in float precision.
+    // that alread agree with the double vertices
+    // in double precision.
     ON_3fPoint P;
     while(count--)
     {
-      P.x = (float)dV->x;
-      P.y = (float)dV->y;
-      P.z = (float)dV->z;
+      P.x = (double)dV->x;
+      P.y = (double)dV->y;
+      P.z = (double)dV->z;
       if ( !(P.x == fV->x && P.y == fV->y && P.z == fV->z) )
       {
-        // (float)dV != fV, so update dV
+        // (double)dV != fV, so update dV
         dV->x = (double)fV->x;
         dV->y = (double)fV->y;
         dV->z = (double)fV->z;
@@ -9584,7 +9584,7 @@ ON_3dPoint ON_Mesh::Vertex(int vertex_index) const
   if ( 0 != dv && dv->m_dV.Count() == m_V.Count() )
   {
     ON_3dPoint D = dv->m_dV[vertex_index];
-    if ( F.x == (float)D.x && F.y == (float)D.y && F.z == (float)D.z )
+    if ( F.x == (double)D.x && F.y == (double)D.y && F.z == (double)D.z )
     {
       // double precision vertex is valid
       return D;
@@ -9854,8 +9854,8 @@ void ON_Mesh::DestroyTree( bool bDeleteTree )
 int* ON_Mesh_GetVidHelper( const int Vcount, const ON_3fPoint* fV, const ON_3dPoint* dV, int first_vid, int* Vid, int* Vindex );
 static int comparefV( const void* a, const void* b )
 {
-  const float* af = (const float*)a;
-  const float* bf = (const float*)b;
+  const double* af = (const double*)a;
+  const double* bf = (const double*)b;
   if ( af[0] < bf[0] )
     return -1;
   if ( af[0] > bf[0] )

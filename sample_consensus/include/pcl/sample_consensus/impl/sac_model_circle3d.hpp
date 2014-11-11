@@ -102,13 +102,13 @@ pcl::SampleConsensusModelCircle3D<PointT>::computeModelCoefficients (const std::
   double circle_radius = circle_radiusVector.norm ();
   Eigen::Vector3d circle_normal = common_helper_vec.normalized (); 
 
-  model_coefficients[0] = static_cast<float> (circle_center[0]);
-  model_coefficients[1] = static_cast<float> (circle_center[1]);
-  model_coefficients[2] = static_cast<float> (circle_center[2]);
-  model_coefficients[3] = static_cast<float> (circle_radius);
-  model_coefficients[4] = static_cast<float> (circle_normal[0]);
-  model_coefficients[5] = static_cast<float> (circle_normal[1]);
-  model_coefficients[6] = static_cast<float> (circle_normal[2]);
+  model_coefficients[0] = static_cast<double> (circle_center[0]);
+  model_coefficients[1] = static_cast<double> (circle_center[1]);
+  model_coefficients[2] = static_cast<double> (circle_center[2]);
+  model_coefficients[3] = static_cast<double> (circle_radius);
+  model_coefficients[4] = static_cast<double> (circle_normal[0]);
+  model_coefficients[5] = static_cast<double> (circle_normal[1]);
+  model_coefficients[6] = static_cast<double> (circle_normal[2]);
    
  return (true);
 }
@@ -281,7 +281,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::optimizeModelCoefficients (
   Eigen::VectorXd coeff;
   int info = lm.minimize (coeff);
   for (int i = 0; i < coeff.size (); ++i)
-    optimized_coefficients[i] = static_cast<float> (coeff[i]);
+    optimized_coefficients[i] = static_cast<double> (coeff[i]);
 
   // Compute the L2 norm of the residuals
   PCL_DEBUG ("[pcl::SampleConsensusModelCircle3D::optimizeModelCoefficients] LM solver finished with exit code %i, having a residual norm of %g. \nInitial solution: %g %g %g %g %g %g %g \nFinal solution: %g %g %g %g %g %g %g\n",
@@ -333,7 +333,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
 
       Eigen::Vector3d helper_vectorPC = P - C;
       // 1.1. get line parameter
-      //float lambda = (helper_vectorPC.dot(N)) / N.squaredNorm() ;
+      //double lambda = (helper_vectorPC.dot(N)) / N.squaredNorm() ;
       double lambda = (-(helper_vectorPC.dot (N))) / N.dot (N);
       // Projected Point on plane
       Eigen::Vector3d P_proj = P + lambda * N;
@@ -342,9 +342,9 @@ pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
       // K : Point on Circle
       Eigen::Vector3d K = C + r * helper_vectorP_projC.normalized ();
 
-      projected_points.points[i].x = static_cast<float> (K[0]);
-      projected_points.points[i].y = static_cast<float> (K[1]);
-      projected_points.points[i].z = static_cast<float> (K[2]);
+      projected_points.points[i].x = static_cast<double> (K[0]);
+      projected_points.points[i].y = static_cast<double> (K[1]);
+      projected_points.points[i].z = static_cast<double> (K[2]);
     }
   }
   else
@@ -383,9 +383,9 @@ pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
       // K : Point on Circle
       Eigen::Vector3d K = C + r * helper_vectorP_projC.normalized ();
 
-      projected_points.points[i].x = static_cast<float> (K[0]);
-      projected_points.points[i].y = static_cast<float> (K[1]);
-      projected_points.points[i].z = static_cast<float> (K[2]);
+      projected_points.points[i].x = static_cast<double> (K[0]);
+      projected_points.points[i].y = static_cast<double> (K[1]);
+      projected_points.points[i].z = static_cast<double> (K[2]);
     }
   }
 }

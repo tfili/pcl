@@ -109,7 +109,7 @@ pcl::modeler::VoxelGridDownampleWorker::processImpl(CloudMeshItem* cloud_mesh_it
 {
   pcl::VoxelGrid<pcl::PointSurfel> voxel_grid;
   voxel_grid.setInputCloud(cloud_mesh_item->getCloudMesh()->getCloud());
-  voxel_grid.setLeafSize (float (*leaf_size_x_), float (*leaf_size_y_), float (*leaf_size_z_));
+  voxel_grid.setLeafSize (double (*leaf_size_x_), double (*leaf_size_y_), double (*leaf_size_z_));
 
   CloudMesh::PointCloudPtr cloud(new CloudMesh::PointCloud());
   voxel_grid.filter(*cloud);

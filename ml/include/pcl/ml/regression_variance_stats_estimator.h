@@ -109,7 +109,7 @@ namespace pcl
       /** \brief The feature associated with the node. */
       FeatureType feature;
       /** \brief The threshold applied on the feature response. */
-      float threshold;
+      double threshold;
 
       /** \brief The label value of this node. */
       LabelType value;
@@ -160,14 +160,14 @@ namespace pcl
         * \param[in] flags The flags corresponding to the results.
         * \param[in] threshold The threshold for which the information gain is computed.
         */
-      float 
+      double 
       computeInformationGain (
         DataSet & data_set,
         std::vector<ExampleIndex> & examples,
         std::vector<LabelDataType> & label_data,
-        std::vector<float> & results,
+        std::vector<double> & results,
         std::vector<unsigned char> & flags,
-        const float threshold) const
+        const double threshold) const
       {
         const size_t num_of_examples = examples.size ();
         const size_t num_of_branches = getNumOfBranches();
@@ -200,19 +200,19 @@ namespace pcl
           ++branch_element_count[num_of_branches];
         }
 
-        std::vector<float> variances (num_of_branches+1, 0);
+        std::vector<double> variances (num_of_branches+1, 0);
         for (size_t branch_index = 0; branch_index < num_of_branches+1; ++branch_index)
         {
-          const float mean_sum = static_cast<float>(sums[branch_index]) / branch_element_count[branch_index];
-          const float mean_sqr_sum = static_cast<float>(sqr_sums[branch_index]) / branch_element_count[branch_index];
+          const double mean_sum = static_cast<double>(sums[branch_index]) / branch_element_count[branch_index];
+          const double mean_sqr_sum = static_cast<double>(sqr_sums[branch_index]) / branch_element_count[branch_index];
           variances[branch_index] = mean_sqr_sum - mean_sum*mean_sum;
         }
 
-        float information_gain = variances[num_of_branches];
+        double information_gain = variances[num_of_branches];
         for (size_t branch_index = 0; branch_index < num_of_branches; ++branch_index)
         {
-          //const float weight = static_cast<float>(sums[branchIndex]) / sums[numOfBranches];
-          const float weight = static_cast<float>(branch_element_count[branch_index]) / static_cast<float>(branch_element_count[num_of_branches]);
+          //const double weight = static_cast<double>(sums[branchIndex]) / sums[numOfBranches];
+          const double weight = static_cast<double>(branch_element_count[branch_index]) / static_cast<double>(branch_element_count[num_of_branches]);
           information_gain -= weight*variances[branch_index];
         }
 
@@ -227,9 +227,9 @@ namespace pcl
         */
       void 
       computeBranchIndices (
-        std::vector<float> & results,
+        std::vector<double> & results,
         std::vector<unsigned char> & flags,
-        const float threshold,
+        const double threshold,
         std::vector<unsigned char> & branch_indices) const
       {
         const size_t num_of_results = results.size ();
@@ -252,9 +252,9 @@ namespace pcl
         */
       inline void 
       computeBranchIndex(
-        const float result,
+        const double result,
         const unsigned char flag,
-        const float threshold,
+        const double threshold,
         unsigned char & branch_index) const
       {
         branch_estimator_->computeBranchIndex (result, flag, threshold, branch_index);
@@ -289,7 +289,7 @@ namespace pcl
         sum /= num_of_examples;
         sqr_sum /= num_of_examples;
 
-        const float variance = sqr_sum - sum*sum;
+        const double variance = sqr_sum - sum*sum;
 
         node.value = sum;
         node.variance = variance;

@@ -46,7 +46,7 @@ namespace pcl
     }
     
     template <typename PointInT> void
-    PointCloudCoherence<PointInT>::compute (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, float &w)
+    PointCloudCoherence<PointInT>::compute (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, double &w)
     {
       if (!initCompute ())
       {

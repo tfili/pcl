@@ -51,7 +51,7 @@ pcl::gpu::Feature::Feature() { radius_ = 0.f, max_results_ = 0; }
 void pcl::gpu::Feature::setInputCloud(const PointCloud& cloud) { cloud_ = cloud; }
 void pcl::gpu::Feature::setSearchSurface(const PointCloud& surface) { surface_ = surface; }
 void pcl::gpu::Feature::setIndices(const Indices& indices) { indices_ = indices; }
-void pcl::gpu::Feature::setRadiusSearch(float radius, int max_results) { radius_ = radius; max_results_ = max_results; }
+void pcl::gpu::Feature::setRadiusSearch(double radius, int max_results) { radius_ = radius; max_results_ = max_results; }
 
 /////////////////////////////////////////////////////////////////////////
 /// FeatureFromNormals
@@ -72,7 +72,7 @@ void pcl::gpu::NormalEstimation::computeNormals(const PointCloud& cloud, const N
     device::computeNormals(c, nn_indices, n); 
 }
 
-void pcl::gpu::NormalEstimation::flipNormalTowardsViewpoint(const PointCloud& cloud, float vp_x, float vp_y, float vp_z, Normals& normals)
+void pcl::gpu::NormalEstimation::flipNormalTowardsViewpoint(const PointCloud& cloud, double vp_x, double vp_y, double vp_z, Normals& normals)
 {    
     const device::PointCloud& c = (const device::PointCloud&)cloud;
     device::Normals& n = (device::Normals&)normals;
@@ -80,7 +80,7 @@ void pcl::gpu::NormalEstimation::flipNormalTowardsViewpoint(const PointCloud& cl
     device::flipNormalTowardsViewpoint(c, make_float3(vp_x, vp_y, vp_z), n);
 }
 
-void pcl::gpu::NormalEstimation::flipNormalTowardsViewpoint(const PointCloud& cloud, const Indices& indices, float vp_x, float vp_y, float vp_z, Normals& normals)
+void pcl::gpu::NormalEstimation::flipNormalTowardsViewpoint(const PointCloud& cloud, const Indices& indices, double vp_x, double vp_y, double vp_z, Normals& normals)
 {
     const device::PointCloud& c = (const device::PointCloud&)cloud;
     device::Normals& n = (device::Normals&)normals;
@@ -89,12 +89,12 @@ void pcl::gpu::NormalEstimation::flipNormalTowardsViewpoint(const PointCloud& cl
 }
 
 
-void pcl::gpu::NormalEstimation::setViewPoint (float vpx, float vpy, float vpz)
+void pcl::gpu::NormalEstimation::setViewPoint (double vpx, double vpy, double vpz)
 {
     vpx_ = vpx; vpy_ = vpy; vpz_ = vpz;
 }
 
-void pcl::gpu::NormalEstimation::getViewPoint (float &vpx, float &vpy, float &vpz)
+void pcl::gpu::NormalEstimation::getViewPoint (double &vpx, double &vpy, double &vpz)
 {
     vpx = vpx_; vpy = vpy_; vpz = vpz_;
 }
@@ -382,8 +382,8 @@ pcl::gpu::VFHEstimation::VFHEstimation()
     size_component_ = false;    
 }
 
-void pcl::gpu::VFHEstimation::setViewPoint(float  vpx, float  vpy, float  vpz) { vpx_ = vpx; vpy_ = vpy; vpz_ = vpz; }
-void pcl::gpu::VFHEstimation::getViewPoint(float& vpx, float& vpy, float& vpz) { vpx = vpx_; vpy = vpy_; vpz = vpz_; }      
+void pcl::gpu::VFHEstimation::setViewPoint(double  vpx, double  vpy, double  vpz) { vpx_ = vpx; vpy_ = vpy; vpz_ = vpz; }
+void pcl::gpu::VFHEstimation::getViewPoint(double& vpx, double& vpy, double& vpz) { vpx = vpx_; vpy = vpy_; vpz = vpz_; }      
 
 void pcl::gpu::VFHEstimation::setUseGivenNormal (bool use) { use_given_normal_ = use; }
 void pcl::gpu::VFHEstimation::setNormalToUse (const NormalType& normal)   { normal_to_use_ = normal; }
@@ -449,7 +449,7 @@ void pcl::gpu::VFHEstimation::compute(DeviceArray<VFHSignature308>& feature)
 /// SpinImageEstimation
 
 void pcl::gpu::SpinImageEstimation::setImageWidth (unsigned int bin_count) { image_width_ = bin_count; }
-void pcl::gpu::SpinImageEstimation::setSupportAngle (float support_angle_cos) 
+void pcl::gpu::SpinImageEstimation::setSupportAngle (double support_angle_cos) 
 {
     if (0.f > support_angle_cos || support_angle_cos > 1.f)  // may be permit negative cosine?
 		pcl::gpu::error("Cosine of support angle should be between 0 and 1", __FILE__, __LINE__);
@@ -537,7 +537,7 @@ void pcl::gpu::SpinImageEstimation::compute(DeviceArray2D<SpinImage>& features, 
 	// OK, we are interested in the points of the cylinder of height 2*r and base radius r, where r = m_dBinSize * in_iImageWidth
 	// it can be embedded to the sphere of radius sqrt(2) * m_dBinSize * in_iImageWidth
 	// suppose that points are uniformly distributed, so we lose ~40% // according to the volumes ratio
-	float bin_size = radius_ / image_width_;
+	double bin_size = radius_ / image_width_;
 	if (!is_radial_)
 		bin_size /= sqrt(2.f);
 

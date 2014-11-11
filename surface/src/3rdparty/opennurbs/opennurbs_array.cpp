@@ -158,7 +158,7 @@ ON_3dPointArray& ON_3dPointArray::operator=(const ON_3dPointArray& src)
 
 ON_3dPointArray& ON_3dPointArray::operator=(const ON_SimpleArray<ON_3fPoint>& src)
 {
-  Create( 3, false, src.Count(), 3, (const float*)src.Array() );
+  Create( 3, false, src.Count(), 3, (const double*)src.Array() );
   return *this;
 }
 
@@ -220,7 +220,7 @@ bool ON_3dPointArray::Create(
   int bRational,
   int point_count,
   int point_stride,
-  const float* points
+  const double* points
   )
 {
   bool rc = false;
@@ -382,8 +382,8 @@ ON_2fPointArray::ON_2fPointArray(const ON_2fPointArray& src)
 {}
 
 bool ON_2fPointArray::GetBBox( // returns true if successful
-       float boxmin[2],
-       float boxmax[2],
+       double boxmin[2],
+       double boxmax[2],
        int bGrowBox
        ) const
 {
@@ -419,8 +419,8 @@ ON_3fPointArray::ON_3fPointArray(const ON_3fPointArray& src) : ON_SimpleArray<ON
 {}
 
 bool ON_3fPointArray::GetBBox( // returns true if successful
-       float boxmin[3],
-       float boxmax[3],
+       double boxmin[3],
+       double boxmax[3],
        int bGrowBox
        ) const
 {
@@ -482,8 +482,8 @@ ON_2fVectorArray::ON_2fVectorArray(const ON_2fVectorArray& src) : ON_SimpleArray
 {}
 
 bool ON_2fVectorArray::GetBBox(
-       float boxmin[2],
-       float boxmax[2],
+       double boxmin[2],
+       double boxmax[2],
        bool bGrowBox
        ) const
 {
@@ -518,8 +518,8 @@ ON_3fVectorArray::ON_3fVectorArray(const ON_3fVectorArray& src) : ON_SimpleArray
 {}
 
 bool ON_3fVectorArray::GetBBox( // returns true if successful
-       float boxmin[3],
-       float boxmax[3],
+       double boxmin[3],
+       double boxmax[3],
        int bGrowBox
        ) const
 {

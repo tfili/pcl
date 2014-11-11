@@ -85,7 +85,7 @@ TEST (PCL, lineWithLineIntersection)
   pcl::ModelCoefficients line_a_mod;
   pcl::ModelCoefficients line_b_mod;
 
-  std::vector<float> values_a_case_1;
+  std::vector<double> values_a_case_1;
   values_a_case_1.push_back (line_a[0]);
   values_a_case_1.push_back (line_a[1]);
   values_a_case_1.push_back (line_a[2]);
@@ -93,7 +93,7 @@ TEST (PCL, lineWithLineIntersection)
   values_a_case_1.push_back (line_a[4]);
   values_a_case_1.push_back (line_a[5]);
 
-  std::vector<float> values_b_case_1;
+  std::vector<double> values_b_case_1;
   values_b_case_1.push_back (line_b[0]);
   values_b_case_1.push_back (line_b[1]);
   values_b_case_1.push_back (line_b[2]);
@@ -147,7 +147,7 @@ TEST (PCL, lineWithLineIntersection)
   pcl::ModelCoefficients line_a_mod_2;
   pcl::ModelCoefficients line_b_mod_2;
 
-  std::vector<float> values_a_case_2;
+  std::vector<double> values_a_case_2;
   values_a_case_2.push_back (0.1000);
   values_a_case_2.push_back (0.2000);
   values_a_case_2.push_back (0.3000);
@@ -155,7 +155,7 @@ TEST (PCL, lineWithLineIntersection)
   values_a_case_2.push_back (0.5000);
   values_a_case_2.push_back (0.6000);
 
-  std::vector<float> values_b_case_2;
+  std::vector<double> values_b_case_2;
   values_b_case_2.push_back (0.1001);
   values_b_case_2.push_back (0.2001);
   values_b_case_2.push_back (0.3001);

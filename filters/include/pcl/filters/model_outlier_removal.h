@@ -130,13 +130,13 @@ namespace pcl
 
       /** \brief Set the thresholdfunction*/
       inline void
-      setThreshold (float thresh)
+      setThreshold (double thresh)
       {
         thresh_ = thresh;
       }
 
       /** \brief Get the thresholdfunction*/
-      inline float
+      inline double
       getThreshold () const
       {
         return (thresh_);
@@ -229,7 +229,7 @@ namespace pcl
       SampleConsensusModelPtr model_;
 
       /** \brief The threshold used to seperate outliers (removed_indices) from inliers (indices) */
-      float thresh_;
+      double thresh_;
 
       /** \brief The model coefficients */
       Eigen::VectorXf model_coefficients_;

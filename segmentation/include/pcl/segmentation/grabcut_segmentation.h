@@ -173,7 +173,7 @@ namespace pcl
       struct Color
       {
         Color () : r (0), g (0), b (0) {}
-        Color (float _r, float _g, float _b) : r(_r), g(_g), b(_b) {}
+        Color (double _r, double _g, double _b) : r(_r), g(_g), b(_b) {}
         Color (const pcl::RGB& color) : r (color.r), g (color.g), b (color.b) {}
 
         template<typename PointT>
@@ -182,7 +182,7 @@ namespace pcl
         template<typename PointT>
         operator PointT () const;
 
-        float r, g, b;
+        double r, g, b;
       };
       /// An Image is a point cloud of Color
       typedef pcl::PointCloud<Color> Image;
@@ -191,7 +191,7 @@ namespace pcl
        * \param[in] c2 second color
        * \return the squared distance measure in RGB space
        */
-      float
+      double
       colorDistance (const Color& c1, const Color& c2);
       /// User supplied Trimap values
       enum TrimapValue { TrimapUnknown = -1, TrimapForeground, TrimapBackground };
@@ -206,13 +206,13 @@ namespace pcl
         /// covariance matrix of the gaussian
         Eigen::Matrix3f covariance;
         /// determinant of the covariance matrix
-        float determinant;
+        double determinant;
         /// inverse of the covariance matrix
         Eigen::Matrix3f inverse;
         /// weighting of this gaussian in the GMM.
-        float pi;
+        double pi;
         /// heighest eigenvalue of covariance matrix
-        float eigenvalue;
+        double eigenvalue;
         /// eigenvector corresponding to the heighest eigenvector
         Eigen::Vector3f eigenvector;
       };
@@ -239,10 +239,10 @@ namespace pcl
           const Gaussian&
           operator[] (std::size_t pos) const { return (gaussians_[pos]); }
           /// \brief \return the computed probability density of a color in this GMM
-          float
+          double
           probabilityDensity (const Color &c);
           /// \brief \return the computed probability density of a color in just one Gaussian
-          float
+          double
           probabilityDensity(std::size_t i, const Color &c);
 
         private:
@@ -254,7 +254,7 @@ namespace pcl
       class GaussianFitter
       {
         public:
-        GaussianFitter (float epsilon = 0.0001)
+        GaussianFitter (double epsilon = 0.0001)
           : sum_ (Eigen::Vector3f::Zero ())
           , accumulator_ (Eigen::Matrix3f::Zero ())
           , count_ (0)
@@ -268,14 +268,14 @@ namespace pcl
         void
         fit (Gaussian& g, std::size_t total_count, bool compute_eigens = false) const;
         /// \return epsilon
-        float
+        double
         getEpsilon () { return (epsilon_); }
         /** set epsilon which will be added to the covariance matrix diagonal which avoids singular
           * covariance matrix
           * \param[in] epsilon user defined epsilon
           */
         void
-        setEpsilon (float epsilon) { epsilon_ = epsilon; }
+        setEpsilon (double epsilon) { epsilon_ = epsilon; }
 
         private:
         /// sum of r,g, and b
@@ -285,7 +285,7 @@ namespace pcl
         /// count of color samples added to the gaussian
         uint32_t count_;
         /// small value to add to covariance matrix diagonal to avoid singular values
-        float epsilon_;
+        double epsilon_;
       };
 
       /** Build the initial GMMs using the Orchard and Bouman color clustering algorithm */
@@ -326,7 +326,7 @@ namespace pcl
       using PCLBase<PointT>::fake_indices_;
 
       /// Constructor
-      GrabCut (uint32_t K = 5, float lambda = 50.f)
+      GrabCut (uint32_t K = 5, double lambda = 50.f)
         : K_ (K)
         , lambda_ (lambda)
         , nb_neighbours_ (9)
@@ -353,13 +353,13 @@ namespace pcl
       virtual int
       refineOnce ();
       /// \return lambda
-      float
+      double
       getLambda () { return (lambda_); }
       /** Set lambda parameter to user given value. Suggested value by the authors is 50
         * \param[in] lambda
         */
       void
-      setLambda (float lambda) { lambda_ = lambda; }
+      setLambda (double lambda) { lambda_ = lambda; }
       /// \return the number of components in the GMM
       uint32_t
       getK () { return (K_); }
@@ -400,8 +400,8 @@ namespace pcl
 
         int nb_links;
         std::vector<int> indices;
-        std::vector<float> dists;
-        std::vector<float> weights;
+        std::vector<double> dists;
+        std::vector<double> weights;
       };
       bool
       initCompute ();
@@ -434,10 +434,10 @@ namespace pcl
       initGraph ();
       /// Add an edge to the graph, graph must be oriented so we add the edge and its reverse
       void
-      addEdge (vertex_descriptor v1, vertex_descriptor v2, float capacity, float rev_capacity);
+      addEdge (vertex_descriptor v1, vertex_descriptor v2, double capacity, double rev_capacity);
       /// Set the weights of SOURCE --> v and v --> SINK
       void
-      setTerminalWeights (vertex_descriptor v, float source_capacity, float sink_capacity);
+      setTerminalWeights (vertex_descriptor v, double source_capacity, double sink_capacity);
       /// \return true if v is in source tree
       inline bool
       isSource (vertex_descriptor v) { return (graph_.inSourceTree (v)); }
@@ -449,11 +449,11 @@ namespace pcl
       /// Number of GMM components
       uint32_t K_;
       /// lambda = 50. This value was suggested the GrabCut paper.
-      float lambda_;
+      double lambda_;
       /// beta = 1/2 * average of the squared color distances between all pairs of 8-neighboring pixels.
-      float beta_;
+      double beta_;
       /// L = a large value to force a pixel to be foreground or background
-      float L_;
+      double L_;
       /// Pointer to the spatial search object.
       KdTreePtr tree_;
       /// Number of neighbours
@@ -468,7 +468,7 @@ namespace pcl
       std::vector<std::size_t> GMM_component_;
       std::vector<segmentation::grabcut::SegmentationValue> hard_segmentation_;
       // Not yet implemented (this would be interpreted as alpha)
-      std::vector<float> soft_segmentation_;
+      std::vector<double> soft_segmentation_;
       segmentation::grabcut::GMM background_GMM_, foreground_GMM_;
       // Graph part
       /// Graph for Graphcut

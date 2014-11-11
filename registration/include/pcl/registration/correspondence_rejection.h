@@ -337,7 +337,7 @@ namespace pcl
             tree_->setInputCloud (target_);
           }
           std::vector<int> indices (1);
-          std::vector<float> distances (1);
+          std::vector<double> distances (1);
           if (tree_->nearestKSearch (input_->points[index], 1, indices, distances))
             return (distances[0]);
           else

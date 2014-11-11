@@ -102,7 +102,7 @@ namespace pcl
   {
     namespace kinfuLS
     {
-      void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, float colors_weight = 0.5f);
+      void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5f);
       void mergePointNormal (const DeviceArray<PointXYZ>& cloud, const DeviceArray<Normal>& normals, DeviceArray<PointNormal>& output);
     }
   }
@@ -694,7 +694,7 @@ struct KinFuLSApp
 {
   enum { PCD_BIN = 1, PCD_ASCII = 2, PLY = 3, MESH_PLY = 7, MESH_VTK = 8 };
 
-  KinFuLSApp(pcl::Grabber& source, float vsz, float shiftDistance, int snapshotRate) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
+  KinFuLSApp(pcl::Grabber& source, double vsz, double shiftDistance, int snapshotRate) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
           registration_ (false), integrate_colors_ (false), pcd_source_ (false), focal_length_(-1.f), capture_ (source), was_lost_(false), time_ms_ (0)
   {    
     //Init Kinfu Tracker
@@ -735,12 +735,12 @@ struct KinFuLSApp
     frame_counter_ = 0;
     enable_texture_extraction_ = false;
 
-    //~ float fx, fy, cx, cy;
+    //~ double fx, fy, cx, cy;
     //~ boost::shared_ptr<openni_wrapper::OpenNIDevice> d = ((pcl::OpenNIGrabber)source).getDevice ();
     //~ kinfu_->getDepthIntrinsics (fx, fy, cx, cy);
 
-    float height = 480.0f;
-    float width = 640.0f;
+    double height = 480.0f;
+    double width = 640.0f;
     screenshot_manager_.setCameraIntrinsics (pcl::device::kinfuLS::FOCAL_LENGTH, height, width);
     snapshot_rate_ = snapshotRate;
     
@@ -909,7 +909,7 @@ struct KinFuLSApp
     data_ready_cond_.notify_one();
   }
 
-  void source_cb2(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, float)
+  void source_cb2(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, double)
   {
     {
       boost::mutex::scoped_try_lock lock(data_ready_mutex_);
@@ -985,7 +985,7 @@ struct KinFuLSApp
     typedef boost::shared_ptr<DepthImage> DepthImagePtr;
     typedef boost::shared_ptr<Image>      ImagePtr;
 
-    boost::function<void (const ImagePtr&, const DepthImagePtr&, float constant)> func1 = boost::bind (&KinFuLSApp::source_cb2, this, _1, _2, _3);
+    boost::function<void (const ImagePtr&, const DepthImagePtr&, double constant)> func1 = boost::bind (&KinFuLSApp::source_cb2, this, _1, _2, _3);
     boost::function<void (const DepthImagePtr&)> func2 = boost::bind (&KinFuLSApp::source_cb1, this, _1);
     boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&) > func3 = boost::bind (&KinFuLSApp::source_cb3, this, _1);
 
@@ -1098,7 +1098,7 @@ struct KinFuLSApp
   bool registration_;
   bool integrate_colors_;
   bool pcd_source_;
-  float focal_length_;
+  double focal_length_;
 
   pcl::Grabber& capture_;
   KinfuTracker *kinfu_;
@@ -1279,7 +1279,7 @@ main (int argc, char* argv[])
     }
     else if (pc::parse_argument (argc, argv, "-pcd", pcd_dir) > 0)
     {
-      float fps_pcd = 15.0f;
+      double fps_pcd = 15.0f;
       pc::parse_argument (argc, argv, "-pcd_fps", fps_pcd);
 
       vector<string> pcd_files = getPcdFilesInDir(pcd_dir);    
@@ -1307,11 +1307,11 @@ main (int argc, char* argv[])
   }
   catch (const pcl::PCLException& /*e*/) { return cout << "Can't open depth source" << endl, -1; }
 
-  float volume_size = pcl::device::kinfuLS::VOLUME_SIZE;
+  double volume_size = pcl::device::kinfuLS::VOLUME_SIZE;
   pc::parse_argument (argc, argv, "--volume_size", volume_size);
   pc::parse_argument (argc, argv, "-vs", volume_size);
 
-  float shift_distance = pcl::device::kinfuLS::DISTANCE_THRESHOLD;
+  double shift_distance = pcl::device::kinfuLS::DISTANCE_THRESHOLD;
   pc::parse_argument (argc, argv, "--shifting_distance", shift_distance);
   pc::parse_argument (argc, argv, "-sd", shift_distance);
 

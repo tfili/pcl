@@ -25,7 +25,7 @@ namespace pcl
         int wsize_; //size of the window
         int max_patch_size_; //max size of the smaller patches
         int num_channels_; //the number of feature channels
-        float min_valid_small_patch_depth_; //percentage of valid depth in a small patch
+        double min_valid_small_patch_depth_; //percentage of valid depth in a small patch
       public:
 
         FeatureHandlerDepthAverage()
@@ -68,7 +68,7 @@ namespace pcl
          {
          srand (time(NULL));
          int min_s = 10;
-         float range_d = 0.03f;
+         double range_d = 0.03f;
          for (size_t i = 0; i < num_of_features; i++)
          {
          FT f;
@@ -87,7 +87,7 @@ namespace pcl
          if(num_channels_ > 1)
          f.used_ii_ = rand() % num_channels_;
 
-         f.threshold_ = -range_d + (rand () / static_cast<float> (RAND_MAX)) * (range_d * 2.f);
+         f.threshold_ = -range_d + (rand () / static_cast<double> (RAND_MAX)) * (range_d * 2.f);
          features.push_back (f);
          }
          }*/
@@ -96,8 +96,8 @@ namespace pcl
         {
           srand (static_cast<unsigned int>(time (NULL)));
           int min_s = 20;
-          float range_d = 0.05f;
-          float incr_d = 0.01f;
+          double range_d = 0.05f;
+          double incr_d = 0.01f;
 
           std::vector < FT > windows_and_functions;
 
@@ -127,7 +127,7 @@ namespace pcl
             FT f = windows_and_functions[i];
             for (size_t j = 0; j <= 10; j++)
             {
-              f.threshold_ = -range_d + static_cast<float> (j) * incr_d;
+              f.threshold_ = -range_d + static_cast<double> (j) * incr_d;
               features.push_back (f);
             }
           }
@@ -140,7 +140,7 @@ namespace pcl
          * \param[out] results The destination for the results of the feature evaluation.
          * \param[out] flags Flags that are supplied together with the results.
          */
-        void evaluateFeature(const FT & feature, DataSet & data_set, std::vector<ExampleIndex> & examples, std::vector<float> & results,
+        void evaluateFeature(const FT & feature, DataSet & data_set, std::vector<ExampleIndex> & examples, std::vector<double> & results,
             std::vector<unsigned char> & flags) const
         {
           results.resize (examples.size ());
@@ -157,7 +157,7 @@ namespace pcl
          * \param[out] result The destination for the result of the feature evaluation.
          * \param[out] flag Flags that are supplied together with the results.
          */
-        void evaluateFeature(const FT & feature, DataSet & data_set, const ExampleIndex & example, float & result, unsigned char & flag) const
+        void evaluateFeature(const FT & feature, DataSet & data_set, const ExampleIndex & example, double & result, unsigned char & flag) const
         {
           TrainingExample te = data_set[example];
           int el_f1 = te.iimages_[feature.used_ii_]->getFiniteElementsCount (te.col_ + feature.col1_, te.row_ + feature.row1_, feature.wsizex1_,
@@ -165,18 +165,18 @@ namespace pcl
           int el_f2 = te.iimages_[feature.used_ii_]->getFiniteElementsCount (te.col_ + feature.col2_, te.row_ + feature.row2_, feature.wsizex2_,
               feature.wsizey2_);
 
-          float sum_f1 = static_cast<float>(te.iimages_[feature.used_ii_]->getFirstOrderSum (te.col_ + feature.col1_, te.row_ + feature.row1_, feature.wsizex1_, feature.wsizey1_));
-          float sum_f2 = static_cast<float>(te.iimages_[feature.used_ii_]->getFirstOrderSum (te.col_ + feature.col2_, te.row_ + feature.row2_, feature.wsizex2_, feature.wsizey2_));
+          double sum_f1 = static_cast<double>(te.iimages_[feature.used_ii_]->getFirstOrderSum (te.col_ + feature.col1_, te.row_ + feature.row1_, feature.wsizex1_, feature.wsizey1_));
+          double sum_f2 = static_cast<double>(te.iimages_[feature.used_ii_]->getFirstOrderSum (te.col_ + feature.col2_, te.row_ + feature.row2_, feature.wsizex2_, feature.wsizey2_));
 
-          float f = min_valid_small_patch_depth_;
-          if (el_f1 == 0 || el_f2 == 0 || (el_f1 <= static_cast<int> (f * static_cast<float>(feature.wsizex1_ * feature.wsizey1_)))
-              || (el_f2 <= static_cast<int> (f * static_cast<float>(feature.wsizex2_ * feature.wsizey2_))))
+          double f = min_valid_small_patch_depth_;
+          if (el_f1 == 0 || el_f2 == 0 || (el_f1 <= static_cast<int> (f * static_cast<double>(feature.wsizex1_ * feature.wsizey1_)))
+              || (el_f2 <= static_cast<int> (f * static_cast<double>(feature.wsizex2_ * feature.wsizey2_))))
           {
-            result = static_cast<float> (pcl_round (static_cast<float>(rand ()) / static_cast<float> (RAND_MAX)));
+            result = static_cast<double> (pcl_round (static_cast<double>(rand ()) / static_cast<double> (RAND_MAX)));
             flag = 1;
           } else
           {
-            result = static_cast<float> ((sum_f1 / static_cast<float>(el_f1) - sum_f2 / static_cast<float>(el_f2)) > feature.threshold_);
+            result = static_cast<double> ((sum_f1 / static_cast<double>(el_f1) - sum_f2 / static_cast<double>(el_f2)) > feature.threshold_);
             flag = 0;
           }
 
@@ -319,8 +319,8 @@ namespace pcl
          * \param[in] flags The flags corresponding to the results.
          * \param[in] threshold The threshold for which the information gain is computed.
          */
-        float computeInformationGain(DataSet & data_set, std::vector<ExampleIndex> & examples, std::vector<LabelDataType> & label_data,
-            std::vector<float> & results, std::vector<unsigned char> & flags, const float threshold) const
+        double computeInformationGain(DataSet & data_set, std::vector<ExampleIndex> & examples, std::vector<LabelDataType> & label_data,
+            std::vector<double> & results, std::vector<unsigned char> & flags, const double threshold) const
         {
           const size_t num_of_examples = examples.size ();
           const size_t num_of_branches = getNumOfBranches ();
@@ -350,18 +350,18 @@ namespace pcl
             sums[num_of_branches] += label;
           }
 
-          std::vector<float> hp (num_of_branches + 1, 0.f);
+          std::vector<double> hp (num_of_branches + 1, 0.f);
           for (size_t branch_index = 0; branch_index < (num_of_branches + 1); ++branch_index)
           {
-            float pf = sums[branch_index] / static_cast<float> (branch_element_count[branch_index]);
-            float pnf = (static_cast<LabelDataType>(branch_element_count[branch_index]) - sums[branch_index] + 1.f)
+            double pf = sums[branch_index] / static_cast<double> (branch_element_count[branch_index]);
+            double pnf = (static_cast<LabelDataType>(branch_element_count[branch_index]) - sums[branch_index] + 1.f)
                         / static_cast<LabelDataType> (branch_element_count[branch_index]);
-            hp[branch_index] -= static_cast<float>(pf * log (pf) + pnf * log (pnf));
+            hp[branch_index] -= static_cast<double>(pf * log (pf) + pnf * log (pnf));
           }
 
           //use mean of the examples as purity
-          float purity = sums[num_of_branches] / static_cast<LabelDataType>(branch_element_count[num_of_branches]);
-          float tp = 0.8f;
+          double purity = sums[num_of_branches] / static_cast<LabelDataType>(branch_element_count[num_of_branches]);
+          double tp = 0.8f;
 
           if (purity >= tp)
           {
@@ -411,10 +411,10 @@ namespace pcl
             }
 
             //update information_gain
-            std::vector<float> hr (num_of_branches + 1, 0.f);
+            std::vector<double> hr (num_of_branches + 1, 0.f);
             for (size_t branch_index = 0; branch_index < (num_of_branches + 1); ++branch_index)
             {
-              hr[branch_index] = static_cast<float>(0.5f * log (std::pow (2 * M_PI, 3)
+              hr[branch_index] = static_cast<double>(0.5f * log (std::pow (2 * M_PI, 3)
                                                     * offset_covariances[branch_index].determinant ())
                                                     + 0.5f * log (std::pow (2 * M_PI, 3)
                                                     * angle_covariances[branch_index].determinant ()));
@@ -422,14 +422,14 @@ namespace pcl
 
             for (size_t branch_index = 0; branch_index < (num_of_branches + 1); ++branch_index)
             {
-              hp[branch_index] += std::max (sums[branch_index] / static_cast<float> (branch_element_count[branch_index]) - tp, 0.f) * hr[branch_index];
+              hp[branch_index] += std::max (sums[branch_index] / static_cast<double> (branch_element_count[branch_index]) - tp, 0.f) * hr[branch_index];
             }
           }
 
-          float information_gain = hp[num_of_branches + 1];
+          double information_gain = hp[num_of_branches + 1];
           for (size_t branch_index = 0; branch_index < (num_of_branches); ++branch_index)
           {
-            information_gain -= static_cast<float> (branch_element_count[branch_index]) / static_cast<float> (branch_element_count[num_of_branches])
+            information_gain -= static_cast<double> (branch_element_count[branch_index]) / static_cast<double> (branch_element_count[num_of_branches])
                 * hp[branch_index];
           }
 
@@ -442,7 +442,7 @@ namespace pcl
          * \param[in] threshold The threshold used to compute the branch indices.
          * \param[out] branch_indices The destination for the computed branch indices.
          */
-        void computeBranchIndices(std::vector<float> & results, std::vector<unsigned char> & flags, const float threshold,
+        void computeBranchIndices(std::vector<double> & results, std::vector<unsigned char> & flags, const double threshold,
             std::vector<unsigned char> & branch_indices) const
         {
           const size_t num_of_results = results.size ();
@@ -462,7 +462,7 @@ namespace pcl
          * \param[in] threshold The threshold used to compute the branch index.
          * \param[out] branch_index The destination for the computed branch index.
          */
-        inline void computeBranchIndex(const float result, const unsigned char flag, const float threshold, unsigned char & branch_index) const
+        inline void computeBranchIndex(const double result, const unsigned char flag, const double threshold, unsigned char & branch_index) const
         {
           branch_estimator_->computeBranchIndex (result, flag, threshold, branch_index);
         }
@@ -487,10 +487,10 @@ namespace pcl
             sqr_sum += label * label;
           }
 
-          sum /= static_cast<float>(num_of_examples);
-          sqr_sum /= static_cast<float>(num_of_examples);
+          sum /= static_cast<double>(num_of_examples);
+          sqr_sum /= static_cast<double>(num_of_examples);
 
-          const float variance = sqr_sum - sum * sum;
+          const double variance = sqr_sum - sum * sum;
 
           node.value = sum;
           node.variance = variance;

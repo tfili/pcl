@@ -671,9 +671,9 @@ pcl::demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
   // Subtract the centroid from cloud_in
   for (size_t i = 0; i < cloud_in.points.size (); ++i)
   {
-    cloud_out[i].x -= static_cast<float> (centroid[0]);
-    cloud_out[i].y -= static_cast<float> (centroid[1]);
-    cloud_out[i].z -= static_cast<float> (centroid[2]);
+    cloud_out[i].x -= static_cast<double> (centroid[0]);
+    cloud_out[i].y -= static_cast<double> (centroid[1]);
+    cloud_out[i].z -= static_cast<double> (centroid[2]);
   }
 }
 
@@ -701,9 +701,9 @@ pcl::demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
   // Subtract the centroid from cloud_in
   for (size_t i = 0; i < indices.size (); ++i)
   {
-    cloud_out[i].x = static_cast<float> (cloud_in[indices[i]].x - centroid[0]);
-    cloud_out[i].y = static_cast<float> (cloud_in[indices[i]].y - centroid[1]);
-    cloud_out[i].z = static_cast<float> (cloud_in[indices[i]].z - centroid[2]);
+    cloud_out[i].x = static_cast<double> (cloud_in[indices[i]].x - centroid[0]);
+    cloud_out[i].y = static_cast<double> (cloud_in[indices[i]].y - centroid[1]);
+    cloud_out[i].z = static_cast<double> (cloud_in[indices[i]].z - centroid[2]);
   }
 }
 

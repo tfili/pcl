@@ -44,8 +44,8 @@
 using namespace pcl;
 using namespace std;
 
-const float subsampling_leaf_size = 0.003f;
-const float base_scale = 0.005f;
+const double subsampling_leaf_size = 0.003f;
+const double base_scale = 0.005f;
 
 
 int
@@ -66,9 +66,9 @@ main (int, char **argv)
   cerr << "subsampled cloud has #points: " << cloud_subsampled->points.size () << endl;
 
   StatisticalMultiscaleInterestRegionExtraction<PointXYZ> region_extraction;
-  std::vector<float> scale_vector;
+  std::vector<double> scale_vector;
   PCL_INFO ("Scale values that will be used: ");
-  float base_scale_aux = base_scale;
+  double base_scale_aux = base_scale;
   for (size_t scales = 0; scales < 7; ++scales)
   {
     PCL_INFO ("%f ", base_scale_aux);

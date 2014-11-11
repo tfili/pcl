@@ -74,7 +74,7 @@ namespace pcl
     */
   PCL_EXPORTS void 
   getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx, int z_idx,
-               const std::string &distance_field_name, float min_distance, float max_distance, 
+               const std::string &distance_field_name, double min_distance, double max_distance, 
                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative = false);
 
   /** \brief Get the relative cell indices of the "upper half" 13 neighbors.
@@ -141,7 +141,7 @@ namespace pcl
     */
   template <typename PointT> void 
   getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, 
-               const std::string &distance_field_name, float min_distance, float max_distance,
+               const std::string &distance_field_name, double min_distance, double max_distance,
                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative = false);
 
   /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions
@@ -159,7 +159,7 @@ namespace pcl
   template <typename PointT> void 
   getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, 
                const std::vector<int> &indices,
-               const std::string &distance_field_name, float min_distance, float max_distance,
+               const std::string &distance_field_name, double min_distance, double max_distance,
                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative = false);
 
   /** \brief VoxelGrid assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
@@ -236,7 +236,7 @@ namespace pcl
         * \param[in] lz the leaf size for Z
         */
       inline void
-      setLeafSize (float lx, float ly, float lz)
+      setLeafSize (double lx, double ly, double lz)
       {
         leaf_size_[0] = lx; leaf_size_[1] = ly; leaf_size_[2] = lz;
         // Avoid division errors
@@ -362,7 +362,7 @@ namespace pcl
         * \param[in] z the Z point coordinate to get the (i, j, k) index at
         */
       inline Eigen::Vector3i 
-      getGridCoordinates (float x, float y, float z) 
+      getGridCoordinates (double x, double y, double z) 
       { 
         return (Eigen::Vector3i (static_cast<int> (floor (x * inverse_leaf_size_[0])), 
                                  static_cast<int> (floor (y * inverse_leaf_size_[1])), 
@@ -563,7 +563,7 @@ namespace pcl
         * \param[in] lz the leaf size for Z
         */
       inline void
-      setLeafSize (float lx, float ly, float lz)
+      setLeafSize (double lx, double ly, double lz)
       {
         leaf_size_[0] = lx; leaf_size_[1] = ly; leaf_size_[2] = lz;
         // Avoid division errors
@@ -642,7 +642,7 @@ namespace pcl
         * \param[in] z the Z point coordinate to get the index at
         */
       inline int 
-      getCentroidIndex (float x, float y, float z)
+      getCentroidIndex (double x, double y, double z)
       {
         return (leaf_layout_.at ((Eigen::Vector4i (static_cast<int> (floor (x * inverse_leaf_size_[0])), 
                                                    static_cast<int> (floor (y * inverse_leaf_size_[1])), 
@@ -660,7 +660,7 @@ namespace pcl
         * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering performed
         */
       inline std::vector<int> 
-      getNeighborCentroidIndices (float x, float y, float z, const Eigen::MatrixXi &relative_coordinates)
+      getNeighborCentroidIndices (double x, double y, double z, const Eigen::MatrixXi &relative_coordinates)
       {
         Eigen::Vector4i ijk (static_cast<int> (floor (x * inverse_leaf_size_[0])), 
                              static_cast<int> (floor (y * inverse_leaf_size_[1])), 
@@ -689,7 +689,7 @@ namespace pcl
         * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering performed
         */
       inline std::vector<int> 
-      getNeighborCentroidIndices (float x, float y, float z, const std::vector<Eigen::Vector3i> &relative_coordinates)
+      getNeighborCentroidIndices (double x, double y, double z, const std::vector<Eigen::Vector3i> &relative_coordinates)
       {
         Eigen::Vector4i ijk (static_cast<int> (floorf (x * inverse_leaf_size_[0])), static_cast<int> (floorf (y * inverse_leaf_size_[1])), static_cast<int> (floorf (z * inverse_leaf_size_[2])), 0);
         std::vector<int> neighbors;
@@ -711,7 +711,7 @@ namespace pcl
         * \param[in] z the Z point coordinate to get the (i, j, k) index at
         */
       inline Eigen::Vector3i 
-      getGridCoordinates (float x, float y, float z) 
+      getGridCoordinates (double x, double y, double z) 
       { 
         return (Eigen::Vector3i (static_cast<int> (floor (x * inverse_leaf_size_[0])), 
                                  static_cast<int> (floor (y * inverse_leaf_size_[1])), 

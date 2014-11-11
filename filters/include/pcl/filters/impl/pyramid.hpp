@@ -70,7 +70,7 @@ pcl::filters::Pyramid<PointT>::initCompute ()
     Eigen::VectorXf k (5);
     k << 1.f/16.f, 1.f/4.f, 3.f/8.f, 1.f/4.f, 1.f/16.f;
     kernel_ = k * k.transpose ();
-    if (threshold_ != std::numeric_limits<float>::infinity ())
+    if (threshold_ != std::numeric_limits<double>::infinity ())
       threshold_ *= 2 * threshold_;
 
   }
@@ -79,7 +79,7 @@ pcl::filters::Pyramid<PointT>::initCompute ()
     Eigen::VectorXf k (3);
     k << 1.f/4.f, 1.f/2.f, 1.f/4.f;
     kernel_ = k * k.transpose ();
-    if (threshold_ != std::numeric_limits<float>::infinity ())
+    if (threshold_ != std::numeric_limits<double>::infinity ())
       threshold_ *= threshold_;
   }
   
@@ -154,7 +154,7 @@ pcl::filters::Pyramid<PointT>::compute (std::vector<PointCloudPtr>& output)
       {
         for(int j=0; j < next.width; ++j)
         {
-          float weight = 0;
+          double weight = 0;
           for(int m=0; m < kernel_rows; ++m)
           {
             int mm = kernel_rows - 1 - m;
@@ -226,7 +226,7 @@ namespace pcl
           {
             for(int j=0; j < next.width; ++j)          // columns
             {
-              float r = 0, g = 0, b = 0;
+              double r = 0, g = 0, b = 0;
               for(int m=0; m < kernel_rows; ++m)     // kernel rows
               {
                 int mm = kernel_rows - 1 - m;      // row index of flipped kernel
@@ -271,8 +271,8 @@ namespace pcl
           {
             for(int j=0; j < next.width; ++j)
             {
-              float weight = 0;
-              float r = 0, g = 0, b = 0;
+              double weight = 0;
+              double r = 0, g = 0, b = 0;
               for(int m=0; m < kernel_rows; ++m)
               {
                 int mm = kernel_rows - 1 - m;
@@ -349,7 +349,7 @@ namespace pcl
           {
             for(int j=0; j < next.width; ++j)          // columns
             {
-              float r = 0, g = 0, b = 0, a = 0;
+              double r = 0, g = 0, b = 0, a = 0;
               for(int m=0; m < kernel_rows; ++m)     // kernel rows
               {
                 int mm = kernel_rows - 1 - m;      // row index of flipped kernel
@@ -396,8 +396,8 @@ namespace pcl
           {
             for(int j=0; j < next.width; ++j)
             {
-              float weight = 0;
-              float r = 0, g = 0, b = 0, a = 0;
+              double weight = 0;
+              double r = 0, g = 0, b = 0, a = 0;
               for(int m=0; m < kernel_rows; ++m)
               {
                 int mm = kernel_rows - 1 - m;
@@ -482,7 +482,7 @@ namespace pcl
           {
             for(int j=0; j < next.width; ++j)
             {
-              float r = 0, g = 0, b = 0;
+              double r = 0, g = 0, b = 0;
               for(int m=0; m < kernel_rows; ++m)
               {
                 int mm = kernel_rows - 1 - m;
@@ -521,8 +521,8 @@ namespace pcl
           {
             for(int j=0; j < next.width; ++j)
             {
-              float weight = 0;
-              float r = 0, g = 0, b = 0;
+              double weight = 0;
+              double r = 0, g = 0, b = 0;
               for(int m=0; m < kernel_rows; ++m)
               {
                 int mm = kernel_rows - 1 - m;

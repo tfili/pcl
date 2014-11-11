@@ -39,7 +39,7 @@ main (int argc, char** argv)
   int K = 10;
 
   std::vector<int> pointIdxNKNSearch(K);
-  std::vector<float> pointNKNSquaredDistance(K);
+  std::vector<double> pointNKNSquaredDistance(K);
 
   std::cout << "K nearest neighbor search at (" << searchPoint.x 
             << " " << searchPoint.y 
@@ -58,9 +58,9 @@ main (int argc, char** argv)
   // Neighbors within radius search
 
   std::vector<int> pointIdxRadiusSearch;
-  std::vector<float> pointRadiusSquaredDistance;
+  std::vector<double> pointRadiusSquaredDistance;
 
-  float radius = 256.0f * rand () / (RAND_MAX + 1.0f);
+  double radius = 256.0f * rand () / (RAND_MAX + 1.0f);
 
   std::cout << "Neighbors within radius search at (" << searchPoint.x 
             << " " << searchPoint.y 

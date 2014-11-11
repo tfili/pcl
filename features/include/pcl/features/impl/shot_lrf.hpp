@@ -45,12 +45,12 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Compute a local Reference Frame for a 3D feature; the output is stored in the "rf" matrix
-template<typename PointInT, typename PointOutT> float
+template<typename PointInT, typename PointOutT> double
 pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const int& current_point_idx, Eigen::Matrix3f &rf)
 {
   const Eigen::Vector4f& central_point = (*input_)[current_point_idx].getVector4fMap ();
   std::vector<int> n_indices;
-  std::vector<float> n_sqr_distances;
+  std::vector<double> n_sqr_distances;
 
   this->searchForNeighbors (current_point_idx, search_parameter_, n_indices, n_sqr_distances);
 
@@ -85,9 +85,9 @@ pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const i
   if (valid_nn_points < 5)
   {
     //PCL_ERROR ("[pcl::%s::getLocalRF] Warning! Neighborhood has less than 5 vertexes. Aborting Local RF computation of feature point (%lf, %lf, %lf)\n", "SHOTLocalReferenceFrameEstimation", central_point[0], central_point[1], central_point[2]);
-    rf.setConstant (std::numeric_limits<float>::quiet_NaN ());
+    rf.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
-    return (std::numeric_limits<float>::max ());
+    return (std::numeric_limits<double>::max ());
   }
 
   cov_m /= sum;
@@ -101,9 +101,9 @@ pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const i
   if (!pcl_isfinite (e1c) || !pcl_isfinite (e2c) || !pcl_isfinite (e3c))
   {
     //PCL_ERROR ("[pcl::%s::getLocalRF] Warning! Eigenvectors are NaN. Aborting Local RF computation of feature point (%lf, %lf, %lf)\n", "SHOTLocalReferenceFrameEstimation", central_point[0], central_point[1], central_point[2]);
-    rf.setConstant (std::numeric_limits<float>::quiet_NaN ());
+    rf.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
-    return (std::numeric_limits<float>::max ());
+    return (std::numeric_limits<double>::max ());
   }
 
   // Disambiguation
@@ -157,8 +157,8 @@ pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const i
 	} else if (plusNormal < 0)
     v3 *= - 1;
 
-  rf.row (0).matrix () = v1.head<3> ().cast<float> ();
-  rf.row (2).matrix () = v3.head<3> ().cast<float> ();
+  rf.row (0).matrix () = v1.head<3> ().cast<double> ();
+  rf.row (2).matrix () = v3.head<3> ().cast<double> ();
   rf.row (1).matrix () = rf.row (2).cross (rf.row (0));
 
   return (0.0f);
@@ -185,8 +185,8 @@ pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::computeFeature (Poi
     PointOutT& output_rf = output[i];
 
     //output_rf.confidence = getLocalRF ((*indices_)[i], rf);
-    //if (output_rf.confidence == std::numeric_limits<float>::max ())
-    if (getLocalRF ((*indices_)[i], rf) == std::numeric_limits<float>::max ())
+    //if (output_rf.confidence == std::numeric_limits<double>::max ())
+    if (getLocalRF ((*indices_)[i], rf) == std::numeric_limits<double>::max ())
     {
       output.is_dense = false;
     }

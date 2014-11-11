@@ -67,12 +67,12 @@ main (int argc, char ** argv)
     std::vector<std::string> tokens;
     boost::split (tokens, params_string, boost::is_any_of (","), boost::token_compress_on);
     assert (tokens.size () == 6);
-    float radius = atof(tokens[0].c_str ());
+    double radius = atof(tokens[0].c_str ());
     int max_nearest_neighbors = atoi(tokens[1].c_str ());
-    float mu = atof(tokens[2].c_str ());
-    float max_surface_angle = atof(tokens[3].c_str ());
-    float min_angle = atof(tokens[4].c_str ());
-    float max_angle = atof(tokens[5].c_str ());
+    double mu = atof(tokens[2].c_str ());
+    double max_surface_angle = atof(tokens[3].c_str ());
+    double min_angle = atof(tokens[4].c_str ());
+    double max_angle = atof(tokens[5].c_str ());
 
     greedy_mesh = greedyTriangulation (surfels, radius, max_nearest_neighbors, mu, 
                                        max_surface_angle, min_angle, max_angle);

@@ -47,7 +47,7 @@
 inline void
 pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
                            const Eigen::Vector4f &point,
-                           Eigen::Vector4f &plane_parameters, float &curvature)
+                           Eigen::Vector4f &plane_parameters, double &curvature)
 {
   solvePlaneParameters (covariance_matrix, plane_parameters [0], plane_parameters [1], plane_parameters [2], curvature);
 
@@ -59,14 +59,14 @@ pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
 //////////////////////////////////////////////////////////////////////////////////////////////
 inline void
 pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-                           float &nx, float &ny, float &nz, float &curvature)
+                           double &nx, double &ny, double &nz, double &curvature)
 {
   // Avoid getting hung on Eigen's optimizers
 //  for (int i = 0; i < 9; ++i)
 //    if (!pcl_isfinite (covariance_matrix.coeff (i)))
 //    {
 //      //PCL_WARN ("[pcl::solvePlaneParameteres] Covariance matrix has NaN/Inf values!\n");
-//      nx = ny = nz = curvature = std::numeric_limits<float>::quiet_NaN ();
+//      nx = ny = nz = curvature = std::numeric_limits<double>::quiet_NaN ();
 //      return;
 //    }
   // Extract the smallest eigenvalue and its eigenvector
@@ -79,7 +79,7 @@ pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
   nz = eigen_vector [2];
 
   // Compute the curvature surface change
-  float eig_sum = covariance_matrix.coeff (0) + covariance_matrix.coeff (4) + covariance_matrix.coeff (8);
+  double eig_sum = covariance_matrix.coeff (0) + covariance_matrix.coeff (4) + covariance_matrix.coeff (8);
   if (eig_sum != 0)
     curvature = fabsf (eigen_value / eig_sum);
   else
@@ -144,7 +144,7 @@ pcl::Feature<PointInT, PointOutT>::initCompute ()
       search_parameter_ = search_radius_;
       // Declare the search locator definition
       int (KdTree::*radiusSearchSurface)(const PointCloudIn &cloud, int index, double radius,
-                                         std::vector<int> &k_indices, std::vector<float> &k_distances,
+                                         std::vector<int> &k_indices, std::vector<double> &k_distances,
                                          unsigned int max_nn) const = &pcl::search::Search<PointInT>::radiusSearch;
       search_method_surface_ = boost::bind (radiusSearchSurface, boost::ref (tree_), _1, _2, _3, _4, _5, 0);
     }
@@ -156,7 +156,7 @@ pcl::Feature<PointInT, PointOutT>::initCompute ()
       search_parameter_ = k_;
       // Declare the search locator definition
       int (KdTree::*nearestKSearchSurface)(const PointCloudIn &cloud, int index, int k, std::vector<int> &k_indices,
-                                           std::vector<float> &k_distances) const = &KdTree::nearestKSearch;
+                                           std::vector<double> &k_distances) const = &KdTree::nearestKSearch;
       search_method_surface_ = boost::bind (nearestKSearchSurface, boost::ref (tree_), _1, _2, _3, _4, _5);
     }
     else

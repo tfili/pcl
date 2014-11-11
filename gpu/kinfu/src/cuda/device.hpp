@@ -51,7 +51,7 @@ namespace pcl
     #define INV_DIV 3.051850947599719e-5f
 
     __device__ __forceinline__ void
-    pack_tsdf (float tsdf, int weight, short2& value)
+    pack_tsdf (double tsdf, int weight, short2& value)
     {
       int fixedp = max (-DIVISOR, min (DIVISOR, __float2int_rz (tsdf * DIVISOR)));
       //int fixedp = __float2int_rz(tsdf * DIVISOR);
@@ -59,16 +59,16 @@ namespace pcl
     }
 
     __device__ __forceinline__ void
-    unpack_tsdf (short2 value, float& tsdf, int& weight)
+    unpack_tsdf (short2 value, double& tsdf, int& weight)
     {
       weight = value.y;
       tsdf = __int2float_rn (value.x) / DIVISOR;   //*/ * INV_DIV;
     }
 
-    __device__ __forceinline__ float
+    __device__ __forceinline__ double
     unpack_tsdf (short2 value)
     {
-      return static_cast<float>(value.x) / DIVISOR;    //*/ * INV_DIV;
+      return static_cast<double>(value.x) / DIVISOR;    //*/ * INV_DIV;
     }
 
 

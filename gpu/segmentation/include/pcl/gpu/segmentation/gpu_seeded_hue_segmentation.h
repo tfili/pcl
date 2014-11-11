@@ -54,10 +54,10 @@ namespace pcl
     void
     seededHueSegmentation (const boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> >  &host_cloud_,
                            const pcl::gpu::Octree::Ptr                                  &tree,
-                           float                                                        tolerance,
+                           double                                                        tolerance,
                            PointIndices                                                 &clusters_in,
                            PointIndices                                                 &clusters_out,
-                           float                                                        delta_hue = 0.0);
+                           double                                                        delta_hue = 0.0);
 
     class SeededHueSegmentation
     {
@@ -106,10 +106,10 @@ namespace pcl
           * \param[in] delta_hue the new delta hue
           */
         inline void 
-        setDeltaHue (float delta_hue) { delta_hue_ = delta_hue; }
+        setDeltaHue (double delta_hue) { delta_hue_ = delta_hue; }
 
         /** \brief Get the tolerance on the hue */
-        inline float 
+        inline double 
         getDeltaHue () { return (delta_hue_); }
 
         /** \brief Cluster extraction in a PointCloud given by <setInputCloud (), setIndices ()>
@@ -132,7 +132,7 @@ namespace pcl
         double cluster_tolerance_;
 
         /** \brief The allowed difference on the hue*/
-        float delta_hue_;
+        double delta_hue_;
 
         /** \brief Class getName method. */
         virtual std::string getClassName () const { return ("gpu::SeededHueSegmentation"); }

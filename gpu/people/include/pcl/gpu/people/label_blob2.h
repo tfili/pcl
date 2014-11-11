@@ -69,7 +69,7 @@ namespace pcl
         //These variables are added in order to be able to build trees with them
         int    child_id[MAX_CHILD];     // id of the best found child
         int    child_lid[MAX_CHILD];    // lid of the best found child
-        float  child_dist[MAX_CHILD];   // result of evaluation function of this child
+        double  child_dist[MAX_CHILD];   // result of evaluation function of this child
         char   child_label[MAX_CHILD];  // makes displaying the tree easier
       
         pcl::PointIndices indices;      // The indices of the pointcloud

@@ -15,7 +15,7 @@ using namespace pcl;
 using namespace std;
 
 const Eigen::Vector4f subsampling_leaf_size (0.02f, 0.02f, 0.02f, 0.0f);
-const float normal_estimation_search_radius = 0.05f;
+const double normal_estimation_search_radius = 0.05f;
 
 
 PointCloud<PointNormal>::Ptr
@@ -111,7 +111,7 @@ main (int argc, char** argv)
     ppf_estimator.setInputNormals (cloud_model_input);
     ppf_estimator.compute (*cloud_model_ppf);
 
-    PPFHashMapSearch::Ptr hashmap_search (new PPFHashMapSearch (12.0f / 180.0f * float (M_PI),
+    PPFHashMapSearch::Ptr hashmap_search (new PPFHashMapSearch (12.0f / 180.0f * double (M_PI),
                                                                  0.05f));
     hashmap_search->setInputFeatureCloud (cloud_model_ppf);
     hashmap_search_vector.push_back (hashmap_search);
@@ -130,7 +130,7 @@ main (int argc, char** argv)
     // set parameters for the PPF registration procedure
     ppf_registration.setSceneReferencePointSamplingRate (10);
     ppf_registration.setPositionClusteringThreshold (0.2f);
-    ppf_registration.setRotationClusteringThreshold (30.0f / 180.0f * float (M_PI));
+    ppf_registration.setRotationClusteringThreshold (30.0f / 180.0f * double (M_PI));
     ppf_registration.setSearchMethod (hashmap_search_vector[model_i]);
     ppf_registration.setInputSource (cloud_models_with_normals[model_i]);
     ppf_registration.setInputTarget (cloud_scene_input);

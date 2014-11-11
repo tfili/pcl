@@ -78,14 +78,14 @@ namespace pcl
           Header ()
             : resolution (0,0,0),
               volume_size (0,0,0),
-              volume_element_size (sizeof(float)),
+              volume_element_size (sizeof(double)),
               weights_element_size (sizeof(short))
           {};
 
           Header (const Eigen::Vector3i &res, const Eigen::Vector3f &size)
             : resolution (res),
               volume_size (size),
-              volume_element_size (sizeof(float)),
+              volume_element_size (sizeof(double)),
               weights_element_size (sizeof(short))
           {};
 
@@ -122,7 +122,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \param[in] distance TSDF truncation distance 
           */
         void
-        setTsdfTruncDist (float distance);
+        setTsdfTruncDist (double distance);
 
         /** \brief Returns tsdf volume container that point to data in GPU memroy */
         DeviceArray2D<int> 
@@ -141,7 +141,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         getVoxelSize () const;
         
         /** \brief Returns tsdf truncation distance in meters */
-        float
+        double
         getTsdfTruncDist () const;
       
         /** \brief Resets tsdf volume data to uninitialized state */
@@ -186,7 +186,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \return DeviceArray with disabled reference counting that points to filled part of cloud_buffer.
           */
         size_t
-        fetchSliceAsCloud (DeviceArray<PointType>& cloud_buffer_xyz, DeviceArray<float>& cloud_buffer_intensity, const tsdf_buffer* buffer, int shiftX, int shiftY, int shiftZ ) const;
+        fetchSliceAsCloud (DeviceArray<PointType>& cloud_buffer_xyz, DeviceArray<double>& cloud_buffer_intensity, const tsdf_buffer* buffer, int shiftX, int shiftY, int shiftZ ) const;
 
         /** \brief Computes normals as gradient of tsdf for given points
           * \param[in] cloud Points where normals are computed.
@@ -207,7 +207,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \param[out] tsdf Array with tsdf values. if volume resolution is 512x512x512, so for voxel (x,y,z) tsdf value can be retrieved as volume[512*512*z + 512*y + x];
           */
         void
-        downloadTsdf (std::vector<float>& tsdf) const;
+        downloadTsdf (std::vector<double>& tsdf) const;
 
         /** \brief Downloads tsdf volume from GPU memory to local CPU buffer*/
         void
@@ -218,7 +218,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \param[out] weights Array with tsdf voxel weights. Same size and access index as for tsdf. A weight of 0 indicates the voxel was never used.
           */
         void
-        downloadTsdfAndWeights (std::vector<float>& tsdf, std::vector<short>& weights) const;
+        downloadTsdfAndWeights (std::vector<double>& tsdf, std::vector<short>& weights) const;
         
         /** \brief Downloads TSDF volume and according voxel weights from GPU memory to local CPU buffers*/
         void
@@ -270,11 +270,11 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         DeviceArray2D<int> volume_;
 
         /** \brief tsdf truncation distance */
-        float tranc_dist_;
+        double tranc_dist_;
         
         // The following member are resulting from the merge of TSDFVolume with TsdfVolume class.
         
-        typedef boost::shared_ptr<std::vector<float> > VolumePtr;
+        typedef boost::shared_ptr<std::vector<double> > VolumePtr;
         typedef boost::shared_ptr<std::vector<short> > WeightsPtr;
         
         Header header_;

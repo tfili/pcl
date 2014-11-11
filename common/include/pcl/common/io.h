@@ -160,7 +160,7 @@ namespace pcl
 
   /** \brief Obtains the type of the PCLPointField from a specific size and type
     * \param[in] size the size in bytes of the data field
-    * \param[in] type a char describing the type of the field  ('F' = float, 'I' = signed, 'U' = unsigned)
+    * \param[in] type a char describing the type of the field  ('F' = double, 'I' = signed, 'U' = unsigned)
     * \ingroup common
     */
   inline int

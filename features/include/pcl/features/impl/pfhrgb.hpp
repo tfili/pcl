@@ -47,7 +47,7 @@ template <typename PointInT, typename PointNT, typename PointOutT> bool
 pcl::PFHRGBEstimation<PointInT, PointNT, PointOutT>::computeRGBPairFeatures (
     const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
     int p_idx, int q_idx,
-    float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7)
+    double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7)
 {
   Eigen::Vector4i colors1 (cloud.points[p_idx].r, cloud.points[p_idx].g, cloud.points[p_idx].b, 0),
       colors2 (cloud.points[q_idx].r, cloud.points[q_idx].g, cloud.points[q_idx].b, 0);
@@ -71,7 +71,7 @@ pcl::PFHRGBEstimation<PointInT, PointNT, PointOutT>::computePointPFHRGBSignature
   pfhrgb_histogram.setZero ();
 
   // Factorization constant
-  float hist_incr = 100.0f / static_cast<float> (indices.size () * indices.size () - 1);
+  double hist_incr = 100.0f / static_cast<double> (indices.size () * indices.size () - 1);
 
   // Iterate over all the points in the neighborhood
   for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
@@ -149,7 +149,7 @@ pcl::PFHRGBEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudO
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   // Iterating over the entire index vector
   for (size_t idx = 0; idx < indices_->size (); ++idx)

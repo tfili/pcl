@@ -24,7 +24,7 @@
  *         represented in c0*x + c1*y + c2*z + c3 = 0 form)
  */
 pcl::ModelCoefficients::Ptr
-fitPlane (const PointCloudPtr & input, float distance_threshold, float max_iterations)
+fitPlane (const PointCloudPtr & input, double distance_threshold, double max_iterations)
 {
   // Intialize the SACSegmentation object
   pcl::SACSegmentation<PointT> seg;
@@ -54,7 +54,7 @@ fitPlane (const PointCloudPtr & input, float distance_threshold, float max_itera
  * Return: A pointer to a new point cloud which contains only the non-plane points
  */
 PointCloudPtr
-findAndSubtractPlane (const PointCloudPtr & input, float distance_threshold, float max_iterations)
+findAndSubtractPlane (const PointCloudPtr & input, double distance_threshold, double max_iterations)
 {
   // Find the dominant plane
   pcl::SACSegmentation<PointT> seg;
@@ -91,7 +91,7 @@ findAndSubtractPlane (const PointCloudPtr & input, float distance_threshold, flo
  */
 void
 clusterObjects (const PointCloudPtr & input, 
-                float cluster_tolerance, int min_cluster_size, int max_cluster_size,
+                double cluster_tolerance, int min_cluster_size, int max_cluster_size,
                 std::vector<pcl::PointIndices> & cluster_indices_out)
 {  
   pcl::EuclideanClusterExtraction<PointT> ec;

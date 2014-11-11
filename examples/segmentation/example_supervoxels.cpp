@@ -134,19 +134,19 @@ main (int argc, char ** argv)
   std::string refined_out_label_path = "refined_test_output_labels.png";;
   pcl::console::parse (argc, argv, "-L", refined_out_label_path);
 
-  float voxel_resolution = 0.008f;
+  double voxel_resolution = 0.008f;
   pcl::console::parse (argc, argv, "-v", voxel_resolution);
     
-  float seed_resolution = 0.08f;
+  double seed_resolution = 0.08f;
   pcl::console::parse (argc, argv, "-s", seed_resolution);
   
-  float color_importance = 0.2f;
+  double color_importance = 0.2f;
   pcl::console::parse (argc, argv, "-c", color_importance);
   
-  float spatial_importance = 0.4f;
+  double spatial_importance = 0.4f;
   pcl::console::parse (argc, argv, "-z", spatial_importance);
   
-  float normal_importance = 1.0f;
+  double normal_importance = 1.0f;
   pcl::console::parse (argc, argv, "-n", normal_importance);
   
   if (!pcd_file_specified)
@@ -206,9 +206,9 @@ main (int argc, char ** argv)
     int centerY = static_cast<int>(cloud->height / 2.0);
     unsigned short* depth_pixel;
     unsigned char* color_pixel;
-    float scale = 1.0f/1000.0f;
-    float focal_length = 525.0f;
-    float fl_const = 1.0f / focal_length;
+    double scale = 1.0f/1000.0f;
+    double focal_length = 525.0f;
+    double fl_const = 1.0f / focal_length;
     depth_pixel = static_cast<unsigned short*>(depth_image->GetScalarPointer (depth_dims[0]-1,depth_dims[1]-1,0));
     color_pixel = static_cast<unsigned char*> (rgb_image->GetScalarPointer (depth_dims[0]-1,depth_dims[1]-1,0));
     
@@ -218,20 +218,20 @@ main (int argc, char ** argv)
       {
         PointT new_point;
         //  uint8_t* p_i = &(cloud_blob->data[y * cloud_blob->row_step + x * cloud_blob->point_step]);
-        float depth = static_cast<float>(*depth_pixel) * scale;
+        double depth = static_cast<double>(*depth_pixel) * scale;
         if (depth == 0.0f)
         {
-          new_point.x = new_point.y = new_point.z = std::numeric_limits<float>::quiet_NaN ();
+          new_point.x = new_point.y = new_point.z = std::numeric_limits<double>::quiet_NaN ();
         }
         else
         {
-          new_point.x = (static_cast<float> (x) - centerX) * depth * fl_const;
-          new_point.y = (static_cast<float> (centerY) - y) * depth * fl_const; // vtk seems to start at the bottom left image corner
+          new_point.x = (static_cast<double> (x) - centerX) * depth * fl_const;
+          new_point.y = (static_cast<double> (centerY) - y) * depth * fl_const; // vtk seems to start at the bottom left image corner
           new_point.z = depth;
         }
         
         uint32_t rgb = static_cast<uint32_t>(color_pixel[0]) << 16 |  static_cast<uint32_t>(color_pixel[1]) << 8 |  static_cast<uint32_t>(color_pixel[2]);
-        new_point.rgb = *reinterpret_cast<float*> (&rgb);
+        new_point.rgb = *reinterpret_cast<double*> (&rgb);
         cloud->points.push_back (new_point);
         
       }
@@ -325,7 +325,7 @@ main (int argc, char ** argv)
   }
   
   std::cout << "Constructing Boost Graph Library Adjacency List...\n";
-  typedef boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, uint32_t, float> VoxelAdjacencyList;
+  typedef boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, uint32_t, double> VoxelAdjacencyList;
   typedef VoxelAdjacencyList::vertex_descriptor VoxelID;
   typedef VoxelAdjacencyList::edge_descriptor EdgeID;
   VoxelAdjacencyList supervoxel_adjacency_list;

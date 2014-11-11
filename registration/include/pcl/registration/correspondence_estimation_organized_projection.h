@@ -57,7 +57,7 @@ namespace pcl
       * variable.
       * \author Alex Ichim
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class CorrespondenceEstimationOrganizedProjection : public CorrespondenceEstimationBase <PointSource, PointTarget, Scalar>
     {
       public:
@@ -90,7 +90,7 @@ namespace pcl
           , cx_ (319.5f)
           , cy_ (239.5f)
           , src_to_tgt_transformation_ (Eigen::Matrix4f::Identity ())
-          , depth_threshold_ (std::numeric_limits<float>::max ())
+          , depth_threshold_ (std::numeric_limits<double>::max ())
           , projection_matrix_ (Eigen::Matrix3f::Identity ())
         { }
 
@@ -100,7 +100,7 @@ namespace pcl
           * \param[in] fy the focal length in pixels along the y-axis of the image
           */
         inline void
-        setFocalLengths (const float fx, const float fy)
+        setFocalLengths (const double fx, const double fy)
         { fx_ = fx; fy_ = fy; }
 
         /** \brief Reads back the focal length parameters of the target camera.
@@ -108,7 +108,7 @@ namespace pcl
           * \param[out] fy the focal length in pixels along the y-axis of the image
           */
         inline void
-        getFocalLengths (float &fx, float &fy) const
+        getFocalLengths (double &fx, double &fy) const
         { fx = fx_; fy = fy_; }
 
 
@@ -117,7 +117,7 @@ namespace pcl
           * \param[in] cy the y-coordinate of the camera center
           */
         inline void
-        setCameraCenters (const float cx, const float cy)
+        setCameraCenters (const double cx, const double cy)
         { cx_ = cx; cy_ = cy; }
 
         /** \brief Reads back the camera center parameters of the target camera.
@@ -125,7 +125,7 @@ namespace pcl
           * \param[out] cy the y-coordinate of the camera center
           */
         inline void
-        getCameraCenters (float &cx, float &cy) const
+        getCameraCenters (double &cx, double &cy) const
         { cx = cx_; cy = cy_; }
 
         /** \brief Sets the transformation from the source point cloud to the target point cloud.
@@ -152,7 +152,7 @@ namespace pcl
           * \param[in] depth_threshold the depth threshold
           */
         inline void
-        setDepthThreshold (const float depth_threshold)
+        setDepthThreshold (const double depth_threshold)
         { depth_threshold_ = depth_threshold; }
 
         /** \brief Reads back the depth threshold; after projecting the source points in the image space of the target
@@ -160,7 +160,7 @@ namespace pcl
           * far from each other.
           * \return the depth threshold
           */
-        inline float
+        inline double
         getDepthThreshold () const
         { return (depth_threshold_); }
 
@@ -192,10 +192,10 @@ namespace pcl
         bool
         initCompute ();
 
-        float fx_, fy_;
-        float cx_, cy_;
+        double fx_, fy_;
+        double cx_, cy_;
         Eigen::Matrix4f src_to_tgt_transformation_;
-        float depth_threshold_;
+        double depth_threshold_;
 
         Eigen::Matrix3f projection_matrix_;
 

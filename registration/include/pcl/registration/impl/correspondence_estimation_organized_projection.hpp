@@ -105,7 +105,7 @@ pcl::registration::CorrespondenceEstimationOrganizedProjection<PointSource, Poin
 
         double dist = (p_src3 - pt_tgt.getVector3fMap ()).norm ();
         if (dist < max_distance)
-          correspondences[c_index++] =  pcl::Correspondence (*src_it, v * target_->width + u, static_cast<float> (dist));
+          correspondences[c_index++] =  pcl::Correspondence (*src_it, v * target_->width + u, static_cast<double> (dist));
       }
     }
   }

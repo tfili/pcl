@@ -65,7 +65,7 @@ namespace pcl
       unsigned char Red;
       unsigned char Alpha;
     };
-    float float_value;
+    double float_value;
     uint32_t long_value;
   } RGBValue;
 }
@@ -489,7 +489,7 @@ pcl::io::OpenNI2Grabber::imageDepthImageCallback (const Image::Ptr &image,
 
   if (image_depth_image_signal_->num_slots () > 0)
   {
-    float reciprocalFocalLength = 1.0f / device_->getDepthFocalLength ();
+    double reciprocalFocalLength = 1.0f / device_->getDepthFocalLength ();
     image_depth_image_signal_->operator ()(image, depth_image, reciprocalFocalLength);
   }
 }
@@ -505,7 +505,7 @@ pcl::io::OpenNI2Grabber::irDepthImageCallback (const IRImage::Ptr &ir_image,
 
   if (ir_depth_image_signal_->num_slots () > 0)
   {
-    float reciprocalFocalLength = 1.0f / device_->getDepthFocalLength ();
+    double reciprocalFocalLength = 1.0f / device_->getDepthFocalLength ();
     ir_depth_image_signal_->operator ()(ir_image, depth_image, reciprocalFocalLength);
   }
 }
@@ -525,22 +525,22 @@ pcl::io::OpenNI2Grabber::convertToXYZPointCloud (const DepthImage::Ptr& depth_im
 
   cloud->points.resize (cloud->height * cloud->width);
 
-  float constant_x = 1.0f / device_->getDepthFocalLength ();
-  float constant_y = 1.0f / device_->getDepthFocalLength ();
-  float centerX = ((float)cloud->width - 1.f) / 2.f;
-  float centerY = ((float)cloud->height - 1.f) / 2.f;
+  double constant_x = 1.0f / device_->getDepthFocalLength ();
+  double constant_y = 1.0f / device_->getDepthFocalLength ();
+  double centerX = ((double)cloud->width - 1.f) / 2.f;
+  double centerY = ((double)cloud->height - 1.f) / 2.f;
 
   if (pcl_isfinite (depth_parameters_.focal_length_x))
-    constant_x =  1.0f / static_cast<float> (depth_parameters_.focal_length_x);
+    constant_x =  1.0f / static_cast<double> (depth_parameters_.focal_length_x);
 
   if (pcl_isfinite (depth_parameters_.focal_length_y))
-    constant_y =  1.0f / static_cast<float> (depth_parameters_.focal_length_y);
+    constant_y =  1.0f / static_cast<double> (depth_parameters_.focal_length_y);
 
   if (pcl_isfinite (depth_parameters_.principal_point_x))
-    centerX =  static_cast<float> (depth_parameters_.principal_point_x);
+    centerX =  static_cast<double> (depth_parameters_.principal_point_x);
 
   if (pcl_isfinite (depth_parameters_.principal_point_y))
-    centerY =  static_cast<float> (depth_parameters_.principal_point_y);
+    centerY =  static_cast<double> (depth_parameters_.principal_point_y);
 
   if ( device_->isDepthRegistered() )
     cloud->header.frame_id = rgb_frame_id_;
@@ -548,7 +548,7 @@ pcl::io::OpenNI2Grabber::convertToXYZPointCloud (const DepthImage::Ptr& depth_im
     cloud->header.frame_id = depth_frame_id_;
 
 
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   const uint16_t* depth_map = (const uint16_t*) depth_image->getData ();
   if (depth_image->getWidth () != depth_width_ || depth_image->getHeight () != depth_height_)
@@ -576,8 +576,8 @@ pcl::io::OpenNI2Grabber::convertToXYZPointCloud (const DepthImage::Ptr& depth_im
         continue;
       }
       pt.z = depth_map[depth_idx] * 0.001f;
-      pt.x = (static_cast<float> (u) - centerX) * pt.z * constant_x;
-      pt.y = (static_cast<float> (v) - centerY) * pt.z * constant_y;
+      pt.x = (static_cast<double> (u) - centerX) * pt.z * constant_x;
+      pt.y = (static_cast<double> (v) - centerY) * pt.z * constant_y;
     }
   }
   cloud->sensor_origin_.setZero ();
@@ -605,27 +605,27 @@ pcl::io::OpenNI2Grabber::convertToXYZRGBPointCloud (const Image::Ptr &image, con
   cloud->points.resize (cloud->height * cloud->width);
 
   // Generate default camera parameters
-  float fx = device_->getDepthFocalLength (); // Horizontal focal length
-  float fy = device_->getDepthFocalLength (); // Vertcal focal length
-  float cx = ((float)depth_width_ - 1.f) / 2.f;  // Center x
-  float cy = ((float)depth_height_- 1.f) / 2.f; // Center y
+  double fx = device_->getDepthFocalLength (); // Horizontal focal length
+  double fy = device_->getDepthFocalLength (); // Vertcal focal length
+  double cx = ((double)depth_width_ - 1.f) / 2.f;  // Center x
+  double cy = ((double)depth_height_- 1.f) / 2.f; // Center y
 
   // Load pre-calibrated camera parameters if they exist
   if (pcl_isfinite (depth_parameters_.focal_length_x))
-    fx =  1.0f / static_cast<float> (depth_parameters_.focal_length_x);
+    fx =  1.0f / static_cast<double> (depth_parameters_.focal_length_x);
 
   if (pcl_isfinite (depth_parameters_.focal_length_y))
-    fy =  1.0f / static_cast<float> (depth_parameters_.focal_length_y);
+    fy =  1.0f / static_cast<double> (depth_parameters_.focal_length_y);
 
   if (pcl_isfinite (depth_parameters_.principal_point_x))
-    cx =  static_cast<float> (depth_parameters_.principal_point_x);
+    cx =  static_cast<double> (depth_parameters_.principal_point_x);
 
   if (pcl_isfinite (depth_parameters_.principal_point_y))
-    cy =  static_cast<float> (depth_parameters_.principal_point_y);
+    cy =  static_cast<double> (depth_parameters_.principal_point_y);
 
   // Get inverse focal length for calculations below
-  float fx_inv = 1.0f / fx;
-  float fy_inv = 1.0f / fy;
+  double fx_inv = 1.0f / fx;
+  double fy_inv = 1.0f / fy;
 
   const uint16_t* depth_map = (const uint16_t*) depth_image->getData ();
   if (depth_image->getWidth () != depth_width_ || depth_image->getHeight () != depth_height_)
@@ -646,7 +646,7 @@ pcl::io::OpenNI2Grabber::convertToXYZRGBPointCloud (const Image::Ptr &image, con
   }
 
 
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   // set xyz to Nan and rgb to 0 (black)  
   if (image_width_ != depth_width_)
@@ -678,8 +678,8 @@ pcl::io::OpenNI2Grabber::convertToXYZRGBPointCloud (const Image::Ptr &image, con
         pixel != depth_image->getShadowValue () )
       {
         pt.z = depth_map[value_idx] * 0.001f;  // millimeters to meters
-        pt.x = (static_cast<float> (u) - cx) * pt.z * fx_inv;
-        pt.y = (static_cast<float> (v) - cy) * pt.z * fy_inv;
+        pt.x = (static_cast<double> (u) - cx) * pt.z * fx_inv;
+        pt.y = (static_cast<double> (v) - cy) * pt.z * fy_inv;
       }
       else
       {
@@ -732,26 +732,26 @@ pcl::io::OpenNI2Grabber::convertToXYZIPointCloud (const IRImage::Ptr &ir_image, 
   cloud->points.resize (cloud->height * cloud->width);
 
 
-  float fx = device_->getDepthFocalLength (); // Horizontal focal length
-  float fy = device_->getDepthFocalLength (); // Vertcal focal length
-  float cx = ((float)cloud->width - 1.f) / 2.f;  // Center x
-  float cy = ((float)cloud->height - 1.f) / 2.f; // Center y
+  double fx = device_->getDepthFocalLength (); // Horizontal focal length
+  double fy = device_->getDepthFocalLength (); // Vertcal focal length
+  double cx = ((double)cloud->width - 1.f) / 2.f;  // Center x
+  double cy = ((double)cloud->height - 1.f) / 2.f; // Center y
 
   // Load pre-calibrated camera parameters if they exist
   if (pcl_isfinite (depth_parameters_.focal_length_x))
-    fx =  static_cast<float> (depth_parameters_.focal_length_x);
+    fx =  static_cast<double> (depth_parameters_.focal_length_x);
 
   if (pcl_isfinite (depth_parameters_.focal_length_y))
-    fy =  static_cast<float> (depth_parameters_.focal_length_y);
+    fy =  static_cast<double> (depth_parameters_.focal_length_y);
 
   if (pcl_isfinite (depth_parameters_.principal_point_x))
-    cx =  static_cast<float> (depth_parameters_.principal_point_x);
+    cx =  static_cast<double> (depth_parameters_.principal_point_x);
 
   if (pcl_isfinite (depth_parameters_.principal_point_y))
-    cy =  static_cast<float> (depth_parameters_.principal_point_y);
+    cy =  static_cast<double> (depth_parameters_.principal_point_y);
 
-  float fx_inv = 1.0f / fx;
-  float fy_inv = 1.0f / fy;
+  double fx_inv = 1.0f / fx;
+  double fy_inv = 1.0f / fy;
 
 
   const uint16_t* depth_map = (const uint16_t*) depth_image->getData ();
@@ -774,7 +774,7 @@ pcl::io::OpenNI2Grabber::convertToXYZIPointCloud (const IRImage::Ptr &ir_image, 
 
 
   int depth_idx = 0;
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   for (int v = 0; v < depth_height_; ++v)
   {
@@ -792,12 +792,12 @@ pcl::io::OpenNI2Grabber::convertToXYZIPointCloud (const IRImage::Ptr &ir_image, 
       else
       {
         pt.z = depth_map[depth_idx] * 0.001f; // millimeters to meters
-        pt.x = (static_cast<float> (u) - cx) * pt.z * fx_inv;
-        pt.y = (static_cast<float> (v) - cy) * pt.z * fy_inv;
+        pt.x = (static_cast<double> (u) - cx) * pt.z * fx_inv;
+        pt.y = (static_cast<double> (v) - cy) * pt.z * fy_inv;
       }
 
       pt.data_c[0] = pt.data_c[1] = pt.data_c[2] = pt.data_c[3] = 0;
-      pt.intensity = static_cast<float> (ir_map[depth_idx]);
+      pt.intensity = static_cast<double> (ir_map[depth_idx]);
     }
   }
   cloud->sensor_origin_.setZero ();
@@ -874,10 +874,10 @@ pcl::io::openni2::OpenNI2VideoMode dummy;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::io::OpenNI2Grabber::getFramesPerSecond () const
 {
-  return (static_cast<float> (device_->getColorVideoMode ().frame_rate_));
+  return (static_cast<double> (device_->getColorVideoMode ().frame_rate_));
 }
 
 
@@ -910,9 +910,9 @@ void pcl::io::OpenNI2Grabber::processDepthFrame (openni::VideoStream& stream)
   stream.readFrame (&frame);
   FrameWrapper::Ptr frameWrapper = boost::make_shared<Openni2FrameWrapper>(frame);
 
-  float focalLength = device_->getDepthFocalLength ();
+  double focalLength = device_->getDepthFocalLength ();
 
-  float baseline = device_->getBaseline();
+  double baseline = device_->getBaseline();
   pcl::uint64_t no_sample_value = device_->getShadowValue();
   pcl::uint64_t shadow_value = no_sample_value;
   

@@ -305,7 +305,7 @@ namespace pcl
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
       /** \brief Functor for the optimization function */
-      struct OptimizationFunctor : pcl::Functor<float>
+      struct OptimizationFunctor : pcl::Functor<double>
       {
         /** Functor constructor
           * \param[in] m_data_points the number of data points to evaluate
@@ -313,7 +313,7 @@ namespace pcl
           * \param[in] distance distance computation function pointer
           */
         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCone<PointT, PointNT> *model) : 
-          pcl::Functor<float> (m_data_points), model_ (model) {}
+          pcl::Functor<double> (m_data_points), model_ (model) {}
 
         /** Cost function to be minimized
           * \param[in] x variables array
@@ -325,10 +325,10 @@ namespace pcl
         {
           Eigen::Vector4f apex  (x[0], x[1], x[2], 0);
           Eigen::Vector4f axis_dir (x[3], x[4], x[5], 0);
-          float opening_angle = x[6];
+          double opening_angle = x[6];
 
-          float apexdotdir = apex.dot (axis_dir);
-          float dirdotdir = 1.0f / axis_dir.dot (axis_dir);
+          double apexdotdir = apex.dot (axis_dir);
+          double dirdotdir = 1.0f / axis_dir.dot (axis_dir);
 
           for (int i = 0; i < values (); ++i)
           {
@@ -338,14 +338,14 @@ namespace pcl
                                 model_->input_->points[(*model_->tmp_inliers_)[i]].z, 0);
 
             // Calculate the point's projection on the cone axis
-            float k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
+            double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
             Eigen::Vector4f pt_proj = apex + k * axis_dir;
 
             // Calculate the actual radius of the cone at the level of the projected point
             Eigen::Vector4f height = apex-pt_proj;
-            float actual_cone_radius = tanf (opening_angle) * height.norm ();
+            double actual_cone_radius = tanf (opening_angle) * height.norm ();
 
-            fvec[i] = static_cast<float> (pcl::sqrPointToLineDistance (pt, apex, axis_dir) - actual_cone_radius * actual_cone_radius);
+            fvec[i] = static_cast<double> (pcl::sqrPointToLineDistance (pt, apex, axis_dir) - actual_cone_radius * actual_cone_radius);
           }
           return (0);
         }

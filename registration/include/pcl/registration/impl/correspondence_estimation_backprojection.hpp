@@ -65,9 +65,9 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
   correspondences.resize (indices_->size ());
 
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
-  float min_dist = std::numeric_limits<float>::max ();
+  double min_dist = std::numeric_limits<double>::max ();
   int min_index = 0;
   
   pcl::Correspondence corr;
@@ -84,15 +84,15 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
       tree_->nearestKSearch (input_->points[*idx_i], k_, nn_indices, nn_dists);
 
       // Among the K nearest neighbours find the one with minimum perpendicular distance to the normal
-      min_dist = std::numeric_limits<float>::max ();
+      min_dist = std::numeric_limits<double>::max ();
       
       // Find the best correspondence
       for (size_t j = 0; j < nn_indices.size (); j++)
       {
-        float cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
+        double cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
                           source_normals_->points[*idx_i].normal_y * target_normals_->points[nn_indices[j]].normal_y +
                           source_normals_->points[*idx_i].normal_z * target_normals_->points[nn_indices[j]].normal_z ;
-        float dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
+        double dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
         
         if (dist < min_dist)
         {
@@ -119,7 +119,7 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
       tree_->nearestKSearch (input_->points[*idx_i], k_, nn_indices, nn_dists);
  
       // Among the K nearest neighbours find the one with minimum perpendicular distance to the normal
-      min_dist = std::numeric_limits<float>::max ();
+      min_dist = std::numeric_limits<double>::max ();
       
       // Find the best correspondence
       for (size_t j = 0; j < nn_indices.size (); j++)
@@ -128,10 +128,10 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
         // Copy the source data to a target PointTarget format so we can search in the tree
         copyPoint (input_->points[*idx_i], pt_src);
 
-        float cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
+        double cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
                           source_normals_->points[*idx_i].normal_y * target_normals_->points[nn_indices[j]].normal_y +
                           source_normals_->points[*idx_i].normal_z * target_normals_->points[nn_indices[j]].normal_z ;
-        float dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
+        double dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
         
         if (dist < min_dist)
         {
@@ -167,11 +167,11 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
   correspondences.resize (indices_->size ());
 
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
   std::vector<int> index_reciprocal (1);
-  std::vector<float> distance_reciprocal (1);
+  std::vector<double> distance_reciprocal (1);
 
-  float min_dist = std::numeric_limits<float>::max ();
+  double min_dist = std::numeric_limits<double>::max ();
   int min_index = 0;
   
   pcl::Correspondence corr;
@@ -189,15 +189,15 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
       tree_->nearestKSearch (input_->points[*idx_i], k_, nn_indices, nn_dists);
 
       // Among the K nearest neighbours find the one with minimum perpendicular distance to the normal
-      min_dist = std::numeric_limits<float>::max ();
+      min_dist = std::numeric_limits<double>::max ();
       
       // Find the best correspondence
       for (size_t j = 0; j < nn_indices.size (); j++)
       {
-        float cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
+        double cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
                           source_normals_->points[*idx_i].normal_y * target_normals_->points[nn_indices[j]].normal_y +
                           source_normals_->points[*idx_i].normal_z * target_normals_->points[nn_indices[j]].normal_z ;
-        float dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
+        double dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
         
         if (dist < min_dist)
         {
@@ -231,7 +231,7 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
       tree_->nearestKSearch (input_->points[*idx_i], k_, nn_indices, nn_dists);
  
       // Among the K nearest neighbours find the one with minimum perpendicular distance to the normal
-      min_dist = std::numeric_limits<float>::max ();
+      min_dist = std::numeric_limits<double>::max ();
       
       // Find the best correspondence
       for (size_t j = 0; j < nn_indices.size (); j++)
@@ -240,10 +240,10 @@ pcl::registration::CorrespondenceEstimationBackProjection<PointSource, PointTarg
         // Copy the source data to a target PointTarget format so we can search in the tree
         copyPoint (input_->points[*idx_i], pt_src);
 
-        float cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
+        double cos_angle = source_normals_->points[*idx_i].normal_x * target_normals_->points[nn_indices[j]].normal_x +
                           source_normals_->points[*idx_i].normal_y * target_normals_->points[nn_indices[j]].normal_y +
                           source_normals_->points[*idx_i].normal_z * target_normals_->points[nn_indices[j]].normal_z ;
-        float dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
+        double dist = nn_dists[j] * (2.0f - cos_angle * cos_angle);
         
         if (dist < min_dist)
         {

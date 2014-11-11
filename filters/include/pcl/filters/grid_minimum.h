@@ -72,7 +72,7 @@ namespace pcl
 
     public:
       /** \brief Empty constructor. */
-      GridMinimum (const float resolution)
+      GridMinimum (const double resolution)
       {
         setResolution (resolution);
         filter_name_ = "GridMinimum";
@@ -87,7 +87,7 @@ namespace pcl
         * \param[in] resolution the grid resolution
         */
       inline void
-      setResolution (const float resolution)
+      setResolution (const double resolution)
       {
         resolution_ = resolution;
         // Use multiplications instead of divisions
@@ -95,15 +95,15 @@ namespace pcl
       }
 
       /** \brief Get the grid resolution. */
-      inline float
+      inline double
       getResolution () { return (resolution_); }
 
     protected:
       /** \brief The resolution. */
-      float resolution_;
+      double resolution_;
 
       /** \brief Internal resolution stored as 1/resolution_ for efficiency reasons. */
-      float inverse_resolution_;
+      double inverse_resolution_;
 
       /** \brief Downsample a Point Cloud using a 2D grid approach
         * \param[out] output the resultant point cloud message

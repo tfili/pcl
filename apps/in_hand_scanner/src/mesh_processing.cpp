@@ -108,7 +108,7 @@ pcl::ihs::MeshProcessing::processBoundary (Mesh& mesh, const std::vector <HalfEd
         bc = (v_c - v_b).head <3> ();
         ac = (v_c - v_a).head <3> ();
 
-        const float angle = std::acos (pcl::ihs::clamp (-ab.dot (bc) / ab.norm () / bc.norm (), -1.f, 1.f));
+        const double angle = std::acos (pcl::ihs::clamp (-ab.dot (bc) / ab.norm () / bc.norm (), -1.f, 1.f));
 
         if (angle < 1.047197551196598f) // 60 * pi / 180
         {

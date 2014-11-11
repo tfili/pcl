@@ -41,12 +41,12 @@
 
 namespace pcl {
 
-inline float 
+inline double 
 Narf::getDescriptorDistance(const Narf& other) const
 {
-  float ret = L1_Norm(descriptor_, other.descriptor_, descriptor_size_);
-  //float ret = Sublinear_Norm(descriptor_, other.descriptor_, descriptor_size_);
-  ret /= static_cast<float> (descriptor_size_);
+  double ret = L1_Norm(descriptor_, other.descriptor_, descriptor_size_);
+  //double ret = Sublinear_Norm(descriptor_, other.descriptor_, descriptor_size_);
+  ret /= static_cast<double> (descriptor_size_);
   return (ret);
 }
 
@@ -61,16 +61,16 @@ inline void Narf::copyToNarf36(Narf36& narf36) const
   memcpy(narf36.descriptor, descriptor_, 36*sizeof(*descriptor_));
 }
 
-//inline float Narf::getDescriptorDistance(const Narf& other) const
+//inline double Narf::getDescriptorDistance(const Narf& other) const
 //{
-  //float middle_value = 0.1f;
-  //float normalization_factor1 = 1.0f/middle_value,
+  //double middle_value = 0.1f;
+  //double normalization_factor1 = 1.0f/middle_value,
         //normalization_factor2 = 1.0f/(1.0f-middle_value);
-  //const float* descriptor1_ptr = descriptor_;
-  //const float* descriptor2_ptr = other.getDescriptor();
-  //float ret = 0;
+  //const double* descriptor1_ptr = descriptor_;
+  //const double* descriptor2_ptr = other.getDescriptor();
+  //double ret = 0;
   //for (int i=0; i<descriptor_size_; ++i) {
-    //float diff = fabsf(*(descriptor2_ptr++) - *(descriptor1_ptr++));
+    //double diff = fabsf(*(descriptor2_ptr++) - *(descriptor1_ptr++));
     //if (diff < middle_value)
     //{
       //diff = diff*normalization_factor1;
@@ -90,13 +90,13 @@ inline void Narf::copyToNarf36(Narf36& narf36) const
   //return ret;
 //}
 
-//inline float Narf::getDescriptorDistance(const Narf& other) const
+//inline double Narf::getDescriptorDistance(const Narf& other) const
 //{
-  //float max_diff_between_cells = 0.25;
+  //double max_diff_between_cells = 0.25;
   
-  //const float* descriptor1_ptr = descriptor_;
-  //const float* descriptor2_ptr = other.getDescriptor();
-  //float ret = 0;
+  //const double* descriptor1_ptr = descriptor_;
+  //const double* descriptor2_ptr = other.getDescriptor();
+  //double ret = 0;
   //for (int i=0; i<descriptor_size_; ++i) {
     //ret += (std::min)(max_diff_between_cells, fabsf(*(descriptor2_ptr++) - *(descriptor1_ptr++)));
   //}

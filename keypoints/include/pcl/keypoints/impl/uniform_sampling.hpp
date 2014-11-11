@@ -105,8 +105,8 @@ pcl::UniformSampling<PointInT>::detectKeypoints (PointCloudOut &output)
     }
 
     // Check to see if this point is closer to the leaf center than the previous one we saved
-    float diff_cur   = (input_->points[(*indices_)[cp]].getVector4fMap () - ijk.cast<float> ()).squaredNorm ();
-    float diff_prev  = (input_->points[leaf.idx].getVector4fMap ()        - ijk.cast<float> ()).squaredNorm ();
+    double diff_cur   = (input_->points[(*indices_)[cp]].getVector4fMap () - ijk.cast<double> ()).squaredNorm ();
+    double diff_prev  = (input_->points[leaf.idx].getVector4fMap ()        - ijk.cast<double> ()).squaredNorm ();
 
     // If current point is closer, copy its index instead
     if (diff_cur < diff_prev)

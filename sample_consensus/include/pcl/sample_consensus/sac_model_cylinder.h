@@ -253,7 +253,7 @@ namespace pcl
                           const Eigen::Vector4f &line_dir,
                           Eigen::Vector4f &pt_proj)
       {
-        float k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
+        double k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
         // Calculate the projection of the point on the line
         pt_proj = line_pt + k * line_dir;
       }
@@ -301,7 +301,7 @@ namespace pcl
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
       /** \brief Functor for the optimization function */
-      struct OptimizationFunctor : pcl::Functor<float>
+      struct OptimizationFunctor : pcl::Functor<double>
       {
         /** Functor constructor
           * \param[in] m_data_points the number of data points to evaluate
@@ -309,7 +309,7 @@ namespace pcl
           * \param[in] distance distance computation function pointer
           */
         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCylinder<PointT, PointNT> *model) : 
-          pcl::Functor<float> (m_data_points), model_ (model) {}
+          pcl::Functor<double> (m_data_points), model_ (model) {}
 
         /** Cost function to be minimized
           * \param[in] x variables array
@@ -329,7 +329,7 @@ namespace pcl
                                 model_->input_->points[(*model_->tmp_inliers_)[i]].y,
                                 model_->input_->points[(*model_->tmp_inliers_)[i]].z, 0);
 
-            fvec[i] = static_cast<float> (pcl::sqrPointToLineDistance (pt, line_pt, line_dir) - x[6]*x[6]);
+            fvec[i] = static_cast<double> (pcl::sqrPointToLineDistance (pt, line_pt, line_dir) - x[6]*x[6]);
           }
           return (0);
         }

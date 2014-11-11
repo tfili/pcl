@@ -56,7 +56,7 @@ typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
 std::string default_method = "open";
-float default_resolution = 1.0f;
+double default_resolution = 1.0f;
 
 void
 printHelp (int, char **argv)
@@ -87,7 +87,7 @@ loadCloud (const std::string &filename, Cloud &cloud)
 }
 
 void
-compute (ConstCloudPtr &input, Cloud &output, float resolution, std::string method)
+compute (ConstCloudPtr &input, Cloud &output, double resolution, std::string method)
 {
   // Estimate
   TicToc tt;
@@ -136,7 +136,7 @@ saveCloud (const std::string &filename, const Cloud &output)
 
 int
 batchProcess (const vector<string> &pcd_files, string &output_dir,
-              float resolution, std::string method)
+              double resolution, std::string method)
 {
   vector<string> st;
   for (size_t i = 0; i < pcd_files.size (); ++i)
@@ -180,7 +180,7 @@ main (int argc, char** argv)
 
   // Command line parsing
   std::string method = default_method;
-  float resolution = default_resolution;
+  double resolution = default_resolution;
   parse_argument (argc, argv, "-method", method);
   parse_argument (argc, argv, "-resolution", resolution);
   string input_dir, output_dir;

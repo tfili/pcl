@@ -52,7 +52,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float default_th_dd = 0.02f;
+double default_th_dd = 0.02f;
 int   default_max_search = 50;
 
 typedef pcl::PointCloud<pcl::PointXYZRGBA> Cloud;
@@ -134,7 +134,7 @@ keyboard_callback (const pcl::visualization::KeyboardEvent& event, void*)
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         float th_dd, int max_search)
+         double th_dd, int max_search)
 {
   CloudPtr cloud (new Cloud);
   fromPCLPointCloud2 (*input, *cloud);
@@ -244,7 +244,7 @@ main (int argc, char** argv)
   }
 
   // Command line parsing
-  float th_dd = default_th_dd;
+  double th_dd = default_th_dd;
   int max_search = default_max_search;
 
   parse_argument (argc, argv, "-th_dd", th_dd);

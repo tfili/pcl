@@ -66,9 +66,9 @@ namespace pcl
         */
       virtual void 
       computeBranchIndex(
-        const float result,
+        const double result,
         const unsigned char flag,
-        const float threshold,
+        const double threshold,
         unsigned char & branch_index) const = 0;
   };
 
@@ -97,9 +97,9 @@ namespace pcl
         */
       inline void 
       computeBranchIndex(
-        const float result,
+        const double result,
         const unsigned char flag,
-        const float threshold,
+        const double threshold,
         unsigned char & branch_index) const
       {
         (void)flag;
@@ -132,9 +132,9 @@ namespace pcl
         */
       inline void 
       computeBranchIndex(
-        const float result,
+        const double result,
         const unsigned char flag,
-        const float threshold,
+        const double threshold,
         unsigned char & branch_index) const
       {
         if (flag == 0)

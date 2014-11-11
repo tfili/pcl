@@ -99,7 +99,7 @@ pcl::ihs::Integration::reconstructMesh (const CloudXYZRGBNormalConstPtr& cloud_d
   for (int c=0; c<width; ++c)
   {
     const PointXYZRGBNormal& pt_d = cloud_data->operator [] (c);
-    const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+    const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
     if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
     {
@@ -111,7 +111,7 @@ pcl::ihs::Integration::reconstructMesh (const CloudXYZRGBNormalConstPtr& cloud_d
     for (int c=0; c<2; ++c)
     {
       const PointXYZRGBNormal& pt_d = cloud_data->operator [] (r*width + c);
-      const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
       {
@@ -161,7 +161,7 @@ pcl::ihs::Integration::reconstructMesh (const CloudXYZRGBNormalConstPtr& cloud_d
       VertexIndex& vi_3 = vertex_indices [ind_3];
       VertexIndex& vi_4 = vertex_indices [ind_4];
 
-      const float weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d_0.x) && weight > min_weight_)
       {
@@ -220,7 +220,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   }
   kd_tree_->setInputCloud (xyz_model);
   std::vector <int>   index (1);
-  std::vector <float> squared_distance (1);
+  std::vector <double> squared_distance (1);
 
   mesh_model->reserveVertices (mesh_model->sizeVertices () + cloud_data->size ());
   mesh_model->reserveEdges    (mesh_model->sizeEdges    () + (width-1) * height + width * (height-1) + (width-1) * (height-1));
@@ -240,7 +240,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   for (int c=0; c<width; ++c)
   {
     const PointXYZRGBNormal& pt_d = cloud_data->operator [] (c);
-    const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+    const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
     if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
     {
@@ -255,7 +255,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
     for (int c=0; c<2; ++c)
     {
       const PointXYZRGBNormal& pt_d = cloud_data->operator [] (r*width + c);
-      const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
       {
@@ -279,7 +279,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   const int offset_3 =        - 1;
   const int offset_4 = -width - 2;
 
-  const float dot_min = std::cos (max_angle_ * 17.45329252e-3); // deg to rad
+  const double dot_min = std::cos (max_angle_ * 17.45329252e-3); // deg to rad
 
   for (int r=1; r<height; ++r)
   {
@@ -310,7 +310,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
       VertexIndex& vi_3 = vertex_indices [ind_3];
       VertexIndex& vi_4 = vertex_indices [ind_4];
 
-      const float weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d_0.x) && weight > min_weight_)
       {
@@ -336,17 +336,17 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
           {
             vi_0 = VertexIndex (index [0]);
 
-            const float W   = pt_m.weight;         // Old accumulated weight
-            const float w   = pt_d_t_0.weight;     // Weight of new point
-            const float WW  = pt_m.weight = W + w; // New accumulated weight
+            const double W   = pt_m.weight;         // Old accumulated weight
+            const double w   = pt_d_t_0.weight;     // Weight of new point
+            const double WW  = pt_m.weight = W + w; // New accumulated weight
 
-            const float r_m = static_cast <float> (pt_m.r);
-            const float g_m = static_cast <float> (pt_m.g);
-            const float b_m = static_cast <float> (pt_m.b);
+            const double r_m = static_cast <double> (pt_m.r);
+            const double g_m = static_cast <double> (pt_m.g);
+            const double b_m = static_cast <double> (pt_m.b);
 
-            const float r_d = static_cast <float> (pt_d_t_0.r);
-            const float g_d = static_cast <float> (pt_d_t_0.g);
-            const float b_d = static_cast <float> (pt_d_t_0.b);
+            const double r_d = static_cast <double> (pt_d_t_0.r);
+            const double g_d = static_cast <double> (pt_d_t_0.g);
+            const double b_d = static_cast <double> (pt_d_t_0.b);
 
             pt_m.getVector4fMap ()       = ( W*pt_m.getVector4fMap ()       + w*pt_d_t_0.getVector4fMap ())       / WW;
             pt_m.getNormalVector4fMap () = ((W*pt_m.getNormalVector4fMap () + w*pt_d_t_0.getNormalVector4fMap ()) / WW).normalized ();
@@ -440,12 +440,12 @@ pcl::ihs::Integration::removeUnfitVertices (const MeshPtr& mesh, const bool clea
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::Integration::setMaxSquaredDistance (const float squared_distance)
+pcl::ihs::Integration::setMaxSquaredDistance (const double squared_distance)
 {
   if (squared_distance > 0) max_squared_distance_ = squared_distance;
 }
 
-float
+double
 pcl::ihs::Integration::getMaxSquaredDistance () const
 {
   return (max_squared_distance_);
@@ -454,12 +454,12 @@ pcl::ihs::Integration::getMaxSquaredDistance () const
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::Integration::setMaxAngle (const float angle)
+pcl::ihs::Integration::setMaxAngle (const double angle)
 {
   max_angle_ = pcl::ihs::clamp (angle, 0.f, 180.f);
 }
 
-float
+double
 pcl::ihs::Integration::getMaxAngle () const
 {
   return (max_angle_);
@@ -496,7 +496,7 @@ pcl::ihs::Integration::getMinDirections () const
 ////////////////////////////////////////////////////////////////////////////////
 
 uint8_t
-pcl::ihs::Integration::trimRGB (const float val) const
+pcl::ihs::Integration::trimRGB (const double val) const
 {
   return (static_cast <uint8_t> (val > 255.f ? 255 : val));
 }

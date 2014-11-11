@@ -118,8 +118,8 @@ pcl::visualization::PCLHistogramVisualizer::addFeatureHistogram (
   {
     xy[0] = d;
     //xy[1] = cloud.points[index].histogram[d];
-    float data;
-    memcpy (&data, reinterpret_cast<const char*> (&cloud.points[index]) + fields[field_idx].offset + d * sizeof (float), sizeof (float));
+    double data;
+    memcpy (&data, reinterpret_cast<const char*> (&cloud.points[index]) + fields[field_idx].offset + d * sizeof (double), sizeof (double));
     xy[1] = data;
     xy_array->SetTuple (d, xy);
   }
@@ -204,8 +204,8 @@ pcl::visualization::PCLHistogramVisualizer::updateFeatureHistogram (
   {
     xy[0] = d;
     //xy[1] = cloud.points[index].histogram[d];
-    float data;
-    memcpy (&data, reinterpret_cast<const char*> (&cloud.points[index]) + fields[field_idx].offset + d * sizeof (float), sizeof (float));
+    double data;
+    memcpy (&data, reinterpret_cast<const char*> (&cloud.points[index]) + fields[field_idx].offset + d * sizeof (double), sizeof (double));
     xy[1] = data;
     xy_array->SetTuple (d, xy);
   }

@@ -98,7 +98,7 @@ namespace pcl
       virtual inline void 
       setRadiusSearch (double radius) 
       { 
-        leaf_size_[0] = leaf_size_[1] = leaf_size_[2] = static_cast<float> (radius);
+        leaf_size_[0] = leaf_size_[1] = leaf_size_[2] = static_cast<double> (radius);
         // Avoid division errors
         if (leaf_size_[3] == 0)
           leaf_size_[3] = 1;

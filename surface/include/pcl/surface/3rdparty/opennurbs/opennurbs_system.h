@@ -228,7 +228,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <float.h>
+#include <double.h>
 #include <time.h>
 #include <limits.h>
 #include <ctype.h>

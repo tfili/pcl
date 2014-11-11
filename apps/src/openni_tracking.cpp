@@ -364,7 +364,7 @@ public:
     double start = pcl::getTime ();
     pcl::VoxelGrid<PointType> grid;
     //pcl::ApproximateVoxelGrid<PointType> grid;
-    grid.setLeafSize (float (leaf_size), float (leaf_size), float (leaf_size));
+    grid.setLeafSize (double (leaf_size), double (leaf_size), double (leaf_size));
     grid.setInputCloud (cloud);
     grid.filter (result);
     //result = *cloud;
@@ -379,7 +379,7 @@ public:
     double start = pcl::getTime ();
     //pcl::VoxelGrid<PointType> grid;
     pcl::ApproximateVoxelGrid<PointType> grid;
-    grid.setLeafSize (static_cast<float> (leaf_size), static_cast<float> (leaf_size), static_cast<float> (leaf_size));
+    grid.setLeafSize (static_cast<double> (leaf_size), static_cast<double> (leaf_size), static_cast<double> (leaf_size));
     grid.setInputCloud (cloud);
     grid.filter (result);
     //result = *cloud;

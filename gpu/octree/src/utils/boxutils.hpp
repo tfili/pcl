@@ -44,23 +44,23 @@ namespace pcl
     namespace device
     {
         __device__ __host__ __forceinline__
-        static bool checkIfNodeInsideSphere(const float3& minp, const float3& maxp, const float3& c, float r)
+        static bool checkIfNodeInsideSphere(const float3& minp, const float3& maxp, const float3& c, double r)
         {
             r *= r;
 
-            float d2_xmin = (minp.x - c.x) * (minp.x - c.x);
-            float d2_ymin = (minp.y - c.y) * (minp.y - c.y);
-            float d2_zmin = (minp.z - c.z) * (minp.z - c.z);
+            double d2_xmin = (minp.x - c.x) * (minp.x - c.x);
+            double d2_ymin = (minp.y - c.y) * (minp.y - c.y);
+            double d2_zmin = (minp.z - c.z) * (minp.z - c.z);
 
             if (d2_xmin + d2_ymin + d2_zmin > r)
                 return false;
 
-            float d2_zmax = (maxp.z - c.z) * (maxp.z - c.z);
+            double d2_zmax = (maxp.z - c.z) * (maxp.z - c.z);
 
             if (d2_xmin + d2_ymin + d2_zmax > r)
                 return false;
 
-            float d2_ymax = (maxp.y - c.y) * (maxp.y - c.y);
+            double d2_ymax = (maxp.y - c.y) * (maxp.y - c.y);
 
             if (d2_xmin + d2_ymax + d2_zmin > r)
                 return false;
@@ -68,7 +68,7 @@ namespace pcl
             if (d2_xmin + d2_ymax + d2_zmax > r)
                 return false;
 
-            float d2_xmax = (maxp.x - c.x) * (maxp.x - c.x);
+            double d2_xmax = (maxp.x - c.x) * (maxp.x - c.x);
 
             if (d2_xmax + d2_ymin + d2_zmin > r)
                 return false;
@@ -86,7 +86,7 @@ namespace pcl
         }
 
         __device__ __host__ __forceinline__
-        static bool checkIfNodeOutsideSphere(const float3& minp, const float3& maxp, const float3& c, float r)
+        static bool checkIfNodeOutsideSphere(const float3& minp, const float3& maxp, const float3& c, double r)
         {
             if (maxp.x < (c.x - r) ||  maxp.y < (c.y - r) || maxp.z < (c.z - r))
                 return true;
@@ -103,9 +103,9 @@ namespace pcl
             int cell_x, cell_y, cell_z;
             Morton::decomposeCode(code, cell_x, cell_y, cell_z);   
 
-            float cell_size_x = (res_maxp.x - res_minp.x) / (1 << level);
-            float cell_size_y = (res_maxp.y - res_minp.y) / (1 << level);
-            float cell_size_z = (res_maxp.z - res_minp.z) / (1 << level);
+            double cell_size_x = (res_maxp.x - res_minp.x) / (1 << level);
+            double cell_size_y = (res_maxp.y - res_minp.y) / (1 << level);
+            double cell_size_z = (res_maxp.z - res_minp.z) / (1 << level);
 
             res_minp.x += cell_x * cell_size_x;
             res_minp.y += cell_y * cell_size_y;

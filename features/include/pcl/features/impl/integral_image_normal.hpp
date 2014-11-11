@@ -105,11 +105,11 @@ template <typename PointInT, typename PointOutT> void
 pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::initSimple3DGradientMethod ()
 {
   // number of DataType entries per element (equal or bigger than dimensions)
-  int element_stride = sizeof (PointInT) / sizeof (float);
+  int element_stride = sizeof (PointInT) / sizeof (double);
   // number of DataType entries per row (equal or bigger than element_stride number of elements per row)
   int row_stride     = element_stride * input_->width;
 
-  const float *data_ = reinterpret_cast<const float*> (&input_->points[0]);
+  const double *data_ = reinterpret_cast<const double*> (&input_->points[0]);
 
   integral_image_XYZ_.setSecondOrderComputation (false);
   integral_image_XYZ_.setInput (data_, input_->width, input_->height, element_stride, row_stride);
@@ -123,11 +123,11 @@ template <typename PointInT, typename PointOutT> void
 pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::initCovarianceMatrixMethod ()
 {
   // number of DataType entries per element (equal or bigger than dimensions)
-  int element_stride = sizeof (PointInT) / sizeof (float);
+  int element_stride = sizeof (PointInT) / sizeof (double);
   // number of DataType entries per row (equal or bigger than element_stride number of elements per row)
   int row_stride     = element_stride * input_->width;
 
-  const float *data_ = reinterpret_cast<const float*> (&input_->points[0]);
+  const double *data_ = reinterpret_cast<const double*> (&input_->points[0]);
 
   integral_image_XYZ_.setSecondOrderComputation (true);
   integral_image_XYZ_.setInput (data_, input_->width, input_->height, element_stride, row_stride);
@@ -141,11 +141,11 @@ template <typename PointInT, typename PointOutT> void
 pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::initAverage3DGradientMethod ()
 {
   size_t data_size = (input_->points.size () << 2);
-  diff_x_ = new float[data_size];
-  diff_y_ = new float[data_size];
+  diff_x_ = new double[data_size];
+  diff_y_ = new double[data_size];
 
-  memset (diff_x_, 0, sizeof(float) * data_size);
-  memset (diff_y_, 0, sizeof(float) * data_size);
+  memset (diff_x_, 0, sizeof(double) * data_size);
+  memset (diff_y_, 0, sizeof(double) * data_size);
 
   // x u x
   // l x r
@@ -154,8 +154,8 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::initAverage3DGradientMe
   const PointInT* point_dn = point_up + (input_->width << 1);//&(input_->points [1 + (input_->width << 1)]);
   const PointInT* point_lf = &(input_->points [input_->width]);
   const PointInT* point_rg = point_lf + 2; //&(input_->points [input_->width + 2]);
-  float* diff_x_ptr = diff_x_ + ((input_->width + 1) << 2);
-  float* diff_y_ptr = diff_y_ + ((input_->width + 1) << 2);
+  double* diff_x_ptr = diff_x_ + ((input_->width + 1) << 2);
+  double* diff_y_ptr = diff_y_ + ((input_->width + 1) << 2);
   unsigned diff_skip = 8; // skip last element in row and the first in the next row
 
   for (size_t ri = 1; ri < input_->height - 1; ++ri
@@ -190,11 +190,11 @@ template <typename PointInT, typename PointOutT> void
 pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::initAverageDepthChangeMethod ()
 {
   // number of DataType entries per element (equal or bigger than dimensions)
-  int element_stride = sizeof (PointInT) / sizeof (float);
+  int element_stride = sizeof (PointInT) / sizeof (double);
   // number of DataType entries per row (equal or bigger than element_stride number of elements per row)
   int row_stride     = element_stride * input_->width;
 
-  const float *data_ = reinterpret_cast<const float*> (&input_->points[0]);
+  const double *data_ = reinterpret_cast<const double*> (&input_->points[0]);
 
   // integral image over the z - value
   integral_image_depth_.setInput (&(data_[2]), input_->width, input_->height, element_stride, row_stride);
@@ -207,7 +207,7 @@ template <typename PointInT, typename PointOutT> void
 pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
     const int pos_x, const int pos_y, const unsigned point_index, PointOutT &normal)
 {
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   if (normal_estimation_method_ == COVARIANCE_MATRIX)
   {
@@ -225,18 +225,18 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
 
     EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
     Eigen::Vector3f center;
-    typename IntegralImage2D<float, 3>::SecondOrderType so_elements;
-    center = integral_image_XYZ_.getFirstOrderSum(pos_x - rect_width_2_, pos_y - rect_height_2_, rect_width_, rect_height_).template cast<float> ();
+    typename IntegralImage2D<double, 3>::SecondOrderType so_elements;
+    center = integral_image_XYZ_.getFirstOrderSum(pos_x - rect_width_2_, pos_y - rect_height_2_, rect_width_, rect_height_).template cast<double> ();
     so_elements = integral_image_XYZ_.getSecondOrderSum(pos_x - rect_width_2_, pos_y - rect_height_2_, rect_width_, rect_height_);
 
-    covariance_matrix.coeffRef (0) = static_cast<float> (so_elements [0]);
-    covariance_matrix.coeffRef (1) = covariance_matrix.coeffRef (3) = static_cast<float> (so_elements [1]);
-    covariance_matrix.coeffRef (2) = covariance_matrix.coeffRef (6) = static_cast<float> (so_elements [2]);
-    covariance_matrix.coeffRef (4) = static_cast<float> (so_elements [3]);
-    covariance_matrix.coeffRef (5) = covariance_matrix.coeffRef (7) = static_cast<float> (so_elements [4]);
-    covariance_matrix.coeffRef (8) = static_cast<float> (so_elements [5]);
-    covariance_matrix -= (center * center.transpose ()) / static_cast<float> (count);
-    float eigen_value;
+    covariance_matrix.coeffRef (0) = static_cast<double> (so_elements [0]);
+    covariance_matrix.coeffRef (1) = covariance_matrix.coeffRef (3) = static_cast<double> (so_elements [1]);
+    covariance_matrix.coeffRef (2) = covariance_matrix.coeffRef (6) = static_cast<double> (so_elements [2]);
+    covariance_matrix.coeffRef (4) = static_cast<double> (so_elements [3]);
+    covariance_matrix.coeffRef (5) = covariance_matrix.coeffRef (7) = static_cast<double> (so_elements [4]);
+    covariance_matrix.coeffRef (8) = static_cast<double> (so_elements [5]);
+    covariance_matrix -= (center * center.transpose ()) / static_cast<double> (count);
+    double eigen_value;
     Eigen::Vector3f eigen_vector;
     pcl::eigen33 (covariance_matrix, eigen_value, eigen_vector);
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, eigen_vector[0], eigen_vector[1], eigen_vector[2]);
@@ -276,9 +276,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
 
     normal_vector /= sqrt (normal_length);
 
-    float nx = static_cast<float> (normal_vector [0]);
-    float ny = static_cast<float> (normal_vector [1]);
-    float nz = static_cast<float> (normal_vector [2]);
+    double nx = static_cast<double> (normal_vector [0]);
+    double ny = static_cast<double> (normal_vector [1]);
+    double nz = static_cast<double> (normal_vector [2]);
 
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, nx, ny, nz);
 
@@ -305,29 +305,29 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
       return;
     }
 
-    float mean_L_z = static_cast<float> (integral_image_depth_.getFirstOrderSum (pos_x - rect_width_2_, pos_y - rect_height_4_, rect_width_2_, rect_height_2_) / count_L_z);
-    float mean_R_z = static_cast<float> (integral_image_depth_.getFirstOrderSum (pos_x + 1            , pos_y - rect_height_4_, rect_width_2_, rect_height_2_) / count_R_z);
-    float mean_U_z = static_cast<float> (integral_image_depth_.getFirstOrderSum (pos_x - rect_width_4_, pos_y - rect_height_2_, rect_width_2_, rect_height_2_) / count_U_z);
-    float mean_D_z = static_cast<float> (integral_image_depth_.getFirstOrderSum (pos_x - rect_width_4_, pos_y + 1             , rect_width_2_, rect_height_2_) / count_D_z);
+    double mean_L_z = static_cast<double> (integral_image_depth_.getFirstOrderSum (pos_x - rect_width_2_, pos_y - rect_height_4_, rect_width_2_, rect_height_2_) / count_L_z);
+    double mean_R_z = static_cast<double> (integral_image_depth_.getFirstOrderSum (pos_x + 1            , pos_y - rect_height_4_, rect_width_2_, rect_height_2_) / count_R_z);
+    double mean_U_z = static_cast<double> (integral_image_depth_.getFirstOrderSum (pos_x - rect_width_4_, pos_y - rect_height_2_, rect_width_2_, rect_height_2_) / count_U_z);
+    double mean_D_z = static_cast<double> (integral_image_depth_.getFirstOrderSum (pos_x - rect_width_4_, pos_y + 1             , rect_width_2_, rect_height_2_) / count_D_z);
 
     PointInT pointL = input_->points[point_index - rect_width_4_ - 1];
     PointInT pointR = input_->points[point_index + rect_width_4_ + 1];
     PointInT pointU = input_->points[point_index - rect_height_4_ * input_->width - 1];
     PointInT pointD = input_->points[point_index + rect_height_4_ * input_->width + 1];
 
-    const float mean_x_z = mean_R_z - mean_L_z;
-    const float mean_y_z = mean_D_z - mean_U_z;
+    const double mean_x_z = mean_R_z - mean_L_z;
+    const double mean_y_z = mean_D_z - mean_U_z;
 
-    const float mean_x_x = pointR.x - pointL.x;
-    const float mean_x_y = pointR.y - pointL.y;
-    const float mean_y_x = pointD.x - pointU.x;
-    const float mean_y_y = pointD.y - pointU.y;
+    const double mean_x_x = pointR.x - pointL.x;
+    const double mean_x_y = pointR.y - pointL.y;
+    const double mean_y_x = pointD.x - pointU.x;
+    const double mean_y_y = pointD.y - pointU.y;
 
-    float normal_x = mean_x_y * mean_y_z - mean_x_z * mean_y_y;
-    float normal_y = mean_x_z * mean_y_x - mean_x_x * mean_y_z;
-    float normal_z = mean_x_x * mean_y_y - mean_x_y * mean_y_x;
+    double normal_x = mean_x_y * mean_y_z - mean_x_z * mean_y_y;
+    double normal_y = mean_x_z * mean_y_x - mean_x_x * mean_y_z;
+    double normal_z = mean_x_x * mean_y_y - mean_x_y * mean_y_x;
 
-    const float normal_length = (normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
+    const double normal_length = (normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
 
     if (normal_length == 0.0f)
     {
@@ -338,7 +338,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
 
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, normal_x, normal_y, normal_z);
     
-    const float scale = 1.0f / sqrtf (normal_length);
+    const double scale = 1.0f / sqrtf (normal_length);
 
     normal.normal_x = normal_x * scale;
     normal.normal_y = normal_y * scale;
@@ -369,9 +369,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
 
     normal_vector /= sqrt (normal_length);
 
-    float nx = static_cast<float> (normal_vector [0]);
-    float ny = static_cast<float> (normal_vector [1]);
-    float nz = static_cast<float> (normal_vector [2]);
+    double nx = static_cast<double> (normal_vector [0]);
+    double ny = static_cast<double> (normal_vector [1]);
+    double nz = static_cast<double> (normal_vector [2]);
 
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, nx, ny, nz);
     
@@ -462,7 +462,7 @@ template <typename PointInT, typename PointOutT> void
 pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirror (
     const int pos_x, const int pos_y, const unsigned point_index, PointOutT &normal)
 {
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   const int width = input_->width;
   const int height = input_->height;
@@ -479,7 +479,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
     const int end_y = start_y + rect_height_;
 
     unsigned count = 0;
-    sumArea<unsigned>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<float, 3>::getFiniteElementsCountSE, &integral_image_XYZ_, _1, _2, _3, _4), count);
+    sumArea<unsigned>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<double, 3>::getFiniteElementsCountSE, &integral_image_XYZ_, _1, _2, _3, _4), count);
     
     // no valid points within the rectangular reagion?
     if (count == 0)
@@ -490,9 +490,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
 
     EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
     Eigen::Vector3f center;
-    typename IntegralImage2D<float, 3>::SecondOrderType so_elements;
-    typename IntegralImage2D<float, 3>::ElementType tmp_center;
-    typename IntegralImage2D<float, 3>::SecondOrderType tmp_so_elements;
+    typename IntegralImage2D<double, 3>::SecondOrderType so_elements;
+    typename IntegralImage2D<double, 3>::ElementType tmp_center;
+    typename IntegralImage2D<double, 3>::SecondOrderType tmp_so_elements;
 
     center[0] = 0;
     center[1] = 0;
@@ -507,21 +507,21 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
     so_elements[4] = 0;
     so_elements[5] = 0;
 
-    sumArea<typename IntegralImage2D<float, 3>::ElementType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<float, 3>::getFirstOrderSumSE, &integral_image_XYZ_, _1, _2, _3, _4), tmp_center);
-    sumArea<typename IntegralImage2D<float, 3>::SecondOrderType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<float, 3>::getSecondOrderSumSE, &integral_image_XYZ_, _1, _2, _3, _4), so_elements);
+    sumArea<typename IntegralImage2D<double, 3>::ElementType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<double, 3>::getFirstOrderSumSE, &integral_image_XYZ_, _1, _2, _3, _4), tmp_center);
+    sumArea<typename IntegralImage2D<double, 3>::SecondOrderType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<double, 3>::getSecondOrderSumSE, &integral_image_XYZ_, _1, _2, _3, _4), so_elements);
 
-    center[0] = float (tmp_center[0]);
-    center[1] = float (tmp_center[1]);
-    center[2] = float (tmp_center[2]);
+    center[0] = double (tmp_center[0]);
+    center[1] = double (tmp_center[1]);
+    center[2] = double (tmp_center[2]);
 
-    covariance_matrix.coeffRef (0) = static_cast<float> (so_elements [0]);
-    covariance_matrix.coeffRef (1) = covariance_matrix.coeffRef (3) = static_cast<float> (so_elements [1]);
-    covariance_matrix.coeffRef (2) = covariance_matrix.coeffRef (6) = static_cast<float> (so_elements [2]);
-    covariance_matrix.coeffRef (4) = static_cast<float> (so_elements [3]);
-    covariance_matrix.coeffRef (5) = covariance_matrix.coeffRef (7) = static_cast<float> (so_elements [4]);
-    covariance_matrix.coeffRef (8) = static_cast<float> (so_elements [5]);
-    covariance_matrix -= (center * center.transpose ()) / static_cast<float> (count);
-    float eigen_value;
+    covariance_matrix.coeffRef (0) = static_cast<double> (so_elements [0]);
+    covariance_matrix.coeffRef (1) = covariance_matrix.coeffRef (3) = static_cast<double> (so_elements [1]);
+    covariance_matrix.coeffRef (2) = covariance_matrix.coeffRef (6) = static_cast<double> (so_elements [2]);
+    covariance_matrix.coeffRef (4) = static_cast<double> (so_elements [3]);
+    covariance_matrix.coeffRef (5) = covariance_matrix.coeffRef (7) = static_cast<double> (so_elements [4]);
+    covariance_matrix.coeffRef (8) = static_cast<double> (so_elements [5]);
+    covariance_matrix -= (center * center.transpose ()) / static_cast<double> (count);
+    double eigen_value;
     Eigen::Vector3f eigen_vector;
     pcl::eigen33 (covariance_matrix, eigen_value, eigen_vector);
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, eigen_vector[0], eigen_vector[1], eigen_vector[2]);
@@ -549,8 +549,8 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
     unsigned count_x = 0;
     unsigned count_y = 0;
 
-    sumArea<unsigned>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<float, 3>::getFiniteElementsCountSE, &integral_image_DX_, _1, _2, _3, _4), count_x);
-    sumArea<unsigned>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<float, 3>::getFiniteElementsCountSE, &integral_image_DY_, _1, _2, _3, _4), count_y);
+    sumArea<unsigned>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<double, 3>::getFiniteElementsCountSE, &integral_image_DX_, _1, _2, _3, _4), count_x);
+    sumArea<unsigned>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<double, 3>::getFiniteElementsCountSE, &integral_image_DY_, _1, _2, _3, _4), count_y);
 
 
     if (count_x == 0 || count_y == 0)
@@ -561,8 +561,8 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
     Eigen::Vector3d gradient_x (0, 0, 0);
     Eigen::Vector3d gradient_y (0, 0, 0);
 
-    sumArea<typename IntegralImage2D<float, 3>::ElementType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<float, 3>::getFirstOrderSumSE, &integral_image_DX_, _1, _2, _3, _4), gradient_x);
-    sumArea<typename IntegralImage2D<float, 3>::ElementType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<float, 3>::getFirstOrderSumSE, &integral_image_DY_, _1, _2, _3, _4), gradient_y);
+    sumArea<typename IntegralImage2D<double, 3>::ElementType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<double, 3>::getFirstOrderSumSE, &integral_image_DX_, _1, _2, _3, _4), gradient_x);
+    sumArea<typename IntegralImage2D<double, 3>::ElementType>(start_x, start_y, end_x, end_y, width, height, boost::bind(&IntegralImage2D<double, 3>::getFirstOrderSumSE, &integral_image_DY_, _1, _2, _3, _4), gradient_y);
 
 
     Eigen::Vector3d normal_vector = gradient_y.cross (gradient_x);
@@ -576,9 +576,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
 
     normal_vector /= sqrt (normal_length);
 
-    float nx = static_cast<float> (normal_vector [0]);
-    float ny = static_cast<float> (normal_vector [1]);
-    float nz = static_cast<float> (normal_vector [2]);
+    double nx = static_cast<double> (normal_vector [0]);
+    double ny = static_cast<double> (normal_vector [1]);
+    double nz = static_cast<double> (normal_vector [2]);
 
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, nx, ny, nz);
 
@@ -642,10 +642,10 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
     unsigned count_U_z = 0;
     unsigned count_D_z = 0;
 
-    sumArea<unsigned>(start_x_L, start_y_L, end_x_L, end_y_L, width, height, boost::bind(&IntegralImage2D<float, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_L_z);
-    sumArea<unsigned>(start_x_R, start_y_R, end_x_R, end_y_R, width, height, boost::bind(&IntegralImage2D<float, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_R_z);
-    sumArea<unsigned>(start_x_U, start_y_U, end_x_U, end_y_U, width, height, boost::bind(&IntegralImage2D<float, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_U_z);
-    sumArea<unsigned>(start_x_D, start_y_D, end_x_D, end_y_D, width, height, boost::bind(&IntegralImage2D<float, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_D_z);
+    sumArea<unsigned>(start_x_L, start_y_L, end_x_L, end_y_L, width, height, boost::bind(&IntegralImage2D<double, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_L_z);
+    sumArea<unsigned>(start_x_R, start_y_R, end_x_R, end_y_R, width, height, boost::bind(&IntegralImage2D<double, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_R_z);
+    sumArea<unsigned>(start_x_U, start_y_U, end_x_U, end_y_U, width, height, boost::bind(&IntegralImage2D<double, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_U_z);
+    sumArea<unsigned>(start_x_D, start_y_D, end_x_D, end_y_D, width, height, boost::bind(&IntegralImage2D<double, 1>::getFiniteElementsCountSE, &integral_image_depth_, _1, _2, _3, _4), count_D_z);
 
     if (count_L_z == 0 || count_R_z == 0 || count_U_z == 0 || count_D_z == 0)
     {
@@ -653,20 +653,20 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
       return;
     }
 
-    float mean_L_z = 0;
-    float mean_R_z = 0;
-    float mean_U_z = 0;
-    float mean_D_z = 0;
+    double mean_L_z = 0;
+    double mean_R_z = 0;
+    double mean_U_z = 0;
+    double mean_D_z = 0;
 
-    sumArea<float>(start_x_L, start_y_L, end_x_L, end_y_L, width, height, boost::bind(&IntegralImage2D<float, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_L_z);
-    sumArea<float>(start_x_R, start_y_R, end_x_R, end_y_R, width, height, boost::bind(&IntegralImage2D<float, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_R_z);
-    sumArea<float>(start_x_U, start_y_U, end_x_U, end_y_U, width, height, boost::bind(&IntegralImage2D<float, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_U_z);
-    sumArea<float>(start_x_D, start_y_D, end_x_D, end_y_D, width, height, boost::bind(&IntegralImage2D<float, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_D_z);
+    sumArea<double>(start_x_L, start_y_L, end_x_L, end_y_L, width, height, boost::bind(&IntegralImage2D<double, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_L_z);
+    sumArea<double>(start_x_R, start_y_R, end_x_R, end_y_R, width, height, boost::bind(&IntegralImage2D<double, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_R_z);
+    sumArea<double>(start_x_U, start_y_U, end_x_U, end_y_U, width, height, boost::bind(&IntegralImage2D<double, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_U_z);
+    sumArea<double>(start_x_D, start_y_D, end_x_D, end_y_D, width, height, boost::bind(&IntegralImage2D<double, 1>::getFirstOrderSumSE, &integral_image_depth_, _1, _2, _3, _4), mean_D_z);
 
-    mean_L_z /= float (count_L_z);
-    mean_R_z /= float (count_R_z);
-    mean_U_z /= float (count_U_z);
-    mean_D_z /= float (count_D_z);
+    mean_L_z /= double (count_L_z);
+    mean_R_z /= double (count_R_z);
+    mean_U_z /= double (count_U_z);
+    mean_D_z /= double (count_D_z);
 
 
     PointInT pointL = input_->points[point_index_L_y*width + point_index_L_x];
@@ -674,19 +674,19 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
     PointInT pointU = input_->points[point_index_U_y*width + point_index_U_x];
     PointInT pointD = input_->points[point_index_D_y*width + point_index_D_x];
 
-    const float mean_x_z = mean_R_z - mean_L_z;
-    const float mean_y_z = mean_D_z - mean_U_z;
+    const double mean_x_z = mean_R_z - mean_L_z;
+    const double mean_y_z = mean_D_z - mean_U_z;
 
-    const float mean_x_x = pointR.x - pointL.x;
-    const float mean_x_y = pointR.y - pointL.y;
-    const float mean_y_x = pointD.x - pointU.x;
-    const float mean_y_y = pointD.y - pointU.y;
+    const double mean_x_x = pointR.x - pointL.x;
+    const double mean_x_y = pointR.y - pointL.y;
+    const double mean_y_x = pointD.x - pointU.x;
+    const double mean_y_y = pointD.y - pointU.y;
 
-    float normal_x = mean_x_y * mean_y_z - mean_x_z * mean_y_y;
-    float normal_y = mean_x_z * mean_y_x - mean_x_x * mean_y_z;
-    float normal_z = mean_x_x * mean_y_y - mean_x_y * mean_y_x;
+    double normal_x = mean_x_y * mean_y_z - mean_x_z * mean_y_y;
+    double normal_y = mean_x_z * mean_y_x - mean_x_x * mean_y_z;
+    double normal_z = mean_x_x * mean_y_y - mean_x_y * mean_y_x;
 
-    const float normal_length = (normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
+    const double normal_length = (normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
 
     if (normal_length == 0.0f)
     {
@@ -697,7 +697,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
 
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, normal_x, normal_y, normal_z);
     
-    const float scale = 1.0f / sqrtf (normal_length);
+    const double scale = 1.0f / sqrtf (normal_length);
 
     normal.normal_x = normal_x * scale;
     normal.normal_y = normal_y * scale;
@@ -724,7 +724,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
   output.sensor_origin_ = input_->sensor_origin_;
   output.sensor_orientation_ = input_->sensor_orientation_;
   
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   // compute depth-change map
   unsigned char * depthChangeMap = new unsigned char[input_->points.size ()];
@@ -737,12 +737,12 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
     {
       index = ri * input_->width + ci;
 
-      const float depth  = input_->points [index].z;
-      const float depthR = input_->points [index + 1].z;
-      const float depthD = input_->points [index + input_->width].z;
+      const double depth  = input_->points [index].z;
+      const double depthR = input_->points [index + 1].z;
+      const double depthD = input_->points [index + input_->width].z;
 
-      //const float depthDependendDepthChange = (max_depth_change_factor_ * (fabs(depth)+1.0f))/(500.0f*0.001f);
-      const float depthDependendDepthChange = (max_depth_change_factor_ * (fabsf (depth) + 1.0f) * 2.0f);
+      //const double depthDependendDepthChange = (max_depth_change_factor_ * (fabs(depth)+1.0f))/(500.0f*0.001f);
+      const double depthDependendDepthChange = (max_depth_change_factor_ * (fabsf (depth) + 1.0f) * 2.0f);
 
       if (fabs (depth - depthR) > depthDependendDepthChange
         || !pcl_isfinite (depth) || !pcl_isfinite (depthR))
@@ -760,32 +760,32 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
   }
 
   // compute distance map
-  //float *distanceMap = new float[input_->points.size ()];
+  //double *distanceMap = new double[input_->points.size ()];
   if (distance_map_ != NULL) delete[] distance_map_;
-  distance_map_ = new float[input_->points.size ()];
-  float *distanceMap = distance_map_;
+  distance_map_ = new double[input_->points.size ()];
+  double *distanceMap = distance_map_;
   for (size_t index = 0; index < input_->points.size (); ++index)
   {
     if (depthChangeMap[index] == 0)
       distanceMap[index] = 0.0f;
     else
-      distanceMap[index] = static_cast<float> (input_->width + input_->height);
+      distanceMap[index] = static_cast<double> (input_->width + input_->height);
   }
 
   // first pass
-  float* previous_row = distanceMap;
-  float* current_row = previous_row + input_->width;
+  double* previous_row = distanceMap;
+  double* current_row = previous_row + input_->width;
   for (size_t ri = 1; ri < input_->height; ++ri)
   {
     for (size_t ci = 1; ci < input_->width; ++ci)
     {
-      const float upLeft  = previous_row [ci - 1] + 1.4f; //distanceMap[(ri-1)*input_->width + ci-1] + 1.4f;
-      const float up      = previous_row [ci] + 1.0f;     //distanceMap[(ri-1)*input_->width + ci] + 1.0f;
-      const float upRight = previous_row [ci + 1] + 1.4f; //distanceMap[(ri-1)*input_->width + ci+1] + 1.4f;
-      const float left    = current_row  [ci - 1] + 1.0f;  //distanceMap[ri*input_->width + ci-1] + 1.0f;
-      const float center  = current_row  [ci];             //distanceMap[ri*input_->width + ci];
+      const double upLeft  = previous_row [ci - 1] + 1.4f; //distanceMap[(ri-1)*input_->width + ci-1] + 1.4f;
+      const double up      = previous_row [ci] + 1.0f;     //distanceMap[(ri-1)*input_->width + ci] + 1.0f;
+      const double upRight = previous_row [ci + 1] + 1.4f; //distanceMap[(ri-1)*input_->width + ci+1] + 1.4f;
+      const double left    = current_row  [ci - 1] + 1.0f;  //distanceMap[ri*input_->width + ci-1] + 1.0f;
+      const double center  = current_row  [ci];             //distanceMap[ri*input_->width + ci];
 
-      const float minValue = std::min (std::min (upLeft, up), std::min (left, upRight));
+      const double minValue = std::min (std::min (upLeft, up), std::min (left, upRight));
 
       if (minValue < center)
         current_row [ci] = minValue; //distanceMap[ri * input_->width + ci] = minValue;
@@ -794,20 +794,20 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
     current_row += input_->width;
   }
 
-  float* next_row    = distanceMap + input_->width * (input_->height - 1);
+  double* next_row    = distanceMap + input_->width * (input_->height - 1);
   current_row = next_row - input_->width;
   // second pass
   for (int ri = input_->height-2; ri >= 0; --ri)
   {
     for (int ci = input_->width-2; ci >= 0; --ci)
     {
-      const float lowerLeft  = next_row [ci - 1] + 1.4f;    //distanceMap[(ri+1)*input_->width + ci-1] + 1.4f;
-      const float lower      = next_row [ci] + 1.0f;        //distanceMap[(ri+1)*input_->width + ci] + 1.0f;
-      const float lowerRight = next_row [ci + 1] + 1.4f;    //distanceMap[(ri+1)*input_->width + ci+1] + 1.4f;
-      const float right      = current_row [ci + 1] + 1.0f; //distanceMap[ri*input_->width + ci+1] + 1.0f;
-      const float center     = current_row [ci];            //distanceMap[ri*input_->width + ci];
+      const double lowerLeft  = next_row [ci - 1] + 1.4f;    //distanceMap[(ri+1)*input_->width + ci-1] + 1.4f;
+      const double lower      = next_row [ci] + 1.0f;        //distanceMap[(ri+1)*input_->width + ci] + 1.0f;
+      const double lowerRight = next_row [ci + 1] + 1.4f;    //distanceMap[(ri+1)*input_->width + ci+1] + 1.4f;
+      const double right      = current_row [ci + 1] + 1.0f; //distanceMap[ri*input_->width + ci+1] + 1.0f;
+      const double center     = current_row [ci];            //distanceMap[ri*input_->width + ci];
 
-      const float minValue = std::min (std::min (lowerLeft, lower), std::min (right, lowerRight));
+      const double minValue = std::min (std::min (lowerLeft, lower), std::min (right, lowerRight));
 
       if (minValue < center)
         current_row [ci] = minValue; //distanceMap[ri*input_->width + ci] = minValue;
@@ -826,8 +826,8 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
 
 //////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (const float *distanceMap,
-                                                                             const float &bad_point,
+pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (const double *distanceMap,
+                                                                             const double &bad_point,
                                                                              PointCloudOut &output)
 {
   unsigned index = 0;
@@ -875,7 +875,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
         {
           index = ri * input_->width + ci;
 
-          const float depth = input_->points[index].z;
+          const double depth = input_->points[index].z;
           if (!pcl_isfinite (depth))
           {
             output[index].getNormalVector3fMap ().setConstant (bad_point);
@@ -883,7 +883,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
             continue;
           }
 
-          float smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<float>(depth)/10.0f);
+          double smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
 
           if (smoothing > 2.0f)
           {
@@ -900,7 +900,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
     }
     else
     {
-      float smoothing_constant = normal_smoothing_size_;
+      double smoothing_constant = normal_smoothing_size_;
 
       index = border + input_->width * border;
       unsigned skip = (border << 1);
@@ -917,7 +917,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
             continue;
           }
 
-          float smoothing = (std::min)(distanceMap[index], smoothing_constant);
+          double smoothing = (std::min)(distanceMap[index], smoothing_constant);
 
           if (smoothing > 2.0f)
           {
@@ -949,7 +949,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
         {
           index = ri * input_->width + ci;
 
-          const float depth = input_->points[index].z;
+          const double depth = input_->points[index].z;
           if (!pcl_isfinite (depth))
           {
             output[index].getNormalVector3fMap ().setConstant (bad_point);
@@ -957,7 +957,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
             continue;
           }
 
-          float smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<float>(depth)/10.0f);
+          double smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
 
           if (smoothing > 2.0f)
           {
@@ -974,7 +974,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
     }
     else
     {
-      float smoothing_constant = normal_smoothing_size_;
+      double smoothing_constant = normal_smoothing_size_;
 
       //index = border + input_->width * border;
       //unsigned skip = (border << 1);
@@ -993,7 +993,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
             continue;
           }
 
-          float smoothing = (std::min)(distanceMap[index], smoothing_constant);
+          double smoothing = (std::min)(distanceMap[index], smoothing_constant);
 
           if (smoothing > 2.0f)
           {
@@ -1013,8 +1013,8 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (const float *distanceMap,
-                                                                             const float &bad_point,
+pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (const double *distanceMap,
+                                                                             const double &bad_point,
                                                                              PointCloudOut &output)
 {
   if (border_policy_ == BORDER_POLICY_IGNORE)
@@ -1045,7 +1045,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
           continue;
         }
 
-        const float depth = input_->points[pt_index].z;
+        const double depth = input_->points[pt_index].z;
         if (!pcl_isfinite (depth))
         {
           output.points[idx].getNormalVector3fMap ().setConstant (bad_point);
@@ -1053,7 +1053,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
           continue;
         }
 
-        float smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<float>(depth)/10.0f);
+        double smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
         if (smoothing > 2.0f)
         {
           setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
@@ -1068,7 +1068,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
     }
     else
     {
-      float smoothing_constant = normal_smoothing_size_;
+      double smoothing_constant = normal_smoothing_size_;
       // Iterating over the entire index vector
       for (std::size_t idx = 0; idx < indices_->size (); ++idx)
       {
@@ -1096,7 +1096,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
           continue;
         }
 
-        float smoothing = (std::min)(distanceMap[pt_index], smoothing_constant);
+        double smoothing = (std::min)(distanceMap[pt_index], smoothing_constant);
 
         if (smoothing > 2.0f)
         {
@@ -1123,7 +1123,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
         unsigned u = pt_index % input_->width;
         unsigned v = pt_index / input_->width;
 
-        const float depth = input_->points[pt_index].z;
+        const double depth = input_->points[pt_index].z;
         if (!pcl_isfinite (depth))
         {
           output[idx].getNormalVector3fMap ().setConstant (bad_point);
@@ -1131,7 +1131,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
           continue;
         }
 
-        float smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<float>(depth)/10.0f);
+        double smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
 
         if (smoothing > 2.0f)
         {
@@ -1147,7 +1147,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
     }
     else
     {
-      float smoothing_constant = normal_smoothing_size_;
+      double smoothing_constant = normal_smoothing_size_;
       for (size_t idx = 0; idx < indices_->size (); ++idx)
       {
         unsigned pt_index = (*indices_)[idx];
@@ -1161,7 +1161,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
           continue;
         }
 
-        float smoothing = (std::min)(distanceMap[pt_index], smoothing_constant);
+        double smoothing = (std::min)(distanceMap[pt_index], smoothing_constant);
 
         if (smoothing > 2.0f)
         {

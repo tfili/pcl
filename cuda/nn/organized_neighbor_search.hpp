@@ -13,7 +13,7 @@ namespace pcl
     int
     OrganizedNeighborSearch<PointT>::radiusSearch (const PointCloudConstPtr &cloud_arg, int index_arg,
                                                    double radius_arg, std::vector<int> &k_indices_arg,
-                                                   std::vector<float> &k_sqr_distances_arg, int max_nn_arg)
+                                                   std::vector<double> &k_sqr_distances_arg, int max_nn_arg)
     {
       this->setInputCloud (cloud_arg);
 
@@ -25,7 +25,7 @@ namespace pcl
     int
     OrganizedNeighborSearch<PointT>::radiusSearch (int index_arg, const double radius_arg,
                                                    std::vector<int> &k_indices_arg,
-                                                   std::vector<float> &k_sqr_distances_arg, int max_nn_arg) const
+                                                   std::vector<double> &k_sqr_distances_arg, int max_nn_arg) const
     {
 
       const PointT searchPoint = getPointByIndex (index_arg);
@@ -39,7 +39,7 @@ namespace pcl
     int
     OrganizedNeighborSearch<PointT>::radiusSearch (const PointT &p_q_arg, const double radius_arg,
                                                    std::vector<int> &k_indices_arg,
-                                                   std::vector<float> &k_sqr_distances_arg, int max_nn_arg) const
+                                                   std::vector<double> &k_sqr_distances_arg, int max_nn_arg) const
     {
       if (input_->height == 1)
       {
@@ -141,7 +141,7 @@ namespace pcl
   template<typename PointT>
     int
     OrganizedNeighborSearch<PointT>::nearestKSearch (int index_arg, int k_arg, std::vector<int> &k_indices_arg,
-                                                     std::vector<float> &k_sqr_distances_arg)
+                                                     std::vector<double> &k_sqr_distances_arg)
     {
 
       const PointT searchPoint = getPointByIndex (index_arg);
@@ -154,7 +154,7 @@ namespace pcl
     int
     OrganizedNeighborSearch<PointT>::nearestKSearch (const PointCloudConstPtr &cloud_arg, int index_arg, int k_arg,
                                                      std::vector<int> &k_indices_arg,
-                                                     std::vector<float> &k_sqr_distances_arg)
+                                                     std::vector<double> &k_sqr_distances_arg)
     {
       this->setInputCloud (cloud_arg);
 
@@ -165,7 +165,7 @@ namespace pcl
   template<typename PointT>
     int
     OrganizedNeighborSearch<PointT>::nearestKSearch (const PointT &p_q_arg, int k_arg, std::vector<int> &k_indices_arg,
-                                                     std::vector<float> &k_sqr_distances_arg)
+                                                     std::vector<double> &k_sqr_distances_arg)
     {
       int x_pos, y_pos, x, y, idx;
       std::size_t i;
@@ -325,7 +325,7 @@ namespace pcl
           }
         } else {
           std::vector<int> k_radius_indices;
-          std::vector<float> k_radius_distances;
+          std::vector<double> k_radius_distances;
 
           nearestNeighbors.clear();
 

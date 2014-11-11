@@ -84,7 +84,7 @@ pcl::gpu::people::PeopleDetector::PeopleDetector()
 }
 
 void
-pcl::gpu::people::PeopleDetector::setIntrinsics (float fx, float fy, float cx, float cy)
+pcl::gpu::people::PeopleDetector::setIntrinsics (double fx, double fy, double cx, double cy)
 {
   fx_ = fx; fy_ = fy; cx_ = cx; cy_ = cy;
 }
@@ -158,7 +158,7 @@ pcl::gpu::people::PeopleDetector::process (const pcl::PointCloud<PointTC>::Const
 {
   allocate_buffers(cloud->height, cloud->width);
 
-  const float qnan = std::numeric_limits<float>::quiet_NaN();
+  const double qnan = std::numeric_limits<double>::quiet_NaN();
 
   for(size_t i = 0; i < cloud->points.size(); ++i)
   {
@@ -247,7 +247,7 @@ pcl::gpu::people::PeopleDetector::processProb (const pcl::PointCloud<PointTC>::C
 {
   allocate_buffers(cloud->height, cloud->width);
 
-  const float qnan = std::numeric_limits<float>::quiet_NaN();
+  const double qnan = std::numeric_limits<double>::quiet_NaN();
 
   for(size_t i = 0; i < cloud->points.size(); ++i)
   {
@@ -297,12 +297,12 @@ pcl::gpu::people::PeopleDetector::processProb ()
     rdf_detector_->processProb(depth_device1_);
 
     // Create Gaussian Kernel for this iteration, in order to smooth P_l_2_
-    float* kernel_ptr_host;
+    double* kernel_ptr_host;
     int kernel_size = 5;
-    float sigma = 1.0;
+    double sigma = 1.0;
     kernel_ptr_host = probability_processor_->CreateGaussianKernel(sigma, kernel_size);
-    DeviceArray<float> kernel_device(kernel_size * sizeof(float));
-    kernel_device.upload(kernel_ptr_host, kernel_size * sizeof(float));
+    DeviceArray<double> kernel_device(kernel_size * sizeof(double));
+    kernel_device.upload(kernel_ptr_host, kernel_size * sizeof(double));
 
     // Output kernel for verification
     PCL_DEBUG("[pcl::gpu::people::PeopleDetector::processProb] : (D) : kernel:\n");
@@ -405,7 +405,7 @@ pcl::gpu::people::PeopleDetector::processProb ()
 namespace 
 {
   void 
-  getProjectedRadiusSearchBox (int rows, int cols, const pcl::device::Intr& intr, const pcl::PointXYZ& point, float squared_radius, 
+  getProjectedRadiusSearchBox (int rows, int cols, const pcl::device::Intr& intr, const pcl::PointXYZ& point, double squared_radius, 
                                   int &minX, int &maxX, int &minY, int &maxY)
   {  
     int min, max;
@@ -417,19 +417,19 @@ namespace
 
     // http://www.wolframalpha.com/input/?i=%7B%7Ba%2C+0%2C+b%7D%2C+%7B0%2C+c%2C+d%7D%2C+%7B0%2C+0%2C+1%7D%7D+*+%7B%7Ba%2C+0%2C+0%7D%2C+%7B0%2C+c%2C+0%7D%2C+%7Bb%2C+d%2C+1%7D%7D
 
-    float coeff8 = 1;                                   //K_KT_.coeff (8);
-    float coeff7 = intr.cy;                             //K_KT_.coeff (7);
-    float coeff4 = intr.fy * intr.fy + intr.cy*intr.cy; //K_KT_.coeff (4);
+    double coeff8 = 1;                                   //K_KT_.coeff (8);
+    double coeff7 = intr.cy;                             //K_KT_.coeff (7);
+    double coeff4 = intr.fy * intr.fy + intr.cy*intr.cy; //K_KT_.coeff (4);
 
-    float coeff6 = intr.cx;                             //K_KT_.coeff (6);
-    float coeff0 = intr.fx * intr.fx + intr.cx*intr.cx; //K_KT_.coeff (0);
+    double coeff6 = intr.cx;                             //K_KT_.coeff (6);
+    double coeff0 = intr.fx * intr.fx + intr.cx*intr.cx; //K_KT_.coeff (0);
 
-    float a = squared_radius * coeff8 - q.z * q.z;
-    float b = squared_radius * coeff7 - q.y * q.z;
-    float c = squared_radius * coeff4 - q.y * q.y;
+    double a = squared_radius * coeff8 - q.z * q.z;
+    double b = squared_radius * coeff7 - q.y * q.z;
+    double c = squared_radius * coeff4 - q.y * q.y;
     
     // a and c are multiplied by two already => - 4ac -> - ac
-    float det = b * b - a * c;
+    double det = b * b - a * c;
   
     if (det < 0)
     {
@@ -438,8 +438,8 @@ namespace
     }
     else
     {
-      float y1 = (b - sqrt (det)) / a;
-      float y2 = (b + sqrt (det)) / a;
+      double y1 = (b - sqrt (det)) / a;
+      double y2 = (b + sqrt (det)) / a;
 
       min = (int)std::min(floor(y1), floor(y2));
       max = (int)std::max( ceil(y1),  ceil(y2));
@@ -458,8 +458,8 @@ namespace
     }
     else
     {
-      float x1 = (b - sqrt (det)) / a;
-      float x2 = (b + sqrt (det)) / a;
+      double x1 = (b - sqrt (det)) / a;
+      double x2 = (b + sqrt (det)) / a;
  
       min = (int)std::min (floor(x1), floor(x2));
       max = (int)std::max ( ceil(x1),  ceil(x2));
@@ -468,12 +468,12 @@ namespace
     }
   }
  
-  float 
+  double 
   sqnorm(const pcl::PointXYZ& p1, const pcl::PointXYZ& p2)
   {
-    float dx = (p1.x - p2.x);
-    float dy = (p1.y - p2.y);
-    float dz = (p1.z - p2.z);
+    double dx = (p1.x - p2.x);
+    double dy = (p1.y - p2.y);
+    double dz = (p1.z - p2.z);
     return dx*dx + dy*dy + dz*dz;    
   }
 }
@@ -484,7 +484,7 @@ pcl::gpu::people::PeopleDetector::shs5(const pcl::PointCloud<PointT> &cloud, con
   pcl::device::Intr intr(fx_, fy_, cx_, cy_);
   intr.setDefaultPPIfIncorrect(cloud.width, cloud.height);
   
-  const float *hue = &hue_host_.points[0];
+  const double *hue = &hue_host_.points[0];
   double squared_radius = CLUST_TOL_SHS * CLUST_TOL_SHS;
 
   std::vector< std::vector<int> > storage(100);
@@ -513,7 +513,7 @@ pcl::gpu::people::PeopleDetector::shs5(const pcl::PointCloud<PointT> &cloud, con
     seed_queue.push_back (i);
 
     PointT p = cloud.points[i];
-    float h = hue[i];    
+    double h = hue[i];    
 
     while (sq_idx < (int)seed_queue.size ())
     {
@@ -540,7 +540,7 @@ pcl::gpu::people::PeopleDetector::shs5(const pcl::PointCloud<PointT> &cloud, con
 
           if (sqnorm(cloud.points[idx], q) <= squared_radius)
           {
-            float h_l = hue[idx];
+            double h_l = hue[idx];
 
             if (fabs(h_l - h) < DELTA_HUE_SHS)
             {                   

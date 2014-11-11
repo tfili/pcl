@@ -51,7 +51,7 @@ boost::variate_generator< boost::mt19937, boost::uniform_int<unsigned> > rand_ui
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, InverseGeneral3x3f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix = RMatrix::Zero ();
@@ -76,7 +76,7 @@ TEST (PCL, InverseGeneral3x3f)
     determinant = invert3x3Matrix (r_matrix, r_inverse);
     if (fabs (determinant) > epsilon)
     {
-      float eps = std::max (epsilon, epsilon / fabs(determinant));
+      double eps = std::max (epsilon, epsilon / fabs(determinant));
 
       result = r_inverse * r_matrix;
       error = result - Eigen::Matrix<Scalar, 3, 3>::Identity ();
@@ -171,7 +171,7 @@ TEST (PCL, InverseGeneral3x3d)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, InverseSymmetric3x3f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix = RMatrix::Zero ();
@@ -202,7 +202,7 @@ TEST (PCL, InverseSymmetric3x3f)
     determinant = invert3x3SymMatrix (r_matrix, r_inverse);
     if (fabs (determinant) > epsilon)
     {
-      float eps = std::max (epsilon, epsilon / fabs(determinant));
+      double eps = std::max (epsilon, epsilon / fabs(determinant));
 
       result = r_inverse * r_matrix;
       error = result - Eigen::Matrix<Scalar, 3, 3>::Identity ();
@@ -304,7 +304,7 @@ TEST (PCL, InverseSymmetric3x3d)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, Inverse2x2f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix = RMatrix::Zero ();
@@ -328,7 +328,7 @@ TEST (PCL, Inverse2x2f)
     determinant = invert2x2 (r_matrix, r_inverse);
     if (fabs (determinant) > epsilon)
     {
-      float eps = std::max (epsilon, epsilon / fabs(determinant));
+      double eps = std::max (epsilon, epsilon / fabs(determinant));
 
       result = r_inverse * r_matrix;
       error = result - Eigen::Matrix<Scalar, 2, 2>::Identity ();
@@ -523,7 +523,7 @@ TEST (PCL, eigen22d)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, eigen22f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix;
@@ -720,11 +720,11 @@ TEST (PCL, eigen33d)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// since we use float in this test and some matrices are bad conditioned for the eigenvalue decomposition, we will have
+// since we use double in this test and some matrices are bad conditioned for the eigenvalue decomposition, we will have
 // some errors > 0.2 but less than 1% is > 1e-3 -> we will just check whether the failure rate is below 1%
 TEST (PCL, eigen33f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix;
@@ -795,8 +795,8 @@ TEST (PCL, eigen33f)
   }
 
   // less than 1% failure rate
-  EXPECT_LE (float(r_fail_count) / float(iterations), 0.01);
-  EXPECT_LE (float(r_fail_count) / float(iterations), 0.01);
+  EXPECT_LE (double(r_fail_count) / double(iterations), 0.01);
+  EXPECT_LE (double(r_fail_count) / double(iterations), 0.01);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

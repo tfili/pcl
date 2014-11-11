@@ -65,7 +65,7 @@ namespace pcl
       {
       public:
         typedef boost::shared_ptr<RayCaster> Ptr;
-        typedef pcl::gpu::DeviceArray2D<float> MapArr;
+        typedef pcl::gpu::DeviceArray2D<double> MapArr;
         typedef pcl::gpu::DeviceArray2D<PixelRGB> View;
         typedef pcl::gpu::DeviceArray2D<unsigned short> Depth;     
 
@@ -80,13 +80,13 @@ namespace pcl
           * \param[in] cx principal point x
           * \param[in] cy principal point y
           */
-        RayCaster(int rows = 480, int cols = 640, float fx = 525.f, float fy = 525.f, float cx = -1, float cy = -1);
+        RayCaster(int rows = 480, int cols = 640, double fx = 525.f, double fy = 525.f, double cx = -1, double cy = -1);
         
         ~RayCaster();
 
         /** \brief Sets camera intrinsics */ 
         void
-        setIntrinsics(float fx = 525.f, float fy = 525.f, float cx = -1, float cy = -1);
+        setIntrinsics(double fx = 525.f, double fy = 525.f, double cx = -1, double cy = -1);
         
         /** \brief Runs raycasting algorithm from given camera pose. It writes results to internal fiels.
           * \param[in] volume tsdf volume container
@@ -125,7 +125,7 @@ namespace pcl
 
       private:
         /** \brief Camera intrinsics. */ 
-        float fx_, fy_, cx_, cy_;
+        double fx_, fy_, cx_, cy_;
               
         /* Vertext/normal map internal representation example for rows=2 and cols=4
         *  X X X X

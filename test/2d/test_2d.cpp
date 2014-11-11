@@ -172,7 +172,7 @@ TEST(Edge, sobel)
   edge_->setOutputType (Edge<pcl::PointXYZI, PointXYZIEdge>::OUTPUT_X_Y);
   edge_->detectEdgeSobel (*output_cloud);
 
-  float gt_x, gt_y;
+  double gt_x, gt_y;
   for (int i = 1; i < height - 1; i++){
     for (int j = 1; j < width - 1; j++){
       gt_x = (*input_cloud)(j+1,i-1).intensity - (*input_cloud)(j-1,i-1).intensity +
@@ -204,7 +204,7 @@ TEST(Edge, prewitt)
   edge_->setOutputType (Edge<pcl::PointXYZI, PointXYZIEdge>::OUTPUT_X_Y);
   edge_->detectEdgePrewitt (*output_cloud);
 
-  float gt_x, gt_y;
+  double gt_x, gt_y;
   for (int i = 1; i < height - 1; i++){
     for (int j = 1; j < width - 1; j++){
       gt_x = (*input_cloud)(j+1,i-1).intensity - (*input_cloud)(j-1,i-1).intensity +
@@ -254,7 +254,7 @@ TEST(Edge, canny)
   //EXPECT_LE(count, 0.1*height*width);
 }
 
-void threshold(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, float thresh){
+void threshold(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, double thresh){
   for(size_t i = 0;i < cloud->height;i++){
     for(size_t j = 0;j < cloud->width;j++){
       if((*cloud)(j,i).intensity > thresh)

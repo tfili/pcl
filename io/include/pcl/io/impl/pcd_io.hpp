@@ -352,12 +352,12 @@ pcl::PCDWriter::writeBinaryCompressed (const std::string &file_name,
     }
   }
 
-  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<float> (data_size) * 1.5f + 8.0f)));
+  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<double> (data_size) * 1.5f + 8.0f)));
   // Compress the valid data
   unsigned int compressed_size = pcl::lzfCompress (only_valid_data, 
                                                    static_cast<uint32_t> (data_size), 
                                                    &temp_buf[8], 
-                                                   static_cast<uint32_t> (static_cast<float>(data_size) * 1.5f));
+                                                   static_cast<uint32_t> (static_cast<double>(data_size) * 1.5f));
   unsigned int compressed_final_size = 0;
   // Was the compression successful?
   if (compressed_size)
@@ -576,12 +576,12 @@ pcl::PCDWriter::writeASCII (const std::string &file_name, const pcl::PointCloud<
           }
           case pcl::PCLPointField::FLOAT32:
           {
-            float value;
-            memcpy (&value, reinterpret_cast<const char*> (&cloud.points[i]) + fields[d].offset + c * sizeof (float), sizeof (float));
+            double value;
+            memcpy (&value, reinterpret_cast<const char*> (&cloud.points[i]) + fields[d].offset + c * sizeof (double), sizeof (double));
             if (pcl_isnan (value))
               stream << "nan";
             else
-              stream << boost::numeric_cast<float>(value);
+              stream << boost::numeric_cast<double>(value);
             break;
           }
           case pcl::PCLPointField::FLOAT64:
@@ -877,12 +877,12 @@ pcl::PCDWriter::writeASCII (const std::string &file_name,
           }
           case pcl::PCLPointField::FLOAT32:
           {
-            float value;
-            memcpy (&value, reinterpret_cast<const char*> (&cloud.points[indices[i]]) + fields[d].offset + c * sizeof (float), sizeof (float));
+            double value;
+            memcpy (&value, reinterpret_cast<const char*> (&cloud.points[indices[i]]) + fields[d].offset + c * sizeof (double), sizeof (double));
             if (pcl_isnan (value))
               stream << "nan";
             else
-              stream << boost::numeric_cast<float>(value);
+              stream << boost::numeric_cast<double>(value);
             break;
           }
           case pcl::PCLPointField::FLOAT64:

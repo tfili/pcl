@@ -78,13 +78,13 @@ pcl::registration::LUM<PointT>::getMaxIterations () const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> void
-pcl::registration::LUM<PointT>::setConvergenceThreshold (float convergence_threshold)
+pcl::registration::LUM<PointT>::setConvergenceThreshold (double convergence_threshold)
 {
   convergence_threshold_ = convergence_threshold;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointT> inline float
+template<typename PointT> inline double
 pcl::registration::LUM<PointT>::getConvergenceThreshold () const
 {
   return (convergence_threshold_);
@@ -254,7 +254,7 @@ pcl::registration::LUM<PointT>::compute ()
     Eigen::VectorXf X = G.colPivHouseholderQr ().solve (B);
 
     // Update the poses
-    float sum = 0.0;
+    double sum = 0.0;
     for (int vi = 1; vi != n; ++vi)
     {
       Eigen::Vector6f difference_pose = static_cast<Eigen::Vector6f> (-incidenceCorrection (getPose (vi)).inverse () * X.segment (6 * (vi - 1), 6));
@@ -263,7 +263,7 @@ pcl::registration::LUM<PointT>::compute ()
     }
 
     // Convergence check
-    if (sum <= convergence_threshold_ * static_cast<float> (n - 1))
+    if (sum <= convergence_threshold_ * static_cast<double> (n - 1))
       return;
   }
 }
@@ -362,7 +362,7 @@ pcl::registration::LUM<PointT>::computeEdge (const Edge &e)
     MZ (5) += corrs_aver[ci] (2) * corrs_diff[ci] (0) - corrs_aver[ci] (0) * corrs_diff[ci] (2);
   }
   // Remaining elements of M'M
-  MM (0, 0) = MM (1, 1) = MM (2, 2) = static_cast<float> (oci);
+  MM (0, 0) = MM (1, 1) = MM (2, 2) = static_cast<double> (oci);
   MM (4, 0) = MM (0, 4);
   MM (5, 0) = MM (0, 5);
   MM (3, 1) = MM (1, 3);
@@ -377,9 +377,9 @@ pcl::registration::LUM<PointT>::computeEdge (const Edge &e)
   Eigen::Vector6f D = static_cast<Eigen::Vector6f> (MM.inverse () * MZ);
 
   // Compute s^2
-  float ss = 0.0f;
+  double ss = 0.0f;
   for (int ci = 0; ci != oci; ++ci)  // ci = correspondence iterator
-    ss += static_cast<float> (pow (corrs_diff[ci] (0) - (D (0) + corrs_aver[ci] (2) * D (5) - corrs_aver[ci] (1) * D (4)), 2.0f)
+    ss += static_cast<double> (pow (corrs_diff[ci] (0) - (D (0) + corrs_aver[ci] (2) * D (5) - corrs_aver[ci] (1) * D (4)), 2.0f)
                             + pow (corrs_diff[ci] (1) - (D (1) + corrs_aver[ci] (0) * D (4) - corrs_aver[ci] (2) * D (3)), 2.0f)
                             + pow (corrs_diff[ci] (2) - (D (2) + corrs_aver[ci] (1) * D (3) - corrs_aver[ci] (0) * D (5)), 2.0f));
 
@@ -401,7 +401,7 @@ template<typename PointT> inline Eigen::Matrix6f
 pcl::registration::LUM<PointT>::incidenceCorrection (const Eigen::Vector6f &pose)
 {
   Eigen::Matrix6f out = Eigen::Matrix6f::Identity ();
-  float cx = cosf (pose (3)), sx = sinf (pose (3)), cy = cosf (pose (4)), sy = sinf (pose (4));
+  double cx = cosf (pose (3)), sx = sinf (pose (3)), cy = cosf (pose (4)), sy = sinf (pose (4));
   out (0, 4) = pose (1) * sx - pose (2) * cx;
   out (0, 5) = pose (1) * cx * cy + pose (2) * sx * cy;
   out (1, 3) = pose (2);

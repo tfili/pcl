@@ -67,8 +67,8 @@ using namespace visualization;
 #define _SHOW_MODEL_OCTREE_POINTS_
 //#define _SHOW_MODEL_OCTREE_NORMALS_
 
-void run (float pair_width, float voxel_size, float max_coplanarity_angle);
-void showModelOpps (PCLVisualizer& viz, const ModelLibrary::HashTable& hash_table, const ModelLibrary::Model* model, float pair_width);
+void run (double pair_width, double voxel_size, double max_coplanarity_angle);
+void showModelOpps (PCLVisualizer& viz, const ModelLibrary::HashTable& hash_table, const ModelLibrary::Model* model, double pair_width);
 bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, PointCloud<Normal>& pcl_normals);
 
 //===========================================================================================================================================
@@ -79,13 +79,13 @@ main (int argc, char** argv)
   printf ("\nUsage: ./pcl_obj_rec_ransac_model_opps <pair_width> <voxel_size> <max_coplanarity_angle>\n\n");
 
   const int num_params = 3;
-  float parameters[num_params] = {10.0f/*pair width*/, 5.0f/*voxel size*/, 5.0f/*max co-planarity angle*/};
+  double parameters[num_params] = {10.0f/*pair width*/, 5.0f/*voxel size*/, 5.0f/*max co-planarity angle*/};
   string parameter_names[num_params] = {"pair_width", "voxel_size", "max_coplanarity_angle"};
 
   // Read the user input if any
   for ( int i = 0 ; i < argc-1 && i < num_params ; ++i )
   {
-    parameters[i] = static_cast<float> (atof (argv[i+1]));
+    parameters[i] = static_cast<double> (atof (argv[i+1]));
     if ( parameters[i] <= 0.0f )
     {
       fprintf(stderr, "ERROR: the %i-th parameter has to be positive and not %f\n", i+1, parameters[i]);
@@ -105,7 +105,7 @@ main (int argc, char** argv)
 
 //===============================================================================================================================
 
-void run (float pair_width, float voxel_size, float max_coplanarity_angle)
+void run (double pair_width, double voxel_size, double max_coplanarity_angle)
 {
   PointCloud<PointXYZ>::Ptr model_points (new PointCloud<PointXYZ> ());
   PointCloud<Normal>::Ptr model_normals (new PointCloud<Normal> ());
@@ -166,7 +166,7 @@ void run (float pair_width, float voxel_size, float max_coplanarity_angle)
 
 //===============================================================================================================================
 
-void showModelOpps (PCLVisualizer& viz, const ModelLibrary::HashTable& hash_table, const ModelLibrary::Model* model, float pair_width)
+void showModelOpps (PCLVisualizer& viz, const ModelLibrary::HashTable& hash_table, const ModelLibrary::Model* model, double pair_width)
 {
   printf ("Visualizing ... "); fflush (stdout);
 
@@ -262,9 +262,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points,
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_points->GetPoint (i, p);
-    pcl_points[i].x = static_cast<float> (p[0]);
-    pcl_points[i].y = static_cast<float> (p[1]);
-    pcl_points[i].z = static_cast<float> (p[2]);
+    pcl_points[i].x = static_cast<double> (p[0]);
+    pcl_points[i].y = static_cast<double> (p[1]);
+    pcl_points[i].z = static_cast<double> (p[2]);
   }
 
   // Check if we have normals
@@ -277,9 +277,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points,
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_normals->GetTuple (i, p);
-    pcl_normals[i].normal_x = static_cast<float> (p[0]);
-    pcl_normals[i].normal_y = static_cast<float> (p[1]);
-    pcl_normals[i].normal_z = static_cast<float> (p[2]);
+    pcl_normals[i].normal_x = static_cast<double> (p[0]);
+    pcl_normals[i].normal_y = static_cast<double> (p[1]);
+    pcl_normals[i].normal_z = static_cast<double> (p[2]);
   }
 
   return true;

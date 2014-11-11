@@ -11,7 +11,7 @@ main (int argc, char** argv)
   srand ((unsigned int) time (NULL));
 
   // Octree resolution - side length of octree voxels
-  float resolution = 32.0f;
+  double resolution = 32.0f;
 
   // Instantiate octree-based point cloud change detection class
   pcl::octree::OctreePointCloudChangeDetector<pcl::PointXYZ> octree (resolution);

@@ -56,9 +56,9 @@ namespace pcl
         __device__ __host__ __forceinline__ type & operator op (type & v1, const type & v2) { v1.x op v2.x; v1.y op v2.y; v1.z op v2.z; return v1; } \
         __device__ __host__ __forceinline__ type & operator op (type & v, scalar val)       {  v.x op val;   v.y op val;   v.z op val;  return v;  }
 
-        PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP(float3, float, -=)    
-        PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP(float3, float, +=)
-        PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP(float3, float, *=)
+        PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP(float3, double, -=)    
+        PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP(float3, double, +=)
+        PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP(float3, double, *=)
 
         PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP(short3, short, -=) 
 
@@ -66,7 +66,7 @@ namespace pcl
 
 #undef PCL_GPU_IMPLEMENT_COMPOUND_VEC3_OP
 
-        __device__ __host__ __forceinline__ float dot(const float3& v1, const float3& v2)
+        __device__ __host__ __forceinline__ double dot(const float3& v1, const float3& v2)
         {
             return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
         }
@@ -79,7 +79,7 @@ namespace pcl
         ////////////////////////////////
         // four element vectors 
 
-		__device__ __host__ __forceinline__ float dot(const float4& v1, const float4& v2)
+		__device__ __host__ __forceinline__ double dot(const float4& v1, const float4& v2)
         {
             return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
         }
@@ -91,9 +91,9 @@ namespace pcl
         __device__ __host__ __forceinline__ type operator op (const type & v1, const type & v2) { type r = v1; r cop v2; return r; } \
         __device__ __host__ __forceinline__ type operator op (const type & v1, scalar c)        { type r = v1; r cop c;  return r; }
             
-        PCL_GPU_IMPLEMENT_VEC_BINOP(float3, float, -, -=)
-        PCL_GPU_IMPLEMENT_VEC_BINOP(float3, float, +, +=)
-        PCL_GPU_IMPLEMENT_VEC_BINOP(float3, float, *, *=)
+        PCL_GPU_IMPLEMENT_VEC_BINOP(float3, double, -, -=)
+        PCL_GPU_IMPLEMENT_VEC_BINOP(float3, double, +, +=)
+        PCL_GPU_IMPLEMENT_VEC_BINOP(float3, double, *, *=)
 
         PCL_GPU_IMPLEMENT_VEC_BINOP(short3, short, -, -=)
 
@@ -105,12 +105,12 @@ namespace pcl
         ////////////////////////////////
         // tempalted operations vectors 
 
-        template<typename T> __device__ __host__ __forceinline__ float norm(const T& val)
+        template<typename T> __device__ __host__ __forceinline__ double norm(const T& val)
         {
             return sqrtf(dot(val, val));
         }
 
-        template<typename T> __host__ __device__ __forceinline__ float inverse_norm(const T& v)
+        template<typename T> __host__ __device__ __forceinline__ double inverse_norm(const T& v)
         {
             return rsqrtf(dot(v, v));
         }

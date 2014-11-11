@@ -63,11 +63,11 @@ main (int argc, char** argv)
   }
 
   // Parse the gradient magnitude threshold
-  float grad_mag_thresh = 10.0f;
+  double grad_mag_thresh = 10.0f;
   parse_argument (argc, argv, "-grad_mag_thresh", grad_mag_thresh);
 
   // Parse the detection threshold
-  float detect_thresh = 0.75f;
+  double detect_thresh = 0.75f;
   parse_argument (argc, argv, "-detect_thresh", detect_thresh);
 
   // Parse the command line arguments for .lmt files

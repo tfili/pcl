@@ -57,9 +57,9 @@ pcl::registration::TransformationValidationEuclidean<PointSource, PointTarget, S
   {
     const PointSource &src = cloud_src->points[i];
     PointTarget &tgt = input_transformed.points[i];
-    tgt.x = static_cast<float> (transformation_matrix (0, 0) * src.x + transformation_matrix (0, 1) * src.y + transformation_matrix (0, 2) * src.z + transformation_matrix (0, 3));
-    tgt.y = static_cast<float> (transformation_matrix (1, 0) * src.x + transformation_matrix (1, 1) * src.y + transformation_matrix (1, 2) * src.z + transformation_matrix (1, 3));
-    tgt.z = static_cast<float> (transformation_matrix (2, 0) * src.x + transformation_matrix (2, 1) * src.y + transformation_matrix (2, 2) * src.z + transformation_matrix (2, 3));
+    tgt.x = static_cast<double> (transformation_matrix (0, 0) * src.x + transformation_matrix (0, 1) * src.y + transformation_matrix (0, 2) * src.z + transformation_matrix (0, 3));
+    tgt.y = static_cast<double> (transformation_matrix (1, 0) * src.x + transformation_matrix (1, 1) * src.y + transformation_matrix (1, 2) * src.z + transformation_matrix (1, 3));
+    tgt.z = static_cast<double> (transformation_matrix (2, 0) * src.x + transformation_matrix (2, 1) * src.y + transformation_matrix (2, 2) * src.z + transformation_matrix (2, 3));
    }
 
   typename MyPointRepresentation::ConstPtr point_rep (new MyPointRepresentation);
@@ -70,7 +70,7 @@ pcl::registration::TransformationValidationEuclidean<PointSource, PointTarget, S
   }
 
   std::vector<int> nn_indices (1);
-  std::vector<float> nn_dists (1);
+  std::vector<double> nn_dists (1);
 
   // For each point in the source dataset
   int nr = 0;

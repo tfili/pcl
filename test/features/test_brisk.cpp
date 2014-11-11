@@ -81,11 +81,11 @@ TEST (PCL, BRISK_2D)
   {
     PointWithScale & point = (*cloud_keypoints) [point_index];
 
-    const float dx = point.x - point.x;
-    const float dy = point.y - point.y;
-    const float dz = point.z - point.z;
+    const double dx = point.x - point.x;
+    const double dy = point.y - point.y;
+    const double dz = point.z - point.z;
 
-    const float sqr_distance = (dx*dx + dy*dy + dz*dz);
+    const double sqr_distance = (dx*dx + dy*dy + dz*dz);
 
     EXPECT_NEAR (0.0f, sqr_distance, 1e-4);
   }
@@ -110,10 +110,10 @@ TEST (PCL, BRISK_2D)
     BRISKSignature512 & descriptor = (*cloud_descriptors) [point_index];
     BRISKSignature512 & descriptor_gt = (*cloud_descriptors_gt) [point_index];
 
-    float sqr_dist = 0.0f;
+    double sqr_dist = 0.0f;
     for (size_t index = 0; index < 33; ++index)
     {
-      const float dist = float (descriptor.descriptor[index] - descriptor_gt.descriptor[index]);
+      const double dist = double (descriptor.descriptor[index] - descriptor_gt.descriptor[index]);
       sqr_dist += dist * dist;
     }
 

@@ -75,7 +75,7 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     // Get local point
     int point_offset = ((*indices_)[index] * input_->point_step);
     int offset = point_offset + input_->fields[x_idx_].offset;
-    memcpy (&local_pt, &input_->data[offset], sizeof (float)*3);
+    memcpy (&local_pt, &input_->data[offset], sizeof (double)*3);
 
     // Check if the point is invalid
     if (!pcl_isfinite (local_pt.x ()) ||
@@ -161,7 +161,7 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (std::vector<int> &indices)
     // Get local point
     int point_offset = ((*indices_)[index] * input_->point_step);
     int offset = point_offset + input_->fields[x_idx_].offset;
-    memcpy (&local_pt, &input_->data[offset], sizeof (float)*3);
+    memcpy (&local_pt, &input_->data[offset], sizeof (double)*3);
 
     // Transform point to world space
     if (!(transform_.matrix().isIdentity()))

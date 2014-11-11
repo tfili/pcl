@@ -47,11 +47,11 @@
 template <typename PointInT, typename PointNT, typename PointOutT, typename IntensitySelectorT> void
 pcl::IntensityGradientEstimation <PointInT, PointNT, PointOutT, IntensitySelectorT>::computePointIntensityGradient (
   const pcl::PointCloud <PointInT> &cloud, const std::vector <int> &indices,
-  const Eigen::Vector3f &point, float mean_intensity, const Eigen::Vector3f &normal, Eigen::Vector3f &gradient)
+  const Eigen::Vector3f &point, double mean_intensity, const Eigen::Vector3f &normal, Eigen::Vector3f &gradient)
 {
   if (indices.size () < 3)
   {
-    gradient[0] = gradient[1] = gradient[2] = std::numeric_limits<float>::quiet_NaN ();
+    gradient[0] = gradient[1] = gradient[2] = std::numeric_limits<double>::quiet_NaN ();
     return;
   }
 
@@ -146,7 +146,7 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
   output.is_dense = true;
 
   // If the data is dense, we don't need to check for NaN
@@ -162,13 +162,13 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
 
       if (!this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists))
       {
-        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<float>::quiet_NaN ();
+        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }
 
       Eigen::Vector3f centroid;
-      float mean_intensity = 0;
+      double mean_intensity = 0;
       // Initialize to 0
       centroid.setZero ();
       for (size_t i = 0; i < nn_indices.size (); ++i)
@@ -176,8 +176,8 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
         centroid += surface_->points[nn_indices[i]].getVector3fMap ();
         mean_intensity += intensity_ (surface_->points[nn_indices[i]]);
       }
-      centroid /= static_cast<float> (nn_indices.size ());
-      mean_intensity /= static_cast<float> (nn_indices.size ());
+      centroid /= static_cast<double> (nn_indices.size ());
+      mean_intensity /= static_cast<double> (nn_indices.size ());
 
       Eigen::Vector3f normal = Eigen::Vector3f::Map (normals_->points[(*indices_) [idx]].normal);
       Eigen::Vector3f gradient;
@@ -200,12 +200,12 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
       if (!isFinite ((*surface_) [(*indices_)[idx]]) ||
           !this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists))
       {
-        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<float>::quiet_NaN ();
+        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }
       Eigen::Vector3f centroid;
-      float mean_intensity = 0;
+      double mean_intensity = 0;
       // Initialize to 0
       centroid.setZero ();
       unsigned cp = 0;
@@ -219,8 +219,8 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
         mean_intensity += intensity_ (surface_->points [nn_indices[i]]);
         ++cp;
       }
-      centroid /= static_cast<float> (cp);
-      mean_intensity /= static_cast<float> (cp);
+      centroid /= static_cast<double> (cp);
+      mean_intensity /= static_cast<double> (cp);
       Eigen::Vector3f normal = Eigen::Vector3f::Map (normals_->points[(*indices_) [idx]].normal);
       Eigen::Vector3f gradient;
       computePointIntensityGradient (*surface_, nn_indices, centroid, mean_intensity, normal, gradient);

@@ -101,7 +101,7 @@ namespace pcl
       /** \brief Empty constructor. 
         * The angular threshold \a angle_threshold_ is set to M_PI / 2.0
         */
-      BoundaryEstimation () : angle_threshold_ (static_cast<float> (M_PI) / 2.0f) 
+      BoundaryEstimation () : angle_threshold_ (static_cast<double> (M_PI) / 2.0f) 
       {
         feature_name_ = "BoundaryEstimation";
       };
@@ -118,7 +118,7 @@ namespace pcl
       bool 
       isBoundaryPoint (const pcl::PointCloud<PointInT> &cloud, 
                        int q_idx, const std::vector<int> &indices, 
-                       const Eigen::Vector4f &u, const Eigen::Vector4f &v, const float angle_threshold);
+                       const Eigen::Vector4f &u, const Eigen::Vector4f &v, const double angle_threshold);
 
       /** \brief Check whether a point is a boundary point in a planar patch of projected points given by indices.
         * \note A coordinate system u-v-n must be computed a-priori using \a getCoordinateSystemOnPlane
@@ -133,20 +133,20 @@ namespace pcl
       isBoundaryPoint (const pcl::PointCloud<PointInT> &cloud, 
                        const PointInT &q_point, 
                        const std::vector<int> &indices, 
-                       const Eigen::Vector4f &u, const Eigen::Vector4f &v, const float angle_threshold);
+                       const Eigen::Vector4f &u, const Eigen::Vector4f &v, const double angle_threshold);
 
       /** \brief Set the decision boundary (angle threshold) that marks points as boundary or regular. 
         * (default \f$\pi / 2.0\f$) 
         * \param[in] angle the angle threshold
         */
       inline void
-      setAngleThreshold (float angle)
+      setAngleThreshold (double angle)
       {
         angle_threshold_ = angle;
       }
 
       /** \brief Get the decision boundary (angle threshold) as set by the user. */
-      inline float
+      inline double
       getAngleThreshold ()
       {
         return (angle_threshold_);
@@ -176,7 +176,7 @@ namespace pcl
       computeFeature (PointCloudOut &output);
 
       /** \brief The decision boundary (angle threshold) that marks points as boundary or regular. (default \f$\pi / 2.0\f$) */
-      float angle_threshold_;
+      double angle_threshold_;
   };
 }
 

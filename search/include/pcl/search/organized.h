@@ -85,11 +85,11 @@ namespace pcl
           *            thus organized neighbor search can not be applied on that cloud.
           * \param[in] pyramid_level the level of the down sampled point cloud to be used for projection matrix estimation
           */
-        OrganizedNeighbor (bool sorted_results = false, float eps = 1e-4f, unsigned pyramid_level = 5)
+        OrganizedNeighbor (bool sorted_results = false, double eps = 1e-4f, unsigned pyramid_level = 5)
           : Search<PointT> ("OrganizedNeighbor", sorted_results)
-          , projection_matrix_ (Eigen::Matrix<float, 3, 4, Eigen::RowMajor>::Zero ())
-          , KR_ (Eigen::Matrix<float, 3, 3, Eigen::RowMajor>::Zero ())
-          , KR_KRT_ (Eigen::Matrix<float, 3, 3, Eigen::RowMajor>::Zero ())
+          , projection_matrix_ (Eigen::Matrix<double, 3, 4, Eigen::RowMajor>::Zero ())
+          , KR_ (Eigen::Matrix<double, 3, 3, Eigen::RowMajor>::Zero ())
+          , KR_KRT_ (Eigen::Matrix<double, 3, 3, Eigen::RowMajor>::Zero ())
           , eps_ (eps)
           , pyramid_level_ (pyramid_level)
           , mask_ ()
@@ -110,7 +110,7 @@ namespace pcl
           // determinant (KR) = determinant (K) * determinant (R) = determinant (K) = f_x * f_y.
           // If we expect at max an opening angle of 170degree in x-direction -> f_x = 2.0 * width / tan (85 degree);
           // 2 * tan (85 degree) ~ 22.86
-          float min_f = 0.043744332f * static_cast<float>(input_->width);
+          double min_f = 0.043744332f * static_cast<double>(input_->width);
           //std::cout << "isValid: " << determinant3x3Matrix<Eigen::Matrix3f> (KR_ / sqrt (KR_KRT_.coeff (8))) << " >= " << (min_f * min_f) << std::endl;
           return (determinant3x3Matrix<Eigen::Matrix3f> (KR_ / sqrtf (KR_KRT_.coeff (8))) >= (min_f * min_f));
         }
@@ -160,7 +160,7 @@ namespace pcl
         radiusSearch (const PointT &p_q,
                       double radius,
                       std::vector<int> &k_indices,
-                      std::vector<float> &k_sqr_distances,
+                      std::vector<double> &k_sqr_distances,
                       unsigned int max_nn = 0) const;
 
         /** \brief estimated the projection matrix from the input cloud. */
@@ -180,7 +180,7 @@ namespace pcl
         nearestKSearch (const PointT &p_q,
                         int k,
                         std::vector<int> &k_indices,
-                        std::vector<float> &k_sqr_distances) const;
+                        std::vector<double> &k_sqr_distances) const;
 
         /** \brief projects a point into the image
           * \param[in] p point in 3D World Coordinate Frame to be projected onto the image plane
@@ -193,10 +193,10 @@ namespace pcl
 
         struct Entry
         {
-          Entry (int idx, float dist) : index (idx), distance (dist) {}
+          Entry (int idx, double dist) : index (idx), distance (dist) {}
           Entry () : index (0), distance (0) {}
           unsigned index;
-          float distance;
+          double distance;
           
           inline bool 
           operator < (const Entry& other) const
@@ -218,11 +218,11 @@ namespace pcl
           const PointT& point = input_->points [index];
           if (mask_ [index] && pcl_isfinite (point.x))
           {
-            //float squared_distance = (point.getVector3fMap () - query.getVector3fMap ()).squaredNorm ();
-            float dist_x = point.x - query.x;
-            float dist_y = point.y - query.y;
-            float dist_z = point.z - query.z;
-            float squared_distance = dist_x * dist_x + dist_y * dist_y + dist_z * dist_z;
+            //double squared_distance = (point.getVector3fMap () - query.getVector3fMap ()).squaredNorm ();
+            double dist_x = point.x - query.x;
+            double dist_y = point.y - query.y;
+            double dist_z = point.z - query.z;
+            double squared_distance = dist_x * dist_x + dist_y * dist_y + dist_z * dist_z;
             if (queue.size () < k)
               queue.push (Entry (index, squared_distance));
             else if (queue.top ().distance > squared_distance)
@@ -251,21 +251,21 @@ namespace pcl
           * \param[out] maxY the max Y box coordinate
           */
         void
-        getProjectedRadiusSearchBox (const PointT& point, float squared_radius, unsigned& minX, unsigned& minY,
+        getProjectedRadiusSearchBox (const PointT& point, double squared_radius, unsigned& minX, unsigned& minY,
                                      unsigned& maxX, unsigned& maxY) const;
 
 
         /** \brief the projection matrix. Either set by user or calculated by the first / each input cloud */
-        Eigen::Matrix<float, 3, 4, Eigen::RowMajor> projection_matrix_;
+        Eigen::Matrix<double, 3, 4, Eigen::RowMajor> projection_matrix_;
 
         /** \brief inveser of the left 3x3 projection matrix which is K * R (with K being the camera matrix and R the rotation matrix)*/
-        Eigen::Matrix<float, 3, 3, Eigen::RowMajor> KR_;
+        Eigen::Matrix<double, 3, 3, Eigen::RowMajor> KR_;
 
         /** \brief inveser of the left 3x3 projection matrix which is K * R (with K being the camera matrix and R the rotation matrix)*/
-        Eigen::Matrix<float, 3, 3, Eigen::RowMajor> KR_KRT_;
+        Eigen::Matrix<double, 3, 3, Eigen::RowMajor> KR_KRT_;
 
         /** \brief epsilon value for the MSE of the projection matrix estimation*/
-        const float eps_;
+        const double eps_;
 
         /** \brief using only a subsample of points to calculate the projection matrix. pyramid_level_ = use down sampled cloud given by pyramid_level_*/
         const unsigned pyramid_level_;

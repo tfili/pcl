@@ -72,7 +72,7 @@ pcl::recognition::ORROctree::clear ()
 //================================================================================================================================================================
 
 void
-pcl::recognition::ORROctree::build (const float* bounds, float voxel_size)
+pcl::recognition::ORROctree::build (const double* bounds, double voxel_size)
 {
   if ( voxel_size <= 0.0f )
     return;
@@ -81,9 +81,9 @@ pcl::recognition::ORROctree::build (const float* bounds, float voxel_size)
 
   voxel_size_ = voxel_size;
 
-  float extent = std::max (std::max (bounds[1]-bounds[0], bounds[3]-bounds[2]), bounds[5]-bounds[4]);
-  float center[3] = {0.5f*(bounds[0]+bounds[1]), 0.5f*(bounds[2]+bounds[3]), 0.5f*(bounds[4]+bounds[5])};
-  float arg = extent/voxel_size;
+  double extent = std::max (std::max (bounds[1]-bounds[0], bounds[3]-bounds[2]), bounds[5]-bounds[4]);
+  double center[3] = {0.5f*(bounds[0]+bounds[1]), 0.5f*(bounds[2]+bounds[3]), 0.5f*(bounds[4]+bounds[5])};
+  double arg = extent/voxel_size;
 
   // Compute the number of tree levels
   if ( arg > 1.0f )
@@ -92,7 +92,7 @@ pcl::recognition::ORROctree::build (const float* bounds, float voxel_size)
     tree_levels_ = 0;
 
   // Compute the number of octree levels and the bounds of the root
-  float half_root_side = static_cast<float> (0.5f*pow (2.0, tree_levels_)*voxel_size);
+  double half_root_side = static_cast<double> (0.5f*pow (2.0, tree_levels_)*voxel_size);
 
   // Determine the bounding box of the octree
   bounds_[0] = center[0] - half_root_side;
@@ -113,7 +113,7 @@ pcl::recognition::ORROctree::build (const float* bounds, float voxel_size)
 //================================================================================================================================================================
 
 void
-pcl::recognition::ORROctree::build (const PointCloudIn& points, float voxel_size, const PointCloudN* normals, float enlarge_bounds)
+pcl::recognition::ORROctree::build (const PointCloudIn& points, double voxel_size, const PointCloudN* normals, double enlarge_bounds)
 {
   if ( voxel_size <= 0.0f )
     return;
@@ -123,8 +123,8 @@ pcl::recognition::ORROctree::build (const PointCloudIn& points, float voxel_size
   getMinMax3D(points, min, max);
 
   // Enlarge the bounds a bit to avoid points lying exact on the octree boundaries
-  float eps = enlarge_bounds*std::max (std::max (max.x-min.x, max.y-min.y), max.z-min.z);
-  float b[6] = {min.x-eps, max.x+eps, min.y-eps, max.y+eps, min.z-eps, max.z+eps};
+  double eps = enlarge_bounds*std::max (std::max (max.x-min.x, max.y-min.y), max.z-min.z);
+  double b[6] = {min.x-eps, max.x+eps, min.y-eps, max.y+eps, min.z-eps, max.z+eps};
 
   // Build an empty octree with the right boundaries and the right number of levels
   this->build (b, voxel_size);
@@ -163,7 +163,7 @@ pcl::recognition::ORROctree::build (const PointCloudIn& points, float voxel_size
   // Compute the normals and average points for each full octree node
   if ( normals )
   {
-    float normal_length;
+    double normal_length;
 
     for ( vector<ORROctree::Node*>::iterator it = full_leaves_.begin() ; it != full_leaves_.end() ; )
     {
@@ -175,7 +175,7 @@ pcl::recognition::ORROctree::build (const PointCloudIn& points, float voxel_size
 
       // We are suppose to use normals. However, it could be that all normals in this leaf are "illegal", because,
       // e.g., they were not available in the data set. In this case, remove the leaf from the octree.
-      if ( normal_length <= numeric_limits<float>::epsilon () )
+      if ( normal_length <= numeric_limits<double>::epsilon () )
       {
         this->deleteBranch (*it);
         it = full_leaves_.erase (it);
@@ -207,7 +207,7 @@ pcl::recognition::ORROctree::Node::createChildren()
   if ( children_ )
     return (false);
 
-  float bounds[6], center[3], childside = 0.5f*(bounds_[1]-bounds_[0]);
+  double bounds[6], center[3], childside = 0.5f*(bounds_[1]-bounds_[0]);
   children_ = new ORROctree::Node[8];
 
   // Compute bounds and center for child 0, i.e., for (0,0,0)
@@ -290,7 +290,7 @@ pcl::recognition::ORROctree::Node::createChildren()
 //====================================================================================================
 
 void
-pcl::recognition::ORROctree::getFullLeavesIntersectedBySphere (const float* p, float radius, std::list<ORROctree::Node*>& out) const
+pcl::recognition::ORROctree::getFullLeavesIntersectedBySphere (const double* p, double radius, std::list<ORROctree::Node*>& out) const
 {
   list<ORROctree::Node*> nodes;
   nodes.push_back (root_);
@@ -307,7 +307,7 @@ pcl::recognition::ORROctree::getFullLeavesIntersectedBySphere (const float* p, f
     nodes.pop_back ();
 
     // Check if the sphere intersects the current node
-    if ( fabs (radius - aux::distance3<float> (p, node->getCenter ())) <= node->getRadius () )
+    if ( fabs (radius - aux::distance3<double> (p, node->getCenter ())) <= node->getRadius () )
     {
       // We have an intersection -> push back the children of the current node
       if ( node->hasChildren () )
@@ -324,7 +324,7 @@ pcl::recognition::ORROctree::getFullLeavesIntersectedBySphere (const float* p, f
         }
       }
       // only push back the node if it is not the leaf of p
-      else if (node->hasData () && !aux::equal3<float> (p, node->getData ()->getPoint ()))
+      else if (node->hasData () && !aux::equal3<double> (p, node->getData ()->getPoint ()))
         out.push_back (node); // We got a full leaf
     }
   }
@@ -333,7 +333,7 @@ pcl::recognition::ORROctree::getFullLeavesIntersectedBySphere (const float* p, f
 //================================================================================================================================================================
 
 ORROctree::Node*
-pcl::recognition::ORROctree::getRandomFullLeafOnSphere (const float* p, float radius) const
+pcl::recognition::ORROctree::getRandomFullLeafOnSphere (const double* p, double radius) const
 {
   vector<int> tmp_ids;
   tmp_ids.reserve (8);
@@ -351,7 +351,7 @@ pcl::recognition::ORROctree::getRandomFullLeafOnSphere (const float* p, float ra
     nodes.pop_back ();
 
     // Check if the sphere intersects the current node
-    if ( fabs (radius - aux::distance3<float> (p, node->getCenter ())) <= node->getRadius () )
+    if ( fabs (radius - aux::distance3<double> (p, node->getCenter ())) <= node->getRadius () )
     {
       // We have an intersection -> push back the children of the current node
       if ( node->hasChildren () )

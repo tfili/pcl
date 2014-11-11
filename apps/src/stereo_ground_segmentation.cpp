@@ -297,7 +297,7 @@ class HRCSSegmentation
           plane_params[3] = -1 * plane_params.dot (clust_centroid);
           
           vp -= clust_centroid;
-          float cos_theta = vp.dot (plane_params);
+          double cos_theta = vp.dot (plane_params);
           if (cos_theta < 0)
           {
             plane_params *= -1;

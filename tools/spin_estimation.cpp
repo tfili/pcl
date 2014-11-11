@@ -47,7 +47,7 @@ using namespace pcl::io;
 using namespace pcl::console;
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::Histogram<153>,
-  (float[153], histogram, spinimage)
+  (double[153], histogram, spinimage)
 )
 
 int    default_image_width = 8;

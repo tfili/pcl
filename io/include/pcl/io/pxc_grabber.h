@@ -115,7 +115,7 @@ namespace pcl
       getName () const;
 
       /** \brief Obtain the number of frames per second (FPS). */
-      virtual float 
+      virtual double 
       getFramesPerSecond () const;
 
     protected:
@@ -145,7 +145,7 @@ namespace pcl
       bool running_;
 
       // FPS computation
-      mutable float fps_;
+      mutable double fps_;
       mutable boost::mutex fps_mutex_;
 
       // thread where the grabbing takes place

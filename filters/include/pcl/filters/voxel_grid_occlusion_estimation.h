@@ -153,9 +153,9 @@ namespace pcl
         k = ((b_min_[2] < 0) ? (abs (min_b_[2]) + ijk[2]) : (ijk[2] - min_b_[2]));
 
         Eigen::Vector4f xyz;
-        xyz[0] = b_min_[0] + (leaf_size_[0] * 0.5f) + (static_cast<float> (i) * leaf_size_[0]);
-        xyz[1] = b_min_[1] + (leaf_size_[1] * 0.5f) + (static_cast<float> (j) * leaf_size_[1]);
-        xyz[2] = b_min_[2] + (leaf_size_[2] * 0.5f) + (static_cast<float> (k) * leaf_size_[2]);
+        xyz[0] = b_min_[0] + (leaf_size_[0] * 0.5f) + (static_cast<double> (i) * leaf_size_[0]);
+        xyz[1] = b_min_[1] + (leaf_size_[1] * 0.5f) + (static_cast<double> (j) * leaf_size_[1]);
+        xyz[2] = b_min_[2] + (leaf_size_[2] * 0.5f) + (static_cast<double> (k) * leaf_size_[2]);
         xyz[3] = 0;
         return xyz;
       }
@@ -174,7 +174,7 @@ namespace pcl
         * \param[in] direction The sensor orientation
         * \return the scaling value
         */
-      float
+      double
       rayBoxIntersection (const Eigen::Vector4f& origin, 
                           const Eigen::Vector4f& direction);
 
@@ -190,7 +190,7 @@ namespace pcl
       rayTraversal (const Eigen::Vector3i& target_voxel,
                     const Eigen::Vector4f& origin, 
                     const Eigen::Vector4f& direction,
-                    const float t_min);
+                    const double t_min);
 
       /** \brief Returns the state of the target voxel (0 = visible, 1 = occupied) and
         * the voxels penetrated by the ray unsing a ray traversal algorithm.
@@ -206,16 +206,16 @@ namespace pcl
                     const Eigen::Vector3i& target_voxel,
                     const Eigen::Vector4f& origin, 
                     const Eigen::Vector4f& direction,
-                    const float t_min);
+                    const double t_min);
 
       /** \brief Returns a rounded value. 
         * \param[in] d
         * \return rounded value
         */
-      inline float
-      round (float d)
+      inline double
+      round (double d)
       {
-        return static_cast<float> (floor (d + 0.5f));
+        return static_cast<double> (floor (d + 0.5f));
       }
 
       // We use round here instead of floor due to some numerical issues.
@@ -225,7 +225,7 @@ namespace pcl
         * \param[in] z the Z point coordinate to get the (i, j, k) index at
         */
       inline Eigen::Vector3i
-      getGridCoordinatesRound (float x, float y, float z) 
+      getGridCoordinatesRound (double x, double y, double z) 
       {
         return Eigen::Vector3i (static_cast<int> (round (x * inverse_leaf_size_[0])), 
                                 static_cast<int> (round (y * inverse_leaf_size_[1])), 

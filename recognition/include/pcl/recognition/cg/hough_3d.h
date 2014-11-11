@@ -358,7 +358,7 @@ namespace pcl
         * \param[in] local_rf_normals_search_radius the normals search radius for the local reference frame calculation.
         */
       inline void
-      setLocalRfNormalsSearchRadius (float local_rf_normals_search_radius)
+      setLocalRfNormalsSearchRadius (double local_rf_normals_search_radius)
       {
         local_rf_normals_search_radius_ = local_rf_normals_search_radius;
         needs_training_ = true;
@@ -371,7 +371,7 @@ namespace pcl
         *
         * \return the normals search radius for the local reference frame calculation.
         */
-      inline float
+      inline double
       getLocalRfNormalsSearchRadius () const
       {
         return (local_rf_normals_search_radius_);
@@ -385,7 +385,7 @@ namespace pcl
         * \param[in] local_rf_search_radius the search radius for the local reference frame calculation.
         */
       inline void
-      setLocalRfSearchRadius (float local_rf_search_radius)
+      setLocalRfSearchRadius (double local_rf_search_radius)
       {
         local_rf_search_radius_ = local_rf_search_radius;
         needs_training_ = true;
@@ -399,7 +399,7 @@ namespace pcl
         *
         * \return the search radius for the local reference frame calculation.
         */
-      inline float
+      inline double
       getLocalRfSearchRadius () const
       {
         return (local_rf_search_radius_);
@@ -462,10 +462,10 @@ namespace pcl
       bool use_distance_weight_;
 
       /** \brief Normals search radius for the potential Rf calculation. */
-      float local_rf_normals_search_radius_;
+      double local_rf_normals_search_radius_;
 
       /** \brief Search radius for the potential Rf calculation. */
-      float local_rf_search_radius_;
+      double local_rf_search_radius_;
 
       /** \brief The Hough space. */
       boost::shared_ptr<pcl::recognition::HoughSpace3D> hough_space_;

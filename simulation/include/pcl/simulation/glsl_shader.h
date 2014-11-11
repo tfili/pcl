@@ -77,7 +77,7 @@ namespace pcl
           void setUniform (const std::string& name, const Eigen::Matrix2f& v);
           void setUniform (const std::string& name, const Eigen::Matrix3f& v);
           void setUniform (const std::string& name, const Eigen::Matrix4f& v);
-          void setUniform (const std::string& name, float v);
+          void setUniform (const std::string& name, double v);
           void setUniform (const std::string& name, int v);
           void setUniform (const std::string& name, bool v);
 

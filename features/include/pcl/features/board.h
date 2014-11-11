@@ -90,7 +90,7 @@ namespace pcl
         * \param[in] radius The search radius for x and y axes. If not set or set to 0 the parameter given with setRadiusSearch is used.
         */
       inline void
-      setTangentRadius (float radius)
+      setTangentRadius (double radius)
       {
         tangent_radius_ = radius;
       }
@@ -99,7 +99,7 @@ namespace pcl
         *
         * \return The search radius for x and y axes. If set to 0 the parameter given with setRadiusSearch is used.
         */
-      inline float
+      inline double
       getTangentRadius () const
       {
         return (tangent_radius_);
@@ -132,7 +132,7 @@ namespace pcl
         * \param[in] margin_thresh the percentage of the search radius after which a point is considered a margin point.
         */
       inline void
-      setMarginThresh (float margin_thresh)
+      setMarginThresh (double margin_thresh)
       {
         margin_thresh_ = margin_thresh;
       }
@@ -141,7 +141,7 @@ namespace pcl
         *
         * \return The percentage of the search radius after which a point is considered a margin point.
         */
-      inline float
+      inline double
       getMarginThresh () const
       {
         return (margin_thresh_);
@@ -188,7 +188,7 @@ namespace pcl
         * \param[in] prob_thresh the minimum percentage of a circumference after which a hole is considered in the calculation
         */
       inline void
-      setHoleSizeProbThresh (float prob_thresh)
+      setHoleSizeProbThresh (double prob_thresh)
       {
         hole_size_prob_thresh_ = prob_thresh;
       }
@@ -198,7 +198,7 @@ namespace pcl
         *
         * \return the minimum percentage of a circumference after which a hole is considered in the calculation
         */
-      inline float
+      inline double
       getHoleSizeProbThresh () const
       {
         return (hole_size_prob_thresh_);
@@ -210,7 +210,7 @@ namespace pcl
         * \param[in] steep_thresh threshold that defines if a missing region contains a point with the most different normal.
         */
       inline void
-      setSteepThresh (float steep_thresh)
+      setSteepThresh (double steep_thresh)
       {
         steep_thresh_ = steep_thresh;
       }
@@ -220,7 +220,7 @@ namespace pcl
         *
         * \return threshold that defines if a missing region contains a point with the most different normal.
         */
-      inline float
+      inline double
       getSteepThresh () const
       {
         return (steep_thresh_);
@@ -249,7 +249,7 @@ namespace pcl
         * \param[in] index the index of the point in input_
         * \param[out] lrf the resultant local reference frame
         */
-      float
+      double
       computePointLRF (const int &index, Eigen::Matrix3f &lrf);
 
       /** \brief Abstract feature estimation method.
@@ -278,7 +278,7 @@ namespace pcl
         * \param[in] axis the rotation axis. Axis must be normalized and orthogonal to plane defined by v1 and v2.
         * \return angle
         */
-      float
+      double
       getAngleBetweenUnitVectors (Eigen::Vector3f const &v1, Eigen::Vector3f const &v2, Eigen::Vector3f const &axis);
 
       /** \brief Disambiguates a normal direction using adjacent normals
@@ -298,7 +298,7 @@ namespace pcl
         * \param[out] norm normal to the fitted plane
         */
       void
-      planeFitting (Eigen::Matrix<float, Eigen::Dynamic, 3> const &points, Eigen::Vector3f &center,
+      planeFitting (Eigen::Matrix<double, Eigen::Dynamic, 3> const &points, Eigen::Vector3f &center,
                     Eigen::Vector3f &norm);
 
       /** \brief Given a plane (origin and normal) and a point, return the projection of x on plane
@@ -330,35 +330,35 @@ namespace pcl
         * \return true if val1 is equal to val2, false otherwise.
         */
       inline bool
-      areEquals (float val1, float val2, float zero_float_eps = 1E-8f) const
+      areEquals (double val1, double val2, double zero_float_eps = 1E-8f) const
       {
         return (std::abs (val1 - val2) < zero_float_eps);
       }
 
     private:
       /** \brief Radius used to find tangent axis. */
-      float tangent_radius_;
+      double tangent_radius_;
 
       /** \brief If true, check if support is complete or has missing regions because it is too near to mesh borders. */
       bool find_holes_;
 
       /** \brief Threshold that define if a support point is near the margins. */
-      float margin_thresh_; 
+      double margin_thresh_; 
 
       /** \brief Number of slices that divide the support in order to determine if a missing region is present. */
       int check_margin_array_size_; 
 
       /** \brief Threshold used to determine a missing region */
-      float hole_size_prob_thresh_; 
+      double hole_size_prob_thresh_; 
 
       /** \brief Threshold that defines if a missing region contains a point with the most different normal. */
-      float steep_thresh_; 
+      double steep_thresh_; 
 
       std::vector<bool> check_margin_array_;
-      std::vector<float> margin_array_min_angle_;
-      std::vector<float> margin_array_max_angle_;
-      std::vector<float> margin_array_min_angle_normal_;
-      std::vector<float> margin_array_max_angle_normal_;
+      std::vector<double> margin_array_min_angle_;
+      std::vector<double> margin_array_max_angle_;
+      std::vector<double> margin_array_min_angle_normal_;
+      std::vector<double> margin_array_max_angle_normal_;
   };
 }
 

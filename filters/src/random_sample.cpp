@@ -73,15 +73,15 @@ pcl::RandomSample<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     // Algorithm A
     for (size_t n = sample_; n >= 2; n--)
     {
-      float V = unifRand ();
+      double V = unifRand ();
       unsigned S = 0;
-      float quot = float (top) / float (N);
+      double quot = double (top) / double (N);
       while (quot > V)
       {
         S++;
         top--;
         N--;
-        quot = quot * float (top) / float (N);
+        quot = quot * double (top) / double (N);
       }
       index += S;
       memcpy (&output.data[i++ * output.point_step], &input_->data[index++ * output.point_step], output.point_step);
@@ -122,15 +122,15 @@ pcl::RandomSample<pcl::PCLPointCloud2>::applyFilter (std::vector<int> &indices)
     // Algorithm A
     for (size_t n = sample_; n >= 2; n--)
     {
-      float V = unifRand ();
+      double V = unifRand ();
       unsigned S = 0;
-      float quot = float (top) / float (N);
+      double quot = double (top) / double (N);
       while (quot > V)
       {
         S++;
         top--;
         N--;
-        quot = quot * float (top) / float (N);
+        quot = quot * double (top) / double (N);
       }
       index += S;
       indices[i++] = (*indices_)[index++];

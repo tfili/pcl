@@ -249,9 +249,9 @@ pcl::visualization::PointCloudColorHandlerHSVField<PointT>::getColor (vtkSmartPo
 
       ///@todo do this with the point_types_conversion in common, first template it!
 
-      float h = cloud_->points[cp].h;
-      float v = cloud_->points[cp].v;
-      float s = cloud_->points[cp].s;
+      double h = cloud_->points[cp].h;
+      double v = cloud_->points[cp].v;
+      double s = cloud_->points[cp].s;
 
       // Fill color data with HSV here:
       // restrict the hue value to [0,360[
@@ -270,12 +270,12 @@ pcl::visualization::PointCloudColorHandlerHSVField<PointT>::getColor (vtkSmartPo
       else
       {
         // calculate p, q, t from HSV-values
-        float a = h / 60;
+        double a = h / 60;
         int   i = floor (a);
-        float f = a - i;
-        float p = v * (1 - s);
-        float q = v * (1 - s * f);
-        float t = v * (1 - s * (1 - f));
+        double f = a - i;
+        double p = v * (1 - s);
+        double q = v * (1 - s * f);
+        double t = v * (1 - s * (1 - f));
 
         switch (i)
         {
@@ -301,9 +301,9 @@ pcl::visualization::PointCloudColorHandlerHSVField<PointT>::getColor (vtkSmartPo
     // Color every point
     for (vtkIdType cp = 0; cp < nr_points; ++cp)
     {
-      float h = cloud_->points[cp].h;
-      float v = cloud_->points[cp].v;
-      float s = cloud_->points[cp].s;
+      double h = cloud_->points[cp].h;
+      double v = cloud_->points[cp].v;
+      double s = cloud_->points[cp].s;
 
       // Fill color data with HSV here:
       // restrict the hue value to [0,360[
@@ -322,12 +322,12 @@ pcl::visualization::PointCloudColorHandlerHSVField<PointT>::getColor (vtkSmartPo
       else
       {
         // calculate p, q, t from HSV-values
-        float a = h / 60;
+        double a = h / 60;
         int   i = floor (a);
-        float f = a - i;
-        float p = v * (1 - s);
-        float q = v * (1 - s * f);
-        float t = v * (1 - s * (1 - f));
+        double f = a - i;
+        double p = v * (1 - s);
+        double q = v * (1 - s * f);
+        double t = v * (1 - s * (1 - f));
 
         switch (i)
         {
@@ -380,8 +380,8 @@ pcl::visualization::PointCloudColorHandlerGenericField<PointT>::getColor (vtkSma
 
   typedef typename pcl::traits::fieldList<PointT>::type FieldList;
 
-  float* colors = new float[nr_points];
-  float field_data;
+  double* colors = new double[nr_points];
+  double field_data;
 
   int j = 0;
   // If XYZ present, check if the points are invalid

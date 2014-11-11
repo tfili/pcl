@@ -171,7 +171,7 @@ pcl::gpu::people::FaceDetector::loadFromXML2(const std::string                  
               current_stage.setStartClassifierRootNodeOffset(haarClassifierNodes.size());
               Ncv32u tmp_num_classifier_root_nodes = 0;
 
-              float stage_threshold = stage.second.get<float>("stage_threshold");
+              double stage_threshold = stage.second.get<double>("stage_threshold");
               int parent = stage.second.get<int>("parent");
               int next = stage.second.get<int>("next");
 
@@ -198,10 +198,10 @@ pcl::gpu::people::FaceDetector::loadFromXML2(const std::string                  
                   {
                     HaarClassifierNode128 current_node;
 
-                    float node_threshold = root_node.second.get<float>("threshold");
-                    float left_val = root_node.second.get<float>("left_val");         // TODO Test if left node is available! see Nvidia code for solution
+                    double node_threshold = root_node.second.get<double>("threshold");
+                    double left_val = root_node.second.get<double>("left_val");         // TODO Test if left node is available! see Nvidia code for solution
                     bool left_val_available = true;                                   // TODO set correctly
-                    float right_val = root_node.second.get<float>("right_val");
+                    double right_val = root_node.second.get<double>("right_val");
                     bool right_val_available = true;                                  // TODO set correctly
                     bool tilted = root_node.second.get<bool>("feature.tilted");
 
@@ -229,7 +229,7 @@ pcl::gpu::people::FaceDetector::loadFromXML2(const std::string                  
 
                       std::istringstream re( r );
                       int rectangle_u = 0, rectangle_v = 0, rectangle_width = 0, rectangle_height =0;
-                      float rectWeight = 0;
+                      double rectWeight = 0;
                       re >> std::skipws >> rectangle_u >> rectangle_v >> rectangle_width >> rectangle_height >> rectWeight;
 
                       if ( !re )

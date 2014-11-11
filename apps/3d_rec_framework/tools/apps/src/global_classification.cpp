@@ -34,8 +34,8 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
   size_t previous_cluster_size = 0;
   size_t previous_categories_size = 0;
 
-  float Z_DIST_ = 1.25f;
-  float text_scale = 0.015f;
+  double Z_DIST_ = 1.25f;
+  double text_scale = 0.015f;
 
   while (camera.isActive ())
   {
@@ -84,7 +84,7 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
     }
 
     previous_categories_size = 0;
-    float dist_ = 0.03f;
+    double dist_ = 0.03f;
 
     for (size_t i = 0; i < clusters.size (); i++)
     {
@@ -98,7 +98,7 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
       global.classify ();
 
       std::vector < std::string > categories;
-      std::vector<float> conf;
+      std::vector<double> conf;
 
       global.getCategory (categories);
       global.getConfidence (conf);
@@ -110,9 +110,9 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
       {
 
         pcl::PointXYZ pos;
-        pos.x = centroid[0] + normal_plane_[0] * static_cast<float> (kk + 1) * dist_;
-        pos.y = centroid[1] + normal_plane_[1] * static_cast<float> (kk + 1) * dist_;
-        pos.z = centroid[2] + normal_plane_[2] * static_cast<float> (kk + 1) * dist_;
+        pos.x = centroid[0] + normal_plane_[0] * static_cast<double> (kk + 1) * dist_;
+        pos.y = centroid[1] + normal_plane_[1] * static_cast<double> (kk + 1) * dist_;
+        pos.z = centroid[2] + normal_plane_[2] * static_cast<double> (kk + 1) * dist_;
 
         std::ostringstream prob_str;
         prob_str.precision (1);

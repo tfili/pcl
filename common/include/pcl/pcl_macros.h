@@ -154,15 +154,15 @@ pcl_round (double number)
 {
   return (number < 0.0 ? ceil (number - 0.5) : floor (number + 0.5));
 }
-__inline float
-pcl_round (float number)
+__inline double
+pcl_round (double number)
 {
   return (number < 0.0f ? ceilf (number - 0.5f) : floorf (number + 0.5f));
 }
 
 #ifdef __GNUC__
 #define pcl_lrint(x) (lrint(static_cast<double> (x)))
-#define pcl_lrintf(x) (lrintf(static_cast<float> (x)))
+#define pcl_lrintf(x) (lrintf(static_cast<double> (x)))
 #else
 #define pcl_lrint(x) (static_cast<long int>(pcl_round(x)))
 #define pcl_lrintf(x) (static_cast<long int>(pcl_round(x)))
@@ -170,10 +170,10 @@ pcl_round (float number)
 
 
 #ifdef _WIN32
-__inline float
-log2f (float x)
+__inline double
+log2f (double x)
 {
-  return (static_cast<float> (logf (x) * M_LOG2E));
+  return (static_cast<double> (logf (x) * M_LOG2E));
 }
 #endif
 
@@ -291,7 +291,7 @@ log2f (float x)
 //
 // Usage:
 // don't use me any more
-// PCL_DEPRECATED(void OldFunc(int a, float b), "Use newFunc instead, this functions will be gone in the next major release");
+// PCL_DEPRECATED(void OldFunc(int a, double b), "Use newFunc instead, this functions will be gone in the next major release");
 // use me instead
 // void NewFunc(int a, double b);
 

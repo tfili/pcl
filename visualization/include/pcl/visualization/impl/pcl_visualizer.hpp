@@ -241,13 +241,13 @@ pcl::visualization::PCLVisualizer::convertPointCloudToVTKPolyData (
   points->SetNumberOfPoints (nr_points);
 
   // Get a pointer to the beginning of the data array
-  float *data = (static_cast<vtkFloatArray*> (points->GetData ()))->GetPointer (0);
+  double *data = (static_cast<vtkFloatArray*> (points->GetData ()))->GetPointer (0);
 
   // Set the points
   if (cloud->is_dense)
   {
     for (vtkIdType i = 0; i < nr_points; ++i)
-      memcpy (&data[i * 3], &cloud->points[i].x, 12);    // sizeof (float) * 3
+      memcpy (&data[i * 3], &cloud->points[i].x, 12);    // sizeof (double) * 3
   }
   else
   {
@@ -260,7 +260,7 @@ pcl::visualization::PCLVisualizer::convertPointCloudToVTKPolyData (
           !pcl_isfinite (cloud->points[i].z))
         continue;
 
-      memcpy (&data[j * 3], &cloud->points[i].x, 12);    // sizeof (float) * 3
+      memcpy (&data[j * 3], &cloud->points[i].x, 12);    // sizeof (double) * 3
       j++;
     }
     nr_points = j;
@@ -725,7 +725,7 @@ pcl::visualization::PCLVisualizer::addText3D (
 template <typename PointNT> bool
 pcl::visualization::PCLVisualizer::addPointCloudNormals (
   const typename pcl::PointCloud<PointNT>::ConstPtr &cloud,
-  int level, float scale, const std::string &id, int viewport)
+  int level, double scale, const std::string &id, int viewport)
 {
   return (addPointCloudNormals<PointNT, PointNT> (cloud, cloud, level, scale, id, viewport));
 }
@@ -735,7 +735,7 @@ template <typename PointT, typename PointNT> bool
 pcl::visualization::PCLVisualizer::addPointCloudNormals (
   const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
   const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
-  int level, float scale,
+  int level, double scale,
   const std::string &id, int viewport)
 {
   if (normals->points.size () != cloud->points.size ())
@@ -761,7 +761,7 @@ pcl::visualization::PCLVisualizer::addPointCloudNormals (
 
 
   vtkIdType nr_normals = 0;
-  float* pts = 0;
+  double* pts = 0;
 
   // If the cloud is organized, then distribute the normal step in both directions
   if (cloud->isOrganized () && normals->isOrganized ())
@@ -769,7 +769,7 @@ pcl::visualization::PCLVisualizer::addPointCloudNormals (
     vtkIdType point_step = static_cast<vtkIdType> (sqrt (double (level)));
     nr_normals = (static_cast<vtkIdType> ((cloud->width - 1)/ point_step) + 1) *
                  (static_cast<vtkIdType> ((cloud->height - 1) / point_step) + 1);
-    pts = new float[2 * nr_normals * 3];
+    pts = new double[2 * nr_normals * 3];
 
     vtkIdType cell_count = 0;
     for (vtkIdType y = 0; y < normals->height; y += point_step)
@@ -796,7 +796,7 @@ pcl::visualization::PCLVisualizer::addPointCloudNormals (
   else
   {
     nr_normals = (cloud->points.size () - 1) / level + 1 ;
-    pts = new float[2 * nr_normals * 3];
+    pts = new double[2 * nr_normals * 3];
 
     for (vtkIdType i = 0, j = 0; j < nr_normals; j++, i = j * level)
     {
@@ -851,7 +851,7 @@ template <typename PointNT> bool
 pcl::visualization::PCLVisualizer::addPointCloudPrincipalCurvatures (
   const typename pcl::PointCloud<PointNT>::ConstPtr &cloud,
   const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
-  int level, float scale,
+  int level, double scale,
   const std::string &id, int viewport)
 {
   return (addPointCloudPrincipalCurvatures<PointNT, PointNT> (cloud, cloud, pcs, level, scale, id, viewport));
@@ -863,7 +863,7 @@ pcl::visualization::PCLVisualizer::addPointCloudPrincipalCurvatures (
   const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
   const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
   const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
-  int level, float scale,
+  int level, double scale,
   const std::string &id, int viewport)
 {
   if (pcs->points.size () != cloud->points.size () || normals->points.size () != cloud->points.size ())
@@ -1005,7 +1005,7 @@ pcl::visualization::PCLVisualizer::addPointCloudIntensityGradients (
   data->SetNumberOfComponents (3);
 
   vtkIdType nr_gradients = (cloud->points.size () - 1) / level + 1 ;
-  float* pts = new float[2 * nr_gradients * 3];
+  double* pts = new double[2 * nr_gradients * 3];
 
   for (vtkIdType i = 0, j = 0; j < nr_gradients; j++, i = j * level)
   {
@@ -1362,7 +1362,7 @@ pcl::visualization::PCLVisualizer::fromHandlersToScreen (
   const std::string &id,
   int viewport,
   const Eigen::Vector4f& sensor_origin,
-  const Eigen::Quaternion<float>& sensor_orientation)
+  const Eigen::Quaternion<double>& sensor_orientation)
 {
   if (!geometry_handler.isCapable ())
   {
@@ -1425,7 +1425,7 @@ pcl::visualization::PCLVisualizer::fromHandlersToScreen (
   const std::string &id,
   int viewport,
   const Eigen::Vector4f& sensor_origin,
-  const Eigen::Quaternion<float>& sensor_orientation)
+  const Eigen::Quaternion<double>& sensor_orientation)
 {
   if (!geometry_handler.isCapable ())
   {
@@ -1489,7 +1489,7 @@ pcl::visualization::PCLVisualizer::fromHandlersToScreen (
   const std::string &id,
   int viewport,
   const Eigen::Vector4f& sensor_origin,
-  const Eigen::Quaternion<float>& sensor_orientation)
+  const Eigen::Quaternion<double>& sensor_orientation)
 {
   if (!geometry_handler->isCapable ())
   {
@@ -1638,14 +1638,14 @@ pcl::visualization::PCLVisualizer::updatePointCloud (const typename pcl::PointCl
   points->SetNumberOfPoints (nr_points);
 
   // Get a pointer to the beginning of the data array
-  float *data = (static_cast<vtkFloatArray*> (points->GetData ()))->GetPointer (0);
+  double *data = (static_cast<vtkFloatArray*> (points->GetData ()))->GetPointer (0);
 
   int pts = 0;
   // If the dataset is dense (no NaNs)
   if (cloud->is_dense)
   {
     for (vtkIdType i = 0; i < nr_points; ++i, pts += 3)
-      memcpy (&data[pts], &cloud->points[i].x, 12);    // sizeof (float) * 3
+      memcpy (&data[pts], &cloud->points[i].x, 12);    // sizeof (double) * 3
   }
   else
   {
@@ -1656,7 +1656,7 @@ pcl::visualization::PCLVisualizer::updatePointCloud (const typename pcl::PointCl
       if (!isFinite (cloud->points[i]))
         continue;
 
-      memcpy (&data[pts], &cloud->points[i].x, 12);    // sizeof (float) * 3
+      memcpy (&data[pts], &cloud->points[i].x, 12);    // sizeof (double) * 3
       pts += 3;
       j++;
     }
@@ -1743,7 +1743,7 @@ pcl::visualization::PCLVisualizer::addPolygonMesh (
   vtkSmartPointer<vtkLODActor> actor;
 
   // Get a pointer to the beginning of the data array
-  float *data = static_cast<vtkFloatArray*> (points->GetData ())->GetPointer (0);
+  double *data = static_cast<vtkFloatArray*> (points->GetData ())->GetPointer (0);
 
   int ptr = 0;
   std::vector<int> lookup;
@@ -1751,7 +1751,7 @@ pcl::visualization::PCLVisualizer::addPolygonMesh (
   if (cloud->is_dense)
   {
     for (vtkIdType i = 0; i < nr_points; ++i, ptr += 3)
-      memcpy (&data[ptr], &cloud->points[i].x, sizeof (float) * 3);
+      memcpy (&data[ptr], &cloud->points[i].x, sizeof (double) * 3);
   }
   else
   {
@@ -1764,7 +1764,7 @@ pcl::visualization::PCLVisualizer::addPolygonMesh (
         continue;
 
       lookup[i] = static_cast<int> (j);
-      memcpy (&data[ptr], &cloud->points[i].x, sizeof (float) * 3);
+      memcpy (&data[ptr], &cloud->points[i].x, sizeof (double) * 3);
       j++;
       ptr += 3;
     }
@@ -1896,7 +1896,7 @@ pcl::visualization::PCLVisualizer::updatePolygonMesh (
   points->SetNumberOfPoints (nr_points);
 
   // Get a pointer to the beginning of the data array
-  float *data = (static_cast<vtkFloatArray*> (points->GetData ()))->GetPointer (0);
+  double *data = (static_cast<vtkFloatArray*> (points->GetData ()))->GetPointer (0);
 
   int ptr = 0;
   std::vector<int> lookup;
@@ -1904,7 +1904,7 @@ pcl::visualization::PCLVisualizer::updatePolygonMesh (
   if (cloud->is_dense)
   {
     for (vtkIdType i = 0; i < nr_points; ++i, ptr += 3)
-      memcpy (&data[ptr], &cloud->points[i].x, sizeof (float) * 3);
+      memcpy (&data[ptr], &cloud->points[i].x, sizeof (double) * 3);
   }
   else
   {
@@ -1917,7 +1917,7 @@ pcl::visualization::PCLVisualizer::updatePolygonMesh (
         continue;
 
       lookup [i] = static_cast<int> (j);
-      memcpy (&data[ptr], &cloud->points[i].x, sizeof (float) * 3);
+      memcpy (&data[ptr], &cloud->points[i].x, sizeof (double) * 3);
       j++;
       ptr += 3;
     }

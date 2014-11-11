@@ -46,7 +46,7 @@ typedef pcl::PointXYZ PointType;
 typedef pcl::PointCloud<PointType> Cloud;
 typedef Cloud::ConstPtr CloudConstPtr;
 
-float default_radius = 1.0f;
+double default_radius = 1.0f;
 bool default_inside = true;
 bool default_keep_organized = true;
 
@@ -79,7 +79,7 @@ loadCloud (const std::string &filename, Cloud::Ptr cloud)
 
 void
 compute (const Cloud::Ptr &input, Cloud::Ptr &output,
-         float radius, bool inside, bool keep_organized)
+         double radius, bool inside, bool keep_organized)
 {
   // Estimate
   pcl::console::TicToc tt;
@@ -115,7 +115,7 @@ saveCloud (const std::string &filename, const Cloud::Ptr &output)
 
 int
 batchProcess (const std::vector<std::string> &pcd_files, std::string &output_dir,
-              float radius, bool inside, bool keep_organized)
+              double radius, bool inside, bool keep_organized)
 {
   std::vector<std::string> st;
   for (size_t i = 0; i < pcd_files.size (); ++i)
@@ -158,7 +158,7 @@ main (int argc, char** argv)
   bool batch_mode = false;
 
   // Command line parsing
-  float radius = default_radius;
+  double radius = default_radius;
   bool inside = default_inside;
   bool keep_organized = default_keep_organized;
   pcl::console::parse_argument (argc, argv, "-radius", radius);

@@ -60,9 +60,9 @@ pcl::visualization::getCorrespondingPointCloud (vtkPolyData *src,
   {
     double p[3];
     src->GetPoint (i, p);
-    cloud.points[i].x = static_cast<float> (p[0]); 
-    cloud.points[i].y = static_cast<float> (p[1]); 
-    cloud.points[i].z = static_cast<float> (p[2]);
+    cloud.points[i].x = static_cast<double> (p[0]); 
+    cloud.points[i].y = static_cast<double> (p[1]); 
+    cloud.points[i].z = static_cast<double> (p[2]);
   }
 
   // Compute a kd-tree for tgt
@@ -71,7 +71,7 @@ pcl::visualization::getCorrespondingPointCloud (vtkPolyData *src,
   kdtree.setInputCloud (tgt_ptr);
 
   std::vector<int> nn_indices (1);
-  std::vector<float> nn_dists (1);
+  std::vector<double> nn_dists (1);
   // For each point on screen, find its correspondent in the target
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {

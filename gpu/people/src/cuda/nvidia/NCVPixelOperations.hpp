@@ -42,7 +42,7 @@
 #define _ncv_pixel_operations_hpp_
 
 #include <limits.h>
-#include <float.h>
+#include <double.h>
 #include "NCV.hpp"
 
 template<typename TBase> inline __host__ __device__ TBase _pixMaxVal();

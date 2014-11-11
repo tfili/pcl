@@ -126,8 +126,8 @@ saveOBJFile (const std::string &file_name,
             fs << "v ";
             v_written = true;
         }
-        float value;
-        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
             break;
@@ -167,8 +167,8 @@ saveOBJFile (const std::string &file_name,
           fs << "vn ";
           v_written = true;
         }
-        float value;
-        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;

@@ -81,11 +81,11 @@ namespace pcl
         * \param[in] sigma_s the size of the Gaussian bilateral filter window to use
         */
       inline void
-      setSigmaS (float sigma_s)
+      setSigmaS (double sigma_s)
       { sigma_s_ = sigma_s; }
 
       /** \brief Get the size of the Gaussian bilateral filter window as set by the user. */
-      inline float
+      inline double
       getSigmaS () const
       { return sigma_s_; }
 
@@ -95,11 +95,11 @@ namespace pcl
         * \param[in] sigma_r the standard deviation of the Gaussian for the intensity difference
         */
       inline void
-      setSigmaR (float sigma_r)
+      setSigmaR (double sigma_r)
       { sigma_r_ = sigma_r; }
 
       /** \brief Get the standard deviation of the Gaussian for the intensity difference */
-      inline float
+      inline double
       getSigmaR () const
       { return sigma_r_; }
 
@@ -110,8 +110,8 @@ namespace pcl
       applyFilter (PointCloud &output);
 
     protected:
-      float sigma_s_;
-      float sigma_r_;
+      double sigma_s_;
+      double sigma_r_;
       bool early_division_;
 
       class Array3D
@@ -143,9 +143,9 @@ namespace pcl
           }
 
           Eigen::Vector2f
-          trilinear_interpolation (const float x,
-                                   const float y,
-                                   const float z);
+          trilinear_interpolation (const double x,
+                                   const double y,
+                                   const double z);
 
           static inline size_t
           clamp (const size_t min_value,

@@ -18,9 +18,9 @@ CreateCylinderPoints (pcl::PointCloud<Point>::Ptr cloud, pcl::on_nurbs::vector_v
     double dh = h * (double (rand ()) / RAND_MAX - 0.5);
 
     Point p;
-    p.x = float (r * cos (da));
-    p.y = float (r * sin (da));
-    p.z = float (dh);
+    p.x = double (r * cos (da));
+    p.y = double (r * sin (da));
+    p.z = double (dh);
 
     data.push_back (Eigen::Vector3d (p.x, p.y, p.z));
     cloud->push_back (p);

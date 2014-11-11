@@ -30,7 +30,7 @@ namespace pcl
       getCategory (std::vector<std::string> & categories) = 0;
 
       virtual void
-      getConfidence (std::vector<float> & conf) = 0;
+      getConfidence (std::vector<double> & conf) = 0;
 
       virtual void
       classify () = 0;
@@ -74,7 +74,7 @@ namespace pcl
         } sortIndexScoresOp;
 
         typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
-        typedef Distance<float> DistT;
+        typedef Distance<double> DistT;
         typedef Model<PointInT> ModelT;
 
         /** \brief Directory where the trained structure will be saved */
@@ -92,8 +92,8 @@ namespace pcl
         /** \brief Descriptor name */
         std::string descr_name_;
 
-        typedef std::pair<ModelT, std::vector<float> > flann_model;
-        flann::Matrix<float> flann_data_;
+        typedef std::pair<ModelT, std::vector<double> > flann_model;
+        flann::Matrix<double> flann_data_;
         flann::Index<DistT> * flann_index_;
         std::vector<flann_model> flann_models_;
 
@@ -104,12 +104,12 @@ namespace pcl
         loadFeaturesAndCreateFLANN ();
 
         inline void
-        convertToFLANN (const std::vector<flann_model> &models, flann::Matrix<float> &data)
+        convertToFLANN (const std::vector<flann_model> &models, flann::Matrix<double> &data)
         {
           data.rows = models.size ();
           data.cols = models[0].second.size (); // number of histogram bins
 
-          flann::Matrix<float> flann_data (new float[models.size () * models[0].second.size ()], models.size (), models[0].second.size ());
+          flann::Matrix<double> flann_data (new double[models.size () * models[0].second.size ()], models.size (), models[0].second.size ());
 
           for (size_t i = 0; i < data.rows; ++i)
             for (size_t j = 0; j < data.cols; ++j)
@@ -121,11 +121,11 @@ namespace pcl
         }
 
         void
-        nearestKSearch (flann::Index<DistT> * index, const flann_model &model, int k, flann::Matrix<int> &indices, flann::Matrix<float> &distances);
+        nearestKSearch (flann::Index<DistT> * index, const flann_model &model, int k, flann::Matrix<int> &indices, flann::Matrix<double> &distances);
 
         int NN_;
         std::vector<std::string> categories_;
-        std::vector<float> confidences_;
+        std::vector<double> confidences_;
 
         std::string first_nn_category_;
 
@@ -153,7 +153,7 @@ namespace pcl
         }
 
         void
-        getConfidence (std::vector<float> & conf)
+        getConfidence (std::vector<double> & conf)
         {
           conf = confidences_;
         }

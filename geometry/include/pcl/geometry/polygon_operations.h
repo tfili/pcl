@@ -49,7 +49,7 @@ namespace pcl
     * \author Suat Gedikli <gedikli@willowgarage.com>
     */
   template <typename PointT>
-  void approximatePolygon (const PlanarPolygon<PointT>& polygon, PlanarPolygon<PointT>& approx_polygon, float threshold, bool refine = false, bool closed = true);
+  void approximatePolygon (const PlanarPolygon<PointT>& polygon, PlanarPolygon<PointT>& approx_polygon, double threshold, bool refine = false, bool closed = true);
   
   /** \brief returns an approximate polygon to given 2D contour. Uses just X and Y values.
     * \note  if refinement is not turned on, the resulting polygon will contain points from the original contour with their original z values (if any)
@@ -64,7 +64,7 @@ namespace pcl
   template <typename PointT>
   void approximatePolygon2D (const typename PointCloud<PointT>::VectorType &polygon, 
                              typename PointCloud<PointT>::VectorType &approx_polygon, 
-                             float threshold, bool refine = false, bool closed = true);
+                             double threshold, bool refine = false, bool closed = true);
 
 } // namespace pcl
 

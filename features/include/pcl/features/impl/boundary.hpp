@@ -50,7 +50,7 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::isBoundaryPoint (
       const pcl::PointCloud<PointInT> &cloud, int q_idx, 
       const std::vector<int> &indices, 
       const Eigen::Vector4f &u, const Eigen::Vector4f &v, 
-      const float angle_threshold)
+      const double angle_threshold)
 {
   return (isBoundaryPoint (cloud, cloud.points[q_idx], indices, u, v, angle_threshold));
 }
@@ -61,7 +61,7 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::isBoundaryPoint (
       const pcl::PointCloud<PointInT> &cloud, const PointInT &q_point, 
       const std::vector<int> &indices, 
       const Eigen::Vector4f &u, const Eigen::Vector4f &v, 
-      const float angle_threshold)
+      const double angle_threshold)
 {
   if (indices.size () < 3)
     return (false);
@@ -70,8 +70,8 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::isBoundaryPoint (
     return (false);
 
   // Compute the angles between each neighboring point and the query point itself
-  std::vector<float> angles (indices.size ());
-  float max_dif = FLT_MIN, dif;
+  std::vector<double> angles (indices.size ());
+  double max_dif = FLT_MIN, dif;
   int cp = 0;
 
   for (size_t i = 0; i < indices.size (); ++i)
@@ -101,7 +101,7 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::isBoundaryPoint (
       max_dif = dif;
   }
   // Get the angle difference between the last and the first
-  dif = 2 * static_cast<float> (M_PI) - angles[angles.size () - 1] + angles[0];
+  dif = 2 * static_cast<double> (M_PI) - angles[angles.size () - 1] + angles[0];
   if (max_dif < dif)
     max_dif = dif;
 
@@ -119,7 +119,7 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointClou
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   Eigen::Vector4f u = Eigen::Vector4f::Zero (), v = Eigen::Vector4f::Zero ();
 

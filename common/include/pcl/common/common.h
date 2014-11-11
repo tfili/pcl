@@ -66,7 +66,7 @@ namespace pcl
     * \ingroup common
     */
   inline void 
-  getMeanStd (const std::vector<float> &values, double &mean, double &stddev);
+  getMeanStd (const std::vector<double> &values, double &mean, double &stddev);
 
   /** \brief Get a set of points residing in a box given its bounds
     * \param cloud the point cloud data message
@@ -158,14 +158,14 @@ namespace pcl
     * \ingroup common
     */
   template <typename PointT> inline void 
-  getMinMax (const PointT &histogram, int len, float &min_p, float &max_p);
+  getMinMax (const PointT &histogram, int len, double &min_p, double &max_p);
 
   /** \brief Calculate the area of a polygon given a point cloud that defines the polygon 
 	  * \param polygon point cloud that contains those vertices that comprises the polygon. Vertices are stored in counterclockwise.
 	  * \return the polygon area 
 	  * \ingroup common
 	  */
-  template<typename PointT> inline float
+  template<typename PointT> inline double
   calculatePolygonArea (const pcl::PointCloud<PointT> &polygon);
 
   /** \brief Get the minimum and maximum values on a point histogram
@@ -178,7 +178,7 @@ namespace pcl
     */
   PCL_EXPORTS void 
   getMinMax (const pcl::PCLPointCloud2 &cloud, int idx, const std::string &field_name,
-             float &min_p, float &max_p);
+             double &min_p, double &max_p);
 
   /** \brief Compute both the mean and the standard deviation of an array of values
     * \param values the array of values
@@ -187,7 +187,7 @@ namespace pcl
     * \ingroup common
     */
   PCL_EXPORTS void
-  getMeanStdDev (const std::vector<float> &values, double &mean, double &stddev);
+  getMeanStdDev (const std::vector<double> &values, double &mean, double &stddev);
 
 }
 /*@}*/

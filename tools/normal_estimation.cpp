@@ -98,7 +98,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
     IntegralImageNormalEstimation<PointXYZ, Normal> ne;
     ne.setInputCloud (xyz);
     ne.setNormalEstimationMethod (IntegralImageNormalEstimation<PointXYZ, Normal>::COVARIANCE_MATRIX);
-    ne.setNormalSmoothingSize (float (radius));
+    ne.setNormalSmoothingSize (double (radius));
     ne.setDepthDependentSmoothing (true);
     ne.compute (normals);
   }

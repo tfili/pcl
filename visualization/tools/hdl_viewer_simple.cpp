@@ -105,8 +105,8 @@ class SimpleHDLViewer
 
     void 
     cloud_callback (const CloudConstPtr& cloud,
-                    float /*startAngle*/,
-                    float /*endAngle*/)
+                    double /*startAngle*/,
+                    double /*endAngle*/)
     {
       FPS_CALC ("cloud callback");
       boost::mutex::scoped_lock lock (cloud_mutex_);
@@ -145,7 +145,7 @@ class SimpleHDLViewer
       //cloud_viewer_->registerMouseCallback(&SimpleHDLViewer::mouse_callback, *this);
       //cloud_viewer_->registerKeyboardCallback (&SimpleHDLViewer::keyboard_callback, *this);
 
-      //boost::function<void(const CloudConstPtr&, float, float)> cloud_cb = boost::bind(&SimpleHDLViewer::cloud_callback, this, _1, _2, _3);
+      //boost::function<void(const CloudConstPtr&, double, double)> cloud_cb = boost::bind(&SimpleHDLViewer::cloud_callback, this, _1, _2, _3);
       boost::function<void (const CloudConstPtr&)> cloud_cb = boost::bind (
           &SimpleHDLViewer::cloud_callback, this, _1);
       boost::signals2::connection cloud_connection = grabber_.registerCallback (

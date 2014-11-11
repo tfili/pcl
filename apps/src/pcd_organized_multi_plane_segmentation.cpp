@@ -53,7 +53,7 @@ class PCDOrganizedMultiPlaneSegmentation
     pcl::visualization::PCLVisualizer viewer;
     typename pcl::PointCloud<PointT>::ConstPtr cloud;
     bool refine_;
-    float threshold_;
+    double threshold_;
     bool depth_dependent_;
     bool polygon_refinement_;
   public:

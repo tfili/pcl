@@ -99,7 +99,7 @@ namespace pcl
       * Features include:
       *  - add and remove different layers with different opacity (transparency) values
       *  - add 2D geometric shapes (circles, boxes, etc) in separate layers
-      *  - display RGB, monochrome, float, angle images
+      *  - display RGB, monochrome, double, angle images
       *
       * Simple usage example:
       * \code
@@ -309,8 +309,8 @@ namespace pcl
         addRGBImage (const pcl::PointCloud<T> &cloud,
                      const std::string &layer_id = "rgb_image", double opacity = 1.0);
 
-        /** \brief Show a 2D image (float) on screen.
-          * \param[in] data the input data representing the image in float format
+        /** \brief Show a 2D image (double) on screen.
+          * \param[in] data the input data representing the image in double format
           * \param[in] width the width of the image
           * \param[in] height the height of the image
           * \param[in] min_value filter all values in the image to be larger than this minimum value
@@ -320,13 +320,13 @@ namespace pcl
           * \param[in] opacity the opacity of the layer (default: 1.0)
           */
         void 
-        showFloatImage (const float* data, unsigned int width, unsigned int height, 
-                        float min_value = std::numeric_limits<float>::min (), 
-                        float max_value = std::numeric_limits<float>::max (), bool grayscale = false,
+        showFloatImage (const double* data, unsigned int width, unsigned int height, 
+                        double min_value = std::numeric_limits<double>::min (), 
+                        double max_value = std::numeric_limits<double>::max (), bool grayscale = false,
                         const std::string &layer_id = "float_image", double opacity = 1.0);
 
-        /** \brief Add a float 2D image layer, but do not render it (use spin/spinOnce to update).
-          * \param[in] data the input data representing the image in float format
+        /** \brief Add a double 2D image layer, but do not render it (use spin/spinOnce to update).
+          * \param[in] data the input data representing the image in double format
           * \param[in] width the width of the image
           * \param[in] height the height of the image
           * \param[in] min_value filter all values in the image to be larger than this minimum value
@@ -336,9 +336,9 @@ namespace pcl
           * \param[in] opacity the opacity of the layer (default: 1.0)
           */
         void 
-        addFloatImage (const float* data, unsigned int width, unsigned int height, 
-                       float min_value = std::numeric_limits<float>::min (), 
-                       float max_value = std::numeric_limits<float>::max (), bool grayscale = false,
+        addFloatImage (const double* data, unsigned int width, unsigned int height, 
+                       double min_value = std::numeric_limits<double>::min (), 
+                       double max_value = std::numeric_limits<double>::max (), bool grayscale = false,
                        const std::string &layer_id = "float_image", double opacity = 1.0);
         
         /** \brief Show a 2D image (unsigned short) on screen.
@@ -381,7 +381,7 @@ namespace pcl
           * \param[in] opacity the opacity of the layer (default: 1.0)
           */
         void 
-        showAngleImage (const float* data, unsigned width, unsigned height,
+        showAngleImage (const double* data, unsigned width, unsigned height,
                         const std::string &layer_id = "angle_image", double opacity = 1.0);
 
         /** \brief Add an angle 2D image layer, but do not render it (use spin/spinOnce to update).
@@ -392,7 +392,7 @@ namespace pcl
           * \param[in] opacity the opacity of the layer (default: 1.0)
           */
         void 
-        addAngleImage (const float* data, unsigned width, unsigned height,
+        addAngleImage (const double* data, unsigned width, unsigned height,
                        const std::string &layer_id = "angle_image", double opacity = 1.0);
 
         /** \brief Show a 2D image on screen representing half angle data.
@@ -403,7 +403,7 @@ namespace pcl
           * \param[in] opacity the opacity of the layer (default: 1.0)
           */
         void 
-        showHalfAngleImage (const float* data, unsigned width, unsigned height,
+        showHalfAngleImage (const double* data, unsigned width, unsigned height,
                             const std::string &layer_id = "half_angle_image", double opacity = 1.0);
 
         /** \brief Add a half angle 2D image layer, but do not render it (use spin/spinOnce to update).
@@ -414,7 +414,7 @@ namespace pcl
           * \param[in] opacity the opacity of the layer (default: 1.0)
           */
         void 
-        addHalfAngleImage (const float* data, unsigned width, unsigned height,
+        addHalfAngleImage (const double* data, unsigned width, unsigned height,
                            const std::string &layer_id = "half_angle_image", double opacity = 1.0);
 
         /** \brief Sets the pixel at coordinates(u,v) to color while setting the neighborhood to another
@@ -442,7 +442,7 @@ namespace pcl
         markPoints (const std::vector<int>& uv, Vector3ub fg_color, Vector3ub bg_color = red_color, double size = 3.0,
                     const std::string &layer_id = "markers", double opacity = 1.0);
 
-        /** \brief Sets the pixel at coordinates(u,v) to color while setting the neighborhood to another (float coordinates version).
+        /** \brief Sets the pixel at coordinates(u,v) to color while setting the neighborhood to another (double coordinates version).
           * \param[in] uv the u/x, v/y coordinate of the pixels to be marked
           * \param[in] fg_color the pixel color
           * \param[in] bg_color the neighborhood color
@@ -451,7 +451,7 @@ namespace pcl
           * \param[in] opacity the opacity of the layer (default: 1.0)
           */
         void
-        markPoints (const std::vector<float>& uv, Vector3ub fg_color, Vector3ub bg_color = red_color, double size = 3.0,
+        markPoints (const std::vector<double>& uv, Vector3ub fg_color, Vector3ub bg_color = red_color, double size = 3.0,
                     const std::string &layer_id = "markers", double opacity = 1.0);
 
         /** \brief Set the window title name

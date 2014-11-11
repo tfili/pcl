@@ -114,7 +114,7 @@ pcl::recognition::HoughSpace3D::voteInt (const Eigen::Vector3d &single_vote_coor
   Eigen::Vector3f bin_centroid;
   Eigen::Vector3f central_bin_weight;
   Eigen::Vector3i interp_bin;
-  std::vector<float> interp_weight (n_neigh);
+  std::vector<double> interp_weight (n_neigh);
 
   for (int n = 0; n < n_neigh; ++n)
     interp_weight[n] = 1.0;
@@ -133,10 +133,10 @@ pcl::recognition::HoughSpace3D::voteInt (const Eigen::Vector3d &single_vote_coor
     central_bin_index += partial_bin_products_[d] * central_bin_coord[d];
 
     // Compute coordinates of the centroid of the bin
-    bin_centroid[d] = static_cast<float> ((2 * static_cast<double> (central_bin_coord[d]) * bin_size_[d] + bin_size_[d]) / 2.0 );
+    bin_centroid[d] = static_cast<double> ((2 * static_cast<double> (central_bin_coord[d]) * bin_size_[d] + bin_size_[d]) / 2.0 );
 
     // Compute interpolated weight for each coordinate of the central bin
-    central_bin_weight[d] = static_cast<float> (1 - (fabs (single_vote_coord[d] - min_coord_[d] - bin_centroid[d]) / bin_size_[d] ) );
+    central_bin_weight[d] = static_cast<double> (1 - (fabs (single_vote_coord[d] - min_coord_[d] - bin_centroid[d]) / bin_size_[d] ) );
 
     // Compute the neighbor bins where the weight has to be interpolated
     if ((single_vote_coord[d] - min_coord_[d]) < bin_centroid[d])

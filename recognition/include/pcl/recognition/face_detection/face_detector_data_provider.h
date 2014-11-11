@@ -95,7 +95,7 @@ namespace pcl
 
           for (int i = 0; i < 16; i++)
           {
-            matrix (i / 4, i % 4) = static_cast<float> (atof (strs_2[i].c_str ()));
+            matrix (i / 4, i % 4) = static_cast<double> (atof (strs_2[i].c_str ()));
           }
 
           return true;

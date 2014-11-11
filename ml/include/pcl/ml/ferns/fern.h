@@ -72,7 +72,7 @@ namespace pcl
       {
         num_of_decisions_ = num_of_decisions;
         features_.resize (num_of_decisions_);
-        thresholds_.resize (num_of_decisions_, std::numeric_limits<float>::quiet_NaN ());
+        thresholds_.resize (num_of_decisions_, std::numeric_limits<double>::quiet_NaN ());
         nodes_.resize (0x1 << num_of_decisions_);
       }
 
@@ -182,7 +182,7 @@ namespace pcl
       /** \brief Access operator for thresholds.
         * \param threshold_index The index of the threshold to access.
         */
-      inline float &
+      inline double &
       accessThreshold (const size_t threshold_index)
       {
         return thresholds_[threshold_index];
@@ -191,7 +191,7 @@ namespace pcl
       /** \brief Access operator for thresholds.
         * \param threshold_index The index of the threshold to access.
         */
-      inline const float &
+      inline const double &
       accessThreshold (const size_t threshold_index) const
       {
         return thresholds_[threshold_index];
@@ -203,7 +203,7 @@ namespace pcl
       /** The list of Features used to make the decisions. */
       std::vector<FeatureType> features_;
       /** The list of thresholds used to make the decisions. */
-      std::vector<float> thresholds_;
+      std::vector<double> thresholds_;
 
       /** The list of Nodes accessed by the Fern. */
       std::vector<NodeType> nodes_;

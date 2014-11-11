@@ -65,7 +65,7 @@ namespace pcl
         {
 	  	  Tex2Dfetcher( const boost::uint16_t* dmap, int W, int H ) : m_dmap(dmap), m_W(W), m_H(H) {}
 
-          inline boost::uint16_t operator () ( float uf, float vf ) 
+          inline boost::uint16_t operator () ( double uf, double vf ) 
           {
             int u = static_cast<int>(uf);
             int v = static_cast<int>(vf);
@@ -150,7 +150,7 @@ pcl::gpu::people::trees::runThroughTree( int maxDepth,
   {
     for(int x = 0; x < W; ++x) 
     {
-      uint16_t depth = tfetch((float)x,(float)y);
+      uint16_t depth = tfetch((double)x,(double)y);
       if(depth == std::numeric_limits<uint16_t>::max() ) 
       {
         lmap[x+W*y] = pcl::gpu::people::NOLABEL;
@@ -165,8 +165,8 @@ pcl::gpu::people::trees::runThroughTree( int maxDepth,
       {
         const Node& node = tree[nid];
         const AttribLocation& loc = node.loc;
-        uint16_t d1       = tfetch((float)(x+loc.du1*scale), (float)(y+loc.dv1*scale));
-        uint16_t d2       = tfetch((float)(x+loc.du2*scale), (float)(y+loc.dv2*scale));
+        uint16_t d1       = tfetch((double)(x+loc.du1*scale), (double)(y+loc.dv1*scale));
+        uint16_t d2       = tfetch((double)(x+loc.du2*scale), (double)(y+loc.dv2*scale));
         int32_t delta     = int32_t(d1) - int32_t(d2);
         bool test = delta > int32_t(node.thresh);
 

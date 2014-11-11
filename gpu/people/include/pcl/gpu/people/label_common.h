@@ -114,14 +114,14 @@ namespace pcl
 
       typedef DeviceArray2D<unsigned short> Depth;
       typedef DeviceArray2D<unsigned char>  Labels;      
-      typedef DeviceArray2D<float>          HueImage;
+      typedef DeviceArray2D<double>          HueImage;
       typedef DeviceArray2D<unsigned char>  Mask;      
       
       /**
        * @brief This LUT contains the max primary eigenvalue for each part
        * @todo read this from XML file
        **/
-      static const float LUT_max_part_size[] =
+      static const double LUT_max_part_size[] =
       {
           0.5f,            // 0 Lfoot
           0.7f,            // 1 Lleg
@@ -153,7 +153,7 @@ namespace pcl
       /**
        *  @brief This LUT contains the ideal lenght between this part and his children
        **/
-      static const float LUT_ideal_length[][4] = 
+      static const double LUT_ideal_length[][4] = 
       {
         { -1.0f,  -1.0f,  -1.0f,  -1.0f}, // 0 Lfoot
         {  0.2f,  -1.0f,  -1.0f,  -1.0f}, // 1 Lleg
@@ -185,7 +185,7 @@ namespace pcl
       /**
        * @brief This LUT contains the max lenght between this part and his children
        **/
-      static const float LUT_max_length_offset[][4] = 
+      static const double LUT_max_length_offset[][4] = 
       {
         { 0.15f,  0.15f,  0.15f,  0.15f}, // 0 Lfoot
         { 0.15f,  0.15f,  0.15f,  0.15f}, // 1 Lleg
@@ -259,7 +259,7 @@ namespace pcl
   {
     struct prob_histogram
     {
-        float probs[pcl::gpu::people::NUM_LABELS];       /** \brief A single float probability for each body part **/
+        double probs[pcl::gpu::people::NUM_LABELS];       /** \brief A single double probability for each body part **/
     };
 
     typedef DeviceArray2D<prob_histogram>                 LabelProbability;

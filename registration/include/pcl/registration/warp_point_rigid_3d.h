@@ -52,11 +52,11 @@ namespace pcl
     /** \brief @b WarpPointRigid3D enables 3D (1D rotation + 2D translation) 
       * transformations for points.
       * 
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSourceT, typename PointTargetT, typename Scalar = float>
+    template <typename PointSourceT, typename PointTargetT, typename Scalar = double>
     class WarpPointRigid3D : public WarpPointRigid<PointSourceT, PointTargetT, Scalar>
     {
       public:

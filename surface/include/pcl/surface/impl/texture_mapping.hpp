@@ -83,23 +83,23 @@ pcl::TextureMapping<PointInT>::mapTexture2Face (
   tp1[0] = 0.0;
   tp1[1] = 0.0;
 
-  tp2[0] = static_cast<float> (e3);
+  tp2[0] = static_cast<double> (e3);
   tp2[1] = 0.0;
 
   // determine texture coordinate tp3;
   double cos_p1 = (e2 * e2 + e3 * e3 - e1 * e1) / (2 * e2 * e3);
   double sin_p1 = sqrt (1 - (cos_p1 * cos_p1));
 
-  tp3[0] = static_cast<float> (cos_p1 * e2);
-  tp3[1] = static_cast<float> (sin_p1 * e2);
+  tp3[0] = static_cast<double> (cos_p1 * e2);
+  tp3[1] = static_cast<double> (sin_p1 * e2);
 
   // rotating by alpha (angle between V and pp1 & pp2)
   Eigen::Vector2f r_tp2, r_tp3;
-  r_tp2[0] = static_cast<float> (tp2[0] * std::cos (alpha) - tp2[1] * std::sin (alpha));
-  r_tp2[1] = static_cast<float> (tp2[0] * std::sin (alpha) + tp2[1] * std::cos (alpha));
+  r_tp2[0] = static_cast<double> (tp2[0] * std::cos (alpha) - tp2[1] * std::sin (alpha));
+  r_tp2[1] = static_cast<double> (tp2[0] * std::sin (alpha) + tp2[1] * std::cos (alpha));
 
-  r_tp3[0] = static_cast<float> (tp3[0] * std::cos (alpha) - tp3[1] * std::sin (alpha));
-  r_tp3[1] = static_cast<float> (tp3[0] * std::sin (alpha) + tp3[1] * std::cos (alpha));
+  r_tp3[0] = static_cast<double> (tp3[0] * std::cos (alpha) - tp3[1] * std::sin (alpha));
+  r_tp3[1] = static_cast<double> (tp3[0] * std::sin (alpha) + tp3[1] * std::cos (alpha));
 
   // shifting
   tp1[0] = tp1[0];
@@ -109,8 +109,8 @@ pcl::TextureMapping<PointInT>::mapTexture2Face (
   tp2[1] = r_tp2[1];
   tp3[1] = r_tp3[1];
 
-  float min_x = tp1[0];
-  float min_y = tp1[1];
+  double min_x = tp1[0];
+  double min_y = tp1[1];
   if (min_x > tp2[0])
     min_x = tp2[0];
   if (min_x > tp3[0])
@@ -148,7 +148,7 @@ pcl::TextureMapping<PointInT>::mapTexture2Mesh (pcl::TextureMesh &tex_mesh)
   int point_size = static_cast<int> (tex_mesh.cloud.data.size ()) / nr_points;
 
   // temporary PointXYZ
-  float x, y, z;
+  double x, y, z;
   // temporary face
   Eigen::Vector3f facet[3];
 
@@ -169,9 +169,9 @@ pcl::TextureMapping<PointInT>::mapTexture2Mesh (pcl::TextureMesh &tex_mesh)
       for (size_t j = 0; j < tex_mesh.tex_polygons[m][i].vertices.size (); ++j)
       {
         idx = tex_mesh.tex_polygons[m][i].vertices[j];
-        memcpy (&x, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[0].offset], sizeof(float));
-        memcpy (&y, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[1].offset], sizeof(float));
-        memcpy (&z, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[2].offset], sizeof(float));
+        memcpy (&x, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[0].offset], sizeof(double));
+        memcpy (&y, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[1].offset], sizeof(double));
+        memcpy (&z, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[2].offset], sizeof(double));
         facet[j][0] = x;
         facet[j][1] = y;
         facet[j][2] = z;
@@ -203,19 +203,19 @@ pcl::TextureMapping<PointInT>::mapTexture2MeshUV (pcl::TextureMesh &tex_mesh)
   int nr_points = tex_mesh.cloud.width * tex_mesh.cloud.height;
   int point_size = static_cast<int> (tex_mesh.cloud.data.size ()) / nr_points;
 
-  float x_lowest = 100000;
-  float x_highest = 0;
-  float y_lowest = 100000;
-  //float y_highest = 0 ;
-  float z_lowest = 100000;
-  float z_highest = 0;
-  float x_, y_, z_;
+  double x_lowest = 100000;
+  double x_highest = 0;
+  double y_lowest = 100000;
+  //double y_highest = 0 ;
+  double z_lowest = 100000;
+  double z_highest = 0;
+  double x_, y_, z_;
 
   for (int i = 0; i < nr_points; ++i)
   {
-    memcpy (&x_, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[0].offset], sizeof(float));
-    memcpy (&y_, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[1].offset], sizeof(float));
-    memcpy (&z_, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[2].offset], sizeof(float));
+    memcpy (&x_, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[0].offset], sizeof(double));
+    memcpy (&y_, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[1].offset], sizeof(double));
+    memcpy (&z_, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[2].offset], sizeof(double));
     // x
     if (x_ <= x_lowest)
       x_lowest = x_;
@@ -234,14 +234,14 @@ pcl::TextureMapping<PointInT>::mapTexture2MeshUV (pcl::TextureMesh &tex_mesh)
       z_highest = z_;
   }
   // x
-  float x_range = (x_lowest - x_highest) * -1;
-  float x_offset = 0 - x_lowest;
+  double x_range = (x_lowest - x_highest) * -1;
+  double x_offset = 0 - x_lowest;
   // x
-  // float y_range = (y_lowest - y_highest)*-1;
-  // float y_offset = 0 - y_lowest;
+  // double y_range = (y_lowest - y_highest)*-1;
+  // double y_offset = 0 - y_lowest;
   // z
-  float z_range = (z_lowest - z_highest) * -1;
-  float z_offset = 0 - z_lowest;
+  double z_range = (z_lowest - z_highest) * -1;
+  double z_offset = 0 - z_lowest;
 
   // texture coordinates for each mesh
   std::vector<std::vector<Eigen::Vector2f> > texture_map;
@@ -259,9 +259,9 @@ pcl::TextureMapping<PointInT>::mapTexture2MeshUV (pcl::TextureMesh &tex_mesh)
       for (size_t j = 0; j < tex_mesh.tex_polygons[m][i].vertices.size (); ++j)
       {
         idx = tex_mesh.tex_polygons[m][i].vertices[j];
-        memcpy (&x_, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[0].offset], sizeof(float));
-        memcpy (&y_, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[1].offset], sizeof(float));
-        memcpy (&z_, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[2].offset], sizeof(float));
+        memcpy (&x_, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[0].offset], sizeof(double));
+        memcpy (&y_, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[1].offset], sizeof(double));
+        memcpy (&z_, &tex_mesh.cloud.data[idx * point_size + tex_mesh.cloud.fields[2].offset], sizeof(double));
 
         // calculate uv coordinates
         tmp_VT[0] = (x_ + x_offset) / x_range;
@@ -712,7 +712,7 @@ pcl::TextureMapping<PointInT>::showOcclusions (const PointCloudPtr &input_cloud,
     }
 
     if (show_nb_occlusions)
-      (nbocc <= max_occlusions) ? (pt.intensity = static_cast<float> (nbocc)) : (pt.intensity = static_cast<float> (max_occlusions));
+      (nbocc <= max_occlusions) ? (pt.intensity = static_cast<double> (nbocc)) : (pt.intensity = static_cast<double> (max_occlusions));
     else
       (nbocc == 0) ? (pt.intensity = 0) : (pt.intensity = 1);
 
@@ -770,8 +770,8 @@ pcl::TextureMapping<PointInT>::textureMeshwithMultipleCameras (pcl::TextureMesh 
 
     //TODO change this
     pcl::PointXY nan_point;
-    nan_point.x = std::numeric_limits<float>::quiet_NaN ();
-    nan_point.y = std::numeric_limits<float>::quiet_NaN ();
+    nan_point.x = std::numeric_limits<double>::quiet_NaN ();
+    nan_point.y = std::numeric_limits<double>::quiet_NaN ();
     UvIndex u_null;
     u_null.idx_cloud = -1;
     u_null.idx_face = -1;
@@ -838,7 +838,7 @@ pcl::TextureMapping<PointInT>::textureMeshwithMultipleCameras (pcl::TextureMesh 
         kdtree.setInputCloud (projections);
 
         std::vector<int> idxNeighbors;
-        std::vector<float> neighborsSquaredDistance;
+        std::vector<double> neighborsSquaredDistance;
         // af first (idx_pcan < current_cam), check if some of the faces attached to previous cameras occlude the current faces
         // then (idx_pcam == current_cam), check for self occlusions. At this stage, we skip faces that were already marked as occluded
         cpt_invisible = 0;
@@ -1010,8 +1010,8 @@ pcl::TextureMapping<PointInT>::getTriangleCircumcenterAndSize(const pcl::PointXY
     double cy2 = ptC.y * ptC.y; // C'y^2
 
     // compute circomcenter's coordinates (translate back to original coordinates)
-    circomcenter.x = static_cast<float> (p1.x + (ptC.y*(bx2 + by2) - ptB.y*(cx2 + cy2)) / D);
-    circomcenter.y = static_cast<float> (p1.y + (ptB.x*(cx2 + cy2) - ptC.x*(bx2 + by2)) / D);
+    circomcenter.x = static_cast<double> (p1.x + (ptC.y*(bx2 + by2) - ptB.y*(cx2 + cy2)) / D);
+    circomcenter.y = static_cast<double> (p1.y + (ptB.x*(cx2 + cy2) - ptC.x*(bx2 + by2)) / D);
   }
 
   radius = sqrt( (circomcenter.x - p1.x)*(circomcenter.x - p1.x)  + (circomcenter.y - p1.y)*(circomcenter.y - p1.y));//2.0* (p1.x*(p2.y - p3.y)  + p2.x*(p3.y - p1.y) + p3.x*(p1.y - p2.y));
@@ -1022,8 +1022,8 @@ template<typename PointInT> inline void
 pcl::TextureMapping<PointInT>::getTriangleCircumcscribedCircleCentroid ( const pcl::PointXY &p1, const pcl::PointXY &p2, const pcl::PointXY &p3, pcl::PointXY &circumcenter, double &radius)
 {
   // compute centroid's coordinates (translate back to original coordinates)
-  circumcenter.x = static_cast<float> (p1.x + p2.x + p3.x ) / 3;
-  circumcenter.y = static_cast<float> (p1.y + p2.y + p3.y ) / 3;
+  circumcenter.x = static_cast<double> (p1.x + p2.x + p3.x ) / 3;
+  circumcenter.y = static_cast<double> (p1.y + p2.y + p3.y ) / 3;
   double r1 = (circumcenter.x - p1.x) * (circumcenter.x - p1.x) + (circumcenter.y - p1.y) * (circumcenter.y - p1.y)  ;
   double r2 = (circumcenter.x - p2.x) * (circumcenter.x - p2.x) + (circumcenter.y - p2.y) * (circumcenter.y - p2.y)  ;
   double r3 = (circumcenter.x - p3.x) * (circumcenter.x - p3.x) + (circumcenter.y - p3.y) * (circumcenter.y - p3.y)  ;
@@ -1063,8 +1063,8 @@ pcl::TextureMapping<PointInT>::getPointUVCoordinates(const PointInT &pt, const C
       focal_y = cam.focal_length;
 
     // project point on camera's image plane
-    UV_coordinates.x = static_cast<float> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
-    UV_coordinates.y = 1.0f - static_cast<float> ((focal_y * (pt.y / pt.z) + cy) / sizeY); //vertical
+    UV_coordinates.x = static_cast<double> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
+    UV_coordinates.y = 1.0f - static_cast<double> ((focal_y * (pt.y / pt.z) + cy) / sizeY); //vertical
 
     // point is visible!
     if (UV_coordinates.x >= 0.0 && UV_coordinates.x <= 1.0 && UV_coordinates.y >= 0.0 && UV_coordinates.y <= 1.0)

@@ -47,7 +47,7 @@
 /// elements
 /// @pre Assumes the pointer is valid.
 void
-setIdentity(float* matrix);
+setIdentity(double* matrix);
 
 /// @brief Performs result = left * right
 /// @param left A pointer to memory representing at least MATRIX_SIZE
@@ -58,13 +58,13 @@ setIdentity(float* matrix);
 /// elements.  The output of left * right is stored in this matrix
 /// @pre Assumes all pointers are valid.
 void
-multMatrix(const float* left, const float* right, float* result);
+multMatrix(const double* left, const double* right, double* result);
 
 /// @brief Finds the inverse of a matrix
 /// @param the input 4x4 column-major matrix following OpenGL's format
 /// @param the output 4x4 column-major inverse matrix following OpenGL's format
 bool
-invertMatrix(const float* matrix, float* inverse);
+invertMatrix(const double* matrix, double* inverse);
 
 /// @brief Helper function for converting objects to strings (using operator<<)
 /// @param input The object to be converted

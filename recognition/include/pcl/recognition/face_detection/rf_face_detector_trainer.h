@@ -24,20 +24,20 @@ namespace pcl
       int ntrees_;
       std::string forest_filename_;
       int nfeatures_;
-      float thres_face_;
+      double thres_face_;
       int num_images_;
-      float trans_max_variance_;
+      double trans_max_variance_;
       size_t min_votes_size_;
       int used_for_pose_;
       bool use_normals_;
       std::string directory_;
-      float HEAD_ST_DIAMETER_;
-      float larger_radius_ratio_;
+      double HEAD_ST_DIAMETER_;
+      double larger_radius_ratio_;
       std::vector<Eigen::Vector3f> head_center_votes_;
       std::vector<std::vector<Eigen::Vector3f> > head_center_votes_clustered_;
       std::vector<std::vector<Eigen::Vector3f> > head_center_original_votes_clustered_;
       std::vector<Eigen::Vector3f> angle_votes_;
-      std::vector<float> uncertainties_;
+      std::vector<double> uncertainties_;
       std::vector<Eigen::Vector3f> head_clusters_centers_;
       std::vector<Eigen::Vector3f> head_clusters_rotation_;
 
@@ -52,7 +52,7 @@ namespace pcl
       int icp_iterations_;
 
       pcl::PointCloud<pcl::PointXYZ>::Ptr model_original_;
-      float res_;
+      double res_;
 
     public:
 
@@ -136,12 +136,12 @@ namespace pcl
         icp_iterations_ = iters;
       }
 
-      void setLeavesFaceThreshold(float p)
+      void setLeavesFaceThreshold(double p)
       {
         thres_face_ = p;
       }
 
-      void setLeavesFaceMaxVariance(float max)
+      void setLeavesFaceMaxVariance(double max)
       {
         trans_max_variance_ = max;
       }
@@ -200,7 +200,7 @@ namespace pcl
           for (size_t j = 0; j < head_center_votes_clustered_[i].size (); j++, p++)
           {
             votes_cloud->points[p].getVector3fMap () = head_center_votes_clustered_[i][j];
-            votes_cloud->points[p].intensity = 0.1f * static_cast<float> (i);
+            votes_cloud->points[p].intensity = 0.1f * static_cast<double> (i);
           }
         }
 
@@ -219,7 +219,7 @@ namespace pcl
           for (size_t j = 0; j < head_center_original_votes_clustered_[i].size (); j++, p++)
           {
             votes_cloud->points[p].getVector3fMap () = head_center_original_votes_clustered_[i][j];
-            votes_cloud->points[p].intensity = 0.1f * static_cast<float> (i);
+            votes_cloud->points[p].intensity = 0.1f * static_cast<double> (i);
           }
         }
 

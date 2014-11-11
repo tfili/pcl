@@ -99,7 +99,7 @@ namespace pcl
           * \param[in] fy the focal length in pixels along the y-axis of the image
           */
         inline void
-        setFocalLengths (const float fx, const float fy)
+        setFocalLengths (const double fx, const double fy)
         { 
           projection_matrix_ (0, 0) = fx;
           projection_matrix_ (1, 1) = fy;
@@ -110,7 +110,7 @@ namespace pcl
           * \param[out] fy the focal length in pixels along the y-axis of the image
           */
         inline void
-        getFocalLengths (float &fx, float &fy) const
+        getFocalLengths (double &fx, double &fy) const
         { 
           fx = projection_matrix_ (0, 0); 
           fy = projection_matrix_ (1, 1); 
@@ -122,7 +122,7 @@ namespace pcl
           * \param[in] cy the y-coordinate of the camera center
           */
         inline void
-        setCameraCenters (const float cx, const float cy)
+        setCameraCenters (const double cx, const double cy)
         { 
           projection_matrix_ (0, 2) = cx;
           projection_matrix_ (1, 2) = cy;
@@ -133,7 +133,7 @@ namespace pcl
           * \param[out] cy the y-coordinate of the camera center
           */
         inline void
-        getCameraCenters (float &cx, float &cy) const
+        getCameraCenters (double &cx, double &cy) const
         {
           cx = projection_matrix_ (0, 2);
           cy = projection_matrix_ (1, 2);

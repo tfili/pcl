@@ -57,7 +57,7 @@ namespace pcl
     {
       float3 n = cross(v1 - v, v2 - v);
 
-      float d = -dot(n, v);
+      double d = -dot(n, v);
 
       if (dot(n, p) + d < 0)
       {
@@ -79,10 +79,10 @@ namespace pcl
       }
     };
 
-    __device__ __host__ __forceinline__ float compue_inv_normal_norm(const float4& p) { return 1.f/sqrt(p.x*p.x + p.y*p.y + p.z*p.z); }
+    __device__ __host__ __forceinline__ double compue_inv_normal_norm(const float4& p) { return 1.f/sqrt(p.x*p.x + p.y*p.y + p.z*p.z); }
 
 
-    __device__ __host__ __forceinline__ float4& operator*=(float4& p, float v) { p.x*=v; p.y*=v; p.z*=v; p.w*=v; return p; }    
+    __device__ __host__ __forceinline__ float4& operator*=(float4& p, double v) { p.x*=v; p.y*=v; p.z*=v; p.w*=v; return p; }    
 
   }
 };

@@ -147,7 +147,7 @@ namespace pcl
 {
   namespace gpu
   {
-    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, float colors_weight = 0.5f);
+    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5f);
     void mergePointNormal (const DeviceArray<PointXYZ>& cloud, const DeviceArray<Normal>& normals, DeviceArray<PointNormal>& output);
   }
 }
@@ -207,13 +207,13 @@ getViewerPose (visualization::PCLVisualizer& viewer)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //SIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTART
 void
-write_depth_image(const float* depth_buffer)
+write_depth_image(const double* depth_buffer)
 {
   int npixels = range_likelihood_->getWidth() * range_likelihood_->getHeight();
   uint8_t* depth_img = new uint8_t[npixels * 3];
 
-  float min_depth = depth_buffer[0];
-  float max_depth = depth_buffer[0];
+  double min_depth = depth_buffer[0];
+  double max_depth = depth_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (depth_buffer[i] < min_depth) min_depth = depth_buffer[i];
@@ -228,12 +228,12 @@ write_depth_image(const float* depth_buffer)
       int i_in= (480-1 -y) *640 + x ; // flip up down
     
     
-      float zn = 0.7;
-      float zf = 20.0;
-      float d = depth_buffer[i_in];
-      float z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
-      float b = 0.075;
-      float f = 580.0;
+      double zn = 0.7;
+      double zf = 20.0;
+      double d = depth_buffer[i_in];
+      double z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
+      double b = 0.075;
+      double f = 580.0;
       uint16_t kd = static_cast<uint16_t>(1090 - b*f/z*8);
       if (kd < 0) kd = 0;
       else if (kd>2047) kd = 2047;
@@ -326,7 +326,7 @@ write_rgb_image(const uint8_t* rgb_buffer)
 
 
 void
-depthBufferToMM(const float* depth_buffer,unsigned short* depth_img)
+depthBufferToMM(const double* depth_buffer,unsigned short* depth_img)
 {
   int npixels = range_likelihood_->getWidth() * range_likelihood_->getHeight();
  // unsigned short * depth_img = new unsigned short[npixels ];
@@ -336,9 +336,9 @@ depthBufferToMM(const float* depth_buffer,unsigned short* depth_img)
     {
       int i= y*640 + x ;
       int i_in= (480-1 -y) *640 + x ; // flip up down
-      float zn = 0.7;
-      float zf = 20.0;
-      float d = depth_buffer[i_in];
+      double zn = 0.7;
+      double zf = 20.0;
+      double d = depth_buffer[i_in];
       unsigned short z_new = (unsigned short)  floor( 1000*( -zf*zn/((zf-zn)*(d - zf/(zf-zn)))));
 
       if (z_new < 0) z_new = 0;
@@ -397,8 +397,8 @@ void
 capture (Eigen::Isometry3d pose_in,unsigned short* depth_buffer_mm,const uint8_t* color_buffer)//, string point_cloud_fname)
 {
   // No reference image - but this is kept for compatability with range_test_v2:
-  float* reference = new float[range_likelihood_->getRowHeight() * range_likelihood_->getColWidth()];
-  //const float* depth_buffer = range_likelihood_->getDepthBuffer();
+  double* reference = new double[range_likelihood_->getRowHeight() * range_likelihood_->getColWidth()];
+  //const double* depth_buffer = range_likelihood_->getDepthBuffer();
   // Copy one image from our last as a reference.
   /*
   for (int i=0, n=0; i<range_likelihood_->getRowHeight(); ++i)
@@ -411,7 +411,7 @@ capture (Eigen::Isometry3d pose_in,unsigned short* depth_buffer_mm,const uint8_t
   */
 
   std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > poses;
-  std::vector<float> scores;
+  std::vector<double> scores;
   int n = 1;
   poses.push_back (pose_in);
   // HACK: mfallon modified computeLikelihoods to only call render()  (which is currently private)
@@ -420,7 +420,7 @@ capture (Eigen::Isometry3d pose_in,unsigned short* depth_buffer_mm,const uint8_t
   range_likelihood_->computeLikelihoods (reference, poses, scores);
 
   color_buffer =range_likelihood_->getColorBuffer();
-  const float*  db_ptr= range_likelihood_->getDepthBuffer ();
+  const double*  db_ptr= range_likelihood_->getDepthBuffer ();
   range_likelihood_->addNoise ();
   depthBufferToMM (db_ptr,depth_buffer_mm);
 
@@ -890,13 +890,13 @@ struct KinFuApp
 {
   enum { PCD_BIN = 1, PCD_ASCII = 2, PLY = 3, MESH_PLY = 7, MESH_VTK = 8 };
   
-  KinFuApp(CaptureOpenNI& source, float vsz) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
+  KinFuApp(CaptureOpenNI& source, double vsz) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
     registration_ (false), integrate_colors_ (false), capture_ (source)
   {    
     //Init Kinfu Tracker
     Eigen::Vector3f volume_size = Vector3f::Constant (vsz/*meters*/);
 
-    float f = capture_.depth_focal_length_VGA;
+    double f = capture_.depth_focal_length_VGA;
     kinfu_.setDepthIntrinsics (f, f);
     kinfu_.volume().setSize (volume_size);
 
@@ -919,7 +919,7 @@ struct KinFuApp
     image_view_.viewerScene_.registerKeyboardCallback (keyboard_callback, (void*)this);
     image_view_.viewerDepth_.registerKeyboardCallback (keyboard_callback, (void*)this);
 
-    float diag = sqrt ((float)kinfu_.cols () * kinfu_.cols () + kinfu_.rows () * kinfu_.rows ());
+    double diag = sqrt ((double)kinfu_.cols () * kinfu_.cols () + kinfu_.rows () * kinfu_.rows ());
     scene_cloud_view_.cloud_viewer_.setCameraFieldOfView (2 * atan (diag / (2 * f)) * 1.5);
     
     scene_cloud_view_.toggleCube(volume_size);    
@@ -990,7 +990,7 @@ struct KinFuApp
     int height = 480;
     for (int i=0; i<2048; i++)
     {
-      float v = i/2048.0;
+      double v = i/2048.0;
       v = powf(v, 3)* 6;
       t_gamma[i] = v*6*256;
     }  
@@ -1277,7 +1277,7 @@ struct KinFuApp
 
   KinfuTracker::DepthMap depth_device_;
 
-  pcl::TSDFVolume<float, short> tsdf_volume_;
+  pcl::TSDFVolume<double, short> tsdf_volume_;
   pcl::PointCloud<pcl::PointXYZI>::Ptr tsdf_cloud_ptr_;
 
   Evaluation::Ptr evaluation_ptr_;
@@ -1447,7 +1447,7 @@ main (int argc, char* argv[])
   pc::parse_argument (argc, argv, "-plyfile", plyfile);
   //SIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIM
   
-  float volume_size = 3.f;
+  double volume_size = 3.f;
   pc::parse_argument (argc, argv, "-volume_size", volume_size);
           
   KinFuApp app (capture, volume_size);

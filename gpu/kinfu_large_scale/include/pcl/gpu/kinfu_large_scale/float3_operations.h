@@ -45,14 +45,14 @@ namespace pcl
   {
     namespace kinfuLS
     {
-      inline float
+      inline double
       dot(const float3& v1, const float3& v2)
       {
         return v1.x * v2.x + v1.y*v2.y + v1.z*v2.z;
       }
 
       inline float3&
-      operator+=(float3& vec, const float& v)
+      operator+=(float3& vec, const double& v)
       {
         vec.x += v;  vec.y += v;  vec.z += v; return vec;
       }
@@ -70,13 +70,13 @@ namespace pcl
       }
       
       inline float3&
-      operator*=(float3& vec, const float& v)
+      operator*=(float3& vec, const double& v)
       {
         vec.x *= v;  vec.y *= v;  vec.z *= v; return vec;
       }
 
       inline float3&
-      operator-=(float3& vec, const float& v)
+      operator-=(float3& vec, const double& v)
       {
         vec.x -= v;  vec.y -= v;  vec.z -= v; return vec;
       }
@@ -106,12 +106,12 @@ namespace pcl
       }
 
       inline float3
-      operator*(const float3& v1, const float& v)
+      operator*(const float3& v1, const double& v)
       {
         return make_float3 (v1.x * v, v1.y * v, v1.z * v);
       }
 
-      inline float
+      inline double
       norm(const float3& v)
       {
         return sqrt (dot (v, v));

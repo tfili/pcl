@@ -49,7 +49,7 @@ namespace cuda
   struct /*__align__(16)*/ PointXYZRGB
   {
     inline __host__ __device__ PointXYZRGB () {}
-    inline __host__ __device__ PointXYZRGB (float _x, float _y, float _z, int _rgb) : 
+    inline __host__ __device__ PointXYZRGB (double _x, double _y, double _z, int _rgb) : 
                                      x(_x), y(_y), z(_z), rgb(_rgb) {}
 
     // Declare a union for XYZ
@@ -58,9 +58,9 @@ namespace cuda
       float3 xyz;
       struct
       {
-        float x;
-        float y;
-        float z;
+        double x;
+        double y;
+        double z;
       };
     };
     RGB rgb;
@@ -119,7 +119,7 @@ namespace cuda
   struct __align__(16) PointXYZRGBNormal
   {
     inline __host__ __device__ PointXYZRGBNormal () {}
-    inline __host__ __device__ PointXYZRGBNormal (float _x, float _y, float _z, int _rgb) : 
+    inline __host__ __device__ PointXYZRGBNormal (double _x, double _y, double _z, int _rgb) : 
                                      x(_x), y(_y), z(_z), rgb(_rgb) {}
 
     // Declare a union for XYZ
@@ -128,9 +128,9 @@ namespace cuda
       float3 xyz;
       struct
       {
-        float x;
-        float y;
-        float z;
+        double x;
+        double y;
+        double z;
       };
     };
     RGB rgb;
@@ -139,10 +139,10 @@ namespace cuda
       float4 normal;
       struct
       {
-        float normal_x;
-        float normal_y;
-        float normal_z;
-        float curvature;
+        double normal_x;
+        double normal_y;
+        double normal_z;
+        double curvature;
       };
     };
     

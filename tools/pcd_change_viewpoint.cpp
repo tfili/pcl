@@ -109,7 +109,7 @@ main (int argc, char** argv)
   Eigen::Vector4f    translation = Eigen::Vector4f::Zero ();
   Eigen::Quaternionf orientation = Eigen::Quaternionf::Identity ();
 
-  std::vector<float> values;
+  std::vector<double> values;
   if (parse_x_arguments (argc, argv, "-viewpoint", values) > -1)
   {
     if (values.size () == 7)

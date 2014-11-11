@@ -90,13 +90,13 @@ namespace pcl
         * \param[in] flags The flags obtained together with the results.
         * \param[in] threshold The threshold which is used to compute the information gain.
         */
-      virtual float 
+      virtual double 
       computeInformationGain (DataSet & data_set,
                               std::vector<ExampleIndex> & examples,
                               std::vector<LabelDataType> & label_data,
-                              std::vector<float> & results,
+                              std::vector<double> & results,
                               std::vector<unsigned char> & flags,
-                              const float threshold) const = 0;
+                              const double threshold) const = 0;
 
       /** \brief Computes the branch indices obtained by the specified threshold on the supplied feature evaluation results.
         * \param[in] results The results obtained from the feature evaluation.
@@ -105,9 +105,9 @@ namespace pcl
         * \param[out] branch_indices The destination for the computed branch indices.
         */
       virtual void 
-      computeBranchIndices (std::vector<float> & results,
+      computeBranchIndices (std::vector<double> & results,
                             std::vector<unsigned char> & flags,
-                            const float threshold,
+                            const double threshold,
                             std::vector<unsigned char> & branch_indices) const = 0;
 
       /** \brief Computes the branch indices obtained by the specified threshold on the supplied feature evaluation results.
@@ -117,9 +117,9 @@ namespace pcl
         * \param[out] branch_index The destination for the computed branch index.
         */
       virtual void 
-      computeBranchIndex (const float result,
+      computeBranchIndex (const double result,
                           const unsigned char flag,
-                          const float threshold,
+                          const double threshold,
                           unsigned char & branch_index) const = 0;
 
       /** \brief Generates code for computing the branch indices for the specified node and writes it to the specified stream.

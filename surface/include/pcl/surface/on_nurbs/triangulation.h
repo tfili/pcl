@@ -61,8 +61,8 @@ namespace pcl
 
         /** \brief Create vertices (cloud) for triangulation. */
         static void
-        createVertices (pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, float x0, float y0, float z0, float width,
-                        float height, unsigned segX, unsigned segY);
+        createVertices (pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, double x0, double y0, double z0, double width,
+                        double height, unsigned segX, unsigned segY);
 
       public:
         static bool

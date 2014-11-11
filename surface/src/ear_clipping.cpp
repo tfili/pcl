@@ -111,7 +111,7 @@ pcl::EarClipping::triangulate (const Vertices& vertices, PolygonMesh& output)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
 {
     //if the polygon is projected onto the xy-plane, the area of the polygon is determined
@@ -120,7 +120,7 @@ pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
     //using Stoke's law: http://code.activestate.com/recipes/578276-3d-polygon-area/
 
     int n = static_cast<int> (vertices.size ());
-    float area = 0.0f;
+    double area = 0.0f;
     Eigen::Vector3f prev_p, cur_p;
     Eigen::Vector3f total (0,0,0);
     Eigen::Vector3f unit_normal;
@@ -156,7 +156,7 @@ pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& verti
   p_v = points_->points[vertices[v]].getVector3fMap();
   p_w = points_->points[vertices[w]].getVector3fMap();
 
-  const float eps = 1e-15f;
+  const double eps = 1e-15f;
   Eigen::Vector3f p_uv, p_uw;
   p_uv = p_v - p_u;
   p_uw = p_w - p_u;
@@ -193,16 +193,16 @@ pcl::EarClipping::isInsideTriangle (const Eigen::Vector3f& u,
   Eigen::Vector3f v2 = p - u;
 
   // Compute dot products
-  float dot00 = v0.dot(v0);
-  float dot01 = v0.dot(v1);
-  float dot02 = v0.dot(v2);
-  float dot11 = v1.dot(v1);
-  float dot12 = v1.dot(v2);
+  double dot00 = v0.dot(v0);
+  double dot01 = v0.dot(v1);
+  double dot02 = v0.dot(v2);
+  double dot11 = v1.dot(v1);
+  double dot12 = v1.dot(v2);
 
   // Compute barycentric coordinates
-  float invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-  float a = (dot11 * dot02 - dot01 * dot12) * invDenom;
-  float b = (dot00 * dot12 - dot01 * dot02) * invDenom;
+  double invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+  double a = (dot11 * dot02 - dot01 * dot12) * invDenom;
+  double b = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
   // Check if point is in triangle
   return (a >= 0) && (b >= 0) && (a + b < 1);

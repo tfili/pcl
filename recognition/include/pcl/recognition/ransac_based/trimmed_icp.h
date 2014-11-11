@@ -114,8 +114,8 @@ namespace pcl
           // Some variables for the closest point search
           pcl::PointXYZ transformed_source_point;
           std::vector<int> target_index (1);
-          std::vector<float> sqr_dist_to_target (1);
-          float old_energy, energy = std::numeric_limits<float>::max ();
+          std::vector<double> sqr_dist_to_target (1);
+          double old_energy, energy = std::numeric_limits<double>::max ();
 
 //          printf ("\nalign\n");
 
@@ -160,7 +160,7 @@ namespace pcl
         }
 
         inline void
-        setNewToOldEnergyRatio (float ratio)
+        setNewToOldEnergyRatio (double ratio)
         {
           if ( ratio >= 1 )
             new_to_old_energy_ratio_ = 0.99f;
@@ -178,7 +178,7 @@ namespace pcl
       protected:
         PointCloudConstPtr target_points_;
         pcl::KdTreeFLANN<PointT> kdtree_;
-        float new_to_old_energy_ratio_;
+        double new_to_old_energy_ratio_;
     };
   } // namespace recognition
 } // namespace pcl

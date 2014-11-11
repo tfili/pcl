@@ -73,7 +73,7 @@ TEST(PCL_OctreeGPU, approxNearesSearch)
     data.shared_radius = data.cube_size/30.f;
     data.printParams();
 
-    const float host_octree_resolution = 25.f;
+    const double host_octree_resolution = 25.f;
 
     //generate
     data();
@@ -109,8 +109,8 @@ TEST(PCL_OctreeGPU, approxNearesSearch)
     pcl::gpu::NeighborIndices result_device(data.tests_num, 1);
     vector<int> result_host_pcl(data.tests_num);
     vector<int> result_host_gpu(data.tests_num);
-    vector<float> dists_pcl(data.tests_num);
-    vector<float> dists_gpu(data.tests_num);
+    vector<double> dists_pcl(data.tests_num);
+    vector<double> dists_gpu(data.tests_num);
     
     //search GPU shared
     octree_device.approxNearestSearch(queries_device, result_device);
@@ -128,10 +128,10 @@ TEST(PCL_OctreeGPU, approxNearesSearch)
 
     int count_gpu_better = 0;
     int count_pcl_better = 0;
-    float diff_pcl_better = 0;
+    double diff_pcl_better = 0;
     for(size_t i = 0; i < data.tests_num; ++i)
     {
-        float diff = dists_pcl[i] - dists_gpu[i];
+        double diff = dists_pcl[i] - dists_gpu[i];
         bool gpu_better = diff > 0;
 
         ++(gpu_better ? count_gpu_better : count_pcl_better);

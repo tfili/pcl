@@ -170,10 +170,10 @@ namespace pcl
     * \param[in] p1 the first point
     * \param[in] p2 the second point
     */
-  template<typename PointType1, typename PointType2> inline float
+  template<typename PointType1, typename PointType2> inline double
   squaredEuclideanDistance (const PointType1& p1, const PointType2& p2)
   {
-    float diff_x = p2.x - p1.x, diff_y = p2.y - p1.y, diff_z = p2.z - p1.z;
+    double diff_x = p2.x - p1.x, diff_y = p2.y - p1.y, diff_z = p2.z - p1.z;
     return (diff_x*diff_x + diff_y*diff_y + diff_z*diff_z);
   }
 
@@ -181,10 +181,10 @@ namespace pcl
     * \param[in] p1 the first point
     * \param[in] p2 the second point
     */
-  template<> inline float
+  template<> inline double
   squaredEuclideanDistance (const PointXY& p1, const PointXY& p2)
   {
-    float diff_x = p2.x - p1.x, diff_y = p2.y - p1.y;
+    double diff_x = p2.x - p1.x, diff_y = p2.y - p1.y;
     return (diff_x*diff_x + diff_y*diff_y);
   }
 
@@ -192,7 +192,7 @@ namespace pcl
     * \param[in] p1 the first point
     * \param[in] p2 the second point
     */
-  template<typename PointType1, typename PointType2> inline float
+  template<typename PointType1, typename PointType2> inline double
   euclideanDistance (const PointType1& p1, const PointType2& p2)
   {
     return (sqrtf (squaredEuclideanDistance (p1, p2)));

@@ -51,11 +51,11 @@ namespace pcl
     /** @b TransformationEstimationLM implements Levenberg Marquardt-based
       * estimation of the transformation aligning the given correspondences.
       *
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename MatScalar = float>
+    template <typename PointSource, typename PointTarget, typename MatScalar = double>
     class TransformationEstimationLM : public TransformationEstimation<PointSource, PointTarget, MatScalar>
     {
       typedef pcl::PointCloud<PointSource> PointCloudSource;

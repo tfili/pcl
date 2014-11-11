@@ -69,7 +69,7 @@ template<typename ModelT, typename SceneT>
       std::vector<int> explained_indices;
       std::vector<int> outliers;
       std::vector<int> nn_indices;
-      std::vector<float> nn_distances;
+      std::vector<double> nn_distances;
 
       for (size_t i = 0; i < recog_model->cloud_->points.size (); i++)
       {
@@ -117,8 +117,8 @@ template<typename ModelT, typename SceneT>
 
     for (size_t i = 0; i < recognition_models_.size (); i++)
     {
-      if (static_cast<float> (recognition_models_[i]->good_information_) > (regularizer_
-          * static_cast<float> (recognition_models_[i]->bad_information_)))
+      if (static_cast<double> (recognition_models_[i]->good_information_) > (regularizer_
+          * static_cast<double> (recognition_models_[i]->bad_information_)))
       {
         best_solution_[i] = true;
         updateGoodInformation (static_cast<int> (i));

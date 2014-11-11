@@ -58,7 +58,7 @@ namespace pcl
     */
   template <typename PointT> inline void
   computePointNormal (const pcl::PointCloud<PointT> &cloud,
-                      Eigen::Vector4f &plane_parameters, float &curvature)
+                      Eigen::Vector4f &plane_parameters, double &curvature)
   {
     // Placeholder for the 3x3 covariance matrix at each surface patch
     EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
@@ -68,8 +68,8 @@ namespace pcl
     if (cloud.size () < 3 ||
         computeMeanAndCovarianceMatrix (cloud, covariance_matrix, xyz_centroid) == 0)
     {
-      plane_parameters.setConstant (std::numeric_limits<float>::quiet_NaN ());
-      curvature = std::numeric_limits<float>::quiet_NaN ();
+      plane_parameters.setConstant (std::numeric_limits<double>::quiet_NaN ());
+      curvature = std::numeric_limits<double>::quiet_NaN ();
       return;
     }
 
@@ -90,7 +90,7 @@ namespace pcl
     */
   template <typename PointT> inline void
   computePointNormal (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices,
-                      Eigen::Vector4f &plane_parameters, float &curvature)
+                      Eigen::Vector4f &plane_parameters, double &curvature)
   {
     // Placeholder for the 3x3 covariance matrix at each surface patch
     EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
@@ -99,8 +99,8 @@ namespace pcl
     if (indices.size () < 3 ||
         computeMeanAndCovarianceMatrix (cloud, indices, covariance_matrix, xyz_centroid) == 0)
     {
-      plane_parameters.setConstant (std::numeric_limits<float>::quiet_NaN ());
-      curvature = std::numeric_limits<float>::quiet_NaN ();
+      plane_parameters.setConstant (std::numeric_limits<double>::quiet_NaN ());
+      curvature = std::numeric_limits<double>::quiet_NaN ();
       return;
     }
     // Get the plane normal and surface curvature
@@ -116,13 +116,13 @@ namespace pcl
     * \ingroup features
     */
   template <typename PointT, typename Scalar> inline void
-  flipNormalTowardsViewpoint (const PointT &point, float vp_x, float vp_y, float vp_z,
+  flipNormalTowardsViewpoint (const PointT &point, double vp_x, double vp_y, double vp_z,
                               Eigen::Matrix<Scalar, 4, 1>& normal)
   {
     Eigen::Matrix <Scalar, 4, 1> vp (vp_x - point.x, vp_y - point.y, vp_z - point.z, 0);
 
     // Dot product between the (viewpoint - point) and the plane normal
-    float cos_theta = vp.dot (normal);
+    double cos_theta = vp.dot (normal);
 
     // Flip the plane normal
     if (cos_theta < 0)
@@ -143,7 +143,7 @@ namespace pcl
     * \ingroup features
     */
   template <typename PointT, typename Scalar> inline void
-  flipNormalTowardsViewpoint (const PointT &point, float vp_x, float vp_y, float vp_z,
+  flipNormalTowardsViewpoint (const PointT &point, double vp_x, double vp_y, double vp_z,
                               Eigen::Matrix<Scalar, 3, 1>& normal)
   {
     Eigen::Matrix <Scalar, 3, 1> vp (vp_x - point.x, vp_y - point.y, vp_z - point.z);
@@ -164,8 +164,8 @@ namespace pcl
     * \ingroup features
     */
   template <typename PointT> inline void
-  flipNormalTowardsViewpoint (const PointT &point, float vp_x, float vp_y, float vp_z,
-                              float &nx, float &ny, float &nz)
+  flipNormalTowardsViewpoint (const PointT &point, double vp_x, double vp_y, double vp_z,
+                              double &nx, double &ny, double &nz)
   {
     // See if we need to flip any plane normals
     vp_x -= point.x;
@@ -173,7 +173,7 @@ namespace pcl
     vp_z -= point.z;
 
     // Dot product between the (viewpoint - point) and the plane normal
-    float cos_theta = (vp_x * nx + vp_y * ny + vp_z * nz);
+    double cos_theta = (vp_x * nx + vp_y * ny + vp_z * nz);
 
     // Flip the plane normal
     if (cos_theta < 0)
@@ -238,13 +238,13 @@ namespace pcl
         */
       inline void
       computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices,
-                          Eigen::Vector4f &plane_parameters, float &curvature)
+                          Eigen::Vector4f &plane_parameters, double &curvature)
       {
         if (indices.size () < 3 ||
             computeMeanAndCovarianceMatrix (cloud, indices, covariance_matrix_, xyz_centroid_) == 0)
         {
-          plane_parameters.setConstant (std::numeric_limits<float>::quiet_NaN ());
-          curvature = std::numeric_limits<float>::quiet_NaN ();
+          plane_parameters.setConstant (std::numeric_limits<double>::quiet_NaN ());
+          curvature = std::numeric_limits<double>::quiet_NaN ();
           return;
         }
 
@@ -266,12 +266,12 @@ namespace pcl
         */
       inline void
       computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices,
-                          float &nx, float &ny, float &nz, float &curvature)
+                          double &nx, double &ny, double &nz, double &curvature)
       {
         if (indices.size () < 3 ||
             computeMeanAndCovarianceMatrix (cloud, indices, covariance_matrix_, xyz_centroid_) == 0)
         {
-          nx = ny = nz = curvature = std::numeric_limits<float>::quiet_NaN ();
+          nx = ny = nz = curvature = std::numeric_limits<double>::quiet_NaN ();
           return;
         }
 
@@ -300,7 +300,7 @@ namespace pcl
         * \param vpz the Z coordinate of the viewpoint
         */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -317,7 +317,7 @@ namespace pcl
         * If an input cloud is set, it will return the sensor origin otherwise it will return the origin (0, 0, 0)
         */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz)
+      getViewPoint (double &vpx, double &vpy, double &vpz)
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -357,7 +357,7 @@ namespace pcl
 
       /** \brief Values describing the viewpoint ("pinhole" camera model assumed). For per point viewpoints, inherit
         * from NormalEstimation and provide your own computeFeature (). By default, the viewpoint is set to 0,0,0. */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** \brief Placeholder for the 3x3 covariance matrix at each surface patch. */
       EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix_;

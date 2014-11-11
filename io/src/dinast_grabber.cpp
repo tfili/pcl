@@ -91,12 +91,12 @@ pcl::DinastGrabber::isRunning () const
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::DinastGrabber::getFramesPerSecond () const
 { 
   static double last = pcl::getTime ();
   double now = pcl::getTime (); 
-  float rate = 1 / float(now - last);
+  double rate = 1 / double(now - last);
   last = now; 
 
   return (rate);
@@ -332,22 +332,22 @@ pcl::DinastGrabber::getXYZIPointCloud ()
       double s_theta = sin (theta_colati);
       double c_ksai = static_cast<double> (x - 160) / r1;
       double s_ksai = static_cast<double> (y - 120) / r1;
-      cloud->points[depth_idx].x = static_cast<float> ((dist * s_theta * c_ksai) / 500.0 + 0.5);
-      cloud->points[depth_idx].y = static_cast<float> ((dist * s_theta * s_ksai) / 500.0 + 0.5);
-      cloud->points[depth_idx].z = static_cast<float> (dist * c_theta);
+      cloud->points[depth_idx].x = static_cast<double> ((dist * s_theta * c_ksai) / 500.0 + 0.5);
+      cloud->points[depth_idx].y = static_cast<double> ((dist * s_theta * s_ksai) / 500.0 + 0.5);
+      cloud->points[depth_idx].z = static_cast<double> (dist * c_theta);
       if (cloud->points[depth_idx].z < 0.01f)
         cloud->points[depth_idx].z = 0.01f;
       cloud->points[depth_idx].z /= 500.0f;
-      cloud->points[depth_idx].intensity = static_cast<float> (pixel);
+      cloud->points[depth_idx].intensity = static_cast<double> (pixel);
 
       
       // Get rid of the noise
       if(cloud->points[depth_idx].z > 0.8f || cloud->points[depth_idx].z < 0.02f)
       {
-        cloud->points[depth_idx].x = std::numeric_limits<float>::quiet_NaN ();
-      	cloud->points[depth_idx].y = std::numeric_limits<float>::quiet_NaN ();
-      	cloud->points[depth_idx].z = std::numeric_limits<float>::quiet_NaN ();
-        cloud->points[depth_idx].intensity = static_cast<float> (pixel);
+        cloud->points[depth_idx].x = std::numeric_limits<double>::quiet_NaN ();
+      	cloud->points[depth_idx].y = std::numeric_limits<double>::quiet_NaN ();
+      	cloud->points[depth_idx].z = std::numeric_limits<double>::quiet_NaN ();
+        cloud->points[depth_idx].intensity = static_cast<double> (pixel);
       }
     }
   }

@@ -74,7 +74,7 @@ class OpenNIGrabFrame
 
     void
     image_callback (const boost::shared_ptr<openni_wrapper::Image> &image, 
-                    const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image, float)
+                    const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image, double)
     {
       boost::mutex::scoped_lock lock (image_mutex_);
       image_ = image;
@@ -184,7 +184,7 @@ class OpenNIGrabFrame
       depth_image_viewer_.registerMouseCallback (&OpenNIGrabFrame::mouse_callback, *this);
       depth_image_viewer_.registerKeyboardCallback(&OpenNIGrabFrame::keyboard_callback, *this);
       
-      boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float) > image_cb = boost::bind (&OpenNIGrabFrame::image_callback, this, _1, _2, _3);
+      boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double) > image_cb = boost::bind (&OpenNIGrabFrame::image_callback, this, _1, _2, _3);
       boost::signals2::connection image_connection = grabber_.registerCallback (image_cb);
       
       // start receiving point clouds

@@ -29,12 +29,12 @@ namespace pcl
     private:
       std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > poses_;
       std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> generated_views_;
-      std::vector<float> entropies_;
+      std::vector<double> entropies_;
       int resolution_;
       int tesselation_level_;
       bool use_vertices_;
-      float view_angle_;
-      float radius_sphere_;
+      double view_angle_;
+      double radius_sphere_;
       bool compute_entropy_;
       vtkSmartPointer<vtkPolyData> polydata_;
       bool gen_organized_;
@@ -102,7 +102,7 @@ namespace pcl
        * \param use true indicates to use vertices, false triangle centers
        */
       void
-      setRadiusSphere (float radius)
+      setRadiusSphere (double radius)
       {
         radius_sphere_ = radius;
       }
@@ -129,7 +129,7 @@ namespace pcl
        * \param angle view angle in degrees
        */
       void
-      setViewAngle (float angle)
+      setViewAngle (double angle)
       {
         view_angle_ = angle;
       }
@@ -170,7 +170,7 @@ namespace pcl
        * \param entropies level of occlusions
        */
       void
-      getEntropies (std::vector<float> & entropies)
+      getEntropies (std::vector<double> & entropies)
       {
         entropies = entropies_;
       }

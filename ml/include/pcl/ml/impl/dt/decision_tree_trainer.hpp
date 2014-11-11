@@ -128,7 +128,7 @@ pcl::DecisionTreeTrainer<FeatureType, DataSet, LabelType, ExampleIndex, NodeType
     feature_handler_->createRandomFeatures (num_of_features_, features);
   }
 
-  std::vector<float> feature_results;
+  std::vector<double> feature_results;
   std::vector<unsigned char> flags;
 
   feature_results.reserve (num_of_examples);
@@ -136,8 +136,8 @@ pcl::DecisionTreeTrainer<FeatureType, DataSet, LabelType, ExampleIndex, NodeType
 
   // find best feature for split
   int best_feature_index = -1;
-  float best_feature_threshold = 0.0f;
-  float best_feature_information_gain = 0.0f;
+  double best_feature_threshold = 0.0f;
+  double best_feature_information_gain = 0.0f;
 
   const size_t num_of_features = features.size ();
   for (size_t feature_index = 0; feature_index < num_of_features; ++feature_index)
@@ -156,7 +156,7 @@ pcl::DecisionTreeTrainer<FeatureType, DataSet, LabelType, ExampleIndex, NodeType
       for (size_t threshold_index = 0; threshold_index < thresholds_.size (); ++threshold_index)
       {
 
-        const float information_gain = stats_estimator_->computeInformationGain (data_set_,
+        const double information_gain = stats_estimator_->computeInformationGain (data_set_,
                                                                                  examples,
                                                                                  label_data,
                                                                                  feature_results,
@@ -173,17 +173,17 @@ pcl::DecisionTreeTrainer<FeatureType, DataSet, LabelType, ExampleIndex, NodeType
     }
     else
     {
-			std::vector<float> thresholds;
+			std::vector<double> thresholds;
 			thresholds.reserve (num_of_thresholds_);
 			createThresholdsUniform (num_of_thresholds_, feature_results, thresholds);
 
 			// compute information gain for each threshold and store threshold with highest information gain
 			for (size_t threshold_index = 0; threshold_index < num_of_thresholds_; ++threshold_index)
 			{
-				const float threshold = thresholds[threshold_index];
+				const double threshold = thresholds[threshold_index];
 
 				// compute information gain
-				const float information_gain = stats_estimator_->computeInformationGain (data_set_,
+				const double information_gain = stats_estimator_->computeInformationGain (data_set_,
 																																								 examples,
 																																								 label_data,
 																																								 feature_results,
@@ -276,31 +276,31 @@ template <class FeatureType, class DataSet, class LabelType, class ExampleIndex,
 void
 pcl::DecisionTreeTrainer<FeatureType, DataSet, LabelType, ExampleIndex, NodeType>::createThresholdsUniform (
   const size_t num_of_thresholds,
-  std::vector<float> & values,
-  std::vector<float> & thresholds)
+  std::vector<double> & values,
+  std::vector<double> & thresholds)
 {
   // estimate range of values
-  float min_value = ::std::numeric_limits<float>::max();
-  float max_value = -::std::numeric_limits<float>::max();
+  double min_value = ::std::numeric_limits<double>::max();
+  double max_value = -::std::numeric_limits<double>::max();
 
   const size_t num_of_values = values.size ();
   for (size_t value_index = 0; value_index < num_of_values; ++value_index)
   {
-    const float value = values[value_index];
+    const double value = values[value_index];
 
     if (value < min_value) min_value = value;
     if (value > max_value) max_value = value;
   }
 
-  const float range = max_value - min_value;
-  const float step = range / static_cast<float>(num_of_thresholds+2);
+  const double range = max_value - min_value;
+  const double step = range / static_cast<double>(num_of_thresholds+2);
 
   // compute thresholds
   thresholds.resize (num_of_thresholds);
 
   for (size_t threshold_index = 0; threshold_index < num_of_thresholds; ++threshold_index)
   {
-    thresholds[threshold_index] = min_value + step*(static_cast<float>(threshold_index+1));
+    thresholds[threshold_index] = min_value + step*(static_cast<double>(threshold_index+1));
   }
 }
   

@@ -114,7 +114,7 @@ class PCLMobileServer
     typedef typename Cloud::ConstPtr CloudConstPtr;
 
     PCLMobileServer (const std::string& device_id = "", int port = 11111,
-                     float leaf_size_x = 0.01, float leaf_size_y = 0.01, float leaf_size_z = 0.01)
+                     double leaf_size_x = 0.01, double leaf_size_y = 0.01, double leaf_size_z = 0.01)
     : port_ (port),
       device_id_ (device_id),
       viewer_ ("PCL OpenNI Mobile Server")
@@ -246,7 +246,7 @@ main (int argc, char ** argv)
   }
 
   int port = 11111;
-  float leaf_x = 0.01f, leaf_y = 0.01f, leaf_z = 0.01f;
+  double leaf_x = 0.01f, leaf_y = 0.01f, leaf_z = 0.01f;
   std::string device_id = "";
 
   pcl::console::parse_argument (argc, argv, "-port", port);

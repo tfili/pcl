@@ -92,7 +92,7 @@ pcl::RadiusOutlierRemoval<PointT>::applyFilterIndices (std::vector<int> &indices
 
   // The arrays to be used
   std::vector<int> nn_indices (indices_->size ());
-  std::vector<float> nn_dists (indices_->size ());
+  std::vector<double> nn_dists (indices_->size ());
   indices.resize (indices_->size ());
   removed_indices_->resize (indices_->size ());
   int oii = 0, rii = 0;  // oii = output indices iterator, rii = removed indices iterator

@@ -107,9 +107,9 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
       */
     struct Intr
     {
-      float fx, fy, cx, cy;
+      double fx, fy, cx, cy;
       Intr () {};
-      Intr (float fx_, float fy_, float cx_, float cy_)
+      Intr (double fx_, double fy_, double cx_, double cy_)
         : fx(fx_), fy(fy_), cx(cx_), cy(cy_) {};
 
       Intr operator()(int level_index) const
@@ -194,7 +194,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     /** \brief Returns the size of one voxel in mm */
     inline Eigen::Vector3f
     voxelSize () const {
-      Eigen::Array3f res = header_.resolution.array().template cast<float>();
+      Eigen::Array3f res = header_.resolution.array().template cast<double>();
       return header_.volume_size.array() / res;
     };
 
@@ -278,7 +278,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   //  scaleDepth (const Eigen::MatrixXf &depth, Eigen::MatrixXf &depth_scaled, const Intr &intr) const;
 
   //  void
-  //  integrateVolume (const Eigen::MatrixXf &depth_scaled, float tranc_dist, const Eigen::Matrix3f &R_inv, const Eigen::Vector3f &t, const Intr &intr);
+  //  integrateVolume (const Eigen::MatrixXf &depth_scaled, double tranc_dist, const Eigen::Matrix3f &R_inv, const Eigen::Vector3f &t, const Intr &intr);
 
     typedef boost::shared_ptr<std::vector<VoxelT> > VolumePtr;
     typedef boost::shared_ptr<std::vector<WeightT> > WeightsPtr;

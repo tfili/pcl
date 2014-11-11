@@ -104,7 +104,7 @@ TEST(PCL_OctreeGPU, perfomance)
     cloud_host->points.resize (cloud_host->width * cloud_host->height);    
     std::transform(data.points.begin(), data.points.end(), cloud_host->points.begin(), DataGenerator::ConvPoint<pcl::PointXYZ>());
 
-    float host_octree_resolution = 25.f;    
+    double host_octree_resolution = 25.f;    
     
     cout << "[!] Host octree resolution: " << host_octree_resolution << endl << endl;    
 
@@ -145,12 +145,12 @@ TEST(PCL_OctreeGPU, perfomance)
     //// Radius search perfomance ///
 
     const int max_answers = 500;
-    float dist;
+    double dist;
     int inds;
 
     //host buffers
     vector<int> indeces;
-    vector<float> pointRadiusSquaredDistance;
+    vector<double> pointRadiusSquaredDistance;
 #ifdef HAVE_OPENCV  
     vector<cv::Point3f> opencv_results;
 #endif

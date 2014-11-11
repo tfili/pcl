@@ -49,7 +49,7 @@ using pcl::device::kinfuLS::device_cast;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-pcl::gpu::kinfuLS::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resolution_(resolution), volume_host_ (new std::vector<float>), weights_host_ (new std::vector<short>)
+pcl::gpu::kinfuLS::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resolution_(resolution), volume_host_ (new std::vector<double>), weights_host_ (new std::vector<short>)
 {
   int volume_x = resolution_(0);
   int volume_y = resolution_(1);
@@ -58,7 +58,7 @@ pcl::gpu::kinfuLS::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resoluti
   volume_.create (volume_y * volume_z, volume_x);
   
   const Vector3f default_volume_size = Vector3f::Constant (3.f); //meters
-  const float    default_tranc_dist  = 0.03f; //meters
+  const double    default_tranc_dist  = 0.03f; //meters
 
   setSize(default_volume_size);
   setTsdfTruncDist(default_tranc_dist);
@@ -79,11 +79,11 @@ pcl::gpu::kinfuLS::TsdfVolume::setSize(const Vector3f& size)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::gpu::kinfuLS::TsdfVolume::setTsdfTruncDist (float distance)
+pcl::gpu::kinfuLS::TsdfVolume::setTsdfTruncDist (double distance)
 {
-  float cx = size_(0) / resolution_(0);
-  float cy = size_(1) / resolution_(1);
-  float cz = size_(2) / resolution_(2);
+  double cx = size_(0) / resolution_(0);
+  double cy = size_(1) / resolution_(1);
+  double cz = size_(2) / resolution_(2);
 
   tranc_dist_ = std::max (distance, 2.1f * std::max (cx, std::max (cy, cz)));  
 }
@@ -117,12 +117,12 @@ pcl::gpu::kinfuLS::TsdfVolume::getResolution() const
 const Eigen::Vector3f
 pcl::gpu::kinfuLS::TsdfVolume::getVoxelSize() const
 {    
-  return size_.array () / resolution_.array().cast<float>();
+  return size_.array () / resolution_.array().cast<double>();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float
+double
 pcl::gpu::kinfuLS::TsdfVolume::getTsdfTruncDist () const
 {
   return tranc_dist_;
@@ -323,7 +323,7 @@ pcl::gpu::kinfuLS::TsdfVolume::pushSlice (PointCloud<PointXYZI>::Ptr existing_da
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 size_t
-pcl::gpu::kinfuLS::TsdfVolume::fetchSliceAsCloud (DeviceArray<PointType>& cloud_buffer_xyz, DeviceArray<float>& cloud_buffer_intensity, const pcl::gpu::kinfuLS::tsdf_buffer* buffer, int shiftX, int shiftY, int shiftZ ) const
+pcl::gpu::kinfuLS::TsdfVolume::fetchSliceAsCloud (DeviceArray<PointType>& cloud_buffer_xyz, DeviceArray<double>& cloud_buffer_intensity, const pcl::gpu::kinfuLS::tsdf_buffer* buffer, int shiftX, int shiftY, int shiftZ ) const
 {
   if (cloud_buffer_xyz.empty ())
     cloud_buffer_xyz.create (DEFAULT_CLOUD_BUFFER_SIZE/2);
@@ -388,7 +388,7 @@ pcl::gpu::kinfuLS::TsdfVolume::convertToTsdfCloud (pcl::PointCloud<pcl::PointXYZ
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::gpu::kinfuLS::TsdfVolume::downloadTsdf (std::vector<float>& tsdf) const
+pcl::gpu::kinfuLS::TsdfVolume::downloadTsdf (std::vector<double>& tsdf) const
 {
   tsdf.resize (volume_.cols() * volume_.rows());
   volume_.download(&tsdf[0], volume_.cols() * sizeof(int));
@@ -396,7 +396,7 @@ pcl::gpu::kinfuLS::TsdfVolume::downloadTsdf (std::vector<float>& tsdf) const
 #pragma omp parallel for
   for(int i = 0; i < (int) tsdf.size(); ++i)
   {
-    float tmp = reinterpret_cast<short2*>(&tsdf[i])->x;
+    double tmp = reinterpret_cast<short2*>(&tsdf[i])->x;
     tsdf[i] = tmp/pcl::device::kinfuLS::DIVISOR;
   }
 }
@@ -411,7 +411,7 @@ pcl::gpu::kinfuLS::TsdfVolume::downloadTsdfLocal () const
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::gpu::kinfuLS::TsdfVolume::downloadTsdfAndWeights (std::vector<float>& tsdf, std::vector<short>& weights) const
+pcl::gpu::kinfuLS::TsdfVolume::downloadTsdfAndWeights (std::vector<double>& tsdf, std::vector<short>& weights) const
 {
   int volumeSize = volume_.cols() * volume_.rows();
   tsdf.resize (volumeSize);
@@ -422,7 +422,7 @@ pcl::gpu::kinfuLS::TsdfVolume::downloadTsdfAndWeights (std::vector<float>& tsdf,
   for(int i = 0; i < (int) tsdf.size(); ++i)
   {
     short2 elem = *reinterpret_cast<short2*>(&tsdf[i]);
-    tsdf[i] = (float)(elem.x)/pcl::device::kinfuLS::DIVISOR;    
+    tsdf[i] = (double)(elem.x)/pcl::device::kinfuLS::DIVISOR;    
     weights[i] = (short)(elem.y);    
   }
 }
@@ -461,7 +461,7 @@ pcl::gpu::kinfuLS::TsdfVolume::save (const std::string &filename, bool binary) c
 
       // DATA
       // write data
-      file.write ((char*) &(volume_host_->at(0)), volume_host_->size()*sizeof(float));
+      file.write ((char*) &(volume_host_->at(0)), volume_host_->size()*sizeof(double));
       file.write ((char*) &(weights_host_->at(0)), weights_host_->size()*sizeof(short));
     }
     else
@@ -469,10 +469,10 @@ pcl::gpu::kinfuLS::TsdfVolume::save (const std::string &filename, bool binary) c
       // write resolution and size of volume and element size
       file << header_.resolution(0) << " " << header_.resolution(1) << " " << header_.resolution(2) << std::endl;
       file << header_.volume_size(0) << " " << header_.volume_size(1) << " " << header_.volume_size(2) << std::endl;
-      file << sizeof (float) << " " << sizeof(short) << std::endl;
+      file << sizeof (double) << " " << sizeof(short) << std::endl;
 
       // write data
-      for (std::vector<float>::const_iterator iter = volume_host_->begin(); iter != volume_host_->end(); ++iter)
+      for (std::vector<double>::const_iterator iter = volume_host_->begin(); iter != volume_host_->end(); ++iter)
         file << *iter << std::endl;
     }
 
@@ -510,9 +510,9 @@ pcl::gpu::kinfuLS::TsdfVolume::load (const std::string &filename, bool binary)
       file.read (&header_.weights_element_size, sizeof(int)); */
 
       // check if element size fits to data
-      if (header_.volume_element_size != sizeof(float))
+      if (header_.volume_element_size != sizeof(double))
       {
-        pcl::console::print_error ("[TSDFVolume::load] Error: Given volume element size (%d) doesn't fit data (%d)", sizeof(float), header_.volume_element_size);
+        pcl::console::print_error ("[TSDFVolume::load] Error: Given volume element size (%d) doesn't fit data (%d)", sizeof(double), header_.volume_element_size);
         return false;
       }
       if ( header_.weights_element_size != sizeof(short))
@@ -525,7 +525,7 @@ pcl::gpu::kinfuLS::TsdfVolume::load (const std::string &filename, bool binary)
       int num_elements = header_.getVolumeSize();
       volume_host_->resize (num_elements);
       weights_host_->resize (num_elements);
-      file.read ((char*) &(*volume_host_)[0], num_elements * sizeof(float));
+      file.read ((char*) &(*volume_host_)[0], num_elements * sizeof(double));
       file.read ((char*) &(*weights_host_)[0], num_elements * sizeof(short));
     }
     else

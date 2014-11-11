@@ -164,7 +164,7 @@ icp (const PointCloud<PointT>::Ptr &src,
     final_transform = transform * final_transform;
 
     // Transform the data
-    transformPointCloudWithNormals (*src, *output, final_transform.cast<float> ());
+    transformPointCloudWithNormals (*src, *output, final_transform.cast<double> ());
 
     // Check if convergence has been reached
     ++iterations;

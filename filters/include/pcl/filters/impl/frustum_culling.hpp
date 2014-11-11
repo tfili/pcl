@@ -88,14 +88,14 @@ pcl::FrustumCulling<PointT>::applyFilter (std::vector<int> &indices)
   Eigen::Vector3f T = camera_pose_.block (0, 3, 3, 1);       // The (X, Y, Z) position of the camera w.r.t origin
 
 
-  float vfov_rad = float (vfov_ * M_PI / 180); // degrees to radians
-  float hfov_rad = float (hfov_ * M_PI / 180); // degrees to radians
+  double vfov_rad = double (vfov_ * M_PI / 180); // degrees to radians
+  double hfov_rad = double (hfov_ * M_PI / 180); // degrees to radians
   
-  float np_h = float (2 * tan (vfov_rad / 2) * np_dist_);  // near plane height
-  float np_w = float (2 * tan (hfov_rad / 2) * np_dist_);  // near plane width
+  double np_h = double (2 * tan (vfov_rad / 2) * np_dist_);  // near plane height
+  double np_w = double (2 * tan (hfov_rad / 2) * np_dist_);  // near plane width
 
-  float fp_h = float (2 * tan (vfov_rad / 2) * fp_dist_);    // far plane height
-  float fp_w = float (2 * tan (hfov_rad / 2) * fp_dist_);    // far plane width
+  double fp_h = double (2 * tan (vfov_rad / 2) * fp_dist_);    // far plane height
+  double fp_w = double (2 * tan (hfov_rad / 2) * fp_dist_);    // far plane width
 
   Eigen::Vector3f fp_c (T + view * fp_dist_);                 // far plane center
   Eigen::Vector3f fp_tl (fp_c + (up * fp_h / 2) - (right * fp_w / 2));  // Top left corner of the far plane

@@ -65,7 +65,7 @@ namespace pcl
       void setOpacity (double opacity) { SetOpacity (opacity); };
       unsigned char colors[3];
       double opacity;
-      std::vector<float> params;
+      std::vector<double> params;
     };
 
     /** Struct PCLContextImageItem a specification of vtkContextItem, used to add an image to the
@@ -80,9 +80,9 @@ namespace pcl
 
       static PCLContextImageItem *New ();
       virtual bool Paint (vtkContext2D *painter);
-      void set (float _x, float _y, vtkImageData *_image);
+      void set (double _x, double _y, vtkImageData *_image);
       vtkSmartPointer<vtkImageData> image;
-      float x, y;
+      double x, y;
     };
 
     namespace context_items
@@ -92,7 +92,7 @@ namespace pcl
         vtkTypeMacro (Point, PCLContextItem);
         static Point *New();
         virtual bool Paint (vtkContext2D *painter);
-        virtual void set (float _x, float _y);
+        virtual void set (double _x, double _y);
       };
 
       struct PCL_EXPORTS Line : public PCLContextItem
@@ -100,7 +100,7 @@ namespace pcl
         vtkTypeMacro (Line, PCLContextItem);
         static Line *New();
         virtual bool Paint (vtkContext2D *painter);
-        virtual void set (float _x_1, float _y_1, float _x_2, float _y_2);
+        virtual void set (double _x_1, double _y_1, double _x_2, double _y_2);
       };
 
       struct PCL_EXPORTS Circle : public PCLContextItem
@@ -108,7 +108,7 @@ namespace pcl
         vtkTypeMacro (Circle, PCLContextItem);
         static Circle *New();
         virtual bool Paint (vtkContext2D *painter);
-        virtual void set (float _x, float _y, float _r);
+        virtual void set (double _x, double _y, double _r);
       };
 
       struct PCL_EXPORTS Disk : public Circle
@@ -123,7 +123,7 @@ namespace pcl
         vtkTypeMacro (Rectangle, Point);
         static Rectangle *New();
         virtual bool Paint (vtkContext2D *painter);
-        virtual void set (float _x, float _y, float _w, float _h);
+        virtual void set (double _x, double _y, double _w, double _h);
       };
 
       struct PCL_EXPORTS FilledRectangle : public Rectangle
@@ -138,7 +138,7 @@ namespace pcl
         vtkTypeMacro (Points, PCLContextItem);
         static Points *New();
         virtual bool Paint (vtkContext2D *painter);
-        void set (const std::vector<float>& _xy)  { params = _xy; }
+        void set (const std::vector<double>& _xy)  { params = _xy; }
       };
 
       struct PCL_EXPORTS Polygon : public Points
@@ -153,7 +153,7 @@ namespace pcl
         vtkTypeMacro (Text, PCLContextItem);
         static Text *New ();
         virtual bool Paint (vtkContext2D *painter);
-        virtual void set (float x, float y, const std::string& _text);
+        virtual void set (double x, double y, const std::string& _text);
         std::string text;
       };
 
@@ -162,10 +162,10 @@ namespace pcl
         vtkTypeMacro (Markers, Points);
         static Markers *New ();
         virtual bool Paint (vtkContext2D *painter);
-        void setSize (float _size) { size = _size; }
+        void setSize (double _size) { size = _size; }
         void setPointColors (unsigned char r, unsigned char g, unsigned char b);
         void setPointColors (unsigned char rgb[3]);
-        float size;
+        double size;
         unsigned char point_colors[3];
       };
     }

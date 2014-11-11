@@ -68,7 +68,7 @@ namespace pcl
         std::string filename_pose = "KinFuSnapshots/";
 
         // Get Pose
-        Eigen::Matrix<float, 3, 3, Eigen::RowMajor> erreMats = camPose.linear ();
+        Eigen::Matrix<double, 3, 3, Eigen::RowMajor> erreMats = camPose.linear ();
                     Eigen::Vector3f teVecs = camPose.translation ();
 
                     // Create filenames
@@ -87,7 +87,7 @@ namespace pcl
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       
       void
-      ScreenshotManager::setCameraIntrinsics (float focal, float height, float width)
+      ScreenshotManager::setCameraIntrinsics (double focal, double height, double width)
       {
         focal_ = focal;
         height_ = height;
@@ -97,7 +97,7 @@ namespace pcl
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       
       void 
-      ScreenshotManager::writePose(const std::string &filename_pose, const Eigen::Vector3f &teVecs, const Eigen::Matrix<float, 3, 3, Eigen::RowMajor> &erreMats)
+      ScreenshotManager::writePose(const std::string &filename_pose, const Eigen::Vector3f &teVecs, const Eigen::Matrix<double, 3, 3, Eigen::RowMajor> &erreMats)
       {
           std::ofstream poseFile;
           poseFile.open (filename_pose.c_str());

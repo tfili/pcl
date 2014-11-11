@@ -88,7 +88,7 @@ namespace pcl
     PCL_EXPORTS int
     cullFrustum (double planes[24], const Eigen::Vector3d &min_bb, const Eigen::Vector3d &max_bb);
 
-    PCL_EXPORTS float
+    PCL_EXPORTS double
     viewScreenArea (const Eigen::Vector3d &eye, const Eigen::Vector3d &min_bb, const Eigen::Vector3d &max_bb, const Eigen::Matrix4d &view_projection_matrix, int width, int height);
 
     enum RenderingProperties

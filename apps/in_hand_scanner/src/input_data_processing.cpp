@@ -109,14 +109,14 @@ pcl::ihs::InputDataProcessing::segment (const CloudXYZRGBAConstPtr& cloud_in,
   MatrixXb hsv_mask (height, width);
 
   // cm -> m for the comparison
-  const float x_min = .01f * x_min_;
-  const float x_max = .01f * x_max_;
-  const float y_min = .01f * y_min_;
-  const float y_max = .01f * y_max_;
-  const float z_min = .01f * z_min_;
-  const float z_max = .01f * z_max_;
+  const double x_min = .01f * x_min_;
+  const double x_max = .01f * x_max_;
+  const double y_min = .01f * y_min_;
+  const double y_max = .01f * y_max_;
+  const double z_min = .01f * z_min_;
+  const double z_max = .01f * z_max_;
 
-  float h, s, v;
+  double h, s, v;
   for (MatrixXb::Index r=0; r<xyz_mask.rows (); ++r)
   {
     for (MatrixXb::Index c=0; c<xyz_mask.cols (); ++c)
@@ -179,7 +179,7 @@ pcl::ihs::InputDataProcessing::segment (const CloudXYZRGBAConstPtr& cloud_in,
           pt_discarded.getVector4fMap ()       = xyzrgb.getVector4fMap ();
           pt_discarded.getNormalVector4fMap () = normal.getNormalVector4fMap ();
 
-          pt_out.x = std::numeric_limits <float>::quiet_NaN ();
+          pt_out.x = std::numeric_limits <double>::quiet_NaN ();
         }
         else
         {
@@ -187,13 +187,13 @@ pcl::ihs::InputDataProcessing::segment (const CloudXYZRGBAConstPtr& cloud_in,
           pt_out.getNormalVector4fMap () = normal.getNormalVector4fMap ();
           pt_out.rgba                    = xyzrgb.rgba;
 
-          pt_discarded.x = std::numeric_limits <float>::quiet_NaN ();
+          pt_discarded.x = std::numeric_limits <double>::quiet_NaN ();
         }
       }
       else
       {
-        pt_out.x       = std::numeric_limits <float>::quiet_NaN ();
-        pt_discarded.x = std::numeric_limits <float>::quiet_NaN ();
+        pt_out.x       = std::numeric_limits <double>::quiet_NaN ();
+        pt_discarded.x = std::numeric_limits <double>::quiet_NaN ();
       }
 
       cloud_out->push_back       (pt_out);
@@ -239,8 +239,8 @@ pcl::ihs::InputDataProcessing::calculateNormals (const CloudXYZRGBAConstPtr& clo
   CloudXYZRGBNormal::iterator  it_out = cloud_out->begin ();
 
   PointXYZRGBNormal invalid_pt;
-  invalid_pt.x        = invalid_pt.y        = invalid_pt.z        = std::numeric_limits <float>::quiet_NaN ();
-  invalid_pt.normal_x = invalid_pt.normal_y = invalid_pt.normal_z = std::numeric_limits <float>::quiet_NaN ();
+  invalid_pt.x        = invalid_pt.y        = invalid_pt.z        = std::numeric_limits <double>::quiet_NaN ();
+  invalid_pt.normal_x = invalid_pt.normal_y = invalid_pt.normal_z = std::numeric_limits <double>::quiet_NaN ();
   invalid_pt.data   [3] = 1.f;
   invalid_pt.data_n [3] = 0.f;
 
@@ -324,14 +324,14 @@ void
 pcl::ihs::InputDataProcessing::RGBToHSV (const unsigned char r,
                                          const unsigned char g,
                                          const unsigned char b,
-                                         float&              h,
-                                         float&              s,
-                                         float&              v) const
+                                         double&              h,
+                                         double&              s,
+                                         double&              v) const
 {
   const unsigned char max = std::max (r, std::max (g, b));
   const unsigned char min = std::min (r, std::min (g, b));
 
-  v = static_cast <float> (max) / 255.f;
+  v = static_cast <double> (max) / 255.f;
 
   if (max == 0) // division by zero
   {
@@ -340,8 +340,8 @@ pcl::ihs::InputDataProcessing::RGBToHSV (const unsigned char r,
     return;
   }
 
-  const float diff = static_cast <float> (max - min);
-  s = diff / static_cast <float> (max);
+  const double diff = static_cast <double> (max - min);
+  s = diff / static_cast <double> (max);
 
   if (min == max) // diff == 0 -> division by zero
   {
@@ -349,9 +349,9 @@ pcl::ihs::InputDataProcessing::RGBToHSV (const unsigned char r,
     return;
   }
 
-  if      (max == r) h = 60.f * (      static_cast <float> (g - b) / diff);
-  else if (max == g) h = 60.f * (2.f + static_cast <float> (b - r) / diff);
-  else               h = 60.f * (4.f + static_cast <float> (r - g) / diff); // max == b
+  if      (max == r) h = 60.f * (      static_cast <double> (g - b) / diff);
+  else if (max == g) h = 60.f * (2.f + static_cast <double> (b - r) / diff);
+  else               h = 60.f * (4.f + static_cast <double> (r - g) / diff); // max == b
 
   if (h < 0.f) h += 360.f;
 }

@@ -71,7 +71,7 @@ pcl::SampleConsensusModelSphere<PointT>::computeModelCoefficients (
     temp (i, 2) = input_->points[samples[i]].z;
     temp (i, 3) = 1;
   }
-  float m11 = temp.determinant ();
+  double m11 = temp.determinant ();
   if (m11 == 0)
     return (false);             // the points don't define a sphere!
 
@@ -79,21 +79,21 @@ pcl::SampleConsensusModelSphere<PointT>::computeModelCoefficients (
     temp (i, 0) = (input_->points[samples[i]].x) * (input_->points[samples[i]].x) +
                   (input_->points[samples[i]].y) * (input_->points[samples[i]].y) +
                   (input_->points[samples[i]].z) * (input_->points[samples[i]].z);
-  float m12 = temp.determinant ();
+  double m12 = temp.determinant ();
 
   for (int i = 0; i < 4; ++i)
   {
     temp (i, 1) = temp (i, 0);
     temp (i, 0) = input_->points[samples[i]].x;
   }
-  float m13 = temp.determinant ();
+  double m13 = temp.determinant ();
 
   for (int i = 0; i < 4; ++i)
   {
     temp (i, 2) = temp (i, 1);
     temp (i, 1) = input_->points[samples[i]].y;
   }
-  float m14 = temp.determinant ();
+  double m14 = temp.determinant ();
 
   for (int i = 0; i < 4; ++i)
   {
@@ -102,7 +102,7 @@ pcl::SampleConsensusModelSphere<PointT>::computeModelCoefficients (
     temp (i, 2) = input_->points[samples[i]].y;
     temp (i, 3) = input_->points[samples[i]].z;
   }
-  float m15 = temp.determinant ();
+  double m15 = temp.determinant ();
 
   // Center (x , y, z)
   model_coefficients.resize (4);
@@ -246,7 +246,7 @@ pcl::SampleConsensusModelSphere<PointT>::optimizeModelCoefficients (
 
   OptimizationFunctor functor (static_cast<int> (inliers.size ()), this);
   Eigen::NumericalDiff<OptimizationFunctor> num_diff (functor);
-  Eigen::LevenbergMarquardt<Eigen::NumericalDiff<OptimizationFunctor>, float> lm (num_diff);
+  Eigen::LevenbergMarquardt<Eigen::NumericalDiff<OptimizationFunctor>, double> lm (num_diff);
   int info = lm.minimize (optimized_coefficients);
 
   // Compute the L2 norm of the residuals

@@ -61,7 +61,7 @@ pcl::MedianFilter<PointT>::applyFilter (PointCloud &output)
     for (int x = 0; x < width; ++x)
       if (pcl::isFinite ((*input_)(x, y)))
       {
-        std::vector<float> vals;
+        std::vector<double> vals;
         vals.reserve (window_size_ * window_size_);
         // Fill in the vector of values with the depths around the interest point
         for (int y_dev = -window_size_/2; y_dev <= window_size_/2; ++y_dev)
@@ -78,7 +78,7 @@ pcl::MedianFilter<PointT>::applyFilter (PointCloud &output)
 
         // The output depth will be the median of all the depths in the window
         partial_sort (vals.begin (), vals.begin () + vals.size () / 2 + 1, vals.end ());
-        float new_depth = vals[vals.size () / 2];
+        double new_depth = vals[vals.size () / 2];
         // Do not allow points to move more than the set max_allowed_movement_
         if (fabs (new_depth - (*input_)(x, y).z) < max_allowed_movement_)
           output (x, y).z = new_depth;

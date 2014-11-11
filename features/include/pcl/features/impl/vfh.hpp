@@ -121,13 +121,13 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (con
   }
 
   // Factorization constant
-  float hist_incr;
+  double hist_incr;
   if (normalize_bins_)
-    hist_incr = 100.0f / static_cast<float> (indices.size () - 1);
+    hist_incr = 100.0f / static_cast<double> (indices.size () - 1);
   else
     hist_incr = 1.0f;
 
-  float hist_incr_size_component;
+  double hist_incr_size_component;
   if (size_component_)
     hist_incr_size_component = hist_incr;
   else
@@ -221,7 +221,7 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
         cp++;
       }
     }
-    normal_centroid /= static_cast<float> (cp);
+    normal_centroid /= static_cast<double> (cp);
   }
 
   // Compute the direction of view from the viewpoint to the centroid
@@ -275,7 +275,7 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
     if (fi > (static_cast<int> (hist_vp_.size ()) - 1))
       fi = static_cast<int> (hist_vp_.size ()) - 1;
     // Bin into the histogram
-    hist_vp_ [fi] += static_cast<float> (hist_incr);
+    hist_vp_ [fi] += static_cast<double> (hist_incr);
   }
   data_size += hist_f4_.size ();
   // Copy the resultant signature

@@ -73,7 +73,7 @@ namespace pcl
 
             PointCloud<Normal>::Ptr normals;
             PointCloud<Normal>::Ptr normals_surface;
-            float radius;
+            double radius;
 
             std::vector< std::vector<int> > neighbors_all;
             std::vector<int> sizes;
@@ -88,7 +88,7 @@ namespace pcl
 
                 PointXYZ minp, maxp;
                 pcl::getMinMax3D(*cloud, minp, maxp);
-                float sz = (maxp.x - minp.x + maxp.y - minp.y + maxp.z - minp.z) / 3;
+                double sz = (maxp.x - minp.x + maxp.y - minp.y + maxp.z - minp.z) / 3;
                 radius = sz / 15;
             }
 
@@ -132,7 +132,7 @@ namespace pcl
                 
                 size_t cloud_size = cloud->points.size();
 
-                std::vector<float> dists;
+                std::vector<double> dists;
                 neighbors_all.resize(cloud_size);
                 for(size_t i = 0; i < cloud_size; ++i)
                 {
@@ -142,7 +142,7 @@ namespace pcl
                 max_nn_size = *max_element(sizes.begin(), sizes.end());
             }
 
-            void findRadiusNeghbors(float radius = -1)
+            void findRadiusNeghbors(double radius = -1)
             {
                 radius = radius == -1 ? this->radius : radius;
 
@@ -151,7 +151,7 @@ namespace pcl
                 
                 size_t cloud_size = cloud->points.size();
 
-                std::vector<float> dists;
+                std::vector<double> dists;
                 neighbors_all.resize(cloud_size);
                 for(size_t i = 0; i < cloud_size; ++i)
                 {

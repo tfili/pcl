@@ -95,7 +95,7 @@ namespace pcl
                 virtual~ Data (){}
 
                 inline void
-                addToPoint (float x, float y, float z)
+                addToPoint (double x, double y, double z)
                 {
                   p_[0] += x; p_[1] += y; p_[2] += z;
                   ++num_points_;
@@ -107,23 +107,23 @@ namespace pcl
                   if ( num_points_ < 2 )
                     return;
 
-                  aux::mult3 (p_, 1.0f/static_cast<float> (num_points_));
+                  aux::mult3 (p_, 1.0f/static_cast<double> (num_points_));
                   num_points_ = 1;
                 }
 
                 inline void
-                addToNormal (float x, float y, float z) { n_[0] += x; n_[1] += y; n_[2] += z;}
+                addToNormal (double x, double y, double z) { n_[0] += x; n_[1] += y; n_[2] += z;}
 
-                inline const float*
+                inline const double*
                 getPoint () const { return p_;}
 
-                inline float*
+                inline double*
                 getPoint (){ return p_;}
 
-                inline const float*
+                inline const double*
                 getNormal () const { return n_;}
 
-                inline float*
+                inline double*
                 getNormal (){ return n_;}
 
                 inline void
@@ -159,7 +159,7 @@ namespace pcl
                 getNeighbors () const { return (neighbors_);}
 
               protected:
-                float n_[3], p_[3];
+                double n_[3], p_[3];
                 int id_x_, id_y_, id_z_, lin_id_, num_points_;
                 std::set<Node*> neighbors_;
                 void *user_data_;
@@ -178,10 +178,10 @@ namespace pcl
             }
 
             inline void
-            setCenter(const float *c) { center_[0] = c[0]; center_[1] = c[1]; center_[2] = c[2];}
+            setCenter(const double *c) { center_[0] = c[0]; center_[1] = c[1]; center_[2] = c[2];}
 
             inline void
-            setBounds(const float *b) { bounds_[0] = b[0]; bounds_[1] = b[1]; bounds_[2] = b[2]; bounds_[3] = b[3]; bounds_[4] = b[4]; bounds_[5] = b[5];}
+            setBounds(const double *b) { bounds_[0] = b[0]; bounds_[1] = b[1]; bounds_[2] = b[2]; bounds_[3] = b[3]; bounds_[4] = b[4]; bounds_[5] = b[5];}
 
             inline void
             setParent(Node* parent) { parent_ = parent;}
@@ -193,20 +193,20 @@ namespace pcl
             inline void
             computeRadius()
             {
-              float v[3] = {0.5f*(bounds_[1]-bounds_[0]), 0.5f*(bounds_[3]-bounds_[2]), 0.5f*(bounds_[5]-bounds_[4])};
-              radius_ = static_cast<float> (aux::length3 (v));
+              double v[3] = {0.5f*(bounds_[1]-bounds_[0]), 0.5f*(bounds_[3]-bounds_[2]), 0.5f*(bounds_[5]-bounds_[4])};
+              radius_ = static_cast<double> (aux::length3 (v));
             }
 
-            inline const float*
+            inline const double*
             getCenter() const { return center_;}
 
-            inline const float*
+            inline const double*
             getBounds() const { return bounds_;}
 
             inline void
-            getBounds(float b[6]) const
+            getBounds(double b[6]) const
             {
-              memcpy (b, bounds_, 6*sizeof (float));
+              memcpy (b, bounds_, 6*sizeof (double));
             }
 
             inline Node*
@@ -234,7 +234,7 @@ namespace pcl
             hasChildren (){ return static_cast<bool> (children_);}
 
             /** \brief Computes the "radius" of the node which is half the diagonal length. */
-            inline float
+            inline double
             getRadius (){ return radius_;}
 
             bool
@@ -274,7 +274,7 @@ namespace pcl
 
           protected:
             Node::Data *data_;
-            float center_[3], bounds_[6], radius_;
+            double center_[3], bounds_[6], radius_;
             Node *parent_, *children_;
         };
 
@@ -289,19 +289,19 @@ namespace pcl
           * by enlarging the bounds by that factor. For example, enlarge_bounds = 1 means that the
           * bounds will be enlarged by 100%. The default value is fine. */
         void
-        build (const PointCloudIn& points, float voxel_size, const PointCloudN* normals = NULL, float enlarge_bounds = 0.00001f);
+        build (const PointCloudIn& points, double voxel_size, const PointCloudN* normals = NULL, double enlarge_bounds = 0.00001f);
 
         /** \brief Creates an empty octree with bounds at least as large as the ones provided as input and with leaf
           * size equal to 'voxel_size'. */
         void
-        build (const float* bounds, float voxel_size);
+        build (const double* bounds, double voxel_size);
 
         /** \brief Creates the leaf containing p = (x, y, z) and returns a pointer to it, however, only if p lies within
           * the octree bounds! A more general version which allows p to be out of bounds is not implemented yet. The method
           * returns NULL if p is not within the root bounds. If the leaf containing p already exists nothing happens and
           * method just returns a pointer to the leaf. */
         inline ORROctree::Node*
-        createLeaf (float x, float y, float z)
+        createLeaf (double x, double y, double z)
         {
           // Make sure that the input point is within the octree bounds
           if ( x < bounds_[0] || x > bounds_[1] ||
@@ -312,7 +312,7 @@ namespace pcl
           }
 
           ORROctree::Node* node = root_;
-          const float *c;
+          const double *c;
           int id;
 
           // Go down to the right leaf
@@ -352,29 +352,29 @@ namespace pcl
     	  * its faster than checking all leaf corners and sides), so we report more leaves than we should,
     	  * but still, this is a fair approximation. */
         void
-        getFullLeavesIntersectedBySphere (const float* p, float radius, std::list<ORROctree::Node*>& out) const;
+        getFullLeavesIntersectedBySphere (const double* p, double radius, std::list<ORROctree::Node*>& out) const;
 
         /** \brief Randomly chooses and returns a full leaf that is intersected by the sphere with center 'p'
           * and 'radius'. Returns NULL if no leaf is intersected by that sphere. */
         ORROctree::Node*
-        getRandomFullLeafOnSphere (const float* p, float radius) const;
+        getRandomFullLeafOnSphere (const double* p, double radius) const;
 
         /** \brief Since the leaves are aligned in a rectilinear grid, each leaf has a unique id. The method returns the leaf
           * with id [i, j, k] or NULL is no such leaf exists. */
         ORROctree::Node*
         getLeaf (int i, int j, int k)
         {
-          float offset = 0.5f*voxel_size_;
-          float p[3] = {bounds_[0] + offset + static_cast<float> (i)*voxel_size_,
-                        bounds_[2] + offset + static_cast<float> (j)*voxel_size_,
-                        bounds_[4] + offset + static_cast<float> (k)*voxel_size_};
+          double offset = 0.5f*voxel_size_;
+          double p[3] = {bounds_[0] + offset + static_cast<double> (i)*voxel_size_,
+                        bounds_[2] + offset + static_cast<double> (j)*voxel_size_,
+                        bounds_[4] + offset + static_cast<double> (k)*voxel_size_};
 
           return (this->getLeaf (p[0], p[1], p[2]));
         }
 
         /** \brief Returns a pointer to the leaf containing p = (x, y, z) or NULL if no such leaf exists. */
         inline ORROctree::Node*
-        getLeaf (float x, float y, float z)
+        getLeaf (double x, double y, double z)
         {
           // Make sure that the input point is within the octree bounds
           if ( x < bounds_[0] || x > bounds_[1] ||
@@ -385,7 +385,7 @@ namespace pcl
           }
 
           ORROctree::Node* node = root_;
-          const float *c;
+          const double *c;
           int id;
 
           // Go down to the right leaf
@@ -427,26 +427,26 @@ namespace pcl
         inline ORROctree::Node*
         getRoot (){ return root_;}
 
-        inline const float*
+        inline const double*
         getBounds () const
         {
           return (bounds_);
         }
 
         inline void
-        getBounds (float b[6]) const
+        getBounds (double b[6]) const
         {
-          memcpy (b, bounds_, 6*sizeof (float));
+          memcpy (b, bounds_, 6*sizeof (double));
         }
 
-        inline float
+        inline double
         getVoxelSize () const { return voxel_size_;}
 
         inline void
         insertNeighbors (Node* node)
         {
-          const float* c = node->getCenter ();
-          float s = 0.5f*voxel_size_;
+          const double* c = node->getCenter ();
+          double s = 0.5f*voxel_size_;
           Node *neigh;
 
           neigh = this->getLeaf (c[0]+s, c[1]+s, c[2]+s); if ( neigh ) node->makeNeighbors (neigh);
@@ -481,7 +481,7 @@ namespace pcl
         }
 
       protected:
-        float voxel_size_, bounds_[6];
+        double voxel_size_, bounds_[6];
         int tree_levels_;
         Node* root_;
         std::vector<Node*> full_leaves_;

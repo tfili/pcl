@@ -9,7 +9,7 @@
 
 /* Use a PassThrough filter to remove points with depth values that are too large or too small */
 PointCloudPtr
-thresholdDepth (const PointCloudPtr & input, float min_depth, float max_depth)
+thresholdDepth (const PointCloudPtr & input, double min_depth, double max_depth)
 {
   pcl::PassThrough<PointT> pass_through;
   pass_through.setInputCloud (input);
@@ -23,7 +23,7 @@ thresholdDepth (const PointCloudPtr & input, float min_depth, float max_depth)
 
 /* Use a VoxelGrid filter to reduce the number of points */
 PointCloudPtr
-downsample (const PointCloudPtr & input, float leaf_size)
+downsample (const PointCloudPtr & input, double leaf_size)
 {
   pcl::VoxelGrid<PointT> voxel_grid;
   voxel_grid.setInputCloud (input);
@@ -36,7 +36,7 @@ downsample (const PointCloudPtr & input, float leaf_size)
 
 /* Use a RadiusOutlierRemoval filter to remove all points with too few local neighbors */
 PointCloudPtr
-removeOutliers (const PointCloudPtr & input, float radius, int min_neighbors)
+removeOutliers (const PointCloudPtr & input, double radius, int min_neighbors)
 {
   pcl::RadiusOutlierRemoval<pcl::PointXYZRGB> radius_outlier_removal;
   radius_outlier_removal.setInputCloud (input);
@@ -50,8 +50,8 @@ removeOutliers (const PointCloudPtr & input, float radius, int min_neighbors)
 
 /* Apply a series of filters (threshold depth, downsample, and remove outliers) */
 PointCloudPtr
-applyFilters (const PointCloudPtr & input, float min_depth, float max_depth, float leaf_size, float radius, 
-              float min_neighbors)
+applyFilters (const PointCloudPtr & input, double min_depth, double max_depth, double leaf_size, double radius, 
+              double min_neighbors)
 {
   PointCloudPtr filtered;
   filtered = thresholdDepth (input, min_depth, max_depth);

@@ -288,8 +288,8 @@ namespace pcl
         * \param[in] precision the specified output numeric stream precision (default: 8)
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -333,8 +333,8 @@ namespace pcl
         * PCD format, false (default) for ASCII
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -362,8 +362,8 @@ namespace pcl
         * \param[in] orientation the sensor acquisition orientation
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -432,8 +432,8 @@ namespace pcl
         * PCD format, false (default) for ASCII
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -457,8 +457,8 @@ namespace pcl
         * PCD format, false (default) for ASCII
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -552,8 +552,8 @@ namespace pcl
       * \param[in] binary_mode true for binary mode, false (default) for ASCII
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.
@@ -576,8 +576,8 @@ namespace pcl
       * \param[in] binary_mode true for binary mode, false (default) for ASCII
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.
@@ -599,8 +599,8 @@ namespace pcl
       * \param[in] cloud the point cloud data message
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.
@@ -639,8 +639,8 @@ namespace pcl
       * \param[in] binary_mode true for binary mode, false (default) for ASCII
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.

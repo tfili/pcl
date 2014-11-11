@@ -51,14 +51,14 @@ struct EIGEN_ALIGN16 PointIntensity
   {
     struct
     {
-      float intensity;
+      double intensity;
     };
-    float data[4];
+    double data[4];
   };
 };
 
 POINT_CLOUD_REGISTER_POINT_STRUCT(
     PointIntensity,
-    (float, intensity, intensity) )
+    (double, intensity, intensity) )
 
 #endif

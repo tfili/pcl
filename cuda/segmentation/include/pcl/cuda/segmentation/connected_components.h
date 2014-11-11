@@ -54,7 +54,7 @@ namespace pcl
     void markInliers (const typename PointCloudAOS<Storage>::ConstPtr &input, typename Storage<int>::type &region_mask, std::vector<boost::shared_ptr<typename Storage<int>::type> > inlier_stencils);
 
     template <template <typename> class Storage>
-    std::vector<typename Storage<int>::type> createRegionStencils (typename Storage<int>::type &parent, typename Storage<int>::type &rank, typename Storage<int>::type &size, int min_size, float percentage);
+    std::vector<typename Storage<int>::type> createRegionStencils (typename Storage<int>::type &parent, typename Storage<int>::type &rank, typename Storage<int>::type &size, int min_size, double percentage);
     
   } // namespace
 } // namespace

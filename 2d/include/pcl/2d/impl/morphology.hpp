@@ -171,7 +171,7 @@ pcl::Morphology<PointT>::erosionGray (pcl::PointCloud<PointT> &output)
   const int width = input_->width;
   const int kernel_height = structuring_element_->height;
   const int kernel_width = structuring_element_->width;
-  float min;
+  double min;
   output.resize (width * height);
   output.width = width;
   output.height = height;
@@ -214,7 +214,7 @@ pcl::Morphology<PointT>::dilationGray (pcl::PointCloud<PointT> &output)
   const int width = input_->width;
   const int kernel_height = structuring_element_->height;
   const int kernel_width = structuring_element_->width;
-  float max;
+  double max;
 
   output.resize (width * height);
   output.width = width;

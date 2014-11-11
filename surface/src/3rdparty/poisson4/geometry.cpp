@@ -43,7 +43,7 @@ namespace pcl
     /////////////////////////
     CoredVectorMeshData::CoredVectorMeshData( void ) { oocPointIndex = polygonIndex = 0; }
     void CoredVectorMeshData::resetIterator ( void ) { oocPointIndex = polygonIndex = 0; }
-    int CoredVectorMeshData::addOutOfCorePoint(const Point3D<float>& p){
+    int CoredVectorMeshData::addOutOfCorePoint(const Point3D<double>& p){
       oocPoints.push_back(p);
       return int(oocPoints.size())-1;
     }
@@ -56,7 +56,7 @@ namespace pcl
       polygons.push_back( polygon );
       return int( polygons.size() )-1;
     }
-    int CoredVectorMeshData::nextOutOfCorePoint(Point3D<float>& p){
+    int CoredVectorMeshData::nextOutOfCorePoint(Point3D<double>& p){
       if(oocPointIndex<int(oocPoints.size())){
         p=oocPoints[oocPointIndex++];
         return 1;

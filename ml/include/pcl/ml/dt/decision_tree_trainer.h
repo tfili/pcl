@@ -153,7 +153,7 @@ namespace pcl
         * \param[in] thres The threshold values.
         */
       void
-      setThresholds (std::vector<float> & thres)
+      setThresholds (std::vector<double> & thres)
       {
         thresholds_ = thres;
       }
@@ -205,8 +205,8 @@ namespace pcl
         */
       static void
       createThresholdsUniform (const size_t num_of_thresholds,
-                               std::vector<float> & values,
-                               std::vector<float> & thresholds);
+                               std::vector<double> & values,
+                               std::vector<double> & thresholds);
 
     private:
 
@@ -232,7 +232,7 @@ namespace pcl
       /** \brief Minimum number of examples to split a node. */
       size_t min_examples_for_split_;
       /** \brief Thresholds to be used instead of generating uniform distributed thresholds. */
-      std::vector<float> thresholds_;
+      std::vector<double> thresholds_;
       /** \brief The data provider which is called before training a specific tree, if pointer is NULL, then data_set_ is used. */
       boost::shared_ptr<pcl::DecisionTreeTrainerDataProvider<FeatureType, DataSet, LabelType, ExampleIndex, NodeType> > decision_tree_trainer_data_provider_;
       /** \brief If true, random features are generated at each node, otherwise, at start of training the tree */

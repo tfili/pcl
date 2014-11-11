@@ -60,7 +60,7 @@ namespace pcl
       typedef pcl::search::Search<PointT> CloudKdTree;
       typedef typename pcl::search::Search<PointT>::Ptr CloudKdTreePtr;
 
-      SurfelSmoothing (float a_scale = 0.01)
+      SurfelSmoothing (double a_scale = 0.01)
         : PCLBase<PointT> ()
         , scale_ (a_scale)
         , scale_squared_ (a_scale * a_scale)
@@ -80,7 +80,7 @@ namespace pcl
       bool
       initCompute ();
 
-      float
+      double
       smoothCloudIteration (PointCloudInPtr &output_positions,
                             NormalCloudPtr &output_normals);
 
@@ -100,7 +100,7 @@ namespace pcl
                                            boost::shared_ptr<std::vector<int> > &output_features);
 
     private:
-      float scale_, scale_squared_;
+      double scale_, scale_squared_;
       NormalCloudPtr normals_;
 
       PointCloudInPtr interm_cloud_;

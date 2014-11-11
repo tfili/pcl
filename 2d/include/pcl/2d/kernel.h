@@ -68,7 +68,7 @@ namespace pcl
       };
 
       int kernel_size_;
-      float sigma_;
+      double sigma_;
       KERNEL_ENUM kernel_type_;
 
       kernel () :
@@ -235,7 +235,7 @@ namespace pcl
        *
        * Setter function for kernel_sigma_
        */
-      void setKernelSigma (float kernel_sigma);
+      void setKernelSigma (double kernel_sigma);
   };
 }
 

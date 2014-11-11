@@ -65,8 +65,8 @@ pcl::SamplingSurfaceNormal<PointT>::applyFilter (PointCloud &output)
 template<typename PointT> void 
 pcl::SamplingSurfaceNormal<PointT>::findXYZMaxMin (const PointCloud& cloud, Vector& max_vec, Vector& min_vec)
 {
-  float maxval = cloud.points[0].x;
-  float minval = cloud.points[0].x;
+  double maxval = cloud.points[0].x;
+  double minval = cloud.points[0].x;
 
   for (unsigned int i = 0; i < cloud.points.size (); i++)
   {
@@ -142,7 +142,7 @@ pcl::SamplingSurfaceNormal<PointT>::partition (
                     indices.begin () + last, CompareDim (cutDim, cloud));
 
 	const int cutIndex (indices[first+leftCount]);
-	const float cutVal = findCutVal (cloud, cutDim, cutIndex);
+	const double cutVal = findCutVal (cloud, cutDim, cutIndex);
 	
 	// update bounds for left
 	Vector leftMaxValues (max_values);
@@ -176,7 +176,7 @@ pcl::SamplingSurfaceNormal<PointT>::samplePartition (
   cloud.height = uint32_t (cloud.points.size ());
 
   Eigen::Vector4f normal;
-  float curvature = 0;
+  double curvature = 0;
   //pcl::computePointNormal<PointT> (cloud, normal, curvature);
 
   computeNormal (cloud, normal, curvature);
@@ -184,7 +184,7 @@ pcl::SamplingSurfaceNormal<PointT>::samplePartition (
   for (unsigned int i = 0; i < cloud.points.size (); i++)
   {
     // TODO: change to Boost random number generators!
-    const float r = float (std::rand ()) / float (RAND_MAX);
+    const double r = double (std::rand ()) / double (RAND_MAX);
 
     if (r < ratio_)
     {
@@ -201,17 +201,17 @@ pcl::SamplingSurfaceNormal<PointT>::samplePartition (
 
 ///////////////////////////////////////////////////////////////////////////////
 template<typename PointT> void
-pcl::SamplingSurfaceNormal<PointT>::computeNormal (const PointCloud& cloud, Eigen::Vector4f &normal, float& curvature)
+pcl::SamplingSurfaceNormal<PointT>::computeNormal (const PointCloud& cloud, Eigen::Vector4f &normal, double& curvature)
 {
   EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
   Eigen::Vector4f xyz_centroid;
-  float nx = 0.0;
-  float ny = 0.0;
-  float nz = 0.0;
+  double nx = 0.0;
+  double ny = 0.0;
+  double nz = 0.0;
 
   if (computeMeanAndCovarianceMatrix (cloud, covariance_matrix, xyz_centroid) == 0)
   {
-    nx = ny = nz = curvature = std::numeric_limits<float>::quiet_NaN ();
+    nx = ny = nz = curvature = std::numeric_limits<double>::quiet_NaN ();
     return;
   }
 
@@ -233,7 +233,7 @@ pcl::SamplingSurfaceNormal<PointT>::computeMeanAndCovarianceMatrix (const pcl::P
                                                                     Eigen::Vector4f &centroid)
 {
   // create the buffer on the stack which is much faster than using cloud.points[indices[i]] and centroid as a buffer
-  Eigen::Matrix<float, 1, 9, Eigen::RowMajor> accu = Eigen::Matrix<float, 1, 9, Eigen::RowMajor>::Zero ();
+  Eigen::Matrix<double, 1, 9, Eigen::RowMajor> accu = Eigen::Matrix<double, 1, 9, Eigen::RowMajor>::Zero ();
   unsigned int point_count = 0;
   for (unsigned int i = 0; i < cloud.points.size (); i++)
   {
@@ -254,7 +254,7 @@ pcl::SamplingSurfaceNormal<PointT>::computeMeanAndCovarianceMatrix (const pcl::P
     accu [8] += cloud[i].z;
   }
 
-  accu /= static_cast<float> (point_count);
+  accu /= static_cast<double> (point_count);
   centroid[0] = accu[6]; centroid[1] = accu[7]; centroid[2] = accu[8];
   centroid[3] = 0;
   covariance_matrix.coeffRef (0) = accu [0] - accu [6] * accu [6];
@@ -273,7 +273,7 @@ pcl::SamplingSurfaceNormal<PointT>::computeMeanAndCovarianceMatrix (const pcl::P
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::SamplingSurfaceNormal<PointT>::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-                                                          float &nx, float &ny, float &nz, float &curvature)
+                                                          double &nx, double &ny, double &nz, double &curvature)
 {
   // Extract the smallest eigenvalue and its eigenvector
   EIGEN_ALIGN16 Eigen::Vector3f::Scalar eigen_value;
@@ -285,7 +285,7 @@ pcl::SamplingSurfaceNormal<PointT>::solvePlaneParameters (const Eigen::Matrix3f 
   nz = eigen_vector [2];
 
   // Compute the curvature surface change
-  float eig_sum = covariance_matrix.coeff (0) + covariance_matrix.coeff (4) + covariance_matrix.coeff (8);
+  double eig_sum = covariance_matrix.coeff (0) + covariance_matrix.coeff (4) + covariance_matrix.coeff (8);
   if (eig_sum != 0)
     curvature = fabsf (eigen_value / eig_sum);
   else
@@ -293,7 +293,7 @@ pcl::SamplingSurfaceNormal<PointT>::solvePlaneParameters (const Eigen::Matrix3f 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-template <typename PointT> float
+template <typename PointT> double
 pcl::SamplingSurfaceNormal<PointT>::findCutVal (
     const PointCloud& cloud, const int cut_dim, const int cut_index)
 {

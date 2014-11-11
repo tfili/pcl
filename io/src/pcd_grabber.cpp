@@ -59,8 +59,8 @@
 //////////////////////// GrabberImplementation //////////////////////
 struct pcl::PCDGrabberBase::PCDGrabberImpl
 {
-  PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::string& pcd_path, float frames_per_second, bool repeat);
-  PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat);
+  PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::string& pcd_path, double frames_per_second, bool repeat);
+  PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::vector<std::string>& pcd_files, double frames_per_second, bool repeat);
   void trigger ();
   void readAhead ();
   
@@ -85,7 +85,7 @@ struct pcl::PCDGrabberBase::PCDGrabberImpl
   numFrames ();
 
   pcl::PCDGrabberBase& grabber_;
-  float frames_per_second_;
+  double frames_per_second_;
   bool repeat_;
   bool running_;
   std::vector<std::string> pcd_files_;
@@ -116,7 +116,7 @@ struct pcl::PCDGrabberBase::PCDGrabberImpl
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-pcl::PCDGrabberBase::PCDGrabberImpl::PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::string& pcd_path, float frames_per_second, bool repeat)
+pcl::PCDGrabberBase::PCDGrabberImpl::PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::string& pcd_path, double frames_per_second, bool repeat)
   : grabber_ (grabber)
   , frames_per_second_ (frames_per_second)
   , repeat_ (repeat)
@@ -140,7 +140,7 @@ pcl::PCDGrabberBase::PCDGrabberImpl::PCDGrabberImpl (pcl::PCDGrabberBase& grabbe
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-pcl::PCDGrabberBase::PCDGrabberImpl::PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat)
+pcl::PCDGrabberBase::PCDGrabberImpl::PCDGrabberImpl (pcl::PCDGrabberBase& grabber, const std::vector<std::string>& pcd_files, double frames_per_second, bool repeat)
   : grabber_ (grabber)
   , frames_per_second_ (frames_per_second)
   , repeat_ (repeat)
@@ -373,13 +373,13 @@ pcl::PCDGrabberBase::PCDGrabberImpl::numFrames ()
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////// GrabberBase //////////////////////
-pcl::PCDGrabberBase::PCDGrabberBase (const std::string& pcd_path, float frames_per_second, bool repeat)
+pcl::PCDGrabberBase::PCDGrabberBase (const std::string& pcd_path, double frames_per_second, bool repeat)
 : impl_ (new PCDGrabberImpl (*this, pcd_path, frames_per_second, repeat))
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-pcl::PCDGrabberBase::PCDGrabberBase (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat)
+pcl::PCDGrabberBase::PCDGrabberBase (const std::vector<std::string>& pcd_files, double frames_per_second, bool repeat)
 : impl_ (new PCDGrabberImpl (*this, pcd_files, frames_per_second, repeat))
 {
 }
@@ -450,7 +450,7 @@ pcl::PCDGrabberBase::rewind ()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-float 
+double 
 pcl::PCDGrabberBase::getFramesPerSecond () const
 {
   return (impl_->frames_per_second_);

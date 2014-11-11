@@ -98,10 +98,10 @@ TEST (ISM, TrainWithWrongParameters)
 {
   pcl::ism::ImplicitShapeModelEstimation<153, pcl::PointXYZ, pcl::Normal> ism;
 
-  float prev_sampling_size = ism.getSamplingSize ();
+  double prev_sampling_size = ism.getSamplingSize ();
   EXPECT_NE (prev_sampling_size, 0.0);
   ism.setSamplingSize (0.0f);
-  float curr_sampling_size = ism.getSamplingSize ();
+  double curr_sampling_size = ism.getSamplingSize ();
   EXPECT_EQ (curr_sampling_size, prev_sampling_size);
 
   unsigned int prev_number_of_clusters = ism.getNumberOfClusters ();

@@ -308,10 +308,10 @@ ON_Array_aA_plus_B( int dim, double a, const double* A, const double* B, double*
 }
 
 
-float 
-ON_ArrayDotProduct( int dim, const float* A, const float* B )
+double 
+ON_ArrayDotProduct( int dim, const double* A, const double* B )
 {
-  float d = 0.0;
+  double d = 0.0;
   if ( dim > 0 ) {
     while(dim--)
       d += *A++ * *B++;
@@ -321,7 +321,7 @@ ON_ArrayDotProduct( int dim, const float* A, const float* B )
 
 
 void
-ON_ArrayScale( int dim, float s, const float* A, float* sA )
+ON_ArrayScale( int dim, double s, const double* A, double* sA )
 {
   if ( dim > 0 ) {
     while ( dim-- )
@@ -331,7 +331,7 @@ ON_ArrayScale( int dim, float s, const float* A, float* sA )
 
 
 void
-ON_Array_aA_plus_B( int dim, float a, const float* A, const float* B, float* aA_plus_B )
+ON_Array_aA_plus_B( int dim, double a, const double* A, const double* B, double* aA_plus_B )
 {
   if ( dim > 0 ) {
     while ( dim-- )
@@ -1096,7 +1096,7 @@ ON_IsValidPointList(
        int is_rat,
        int count,
        int stride,
-       const float* p
+       const double* p
        )
 {
   return ( dim > 0 && stride >= (is_rat?(dim+1):dim) && count >= 0 && p != NULL ) ? true : false;
@@ -1201,10 +1201,10 @@ ON_ReversePointGrid(
 
 
 bool 
-ON_SwapPointListCoordinates( int count, int stride, float* p,
+ON_SwapPointListCoordinates( int count, int stride, double* p,
                                    int i, int j )
 {
-  float t;
+  double t;
   int k;
   if ( !ON_IsValidPointList(stride,0,count,stride,p) )
     return false;
@@ -1271,7 +1271,7 @@ ON_SwapPointGridCoordinates(
 bool 
 ON_TransformPointList(
                   int dim, int is_rat, int count, 
-                  int stride, float* point,
+                  int stride, double* point,
                   const ON_Xform& xform
                   )
 {
@@ -1291,7 +1291,7 @@ ON_TransformPointList(
       while(count--) {
 				x = xform.m_xform[0][0]*point[0] + xform.m_xform[0][3]*point[1];
 				w = xform.m_xform[3][0]*point[0] + xform.m_xform[3][3]*point[1];
-				point[0] = (float)x; point[1] = (float)w;
+				point[0] = (double)x; point[1] = (double)w;
 				point += stride;
       }
       break;
@@ -1300,7 +1300,7 @@ ON_TransformPointList(
 				x = xform.m_xform[0][0]*point[0] + xform.m_xform[0][1]*point[1] + xform.m_xform[0][3]*point[2];
 				y = xform.m_xform[1][0]*point[0] + xform.m_xform[1][1]*point[1] + xform.m_xform[1][3]*point[2];
 				w = xform.m_xform[3][0]*point[0] + xform.m_xform[3][1]*point[1] + xform.m_xform[3][3]*point[2];
-				point[0] = (float)x; point[1] = (float)y; point[2] = (float)w;
+				point[0] = (double)x; point[1] = (double)y; point[2] = (double)w;
 				point += stride;
       }
       break;
@@ -1310,7 +1310,7 @@ ON_TransformPointList(
 				y = xform.m_xform[1][0]*point[0] + xform.m_xform[1][1]*point[1] + xform.m_xform[1][2]*point[2] + xform.m_xform[1][3]*point[dim];
 				z = xform.m_xform[2][0]*point[0] + xform.m_xform[2][1]*point[1] + xform.m_xform[2][2]*point[2] + xform.m_xform[2][3]*point[dim];
 				w = xform.m_xform[3][0]*point[0] + xform.m_xform[3][1]*point[1] + xform.m_xform[3][2]*point[2] + xform.m_xform[3][3]*point[dim];
-				point[0] = (float)x; point[1] = (float)y; point[2] = (float)z; point[dim] = (float)w;
+				point[0] = (double)x; point[1] = (double)y; point[2] = (double)z; point[dim] = (double)w;
 				point += stride;
       }
       break;
@@ -1328,7 +1328,7 @@ ON_TransformPointList(
         else
 				  w = 1.0/w;
 				x = xform.m_xform[0][0]*point[0] + xform.m_xform[0][3];
-				point[0] = (float)(w*x);
+				point[0] = (double)(w*x);
 				point += stride;
       }
       break;
@@ -1343,7 +1343,7 @@ ON_TransformPointList(
 				  w = 1.0/w;
 				x = xform.m_xform[0][0]*point[0] + xform.m_xform[0][1]*point[1] + xform.m_xform[0][3];
 				y = xform.m_xform[1][0]*point[0] + xform.m_xform[1][1]*point[1] + xform.m_xform[1][3];
-				point[0] = (float)(w*x); point[1] = (float)(w*y);
+				point[0] = (double)(w*x); point[1] = (double)(w*y);
 				point += stride;
       }
       break;
@@ -1359,7 +1359,7 @@ ON_TransformPointList(
 				x = xform.m_xform[0][0]*point[0] + xform.m_xform[0][1]*point[1] + xform.m_xform[0][2]*point[2] + xform.m_xform[0][3];
 				y = xform.m_xform[1][0]*point[0] + xform.m_xform[1][1]*point[1] + xform.m_xform[1][2]*point[2] + xform.m_xform[1][3];
 				z = xform.m_xform[2][0]*point[0] + xform.m_xform[2][1]*point[1] + xform.m_xform[2][2]*point[2] + xform.m_xform[2][3];
-				point[0] = (float)(w*x); point[1] = (float)(w*y); point[2] = (float)(w*z);
+				point[0] = (double)(w*x); point[1] = (double)(w*y); point[2] = (double)(w*z);
 				point += stride;
       }
       break;
@@ -1498,7 +1498,7 @@ ON_TransformPointGrid(
 ON_BOOL32 
 ON_TransformVectorList(
                   int dim, int count, 
-                  int stride, float* vector,
+                  int stride, double* vector,
                   const ON_Xform& xform
                   )
 {
@@ -1516,7 +1516,7 @@ ON_TransformVectorList(
   case 1:
     while(count--) {
 			x = xform.m_xform[0][0]*vector[0];
-			vector[0] = (float)x;
+			vector[0] = (double)x;
 			vector += stride;
     }
     break;
@@ -1524,7 +1524,7 @@ ON_TransformVectorList(
     while(count--) {
 			x = xform.m_xform[0][0]*vector[0] + xform.m_xform[0][1]*vector[1];
 			y = xform.m_xform[1][0]*vector[0] + xform.m_xform[1][1]*vector[1];
-			vector[0] = (float)x; vector[1] = (float)y;
+			vector[0] = (double)x; vector[1] = (double)y;
 			vector += stride;
     }
     break;
@@ -1533,7 +1533,7 @@ ON_TransformVectorList(
 			x = xform.m_xform[0][0]*vector[0] + xform.m_xform[0][1]*vector[1] + xform.m_xform[0][2]*vector[2];
 			y = xform.m_xform[1][0]*vector[0] + xform.m_xform[1][1]*vector[1] + xform.m_xform[1][2]*vector[2];
 			z = xform.m_xform[2][0]*vector[0] + xform.m_xform[2][1]*vector[1] + xform.m_xform[2][2]*vector[2];
-			vector[0] = (float)x; vector[1] = (float)y; vector[2] = (float)z;
+			vector[0] = (double)x; vector[1] = (double)y; vector[2] = (double)z;
 			vector += stride;
     }
     break;
@@ -4378,7 +4378,7 @@ double ON_Max(double a, double b){
 }
 
  
-float ON_Max(float a, float b){
+double ON_Max(double a, double b){
   return (a<b)? b:a;
 }
 
@@ -4393,7 +4393,7 @@ double ON_Min(double a, double b){
 }
 
  
-float ON_Min(float a, float b){
+double ON_Min(double a, double b){
   return (a<b)? a:b;
 }
 

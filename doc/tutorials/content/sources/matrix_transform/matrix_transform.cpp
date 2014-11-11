@@ -75,7 +75,7 @@ main (int argc, char** argv)
   Eigen::Matrix4f transform_1 = Eigen::Matrix4f::Identity();
 
   // Define a rotation matrix (see https://en.wikipedia.org/wiki/Rotation_matrix)
-  float theta = M_PI/4; // The angle of rotation in radians
+  double theta = M_PI/4; // The angle of rotation in radians
   transform_1 (0,0) = cos (theta);
   transform_1 (0,1) = -sin(theta);
   transform_1 (1,0) = sin (theta);

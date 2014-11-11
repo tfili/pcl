@@ -28,7 +28,7 @@
 Eigen::Matrix4f
 computeInitialAlignment (const PointCloudPtr & source_points, const LocalDescriptorsPtr & source_descriptors,
                          const PointCloudPtr & target_points, const LocalDescriptorsPtr & target_descriptors,
-                         float min_sample_distance, float max_correspondence_distance, int nr_iterations)
+                         double min_sample_distance, double max_correspondence_distance, int nr_iterations)
 {
   pcl::SampleConsensusInitialAlignment<PointT, PointT, LocalDescriptorT> sac_ia;
   sac_ia.setMinSampleDistance (min_sample_distance);
@@ -69,8 +69,8 @@ computeInitialAlignment (const PointCloudPtr & source_points, const LocalDescrip
  */
 Eigen::Matrix4f
 refineAlignment (const PointCloudPtr & source_points, const PointCloudPtr & target_points, 
-                 const Eigen::Matrix4f &initial_alignment, float max_correspondence_distance,
-                 float outlier_rejection_threshold, float transformation_epsilon, float max_iterations)
+                 const Eigen::Matrix4f &initial_alignment, double max_correspondence_distance,
+                 double outlier_rejection_threshold, double transformation_epsilon, double max_iterations)
 {
 
   pcl::IterativeClosestPoint<PointT, PointT> icp;

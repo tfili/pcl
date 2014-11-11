@@ -87,9 +87,9 @@ pcl::visualization::PCLPlotter::addFeatureHistogram (
   for (int i = 0; i < hsize; ++i)
   {
     array_x[i] = i;
-    float data;
-    // TODO: replace float with the real data type
-    memcpy (&data, reinterpret_cast<const char*> (&cloud.points[index]) + fields[field_idx].offset + i * sizeof (float), sizeof (float));
+    double data;
+    // TODO: replace double with the real data type
+    memcpy (&data, reinterpret_cast<const char*> (&cloud.points[index]) + fields[field_idx].offset + i * sizeof (double), sizeof (double));
     array_y[i] = data;
   }
   

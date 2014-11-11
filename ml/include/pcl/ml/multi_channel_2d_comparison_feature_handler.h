@@ -97,7 +97,7 @@ namespace pcl
       {
         features[feature_index].p1 = PointXY32i::randomPoint(-feature_window_width_/2, feature_window_width_/2, -feature_window_height_/2, feature_window_height_/2);
         features[feature_index].p2 = PointXY32i::randomPoint(-feature_window_width_/2, feature_window_width_/2, -feature_window_height_/2, feature_window_height_/2);
-        features[feature_index].channel = static_cast<unsigned char>(NUM_OF_CHANNELS*(static_cast<float>(rand()) / (RAND_MAX+1)));
+        features[feature_index].channel = static_cast<unsigned char>(NUM_OF_CHANNELS*(static_cast<double>(rand()) / (RAND_MAX+1)));
       }
     }
 
@@ -113,7 +113,7 @@ namespace pcl
       const MultiChannel2DComparisonFeature<PointXY32i> & feature,
       MultiChannel2DDataSet<DATA_TYPE, NUM_OF_CHANNELS> & data_set,
       std::vector<MultipleData2DExampleIndex> & examples,
-      std::vector<float> & results,
+      std::vector<double> & results,
       std::vector<unsigned char> & flags) const
     {
       results.resize (examples.size ());
@@ -138,7 +138,7 @@ namespace pcl
       const MultiChannel2DComparisonFeature<PointXY32i> & feature,
       MultiChannel2DDataSet<DATA_TYPE, NUM_OF_CHANNELS> & data_set,
       const MultipleData2DExampleIndex & example,
-      float & result,
+      double & result,
       unsigned char & flag) const
     {
       const int center_col_index = example.x;
@@ -152,8 +152,8 @@ namespace pcl
 
       const unsigned char channel = feature.channel;
 
-      const float value1 = static_cast<float> (data_set (example.data_set_id, p1_col, p1_row)[channel]);
-      const float value2 = static_cast<float> (data_set (example.data_set_id, p2_col, p2_row)[channel]);
+      const double value1 = static_cast<double> (data_set (example.data_set_id, p1_col, p1_row)[channel]);
+      const double value2 = static_cast<double> (data_set (example.data_set_id, p2_col, p2_row)[channel]);
 
       result = value1 - value2;
       flag = (pcl_isfinite (value1) && pcl_isfinite (value2)) ? 0 : 1;
@@ -169,7 +169,7 @@ namespace pcl
       std::ostream & stream) const
     {
       stream << "ERROR: RegressionVarianceStatsEstimator does not implement generateCodeForBranchIndex(...)";
-      //stream << "const float value = ( (*dataSet)(dataSetId, centerY+" << feature.p1.y << ", centerX+" << feature.p1.x << ")[" << static_cast<int>(feature.colorChannel) << "]"
+      //stream << "const double value = ( (*dataSet)(dataSetId, centerY+" << feature.p1.y << ", centerX+" << feature.p1.x << ")[" << static_cast<int>(feature.colorChannel) << "]"
       //  << " - " << "(*dataSet)(dataSetId, centerY+" << feature.p2.y << ", centerX+" << feature.p2.x << ")[" << static_cast<int>(feature.colorChannel) << "] );" << ::std::endl;
     }
 
@@ -226,7 +226,7 @@ namespace pcl
       {
         features[feature_index].p1 = PointXY32f::randomPoint(-feature_window_width_/2, feature_window_width_/2, -feature_window_height_/2, feature_window_height_/2);
         features[feature_index].p2 = PointXY32f::randomPoint(-feature_window_width_/2, feature_window_width_/2, -feature_window_height_/2, feature_window_height_/2);
-        features[feature_index].channel = static_cast<unsigned char>(NUM_OF_CHANNELS*(static_cast<float>(rand()) / (RAND_MAX+1)));
+        features[feature_index].channel = static_cast<unsigned char>(NUM_OF_CHANNELS*(static_cast<double>(rand()) / (RAND_MAX+1)));
       }
     }
 
@@ -242,7 +242,7 @@ namespace pcl
       const MultiChannel2DComparisonFeature<PointXY32f> & feature,
       MultiChannel2DDataSet<DATA_TYPE, NUM_OF_CHANNELS> & data_set,
       std::vector<MultipleData2DExampleIndex> & examples,
-      std::vector<float> & results,
+      std::vector<double> & results,
       std::vector<unsigned char> & flags) const
     {
       results.resize (examples.size ());
@@ -267,17 +267,17 @@ namespace pcl
       const MultiChannel2DComparisonFeature<PointXY32f> & feature,
       MultiChannel2DDataSet<DATA_TYPE, NUM_OF_CHANNELS> & data_set,
       const MultipleData2DExampleIndex & example,
-      float & result,
+      double & result,
       unsigned char & flag) const
     {
       const int center_col_index = example.x;
       const int center_row_index = example.y;
 
-      float scale;
+      double scale;
       if (INVERT_SCALE)
-        scale = 1.0f / static_cast<float> (data_set (example.data_set_id, center_col_index, center_row_index)[SCALE_CHANNEL]);
+        scale = 1.0f / static_cast<double> (data_set (example.data_set_id, center_col_index, center_row_index)[SCALE_CHANNEL]);
       else
-        scale = static_cast<float> (data_set (example.data_set_id, center_col_index, center_row_index)[SCALE_CHANNEL]);
+        scale = static_cast<double> (data_set (example.data_set_id, center_col_index, center_row_index)[SCALE_CHANNEL]);
 
 
 
@@ -290,8 +290,8 @@ namespace pcl
 
       const unsigned char channel = feature.channel;
 
-      const float value1 = static_cast<float> (data_set (example.data_set_id, p1_col, p1_row)[channel]);
-      const float value2 = static_cast<float> (data_set (example.data_set_id, p2_col, p2_row)[channel]);
+      const double value1 = static_cast<double> (data_set (example.data_set_id, p1_col, p1_row)[channel]);
+      const double value2 = static_cast<double> (data_set (example.data_set_id, p2_col, p2_row)[channel]);
 
       result = value1 - value2;
       flag = (pcl_isfinite (value1) && pcl_isfinite (value2)) ? 0 : 1;
@@ -311,9 +311,9 @@ namespace pcl
       //pcl::PointXY32f p1 = feature.p1;
       //pcl::PointXY32f p2 = feature.p2;
 
-      //stream << "const float eval_value = data_ptr + " << p1.x << " + " << p1.y << " * width;
+      //stream << "const double eval_value = data_ptr + " << p1.x << " + " << p1.y << " * width;
 
-      //stream << "const float value = ( (*dataSet)(dataSetId, centerY+" << feature.p1.y << ", centerX+" << feature.p1.x << ")[" << static_cast<int>(feature.colorChannel) << "]"
+      //stream << "const double value = ( (*dataSet)(dataSetId, centerY+" << feature.p1.y << ", centerX+" << feature.p1.x << ")[" << static_cast<int>(feature.colorChannel) << "]"
       //  << " - " << "(*dataSet)(dataSetId, centerY+" << feature.p2.y << ", centerX+" << feature.p2.x << ")[" << static_cast<int>(feature.colorChannel) << "] );" << ::std::endl;
     }
 
@@ -351,11 +351,11 @@ namespace pcl
   {
     if (NUM_OF_CHANNELS == 1 && SCALE_CHANNEL == 0 && INVERT_SCALE)
     {
-      stream << "const float scale  = 1.0f / static_cast<float> (*data_ptr);" << std::endl;
+      stream << "const double scale  = 1.0f / static_cast<double> (*data_ptr);" << std::endl;
       stream << "" << std::endl;
       stream << "struct LocalFeatureHandler" << std::endl;
       stream << "{" << std::endl;
-      stream << "  static inline void eval (" << typeid (DATA_TYPE).name () << " * a_ptr, const float a_x1, const float a_y1, const float a_x2, const float a_y2, const float a_scale, const int a_width, float & a_result, unsigned char & a_flags)" << std::endl;
+      stream << "  static inline void eval (" << typeid (DATA_TYPE).name () << " * a_ptr, const double a_x1, const double a_y1, const double a_x2, const double a_y2, const double a_scale, const int a_width, double & a_result, unsigned char & a_flags)" << std::endl;
       stream << "  {" << std::endl;
       stream << "    a_result = *(a_ptr + static_cast<int> (a_scale*a_x1) + (static_cast<int> (a_scale*a_y1)*a_width)) - *(a_ptr + static_cast<int> (a_scale*a_x2) + (static_cast<int> (a_scale*a_y2)*a_width));" << std::endl;
       stream << "  }" << std::endl;
@@ -382,16 +382,16 @@ namespace pcl
   }
 
 
-  typedef MultiChannel2DComparisonFeatureHandler<float, 1> Depth2DComparisonFeatureHandler;
-  typedef MultiChannel2DComparisonFeatureHandler<float, 2> IntensityDepth2DComparisonFeatureHandler;
-  typedef MultiChannel2DComparisonFeatureHandler<float, 3> RGB2DComparisonFeatureHandler;
-  typedef MultiChannel2DComparisonFeatureHandler<float, 4> RGBD2DComparisonFeatureHandler;
+  typedef MultiChannel2DComparisonFeatureHandler<double, 1> Depth2DComparisonFeatureHandler;
+  typedef MultiChannel2DComparisonFeatureHandler<double, 2> IntensityDepth2DComparisonFeatureHandler;
+  typedef MultiChannel2DComparisonFeatureHandler<double, 3> RGB2DComparisonFeatureHandler;
+  typedef MultiChannel2DComparisonFeatureHandler<double, 4> RGBD2DComparisonFeatureHandler;
 
-  typedef ScaledMultiChannel2DComparisonFeatureHandler<float, 1, 0, true> ScaledDepth2DComparisonFeatureHandler;
-  typedef ScaledMultiChannel2DComparisonFeatureHandler<float, 2, 1, true> ScaledIntensityDepth2DComparisonFeatureHandler;
-  typedef ScaledMultiChannel2DComparisonFeatureHandler<float, 4, 3, true> ScaledRGBD2DComparisonFeatureHandler;
+  typedef ScaledMultiChannel2DComparisonFeatureHandler<double, 1, 0, true> ScaledDepth2DComparisonFeatureHandler;
+  typedef ScaledMultiChannel2DComparisonFeatureHandler<double, 2, 1, true> ScaledIntensityDepth2DComparisonFeatureHandler;
+  typedef ScaledMultiChannel2DComparisonFeatureHandler<double, 4, 3, true> ScaledRGBD2DComparisonFeatureHandler;
 
-  typedef ScaledMultiChannel2DComparisonFeatureHandlerCCodeGenerator<float, 1, 0, true> ScaledDepth2DComparisonFeatureHandlerCCodeGenerator;
+  typedef ScaledMultiChannel2DComparisonFeatureHandlerCCodeGenerator<double, 1, 0, true> ScaledDepth2DComparisonFeatureHandlerCCodeGenerator;
 
 }
 

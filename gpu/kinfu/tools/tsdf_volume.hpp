@@ -219,7 +219,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::getVoxelCoordAndOffset (const PointT &point,
   coord(2) = round(voxel_coord(2));
 
   // offset of point wrt. to voxel center
-  offset = (voxel_coord - coord.cast<float>().array() * voxel_size).matrix();
+  offset = (voxel_coord - coord.cast<double>().array() * voxel_size).matrix();
 }
 
 
@@ -347,12 +347,12 @@ pcl::TSDFVolume<VoxelT, WeightT>::averageValues ()
 pcl::TSDFVolume<VoxelT, WeightT>::createFromCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const Intr &intr)
 {
   // get depth map from cloud
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
   // Eigen::MatrixXf depth = Eigen::MatrixXf::Constant(cloud_->height, cloud_->width, bad_point);
   Eigen::MatrixXf depth (cloud->height, cloud->width);
 
   // determine max and min value
-  float min = 3000.0, max = 0.0;
+  double min = 3000.0, max = 0.0;
   for (int x = 0; x < cloud->width; ++x)
     for (int y = 0; y < cloud->height; ++y)
     {
@@ -398,7 +398,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::createFromCloud (const typename pcl::PointClou
   Eigen::Vector3f volume_size = volumeSize();
   Eigen::Vector3f voxel_size = voxelSize();
 
-  float tranc_dist = std::max (DEFAULT_TRANCATION_DISTANCE, 2.1f * voxel_size.maxCoeff());
+  double tranc_dist = std::max (DEFAULT_TRANCATION_DISTANCE, 2.1f * voxel_size.maxCoeff());
 
   Eigen::Matrix3f R_inv_init = Eigen::Matrix3f::Identity();
   Eigen::Vector3f t_init =  volume_size * 0.5f - Eigen::Vector3f (0, 0, volume_size(2)/2.0f * 1.2f);
@@ -415,16 +415,16 @@ pcl::TSDFVolume<VoxelT, WeightT>::scaleDepth (const Eigen::MatrixXf &depth, Eige
   // function ported from KinFu GPU code
   depth_scaled.resizeLike (depth);
 
-  float min = 3000.0, max = 0.0;
+  double min = 3000.0, max = 0.0;
   // loop over depth image
   for (int x = 0; x < depth.cols(); ++x)
     for (int y = 0; y < depth.rows(); ++y)
     {
       int Dp = depth(y,x);
 
-      float xl = (x - intr.cx) / intr.fx;
-      float yl = (y - intr.cy) / intr.fy;
-      float lambda = sqrtf (xl * xl + yl * yl + 1);
+      double xl = (x - intr.cx) / intr.fx;
+      double yl = (y - intr.cy) / intr.fy;
+      double lambda = sqrtf (xl * xl + yl * yl + 1);
 
       depth_scaled(y,x) = Dp * lambda;
 
@@ -441,7 +441,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::scaleDepth (const Eigen::MatrixXf &depth, Eige
 
 /*template <typename VoxelT, typename WeightT> void
 pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXf &depth_scaled,
-                                              float tranc_dist,
+                                              double tranc_dist,
                                               const Eigen::Matrix3f &R_inv,
                                               const Eigen::Vector3f &t,
                                               const Intr &intr)
@@ -467,17 +467,17 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXf &depth_
     {
       voxel_coord(2) = 0;
       // points at depth 0, shifted by t
-      Eigen::Vector3f v_g = (voxel_coord.cast<float>() + 0.5f) * voxel_size - t.array();
-      float v_g_part_norm = v_g(0)*v_g(0) + v_g(1)*v_g(1);
+      Eigen::Vector3f v_g = (voxel_coord.cast<double>() + 0.5f) * voxel_size - t.array();
+      double v_g_part_norm = v_g(0)*v_g(0) + v_g(1)*v_g(1);
 
       // rays in 3d
       Eigen::Vector3f v = (R_inv * v_g).array() * intr_arr;
 
-      float z_scaled = 0;
+      double z_scaled = 0;
 
       Eigen::Array3f R_inv_z_scaled = R_inv.col(2).array() * voxel_size(2) * intr_arr;
 
-      float tranc_dist_inv = 1.0f / tranc_dist;
+      double tranc_dist_inv = 1.0f / tranc_dist;
 
       // loop over depth values
       for (voxel_coord(2) = 0; voxel_coord(2) < volume_res(2); ++voxel_coord(2),
@@ -486,7 +486,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXf &depth_
            v(0) += R_inv_z_scaled(0),
            v(1) += R_inv_z_scaled(1))
       {
-        float inv_z = 1.0f / (v(2) + R_inv(2,2) * z_scaled);
+        double inv_z = 1.0f / (v(2) + R_inv(2,2) * z_scaled);
 
         // std::cout << "z = " << voxel_coord(2) << ", inv_z = " << inv_z << std::endl;
 
@@ -501,15 +501,15 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXf &depth_
 
         if (img_coord(0) >= 0 && img_coord(1) >= 0 && img_coord(0) < depth_scaled.cols() && img_coord(1) < depth_scaled.rows())         //6
         {
-          float Dp_scaled = depth_scaled(img_coord(1), img_coord(0));
+          double Dp_scaled = depth_scaled(img_coord(1), img_coord(0));
 
           // signed distance function
-          float sdf = Dp_scaled - sqrtf (v_g(2) * v_g(2) + v_g_part_norm);
+          double sdf = Dp_scaled - sqrtf (v_g(2) * v_g(2) + v_g_part_norm);
 
           if (Dp_scaled != 0 && sdf >= -tranc_dist)
           {
             // get truncated distance function value
-            float tsdf = fmin (1.0f, sdf * tranc_dist_inv);
+            double tsdf = fmin (1.0f, sdf * tranc_dist_inv);
 
             // add values to volume
             int idx = getLinearVoxelIndex (voxel_coord);

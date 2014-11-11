@@ -63,48 +63,48 @@ namespace pcl
         // =====PUBLIC STATIC METHODS=====
         /** Get a widget visualizing the given range image.
          *  You are responsible for deleting it after usage! */
-        static RangeImageVisualizer* getRangeImageWidget (const pcl::RangeImage& range_image, float min_value,
-                                                  float max_value, bool grayscale, const std::string& name="Range image");
+        static RangeImageVisualizer* getRangeImageWidget (const pcl::RangeImage& range_image, double min_value,
+                                                  double max_value, bool grayscale, const std::string& name="Range image");
         
         /** Visualize the given range image and the detected borders in it.
          *  Borders on the obstacles are marked green, borders on the background are marked bright blue. */
-        void visualizeBorders (const pcl::RangeImage& range_image, float min_value, float max_value, bool grayscale,
+        void visualizeBorders (const pcl::RangeImage& range_image, double min_value, double max_value, bool grayscale,
                                const pcl::PointCloud<pcl::BorderDescription>& border_descriptions);
         
         /** Same as above, but returning a new widget. You are responsible for deleting it after usage! */
-        static RangeImageVisualizer* getRangeImageBordersWidget (const pcl::RangeImage& range_image, float min_value,
-                      float max_value, bool grayscale, const pcl::PointCloud<pcl::BorderDescription>& border_descriptions,
+        static RangeImageVisualizer* getRangeImageBordersWidget (const pcl::RangeImage& range_image, double min_value,
+                      double max_value, bool grayscale, const pcl::PointCloud<pcl::BorderDescription>& border_descriptions,
                       const std::string& name="Range image with borders");
         
         /** Get a widget visualizing the given angle image (assuming values in (-PI, PI]).
          *  -PI and PI will return the same color
          *  You are responsible for deleting it after usage! */
-        static RangeImageVisualizer* getAnglesWidget (const pcl::RangeImage& range_image, float* angles_image, const std::string& name);
+        static RangeImageVisualizer* getAnglesWidget (const pcl::RangeImage& range_image, double* angles_image, const std::string& name);
         
         /** Get a widget visualizing the given angle image (assuming values in (-PI/2, PI/2]).
          *  -PI/2 and PI/2 will return the same color
          *  You are responsible for deleting it after usage! */
-        static RangeImageVisualizer* getHalfAnglesWidget (const pcl::RangeImage& range_image, float* angles_image, const std::string& name);
+        static RangeImageVisualizer* getHalfAnglesWidget (const pcl::RangeImage& range_image, double* angles_image, const std::string& name);
 
         
         /** Get a widget visualizing the interest values and extracted interest points.
          * The interest points will be marked green.
          *  You are responsible for deleting it after usage! */
-        static RangeImageVisualizer* getInterestPointsWidget (const pcl::RangeImage& range_image, const float* interest_image, float min_value, float max_value,
+        static RangeImageVisualizer* getInterestPointsWidget (const pcl::RangeImage& range_image, const double* interest_image, double min_value, double max_value,
                                                               const pcl::PointCloud<pcl::InterestPoint>& interest_points, const std::string& name);
 
         // =====PUBLIC METHODS=====
         //! Visualize a range image
         /* void  */
         /* setRangeImage (const pcl::RangeImage& range_image,  */
-        /*                float min_value = -std::numeric_limits<float>::infinity (),  */
-        /*                float max_value =  std::numeric_limits<float>::infinity (),  */
+        /*                double min_value = -std::numeric_limits<double>::infinity (),  */
+        /*                double max_value =  std::numeric_limits<double>::infinity (),  */
         /*                bool grayscale  = false); */
 
         void 
         showRangeImage (const pcl::RangeImage& range_image, 
-                       float min_value = -std::numeric_limits<float>::infinity (), 
-                       float max_value =  std::numeric_limits<float>::infinity (), 
+                       double min_value = -std::numeric_limits<double>::infinity (), 
+                       double max_value =  std::numeric_limits<double>::infinity (), 
                        bool grayscale  = false);
         
       protected:

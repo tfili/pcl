@@ -78,7 +78,7 @@ namespace pcl
         Eigen::Vector3f normal_no_jumps;
         Eigen::Vector3f neighborhood_mean_no_jumps;
         Eigen::Vector3f eigen_values_no_jumps;
-        float max_neighbor_distance_squared;
+        double max_neighbor_distance_squared;
       };
       
       //! Stores the indices of the shadow border corresponding to obstacle borders
@@ -97,7 +97,7 @@ namespace pcl
         int pixel_radius_borders;
         int pixel_radius_plane_extraction;
         int pixel_radius_border_direction;
-        float minimum_border_probability;
+        double minimum_border_probability;
         int pixel_radius_principal_curvature;
       };
       
@@ -105,7 +105,7 @@ namespace pcl
       /** \brief Take the information from BorderTraits to calculate the local direction of the border
        * \param border_traits contains the information needed to calculate the border angle
        */
-      static inline float
+      static inline double
       getObstacleBorderAngle (const BorderTraits& border_traits);
       
       // =====CONSTRUCTOR & DESTRUCTOR=====
@@ -128,13 +128,13 @@ namespace pcl
       /** \brief Get the 2D directions in the range image from the border directions - probably mainly useful for 
         * visualization 
         */
-      float*
+      double*
       getAnglesImageForBorderDirections ();
 
       /** \brief Get the 2D directions in the range image from the surface change directions - probably mainly useful for 
         * visualization 
         */
-      float*
+      double*
       getAnglesImageForSurfaceChangeDirections ();
       
       /** Overwrite the compute function of the base class */
@@ -151,16 +151,16 @@ namespace pcl
       const RangeImage&
       getRangeImage () const { return *range_image_; }
 
-      float*
+      double*
       getBorderScoresLeft ()   { extractBorderScoreImages (); return border_scores_left_; }
 
-      float*
+      double*
       getBorderScoresRight ()  { extractBorderScoreImages (); return border_scores_right_; }
 
-      float*
+      double*
       getBorderScoresTop ()    { extractBorderScoreImages (); return border_scores_top_; }
 
-      float*
+      double*
       getBorderScoresBottom () { extractBorderScoreImages (); return border_scores_bottom_; }
 
       LocalSurface**
@@ -175,7 +175,7 @@ namespace pcl
       Eigen::Vector3f**
       getBorderDirections () { calculateBorderDirections (); return border_directions_; }
 
-      float*
+      double*
       getSurfaceChangeScores () { calculateSurfaceChanges (); return surface_change_scores_; }
 
       Eigen::Vector3f*
@@ -187,13 +187,13 @@ namespace pcl
       Parameters parameters_;
       const RangeImage* range_image_;
       int range_image_size_during_extraction_;
-      float* border_scores_left_, * border_scores_right_, * border_scores_top_, * border_scores_bottom_;
+      double* border_scores_left_, * border_scores_right_, * border_scores_top_, * border_scores_bottom_;
       LocalSurface** surface_structure_;
       PointCloudOut* border_descriptions_;
       ShadowBorderIndices** shadow_border_informations_;
       Eigen::Vector3f** border_directions_;
       
-      float* surface_change_scores_;
+      double* surface_change_scores_;
       Eigen::Vector3f* surface_change_directions_;
       
       
@@ -207,7 +207,7 @@ namespace pcl
        * /param pixel_radius (defaults to 1)
        * /return the resulting border score
        */
-      inline float
+      inline double
       getNeighborDistanceChangeScore (const LocalSurface& local_surface, int x, int y, 
                                       int offset_x, int offset_y, int pixel_radius=1) const;
       
@@ -219,7 +219,7 @@ namespace pcl
         * \param offset_y
         * \return the resulting border score
         */
-      inline float
+      inline double
       getNormalBasedBorderScore (const LocalSurface& local_surface, int x, int y, 
                                  int offset_x, int offset_y) const;
       
@@ -234,8 +234,8 @@ namespace pcl
         * \return
         */
       inline bool
-      changeScoreAccordingToShadowBorderValue (int x, int y, int offset_x, int offset_y, float* border_scores,
-                                               float* border_scores_other_direction, int& shadow_border_idx) const;
+      changeScoreAccordingToShadowBorderValue (int x, int y, int offset_x, int offset_y, double* border_scores,
+                                               double* border_scores_other_direction, int& shadow_border_idx) const;
       
       /** \brief Returns a new score for the given pixel that is >= the original value, based on the neighbors values
         * \param x the x-coordinate of the input pixel
@@ -243,15 +243,15 @@ namespace pcl
         * \param border_scores the input border scores
         * \return the resulting updated border score
         */
-      inline float
-      updatedScoreAccordingToNeighborValues (int x, int y, const float* border_scores) const;
+      inline double
+      updatedScoreAccordingToNeighborValues (int x, int y, const double* border_scores) const;
 
       /** \brief For all pixels, returns a new score that is >= the original value, based on the neighbors values
         * \param border_scores the input border scores
         * \return a pointer to the resulting array of updated scores
         */
-      float*
-      updatedScoresAccordingToNeighborValues (const float* border_scores) const;
+      double*
+      updatedScoresAccordingToNeighborValues (const double* border_scores) const;
 
       /** \brief Replace all border score values with updates according to \a updatedScoreAccordingToNeighborValues */
       void
@@ -268,8 +268,8 @@ namespace pcl
         * \return a boolean value indicating whether or not the point has a corresponding shadow border
        */
       inline bool
-      checkPotentialBorder (int x, int y, int offset_x, int offset_y, float* border_scores_left,
-                            float* border_scores_right, int& shadow_border_idx) const;
+      checkPotentialBorder (int x, int y, int offset_x, int offset_y, double* border_scores_left,
+                            double* border_scores_right, int& shadow_border_idx) const;
 
       /** \brief Check if a potential border point is a maximum regarding the border score
         * \param x the x-coordinate of the input point
@@ -281,7 +281,7 @@ namespace pcl
         * \result a boolean value indicating whether or not the point is a maximum
         */
       inline bool
-      checkIfMaximum (int x, int y, int offset_x, int offset_y, float* border_scores, int shadow_border_idx) const;
+      checkIfMaximum (int x, int y, int offset_x, int offset_y, double* border_scores, int shadow_border_idx) const;
       
       /** \brief Find the best corresponding shadow border and lower score according to the shadow borders value */
       void
@@ -337,7 +337,7 @@ namespace pcl
         * \param main_direction the resulting direction
         */
       inline bool
-      calculateMainPrincipalCurvature (int x, int y, int radius, float& magnitude,
+      calculateMainPrincipalCurvature (int x, int y, int radius, double& magnitude,
                                        Eigen::Vector3f& main_direction) const;
       
       /** \brief Uses either the border or principal curvature to define a score how much the surface changes in a point 

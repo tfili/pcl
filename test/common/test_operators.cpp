@@ -74,7 +74,7 @@ TEST (PointOperators, PointXYZ)
   EXPECT_EQ (p3.y, p0.y - p1.y);
   EXPECT_EQ (p3.z, p0.z - p1.z);
 
-  float scalar = 4;
+  double scalar = 4;
   p2 *= scalar;
 
   EXPECT_EQ (p2.x, scalar * p0.x + scalar * p1.x);

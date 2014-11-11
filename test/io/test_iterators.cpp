@@ -54,7 +54,7 @@ init ()
   for (int x=-20; x<20; x++) 
     for (int y=-20; y<20; y++) 
       for (int z=-20; z<20; z++) 
-        cloud.push_back (Point (static_cast<float> (x), static_cast<float> (y), static_cast<float> (z)));
+        cloud.push_back (Point (static_cast<double> (x), static_cast<double> (y), static_cast<double> (z)));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ TEST (PCL, Iterators)
   {
     for (int i=0;i<3;i++) mean.data[i] += it->data[i];
   }
-  for (int i=0;i<3;i++) mean.data[i] /= static_cast<float> (cloud.size ());
+  for (int i=0;i<3;i++) mean.data[i] /= static_cast<double> (cloud.size ());
 
   EXPECT_NEAR (mean.x, -0.5, 1e-4);
 }

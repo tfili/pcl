@@ -151,10 +151,10 @@ pcl::FotonicGrabber::getName () const
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::FotonicGrabber::getFramesPerSecond () const
 {
-  //return (static_cast<float> (device_->getDepthOutputMode ().nFPS));
+  //return (static_cast<double> (device_->getDepthOutputMode ().nFPS));
   return 0.0f;
 }
 
@@ -240,7 +240,7 @@ pcl::FotonicGrabber::processGrabbing ()
               pcl::PointXYZRGBA & point1 = (*cloud) (col, row_index);
               ++col;
 
-              float r,g,b,u,v,u1,v1,uv1;
+              double r,g,b,u,v,u1,v1,uv1;
 
               u = p[col_index].u - 128.0f;
               v = p[col_index].v - 128.0f;
@@ -282,7 +282,7 @@ pcl::FotonicGrabber::processGrabbing ()
 
             short z = *ptr;
 
-            point.z = static_cast<float> (z) / 1000.0f;
+            point.z = static_cast<double> (z) / 1000.0f;
 
             ++ptr;
           }
@@ -294,7 +294,7 @@ pcl::FotonicGrabber::processGrabbing ()
             short x = *ptr;
             ++ptr;
 
-            point.x = -static_cast<float> (x) / 1000.0f;
+            point.x = -static_cast<double> (x) / 1000.0f;
           }
 
           for (int col_index = 0; col_index < width; ++col_index)
@@ -304,7 +304,7 @@ pcl::FotonicGrabber::processGrabbing ()
             short y = *ptr;
             ++ptr;
 
-            point.y = static_cast<float> (y) / 1000.0f;
+            point.y = static_cast<double> (y) / 1000.0f;
           }
         }
 

@@ -66,22 +66,22 @@ namespace pcl
             Pixel (int id): id_ (id) {}
 
             inline void
-            set_z1 (float z1) { z1_ = z1;}
+            set_z1 (double z1) { z1_ = z1;}
 
             inline void
-            set_z2 (float z2) { z2_ = z2;}
+            set_z2 (double z2) { z2_ = z2;}
 
-            float
+            double
             z1 () const { return z1_;}
 
-            float
+            double
             z2 () const { return z2_;}
 
             int
             getId () const { return id_;}
 
           protected:
-            float z1_, z2_;
+            double z1_, z2_;
             int id_;
         };
 
@@ -124,20 +124,20 @@ namespace pcl
         virtual ~ORROctreeZProjection (){ this->clear();}
 
         void
-        build (const ORROctree& input, float eps_front, float eps_back);
+        build (const ORROctree& input, double eps_front, double eps_back);
 
         void
         clear ();
 
         inline void
-        getPixelCoordinates (const float* p, int& x, int& y) const
+        getPixelCoordinates (const double* p, int& x, int& y) const
         {
         	x = static_cast<int> ((p[0] - bounds_[0])*inv_pixel_size_);
         	y = static_cast<int> ((p[1] - bounds_[2])*inv_pixel_size_);
         }
 
         inline const Pixel*
-        getPixel (const float* p) const
+        getPixel (const double* p) const
         {
           int x, y; this->getPixelCoordinates (p, x, y);
 
@@ -148,7 +148,7 @@ namespace pcl
         }
 
         inline Pixel*
-        getPixel (const float* p)
+        getPixel (const double* p)
         {
           int x, y; this->getPixelCoordinates (p, x, y);
 
@@ -159,7 +159,7 @@ namespace pcl
         }
 
         inline const std::set<ORROctree::Node*, bool(*)(ORROctree::Node*,ORROctree::Node*)>*
-        getOctreeNodes (const float* p) const
+        getOctreeNodes (const double* p) const
         {
           int x, y; this->getPixelCoordinates (p, x, y);
 
@@ -181,13 +181,13 @@ namespace pcl
           return pixels_[i][j];
         }
 
-        inline float
+        inline double
         getPixelSize () const
         {
           return pixel_size_;
         }
 
-        inline const float*
+        inline const double*
         getBounds () const
         {
           return bounds_;
@@ -202,7 +202,7 @@ namespace pcl
         }
 
       protected:
-        float pixel_size_, inv_pixel_size_, bounds_[4], extent_x_, extent_y_;
+        double pixel_size_, inv_pixel_size_, bounds_[4], extent_x_, extent_y_;
         int num_pixels_x_, num_pixels_y_, num_pixels_;
         Pixel ***pixels_;
         Set ***sets_;

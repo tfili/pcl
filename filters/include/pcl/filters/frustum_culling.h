@@ -135,13 +135,13 @@ namespace pcl
         * \param[in] hfov the field of view
         */
       void 
-      setHorizontalFOV (float hfov)
+      setHorizontalFOV (double hfov)
       {
         hfov_ = hfov;
       }
 
       /** \brief Get the horizontal field of view for the camera in degrees */
-      float 
+      double 
       getHorizontalFOV () const
       {
         return (hfov_);
@@ -151,13 +151,13 @@ namespace pcl
         * \param[in] vfov the field of view
         */
       void 
-      setVerticalFOV (float vfov)
+      setVerticalFOV (double vfov)
       {
         vfov_ = vfov;
       }
 
       /** \brief Get the vertical field of view for the camera in degrees */
-      float 
+      double 
       getVerticalFOV () const
       {
         return (vfov_);
@@ -167,13 +167,13 @@ namespace pcl
         * \param[in] np_dist the near plane distance
         */
       void 
-      setNearPlaneDistance (float np_dist)
+      setNearPlaneDistance (double np_dist)
       {
         np_dist_ = np_dist;
       }
 
       /** \brief Get the near plane distance. */
-      float
+      double
       getNearPlaneDistance () const
       {
         return (np_dist_);
@@ -183,13 +183,13 @@ namespace pcl
         * \param[in] fp_dist the far plane distance
         */
       void 
-      setFarPlaneDistance (float fp_dist)
+      setFarPlaneDistance (double fp_dist)
       {
         fp_dist_ = fp_dist;
       }
 
       /** \brief Get the far plane distance */
-      float 
+      double 
       getFarPlaneDistance () const
       {
         return (fp_dist_);
@@ -222,13 +222,13 @@ namespace pcl
       /** \brief The camera pose */
       Eigen::Matrix4f camera_pose_;
       /** \brief Horizontal field of view */
-      float hfov_;
+      double hfov_;
       /** \brief Vertical field of view */
-      float vfov_;
+      double vfov_;
       /** \brief Near plane distance */
-      float np_dist_;
+      double np_dist_;
       /** \brief Far plane distance */
-      float fp_dist_;
+      double fp_dist_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

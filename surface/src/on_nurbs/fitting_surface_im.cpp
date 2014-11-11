@@ -61,9 +61,9 @@ FittingSurfaceIM::computeMean () const
     if (pcl_isnan (point.x) || pcl_isnan (point.y) || pcl_isnan (point.z))
       continue;
 
-    u.x += point.x * float (ds);
-    u.y += point.y * float (ds);
-    u.z += point.z * float (ds);
+    u.x += point.x * double (ds);
+    u.y += point.y * double (ds);
+    u.z += point.z * double (ds);
   }
 
   return u;

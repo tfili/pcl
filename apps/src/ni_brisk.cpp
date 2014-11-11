@@ -109,7 +109,7 @@ class BRISKDemo
 
     /////////////////////////////////////////////////////////////////////////
     inline PointT
-    bilinearInterpolation (const CloudConstPtr &cloud, float x, float y)
+    bilinearInterpolation (const CloudConstPtr &cloud, double x, double y)
     {
       int u = int (x);
       int v = int (y);
@@ -122,11 +122,11 @@ class BRISKDemo
       const PointT &p3 = (*cloud)(u,   v+1);
       const PointT &p4 = (*cloud)(u+1, v+1);
       
-      float fx = x - float (u), fy = y - float (v);
-      float fx1 = 1.0f - fx, fy1 = 1.0f - fy;
+      double fx = x - double (u), fy = y - double (v);
+      double fx1 = 1.0f - fx, fy1 = 1.0f - fy;
 
-      float w1 = fx1 * fy1, w2 = fx * fy1, w3 = fx1 * fy, w4 = fx * fy;
-      float weight = 0;
+      double w1 = fx1 * fy1, w2 = fx * fy1, w3 = fx1 * fy, w4 = fx * fy;
+      double weight = 0;
       
       if (isFinite (p1))
       {
@@ -158,7 +158,7 @@ class BRISKDemo
       }
 
       if (weight == 0)
-        pt.x = pt.y = pt.z = std::numeric_limits<float>::quiet_NaN ();
+        pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
       else
       {
         weight = 1.0f / weight;

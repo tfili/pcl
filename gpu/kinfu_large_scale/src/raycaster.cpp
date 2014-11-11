@@ -46,7 +46,7 @@ using namespace Eigen;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-pcl::gpu::kinfuLS::RayCaster::RayCaster(int rows_arg, int cols_arg, float fx, float fy, float cx, float cy)
+pcl::gpu::kinfuLS::RayCaster::RayCaster(int rows_arg, int cols_arg, double fx, double fy, double cx, double cy)
    : cols(cols_arg), rows(rows_arg), fx_(fx), fy_(fy), cx_(cx < 0 ? cols/2 : cx), cy_(cy < 0 ? rows/2 : cy)
 { 
   vertex_map_.create(rows * 3, cols);
@@ -62,7 +62,7 @@ pcl::gpu::kinfuLS::RayCaster::~RayCaster()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::kinfuLS::RayCaster::setIntrinsics(float fx, float fy, float cx, float cy)
+pcl::gpu::kinfuLS::RayCaster::setIntrinsics(double fx, double fy, double cx, double cy)
 {
   fx_ = fx;
   fy_ = fy;
@@ -82,7 +82,7 @@ pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& came
   vertex_map_.create(rows * 3, cols);
   normal_map_.create(rows * 3, cols);
 
-  typedef Matrix<float, 3, 3, RowMajor> Matrix3f;
+  typedef Matrix<double, 3, 3, RowMajor> Matrix3f;
     
   Matrix3f R = camera_pose_.linear();
   Vector3f t = camera_pose_.translation();
@@ -96,7 +96,7 @@ pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& came
   device_t.y -= buffer->origin_metric.y;
   device_t.z -= buffer->origin_metric.z;
   
-  float tranc_dist = volume.getTsdfTruncDist();  
+  double tranc_dist = volume.getTsdfTruncDist();  
   pcl::device::kinfuLS::raycast (intr, device_R, device_t, tranc_dist, pcl::device::kinfuLS::device_cast<const float3>(volume_size_), volume.data(), buffer, vertex_map_, normal_map_);  
 }
 
@@ -127,7 +127,7 @@ pcl::gpu::kinfuLS::RayCaster::generateDepthImage(Depth& depth) const
   
   depth.create(rows, cols);    
   
-  Matrix<float, 3, 3, RowMajor> R_inv = camera_pose_.linear().inverse();
+  Matrix<double, 3, 3, RowMajor> R_inv = camera_pose_.linear().inverse();
   Vector3f t = camera_pose_.translation();
   
   pcl::device::kinfuLS::generateDepth(pcl::device::kinfuLS::device_cast<pcl::device::kinfuLS::Mat33>(R_inv), pcl::device::kinfuLS::device_cast<const float3>(t), vertex_map_, depth);

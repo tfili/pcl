@@ -75,7 +75,7 @@ class CallbackParameters;
 void keyboardCB (const pcl::visualization::KeyboardEvent &event, void* params_void);
 void update (CallbackParameters* params);
 bool vtk2PointCloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, PointCloud<Normal>& pcl_normals, vtkPolyData* vtk_data);
-void run (float pair_width, float voxel_size, float max_coplanarity_angle);
+void run (double pair_width, double voxel_size, double max_coplanarity_angle);
 bool loadScene (const char* file_name, PointCloud<PointXYZ>& non_plane_points, PointCloud<Normal>& non_plane_normals,
                 PointCloud<PointXYZ>& plane_points);
 
@@ -109,13 +109,13 @@ main (int argc, char** argv)
   printf ("\nUsage: ./pcl_obj_rec_ransac_scene_opps <pair_width> <voxel_size> <max_coplanarity_angle>\n\n");
 
   const int num_params = 3;
-  float parameters[num_params] = {40.0f/*pair width*/, 5.0f/*voxel size*/, 15.0f/*max co-planarity angle*/};
+  double parameters[num_params] = {40.0f/*pair width*/, 5.0f/*voxel size*/, 15.0f/*max co-planarity angle*/};
   string parameter_names[num_params] = {"pair_width", "voxel_size", "max_coplanarity_angle"};
 
   // Read the user input if any
   for ( int i = 0 ; i < argc-1 && i < num_params ; ++i )
   {
-    parameters[i] = static_cast<float> (atof (argv[i+1]));
+    parameters[i] = static_cast<double> (atof (argv[i+1]));
     if ( parameters[i] <= 0.0f )
     {
       fprintf(stderr, "ERROR: the %i-th parameter has to be positive and not %f\n", i+1, parameters[i]);
@@ -134,7 +134,7 @@ main (int argc, char** argv)
 //===========================================================================================================================================
 
 void
-run (float pair_width, float voxel_size, float max_coplanarity_angle)
+run (double pair_width, double voxel_size, double max_coplanarity_angle)
 {
   // The object recognizer
   ObjRecRANSAC objrec (pair_width, voxel_size);
@@ -267,7 +267,7 @@ update (CallbackParameters* params)
     // Setup the matrix
     vtkSmartPointer<vtkMatrix4x4> vtk_mat = vtkSmartPointer<vtkMatrix4x4>::New ();
     vtk_mat->Identity ();
-    const float *t = it->rigid_transform_;
+    const double *t = it->rigid_transform_;
     // Setup the rotation
     vtk_mat->SetElement (0, 0, t[0]); vtk_mat->SetElement (0, 1, t[1]); vtk_mat->SetElement (0, 2, t[2]);
     vtk_mat->SetElement (1, 0, t[3]); vtk_mat->SetElement (1, 1, t[4]); vtk_mat->SetElement (1, 2, t[5]);
@@ -418,9 +418,9 @@ vtk2PointCloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, PointCl
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_points->GetPoint (i, p);
-    pcl_points[i].x = static_cast<float> (p[0]);
-    pcl_points[i].y = static_cast<float> (p[1]);
-    pcl_points[i].z = static_cast<float> (p[2]);
+    pcl_points[i].x = static_cast<double> (p[0]);
+    pcl_points[i].y = static_cast<double> (p[1]);
+    pcl_points[i].z = static_cast<double> (p[2]);
   }
 
   // Check if we have normals
@@ -433,9 +433,9 @@ vtk2PointCloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, PointCl
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_normals->GetTuple (i, p);
-    pcl_normals[i].normal_x = static_cast<float> (p[0]);
-    pcl_normals[i].normal_y = static_cast<float> (p[1]);
-    pcl_normals[i].normal_z = static_cast<float> (p[2]);
+    pcl_normals[i].normal_x = static_cast<double> (p[0]);
+    pcl_normals[i].normal_y = static_cast<double> (p[1]);
+    pcl_normals[i].normal_z = static_cast<double> (p[2]);
   }
 
   return true;

@@ -135,7 +135,7 @@ namespace pcl
       configureCapture (const bool auto_exposure = true,
                         const bool auto_gain = true,
                         const int bining = 1,
-                        const float exposure = 0.32,
+                        const double exposure = 0.32,
                         const bool front_light = false,
                         const int gain = 1,
                         const bool gain_boost = false,
@@ -163,12 +163,12 @@ namespace pcl
        * Make sure it is the identity transformation if you want the original point cloud!*/
       bool
       setExtrinsicCalibration (const std::string target = "Hand",
-                              const float euler_angle = 0.0,
+                              const double euler_angle = 0.0,
                               const Eigen::Vector3f rotation_axis = Eigen::Vector3f (0.0, 0.0, 0.0),
                               const Eigen::Vector3f translation = Eigen::Vector3f (0.0, 0.0, 0.0));
 
       /** @brief Obtain the number of frames per second (FPS) */
-      float
+      double
       getFramesPerSecond () const;
 
       /** @brief Open TCP port to enable access via the <a href="http://www.ensenso.de/manual/software_components.htm">nxTreeEdit</a> program.

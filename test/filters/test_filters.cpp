@@ -335,7 +335,7 @@ TEST (PassThrough, Filters)
   EXPECT_NEAR (output.points[354].z, -0.0444, 1e-5);
 
   // Test the keep organized structure
-  pt.setUserFilterValue (std::numeric_limits<float>::quiet_NaN ());
+  pt.setUserFilterValue (std::numeric_limits<double>::quiet_NaN ());
   pt.setFilterFieldName ("");
   pt.filter (output);
 
@@ -481,7 +481,7 @@ TEST (PassThrough, Filters)
   EXPECT_NEAR (output.points[354].z, -0.0444, 1e-5);
 
   // Test the keep organized structure
-  pt2.setUserFilterValue (std::numeric_limits<float>::quiet_NaN ());
+  pt2.setUserFilterValue (std::numeric_limits<double>::quiet_NaN ());
   pt2.setFilterFieldName ("");
   pt2.filter (output_blob);
   fromPCLPointCloud2 (output_blob, output);
@@ -701,14 +701,14 @@ TEST (VoxelGrid_RGB, Filters)
   int col_r[] = {214, 193, 180, 164, 133, 119, 158, 179, 178, 212};
   int col_g[] = {10, 39, 219, 231, 142, 169, 84, 158, 139, 214};
   int col_b[] = {101, 26, 46, 189, 211, 154, 246, 16, 139, 153};
-  float ave_r = 0.0f;
-  float ave_b = 0.0f;
-  float ave_g = 0.0f;
+  double ave_r = 0.0f;
+  double ave_b = 0.0f;
+  double ave_g = 0.0f;
   for (int i = 0; i < 10; ++i)
   {
-    ave_r += static_cast<float> (col_r[i]);
-    ave_g += static_cast<float> (col_g[i]);
-    ave_b += static_cast<float> (col_b[i]);
+    ave_r += static_cast<double> (col_r[i]);
+    ave_g += static_cast<double> (col_g[i]);
+    ave_b += static_cast<double> (col_b[i]);
   }
   ave_r /= 10.0f;
   ave_g /= 10.0f;
@@ -721,7 +721,7 @@ TEST (VoxelGrid_RGB, Filters)
     pt.x = 0.0f;
     pt.y = 0.0f;
     pt.z = 0.0f;
-    pt.rgb = *reinterpret_cast<float*> (&rgb);
+    pt.rgb = *reinterpret_cast<double*> (&rgb);
     cloud_rgb_.points.push_back (pt);
   }
 
@@ -782,9 +782,9 @@ TEST (VoxelGrid_RGB, Filters)
 
 #if 0
 ////////////////////////////////////////////////////////////////////////////////
-float getRandomNumber (float max = 1.0, float min = 0.0)
+double getRandomNumber (double max = 1.0, double min = 0.0)
 {
-  return (max - min) * float(rand ()) / float (RAND_MAX) + min;
+  return (max - min) * double(rand ()) / double (RAND_MAX) + min;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -820,7 +820,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
         point.normal_y = getRandomNumber (1.0, -1.0);
         point.normal_z = getRandomNumber (1.0, -1.0);
         
-        float norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
+        double norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
         point.normal_x *= norm;
         point.normal_y *= norm;
         point.normal_z *= norm;
@@ -833,9 +833,9 @@ TEST (VoxelGrid_XYZNormal, Filters)
         
         if (xIdx != 0)
         {
-          point.x = getRandomNumber (0.99) + float (xIdx);
-          point.y = getRandomNumber (0.99) + float (yIdx);
-          point.z = getRandomNumber (0.99) + float (zIdx);
+          point.x = getRandomNumber (0.99) + double (xIdx);
+          point.y = getRandomNumber (0.99) + double (yIdx);
+          point.z = getRandomNumber (0.99) + double (zIdx);
         }
         if (yIdx == 0 && zIdx == 0) // opposite normals
         {
@@ -845,9 +845,9 @@ TEST (VoxelGrid_XYZNormal, Filters)
         }
         else if (yIdx == 0 && zIdx == 1) // second normal is nan
         {
-          point.normal_x = std::numeric_limits<float>::quiet_NaN ();
-          point.normal_y = std::numeric_limits<float>::quiet_NaN ();
-          point.normal_z = std::numeric_limits<float>::quiet_NaN ();
+          point.normal_x = std::numeric_limits<double>::quiet_NaN ();
+          point.normal_y = std::numeric_limits<double>::quiet_NaN ();
+          point.normal_z = std::numeric_limits<double>::quiet_NaN ();
         }
         else if (yIdx == 1 && zIdx == 0) // orthogonal
         {
@@ -872,13 +872,13 @@ TEST (VoxelGrid_XYZNormal, Filters)
         
         if (yIdx == 0 && zIdx == 0)
         {
-          voxel.normal_x = std::numeric_limits<float>::quiet_NaN ();
-          voxel.normal_y = std::numeric_limits<float>::quiet_NaN ();
-          voxel.normal_z = std::numeric_limits<float>::quiet_NaN ();
+          voxel.normal_x = std::numeric_limits<double>::quiet_NaN ();
+          voxel.normal_y = std::numeric_limits<double>::quiet_NaN ();
+          voxel.normal_z = std::numeric_limits<double>::quiet_NaN ();
         }
         else if (pcl_isfinite (point.normal_x))
         {
-          float norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
+          double norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
           point.normal_x *= norm;
           point.normal_y *= norm;
           point.normal_z *= norm;
@@ -1028,7 +1028,7 @@ TEST (VoxelGridCovariance, Filters)
 
   // testing k nearest neighbors search
   vector<VoxelGridCovariance<pcl::PointXYZ>::LeafConstPtr> leaves;
-  vector<float> distances;
+  vector<double> distances;
   grid.nearestKSearch (PointXYZ(0,1,0), 1, leaves, distances);
 
   EXPECT_EQ (int (leaves.size ()), 1);
@@ -1244,7 +1244,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Rotate crop box up by 45
-  cropBoxFilter.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter.setRotation (Eigen::Vector3f (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1268,7 +1268,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Rotate point cloud by -45
-  cropBoxFilter.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f));
+  cropBoxFilter.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * double (M_PI) / 180.0f));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1292,7 +1292,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Translate point cloud down by -1
-  cropBoxFilter.setTransform (getTransformation(0, -1, 0, 0, 0, -45.0 * float (M_PI) / 180.0));
+  cropBoxFilter.setTransform (getTransformation(0, -1, 0, 0, 0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1402,7 +1402,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Rotate crop box up by 45
-  cropBoxFilter2.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter2.setRotation (Eigen::Vector3f (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1410,7 +1410,7 @@ TEST (CropBox, Filters)
   EXPECT_EQ (int (indices2.size ()), int (cloud_out2.width * cloud_out2.height));
 
   // Rotate point cloud by -45
-  cropBoxFilter2.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f));
+  cropBoxFilter2.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * double (M_PI) / 180.0f));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1432,7 +1432,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Translate point cloud down by -1
-  cropBoxFilter2.setTransform (getTransformation (0.0f, -1.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f));
+  cropBoxFilter2.setTransform (getTransformation (0.0f, -1.0f, 0.0f, 0.0f, 0.0f, -45.0f * double (M_PI) / 180.0f));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1811,9 +1811,9 @@ TEST (SamplingSurfaceNormal, Filters)
   PointCloud <PointNormal> outcloud;
 
   //Creating a point cloud on the XY plane
-  for (float i = 0.0f; i < 5.0f; i += 0.1f)
+  for (double i = 0.0f; i < 5.0f; i += 0.1f)
   {
-    for (float j = 0.0f; j < 5.0f; j += 0.1f)
+    for (double j = 0.0f; j < 5.0f; j += 0.1f)
     {
       PointNormal pt;
       pt.x = i;
@@ -1844,9 +1844,9 @@ TEST (ShadowPoints, Filters)
 {
   //Creating a point cloud on the XY plane
   PointCloud<PointXYZ>::Ptr input (new PointCloud<PointXYZ> ());
-  for (float i = 0.0f; i < 10.0f; i+=0.1f)
+  for (double i = 0.0f; i < 10.0f; i+=0.1f)
   {
-    for (float j = 0.0f; j < 10.0f; j+=0.1f)
+    for (double j = 0.0f; j < 10.0f; j+=0.1f)
     {
       input->push_back (PointXYZ (i, j, 1.0f));
     }
@@ -1916,9 +1916,9 @@ TEST (FrustumCulling, Filters)
       for (int k = 0; k < 5; k++) 
       {
         pcl::PointXYZ pt;
-        pt.x = float (i);
-        pt.y = float (j);
-        pt.z = float (k);
+        pt.x = double (i);
+        pt.y = double (j);
+        pt.z = double (k);
         input->points.push_back (pt);
       }
     }
@@ -2004,7 +2004,7 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
   ConditionAnd<PointXYZ>::Ptr cyl_cond (new ConditionAnd<PointXYZ> ());
   Eigen::Matrix3f cylinderMatrix;
   cylinderMatrix << 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0;
-  float cylinderScalar = -4; //radius² of cylinder
+  double cylinderScalar = -4; //radius² of cylinder
   TfQuadraticXYZComparison<PointXYZ>::Ptr cyl_comp (new TfQuadraticXYZComparison<PointXYZ> (ComparisonOps::LE, cylinderMatrix,
                                                                                             Eigen::Vector3f::Zero (), cylinderScalar));
   cyl_cond->addComparison (cyl_comp);
@@ -2029,7 +2029,7 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
   EXPECT_EQ (input->points[9].z, output.points[9].z);
 
   // rotate cylinder comparison along z-axis by PI/2
-  cyl_comp->transformComparison (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, float (M_PI) / 2.0f).inverse ());
+  cyl_comp->transformComparison (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, double (M_PI) / 2.0f).inverse ());
 
   condrem.filter (output);
 
@@ -2084,11 +2084,11 @@ TEST (MedianFilter, Filters)
 
   for (size_t i = 0; i < 5; ++i)
   {
-    cloud_manual (i, 0).z = static_cast<float> (i + 1);
-    cloud_manual (i, 1).z = static_cast<float> (i + 6);
-    cloud_manual (i, 2).z = static_cast<float> (10 - i);
-    cloud_manual (i, 3).z = static_cast<float> (5 - i);
-    cloud_manual (i, 4).z = static_cast<float> (100);
+    cloud_manual (i, 0).z = static_cast<double> (i + 1);
+    cloud_manual (i, 1).z = static_cast<double> (i + 6);
+    cloud_manual (i, 2).z = static_cast<double> (10 - i);
+    cloud_manual (i, 3).z = static_cast<double> (5 - i);
+    cloud_manual (i, 4).z = static_cast<double> (100);
   }
   cloud_manual (2, 4).z = 500;
 
@@ -2200,14 +2200,14 @@ TEST (NormalRefinement, Filters)
   pcl::removeNaNFromPointCloud<pcl::PointXYZRGB> (*cloud_organized, cloud_organized_nonan, dummy);
   
   // Viewpoint
-  const float vp_x = cloud_organized_nonan.sensor_origin_[0];
-  const float vp_y = cloud_organized_nonan.sensor_origin_[1];
-  const float vp_z = cloud_organized_nonan.sensor_origin_[2];
+  const double vp_x = cloud_organized_nonan.sensor_origin_[0];
+  const double vp_y = cloud_organized_nonan.sensor_origin_[1];
+  const double vp_z = cloud_organized_nonan.sensor_origin_[2];
   
   // Search parameters
   const int k = 5;
   std::vector<std::vector<int> > k_indices;
-  std::vector<std::vector<float> > k_sqr_distances;
+  std::vector<std::vector<double> > k_sqr_distances;
   
   // Estimated and refined normal containers
   pcl::PointCloud<pcl::PointXYZRGBNormal> cloud_organized_normal;
@@ -2234,7 +2234,7 @@ TEST (NormalRefinement, Filters)
     // Output point
     pcl::PointXYZRGBNormal normali;
     // XYZ and RGB
-    std::memcpy (normali.data, cloud_organized_nonan[i].data, 3*sizeof (float));
+    std::memcpy (normali.data, cloud_organized_nonan[i].data, 3*sizeof (double));
     normali.rgba = cloud_organized_nonan[i].rgba;
     // Normal
     ne.computePointNormal (cloud_organized_nonan, k_indices[i], normali.normal_x, normali.normal_y, normali.normal_z, normali.curvature);
@@ -2271,10 +2271,10 @@ TEST (NormalRefinement, Filters)
   
   // Read out SAC model
   const std::vector<int>& idx_table = inliers->indices;
-  float a = coefficients->values[0];
-  float b = coefficients->values[1];
-  float c = coefficients->values[2];
-  const float d = coefficients->values[3];
+  double a = coefficients->values[0];
+  double b = coefficients->values[1];
+  double c = coefficients->values[2];
+  const double d = coefficients->values[3];
   
   // Find a point on the plane [0 0 z] => z = -d / c
   pcl::PointXYZ p_table;
@@ -2290,10 +2290,10 @@ TEST (NormalRefinement, Filters)
    */
   
   // Errors for the two normal sets and their means
-  std::vector<float> errs_est;
-  float err_est_mean = 0.0f;
-  std::vector<float> errs_refined;
-  float err_refined_mean = 0.0f;
+  std::vector<double> errs_est;
+  double err_est_mean = 0.0f;
+  std::vector<double> errs_refined;
+  double err_refined_mean = 0.0f;
   
   // Number of zero or NaN vectors produced by refinement
   int num_zeros = 0;
@@ -2302,7 +2302,7 @@ TEST (NormalRefinement, Filters)
   // Loop
   for (unsigned int i = 0; i < idx_table.size (); ++i)
   {
-    float tmp;
+    double tmp;
     
     // Estimated (need to avoid zeros and NaNs)
     const pcl::PointXYZRGBNormal& calci = cloud_organized_normal[idx_table[i]];
@@ -2339,20 +2339,20 @@ TEST (NormalRefinement, Filters)
   }
   
   // Mean errors
-  err_est_mean /= static_cast<float> (errs_est.size ());
-  err_refined_mean /= static_cast<float> (errs_refined.size ());
+  err_est_mean /= static_cast<double> (errs_est.size ());
+  err_refined_mean /= static_cast<double> (errs_refined.size ());
   
   // Error variance of estimated
-  float err_est_var = 0.0f;
+  double err_est_var = 0.0f;
   for (unsigned int i = 0; i < errs_est.size (); ++i)
     err_est_var = (errs_est[i] - err_est_mean) * (errs_est[i] - err_est_mean);
-  err_est_var /= static_cast<float> (errs_est.size () - 1);
+  err_est_var /= static_cast<double> (errs_est.size () - 1);
   
   // Error variance of refined
-  float err_refined_var = 0.0f;
+  double err_refined_var = 0.0f;
   for (unsigned int i = 0; i < errs_refined.size (); ++i)
     err_refined_var = (errs_refined[i] - err_refined_mean) * (errs_refined[i] - err_refined_mean);
-  err_refined_var /= static_cast<float> (errs_refined.size () - 1);
+  err_refined_var /= static_cast<double> (errs_refined.size () - 1);
   
   // Refinement should not produce any zeros and NaNs
   EXPECT_EQ(num_zeros, 0);

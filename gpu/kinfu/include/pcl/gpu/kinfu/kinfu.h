@@ -89,7 +89,7 @@ namespace pcl
           * \param[in] cy principal point y
           */
         void
-        setDepthIntrinsics (float fx, float fy, float cx = -1, float cy = -1);
+        setDepthIntrinsics (double fx, double fy, double cx = -1, double cy = -1);
         
         /** \brief Get Depth camera intrinsics
           * \param[out] fx focal length x 
@@ -98,7 +98,7 @@ namespace pcl
           * \param[out] cy principal point y
           */
         void
-        getDepthIntrinsics (float& fx, float& fy, float& cx, float& cy);
+        getDepthIntrinsics (double& fx, double& fy, double& cx, double& cy);
         
 
         /** \brief Sets initial camera pose relative to volume coordiante space
@@ -112,21 +112,21 @@ namespace pcl
           * \param[in] max_icp_distance Maximal distance, higher values are reset to zero (means no measurement). 
           */
         void
-        setDepthTruncationForICP (float max_icp_distance = 0.f);
+        setDepthTruncationForICP (double max_icp_distance = 0.f);
 
         /** \brief Sets ICP filtering parameters.
           * \param[in] distThreshold distance.
           * \param[in] sineOfAngle sine of angle between normals.
           */
         void
-        setIcpCorespFilteringParams (float distThreshold, float sineOfAngle);
+        setIcpCorespFilteringParams (double distThreshold, double sineOfAngle);
         
         /** \brief Sets integration threshold. TSDF volume is integrated iff a camera movement metric exceedes the threshold value. 
           * The metric represents the following: M = (rodrigues(Rotation).norm() + alpha*translation.norm())/2, where alpha = 1.f (hardcoded constant)
           * \param[in] threshold a value to compare with the metric. Suitable values are ~0.001          
           */
         void
-        setCameraMovementThreshold(float threshold = 0.001f);
+        setCameraMovementThreshold(double threshold = 0.001f);
 
         /** \brief Performs initialization for color integration. Must be called before calling color integration. 
           * \param[in] max_weight max weighe for color integration. -1 means default weight.
@@ -209,9 +209,9 @@ namespace pcl
         typedef DeviceArray2D<int> CorespMap;
 
         /** \brief Vertex or Normal Map type */
-        typedef DeviceArray2D<float> MapArr;
+        typedef DeviceArray2D<double> MapArr;
         
-        typedef Eigen::Matrix<float, 3, 3, Eigen::RowMajor> Matrix3frm;
+        typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> Matrix3frm;
         typedef Eigen::Vector3f Vector3f;
 
         /** \brief Height of input depth image. */
@@ -222,10 +222,10 @@ namespace pcl
         int global_time_;
 
         /** \brief Truncation threshold for depth image for ICP step */
-        float max_icp_distance_;
+        double max_icp_distance_;
 
         /** \brief Intrinsic parameters of depth camera. */
-        float fx_, fy_, cx_, cy_;
+        double fx_, fy_, cx_, cy_;
 
         /** \brief Tsdf volume container. */
         TsdfVolume::Ptr tsdf_volume_;
@@ -240,9 +240,9 @@ namespace pcl
         /** \brief array with IPC iteration numbers for each pyramid level */
         int icp_iterations_[LEVELS];
         /** \brief distance threshold in correspondences filtering */
-        float  distThres_;
+        double  distThres_;
         /** \brief angle threshold in correspondences filtering. Represents max sine of angle between normals. */
-        float angleThres_;
+        double angleThres_;
         
         /** \brief Depth pyramid. */
         std::vector<DepthMap> depths_curr_;
@@ -265,7 +265,7 @@ namespace pcl
         std::vector<CorespMap> coresps_;
         
         /** \brief Buffer for storing scaled depth image */
-        DeviceArray2D<float> depthRawScaled_;
+        DeviceArray2D<double> depthRawScaled_;
         
         /** \brief Temporary buffer for ICP */
         DeviceArray2D<double> gbuf_;
@@ -279,7 +279,7 @@ namespace pcl
         std::vector<Vector3f> tvecs_;
 
         /** \brief Camera movement threshold. TSDF is integrated iff a camera movement metric exceedes some value. */
-        float integration_metric_threshold_;
+        double integration_metric_threshold_;
 
         /** \brief ICP step is completelly disabled. Inly integratio now */
         bool disable_icp_;

@@ -72,9 +72,9 @@ pcl::SampleConsensusModelLine<PointT>::computeModelCoefficients (
     return (false);
   }
 
-  if (fabs (input_->points[samples[0]].x - input_->points[samples[1]].x) <= std::numeric_limits<float>::epsilon () && 
-      fabs (input_->points[samples[0]].y - input_->points[samples[1]].y) <= std::numeric_limits<float>::epsilon () && 
-      fabs (input_->points[samples[0]].z - input_->points[samples[1]].z) <= std::numeric_limits<float>::epsilon ())
+  if (fabs (input_->points[samples[0]].x - input_->points[samples[1]].x) <= std::numeric_limits<double>::epsilon () && 
+      fabs (input_->points[samples[0]].y - input_->points[samples[1]].y) <= std::numeric_limits<double>::epsilon () && 
+      fabs (input_->points[samples[0]].z - input_->points[samples[1]].z) <= std::numeric_limits<double>::epsilon ())
   {
     return (false);
   }
@@ -264,7 +264,7 @@ pcl::SampleConsensusModelLine<PointT>::projectPoints (
     {
       Eigen::Vector4f pt (input_->points[inliers[i]].x, input_->points[inliers[i]].y, input_->points[inliers[i]].z, 0);
       // double k = (DOT_PROD_3D (points[i], p21) - dotA_B) / dotB_B;
-      float k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
+      double k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
 
       Eigen::Vector4f pp = line_pt + k * line_dir;
       // Calculate the projection of the point on the line (pointProj = A + k * B)
@@ -291,7 +291,7 @@ pcl::SampleConsensusModelLine<PointT>::projectPoints (
     {
       Eigen::Vector4f pt (input_->points[inliers[i]].x, input_->points[inliers[i]].y, input_->points[inliers[i]].z, 0);
       // double k = (DOT_PROD_3D (points[i], p21) - dotA_B) / dotB_B;
-      float k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
+      double k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
 
       Eigen::Vector4f pp = line_pt + k * line_dir;
       // Calculate the projection of the point on the line (pointProj = A + k * B)

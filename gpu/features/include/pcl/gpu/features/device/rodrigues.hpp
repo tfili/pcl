@@ -44,9 +44,9 @@ namespace pcl
 {
     namespace device
     {
-        __device__ __host__ __forceinline__ void AngleAxisf(float angle, const float3& r, float3& row1, float3& row2, float3& row3)
+        __device__ __host__ __forceinline__ void AngleAxisf(double angle, const float3& r, float3& row1, float3& row2, float3& row3)
         {
-            float cosA, sinA;
+            double cosA, sinA;
             sincosf(angle, &sinA, &cosA);
 
             row1.x = cosA;  row1.y =  0.f; row1.z =  0.f; 
@@ -64,7 +64,7 @@ namespace pcl
 
         __device__ __host__ __forceinline__ void Rodrigues(const float3& rvec, float3& row1, float3& row2, float3& row3)
         {
-            float angle = norm(rvec);
+            double angle = norm(rvec);
             float3 unit_axis = make_float3(rvec.x/angle, rvec.y/angle, rvec.z/angle);
             AngleAxisf(angle, unit_axis, row1, row2, row3);
         }

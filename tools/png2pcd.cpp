@@ -99,16 +99,16 @@ saveCloud (const std::string &filename, const PointCloud<PointInT> &cloud, bool 
 }
 
 inline void
-depth2xyz (float v_viewing_angle, float h_viewing_angle,
+depth2xyz (double v_viewing_angle, double h_viewing_angle,
            int image_width, int image_height, int image_x, int image_y,
-           float depth, float &x, float &y, float &z)
+           double depth, double &x, double &y, double &z)
 {
-  float width, height;
-  static const float PI = 3.1415927;
+  double width, height;
+  static const double PI = 3.1415927;
 
   if (depth <= 0.0f)
   {
-    x = y = z = std::numeric_limits<float>::quiet_NaN ();
+    x = y = z = std::numeric_limits<double>::quiet_NaN ();
   }
   else
   {
@@ -176,9 +176,9 @@ main (int argc, char** argv)
   vtkSmartPointer<vtkImageData> depth_image_data;
   vtkSmartPointer<vtkPNGReader> depth_reader;
   bool enable_depth = false;
-  float v_viewing_angle = 43.0f;
-  float h_viewing_angle = 57.0f;
-  float depth_unit_magic = 1000.0f;
+  double v_viewing_angle = 43.0f;
+  double h_viewing_angle = 57.0f;
+  double depth_unit_magic = 1000.0f;
   if (png_file_indices.size () == 2)
   {
     depth_reader = vtkSmartPointer<vtkPNGReader>::New ();
@@ -227,7 +227,7 @@ main (int argc, char** argv)
   // Retrieve the entries from the image data and copy them into the output RGB cloud
   double* pixel = new double [4];
   memset (pixel, 0, sizeof (double) * 4);
-  float depth;
+  double depth;
 
   std::string intensity_type;
 
@@ -287,7 +287,7 @@ main (int argc, char** argv)
               depth2xyz (v_viewing_angle, h_viewing_angle,
                          mono_depth_cloud.width, mono_depth_cloud.height, x, y,
                          depth, xyzi.x, xyzi.y, xyzi.z);
-              xyzi.intensity = static_cast<float> (pixel[0]) / MAX_COLOR_INTENSITY;
+              xyzi.intensity = static_cast<double> (pixel[0]) / MAX_COLOR_INTENSITY;
 
               mono_depth_cloud (x, dimensions[1] - y -1) = xyzi;
             }
@@ -310,7 +310,7 @@ main (int argc, char** argv)
               pixel[0] = color_image_data->GetScalarComponentAsDouble (x, y, 0, 0);
 
               Intensity gray;
-              gray.intensity = static_cast<float> (pixel[0]) / MAX_COLOR_INTENSITY;
+              gray.intensity = static_cast<double> (pixel[0]) / MAX_COLOR_INTENSITY;
 
               mono_cloud (x, dimensions[1] - y - 1) = gray;
             }
@@ -400,7 +400,7 @@ main (int argc, char** argv)
                 (static_cast<int> (color.g)) << 8 |
                 (static_cast<int> (color.b));
 
-            color.rgb = static_cast<float> (rgb);
+            color.rgb = static_cast<double> (rgb);
 
             color.rgba = static_cast<uint32_t> (rgb);
 
@@ -476,7 +476,7 @@ main (int argc, char** argv)
                 (static_cast<int> (color.g)) << 8 |
                 (static_cast<int> (color.b));
 
-            color.rgb = static_cast<float> (rgb);
+            color.rgb = static_cast<double> (rgb);
             color.rgba = static_cast<uint32_t> (rgba);
 
             color_cloud (x, dimensions[1] - y - 1) = color;
@@ -586,7 +586,7 @@ main (int argc, char** argv)
                 (static_cast<int> (color.b));
 
             rgba = rgb;
-            color.rgb = static_cast<float> (rgb);
+            color.rgb = static_cast<double> (rgb);
             color.rgba = static_cast<uint32_t> (rgba);
             break;
 
@@ -599,7 +599,7 @@ main (int argc, char** argv)
                 (static_cast<int> (color.b));
 
             rgba = rgb;
-            color.rgb = static_cast<float> (rgb);
+            color.rgb = static_cast<double> (rgb);
             color.rgba = static_cast<uint32_t> (rgba);
             break;
 
@@ -616,7 +616,7 @@ main (int argc, char** argv)
                 (static_cast<int> (color.g)) << 8 |
                 (static_cast<int> (color.b));
 
-            color.rgb = static_cast<float> (rgb);
+            color.rgb = static_cast<double> (rgb);
             color.rgba = static_cast<uint32_t> (rgba);
             break;
           }
@@ -656,15 +656,15 @@ main (int argc, char** argv)
 
           switch (components)
           {
-            case 1:  gray.intensity = static_cast<float> (pixel[0]) / MAX_COLOR_INTENSITY;
+            case 1:  gray.intensity = static_cast<double> (pixel[0]) / MAX_COLOR_INTENSITY;
             break;
 
-            case 3:  gray.intensity = static_cast<float> ( RED_MULTIPLIER * pixel[0] +
+            case 3:  gray.intensity = static_cast<double> ( RED_MULTIPLIER * pixel[0] +
                 GREEN_MULTIPLIER * pixel[1] +
                 BLUE_MULTIPLIER * pixel[2] ) / MAX_COLOR_INTENSITY;
             break;
 
-            case 4:  gray.intensity = static_cast<float> ( RED_MULTIPLIER * pixel[0] +
+            case 4:  gray.intensity = static_cast<double> ( RED_MULTIPLIER * pixel[0] +
                 GREEN_MULTIPLIER * pixel[1] +
                 BLUE_MULTIPLIER * pixel[2] ) / MAX_COLOR_INTENSITY;
             break;
@@ -708,15 +708,15 @@ main (int argc, char** argv)
 
               switch (components)
               {
-                case 1:  gray.intensity = static_cast<float> (pixel[0]) / MAX_COLOR_INTENSITY;
+                case 1:  gray.intensity = static_cast<double> (pixel[0]) / MAX_COLOR_INTENSITY;
                 break;
 
-                case 3:  gray.intensity = static_cast<float> ( RED_MULTIPLIER * pixel[0] +
+                case 3:  gray.intensity = static_cast<double> ( RED_MULTIPLIER * pixel[0] +
                     GREEN_MULTIPLIER * pixel[1] +
                     BLUE_MULTIPLIER * pixel[2] ) / MAX_COLOR_INTENSITY;
                 break;
 
-                case 4:  gray.intensity = static_cast<float> ( RED_MULTIPLIER * pixel[0] +
+                case 4:  gray.intensity = static_cast<double> ( RED_MULTIPLIER * pixel[0] +
                     GREEN_MULTIPLIER * pixel[1] +
                     BLUE_MULTIPLIER * pixel[2] ) / MAX_COLOR_INTENSITY;
                 break;

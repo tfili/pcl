@@ -86,13 +86,13 @@ IEEE 754
 
 Storage
            size      sign     exponent         fraction
-  float    4 bytes   bit 31    8 bits (30-23)  23 bits (22-0)
+  double    4 bytes   bit 31    8 bits (30-23)  23 bits (22-0)
   double   8 bytes   bit 63   11 bits (62-52)  52 bits (51-0)
 
 sign bit = 1 indicates negative
 sign bit = 0 indicates positive
 
-float  absolute value = 2^(e-127)  * 1+(f/2^23)
+double  absolute value = 2^(e-127)  * 1+(f/2^23)
   e = value of the 8 bit number in the exponent field
   f = value of the 23 bit number in the fraction field
 
@@ -106,10 +106,10 @@ Exceptions:
 
   If all exponent bits are all 0 (e = 0) and at least one fraction
   bits is not zero, then the representaion is "denormalized".
-  In this case, the float absolute value is 0.f*2^-126 and the
+  In this case, the double absolute value is 0.f*2^-126 and the
   double absolute value is 0.f*2^-1022.
 
-  If all exponent bits are 1 (float e = 11111111binary = 255decimal
+  If all exponent bits are 1 (double e = 11111111binary = 255decimal
   or double e = 11111111111 binary = 2047 decimal) and the fraction
   bits are all zero, the number is infinity.  The sign bit
   determines the sign of infinity.
@@ -209,12 +209,12 @@ static double ON__dblinithelper(int i)
 }
 
 
-static float ON__fltinithelper(int i)
+static double ON__fltinithelper(int i)
 {
   // called twice - performance is not important
   union 
   {
-    float x;
+    double x;
     unsigned char b[4];
   } u;
   unsigned int i3, i2;
@@ -235,7 +235,7 @@ static float ON__fltinithelper(int i)
   {
     // this sitation is not handled by this algorithm
     // and that is a bug in the algorithm.
-    ON_ERROR("CPU has unexpected bit pattern in float 2.0f.");
+    ON_ERROR("CPU has unexpected bit pattern in double 2.0f.");
     i3 = 0;
     i2 = 0;
     i = 99;
@@ -275,9 +275,9 @@ const double ON_DBL_QNAN =  ON__dblinithelper(1);
 const double ON_DBL_PINF =  ON__dblinithelper(2);
 const double ON_DBL_NINF = -ON__dblinithelper(2);
 
-const float  ON_FLT_QNAN =  ON__fltinithelper(1);
-const float  ON_FLT_PINF =  ON__fltinithelper(2);
-const float  ON_FLT_NINF = -ON__fltinithelper(2);
+const double  ON_FLT_QNAN =  ON__fltinithelper(1);
+const double  ON_FLT_PINF =  ON__fltinithelper(2);
+const double  ON_FLT_NINF = -ON__fltinithelper(2);
 
 void ON_DBL_SNAN( double* x)
 {
@@ -348,11 +348,11 @@ void ON_DBL_SNAN( double* x)
   memcpy(x,&u.x,sizeof(*x));
 }
 
-void ON_FLT_SNAN( float* x)
+void ON_FLT_SNAN( double* x)
 {
   union 
   {
-    float x;
+    double x;
     unsigned char b[4];
   } u;
 
@@ -381,7 +381,7 @@ void ON_FLT_SNAN( float* x)
   {
     // this sitation is not handled by this algorithm
     // and that is a bug in the algorithm.
-    ON_ERROR("CPU has unexpected bit pattern in float 2.0f.");
+    ON_ERROR("CPU has unexpected bit pattern in double 2.0f.");
     memset(&x,0xFF,sizeof(*x));
     return;
   }
@@ -480,9 +480,9 @@ static void ValidateSizesHelper()
     {
       ON_ERROR("OpenNURBS assumes sizeof(int) <= sizeof(void*).");
     }
-    if ( 4 !=  sizeof(float) )
+    if ( 4 !=  sizeof(double) )
     {
-      ON_ERROR("OpenNURBS assumes sizeof(float) = 4.");
+      ON_ERROR("OpenNURBS assumes sizeof(double) = 4.");
     }
     if ( 8 !=  sizeof(double) )
     {

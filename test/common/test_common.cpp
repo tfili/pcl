@@ -59,7 +59,7 @@ TEST (PCL, PointXYZRGB)
   uint32_t rgb = (static_cast<uint32_t> (r) << 16 | 
                   static_cast<uint32_t> (g) << 8 | 
                   static_cast<uint32_t> (b));
-  p.rgb = *reinterpret_cast<float*>(&rgb);
+  p.rgb = *reinterpret_cast<double*>(&rgb);
 
   rgb = *reinterpret_cast<int*>(&p.rgb);
   uint8_t rr = (rgb >> 16) & 0x0000ff;
@@ -93,7 +93,7 @@ TEST (PCL, PointXYZRGBNormal)
   uint32_t rgb = (static_cast<uint32_t> (r) << 16 | 
                   static_cast<uint32_t> (g) << 8 | 
                   static_cast<uint32_t> (b));
-  p.rgb = *reinterpret_cast<float*>(&rgb);
+  p.rgb = *reinterpret_cast<double*>(&rgb);
 
   rgb = *reinterpret_cast<int*>(&p.rgb);
   uint8_t rr = (rgb >> 16) & 0x0000ff;
@@ -122,10 +122,10 @@ TEST (PCL, PointXYZRGBNormal)
 TEST(PCL, isFinite)
 {
   PointXYZ p;
-  p.x = std::numeric_limits<float>::quiet_NaN ();
+  p.x = std::numeric_limits<double>::quiet_NaN ();
   EXPECT_EQ (isFinite (p), false);
   Normal n;
-  n.normal_x = std::numeric_limits<float>::quiet_NaN ();
+  n.normal_x = std::numeric_limits<double>::quiet_NaN ();
   EXPECT_EQ (isFinite (n), false);
 }
 
@@ -188,7 +188,7 @@ TEST (PCL, PointCloud)
   cloud.width = 10;
   for (uint32_t i = 0; i < cloud.width*cloud.height; ++i)
   {
-    float j = static_cast<float> (i);
+    double j = static_cast<double> (i);
     cloud.points.push_back (PointXYZ (3.0f * j + 0.0f, 3.0f * j + 1.0f, 3.0f * j + 2.0f));
   }
 
@@ -396,42 +396,42 @@ TEST (PCL, CopyIfFieldExists)
   bool is_x = false, is_y = false, is_z = false, is_rgb = false, 
        is_normal_x = false, is_normal_y = false, is_normal_z = false;
 
-  float x_val, y_val, z_val, normal_x_val, normal_y_val, normal_z_val, rgb_val;
-  x_val = y_val = z_val = std::numeric_limits<float>::quiet_NaN ();
-  normal_x_val = normal_y_val = normal_z_val = std::numeric_limits<float>::quiet_NaN ();
-  rgb_val = std::numeric_limits<float>::quiet_NaN ();
+  double x_val, y_val, z_val, normal_x_val, normal_y_val, normal_z_val, rgb_val;
+  x_val = y_val = z_val = std::numeric_limits<double>::quiet_NaN ();
+  normal_x_val = normal_y_val = normal_z_val = std::numeric_limits<double>::quiet_NaN ();
+  rgb_val = std::numeric_limits<double>::quiet_NaN ();
 
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "x", is_x, x_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "x", is_x, x_val));
   EXPECT_EQ (is_x, true);
   EXPECT_EQ (x_val, 1.0);
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "y", is_y, y_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "y", is_y, y_val));
   EXPECT_EQ (is_y, true);
   EXPECT_EQ (y_val, 2.0);
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "z", is_z, z_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "z", is_z, z_val));
   EXPECT_EQ (is_z, true);
   EXPECT_EQ (z_val, 3.0);
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "rgb", is_rgb, rgb_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "rgb", is_rgb, rgb_val));
   EXPECT_EQ (is_rgb, true);
   int rgb = *reinterpret_cast<int*>(&rgb_val);
   EXPECT_EQ (rgb, 8339710);      // alpha is 0
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "normal_x", is_normal_x, normal_x_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "normal_x", is_normal_x, normal_x_val));
   EXPECT_EQ (is_normal_x, true);
   EXPECT_EQ (normal_x_val, 1.0);
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "normal_y", is_normal_y, normal_y_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "normal_y", is_normal_y, normal_y_val));
   EXPECT_EQ (is_normal_y, true);
   EXPECT_EQ (normal_y_val, 0.0);
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "normal_z", is_normal_z, normal_z_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "normal_z", is_normal_z, normal_z_val));
   EXPECT_EQ (is_normal_z, true);
   EXPECT_EQ (normal_z_val, 0.0);
   
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "x", x_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "x", x_val));
   EXPECT_EQ (x_val, 1.0);
 
-  float xx_val = -1.0;
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "xx", xx_val));
+  double xx_val = -1.0;
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "xx", xx_val));
   EXPECT_EQ (xx_val, -1.0);
   bool is_xx = true;
-  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, float> (p, "xx", is_xx, xx_val));
+  pcl::for_each_type<FieldList> (CopyIfFieldExists<PointXYZRGBNormal, double> (p, "xx", is_xx, xx_val));
   EXPECT_EQ (is_xx, false);
 }
 
@@ -445,24 +445,24 @@ TEST (PCL, SetIfFieldExists)
   p.normal_x = p.normal_y = p.normal_z = 0.0;
 
   typedef pcl::traits::fieldList<PointXYZRGBNormal>::type FieldList;
-  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, float> (p, "x", 1.0));
+  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, double> (p, "x", 1.0));
   EXPECT_EQ (p.x, 1.0);
-  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, float> (p, "y", 2.0));
+  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, double> (p, "y", 2.0));
   EXPECT_EQ (p.y, 2.0);
-  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, float> (p, "z", 3.0));
+  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, double> (p, "z", 3.0));
   EXPECT_EQ (p.z, 3.0);
-  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, float> (p, "normal_x", 1.0));
+  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, double> (p, "normal_x", 1.0));
   EXPECT_EQ (p.normal_x, 1.0);
-  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, float> (p, "normal_y", 0.0));
+  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, double> (p, "normal_y", 0.0));
   EXPECT_EQ (p.normal_y, 0.0);
-  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, float> (p, "normal_z", 0.0));
+  pcl::for_each_type<FieldList> (SetIfFieldExists<PointXYZRGBNormal, double> (p, "normal_z", 0.0));
   EXPECT_EQ (p.normal_z, 0.0);
 
 //  pcl::PointXY p1;
-//  pcl::for_each_type<pcl::traits::fieldList<pcl::PointXY>::type> (pcl::SetIfFieldExists<pcl::PointXY, float> (p1, "intensity", 3.0));
+//  pcl::for_each_type<pcl::traits::fieldList<pcl::PointXY>::type> (pcl::SetIfFieldExists<pcl::PointXY, double> (p1, "intensity", 3.0));
 //
 //  pcl::PFHSignature125 p2;
-//  pcl::for_each_type<pcl::traits::fieldList<pcl::PFHSignature125>::type> (pcl::SetIfFieldExists<pcl::PFHSignature125, float*> (p2, "intensity", 3.0));
+//  pcl::for_each_type<pcl::traits::fieldList<pcl::PFHSignature125>::type> (pcl::SetIfFieldExists<pcl::PFHSignature125, double*> (p2, "intensity", 3.0));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

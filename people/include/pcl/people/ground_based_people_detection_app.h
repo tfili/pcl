@@ -121,7 +121,7 @@ namespace pcl
        * \param[in] voxel_size Value of the voxel dimension (default = 0.06m.).
        */
       void
-      setVoxelSize (float voxel_size);
+      setVoxelSize (double voxel_size);
 
       /**
        * \brief Set intrinsic parameters of the RGB camera.
@@ -146,7 +146,7 @@ namespace pcl
        * \param[in] max The end of the field of view in z-direction.
        */
       void
-      setFOV (float min, float max);
+      setFOV (double min, double max);
 
       /**
        * \brief Set sensor orientation (vertical = true means portrait mode, vertical = false means landscape mode).
@@ -173,7 +173,7 @@ namespace pcl
        * \param[in] max_width Maximum width for a person cluster (default = 8.0).
        */
       void
-      setPersonClusterLimits (float min_height, float max_height, float min_width, float max_width);
+      setPersonClusterLimits (double min_height, double max_height, double min_width, double max_width);
 
       /**
        * \brief Set minimum distance between persons' heads.
@@ -181,7 +181,7 @@ namespace pcl
        * \param[in] heads_minimum_distance Minimum allowed distance between persons' heads (default = 0.3).
        */
       void
-      setMinimumDistanceBetweenHeads (float heads_minimum_distance);
+      setMinimumDistanceBetweenHeads (double heads_minimum_distance);
 
       /**
        * \brief Get the minimum and maximum allowed height and width for a person cluster.
@@ -192,7 +192,7 @@ namespace pcl
        * \param[out] max_width Maximum width for a person cluster.
        */
       void
-      getPersonClusterLimits (float& min_height, float& max_height, float& min_width, float& max_width);
+      getPersonClusterLimits (double& min_height, double& max_height, double& min_width, double& max_width);
 
       /**
        * \brief Get minimum and maximum allowed number of points for a person cluster.
@@ -206,7 +206,7 @@ namespace pcl
       /**
        * \brief Get minimum distance between persons' heads.
        */
-      float
+      double
       getMinimumDistanceBetweenHeads ();
 
       /**
@@ -289,7 +289,7 @@ namespace pcl
       int sampling_factor_; 
       
       /** \brief voxel size */
-      float voxel_size_;                  
+      double voxel_size_;                  
       
       /** \brief ground plane coefficients */
       Eigen::VectorXf ground_coeffs_;
@@ -301,7 +301,7 @@ namespace pcl
       Eigen::VectorXf ground_coeffs_transformed_;
 
       /** \brief ground plane normalization factor */
-      float sqrt_ground_coeffs_;
+      double sqrt_ground_coeffs_;
 
       /** \brief rotation matrix which transforms input point cloud to internal people tracker coordinate frame */
       Eigen::Matrix3f transformation_;
@@ -322,22 +322,22 @@ namespace pcl
       pcl::PointCloud<pcl::RGB>::Ptr rgb_image_;      
       
       /** \brief person clusters maximum height from the ground plane */
-      float max_height_;                  
+      double max_height_;                  
       
       /** \brief person clusters minimum height from the ground plane */
-      float min_height_;
+      double min_height_;
 
       /** \brief person clusters maximum width, used to estimate how many points maximally represent a person cluster */
-      float max_width_;
+      double max_width_;
 
       /** \brief person clusters minimum width, used to estimate how many points minimally represent a person cluster */
-      float min_width_;
+      double min_width_;
 
       /** \brief the beginning of the field of view in z-direction, should be usually set to zero */
-      float min_fov_;
+      double min_fov_;
 
       /** \brief the end of the field of view in z-direction */
-      float max_fov_;
+      double max_fov_;
 
       /** \brief if true, the sensor is considered to be vertically placed (portrait mode) */
       bool vertical_;                    
@@ -353,7 +353,7 @@ namespace pcl
       int min_points_;                  
       
       /** \brief minimum distance between persons' heads */
-      float heads_minimum_distance_;            
+      double heads_minimum_distance_;            
       
       /** \brief intrinsic parameters matrix of the RGB camera */
       Eigen::Matrix3f intrinsics_matrix_;

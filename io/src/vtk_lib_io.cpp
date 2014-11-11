@@ -257,9 +257,9 @@ pcl::io::vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, pcl::PolygonMe
   for (vtkIdType i = 0; i < mesh_points->GetNumberOfPoints (); i++)
   {
     mesh_points->GetPoint (i, &point_xyz[0]);
-    xyz_cloud->points[i].x = static_cast<float> (point_xyz[0]);
-    xyz_cloud->points[i].y = static_cast<float> (point_xyz[1]);
-    xyz_cloud->points[i].z = static_cast<float> (point_xyz[2]);
+    xyz_cloud->points[i].x = static_cast<double> (point_xyz[0]);
+    xyz_cloud->points[i].y = static_cast<double> (point_xyz[1]);
+    xyz_cloud->points[i].z = static_cast<double> (point_xyz[2]);
   }
   // And put it in the mesh cloud
   pcl::toPCLPointCloud2 (*xyz_cloud, mesh.cloud);
@@ -317,7 +317,7 @@ pcl::io::vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, pcl::PolygonMe
 
     for (vtkIdType i = 0; i < mesh_points->GetNumberOfPoints (); i++)
     {
-      float normal[3];
+      double normal[3];
       normals->GetTupleValue (i, normal);
       normal_cloud->points[i].normal_x = normal[0];
       normal_cloud->points[i].normal_y = normal[1];
@@ -381,7 +381,7 @@ pcl::io::vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, pcl::TextureMe
   {
     for (vtkIdType i = 0; i < nr_points; ++i)
     {
-      float tex[2];
+      double tex[2];
       texture_coords->GetTupleValue (i, tex);
       mesh.tex_coordinates.front ().push_back (Eigen::Vector2f (tex[0], tex[1]));
     }
@@ -429,9 +429,9 @@ pcl::io::mesh2vtk (const pcl::PolygonMesh& mesh, vtkSmartPointer<vtkPolyData>& p
     Eigen::Array4i xyz_offset (mesh.cloud.fields[idx_x].offset, mesh.cloud.fields[idx_y].offset, mesh.cloud.fields[idx_z].offset, 0);
     for (vtkIdType cp = 0; cp < static_cast<vtkIdType> (nr_points); ++cp, xyz_offset += mesh.cloud.point_step)
     {
-      memcpy(&pt[0], &mesh.cloud.data[xyz_offset[0]], sizeof (float));
-      memcpy(&pt[1], &mesh.cloud.data[xyz_offset[1]], sizeof (float));
-      memcpy(&pt[2], &mesh.cloud.data[xyz_offset[2]], sizeof (float));
+      memcpy(&pt[0], &mesh.cloud.data[xyz_offset[0]], sizeof (double));
+      memcpy(&pt[1], &mesh.cloud.data[xyz_offset[1]], sizeof (double));
+      memcpy(&pt[2], &mesh.cloud.data[xyz_offset[2]], sizeof (double));
       vtk_mesh_points->InsertPoint (cp, pt[0], pt[1], pt[2]);
     }
   }
@@ -471,13 +471,13 @@ pcl::io::mesh2vtk (const pcl::PolygonMesh& mesh, vtkSmartPointer<vtkPolyData>& p
   {
     vtkSmartPointer<vtkFloatArray> normals = vtkSmartPointer<vtkFloatArray>::New ();
     normals->SetNumberOfComponents (3);
-    float nx = 0.0f, ny = 0.0f, nz = 0.0f;
+    double nx = 0.0f, ny = 0.0f, nz = 0.0f;
     for (vtkIdType cp = 0; cp < nr_points; ++cp)
     {
-      memcpy (&nx, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_x].offset], sizeof (float));
-      memcpy (&ny, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_y].offset], sizeof (float));
-      memcpy (&nz, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_z].offset], sizeof (float));
-      const float normal[3] = {nx, ny, nz};
+      memcpy (&nx, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_x].offset], sizeof (double));
+      memcpy (&ny, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_y].offset], sizeof (double));
+      memcpy (&nz, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_z].offset], sizeof (double));
+      const double normal[3] = {nx, ny, nz};
       normals->InsertNextTupleValue (normal);
     }
     poly_data->GetPointData()->SetNormals (normals);
@@ -509,14 +509,14 @@ pcl::io::saveRangeImagePlanarFilePNG (
     {
     for (int x = 0; x < dims[0]; x++)
       {
-      float* pixel = static_cast<float*>(image->GetScalarPointer(x,y,0));
+      double* pixel = static_cast<double*>(image->GetScalarPointer(x,y,0));
       pixel[0] = range_image(y,x).range;
       }
     }
 
   // Compute the scaling
-  float oldRange = static_cast<float> (image->GetScalarRange()[1] - image->GetScalarRange()[0]);
-  float newRange = 255; // We want the output [0,255]
+  double oldRange = static_cast<double> (image->GetScalarRange()[1] - image->GetScalarRange()[0]);
+  double newRange = 255; // We want the output [0,255]
 
   vtkSmartPointer<vtkImageShiftScale> shiftScaleFilter = vtkSmartPointer<vtkImageShiftScale>::New();
   shiftScaleFilter->SetOutputScalarTypeToUnsignedChar();
@@ -551,11 +551,11 @@ pcl::io::pointCloudTovtkPolyData(const pcl::PCLPointCloud2Ptr& cloud, vtkSmartPo
   vtkIdType pid[1];
   for (size_t point_idx = 0; point_idx < cloud->width * cloud->height; point_idx ++)
   {
-    float point[3];
+    double point[3];
 
     int point_offset = (int (point_idx) * cloud->point_step);
     int offset = point_offset + cloud->fields[x_idx].offset;
-    memcpy (&point, &cloud->data[offset], sizeof (float)*3);
+    memcpy (&point, &cloud->data[offset], sizeof (double)*3);
 
     pid[0] = cloud_points->InsertNextPoint (point);
     cloud_vertices->InsertNextCell (1, pid);
@@ -600,11 +600,11 @@ pcl::io::pointCloudTovtkPolyData(const pcl::PCLPointCloud2Ptr& cloud, vtkSmartPo
 
     for (size_t point_idx = 0; point_idx < cloud->width * cloud->height; point_idx ++)
     {
-      float intensity;
+      double intensity;
 
       int point_offset = (int (point_idx) * cloud->point_step);
       int offset = point_offset + cloud->fields[intensity_idx].offset;
-      memcpy (&intensity, &cloud->data[offset], sizeof(float));
+      memcpy (&intensity, &cloud->data[offset], sizeof(double));
 
       cloud_intensity->InsertNextValue(intensity);
     }
@@ -625,11 +625,11 @@ pcl::io::pointCloudTovtkPolyData(const pcl::PCLPointCloud2Ptr& cloud, vtkSmartPo
 
     for (size_t point_idx = 0; point_idx < cloud->width * cloud->height; point_idx ++)
     {
-      float normal[3];
+      double normal[3];
 
       int point_offset = (int (point_idx) * cloud->point_step);
       int offset = point_offset + cloud->fields[normal_x_idx].offset;
-      memcpy (&normal, &cloud->data[offset], sizeof (float)*3);
+      memcpy (&normal, &cloud->data[offset], sizeof (double)*3);
 
       normals->InsertNextTuple(normal);
     }

@@ -91,11 +91,11 @@ pcl::SampleConsensusModelCircle2D<PointT>::computeModelCoefficients (const std::
   Eigen::Vector2d m (- p1p0dif[0] / p1p0dif[1], - p2p1dif[0] / p2p1dif[1]);
 
   // Center (x, y)
-  model_coefficients[0] = static_cast<float> ((m[0] * u[0] -  m[1] * v[0]  - uvdif[1] )             / (m[0] - m[1]));
-  model_coefficients[1] = static_cast<float> ((m[0] * m[1] * uvdif[0] +  m[0] * v[1] - m[1] * u[1]) / (m[0] - m[1]));
+  model_coefficients[0] = static_cast<double> ((m[0] * u[0] -  m[1] * v[0]  - uvdif[1] )             / (m[0] - m[1]));
+  model_coefficients[1] = static_cast<double> ((m[0] * m[1] * uvdif[0] +  m[0] * v[1] - m[1] * u[1]) / (m[0] - m[1]));
 
   // Radius
-  model_coefficients[2] = static_cast<float> (sqrt ((model_coefficients[0] - p0[0]) * (model_coefficients[0] - p0[0]) +
+  model_coefficients[2] = static_cast<double> (sqrt ((model_coefficients[0] - p0[0]) * (model_coefficients[0] - p0[0]) +
                                                     (model_coefficients[1] - p0[1]) * (model_coefficients[1] - p0[1])));
   return (true);
 }
@@ -146,7 +146,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::selectWithinDistance (
   {
     // Calculate the distance from the point to the sphere as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    float distance = fabsf (sqrtf (
+    double distance = fabsf (sqrtf (
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 
@@ -180,7 +180,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::countWithinDistance (
   {
     // Calculate the distance from the point to the sphere as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    float distance = fabsf (sqrtf (
+    double distance = fabsf (sqrtf (
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 
@@ -218,7 +218,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::optimizeModelCoefficients (
 
   OptimizationFunctor functor (static_cast<int> (inliers.size ()), this);
   Eigen::NumericalDiff<OptimizationFunctor> num_diff (functor);
-  Eigen::LevenbergMarquardt<Eigen::NumericalDiff<OptimizationFunctor>, float> lm (num_diff);
+  Eigen::LevenbergMarquardt<Eigen::NumericalDiff<OptimizationFunctor>, double> lm (num_diff);
   int info = lm.minimize (optimized_coefficients);
 
   // Compute the L2 norm of the residuals
@@ -259,9 +259,9 @@ pcl::SampleConsensusModelCircle2D<PointT>::projectPoints (
     // Iterate through the 3d points and calculate the distances from them to the plane
     for (size_t i = 0; i < inliers.size (); ++i)
     {
-      float dx = input_->points[inliers[i]].x - model_coefficients[0];
-      float dy = input_->points[inliers[i]].y - model_coefficients[1];
-      float a = sqrtf ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
+      double dx = input_->points[inliers[i]].x - model_coefficients[0];
+      double dy = input_->points[inliers[i]].y - model_coefficients[1];
+      double a = sqrtf ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
 
       projected_points.points[inliers[i]].x = a * dx + model_coefficients[0];
       projected_points.points[inliers[i]].y = a * dy + model_coefficients[1];
@@ -283,9 +283,9 @@ pcl::SampleConsensusModelCircle2D<PointT>::projectPoints (
     // Iterate through the 3d points and calculate the distances from them to the plane
     for (size_t i = 0; i < inliers.size (); ++i)
     {
-      float dx = input_->points[inliers[i]].x - model_coefficients[0];
-      float dy = input_->points[inliers[i]].y - model_coefficients[1];
-      float a = sqrtf ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
+      double dx = input_->points[inliers[i]].x - model_coefficients[0];
+      double dy = input_->points[inliers[i]].y - model_coefficients[1];
+      double a = sqrtf ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
 
       projected_points.points[i].x = a * dx + model_coefficients[0];
       projected_points.points[i].y = a * dy + model_coefficients[1];

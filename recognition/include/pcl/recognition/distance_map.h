@@ -67,7 +67,7 @@ namespace pcl
       }
     
       /** \brief Returns a pointer to the beginning of map. */
-      inline float * 
+      inline double * 
       getData () 
       { 
         return (&data_[0]); 
@@ -89,7 +89,7 @@ namespace pcl
         * \param[in] col_index the column index of the element to access.
         * \param[in] row_index the row index of the element to access.
         */
-      inline float & 
+      inline double & 
       operator() (const size_t col_index, const size_t row_index)
       {
         return (data_[row_index*width_ + col_index]);
@@ -99,7 +99,7 @@ namespace pcl
         * \param[in] col_index the column index of the element to access.
         * \param[in] row_index the row index of the element to access.
         */
-      inline const float & 
+      inline const double & 
       operator() (const size_t col_index, const size_t row_index) const
       {
         return (data_[row_index*width_ + col_index]);
@@ -107,7 +107,7 @@ namespace pcl
 
     protected:
       /** \brief The storage for the distance map data. */
-      std::vector<float> data_;
+      std::vector<double> data_;
       /** \brief The width of the map. */
       size_t width_;
       /** \brief The height of the map. */

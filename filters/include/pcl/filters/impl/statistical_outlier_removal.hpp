@@ -84,8 +84,8 @@ pcl::StatisticalOutlierRemoval<PointT>::applyFilterIndices (std::vector<int> &in
 
   // The arrays to be used
   std::vector<int> nn_indices (mean_k_);
-  std::vector<float> nn_dists (mean_k_);
-  std::vector<float> distances (indices_->size ());
+  std::vector<double> nn_dists (mean_k_);
+  std::vector<double> distances (indices_->size ());
   indices.resize (indices_->size ());
   removed_indices_->resize (indices_->size ());
   int oii = 0, rii = 0;  // oii = output indices iterator, rii = removed indices iterator
@@ -114,7 +114,7 @@ pcl::StatisticalOutlierRemoval<PointT>::applyFilterIndices (std::vector<int> &in
     double dist_sum = 0.0;
     for (int k = 1; k < mean_k_ + 1; ++k)  // k = 0 is the query point
       dist_sum += sqrt (nn_dists[k]);
-    distances[iii] = static_cast<float> (dist_sum / mean_k_);
+    distances[iii] = static_cast<double> (dist_sum / mean_k_);
     valid_distances++;
   }
 

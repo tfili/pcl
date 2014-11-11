@@ -82,7 +82,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_table_plane ()
   bb_cluster_proj_.setModelType (pcl::SACMODEL_NORMAL_PLANE);
 
   // ---[ PassThroughFilter
-  pass_.setFilterLimits (float (min_z_bounds_), float (max_z_bounds_));
+  pass_.setFilterLimits (double (min_z_bounds_), double (max_z_bounds_));
   pass_.setFilterFieldName ("z");
   pass_.setInputCloud (input_);
   pass_.filter (*cloud_filtered_);
@@ -142,7 +142,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_table_plane ()
   vp -= table_hull->points[0].getVector4fMap ();
   vp[3] = 0;
   // Dot product between the (viewpoint - point) and the plane normal
-  float cos_theta = vp.dot (model_coefficients);
+  double cos_theta = vp.dot (model_coefficients);
   // Flip the plane normal
   if (cos_theta < 0)
   {
@@ -212,7 +212,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
   cluster_.setSearchMethod (clusters_tree_);
 
   // ---[ PassThroughFilter
-  pass_.setFilterLimits (float (min_z_bounds_), float (max_z_bounds_));
+  pass_.setFilterLimits (double (min_z_bounds_), double (max_z_bounds_));
   pass_.setFilterFieldName ("z");
   pass_.setInputCloud (input_);
   pass_.filter (*cloud_filtered_);
@@ -272,7 +272,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
   vp -= table_hull->points[0].getVector4fMap ();
   vp[3] = 0;
   // Dot product between the (viewpoint - point) and the plane normal
-  float cos_theta = vp.dot (model_coefficients);
+  double cos_theta = vp.dot (model_coefficients);
   // Flip the plane normal
   if (cos_theta < 0)
   {
@@ -316,9 +316,9 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
 
   //connected components on the binary image
 
-  std::map<float, float> connected_labels;
-  float c_intensity = 0.1f;
-  float intensity_incr = 0.1f;
+  std::map<double, double> connected_labels;
+  double c_intensity = 0.1f;
+  double intensity_incr = 0.1f;
 
   {
 
@@ -410,8 +410,8 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
 
                   if ((*binary_cloud) (i - 1, j).intensity != (*binary_cloud) (i, j - 1).intensity)
                   {
-                    float smaller_intensity = (*binary_cloud) (i - 1, j).intensity;
-                    float bigger_intensity = (*binary_cloud) (i, j - 1).intensity;
+                    double smaller_intensity = (*binary_cloud) (i - 1, j).intensity;
+                    double bigger_intensity = (*binary_cloud) (i, j - 1).intensity;
 
                     if ((*binary_cloud) (i - 1, j).intensity > (*binary_cloud) (i, j - 1).intensity)
                     {
@@ -441,8 +441,8 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
                     {
                       if ((*binary_cloud) (i - dist, j).intensity != (*binary_cloud) (i, j - dist).intensity)
                       {
-                        float smaller_intensity = (*binary_cloud) (i - dist, j).intensity;
-                        float bigger_intensity = (*binary_cloud) (i, j - dist).intensity;
+                        double smaller_intensity = (*binary_cloud) (i - dist, j).intensity;
+                        double bigger_intensity = (*binary_cloud) (i, j - dist).intensity;
 
                         if ((*binary_cloud) (i - dist, j).intensity > (*binary_cloud) (i, j - dist).intensity)
                         {
@@ -478,10 +478,10 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
     }
   }
 
-  std::map<float, pcl::PointIndices> clusters_map;
+  std::map<double, pcl::PointIndices> clusters_map;
 
   {
-    std::map<float, float>::iterator it;
+    std::map<double, double>::iterator it;
 
     for (int i = 0; i < int (binary_cloud->width); i++)
     {
@@ -498,7 +498,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
             it = connected_labels.find (binary_cloud->at (i, j).intensity);
           }
 
-          std::map<float, pcl::PointIndices>::iterator it_indices;
+          std::map<double, pcl::PointIndices>::iterator it_indices;
           it_indices = clusters_map.find (binary_cloud->at (i, j).intensity);
           if (it_indices == clusters_map.end ())
           {
@@ -514,7 +514,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
 
   clusters.resize (clusters_map.size ());
 
-  std::map<float, pcl::PointIndices>::iterator it_indices;
+  std::map<double, pcl::PointIndices>::iterator it_indices;
   int k = 0;
   for (it_indices = clusters_map.begin (); it_indices != clusters_map.end (); it_indices++)
   {
@@ -583,7 +583,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute (std::vector<CloudPtr> 
   cluster_.setSearchMethod (clusters_tree_);
 
   // ---[ PassThroughFilter
-  pass_.setFilterLimits (float (min_z_bounds_), float (max_z_bounds_));
+  pass_.setFilterLimits (double (min_z_bounds_), double (max_z_bounds_));
   pass_.setFilterFieldName ("z");
   pass_.setInputCloud (input_);
   pass_.filter (*cloud_filtered_);
@@ -648,7 +648,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute (std::vector<CloudPtr> 
   vp -= table_hull->points[0].getVector4fMap ();
   vp[3] = 0;
   // Dot product between the (viewpoint - point) and the plane normal
-  float cos_theta = vp.dot (model_coefficients);
+  double cos_theta = vp.dot (model_coefficients);
   // Flip the plane normal
   if (cos_theta < 0)
   {
@@ -746,7 +746,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_full (std::vector<Cloud
   cluster_.setSearchMethod (clusters_tree_);
 
   // ---[ PassThroughFilter
-  pass_.setFilterLimits (float (min_z_bounds_), float (max_z_bounds_));
+  pass_.setFilterLimits (double (min_z_bounds_), double (max_z_bounds_));
   pass_.setFilterFieldName ("z");
   pass_.setInputCloud (input_);
   pass_.filter (*cloud_filtered_);
@@ -811,7 +811,7 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_full (std::vector<Cloud
   vp -= table_hull->points[0].getVector4fMap ();
   vp[3] = 0;
   // Dot product between the (viewpoint - point) and the plane normal
-  float cos_theta = vp.dot (model_coefficients);
+  double cos_theta = vp.dot (model_coefficients);
   // Flip the plane normal
   if (cos_theta < 0)
   {

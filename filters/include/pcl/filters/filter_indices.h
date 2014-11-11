@@ -88,7 +88,7 @@ namespace pcl
       FilterIndices (bool extract_removed_indices = false) :
           negative_ (false), 
           keep_organized_ (false), 
-          user_filter_value_ (std::numeric_limits<float>::quiet_NaN ())
+          user_filter_value_ (std::numeric_limits<double>::quiet_NaN ())
       {
         extract_removed_indices_ = extract_removed_indices;
       }
@@ -163,7 +163,7 @@ namespace pcl
         * \param[in] value the user given value that the filtered point dimensions should be set to (default = NaN).
         */
       inline void
-      setUserFilterValue (float value)
+      setUserFilterValue (double value)
       {
         user_filter_value_ = value;
       }
@@ -180,7 +180,7 @@ namespace pcl
       bool keep_organized_;
 
       /** \brief The user given value that the filtered point dimensions should be set to (default = NaN). */
-      float user_filter_value_;
+      double user_filter_value_;
 
       /** \brief Abstract filter method for point cloud indices. */
       virtual void
@@ -213,7 +213,7 @@ namespace pcl
       FilterIndices (bool extract_removed_indices = false) :
           negative_ (false), 
           keep_organized_ (false), 
-          user_filter_value_ (std::numeric_limits<float>::quiet_NaN ())
+          user_filter_value_ (std::numeric_limits<double>::quiet_NaN ())
       {
         extract_removed_indices_ = extract_removed_indices;
       }
@@ -279,7 +279,7 @@ namespace pcl
         * \param[in] value the user given value that the filtered point dimensions should be set to (default = NaN).
         */
       inline void
-      setUserFilterValue (float value)
+      setUserFilterValue (double value)
       {
         user_filter_value_ = value;
       }
@@ -293,7 +293,7 @@ namespace pcl
       bool keep_organized_;
 
       /** \brief The user given value that the filtered point dimensions should be set to (default = NaN). */
-      float user_filter_value_;
+      double user_filter_value_;
 
       /** \brief Abstract filter method for point cloud indices. */
       virtual void

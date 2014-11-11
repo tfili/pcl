@@ -74,14 +74,14 @@ pcl::cloud_composer::SupervoxelsTool::performTemplatedAction (QList <const Cloud
     QVariant variant = input_item->data (ItemDataRole::CLOUD_TEMPLATED);
     typename PointCloud <PointT>::Ptr input_cloud = variant.value <typename PointCloud<PointT>::Ptr> ();
     
-    float resolution = parameter_model_->getProperty("Resolution").toFloat ();
+    double resolution = parameter_model_->getProperty("Resolution").toFloat ();
     qDebug () << "Octree resolution = "<<resolution;
-    float seed_resolution = parameter_model_->getProperty("Seed Resolution").toFloat ();
+    double seed_resolution = parameter_model_->getProperty("Seed Resolution").toFloat ();
     qDebug () << "Seed resolution = "<<seed_resolution;
     
-    float rgb_weight = parameter_model_->getProperty("RGB Weight").toFloat ();
-    float normal_weight = parameter_model_->getProperty("Normals Weight").toFloat ();
-    float spatial_weight = parameter_model_->getProperty("Spatial Weight").toFloat ();
+    double rgb_weight = parameter_model_->getProperty("RGB Weight").toFloat ();
+    double normal_weight = parameter_model_->getProperty("Normals Weight").toFloat ();
+    double spatial_weight = parameter_model_->getProperty("Spatial Weight").toFloat ();
     
   
     pcl::SupervoxelClustering<PointT> super (resolution, seed_resolution);

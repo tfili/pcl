@@ -374,7 +374,7 @@ class NILinemod
         return;
 
       vector<int> indices (1);
-      vector<float> distances (1);
+      vector<double> distances (1);
 
       // Use mutices to make sure we get the right cloud
       boost::mutex::scoped_lock lock1 (cloud_mutex_);

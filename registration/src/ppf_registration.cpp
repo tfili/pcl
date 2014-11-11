@@ -51,13 +51,13 @@ pcl::PPFHashMapSearch::setInputFeatureCloud (PointCloud<PPFSignature>::ConstPtr 
 {
   // Discretize the feature cloud and insert it in the hash map
   feature_hash_map_->clear ();
-  unsigned int n = static_cast<unsigned int> (sqrt (static_cast<float> (feature_cloud->points.size ())));
+  unsigned int n = static_cast<unsigned int> (sqrt (static_cast<double> (feature_cloud->points.size ())));
   int d1, d2, d3, d4;
   max_dist_ = -1.0;
   alpha_m_.resize (n);
   for (size_t i = 0; i < n; ++i)
   {
-    std::vector <float> alpha_m_row (n);
+    std::vector <double> alpha_m_row (n);
     for (size_t j = 0; j < n; ++j)
     {
       d1 = static_cast<int> (floor (feature_cloud->points[i*n+j].f1 / angle_discretization_step_));
@@ -79,7 +79,7 @@ pcl::PPFHashMapSearch::setInputFeatureCloud (PointCloud<PPFSignature>::ConstPtr 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::PPFHashMapSearch::nearestNeighborSearch (float &f1, float &f2, float &f3, float &f4,
+pcl::PPFHashMapSearch::nearestNeighborSearch (double &f1, double &f2, double &f3, double &f4,
                                               std::vector<std::pair<size_t, size_t> > &indices)
 {
   if (!internals_initialized_)

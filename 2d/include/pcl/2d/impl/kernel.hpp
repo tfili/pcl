@@ -121,7 +121,7 @@ pcl::kernel<PointT>::fetchKernel (pcl::PointCloud<PointT> &kernel)
 template <typename PointT> void
 pcl::kernel<PointT>::gaussianKernel (pcl::PointCloud<PointT> &kernel)
 {
-  float sum = 0;
+  double sum = 0;
   kernel.resize (kernel_size_ * kernel_size_);
   kernel.height = kernel_size_;
   kernel.width = kernel_size_;
@@ -134,8 +134,8 @@ pcl::kernel<PointT>::gaussianKernel (pcl::PointCloud<PointT> &kernel)
     {
       int iks = (i - kernel_size_ / 2);
       int jks = (j - kernel_size_ / 2);
-      kernel (j, i).intensity = expf (float (- double (iks * iks + jks * jks) / sigma_sqr));
-      sum += float (kernel (j, i).intensity);
+      kernel (j, i).intensity = expf (double (- double (iks * iks + jks * jks) / sigma_sqr));
+      sum += double (kernel (j, i).intensity);
     }
   }
 
@@ -148,8 +148,8 @@ pcl::kernel<PointT>::gaussianKernel (pcl::PointCloud<PointT> &kernel)
 template<typename PointT> void
 pcl::kernel<PointT>::loGKernel (pcl::PointCloud<PointT> &kernel)
 {
-  float sum = 0;
-  float temp = 0;
+  double sum = 0;
+  double temp = 0;
   kernel.resize (kernel_size_ * kernel_size_);
   kernel.height = kernel_size_;
   kernel.width = kernel_size_;
@@ -162,7 +162,7 @@ pcl::kernel<PointT>::loGKernel (pcl::PointCloud<PointT> &kernel)
     {
       int iks = (i - kernel_size_ / 2); 
       int jks = (j - kernel_size_ / 2); 
-      temp = float (double (iks * iks  + jks * jks) / sigma_sqr);
+      temp = double (double (iks * iks  + jks * jks) / sigma_sqr);
       kernel (j, i).intensity = (1.0f - temp) * expf (-temp);
       sum += kernel (j, i).intensity;
     }
@@ -319,7 +319,7 @@ pcl::kernel<PointT>::setKernelSize (int kernel_size)
 
 //////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::kernel<PointT>::setKernelSigma (float kernel_sigma)
+pcl::kernel<PointT>::setKernelSigma (double kernel_sigma)
 {
   sigma_ = kernel_sigma;
 }

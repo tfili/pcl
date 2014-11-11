@@ -64,19 +64,19 @@ namespace pcl
     /** \brief Distance between the corresponding points, or the weight denoting the confidence in correspondence estimation */
     union
     {
-      float distance;
-      float weight;
+      double distance;
+      double weight;
     };
     
     /** \brief Standard constructor. 
       * Sets \ref index_query to 0, \ref index_match to -1, and \ref distance to FLT_MAX.
       */
     inline Correspondence () : index_query (0), index_match (-1), 
-                               distance (std::numeric_limits<float>::max ())
+                               distance (std::numeric_limits<double>::max ())
     {}
 
     /** \brief Constructor. */
-    inline Correspondence (int _index_query, int _index_match, float _distance) : 
+    inline Correspondence (int _index_query, int _index_match, double _distance) : 
       index_query (_index_query), index_match (_index_match), distance (_distance)
     {}
 

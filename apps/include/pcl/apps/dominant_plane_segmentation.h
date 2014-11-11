@@ -134,7 +134,7 @@ namespace pcl
          * \param d distance (in meters)
          */
         void
-        setDistanceBetweenClusters (float d) 
+        setDistanceBetweenClusters (double d) 
         {
           object_cluster_tolerance_ = d;
         }
@@ -201,7 +201,7 @@ namespace pcl
          * \param d resolution (in meters)
          */
         void 
-        setDownsamplingSize (float d) 
+        setDownsamplingSize (double d) 
         {
           downsample_leaf_ = d;
         }
@@ -224,7 +224,7 @@ namespace pcl
       private:
 
         int
-        check (pcl::PointXYZI & p1, pcl::PointXYZI & p2, float, float max_dist)
+        check (pcl::PointXYZI & p1, pcl::PointXYZI & p2, double, double max_dist)
         {
           if (p1.intensity == 0) //new label
             return 1;
@@ -257,7 +257,7 @@ namespace pcl
         /** \brief Table coefficients (a,b,c,d) */
         Eigen::Vector4f table_coeffs_;
         /** \brief Downsampling resolution. */
-        float downsample_leaf_;
+        double downsample_leaf_;
         /** \brief Number of neighbors for normal estimation */
         int k_;
         /** \brief Keep points farther away than min_z_bounds */
@@ -271,7 +271,7 @@ namespace pcl
         /** \brief Max height from the table plane */
         double object_max_height_;
         /** \brief Tolerance between different clusters */
-        float object_cluster_tolerance_;
+        double object_cluster_tolerance_;
         /** \brief Minimum size for a cluster, clusters smaller than this won't be returned */
         int object_cluster_min_size_;
         /** \brief Window size in pixels for CC in compute_fast method */

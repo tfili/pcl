@@ -55,7 +55,7 @@ KdTreePtr tree;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, MomentInvariantsEstimation)
 {
-  float j1, j2, j3;
+  double j1, j2, j3;
 
   MomentInvariantsEstimation<PointXYZ, MomentInvariants> mi;
 

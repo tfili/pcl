@@ -104,9 +104,9 @@ pcl::MarchingCubesRBF<PointNT>::voxelizeData ()
       for (int z = 0; z < res_z_; ++z)
       {
         Eigen::Vector3d point;
-        point[0] = min_p_[0] + (max_p_[0] - min_p_[0]) * float (x) / float (res_x_);
-        point[1] = min_p_[1] + (max_p_[1] - min_p_[1]) * float (y) / float (res_y_);
-        point[2] = min_p_[2] + (max_p_[2] - min_p_[2]) * float (z) / float (res_z_);
+        point[0] = min_p_[0] + (max_p_[0] - min_p_[0]) * double (x) / double (res_x_);
+        point[1] = min_p_[1] + (max_p_[1] - min_p_[1]) * double (y) / double (res_y_);
+        point[2] = min_p_[2] + (max_p_[2] - min_p_[2]) * double (z) / double (res_z_);
 
         double f = 0.0;
         std::vector<double>::const_iterator w_it (weights.begin());
@@ -114,7 +114,7 @@ pcl::MarchingCubesRBF<PointNT>::voxelizeData ()
              c_it != centers.end (); ++c_it, ++w_it)
           f += *w_it * kernel (*c_it, point);
 
-        grid_[x * res_y_*res_z_ + y * res_z_ + z] = float (f);
+        grid_[x * res_y_*res_z_ + y * res_z_ + z] = double (f);
       }
 }
 

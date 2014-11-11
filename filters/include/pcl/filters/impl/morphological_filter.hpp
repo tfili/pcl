@@ -55,7 +55,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::applyMorphologicalOperator (const typename pcl::PointCloud<PointT>::ConstPtr &cloud_in,
-                                 float resolution, const int morphological_operator,
+                                 double resolution, const int morphological_operator,
                                  pcl::PointCloud<PointT> &cloud_out)
 {
   if (cloud_in->empty ())
@@ -68,7 +68,7 @@ pcl::applyMorphologicalOperator (const typename pcl::PointCloud<PointT>::ConstPt
   tree.setInputCloud (cloud_in);
   tree.addPointsFromInputCloud ();
 
-  float half_res = resolution / 2.0f;
+  double half_res = resolution / 2.0f;
 
   switch (morphological_operator)
   {
@@ -79,12 +79,12 @@ pcl::applyMorphologicalOperator (const typename pcl::PointCloud<PointT>::ConstPt
       {
         Eigen::Vector3f bbox_min, bbox_max;
         std::vector<int> pt_indices;
-        float minx = cloud_in->points[p_idx].x - half_res;
-        float miny = cloud_in->points[p_idx].y - half_res;
-        float minz = -std::numeric_limits<float>::max ();
-        float maxx = cloud_in->points[p_idx].x + half_res;
-        float maxy = cloud_in->points[p_idx].y + half_res;
-        float maxz = std::numeric_limits<float>::max ();
+        double minx = cloud_in->points[p_idx].x - half_res;
+        double miny = cloud_in->points[p_idx].y - half_res;
+        double minz = -std::numeric_limits<double>::max ();
+        double maxx = cloud_in->points[p_idx].x + half_res;
+        double maxy = cloud_in->points[p_idx].y + half_res;
+        double maxz = std::numeric_limits<double>::max ();
         bbox_min = Eigen::Vector3f (minx, miny, minz);
         bbox_max = Eigen::Vector3f (maxx, maxy, maxz);
         tree.boxSearch (bbox_min, bbox_max, pt_indices);
@@ -122,12 +122,12 @@ pcl::applyMorphologicalOperator (const typename pcl::PointCloud<PointT>::ConstPt
       {
         Eigen::Vector3f bbox_min, bbox_max;
         std::vector<int> pt_indices;
-        float minx = cloud_temp.points[p_idx].x - half_res;
-        float miny = cloud_temp.points[p_idx].y - half_res;
-        float minz = -std::numeric_limits<float>::max ();
-        float maxx = cloud_temp.points[p_idx].x + half_res;
-        float maxy = cloud_temp.points[p_idx].y + half_res;
-        float maxz = std::numeric_limits<float>::max ();
+        double minx = cloud_temp.points[p_idx].x - half_res;
+        double miny = cloud_temp.points[p_idx].y - half_res;
+        double minz = -std::numeric_limits<double>::max ();
+        double maxx = cloud_temp.points[p_idx].x + half_res;
+        double maxy = cloud_temp.points[p_idx].y + half_res;
+        double maxz = std::numeric_limits<double>::max ();
         bbox_min = Eigen::Vector3f (minx, miny, minz);
         bbox_max = Eigen::Vector3f (maxx, maxy, maxz);
         tree.boxSearch (bbox_min, bbox_max, pt_indices);
@@ -159,12 +159,12 @@ pcl::applyMorphologicalOperator (const typename pcl::PointCloud<PointT>::ConstPt
       {
         Eigen::Vector3f bbox_min, bbox_max;
         std::vector<int> pt_indices;
-        float minx = cloud_temp.points[p_idx].x - half_res;
-        float miny = cloud_temp.points[p_idx].y - half_res;
-        float minz = -std::numeric_limits<float>::max ();
-        float maxx = cloud_temp.points[p_idx].x + half_res;
-        float maxy = cloud_temp.points[p_idx].y + half_res;
-        float maxz = std::numeric_limits<float>::max ();
+        double minx = cloud_temp.points[p_idx].x - half_res;
+        double miny = cloud_temp.points[p_idx].y - half_res;
+        double minz = -std::numeric_limits<double>::max ();
+        double maxx = cloud_temp.points[p_idx].x + half_res;
+        double maxy = cloud_temp.points[p_idx].y + half_res;
+        double maxz = std::numeric_limits<double>::max ();
         bbox_min = Eigen::Vector3f (minx, miny, minz);
         bbox_max = Eigen::Vector3f (maxx, maxy, maxz);
         tree.boxSearch (bbox_min, bbox_max, pt_indices);
@@ -202,7 +202,7 @@ pcl::applyMorphologicalOperator (const typename pcl::PointCloud<PointT>::ConstPt
   return;
 }
 
-#define PCL_INSTANTIATE_applyMorphologicalOperator(T) template PCL_EXPORTS void pcl::applyMorphologicalOperator<T> (const pcl::PointCloud<T>::ConstPtr &, float, const int, pcl::PointCloud<T> &);
+#define PCL_INSTANTIATE_applyMorphologicalOperator(T) template PCL_EXPORTS void pcl::applyMorphologicalOperator<T> (const pcl::PointCloud<T>::ConstPtr &, double, const int, pcl::PointCloud<T> &);
 
 #endif  //#ifndef PCL_FILTERS_IMPL_MORPHOLOGICAL_FILTER_H_
 

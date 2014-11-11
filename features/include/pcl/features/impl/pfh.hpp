@@ -45,7 +45,7 @@
 template <typename PointInT, typename PointNT, typename PointOutT> bool
 pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computePairFeatures (
       const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
-      int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4)
+      int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4)
 {
   pcl::computePairFeatures (cloud.points[p_idx].getVector4fMap (), normals.points[p_idx].getNormalVector4fMap (),
                             cloud.points[q_idx].getVector4fMap (), normals.points[q_idx].getNormalVector4fMap (),
@@ -65,7 +65,7 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computePointPFHSignature (
   pfh_histogram.setZero ();
 
   // Factorization constant
-  float hist_incr = 100.0f / static_cast<float> (indices.size () * (indices.size () - 1) / 2);
+  double hist_incr = 100.0f / static_cast<double> (indices.size () * (indices.size () - 1) / 2);
 
   std::pair<int, int> key;
   // Iterate over all the points in the neighborhood
@@ -166,7 +166,7 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   output.is_dense = true;
   // Save a few cycles by not checking every point for NaN/Inf values if the cloud is set to dense
@@ -178,7 +178,7 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
       if (this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
         for (int d = 0; d < pfh_histogram_.size (); ++d)
-          output.points[idx].histogram[d] = std::numeric_limits<float>::quiet_NaN ();
+          output.points[idx].histogram[d] = std::numeric_limits<double>::quiet_NaN ();
 
         output.is_dense = false;
         continue;
@@ -201,7 +201,7 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
           this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
         for (int d = 0; d < pfh_histogram_.size (); ++d)
-          output.points[idx].histogram[d] = std::numeric_limits<float>::quiet_NaN ();
+          output.points[idx].histogram[d] = std::numeric_limits<double>::quiet_NaN ();
 
         output.is_dense = false;
         continue;

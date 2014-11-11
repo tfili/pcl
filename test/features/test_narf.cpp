@@ -48,9 +48,9 @@ TEST (PCL, Narf_save_load)
   getTransformation(1.0f, 2.0f, 3.0f, deg2rad(10.0f), deg2rad(20.0f), deg2rad(30.0f), narf.getTransformation());
   narf.getPosition() = narf.getTransformation().inverse().translation ();
   narf.getSurfacePatchPixelSize() = 10;
-  narf.setSurfacePatch(new float[narf.getSurfacePatchPixelSize()*narf.getSurfacePatchPixelSize()]);
+  narf.setSurfacePatch(new double[narf.getSurfacePatchPixelSize()*narf.getSurfacePatchPixelSize()]);
   for (int i=0; i<narf.getSurfacePatchPixelSize()*narf.getSurfacePatchPixelSize(); ++i)
-    narf.getSurfacePatch()[i] = static_cast<float> (i);
+    narf.getSurfacePatch()[i] = static_cast<double> (i);
   narf.getSurfacePatchWorldSize() = 0.5f;
   narf.getSurfacePatchRotation() = deg2rad(10.0f);
   narf.extractDescriptor(36);

@@ -52,8 +52,8 @@ namespace pcl
             typename search::KdTree<PointInT>::Ptr tree;
             Eigen::Vector4f centroid_cluster;
             pcl::compute3DCentroid (*in, centroid_cluster);
-            float dist_to_sensor = centroid_cluster.norm();
-            float sigma = dist_to_sensor * 0.01f;
+            double dist_to_sensor = centroid_cluster.norm();
+            double sigma = dist_to_sensor * 0.01f;
             mls.setSearchMethod(tree);
             mls.setSearchRadius (sigma);
             mls.setUpsamplingMethod (mls.SAMPLE_LOCAL_PLANE);
@@ -124,7 +124,7 @@ namespace pcl
           signatures->width = static_cast<int> (shots->points.size ());
           signatures->height = 1;
 
-          int size_feat = sizeof(signatures->points[0].histogram) / sizeof(float);
+          int size_feat = sizeof(signatures->points[0].histogram) / sizeof(double);
 
           for (size_t k = 0; k < shots->points.size (); k++)
             for (int i = 0; i < size_feat; i++)

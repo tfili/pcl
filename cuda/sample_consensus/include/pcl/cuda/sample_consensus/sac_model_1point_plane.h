@@ -51,9 +51,9 @@ namespace pcl
     struct CountPlanarInlier
     {
       float4 coefficients;
-      float threshold;
+      double threshold;
 
-      CountPlanarInlier (float4 coeff, float thresh) : 
+      CountPlanarInlier (float4 coeff, double thresh) : 
         coefficients(coeff), threshold(thresh) 
       {}
 
@@ -66,10 +66,10 @@ namespace pcl
     struct NewCheckPlanarInlier
     {
       float4 coefficients;
-      float threshold;
+      double threshold;
       const typename Storage<PointXYZRGB>::type &input_;
 
-      NewCheckPlanarInlier (float4 coeff, float thresh, const typename Storage<PointXYZRGB>::type &input) : 
+      NewCheckPlanarInlier (float4 coeff, double thresh, const typename Storage<PointXYZRGB>::type &input) : 
         coefficients(coeff), threshold(thresh), input_(input)
       {}
 
@@ -81,9 +81,9 @@ namespace pcl
     struct CheckPlanarInlier
     {
       float4 coefficients;
-      float threshold;
+      double threshold;
 
-      CheckPlanarInlier (float4 coeff, float thresh) : 
+      CheckPlanarInlier (float4 coeff, double thresh) : 
         coefficients(coeff), threshold(thresh) 
       {}
 
@@ -95,9 +95,9 @@ namespace pcl
     struct CheckPlanarInlierIndices
     {
       float4 coefficients;
-      float threshold;
+      double threshold;
 
-      CheckPlanarInlierIndices (float4 coeff, float thresh) : 
+      CheckPlanarInlierIndices (float4 coeff, double thresh) : 
         coefficients(coeff), threshold(thresh) 
       {}
 
@@ -109,10 +109,10 @@ namespace pcl
     struct CheckPlanarInlierKinectNormalIndices
     {
       float4 coefficients;
-      float threshold;
-      float angle_threshold;
+      double threshold;
+      double angle_threshold;
 
-      CheckPlanarInlierKinectNormalIndices (float4 coeff, float thresh, float angle_thresh) : 
+      CheckPlanarInlierKinectNormalIndices (float4 coeff, double thresh, double angle_thresh) : 
         coefficients(coeff), threshold(thresh), angle_threshold (angle_thresh)
       {}
 
@@ -124,10 +124,10 @@ namespace pcl
     struct CheckPlanarInlierKinectIndices
     {
       float4 coefficients;
-      float threshold;
-      float angle_threshold;
+      double threshold;
+      double angle_threshold;
 
-      CheckPlanarInlierKinectIndices (float4 coeff, float thresh, float angle_thresh) : 
+      CheckPlanarInlierKinectIndices (float4 coeff, double thresh, double angle_thresh) : 
         coefficients(coeff), threshold(thresh), angle_threshold (angle_thresh)
       {}
 
@@ -139,10 +139,10 @@ namespace pcl
     struct CheckPlanarInlierNormalIndices
     {
       float4 coefficients;
-      float threshold;
-      float angle_threshold;
+      double threshold;
+      double angle_threshold;
 
-      CheckPlanarInlierNormalIndices (float4 coeff, float thresh, float angle_thresh) : 
+      CheckPlanarInlierNormalIndices (float4 coeff, double thresh, double angle_thresh) : 
         coefficients(coeff), threshold(thresh), angle_threshold (angle_thresh)
       {}
 
@@ -217,21 +217,21 @@ namespace pcl
           */
         int
         selectWithinDistance (const Coefficients &model_coefficients, 
-                              float threshold, IndicesPtr &inliers, IndicesPtr &inliers_stencil);
+                              double threshold, IndicesPtr &inliers, IndicesPtr &inliers_stencil);
         int
         selectWithinDistance (const Hypotheses &h, int idx,
-                              float threshold,
+                              double threshold,
                               IndicesPtr &inliers, IndicesPtr &inliers_stencil);
         int
         selectWithinDistance (Hypotheses &h, int idx,
-                              float threshold,
+                              double threshold,
                               IndicesPtr &inliers_stencil,
                               float3 &centroid);
         int
-        countWithinDistance (const Coefficients &model_coefficients, float threshold);
+        countWithinDistance (const Coefficients &model_coefficients, double threshold);
 
         int
-        countWithinDistance (const Hypotheses &h, int idx, float threshold);
+        countWithinDistance (const Hypotheses &h, int idx, double threshold);
 
   //    private:
   //      /** \brief Define the maximum number of iterations for collinearity checks */
@@ -250,9 +250,9 @@ namespace pcl
       const PointXYZRGB *input;
       const int *indices;
       int nr_indices;
-      float bad_value;
+      double bad_value;
 
-      Create1PointPlaneHypothesis (const PointXYZRGB *_input, const int *_indices, int _nr_indices, float bad) : 
+      Create1PointPlaneHypothesis (const PointXYZRGB *_input, const int *_indices, int _nr_indices, double bad) : 
         input(_input), indices(_indices), nr_indices(_nr_indices), bad_value(bad)
       {}
 
@@ -277,10 +277,10 @@ namespace pcl
       int width_;
       int height_;
       int nr_indices;
-      float bad_value;
+      double bad_value;
       thrust::default_random_engine rng;
 
-      Create1PointPlaneSampleHypothesis (const PointXYZRGB *_input, const float4* normals, const int *_indices, int width, int height, int _nr_indices, float bad) : 
+      Create1PointPlaneSampleHypothesis (const PointXYZRGB *_input, const float4* normals, const int *_indices, int width, int height, int _nr_indices, double bad) : 
         input(_input), normals_(normals), indices(_indices), width_(width), height_(height), nr_indices(_nr_indices), bad_value(bad)
       {
       }

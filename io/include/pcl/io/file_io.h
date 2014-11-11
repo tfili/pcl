@@ -221,7 +221,7 @@ namespace pcl
       }
   };
 
-  /** \brief insers a value of type Type (uchar, char, uint, int, float, double, ...) into a stringstream.
+  /** \brief insers a value of type Type (uchar, char, uint, int, double, double, ...) into a stringstream.
     *
     * If the value is NaN, it inserst "nan".
     *
@@ -280,7 +280,7 @@ namespace pcl
       stream << boost::numeric_cast<int>(value);
   }
 
-  /** \brief Check whether a given value of type Type (uchar, char, uint, int, float, double, ...) is finite or not
+  /** \brief Check whether a given value of type Type (uchar, char, uint, int, double, double, ...) is finite or not
     *
     * \param[in] cloud the cloud that contains the data
     * \param[in] point_index the index of the point
@@ -304,7 +304,7 @@ namespace pcl
     return (true);
   }
 
-  /** \brief Copy one single value of type T (uchar, char, uint, int, float, double, ...) from a string
+  /** \brief Copy one single value of type T (uchar, char, uint, int, double, double, ...) from a string
     * 
     * Uses aoti/atof to do the conversion.
     * Checks if the st is "nan" and converts it accordingly.
@@ -427,7 +427,7 @@ namespace pcl
     /** \brief Save point cloud data to a binary file when available else to ASCII.
       * \param[in] file_name the output file name
       * \param[in] blob the point cloud data message
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     PCL_EXPORTS int
@@ -436,7 +436,7 @@ namespace pcl
     /** \brief Save point cloud to a binary file when available else to ASCII.
       * \param[in] file_name the output file name
       * \param[in] cloud the point cloud
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     template<typename PointT> int
@@ -445,7 +445,7 @@ namespace pcl
     /** \brief Saves a TextureMesh to a binary file when available else to ASCII.
       * \param[in] file_name the name of the file to write to disk
       * \param[in] tex_mesh the texture mesh to save
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     PCL_EXPORTS int
@@ -454,7 +454,7 @@ namespace pcl
     /** \brief Saves a PolygonMesh to a binary file when available else to ASCII.
       * \param[in] file_name the name of the file to write to disk
       * \param[in] mesh the polygonal mesh to save
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     PCL_EXPORTS int

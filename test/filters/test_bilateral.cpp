@@ -82,11 +82,11 @@ TEST (FastBilateralFilter, Filters_Bilateral)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (FastBilateralFilterOMP, Filters_Bilateral)
 {
-  std::vector<float> sigma_s; 
+  std::vector<double> sigma_s; 
   sigma_s.push_back (2.341f);
   sigma_s.push_back (5.2342f);
   sigma_s.push_back (10.29380f);
-  std::vector<float> sigma_r; 
+  std::vector<double> sigma_r; 
   sigma_r.push_back (0.0123f);
   sigma_r.push_back (0.023f);
   sigma_r.push_back (0.0345f);

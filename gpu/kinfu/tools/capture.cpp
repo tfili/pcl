@@ -333,10 +333,10 @@ pcl::gpu::CaptureOpenNI::getParams ()
 
 
   // baseline from cm -> mm
-  baseline = (float)(baseline_local * 10);
+  baseline = (double)(baseline_local * 10);
 
   //focal length from mm -> pixels (valid for 1280x1024)
-  float depth_focal_length_SXGA = static_cast<float>(depth_focal_length_SXGA_mm / pixelSize);
+  double depth_focal_length_SXGA = static_cast<double>(depth_focal_length_SXGA_mm / pixelSize);
   depth_focal_length_VGA = depth_focal_length_SXGA / 2;
 }
 

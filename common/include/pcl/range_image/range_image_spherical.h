@@ -85,7 +85,7 @@ namespace pcl
         * \note Implementation according to planar range images (compared to spherical as in the original)
         */
       virtual inline void
-      calculate3DPoint (float image_x, float image_y, float range, Eigen::Vector3f& point) const;
+      calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3f& point) const;
 
       /** \brief Calculate the image point and range from the given 3D point
         * \param point the resulting 3D point
@@ -95,15 +95,15 @@ namespace pcl
         * \note Implementation according to planar range images (compared to spherical as in the original)
         */
       virtual inline void
-      getImagePoint (const Eigen::Vector3f& point, float& image_x, float& image_y, float& range) const;
+      getImagePoint (const Eigen::Vector3f& point, double& image_x, double& image_y, double& range) const;
 
       /** Get the angles corresponding to the given image point */
       inline void
-      getAnglesFromImagePoint (float image_x, float image_y, float& angle_x, float& angle_y) const;
+      getAnglesFromImagePoint (double image_x, double image_y, double& angle_x, double& angle_y) const;
 
       /** Get the image point corresponding to the given ranges */
       inline void
-      getImagePointFromAngles (float angle_x, float angle_y, float& image_x, float& image_y) const;
+      getImagePointFromAngles (double angle_x, double angle_y, double& image_x, double& image_y) const;
 
   };
 }  // namespace end

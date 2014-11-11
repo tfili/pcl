@@ -43,7 +43,7 @@ namespace pcl
   template<typename PointT>
   struct SIFTKeypointFieldSelector
   {
-    inline float
+    inline double
     operator () (const PointT & p) const
     {
       return p.intensity;
@@ -52,7 +52,7 @@ namespace pcl
   template<>
   struct SIFTKeypointFieldSelector<PointNormal>
   {
-    inline float
+    inline double
     operator () (const PointNormal & p) const
     {
       return p.curvature;
@@ -61,19 +61,19 @@ namespace pcl
   template<>
   struct SIFTKeypointFieldSelector<PointXYZRGB>
   {
-    inline float
+    inline double
     operator () (const PointXYZRGB & p) const
     {
-      return (static_cast<float> (299*p.r + 587*p.g + 114*p.b) / 1000.0f);
+      return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) / 1000.0f);
     }
   };
   template<>
   struct SIFTKeypointFieldSelector<PointXYZRGBA>
   {
-    inline float
+    inline double
     operator () (const PointXYZRGBA & p) const
     {
-      return (static_cast<float> (299*p.r + 587*p.g + 114*p.b) / 1000.0f);
+      return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) / 1000.0f);
     }
   };
 
@@ -110,7 +110,7 @@ namespace pcl
 
       /** \brief Empty constructor. */
       SIFTKeypoint () : min_scale_ (0.0), nr_octaves_ (0), nr_scales_per_octave_ (0), 
-        min_contrast_ (-std::numeric_limits<float>::max ()), scale_idx_ (-1), 
+        min_contrast_ (-std::numeric_limits<double>::max ()), scale_idx_ (-1), 
         out_fields_ (), getFieldValue_ ()
       {
         name_ = "SIFTKeypoint";
@@ -122,13 +122,13 @@ namespace pcl
         * \param nr_scales_per_octave the number of scales to compute within each octave
         */
       void 
-      setScales (float min_scale, int nr_octaves, int nr_scales_per_octave);
+      setScales (double min_scale, int nr_octaves, int nr_scales_per_octave);
 
       /** \brief Provide a threshold to limit detection of keypoints without sufficient contrast
         * \param min_contrast the minimum contrast required for detection
         */
       void 
-      setMinimumContrast (float min_contrast);
+      setMinimumContrast (double min_contrast);
 
     protected:
       bool
@@ -151,7 +151,7 @@ namespace pcl
         */
       void 
       detectKeypointsForOctave (const PointCloudIn &input, KdTree &tree, 
-                                float base_scale, int nr_scales_per_octave, 
+                                double base_scale, int nr_scales_per_octave, 
                                 PointCloudOut &output);
 
       /** \brief Compute the difference-of-Gaussian (DoG) scale space for the given input and scales
@@ -162,7 +162,7 @@ namespace pcl
         */
       void 
       computeScaleSpace (const PointCloudIn &input, KdTree &tree, 
-                         const std::vector<float> &scales, 
+                         const std::vector<double> &scales, 
                          Eigen::MatrixXf &diff_of_gauss);
 
       /** \brief Find the local minima and maxima in the provided difference-of-Gaussian (DoG) scale space
@@ -179,7 +179,7 @@ namespace pcl
 
 
       /** \brief The standard deviation of the smallest scale in the scale space.*/
-      float min_scale_;
+      double min_scale_;
 
       /** \brief The number of octaves (i.e. doublings of scale) over which to search for keypoints.*/
       int nr_octaves_;
@@ -188,7 +188,7 @@ namespace pcl
       int nr_scales_per_octave_;
 
       /** \brief The minimum contrast required for detection.*/
-      float min_contrast_;
+      double min_contrast_;
 
       /** \brief Set to a value different than -1 if the output cloud has a "scale" field and we have to save 
         * the keypoints scales. */

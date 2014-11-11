@@ -89,7 +89,7 @@ namespace pcl
       ~RegionGrowingRGB ();
 
       /** \brief Returns the color threshold value used for testing if points belong to the same region. */
-      float
+      double
       getPointColorThreshold () const;
 
       /** \brief This method specifies the threshold value for color test between the points.
@@ -99,10 +99,10 @@ namespace pcl
         * \param[in] thresh new threshold value for color test
         */
       void
-      setPointColorThreshold (float thresh);
+      setPointColorThreshold (double thresh);
 
       /** \brief Returns the color threshold value used for testing if regions can be merged. */
-      float
+      double
       getRegionColorThreshold () const;
 
       /** \brief This method specifies the threshold value for color test between the regions.
@@ -111,19 +111,19 @@ namespace pcl
         * \param[in] thresh new threshold value for color test
         */
       void
-      setRegionColorThreshold (float thresh);
+      setRegionColorThreshold (double thresh);
 
       /** \brief Returns the distance threshold. If the distance between two points is less or equal to
         * distance threshold value, then those points assumed to be neighbouring points.
         */
-      float
+      double
       getDistanceThreshold () const;
 
       /** \brief Allows to set distance threshold.
         * \param[in] thresh new threshold value for neighbour test
         */
       void
-      setDistanceThreshold (float thresh);
+      setDistanceThreshold (double thresh);
 
       /** \brief Returns the number of nearest neighbours used for searching K nearest segments.
         * Note that here it refers to the segments(not the points).
@@ -203,7 +203,7 @@ namespace pcl
         * \param[out] dist the array of distances to the corresponding neighbours
         */
       void
-      findRegionsKNN (int index, int nghbr_number, std::vector<int>& nghbrs, std::vector<float>& dist);
+      findRegionsKNN (int index, int nghbr_number, std::vector<int>& nghbrs, std::vector<double>& dist);
 
       /** \brief This function implements the merging algorithm described in the article
         * "Color-based segmentation of point clouds"
@@ -217,7 +217,7 @@ namespace pcl
         * \param[in] first_color the color of the first point
         * \param[in] second_color the color of the second point
         */
-      float
+      double
       calculateColorimetricalDifference (std::vector<unsigned int>& first_color, std::vector<unsigned int>& second_color) const;
 
       /** \brief This method assembles the array containing neighbours of each homogeneous region.
@@ -228,7 +228,7 @@ namespace pcl
         * to the corresponding homogeneous region.
         */
       void
-      findRegionNeighbours (std::vector< std::vector< std::pair<float, int> > >& neighbours_out, std::vector< std::vector<int> >& regions_in);
+      findRegionNeighbours (std::vector< std::vector< std::pair<double, int> > >& neighbours_out, std::vector< std::vector<int> >& regions_in);
 
       /** \brief This function simply assembles the regions from list of point labels.
         * \param[in] num_pts_in_region for each final region it stores the corresponding number of points in it
@@ -250,25 +250,25 @@ namespace pcl
     protected:
 
       /** \brief Thershold used in color test for points. */
-      float color_p2p_threshold_;
+      double color_p2p_threshold_;
 
       /** \brief Thershold used in color test for regions. */
-      float color_r2r_threshold_;
+      double color_r2r_threshold_;
 
       /** \brief Threshold that tells which points we need to assume neighbouring. */
-      float distance_threshold_;
+      double distance_threshold_;
 
       /** \brief Number of neighbouring segments to find. */
       unsigned int region_neighbour_number_;
 
       /** \brief Stores distances for the point neighbours from point_neighbours_ */
-      std::vector< std::vector<float> > point_distances_;
+      std::vector< std::vector<double> > point_distances_;
 
       /** \brief Stores the neighboures for the corresponding segments. */
       std::vector< std::vector<int> > segment_neighbours_;
 
       /** \brief Stores distances for the segment neighbours from segment_neighbours_ */
-      std::vector< std::vector<float> > segment_distances_;
+      std::vector< std::vector<double> > segment_distances_;
 
       /** \brief Stores new indices for segments that were obtained at the region growing stage. */
       std::vector<int> segment_labels_;

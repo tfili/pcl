@@ -38,19 +38,19 @@
 #include <pcl/common/gaussian.h>
 
 void 
-pcl::GaussianKernel::compute (float sigma, 
+pcl::GaussianKernel::compute (double sigma, 
                               Eigen::VectorXf &kernel, 
                               unsigned kernel_width) const
 {
   assert (kernel_width %2 == 1);
   assert (sigma >= 0);
   kernel.resize (kernel_width);
-  static const float factor = 0.01f;
-  static const float max_gauss = 1.0f;
+  static const double factor = 0.01f;
+  static const double max_gauss = 1.0f;
   const int hw = kernel_width / 2;
-  float sigma_sqr = 1.0f / (2.0f * sigma * sigma);
+  double sigma_sqr = 1.0f / (2.0f * sigma * sigma);
   for (int i = -hw, j = 0, k = kernel_width - 1; i < 0 ; i++, j++, k--)
-    kernel[k] = kernel[j] = expf (-static_cast<float>(i) * static_cast<float>(i) * sigma_sqr);
+    kernel[k] = kernel[j] = expf (-static_cast<double>(i) * static_cast<double>(i) * sigma_sqr);
   kernel[hw] = 1;
   unsigned g_width = kernel_width;
   for (unsigned i = 0; fabs (kernel[i]/max_gauss) < factor; i++, g_width-= 2) ;
@@ -73,7 +73,7 @@ pcl::GaussianKernel::compute (float sigma,
 }
 
 void 
-pcl::GaussianKernel::compute (float sigma, 
+pcl::GaussianKernel::compute (double sigma, 
                               Eigen::VectorXf &kernel, 
                               Eigen::VectorXf &derivative,
                               unsigned kernel_width) const
@@ -82,15 +82,15 @@ pcl::GaussianKernel::compute (float sigma,
   assert (sigma >= 0);
   kernel.resize (kernel_width);
   derivative.resize (kernel_width);
-  const float factor = 0.01f;
-  float max_gauss = 1.0f, max_deriv = float (sigma * exp (-0.5));
+  const double factor = 0.01f;
+  double max_gauss = 1.0f, max_deriv = double (sigma * exp (-0.5));
   int hw = kernel_width / 2;
 
-  float sigma_sqr = 1.0f / (2.0f * sigma * sigma);
+  double sigma_sqr = 1.0f / (2.0f * sigma * sigma);
   for (int i = -hw, j = 0, k = kernel_width - 1; i < 0 ; i++, j++, k--)
   {
-    kernel[k] = kernel[j] = expf (-static_cast<float>(i) * static_cast<float>(i) * sigma_sqr);
-    derivative[j] = -static_cast<float>(i) * kernel[j];
+    kernel[k] = kernel[j] = expf (-static_cast<double>(i) * static_cast<double>(i) * sigma_sqr);
+    derivative[j] = -static_cast<double>(i) * kernel[j];
     derivative[k] = -derivative[j];
   }
   kernel[hw] = 1;
@@ -124,21 +124,21 @@ pcl::GaussianKernel::compute (float sigma,
   derivative.conservativeResize (d_width);
   // Normalize derivative
   hw = d_width / 2;
-  float den = 0;
+  double den = 0;
   for (int i = -hw ; i <= hw ; i++)
-    den -=  static_cast<float>(i) * derivative[i+hw];
+    den -=  static_cast<double>(i) * derivative[i+hw];
   derivative/= den;
 }
 
 void 
-pcl::GaussianKernel::convolveRows (const pcl::PointCloud<float>& input,
+pcl::GaussianKernel::convolveRows (const pcl::PointCloud<double>& input,
                                    const Eigen::VectorXf& kernel,
-                                   pcl::PointCloud<float>& output) const
+                                   pcl::PointCloud<double>& output) const
 {
   assert (kernel.size () % 2 == 1);
   size_t kernel_width = kernel.size () -1;
   size_t radius = kernel.size () / 2;
-  const pcl::PointCloud<float>* input_;
+  const pcl::PointCloud<double>* input_;
   if (&input != &output)
   {
     if (output.height < input.height || output.width < input.width)
@@ -150,7 +150,7 @@ pcl::GaussianKernel::convolveRows (const pcl::PointCloud<float>& input,
     input_ = &input;
   }
   else
-    input_ = new pcl::PointCloud<float>(input);
+    input_ = new pcl::PointCloud<double>(input);
   
   size_t i;
   for (size_t j = 0; j < input_->height; j++)
@@ -176,14 +176,14 @@ pcl::GaussianKernel::convolveRows (const pcl::PointCloud<float>& input,
 }
 
 void 
-pcl::GaussianKernel::convolveCols (const pcl::PointCloud<float>& input,
+pcl::GaussianKernel::convolveCols (const pcl::PointCloud<double>& input,
                                    const Eigen::VectorXf& kernel,
-                                   pcl::PointCloud<float>& output) const
+                                   pcl::PointCloud<double>& output) const
 {
   assert (kernel.size () % 2 == 1);
   size_t kernel_width = kernel.size () -1;
   size_t radius = kernel.size () / 2;
-  const pcl::PointCloud<float>* input_;
+  const pcl::PointCloud<double>* input_;
   if (&input != &output)
   {
     if (output.height < input.height || output.width < input.width)
@@ -195,7 +195,7 @@ pcl::GaussianKernel::convolveCols (const pcl::PointCloud<float>& input,
     input_ = &input;
   }
   else
-    input_ = new pcl::PointCloud<float> (input);
+    input_ = new pcl::PointCloud<double> (input);
 
   size_t j;
   for (size_t i = 0; i < input_->width; i++)

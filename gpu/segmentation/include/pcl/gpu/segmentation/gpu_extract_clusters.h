@@ -54,7 +54,7 @@ namespace pcl
     void
     extractEuclideanClusters (const boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >  &host_cloud_,
                               const pcl::gpu::Octree::Ptr                               &tree,
-                              float                                                     tolerance,
+                              double                                                     tolerance,
                               std::vector<PointIndices>                                 &clusters,
                               unsigned int                                              min_pts_per_cluster, 
                               unsigned int                                max_pts_per_cluster);

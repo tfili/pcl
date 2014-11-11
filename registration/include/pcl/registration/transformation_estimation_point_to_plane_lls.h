@@ -55,11 +55,11 @@ namespace pcl
       *   "Linear Least-Squares Optimization for Point-to-Plane ICP Surface Registration", Kok-Lim Low, 2004
       *
       * \note The class is templated on the source and target point types as well as on the output scalar of the
-      * transformation matrix (i.e., float or double). Default: float.
+      * transformation matrix (i.e., double or double). Default: double.
       * \author Michael Dixon
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class TransformationEstimationPointToPlaneLLS : public TransformationEstimation<PointSource, PointTarget, Scalar>
     {
       public:

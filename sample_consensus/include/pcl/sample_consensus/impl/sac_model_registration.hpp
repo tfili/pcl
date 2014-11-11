@@ -175,7 +175,7 @@ pcl::SampleConsensusModelRegistration<PointT>::selectWithinDistance (const Eigen
 
     Eigen::Vector4f p_tr (transform * pt_src);
   
-    float distance = (p_tr - pt_tgt).squaredNorm (); 
+    double distance = (p_tr - pt_tgt).squaredNorm (); 
     // Calculate the distance from the transformed point to its correspondence
     if (distance < thresh)
     {
@@ -292,10 +292,10 @@ pcl::SampleConsensusModelRegistration<PointT>::estimateRigidTransformationSVD (
   Eigen::Matrix4d transformation_matrix = pcl::umeyama (src, tgt, false);
 
   // Return the correct transformation
-  transform.segment<4> (0).matrix () = transformation_matrix.cast<float> ().row (0); 
-  transform.segment<4> (4).matrix () = transformation_matrix.cast<float> ().row (1);
-  transform.segment<4> (8).matrix () = transformation_matrix.cast<float> ().row (2);
-  transform.segment<4> (12).matrix () = transformation_matrix.cast<float> ().row (3);
+  transform.segment<4> (0).matrix () = transformation_matrix.cast<double> ().row (0); 
+  transform.segment<4> (4).matrix () = transformation_matrix.cast<double> ().row (1);
+  transform.segment<4> (8).matrix () = transformation_matrix.cast<double> ().row (2);
+  transform.segment<4> (12).matrix () = transformation_matrix.cast<double> ().row (3);
 }
 
 #define PCL_INSTANTIATE_SampleConsensusModelRegistration(T) template class PCL_EXPORTS pcl::SampleConsensusModelRegistration<T>;

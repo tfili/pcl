@@ -53,12 +53,12 @@ pcl::VoxelGridOcclusionEstimation<PointT>::initializeVoxelGrid ()
   this->filter (filtered_cloud_);
 
   // Get the minimum and maximum bounding box dimensions
-  b_min_[0] = (static_cast<float> ( min_b_[0]) * leaf_size_[0]);
-  b_min_[1] = (static_cast<float> ( min_b_[1]) * leaf_size_[1]);
-  b_min_[2] = (static_cast<float> ( min_b_[2]) * leaf_size_[2]);
-  b_max_[0] = (static_cast<float> ( (max_b_[0]) + 1) * leaf_size_[0]);
-  b_max_[1] = (static_cast<float> ( (max_b_[1]) + 1) * leaf_size_[1]);
-  b_max_[2] = (static_cast<float> ( (max_b_[2]) + 1) * leaf_size_[2]);
+  b_min_[0] = (static_cast<double> ( min_b_[0]) * leaf_size_[0]);
+  b_min_[1] = (static_cast<double> ( min_b_[1]) * leaf_size_[1]);
+  b_min_[2] = (static_cast<double> ( min_b_[2]) * leaf_size_[2]);
+  b_max_[0] = (static_cast<double> ( (max_b_[0]) + 1) * leaf_size_[0]);
+  b_max_[1] = (static_cast<double> ( (max_b_[1]) + 1) * leaf_size_[1]);
+  b_max_[2] = (static_cast<double> ( (max_b_[2]) + 1) * leaf_size_[2]);
 
   // set the sensor origin and sensor orientation
   sensor_origin_ = filtered_cloud_.sensor_origin_;
@@ -82,7 +82,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimation (int& out_state,
   direction.normalize ();
 
   // estimate entry point into the voxel grid
-  float tmin = rayBoxIntersection (sensor_origin_, direction);
+  double tmin = rayBoxIntersection (sensor_origin_, direction);
 
   if (tmin == -1)
   {
@@ -114,7 +114,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimation (int& out_state,
   direction.normalize ();
 
   // estimate entry point into the voxel grid
-  float tmin = rayBoxIntersection (sensor_origin_, direction);
+  double tmin = rayBoxIntersection (sensor_origin_, direction);
 
   if (tmin == -1)
   {
@@ -158,7 +158,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimationAll (std::vector<E
           direction.normalize ();
           
           // estimate entry point into the voxel grid
-          float tmin = rayBoxIntersection (sensor_origin_, direction);
+          double tmin = rayBoxIntersection (sensor_origin_, direction);
 
           // ray traversal
           int state = rayTraversal (ijk, sensor_origin_, direction, tmin);
@@ -172,11 +172,11 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimationAll (std::vector<E
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT> float
+template <typename PointT> double
 pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vector4f& origin, 
                                                                const Eigen::Vector4f& direction)
 {
-  float tmin, tmax, tymin, tymax, tzmin, tzmax;
+  double tmin, tmax, tymin, tymax, tzmin, tzmax;
 
   if (direction[0] >= 0)
   {
@@ -243,7 +243,7 @@ template <typename PointT> int
 pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& target_voxel,
                                                          const Eigen::Vector4f& origin, 
                                                          const Eigen::Vector4f& direction,
-                                                         const float t_min)
+                                                         const double t_min)
 {
   // coordinate of the boundary of the voxel grid
   Eigen::Vector4f start = origin + t_min * direction;
@@ -288,13 +288,13 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& 
     step_z = -1;
   }
 
-  float t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
-  float t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
-  float t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
+  double t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
+  double t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
+  double t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
      
-  float t_delta_x = leaf_size_[0] / static_cast<float> (fabs (direction[0]));
-  float t_delta_y = leaf_size_[1] / static_cast<float> (fabs (direction[1]));
-  float t_delta_z = leaf_size_[2] / static_cast<float> (fabs (direction[2]));
+  double t_delta_x = leaf_size_[0] / static_cast<double> (fabs (direction[0]));
+  double t_delta_y = leaf_size_[1] / static_cast<double> (fabs (direction[1]));
+  double t_delta_z = leaf_size_[2] / static_cast<double> (fabs (direction[2]));
 
   // index of the point in the point cloud
   int index;
@@ -338,7 +338,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vec
                                                          const Eigen::Vector3i& target_voxel,
                                                          const Eigen::Vector4f& origin, 
                                                          const Eigen::Vector4f& direction,
-                                                         const float t_min)
+                                                         const double t_min)
 {
   // reserve space for the ray vector
   int reserve_size = div_b_.maxCoeff () * div_b_.maxCoeff ();
@@ -388,13 +388,13 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vec
     step_z = -1;
   }
 
-  float t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
-  float t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
-  float t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
+  double t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
+  double t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
+  double t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
      
-  float t_delta_x = leaf_size_[0] / static_cast<float> (fabs (direction[0]));
-  float t_delta_y = leaf_size_[1] / static_cast<float> (fabs (direction[1]));
-  float t_delta_z = leaf_size_[2] / static_cast<float> (fabs (direction[2]));
+  double t_delta_x = leaf_size_[0] / static_cast<double> (fabs (direction[0]));
+  double t_delta_y = leaf_size_[1] / static_cast<double> (fabs (direction[1]));
+  double t_delta_z = leaf_size_[2] / static_cast<double> (fabs (direction[2]));
 
   // the index of the cloud (-1 if empty)
   int index = -1;

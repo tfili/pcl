@@ -63,7 +63,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::GroundBasedPeopleDetectionAp
   heads_minimum_distance_ = 0.3;
 
   // set flag values for mandatory parameters:
-  sqrt_ground_coeffs_ = std::numeric_limits<float>::quiet_NaN();
+  sqrt_ground_coeffs_ = std::numeric_limits<double>::quiet_NaN();
   ground_coeffs_set_ = false;
   intrinsics_matrix_set_ = false;
   person_classifier_set_flag_ = false;
@@ -108,7 +108,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setSamplingFactor (int sampl
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setVoxelSize (float voxel_size)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setVoxelSize (double voxel_size)
 {
   voxel_size_ = voxel_size;
   updateMinMaxPoints ();
@@ -130,7 +130,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setClassifier (pcl::people::
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setFOV (float min_fov, float max_fov)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setFOV (double min_fov, double max_fov)
 {
   min_fov_ = min_fov;
   max_fov_ = max_fov;
@@ -150,7 +150,7 @@ void pcl::people::GroundBasedPeopleDetectionApp<PointT>::updateMinMaxPoints ()
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setPersonClusterLimits (float min_height, float max_height, float min_width, float max_width)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setPersonClusterLimits (double min_height, double max_height, double min_width, double max_width)
 {
   min_height_ = min_height;
   max_height_ = max_height;
@@ -160,7 +160,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setPersonClusterLimits (floa
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setMinimumDistanceBetweenHeads (float heads_minimum_distance)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setMinimumDistanceBetweenHeads (double heads_minimum_distance)
 {
   heads_minimum_distance_= heads_minimum_distance;
 }
@@ -172,7 +172,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setHeadCentroid (bool head_c
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::getPersonClusterLimits (float& min_height, float& max_height, float& min_width, float& max_width)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::getPersonClusterLimits (double& min_height, double& max_height, double& min_width, double& max_width)
 {
   min_height = min_height_;
   max_height = max_height_;
@@ -187,7 +187,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::getDimensionLimits (int& min
   max_points = max_points_;
 }
 
-template <typename PointT> float
+template <typename PointT> double
 pcl::people::GroundBasedPeopleDetectionApp<PointT>::getMinimumDistanceBetweenHeads ()
 {
   return (heads_minimum_distance_);
@@ -258,7 +258,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::applyTransformationPointClou
 {
   if (transformation_set_)
   {
-    Eigen::Transform<float, 3, Eigen::Affine> transform;
+    Eigen::Transform<double, 3, Eigen::Affine> transform;
     transform = transformation_;
     pcl::transformPointCloud(*cloud_, *cloud_, transform);
   }
@@ -269,7 +269,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::applyTransformationGround ()
 {
   if (transformation_set_ && ground_coeffs_set_)
   {
-    Eigen::Transform<float, 3, Eigen::Affine> transform;
+    Eigen::Transform<double, 3, Eigen::Affine> transform;
     transform = transformation_;
     ground_coeffs_transformed_ = transform.matrix() * ground_coeffs_;
   }

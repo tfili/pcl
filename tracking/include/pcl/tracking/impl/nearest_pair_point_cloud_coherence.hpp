@@ -11,7 +11,7 @@ namespace pcl
   {
     template <typename PointInT> void 
     NearestPairPointCloudCoherence<PointInT>::computeCoherence (
-        const PointCloudInConstPtr &cloud, const IndicesConstPtr &, float &w)
+        const PointCloudInConstPtr &cloud, const IndicesConstPtr &, double &w)
     {
       double val = 0.0;
       //for (size_t i = 0; i < indices->size (); i++)
@@ -19,10 +19,10 @@ namespace pcl
       {
         PointInT input_point = cloud->points[i];
         std::vector<int> k_indices(1);
-        std::vector<float> k_distances(1);
+        std::vector<double> k_distances(1);
         search_->nearestKSearch (input_point, 1, k_indices, k_distances);
         int k_index = k_indices[0];
-        float k_distance = k_distances[0];
+        double k_distance = k_distances[0];
         if (k_distance < maximum_distance_ * maximum_distance_)
         {
           // nearest_targets.push_back (k_index);
@@ -38,7 +38,7 @@ namespace pcl
           val += coherence_val;
         }
       }
-      w = - static_cast<float> (val);
+      w = - static_cast<double> (val);
     }
     
     template <typename PointInT> bool

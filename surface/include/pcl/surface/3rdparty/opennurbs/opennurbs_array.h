@@ -371,7 +371,7 @@ ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<short>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<unsigned short>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<int>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<unsigned int>;
-ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<float>;
+ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<double>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<double>;
 
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<bool*>;
@@ -381,7 +381,7 @@ ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<short*>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<unsigned short*>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<int*>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<unsigned int*>;
-ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<float*>;
+ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<double*>;
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<double*>;
 
 ON_DLL_TEMPLATE template class ON_CLASS ON_SimpleArray<ON_2dPoint>;
@@ -444,8 +444,8 @@ public:
   ON_2fPointArray& operator=( const ON_2fPointArray& );
 
   bool GetBBox( // returns true if successful
-         float boxmin[2],
-         float boxmax[2],
+         double boxmin[2],
+         double boxmax[2],
          int bGrowBox = false  // true means grow box
          ) const;
   bool Transform( const ON_Xform& );
@@ -496,7 +496,7 @@ public:
     int bRational,
     int point_count,
     int point_stride,
-    const float* points
+    const double* points
     );
 
   // Description: 
@@ -670,8 +670,8 @@ public:
   ON_3fPointArray& operator=( const ON_3fPointArray& );
 
   bool GetBBox(
-         float boxmin[3],
-         float boxmax[3],
+         double boxmin[3],
+         double boxmax[3],
          int bGrowBox = false
          ) const;
 
@@ -751,8 +751,8 @@ public:
   ON_2fVectorArray& operator=( const ON_2fVectorArray& );
 
   bool GetBBox(
-         float boxmin[2],
-         float boxmax[2],
+         double boxmin[2],
+         double boxmax[2],
          bool = false
          ) const;
 
@@ -794,8 +794,8 @@ public:
   ON_3fVectorArray& operator=( const ON_3fVectorArray& );
 
   bool GetBBox(
-         float boxmin[3],
-         float boxmax[3],
+         double boxmin[3],
+         double boxmax[3],
          int bGrowBox = false
          ) const;
 

@@ -231,7 +231,7 @@ pcl::ASCIIReader::parse (
     }
     case pcl::PCLPointField::FLOAT32:
     {
-      *(reinterpret_cast<float*>(data_target)) = boost::lexical_cast<float> (token);
+      *(reinterpret_cast<double*>(data_target)) = boost::lexical_cast<double> (token);
       return 4;
     }
     case pcl::PCLPointField::FLOAT64:

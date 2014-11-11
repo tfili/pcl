@@ -74,7 +74,7 @@ template<typename PointInT, typename PointNT, typename PointOutT> void
 pcl::CVFHEstimation<PointInT, PointNT, PointOutT>::extractEuclideanClustersSmooth (
     const pcl::PointCloud<pcl::PointNormal> &cloud,
     const pcl::PointCloud<pcl::PointNormal> &normals,
-    float tolerance,
+    double tolerance,
     const pcl::search::Search<pcl::PointNormal>::Ptr &tree,
     std::vector<pcl::PointIndices> &clusters,
     double eps_angle,
@@ -96,7 +96,7 @@ pcl::CVFHEstimation<PointInT, PointNT, PointOutT>::extractEuclideanClustersSmoot
   std::vector<bool> processed (cloud.points.size (), false);
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
   // Process all points in the indices vector
   for (int i = 0; i < static_cast<int> (cloud.points.size ()); ++i)
   {
@@ -164,7 +164,7 @@ pcl::CVFHEstimation<PointInT, PointNT, PointOutT>::filterNormalsWithHighCurvatur
     std::vector<int> &indices_to_use,
     std::vector<int> &indices_out,
     std::vector<int> &indices_in,
-    float threshold)
+    double threshold)
 {
   indices_out.resize (cloud.points.size ());
   indices_in.resize (cloud.points.size ());
@@ -284,8 +284,8 @@ pcl::CVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
         avg_centroid += normals_filtered_cloud->points[clusters[i].indices[j]].getVector4fMap ();
       }
 
-      avg_normal /= static_cast<float> (clusters[i].indices.size ());
-      avg_centroid /= static_cast<float> (clusters[i].indices.size ());
+      avg_normal /= static_cast<double> (clusters[i].indices.size ());
+      avg_centroid /= static_cast<double> (clusters[i].indices.size ());
 
       Eigen::Vector4f centroid_test;
       pcl::compute3DCentroid (*normals_filtered_cloud, centroid_test);

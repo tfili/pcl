@@ -45,7 +45,7 @@ pcl::Permutohedral::Permutohedral () :
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::Permutohedral::init (const std::vector<float> &feature, const int feature_dimension, const int N)
+pcl::Permutohedral::init (const std::vector<double> &feature, const int feature_dimension, const int N)
 {
   N_ = N;
   d_ = feature_dimension;
@@ -85,11 +85,11 @@ pcl::Permutohedral::init (const std::vector<float> &feature, const int feature_d
   }
 
   // Expected standard deviation of our filter (p.6 in [Adams etal 2010])
-  float inv_std_dev = sqrtf (2.0f / 3.0f) * static_cast<float> (d_ + 1);
+  double inv_std_dev = sqrtf (2.0f / 3.0f) * static_cast<double> (d_ + 1);
   
   // Compute the diagonal part of E (p.5 in [Adams etal 2010])
   for (int i = 0; i < d_; i++)
-    scale_factor (i) = 1.0f / sqrtf (static_cast<float> (i + 2) * static_cast<float> (i + 1)) * inv_std_dev;
+    scale_factor (i) = 1.0f / sqrtf (static_cast<double> (i + 2) * static_cast<double> (i + 1)) * inv_std_dev;
 
   // Compute the simplex each feature lies in
   for (int k = 0; k < N_; k++)
@@ -99,21 +99,21 @@ pcl::Permutohedral::init (const std::vector<float> &feature, const int feature_d
     // Elevate the feature  (y = Ep, see p.5 in [Adams etal 2010])
     int index = k * feature_dimension;
     // sm contains the sum of 1..n of our faeture vector
-    float sm = 0;
+    double sm = 0;
     for (int j = d_; j > 0; j--)
     {
-      float cf = feature[index + j-1] * scale_factor (j-1);      
-      elevated (j) = sm - static_cast<float> (j) * cf;
+      double cf = feature[index + j-1] * scale_factor (j-1);      
+      elevated (j) = sm - static_cast<double> (j) * cf;
       sm += cf;
     }
     elevated (0) = sm;
 
     // Find the closest 0-colored simplex through rounding
-    float down_factor = 1.0f / static_cast<float>(d_+1);
-    float up_factor = static_cast<float>(d_+1);
+    double down_factor = 1.0f / static_cast<double>(d_+1);
+    double up_factor = static_cast<double>(d_+1);
     int sum = 0;
     for (int j = 0; j <= d_; j++){
-      float rd = floorf (0.5f + (down_factor * elevated (j))) ;
+      double rd = floorf (0.5f + (down_factor * elevated (j))) ;
       rem0 (j) = rd * up_factor;
       sum += static_cast<int> (rd);
     }
@@ -135,11 +135,11 @@ pcl::Permutohedral::init (const std::vector<float> &feature, const int feature_d
       rank (j) += sum;
       if (rank (j) < 0){
         rank (j) += d_+1;
-        rem0 (j) += static_cast<float> (d_ + 1);
+        rem0 (j) += static_cast<double> (d_ + 1);
       }
       else if (rank (j) > d_){
         rank (j) -= d_+1;
-        rem0 (j) -= static_cast<float> (d_ + 1);
+        rem0 (j) -= static_cast<double> (d_ + 1);
       }
     }
 
@@ -157,7 +157,7 @@ pcl::Permutohedral::init (const std::vector<float> &feature, const int feature_d
     for (int remainder = 0; remainder <= d_; remainder++)
     {
       for (int j = 0; j < d_; j++)
-        key[j] = static_cast<short> (rem0 (j) + static_cast<float> (canonical ( rank (j), remainder)));
+        key[j] = static_cast<short> (rem0 (j) + static_cast<double> (canonical ( rank (j), remainder)));
 
       // insert key in hash table      
       size_t hash_key = generateHashKey (key);
@@ -207,7 +207,7 @@ pcl::Permutohedral::init (const std::vector<float> &feature, const int feature_d
         keys.push_back (key);
         hash_table.insert (std::pair<size_t, int> (hash_key, key_index));
       }
-      offset_[ k * (d_ + 1) + remainder ] = static_cast<float> (key_index);
+      offset_[ k * (d_ + 1) + remainder ] = static_cast<double> (key_index);
       
       barycentric_[ k * (d_ + 1) + remainder ] = barycentric (remainder);
     }
@@ -261,7 +261,7 @@ pcl::Permutohedral::init (const std::vector<float> &feature, const int feature_d
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::Permutohedral::compute (std::vector<float> &out, const std::vector<float> &in, 
+pcl::Permutohedral::compute (std::vector<double> &out, const std::vector<double> &in, 
                              int value_size,
                              int in_offset, int out_offset,
                              int in_size, int out_size) const
@@ -270,8 +270,8 @@ pcl::Permutohedral::compute (std::vector<float> &out, const std::vector<float> &
   if (out_size == -1) out_size = N_ - out_offset;
 		
   // Shift all values by 1 such that -1 -> 0 (used for blurring)
-  std::vector<float> values ((M_+2)*value_size, 0.0f);
-  std::vector<float> new_values ((M_+2)*value_size, 0.0f);
+  std::vector<double> values ((M_+2)*value_size, 0.0f);
+  std::vector<double> new_values ((M_+2)*value_size, 0.0f);
 	
   // Splatting
   for (int i = 0;  i < in_size; i++)
@@ -279,7 +279,7 @@ pcl::Permutohedral::compute (std::vector<float> &out, const std::vector<float> &
     for (int j = 0; j <= d_; j++)
     {
       int o = static_cast<int> (offset_[(in_offset + i) * (d_ + 1) + j]) + 1;
-      float w = barycentric_[(in_offset + i) * (d_ + 1) + j];
+      double w = barycentric_[(in_offset + i) * (d_ + 1) + j];
       for (int k = 0; k < value_size; k++)
         values[ o * value_size + k ] += w * in[ i * value_size + k ];
     }
@@ -305,7 +305,7 @@ pcl::Permutohedral::compute (std::vector<float> &out, const std::vector<float> &
   }
 
   // Alpha is a magic scaling constant (write Andrew if you really wanna understand this)
-  float alpha = 1.0f / (1.0f + static_cast<float> (pow(2.0f, -d_)));
+  double alpha = 1.0f / (1.0f + static_cast<double> (pow(2.0f, -d_)));
 		
   // Slicing
   for (int i = 0; i < out_size; i++){
@@ -313,7 +313,7 @@ pcl::Permutohedral::compute (std::vector<float> &out, const std::vector<float> &
       out[i * value_size + k] = 0;
     for (int j = 0; j <= d_; j++){
       int o = static_cast<int> (offset_[(out_offset + i) * (d_ + 1) + j]) + 1;
-      float w = barycentric_[(out_offset + i) * (d_ + 1) + j];
+      double w = barycentric_[(out_offset + i) * (d_ + 1) + j];
       for (int k = 0; k <value_size; k++)
         out[ i* value_size + k ] += w * values[ o * value_size + k ] * alpha;
     }
@@ -322,7 +322,7 @@ pcl::Permutohedral::compute (std::vector<float> &out, const std::vector<float> &
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::Permutohedral::initOLD (const std::vector<float> &feature, const int feature_dimension, const int N)
+pcl::Permutohedral::initOLD (const std::vector<double> &feature, const int feature_dimension, const int N)
 {
   // Compute the lattice coordinates for each feature [there is going to be a lot of magic here
   N_ = N;
@@ -333,13 +333,13 @@ pcl::Permutohedral::initOLD (const std::vector<float> &feature, const int featur
   if (offsetOLD_) delete [] offsetOLD_;
   offsetOLD_ = new int[ (d_+1)*N_ ];
   if (barycentricOLD_) delete [] barycentricOLD_;
-  barycentricOLD_ = new float[ (d_+1)*N_ ];
+  barycentricOLD_ = new double[ (d_+1)*N_ ];
 		
   // Allocate the local memory
-  float * scale_factor = new float[d_];
-  float * elevated = new float[d_+1];
-  float * rem0 = new float[d_+1];
-  float * barycentric = new float[d_+2];
+  double * scale_factor = new double[d_];
+  double * elevated = new double[d_+1];
+  double * rem0 = new double[d_+1];
+  double * barycentric = new double[d_+2];
   int * rank = new int[d_+1];
   short * canonical = new short[(d_+1)*(d_+1)];
   short * key = new short[d_+1];
@@ -353,38 +353,38 @@ pcl::Permutohedral::initOLD (const std::vector<float> &feature, const int featur
   }
 		
   // Expected standard deviation of our filter (p.6 in [Adams etal 2010])
-  float inv_std_dev = sqrtf (2.0f / 3.0f)* static_cast<float>(d_+1);
+  double inv_std_dev = sqrtf (2.0f / 3.0f)* static_cast<double>(d_+1);
   // Compute the diagonal part of E (p.5 in [Adams etal 2010])
   for (int i=0; i<d_; i++)
-    scale_factor[i] = 1.0f / sqrtf (static_cast<float>(i+2)*static_cast<float>(i+1)) * inv_std_dev;
+    scale_factor[i] = 1.0f / sqrtf (static_cast<double>(i+2)*static_cast<double>(i+1)) * inv_std_dev;
 		
   // Compute the simplex each feature lies in
   for (int k=0; k<N_; k++)
   {
   //for (int k = 0; k < 500; k++){
     // Elevate the feature (y = Ep, see p.5 in [Adams etal 2010])
-    //const float * f = feature + k*feature_size;
+    //const double * f = feature + k*feature_size;
     int index = k * feature_dimension;
 
 
     // sm contains the sum of 1..n of our faeture vector
-    float sm = 0;
+    double sm = 0;
     for (int j = d_; j > 0; j--)
     {
-      //float cf = f[j-1]*scale_factor[j-1];
-      float cf = feature[index + j-1] * scale_factor[j-1];
-      elevated[j] = sm - static_cast<float>(j)*cf;
+      //double cf = f[j-1]*scale_factor[j-1];
+      double cf = feature[index + j-1] * scale_factor[j-1];
+      elevated[j] = sm - static_cast<double>(j)*cf;
       sm += cf;
     }
     elevated[0] = sm;
 
     // Find the closest 0-colored simplex through rounding
-    float down_factor = 1.0f / static_cast<float>(d_+1);
-    float up_factor = static_cast<float>(d_+1);
+    double down_factor = 1.0f / static_cast<double>(d_+1);
+    double up_factor = static_cast<double>(d_+1);
     int sum = 0;
     for (int i=0; i<=d_; i++){
       int rd = static_cast<int> (pcl_round (down_factor * elevated[i]));
-      rem0[i] = static_cast<float >(rd) * up_factor;
+      rem0[i] = static_cast<double >(rd) * up_factor;
       sum += rd;
     }
 			
@@ -406,11 +406,11 @@ pcl::Permutohedral::initOLD (const std::vector<float> &feature, const int featur
       rank[i] += sum;
       if (rank[i] < 0){
         rank[i] += d_+1;
-        rem0[i] += static_cast<float> (d_+1);
+        rem0[i] += static_cast<double> (d_+1);
       }
       else if (rank[i] > d_){
         rank[i] -= d_+1;
-        rem0[i] -= static_cast<float> (d_+1);
+        rem0[i] -= static_cast<double> (d_+1);
       }
     }
 
@@ -418,7 +418,7 @@ pcl::Permutohedral::initOLD (const std::vector<float> &feature, const int featur
     for (int i=0; i<=d_+1; i++)
       barycentric[i] = 0;
     for (int i=0; i<=d_; i++){
-      float v = (elevated[i] - rem0[i])*down_factor;
+      double v = (elevated[i] - rem0[i])*down_factor;
       barycentric[d_-rank[i]  ] += v;
       barycentric[d_-rank[i]+1] -= v;
     }
@@ -491,7 +491,7 @@ pcl::Permutohedral::initOLD (const std::vector<float> &feature, const int featur
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::Permutohedral::computeOLD (std::vector<float> &out, const std::vector<float> &in, 
+pcl::Permutohedral::computeOLD (std::vector<double> &out, const std::vector<double> &in, 
                                 int value_size,
                                 int in_offset, int out_offset,
                                 int in_size, int out_size) const
@@ -500,8 +500,8 @@ pcl::Permutohedral::computeOLD (std::vector<float> &out, const std::vector<float
   if (out_size == -1) out_size = N_ - out_offset;
 		
   // Shift all values by 1 such that -1 -> 0 (used for blurring)
-  float * values = new float[ (M_+2)*value_size ];
-  float * new_values = new float[ (M_+2)*value_size ];
+  double * values = new double[ (M_+2)*value_size ];
+  double * new_values = new double[ (M_+2)*value_size ];
 		
   for (int i=0; i<(M_+2)*value_size; i++)
     values[i] = new_values[i] = 0;
@@ -510,7 +510,7 @@ pcl::Permutohedral::computeOLD (std::vector<float> &out, const std::vector<float
   for (int i=0;  i<in_size; i++){
     for (int j=0; j<=d_; j++){
       int o = static_cast<int> (offsetOLD_[(in_offset+i)*(d_+1)+j]) + 1;
-      float w = barycentricOLD_[(in_offset+i)*(d_+1)+j];
+      double w = barycentricOLD_[(in_offset+i)*(d_+1)+j];
       for (int k=0; k<value_size; k++)
         values[ o*value_size+k ] += w * in[ i*value_size+k ];
     }
@@ -518,22 +518,22 @@ pcl::Permutohedral::computeOLD (std::vector<float> &out, const std::vector<float
 		
   for (int j=0; j<=d_; j++){
     for (int i=0; i<M_; i++){
-      float * old_val = values + (i+1)*value_size;
-      float * new_val = new_values + (i+1)*value_size;
+      double * old_val = values + (i+1)*value_size;
+      double * new_val = new_values + (i+1)*value_size;
 				
       int n1 = blur_neighborsOLD_[j*M_+i].n1+1;
       int n2 = blur_neighborsOLD_[j*M_+i].n2+1;
-      float * n1_val = values + n1*value_size;
-      float * n2_val = values + n2*value_size;
+      double * n1_val = values + n1*value_size;
+      double * n2_val = values + n2*value_size;
       for (int k=0; k<value_size; k++)
         new_val[k] = old_val[k]+0.5f * (n1_val[k] + n2_val[k]);
     }
-    float * tmp = values;
+    double * tmp = values;
     values = new_values;
     new_values = tmp;
   }
   // Alpha is a magic scaling constant (write Andrew if you really wanna understand this)
-  float alpha = 1.0f / (1.0f + powf (2.0f, - float (d_)));
+  double alpha = 1.0f / (1.0f + powf (2.0f, - double (d_)));
 		
   // Slicing
   for (int i=0; i<out_size; i++)
@@ -542,7 +542,7 @@ pcl::Permutohedral::computeOLD (std::vector<float> &out, const std::vector<float
       out[i*value_size+k] = 0;
     for (int j=0; j<=d_; j++){
       int o = static_cast<int> (offsetOLD_[(out_offset+i)*(d_+1)+j]) + 1;
-      float w = barycentricOLD_[(out_offset+i)*(d_+1)+j];
+      double w = barycentricOLD_[(out_offset+i)*(d_+1)+j];
       for (int k=0; k<value_size; k++)
         out[ i*value_size+k ] += w * values[ o*value_size+k ] * alpha;
     }
@@ -588,7 +588,7 @@ pcl::Permutohedral::debug ()
 }
 
 /*
-std::vector<float>
+std::vector<double>
 pcl::Permuohedral::getBarycentric ()
 {
   return 

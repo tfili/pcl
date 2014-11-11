@@ -142,7 +142,7 @@ namespace pcl
       
       /** \brief Get normal threshold
        *  \return The concavity tolerance angle in [deg] that is currently set */
-      inline float
+      inline double
       getConcavityToleranceThreshold () const
       {
         return (concavity_tolerance_threshold_);
@@ -167,7 +167,7 @@ namespace pcl
       /** \brief Set normal threshold
        *  \param[in] concavity_tolerance_threshold_arg the concavity tolerance angle in [deg] to set */
       inline void
-      setConcavityToleranceThreshold (float concavity_tolerance_threshold_arg)
+      setConcavityToleranceThreshold (double concavity_tolerance_threshold_arg)
       {
         concavity_tolerance_threshold_ = concavity_tolerance_threshold_arg;
       }
@@ -179,9 +179,9 @@ namespace pcl
        *  \param[in] smoothness_threshold_arg Threshold (/fudging factor) for smoothness constraint according to the above formula. */
       inline void
       setSmoothnessCheck (bool use_smoothness_check_arg,
-                          float voxel_res_arg,
-                          float seed_res_arg,
-                          float smoothness_threshold_arg = 0.1)
+                          double voxel_res_arg,
+                          double seed_res_arg,
+                          double smoothness_threshold_arg = 0.1)
       {
         use_smoothness_check_ = use_smoothness_check_arg;
         voxel_resolution_ = voxel_res_arg;
@@ -246,7 +246,7 @@ namespace pcl
       ///  *** Parameters *** ///
 
       /** \brief Normal Threshold in degrees [0,180] used for merging */
-      float concavity_tolerance_threshold_;
+      double concavity_tolerance_threshold_;
 
       /** \brief Marks if valid grouping data (sv_adjacency_list_, svLabel_segLabel_map_, processed_) is avaiable */
       bool grouping_data_valid_;
@@ -255,16 +255,16 @@ namespace pcl
       bool use_smoothness_check_;
 
       /** \brief Two supervoxels are unsmooth if their plane-to-plane distance DIST >  (expected_distance + smoothness_threshold_*voxel_resolution_). For parallel supervoxels, the expected_distance is zero. */
-      float smoothness_threshold_;
+      double smoothness_threshold_;
 
       /** \brief Determines if we use the sanity check which tries to find and invalidate singular connected patches*/
       bool use_sanity_check_;
       
       /** \brief Seed resolution of the supervoxels (used only for smoothness check) */
-      float seed_resolution_;
+      double seed_resolution_;
 
       /** \brief Voxel resolution used to build the supervoxels (used only for smoothness check)*/
-      float voxel_resolution_;
+      double voxel_resolution_;
 
       /** \brief Factor used for k-convexity */
       unsigned int k_factor_;

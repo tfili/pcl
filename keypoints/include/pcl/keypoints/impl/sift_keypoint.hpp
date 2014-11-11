@@ -44,7 +44,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void 
-pcl::SIFTKeypoint<PointInT, PointOutT>::setScales (float min_scale, int nr_octaves, int nr_scales_per_octave)
+pcl::SIFTKeypoint<PointInT, PointOutT>::setScales (double min_scale, int nr_octaves, int nr_scales_per_octave)
 {
   min_scale_ = min_scale;
   nr_octaves_ = nr_octaves;
@@ -54,7 +54,7 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::setScales (float min_scale, int nr_octav
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void 
-pcl::SIFTKeypoint<PointInT, PointOutT>::setMinimumContrast (float min_contrast)
+pcl::SIFTKeypoint<PointInT, PointOutT>::setMinimumContrast (double min_contrast)
 {
   min_contrast_ = min_contrast;
 }
@@ -116,11 +116,11 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypoints (PointCloudOut &output)
 
   VoxelGrid<PointInT> voxel_grid;
   // Search for keypoints at each octave
-  float scale = min_scale_;
+  double scale = min_scale_;
   for (int i_octave = 0; i_octave < nr_octaves_; ++i_octave)
   {
     // Downsample the point cloud
-    const float s = 1.0f * scale; // note: this can be adjusted
+    const double s = 1.0f * scale; // note: this can be adjusted
     voxel_grid.setLeafSize (s, s, s);
     voxel_grid.setInputCloud (cloud);
     boost::shared_ptr<pcl::PointCloud<PointInT> > temp (new pcl::PointCloud<PointInT>);    
@@ -150,14 +150,14 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypoints (PointCloudOut &output)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void 
 pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypointsForOctave (
-    const PointCloudIn &input, KdTree &tree, float base_scale, int nr_scales_per_octave, 
+    const PointCloudIn &input, KdTree &tree, double base_scale, int nr_scales_per_octave, 
     PointCloudOut &output)
 {
   // Compute the difference of Gaussians (DoG) scale space
-  std::vector<float> scales (nr_scales_per_octave + 3);
+  std::vector<double> scales (nr_scales_per_octave + 3);
   for (int i_scale = 0; i_scale <= nr_scales_per_octave + 2; ++i_scale)
   {
-    scales[i_scale] = base_scale * powf (2.0f, (1.0f * static_cast<float> (i_scale) - 1.0f) / static_cast<float> (nr_scales_per_octave));
+    scales[i_scale] = base_scale * powf (2.0f, (1.0f * static_cast<double> (i_scale) - 1.0f) / static_cast<double> (nr_scales_per_octave));
   }
   Eigen::MatrixXf diff_of_gauss;
   computeScaleSpace (input, tree, scales, diff_of_gauss);
@@ -180,7 +180,7 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypointsForOctave (
       keypoint.y = input.points[keypoint_index].y;
       keypoint.z = input.points[keypoint_index].z;
       memcpy (reinterpret_cast<char*> (&keypoint) + out_fields_[scale_idx_].offset,
-              &scales[extrema_scales[i_keypoint]], sizeof (float));
+              &scales[extrema_scales[i_keypoint]], sizeof (double));
       output.points.push_back (keypoint); 
     }
   }
@@ -205,39 +205,39 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypointsForOctave (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> 
 void pcl::SIFTKeypoint<PointInT, PointOutT>::computeScaleSpace (
-    const PointCloudIn &input, KdTree &tree, const std::vector<float> &scales, 
+    const PointCloudIn &input, KdTree &tree, const std::vector<double> &scales, 
     Eigen::MatrixXf &diff_of_gauss)
 {
   diff_of_gauss.resize (input.size (), scales.size () - 1);
 
   // For efficiency, we will only filter over points within 3 standard deviations 
-  const float max_radius = 3.0f * scales.back ();
+  const double max_radius = 3.0f * scales.back ();
 
   for (int i_point = 0; i_point < static_cast<int> (input.size ()); ++i_point)
   {
     std::vector<int> nn_indices;
-    std::vector<float> nn_dist;
+    std::vector<double> nn_dist;
     tree.radiusSearch (i_point, max_radius, nn_indices, nn_dist); // *
     // * note: at this stage of the algorithm, we must find all points within a radius defined by the maximum scale, 
     //   regardless of the configurable search method specified by the user, so we directly employ tree.radiusSearch 
     //   here instead of using searchForNeighbors.
 
     // For each scale, compute the Gaussian "filter response" at the current point
-    float filter_response = 0.0f;
-    float previous_filter_response;
+    double filter_response = 0.0f;
+    double previous_filter_response;
     for (size_t i_scale = 0; i_scale < scales.size (); ++i_scale)
     {
-      float sigma_sqr = powf (scales[i_scale], 2.0f);
+      double sigma_sqr = powf (scales[i_scale], 2.0f);
 
-      float numerator = 0.0f;
-      float denominator = 0.0f;
+      double numerator = 0.0f;
+      double denominator = 0.0f;
       for (size_t i_neighbor = 0; i_neighbor < nn_indices.size (); ++i_neighbor)
       {
-        const float &value = getFieldValue_ (input.points[nn_indices[i_neighbor]]);
-        const float &dist_sqr = nn_dist[i_neighbor];
+        const double &value = getFieldValue_ (input.points[nn_indices[i_neighbor]]);
+        const double &dist_sqr = nn_dist[i_neighbor];
         if (dist_sqr <= 9*sigma_sqr)
         {
-          float w = expf (-0.5f * dist_sqr / sigma_sqr);
+          double w = expf (-0.5f * dist_sqr / sigma_sqr);
           numerator += value * w;
           denominator += w;
         }
@@ -261,10 +261,10 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::findScaleSpaceExtrema (
 {
   const int k = 25;
   std::vector<int> nn_indices (k);
-  std::vector<float> nn_dist (k);
+  std::vector<double> nn_dist (k);
 
   const int nr_scales = static_cast<int> (diff_of_gauss.cols ());
-  std::vector<float> min_val (nr_scales), max_val (nr_scales);
+  std::vector<double> min_val (nr_scales), max_val (nr_scales);
 
   for (int i_point = 0; i_point < static_cast<int> (input.size ()); ++i_point)
   {
@@ -277,12 +277,12 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::findScaleSpaceExtrema (
     // At each scale, find the extreme values of the DoG within the current neighborhood
     for (int i_scale = 0; i_scale < nr_scales; ++i_scale)
     {
-      min_val[i_scale] = std::numeric_limits<float>::max ();
-      max_val[i_scale] = -std::numeric_limits<float>::max ();
+      min_val[i_scale] = std::numeric_limits<double>::max ();
+      max_val[i_scale] = -std::numeric_limits<double>::max ();
 
       for (size_t i_neighbor = 0; i_neighbor < nr_nn; ++i_neighbor)
       {
-        const float &d = diff_of_gauss (nn_indices[i_neighbor], i_scale);
+        const double &d = diff_of_gauss (nn_indices[i_neighbor], i_scale);
 
         min_val[i_scale] = (std::min) (min_val[i_scale], d);
         max_val[i_scale] = (std::max) (max_val[i_scale], d);
@@ -292,7 +292,7 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::findScaleSpaceExtrema (
     // If the current point is an extreme value with high enough contrast, add it as a keypoint 
     for (int i_scale = 1; i_scale < nr_scales - 1; ++i_scale)
     {
-      const float &val = diff_of_gauss (i_point, i_scale);
+      const double &val = diff_of_gauss (i_point, i_scale);
 
       // Does the point have sufficient contrast?
       if (fabs (val) >= min_contrast_)

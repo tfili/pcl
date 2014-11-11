@@ -66,7 +66,7 @@ pcl::PlaneClipper3D<PointT>::clone () const
   return new PlaneClipper3D<PointT> (plane_params_);
 }
 
-template<typename PointT> float
+template<typename PointT> double
 pcl::PlaneClipper3D<PointT>::getDistance (const PointT& point) const
 {
   return (plane_params_[0] * point.x + plane_params_[1] * point.y + plane_params_[2] * point.z + plane_params_[3]);
@@ -84,13 +84,13 @@ pcl::PlaneClipper3D<PointT>::clipPoint3D (const PointT& point) const
 template<typename PointT> bool
 pcl::PlaneClipper3D<PointT>::clipLineSegment3D (PointT& point1, PointT& point2) const
 {
-  float dist1 = getDistance (point1);
-  float dist2 = getDistance (point2);
+  double dist1 = getDistance (point1);
+  double dist2 = getDistance (point2);
 
   if (dist1 * dist2 > 0) // both on same side of the plane -> nothing to clip
     return (dist1 > 0); // true if both are on positive side, thus visible
 
-  float lambda = dist2 / (dist2 - dist1);
+  double lambda = dist2 / (dist2 - dist1);
 
   // get the plane intersecion
   PointT intersection;
@@ -135,7 +135,7 @@ pcl::PlaneClipper3D<PointT>::clipPlanarPolygon3D (const std::vector<PointT, Eige
     return;
   }
 
-  float previous_distance = getDistance (polygon [0]);
+  double previous_distance = getDistance (polygon [0]);
 
   if (previous_distance > 0)
     clipped_polygon.push_back (polygon [0]);
@@ -145,10 +145,10 @@ pcl::PlaneClipper3D<PointT>::clipPlanarPolygon3D (const std::vector<PointT, Eige
   for (typename std::vector<PointT, Eigen::aligned_allocator<PointT> >::const_iterator pIt = prev_it + 1; pIt != polygon.end (); prev_it = pIt++)
   {
     // if we intersect plane
-    float distance = getDistance (*pIt);
+    double distance = getDistance (*pIt);
     if (distance * previous_distance < 0)
     {
-      float lambda = distance / (distance - previous_distance);
+      double lambda = distance / (distance - previous_distance);
 
       PointT intersection;
       intersection.x = (prev_it->x - pIt->x) * lambda + pIt->x;
@@ -184,7 +184,7 @@ pcl::PlaneClipper3D<PointT>::clipPointCloud3D (const pcl::PointCloud<PointT>& cl
     clipped.reserve (cloud_in.size ());
     /*
 #if 0
-    Eigen::MatrixXf points = cloud_in.getMatrixXfMap (4, sizeof (PointT) / sizeof (float), offsetof(PointT,x) / sizeof (float));
+    Eigen::MatrixXf points = cloud_in.getMatrixXfMap (4, sizeof (PointT) / sizeof (double), offsetof(PointT,x) / sizeof (double));
     Eigen::VectorXf distances = plane_params_.transpose () * points;
     for (register unsigned rIdx = 0; rIdx < cloud_in.size (); ++ rIdx)
     {

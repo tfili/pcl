@@ -76,7 +76,7 @@ pcl::FernEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, NodeType>::eva
 
   label_data.resize (num_of_examples);
 
-  std::vector<std::vector<float> > results (num_of_features);
+  std::vector<std::vector<double> > results (num_of_features);
   std::vector<std::vector<unsigned char> > flags (num_of_features);
   std::vector<std::vector<unsigned char> > branch_indices (num_of_features);
 
@@ -118,7 +118,7 @@ pcl::FernEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, NodeType>::eva
   const size_t num_of_branches = stats_estimator.getNumOfBranches ();
   const size_t num_of_features = fern.getNumOfFeatures ();
 
-  std::vector<std::vector<float> > results (num_of_features);
+  std::vector<std::vector<double> > results (num_of_features);
   std::vector<std::vector<unsigned char> > flags (num_of_features);
   std::vector<std::vector<unsigned char> > branch_indices (num_of_features);
 
@@ -162,7 +162,7 @@ pcl::FernEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, NodeType>::get
 
   nodes.reserve (num_of_examples);
 
-  std::vector<std::vector<float> > results (num_of_features);
+  std::vector<std::vector<double> > results (num_of_features);
   std::vector<std::vector<unsigned char> > flags (num_of_features);
   std::vector<std::vector<unsigned char> > branch_indices (num_of_features);
 

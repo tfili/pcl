@@ -122,7 +122,7 @@ namespace pcl
       getName () const;
 
       /** \brief Obtain the number of frames per second (FPS). */
-      virtual float 
+      virtual double 
       getFramesPerSecond () const;
 
     protected:

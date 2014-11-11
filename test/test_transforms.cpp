@@ -51,8 +51,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace std;
 
-const float PI = 3.14159265f;
-const float rho = sqrtf (2.0f) / 2.0f;  // cos(PI/4) == sin(PI/4)
+const double PI = 3.14159265f;
+const double rho = sqrtf (2.0f) / 2.0f;  // cos(PI/4) == sin(PI/4)
 
 PointCloud<PointXYZ> cloud;
 pcl::PCLPointCloud2 cloud_blob;
@@ -148,7 +148,7 @@ TEST (PCL, DeMean)
 TEST (PCL, Transform)
 {
   Eigen::Vector3f offset (100, 0, 0);
-  float angle = PI/4;
+  double angle = PI/4;
   Eigen::Quaternionf rotation (cos (angle / 2), 0, 0, sin (angle / 2));
 
   PointCloud<PointXYZ> cloud_out;
@@ -269,9 +269,9 @@ TEST (PCL, TransformCopyFields)
 //////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, Matrix4Affine3Transform)
 {
-  float rot_x = 2.8827f;
-  float rot_y = -0.31190f;
-  float rot_z = -0.93058f;
+  double rot_x = 2.8827f;
+  double rot_y = -0.31190f;
+  double rot_z = -0.93058f;
   Eigen::Affine3f affine;
   pcl::getTransformation (0, 0, 0, rot_x, rot_y, rot_z, affine);
 
@@ -286,7 +286,7 @@ TEST (PCL, Matrix4Affine3Transform)
   EXPECT_NEAR (rotation (1, 0), -0.76327348f, 1e-4); EXPECT_NEAR (rotation (1, 1), -0.51445758f, 1e-4); EXPECT_NEAR (rotation (1, 2), -0.39082864f, 1e-4);
   EXPECT_NEAR (rotation (2, 0),  0.30686751f, 1e-4); EXPECT_NEAR (rotation (2, 1),  0.24365838f, 1e-4); EXPECT_NEAR (rotation (2, 2), -0.920034f, 1e-4);
 
-  float trans_x, trans_y, trans_z;
+  double trans_x, trans_y, trans_z;
   pcl::getTransformation (0.1f, 0.2f, 0.3f, rot_x, rot_y, rot_z, affine);
   pcl::getTranslationAndEulerAngles (affine, trans_x, trans_y, trans_z, rot_x, rot_y, rot_z);
   EXPECT_FLOAT_EQ (trans_x, 0.1f);

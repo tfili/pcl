@@ -62,7 +62,7 @@ namespace pcl
         SampleConsensus () {};
 
       public:
-        typedef typename Storage<float>::type Coefficients;
+        typedef typename Storage<double>::type Coefficients;
         typedef boost::shared_ptr <Coefficients> CoefficientsPtr;
         typedef boost::shared_ptr <const Coefficients> CoefficientsConstPtr;
 
@@ -81,7 +81,7 @@ namespace pcl
           * \param model a Sample Consensus model
           * \param threshold distance to model threshold
           */
-        SampleConsensus (const SampleConsensusModelPtr &model, float threshold) : 
+        SampleConsensus (const SampleConsensusModelPtr &model, double threshold) : 
           sac_model_(model), probability_ (0.99), iterations_ (0), threshold_ (threshold), 
           max_iterations_ (1000)
         {};
@@ -93,10 +93,10 @@ namespace pcl
           * \param threshold distance to model threshold
           */
         inline void 
-        setDistanceThreshold (float threshold)  { threshold_ = threshold; }
+        setDistanceThreshold (double threshold)  { threshold_ = threshold; }
 
         /** \brief Get the distance to model threshold, as set by the user. */
-        inline float 
+        inline double 
         getDistanceThreshold () { return (threshold_); }
 
         /** \brief Set the maximum number of iterations.
@@ -116,12 +116,12 @@ namespace pcl
           * \note internally, the probability is set to 99% (0.99) by default.
           */
         inline void 
-        setProbability (float probability) { probability_ = probability; }
+        setProbability (double probability) { probability_ = probability; }
 
         /** \brief Obtain the probability of choosing at least one sample free from outliers, 
           * as set by the user. 
           */
-        inline float 
+        inline double 
         getProbability () { return (probability_); }
 
         /** \brief Compute the actual model. Pure virtual. */
@@ -184,13 +184,13 @@ namespace pcl
         Coefficients model_coefficients_;
 
         /** \brief Desired probability of choosing at least one sample free from outliers. */
-        float probability_;
+        double probability_;
 
         /** \brief Total number of internal loop iterations that we've done so far. */
         int iterations_;
         
         /** \brief Distance to model threshold. */
-        float threshold_;
+        double threshold_;
         
         /** \brief Maximum number of iterations before giving up. */
         int max_iterations_;

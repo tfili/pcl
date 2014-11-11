@@ -108,17 +108,17 @@ namespace pcl
     /*
      * \brief The resolution of models and scene used to verify hypotheses (in meters)
      */
-    float resolution_;
+    double resolution_;
 
     /*
      * \brief Threshold for inliers
      */
-    float inliers_threshold_;
+    double inliers_threshold_;
 
     /*
      * \brief Threshold to consider a point being occluded
      */
-    float occlusion_thres_;
+    double occlusion_thres_;
 
     /*
      * \brief Whether the HV method requires normals or not, by default = false
@@ -136,7 +136,7 @@ namespace pcl
       zbuffer_scene_resolution_ = 100;
       zbuffer_self_occlusion_resolution_ = 150;
       resolution_ = 0.005f;
-      inliers_threshold_ = static_cast<float>(resolution_);
+      inliers_threshold_ = static_cast<double>(resolution_);
       occlusion_cloud_set_ = false;
       occlusion_thres_ = 0.005f;
       normals_set_ = false;
@@ -152,7 +152,7 @@ namespace pcl
      *  mask r resolution
      */
     void
-    setResolution(float r) {
+    setResolution(double r) {
       resolution_ = r;
     }
 
@@ -161,7 +161,7 @@ namespace pcl
      *  mask t threshold
      */
     void
-    setOcclusionThreshold(float t) {
+    setOcclusionThreshold(double t) {
       occlusion_thres_ = t;
     }
 
@@ -170,7 +170,7 @@ namespace pcl
      *  mask r resolution
      */
     void
-    setInlierThreshold(float r) {
+    setInlierThreshold(double r) {
       inliers_threshold_ = r;
     }
 

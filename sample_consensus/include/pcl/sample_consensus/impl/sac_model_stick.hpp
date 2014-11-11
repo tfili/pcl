@@ -100,7 +100,7 @@ pcl::SampleConsensusModelStick<PointT>::getDistancesToModel (
   if (!isModelValid (model_coefficients))
     return;
 
-  float sqr_threshold = static_cast<float> (radius_max_ * radius_max_);
+  double sqr_threshold = static_cast<double> (radius_max_ * radius_max_);
   distances.resize (indices_->size ());
 
   // Obtain the line point and direction
@@ -113,7 +113,7 @@ pcl::SampleConsensusModelStick<PointT>::getDistancesToModel (
   {
     // Calculate the distance from the point to the line
     // D = ||(P2-P1) x (P1-P0)|| / ||P2-P1|| = norm (cross (p2-p1, p2-p0)) / norm(p2-p1)
-    float sqr_distance = (line_pt - input_->points[(*indices_)[i]].getVector4fMap ()).cross3 (line_dir).squaredNorm ();
+    double sqr_distance = (line_pt - input_->points[(*indices_)[i]].getVector4fMap ()).cross3 (line_dir).squaredNorm ();
 
     if (sqr_distance < sqr_threshold)
       // Need to estimate sqrt here to keep MSAC and friends general
@@ -133,7 +133,7 @@ pcl::SampleConsensusModelStick<PointT>::selectWithinDistance (
   if (!isModelValid (model_coefficients))
     return;
 
-  float sqr_threshold = static_cast<float> (threshold * threshold);
+  double sqr_threshold = static_cast<double> (threshold * threshold);
 
   int nr_p = 0;
   inliers.resize (indices_->size ());
@@ -146,7 +146,7 @@ pcl::SampleConsensusModelStick<PointT>::selectWithinDistance (
   //Eigen::Vector4f line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   //Eigen::Vector4f line_dir (model_coefficients[3] - model_coefficients[0], model_coefficients[4] - model_coefficients[1], model_coefficients[5] - model_coefficients[2], 0);
   line_dir.normalize ();
-  //float norm = line_dir.squaredNorm ();
+  //double norm = line_dir.squaredNorm ();
 
   // Iterate through the 3d points and calculate the distances from them to the line
   for (size_t i = 0; i < indices_->size (); ++i)
@@ -154,13 +154,13 @@ pcl::SampleConsensusModelStick<PointT>::selectWithinDistance (
     // Calculate the distance from the point to the line
     // D = ||(P2-P1) x (P1-P0)|| / ||P2-P1|| = norm (cross (p2-p1, p2-p0)) / norm(p2-p1)
     Eigen::Vector4f dir = input_->points[(*indices_)[i]].getVector4fMap () - line_pt1;
-    //float u = dir.dot (line_dir);
+    //double u = dir.dot (line_dir);
 
     // If the point falls outside of the segment, ignore it
     //if (u < 0.0f || u > 1.0f)
     //  continue;
 
-    float sqr_distance = dir.cross3 (line_dir).squaredNorm ();
+    double sqr_distance = dir.cross3 (line_dir).squaredNorm ();
     if (sqr_distance < sqr_threshold)
     {
       // Returns the indices of the points whose squared distances are smaller than the threshold
@@ -182,7 +182,7 @@ pcl::SampleConsensusModelStick<PointT>::countWithinDistance (
   if (!isModelValid (model_coefficients))
     return (0);
 
-  float sqr_threshold = static_cast<float> (threshold * threshold);
+  double sqr_threshold = static_cast<double> (threshold * threshold);
 
   int nr_i = 0, nr_o = 0;
 
@@ -201,13 +201,13 @@ pcl::SampleConsensusModelStick<PointT>::countWithinDistance (
     // Calculate the distance from the point to the line
     // D = ||(P2-P1) x (P1-P0)|| / ||P2-P1|| = norm (cross (p2-p1, p2-p0)) / norm(p2-p1)
     Eigen::Vector4f dir = input_->points[(*indices_)[i]].getVector4fMap () - line_pt1;
-    //float u = dir.dot (line_dir);
+    //double u = dir.dot (line_dir);
 
     // If the point falls outside of the segment, ignore it
     //if (u < 0.0f || u > 1.0f)
     //  continue;
 
-    float sqr_distance = dir.cross3 (line_dir).squaredNorm ();
+    double sqr_distance = dir.cross3 (line_dir).squaredNorm ();
     // Use a larger threshold (4 times the radius) to get more points in
     if (sqr_distance < sqr_threshold)
       nr_i++;
@@ -294,7 +294,7 @@ pcl::SampleConsensusModelStick<PointT>::projectPoints (
     {
       Eigen::Vector4f pt (input_->points[inliers[i]].x, input_->points[inliers[i]].y, input_->points[inliers[i]].z, 0);
       // double k = (DOT_PROD_3D (points[i], p21) - dotA_B) / dotB_B;
-      float k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
+      double k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
 
       Eigen::Vector4f pp = line_pt + k * line_dir;
       // Calculate the projection of the point on the line (pointProj = A + k * B)
@@ -321,7 +321,7 @@ pcl::SampleConsensusModelStick<PointT>::projectPoints (
     {
       Eigen::Vector4f pt (input_->points[inliers[i]].x, input_->points[inliers[i]].y, input_->points[inliers[i]].z, 0);
       // double k = (DOT_PROD_3D (points[i], p21) - dotA_B) / dotB_B;
-      float k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
+      double k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
 
       Eigen::Vector4f pp = line_pt + k * line_dir;
       // Calculate the projection of the point on the line (pointProj = A + k * B)
@@ -347,7 +347,7 @@ pcl::SampleConsensusModelStick<PointT>::doSamplesVerifyModel (
   //Eigen::Vector4f line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   line_dir.normalize ();
 
-  float sqr_threshold = static_cast<float> (threshold * threshold);
+  double sqr_threshold = static_cast<double> (threshold * threshold);
   // Iterate through the 3d points and calculate the distances from them to the line
   for (std::set<int>::const_iterator it = indices.begin (); it != indices.end (); ++it)
   {

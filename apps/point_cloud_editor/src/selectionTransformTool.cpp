@@ -45,7 +45,7 @@
 #include <pcl/apps/point_cloud_editor/commandQueue.h>
 #include <pcl/apps/point_cloud_editor/common.h>
 
-const float SelectionTransformTool::DEFAULT_TRANSLATE_FACTOR_ = 0.001;
+const double SelectionTransformTool::DEFAULT_TRANSLATE_FACTOR_ = 0.001;
 
 SelectionTransformTool::SelectionTransformTool (ConstSelectionPtr selection_ptr,
                                                 CloudPtr cloud_ptr,
@@ -91,9 +91,9 @@ SelectionTransformTool::update (int x, int y, BitMask, BitMask buttons)
   {
     // selection motion is not applied directly (waits for end)
     // as such we can not update x and y immediately
-    float scale = 1.0f / cloud_ptr_->getScalingFactor();
-    cloud_ptr_->setSelectionTranslation ((float) dx * translate_factor_ * scale,
-                                         (float) -dy * translate_factor_ * scale,
+    double scale = 1.0f / cloud_ptr_->getScalingFactor();
+    cloud_ptr_->setSelectionTranslation ((double) dx * translate_factor_ * scale,
+                                         (double) -dy * translate_factor_ * scale,
                                          0.0f);
     return;
   }
@@ -101,13 +101,13 @@ SelectionTransformTool::update (int x, int y, BitMask, BitMask buttons)
   {
     // selection motion is not applied directly (waits for end)
     // as such we can not update x and y immediately
-    float scale = 1.0f / cloud_ptr_->getScalingFactor();
+    double scale = 1.0f / cloud_ptr_->getScalingFactor();
     cloud_ptr_->setSelectionTranslation (0.0f,
                                          0.0f,
-                                         (float) dy * translate_factor_ * scale);
+                                         (double) dy * translate_factor_ * scale);
     return;
   }
-  float transform[MATRIX_SIZE];
+  double transform[MATRIX_SIZE];
   trackball_.getRotationMatrix(transform);
   transform_matrix_[12] -= center_xyz_[0];
   transform_matrix_[13] -= center_xyz_[1];
@@ -128,22 +128,22 @@ SelectionTransformTool::end (int x, int y, BitMask modifiers, BitMask buttons)
   if (!(buttons & LEFT))
     return;
 
-  float scale = 1.0f / cloud_ptr_->getScalingFactor();
+  double scale = 1.0f / cloud_ptr_->getScalingFactor();
   int dx = (x - x_);
   int dy = (y - y_);
   update(x, y, modifiers, buttons);
   if (modifiers_ & CTRL)
   {
     boost::shared_ptr<TransformCommand> c(new TransformCommand(selection_ptr_,
-      cloud_ptr_, transform_matrix_, (float) dx * translate_factor_ * scale,
-      (float) -dy * translate_factor_ * scale, 0.0f));
+      cloud_ptr_, transform_matrix_, (double) dx * translate_factor_ * scale,
+      (double) -dy * translate_factor_ * scale, 0.0f));
     command_queue_ptr_->execute(c);
   }
   else if (modifiers_ & ALT)
   {
     boost::shared_ptr<TransformCommand> c(new TransformCommand(selection_ptr_,
       cloud_ptr_, transform_matrix_, 0.0f, 0.0f,
-      (float) dy * translate_factor_ * scale));
+      (double) dy * translate_factor_ * scale));
     command_queue_ptr_->execute(c);
   }
   else
@@ -159,14 +159,14 @@ SelectionTransformTool::end (int x, int y, BitMask modifiers, BitMask buttons)
 
 /*void
 SelectionTransformTool::getRotateMatrix (int dx, int dy,
-                                         float* rotation_matrix_a,
-                                         float* rotation_matrix_b,
+                                         double* rotation_matrix_a,
+                                         double* rotation_matrix_b,
                                          BitMask buttons) const
 {
   setIdentity(rotation_matrix_a);
   setIdentity(rotation_matrix_b);
-  float rad_dx = (float) dx  * M_PI / 180.0f;
-  float rad_dy = (float) dy  * M_PI / 180.0f;
+  double rad_dx = (double) dx  * M_PI / 180.0f;
+  double rad_dy = (double) dy  * M_PI / 180.0f;
   rotation_matrix_a[5]  = std::cos(rad_dy);
   rotation_matrix_a[6]  = std::sin(rad_dy);
   rotation_matrix_a[9]  = -std::sin(rad_dy);
@@ -192,10 +192,10 @@ SelectionTransformTool::findSelectionCenter ()
 {
   if (!selection_ptr_ || selection_ptr_->empty())
     return;
-  float min_xyz[XYZ_SIZE] = {0.0f};
-  float max_xyz[XYZ_SIZE] = {0.0f};
+  double min_xyz[XYZ_SIZE] = {0.0f};
+  double max_xyz[XYZ_SIZE] = {0.0f};
   Selection::const_iterator it = selection_ptr_->begin();
-  float *pt = &((cloud_ptr_->getObjectSpacePoint(*it)).data[X]);
+  double *pt = &((cloud_ptr_->getObjectSpacePoint(*it)).data[X]);
   std::copy(pt, pt+XYZ_SIZE, max_xyz);
   std::copy(max_xyz, max_xyz+XYZ_SIZE, min_xyz);
 

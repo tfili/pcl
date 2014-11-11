@@ -152,7 +152,7 @@ template<template<class > class DistT, typename PointT, typename FeatureT>
           typename pcl::PointCloud<PointT>::Ptr model_aligned (new pcl::PointCloud<PointT>);
           pcl::transformPointCloud (*model_cloud, *model_aligned, transforms->at (j));
 
-          float r, g, b;
+          double r, g, b;
           std::cout << models->at (j).id_ << std::endl;
           r = 255.0f;
           g = 0.0f;
@@ -301,7 +301,7 @@ getModelsInDirectory (bf::path & dir, std::string & rel_path_so_far, std::vector
 typedef pcl::ReferenceFrame RFType;
 
 int CG_SIZE_ = 3;
-float CG_THRESHOLD_ = 0.005f;
+double CG_THRESHOLD_ = 0.005f;
 
 /** Based on the paper:
   * "A Global Hypotheses Verification Method for 3D Object Recognition",
@@ -327,8 +327,8 @@ main (int argc, char ** argv)
   int detect_clutter = 1;
   int hv_method = 0;
   int use_hv = 1;
-  float thres_hyp_ = 0.2f;
-  float desc_radius = 0.04f;
+  double thres_hyp_ = 0.2f;
+  double desc_radius = 0.04f;
 
   pcl::console::parse_argument (argc, argv, "-models_dir", path);
   pcl::console::parse_argument (argc, argv, "-training_dir", training_dir);

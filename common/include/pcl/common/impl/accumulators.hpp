@@ -117,7 +117,7 @@ namespace pcl
       typedef pcl::traits::has_curvature<boost::mpl::_1> IsCompatible;
 
       // Storage
-      float curvature;
+      double curvature;
 
       AccumulatorCurvature () : curvature (0) { }
 
@@ -136,17 +136,17 @@ namespace pcl
       typedef pcl::traits::has_color<boost::mpl::_1> IsCompatible;
 
       // Storage
-      float r, g, b, a;
+      double r, g, b, a;
 
       AccumulatorRGBA () : r (0), g (0), b (0), a (0) { }
 
       template <typename PointT> void
       add (const PointT& t)
       {
-        r += static_cast<float> (t.r);
-        g += static_cast<float> (t.g);
-        b += static_cast<float> (t.b);
-        a += static_cast<float> (t.a);
+        r += static_cast<double> (t.r);
+        g += static_cast<double> (t.g);
+        b += static_cast<double> (t.b);
+        a += static_cast<double> (t.a);
       }
 
       template <typename PointT> void
@@ -167,7 +167,7 @@ namespace pcl
       typedef pcl::traits::has_intensity<boost::mpl::_1> IsCompatible;
 
       // Storage
-      float intensity;
+      double intensity;
 
       AccumulatorIntensity () : intensity (0) { }
 

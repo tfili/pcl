@@ -51,7 +51,7 @@ namespace pcl
     * For more information check the documentation of setConditionFunction() or the usage example below:
     * \code
     * bool
-    * enforceIntensitySimilarity (const pcl::PointXYZI& point_a, const pcl::PointXYZI& point_b, float squared_distance)
+    * enforceIntensitySimilarity (const pcl::PointXYZI& point_a, const pcl::PointXYZI& point_b, double squared_distance)
     * {
     *   if (fabs (point_a.intensity - point_b.intensity) < 0.1f)
     *     return (true);
@@ -116,13 +116,13 @@ namespace pcl
         * <ul>
         *  <li>PointT The first point of the point pair</li>
         *  <li>PointT The second point of the point pair</li>
-        *  <li>float The squared distance between the points</li>
+        *  <li>double The squared distance between the points</li>
         * </ul>
         * The output argument is a boolean, returning true will merge the second point into the cluster of the first point.
         * \param[in] condition_function The condition function that needs to hold for clustering
         */
       inline void
-      setConditionFunction (bool (*condition_function) (const PointT&, const PointT&, float)) 
+      setConditionFunction (bool (*condition_function) (const PointT&, const PointT&, double)) 
       {
         condition_function_ = condition_function;
       }
@@ -133,13 +133,13 @@ namespace pcl
         * \param[in] cluster_tolerance The distance to scan for cluster candidates (default = 0.0)
         */
       inline void
-      setClusterTolerance (float cluster_tolerance)
+      setClusterTolerance (double cluster_tolerance)
       {
         cluster_tolerance_ = cluster_tolerance;
       }
 
       /** \brief Get the spatial tolerance for new cluster candidates.*/
-      inline float
+      inline double
       getClusterTolerance ()
       {
         return (cluster_tolerance_);
@@ -211,10 +211,10 @@ namespace pcl
       SearcherPtr searcher_;
 
       /** \brief The condition function that needs to hold for clustering */
-      bool (*condition_function_) (const PointT&, const PointT&, float);
+      bool (*condition_function_) (const PointT&, const PointT&, double);
 
       /** \brief The distance to scan for cluster candidates (default = 0.0) */
-      float cluster_tolerance_;
+      double cluster_tolerance_;
 
       /** \brief The minimum cluster size (default = 1) */
       int min_cluster_size_;

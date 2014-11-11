@@ -48,7 +48,7 @@
 template <typename PointInT, typename PointNT, typename PointOutT> bool
 pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computePairFeatures (
     const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
-    int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4)
+    int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4)
 {
   pcl::computePairFeatures (cloud.points[p_idx].getVector4fMap (), normals.points[p_idx].getNormalVector4fMap (),
       cloud.points[q_idx].getVector4fMap (), normals.points[q_idx].getNormalVector4fMap (),
@@ -70,7 +70,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (
   int nr_bins_f3 = static_cast<int> (hist_f3.cols ());
 
   // Factorization constant
-  float hist_incr = 100.0f / static_cast<float>(indices.size () - 1);
+  double hist_incr = 100.0f / static_cast<double>(indices.size () - 1);
 
   // Iterate over all the points in the neighborhood
   for (size_t idx = 0; idx < indices.size (); ++idx)
@@ -105,11 +105,11 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::weightPointSPFHSignature (
     const Eigen::MatrixXf &hist_f1, const Eigen::MatrixXf &hist_f2, const Eigen::MatrixXf &hist_f3,
-    const std::vector<int> &indices, const std::vector<float> &dists, Eigen::VectorXf &fpfh_histogram)
+    const std::vector<int> &indices, const std::vector<double> &dists, Eigen::VectorXf &fpfh_histogram)
 {
   assert (indices.size () == dists.size ());
   double sum_f1 = 0.0, sum_f2 = 0.0, sum_f3 = 0.0;
-  float weight = 0.0, val_f1, val_f2, val_f3;
+  double weight = 0.0, val_f1, val_f2, val_f3;
 
   // Get the number of bins from the histograms size
   int nr_bins_f1 = static_cast<int> (hist_f1.cols ());
@@ -162,11 +162,11 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::weightPointSPFHSignature (
 
   // Adjust final FPFH values
   for (int f1_i = 0; f1_i < nr_bins_f1; ++f1_i)
-    fpfh_histogram[f1_i] *= static_cast<float> (sum_f1);
+    fpfh_histogram[f1_i] *= static_cast<double> (sum_f1);
   for (int f2_i = 0; f2_i < nr_bins_f2; ++f2_i)
-    fpfh_histogram[f2_i + nr_bins_f1] *= static_cast<float> (sum_f2);
+    fpfh_histogram[f2_i + nr_bins_f1] *= static_cast<double> (sum_f2);
   for (int f3_i = 0; f3_i < nr_bins_f3; ++f3_i)
-    fpfh_histogram[f3_i + nr_bins_f12] *= static_cast<float> (sum_f3);
+    fpfh_histogram[f3_i + nr_bins_f12] *= static_cast<double> (sum_f3);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +177,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computeSPFHSignatures (std::v
   // Allocate enough space to hold the NN search results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   std::set<int> spfh_indices;
   spfh_hist_lookup.resize (surface_->points.size ());
@@ -236,7 +236,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
   // Allocate enough space to hold the NN search results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   std::vector<int> spfh_hist_lookup;
   computeSPFHSignatures (spfh_hist_lookup, hist_f1_, hist_f2_, hist_f3_);
@@ -251,7 +251,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
       if (this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
         for (int d = 0; d < fpfh_histogram_.size (); ++d)
-          output.points[idx].histogram[d] = std::numeric_limits<float>::quiet_NaN ();
+          output.points[idx].histogram[d] = std::numeric_limits<double>::quiet_NaN ();
     
         output.is_dense = false;
         continue;
@@ -279,7 +279,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
           this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
         for (int d = 0; d < fpfh_histogram_.size (); ++d)
-          output.points[idx].histogram[d] = std::numeric_limits<float>::quiet_NaN ();
+          output.points[idx].histogram[d] = std::numeric_limits<double>::quiet_NaN ();
     
         output.is_dense = false;
         continue;

@@ -64,15 +64,15 @@ namespace pcl
      * \param[in] repeat whether to play PCD file in an endless loop or not.
      * \param pclzf_mode
      */
-    ImageGrabberBase (const std::string& directory, float frames_per_second, bool repeat, bool pclzf_mode);
+    ImageGrabberBase (const std::string& directory, double frames_per_second, bool repeat, bool pclzf_mode);
 
-    ImageGrabberBase (const std::string& depth_directory, const std::string& rgb_directory, float frames_per_second, bool repeat);
+    ImageGrabberBase (const std::string& depth_directory, const std::string& rgb_directory, double frames_per_second, bool repeat);
     /** \brief Constructor taking a list of paths to PCD files, that are played in the order they appear in the list.
      * \param[in] depth_image_files Path to the depth image files files.
      * \param[in] frames_per_second frames per second. If 0, start() functions like a trigger, publishing the next PCD in the list.
      * \param[in] repeat whether to play PCD file in an endless loop or not.
      */
-    ImageGrabberBase (const std::vector<std::string>& depth_image_files, float frames_per_second, bool repeat);
+    ImageGrabberBase (const std::vector<std::string>& depth_image_files, double frames_per_second, bool repeat);
 
     /** \brief Copy constructor.
      * \param[in] src the Image Grabber base object to copy into this
@@ -122,7 +122,7 @@ namespace pcl
     rewind ();
 
     /** \brief Returns the frames_per_second. 0 if grabber is trigger-based */
-    virtual float 
+    virtual double 
     getFramesPerSecond () const;
 
     /** \brief Returns whether the repeat flag is on */
@@ -183,7 +183,7 @@ namespace pcl
     /** \brief Define the units the depth data is stored in.
      *  Defaults to mm (0.001), meaning a brightness of 1000 corresponds to 1 m*/
     void
-    setDepthImageUnits (float units);
+    setDepthImageUnits (double units);
     
     /** \brief Set the number of threads, if we wish to use OpenMP for quicker cloud population.
      *  Note that for a standard (< 4 core) machine this is unlikely to yield a drastic speedup.*/
@@ -217,17 +217,17 @@ namespace pcl
   {
     public:
     ImageGrabber (const std::string& dir, 
-                  float frames_per_second = 0, 
+                  double frames_per_second = 0, 
                   bool repeat = false, 
                   bool pclzf_mode = false);
 
     ImageGrabber (const std::string& depth_dir, 
                   const std::string& rgb_dir, 
-                  float frames_per_second = 0, 
+                  double frames_per_second = 0, 
                   bool repeat = false);
 
     ImageGrabber (const std::vector<std::string>& depth_image_files, 
-                  float frames_per_second = 0, 
+                  double frames_per_second = 0, 
                   bool repeat = false);
       
     /** \brief Empty destructor */
@@ -252,7 +252,7 @@ namespace pcl
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   template<typename PointT>
   ImageGrabber<PointT>::ImageGrabber (const std::string& dir, 
-                                      float frames_per_second, 
+                                      double frames_per_second, 
                                       bool repeat, 
                                       bool pclzf_mode)
     : ImageGrabberBase (dir, frames_per_second, repeat, pclzf_mode)
@@ -264,7 +264,7 @@ namespace pcl
   template<typename PointT>
   ImageGrabber<PointT>::ImageGrabber (const std::string& depth_dir, 
                                       const std::string& rgb_dir, 
-                                      float frames_per_second, 
+                                      double frames_per_second, 
                                       bool repeat)
     : ImageGrabberBase (depth_dir, rgb_dir, frames_per_second, repeat)
   {
@@ -274,7 +274,7 @@ namespace pcl
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   template<typename PointT>
   ImageGrabber<PointT>::ImageGrabber (const std::vector<std::string>& depth_image_files, 
-                                      float frames_per_second, 
+                                      double frames_per_second, 
                                       bool repeat)
     : ImageGrabberBase (depth_image_files, frames_per_second, repeat), signal_ ()
   {

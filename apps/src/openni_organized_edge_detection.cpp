@@ -157,7 +157,7 @@ class OpenNIOrganizedEdgeDetection
       ne.setNormalSmoothingSize (10.0f);
       ne.setBorderPolicy (ne.BORDER_POLICY_MIRROR);
 
-      float th_dd = 0.04f;
+      double th_dd = 0.04f;
       int max_search = 100;
       pcl::OrganizedEdgeFromRGBNormals<PointT, pcl::Normal, pcl::Label> oed;
       oed.setDepthDisconThreshold (th_dd);

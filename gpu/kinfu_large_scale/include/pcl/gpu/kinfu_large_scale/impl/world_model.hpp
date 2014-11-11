@@ -253,13 +253,13 @@ pcl::kinfuLS::WorldModel<PointT>::setIndicesAsNans (PointCloudPtr cloud, Indices
 {
   std::vector<pcl::PCLPointField> fields;
   pcl::for_each_type<FieldList> (pcl::detail::FieldAdder<PointT> (fields));
-  float my_nan = std::numeric_limits<float>::quiet_NaN ();
+  double my_nan = std::numeric_limits<double>::quiet_NaN ();
   
   for (int rii = 0; rii < static_cast<int> (indices->size ()); ++rii)  // rii = removed indices iterator
   {
 	uint8_t* pt_data = reinterpret_cast<uint8_t*> (&cloud->points[(*indices)[rii]]);
 	for (int fi = 0; fi < static_cast<int> (fields.size ()); ++fi)  // fi = field iterator
-	  memcpy (pt_data + fields[fi].offset, &my_nan, sizeof (float));
+	  memcpy (pt_data + fields[fi].offset, &my_nan, sizeof (double));
   }
 }
 

@@ -286,9 +286,9 @@ pcl::cloud_composer::ProjectModel::insertNewCloudFromRGBandDepth ()
   int centerY = static_cast<int>(cloud->height / 2.0);
   unsigned short* depth_pixel;
   unsigned char* color_pixel;
-  float scale = 1.0f/1000.0f;
-  float focal_length = 525.0f;
-  float fl_const = 1.0f / focal_length;
+  double scale = 1.0f/1000.0f;
+  double focal_length = 525.0f;
+  double fl_const = 1.0f / focal_length;
   depth_pixel = static_cast<unsigned short*>(depth_image->GetScalarPointer (depth_dims[0]-1,depth_dims[1]-1,0));
   color_pixel = static_cast<unsigned char*> (rgb_image->GetScalarPointer (depth_dims[0]-1,depth_dims[1]-1,0));
   
@@ -298,21 +298,21 @@ pcl::cloud_composer::ProjectModel::insertNewCloudFromRGBandDepth ()
     {
       PointXYZRGB new_point;
       //  uint8_t* p_i = &(cloud_blob->data[y * cloud_blob->row_step + x * cloud_blob->point_step]);
-      float depth = (float)(*depth_pixel) * scale;
+      double depth = (double)(*depth_pixel) * scale;
     //  qDebug () << "Depth = "<<depth;
       if (depth == 0.0f)
       {
-        new_point.x = new_point.y = new_point.z = std::numeric_limits<float>::quiet_NaN ();
+        new_point.x = new_point.y = new_point.z = std::numeric_limits<double>::quiet_NaN ();
       }
       else
       {
-        new_point.x = ((float)(x - centerX)) * depth * fl_const;
-        new_point.y = ((float)(centerY - y)) * depth * fl_const; // vtk seems to start at the bottom left image corner
+        new_point.x = ((double)(x - centerX)) * depth * fl_const;
+        new_point.y = ((double)(centerY - y)) * depth * fl_const; // vtk seems to start at the bottom left image corner
         new_point.z = depth;
       }
       
       uint32_t rgb = (uint32_t)color_pixel[0] << 16 | (uint32_t)color_pixel[1] << 8 | (uint32_t)color_pixel[2];
-      new_point.rgb = *reinterpret_cast<float*> (&rgb);
+      new_point.rgb = *reinterpret_cast<double*> (&rgb);
       cloud->points.push_back (new_point);
       //   qDebug () << "depth = "<<depth << "x,y,z="<<data[0]<<","<<data[1]<<","<<data[2];
       //qDebug() << "r ="<<color_pixel[0]<<" g="<<color_pixel[1]<<" b="<<color_pixel[2];

@@ -51,7 +51,7 @@ namespace pcl
     * \author Stephen Miller
     * \ingroup registration
     */
-  template <typename PointSource, typename PointTarget, typename Scalar = float>
+  template <typename PointSource, typename PointTarget, typename Scalar = double>
   class JointIterativeClosestPoint : public IterativeClosestPoint<PointSource, PointTarget, Scalar>
   {
     public:

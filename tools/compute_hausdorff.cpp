@@ -87,11 +87,11 @@ compute (Cloud &cloud_a, Cloud &cloud_b)
   // compare A to B
   pcl::search::KdTree<PointType> tree_b;
   tree_b.setInputCloud (cloud_b.makeShared ());
-  float max_dist_a = -std::numeric_limits<float>::max ();
+  double max_dist_a = -std::numeric_limits<double>::max ();
   for (size_t i = 0; i < cloud_a.points.size (); ++i)
   {
     std::vector<int> indices (1);
-    std::vector<float> sqr_distances (1);
+    std::vector<double> sqr_distances (1);
 
     tree_b.nearestKSearch (cloud_a.points[i], 1, indices, sqr_distances);
     if (sqr_distances[0] > max_dist_a)
@@ -101,11 +101,11 @@ compute (Cloud &cloud_a, Cloud &cloud_b)
   // compare B to A
   pcl::search::KdTree<PointType> tree_a;
   tree_a.setInputCloud (cloud_a.makeShared ());
-  float max_dist_b = -std::numeric_limits<float>::max ();
+  double max_dist_b = -std::numeric_limits<double>::max ();
   for (size_t i = 0; i < cloud_b.points.size (); ++i)
   {
     std::vector<int> indices (1);
-    std::vector<float> sqr_distances (1);
+    std::vector<double> sqr_distances (1);
 
     tree_a.nearestKSearch (cloud_b.points[i], 1, indices, sqr_distances);
     if (sqr_distances[0] > max_dist_b)
@@ -115,7 +115,7 @@ compute (Cloud &cloud_a, Cloud &cloud_b)
   max_dist_a = std::sqrt (max_dist_a);
   max_dist_b = std::sqrt (max_dist_b);
 
-  float dist = std::max (max_dist_a, max_dist_b);
+  double dist = std::max (max_dist_a, max_dist_b);
 
   print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms : ");
   print_info ("A->B: "); print_value ("%f", max_dist_a);

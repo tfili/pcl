@@ -542,7 +542,7 @@ bool ON_GetPointListBoundingBox(
     int is_rat,
     int count,
     int stride,
-    const float* point_list,
+    const double* point_list,
     ON_BoundingBox& bbox,
     int bGrowBox = false,
     const ON_Xform* xform = 0
@@ -575,9 +575,9 @@ bool ON_GetPointListBoundingBox(
     int is_rat,
     int count,
     int stride,
-    const float* point_list,
-    float* boxmin,       // min[dim]
-    float* boxmax,       // max[dim]
+    const double* point_list,
+    double* boxmin,       // min[dim]
+    double* boxmax,       // max[dim]
     int bGrowBox
     );
 
@@ -587,7 +587,7 @@ ON_BoundingBox ON_PointListBoundingBox( // low level workhorse function
     int is_rat,
     int count,
     int stride,
-    const float* point_list
+    const double* point_list
     );
 
 ON_DECL

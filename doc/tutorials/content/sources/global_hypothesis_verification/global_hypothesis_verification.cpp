@@ -88,20 +88,20 @@ std::string scene_filename_;
 //Algorithm params 
 bool show_keypoints_ (false);
 bool use_hough_ (true);
-float model_ss_ (0.02f);
-float scene_ss_ (0.02f);
-float rf_rad_ (0.015f);
-float descr_rad_ (0.02f);
-float cg_size_ (0.01f);
-float cg_thresh_ (5.0f);
+double model_ss_ (0.02f);
+double scene_ss_ (0.02f);
+double rf_rad_ (0.015f);
+double descr_rad_ (0.02f);
+double cg_size_ (0.01f);
+double cg_thresh_ (5.0f);
 int icp_max_iter_ (5);
-float icp_corr_distance_ (0.005f);
-float hv_clutter_reg_ (5.0f);
-float hv_inlier_th_ (0.005f);
-float hv_occlusion_th_ (0.01f);
-float hv_rad_clutter_ (0.03f);
-float hv_regularizer_ (3.0f);
-float hv_rad_normals_ (0.05);
+double icp_corr_distance_ (0.005f);
+double hv_clutter_reg_ (5.0f);
+double hv_inlier_th_ (0.005f);
+double hv_occlusion_th_ (0.01f);
+double hv_rad_clutter_ (0.03f);
+double hv_regularizer_ (3.0f);
+double hv_rad_normals_ (0.05);
 bool hv_detect_clutter_ (true);
 
 /**
@@ -299,7 +299,7 @@ main (int argc,
   for (size_t i = 0; i < scene_descriptors->size (); ++i)
   {
     std::vector<int> neigh_indices (1);
-    std::vector<float> neigh_sqr_dists (1);
+    std::vector<double> neigh_sqr_dists (1);
     if (!pcl_isfinite (scene_descriptors->at (i).descriptor[0]))  //skipping NaNs
     {
       continue;

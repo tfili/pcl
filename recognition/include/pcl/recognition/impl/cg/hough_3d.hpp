@@ -56,7 +56,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::co
   if (local_rf_search_radius_ == 0)
   {
     PCL_WARN ("[pcl::Hough3DGrouping::computeRf()] Warning! Reference frame search radius not set. Computing with default value. Results might be incorrect, algorithm might be slow.\n");
-    local_rf_search_radius_ = static_cast<float> (hough_bin_size_);
+    local_rf_search_radius_ = static_cast<double> (hough_bin_size_);
   }
   pcl::PointCloud<Normal>::Ptr normal_cloud (new pcl::PointCloud<Normal> ());
   NormalEstimation<PointType, Normal> norm_est;
@@ -114,7 +114,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::tr
   {
     centroid += input_->at (i).getVector3fMap ();
   }
-  centroid /= static_cast<float> (input_->size ());
+  centroid /= static_cast<double> (input_->size ());
 
   // compute model votes
   for (size_t i = 0; i < input_->size (); ++i)
@@ -184,7 +184,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::ho
   d_max.setConstant (-std::numeric_limits<double>::max ());
   bin_size.setConstant (hough_bin_size_);
 
-  float max_distance = -std::numeric_limits<float>::max ();
+  double max_distance = -std::numeric_limits<double>::max ();
 
   // Calculating 3D Hough space dimensions and vote position for each match
   for (int i=0; i< n_matches; ++i)

@@ -56,7 +56,7 @@ KdTreePtr tree;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, PrincipalCurvaturesEstimation)
 {
-  float pcx, pcy, pcz, pc1, pc2;
+  double pcx, pcy, pcz, pc1, pc2;
 
   // Estimate normals first
   NormalEstimation<PointXYZ, Normal> n;

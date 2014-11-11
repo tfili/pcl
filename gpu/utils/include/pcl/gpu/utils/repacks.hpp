@@ -116,15 +116,15 @@ namespace pcl
             copyFieldsEx(src, dst, rule(cp(0, 0), cp(1, 1), cp(2, 2)));
         };
 
-        void copyFieldsZ(const DeviceArray<PointXYZ>& src, DeviceArray<float>& dst)
+        void copyFieldsZ(const DeviceArray<PointXYZ>& src, DeviceArray<double>& dst)
         {
-            //PointXYZRGBL.z (2) -> float (1)
+            //PointXYZRGBL.z (2) -> double (1)
             copyFieldsEx(src, dst, rule(cp(2, 0)));
         };
 
-        void copyFieldsZ(const DeviceArray<PointXYZRGB>& src, DeviceArray<float>& dst)
+        void copyFieldsZ(const DeviceArray<PointXYZRGB>& src, DeviceArray<double>& dst)
         {
-            //PointXYZRGBL.z (2) -> float (1)
+            //PointXYZRGBL.z (2) -> double (1)
             copyFieldsEx(src, dst, rule(cp(2, 0)));
         };
     }

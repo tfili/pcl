@@ -35,7 +35,7 @@ class GrabCutHelper : public pcl::GrabCut<pcl::PointXYZRGB>
   typedef boost::shared_ptr<GrabCutHelper > Ptr;
   typedef boost::shared_ptr<const GrabCutHelper > ConstPtr;
 
-  GrabCutHelper (uint32_t K = 5, float lambda = 50.f)
+  GrabCutHelper (uint32_t K = 5, double lambda = 50.f)
     : pcl::GrabCut<pcl::PointXYZRGB> (K, lambda)
   {}
 
@@ -66,10 +66,10 @@ class GrabCutHelper : public pcl::GrabCut<pcl::PointXYZRGB>
   buildImages ();
 
   // Clouds of various variables that can be displayed for debugging.
-  pcl::PointCloud<float>::Ptr n_links_image_;
+  pcl::PointCloud<double>::Ptr n_links_image_;
   pcl::segmentation::grabcut::Image::Ptr t_links_image_;
   pcl::segmentation::grabcut::Image::Ptr gmm_image_;
-  pcl::PointCloud<float>::Ptr alpha_image_;
+  pcl::PointCloud<double>::Ptr alpha_image_;
 
   int image_height_1_;
   int image_width_1_;
@@ -81,10 +81,10 @@ GrabCutHelper::setInputCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr&
 {
   pcl::GrabCut<pcl::PointXYZRGB>::setInputCloud (cloud);
   // Reset clouds
-  n_links_image_.reset (new pcl::PointCloud<float> (cloud->width, cloud->height, 0));
+  n_links_image_.reset (new pcl::PointCloud<double> (cloud->width, cloud->height, 0));
   t_links_image_.reset (new pcl::segmentation::grabcut::Image (cloud->width, cloud->height));
   gmm_image_.reset (new pcl::segmentation::grabcut::Image (cloud->width, cloud->height));
-  alpha_image_.reset (new pcl::PointCloud<float> (cloud->width, cloud->height, 0));
+  alpha_image_.reset (new pcl::PointCloud<double> (cloud->width, cloud->height, 0));
   image_height_1_ = cloud->height-1;
   image_width_1_ = cloud->width-1;
 }
@@ -167,7 +167,7 @@ void
 GrabCutHelper::buildImages ()
 {
   using namespace pcl::segmentation::grabcut;
-  memset (&n_links_image_->points[0], 0, sizeof (float) * n_links_image_->size ());
+  memset (&n_links_image_->points[0], 0, sizeof (double) * n_links_image_->size ());
   for (int y = 0; y < static_cast<int> (image_->height); ++y)
 	{
     for (int x = 0; x < static_cast<int> (image_->width); ++x)
@@ -201,22 +201,22 @@ GrabCutHelper::buildImages ()
       // TLinks cloud
       pcl::segmentation::grabcut::Color &tlink_point  = t_links_image_->points[index];
       pcl::segmentation::grabcut::Color &gmm_point    = gmm_image_->points[index];
-      float &alpha_point = alpha_image_->points[index];
+      double &alpha_point = alpha_image_->points[index];
       double red = pow (graph_.getSourceEdgeCapacity (index)/L_, 0.25); // red
       double green = pow (graph_.getTargetEdgeCapacity (index)/L_, 0.25); // green
-      tlink_point.r = static_cast<float> (red);
-      tlink_point.g = static_cast<float> (green);
+      tlink_point.r = static_cast<double> (red);
+      tlink_point.g = static_cast<double> (green);
       gmm_point.b = tlink_point.b = 0;
       // GMM cloud and Alpha cloud
       if (hard_segmentation_[index] == SegmentationForeground)
       {
-        //assert (static_cast<float>(GMM_component_[index]+1)/static_cast<float> (K_) < 1.f);
-        gmm_point.r = static_cast<float>(GMM_component_[index]+1)/static_cast<float> (K_);
+        //assert (static_cast<double>(GMM_component_[index]+1)/static_cast<double> (K_) < 1.f);
+        gmm_point.r = static_cast<double>(GMM_component_[index]+1)/static_cast<double> (K_);
         alpha_point = 0;
       }
       else
       {
-        gmm_point.g = static_cast<float>(GMM_component_[index]+1)/static_cast<float> (K_);
+        gmm_point.g = static_cast<double>(GMM_component_[index]+1)/static_cast<double> (K_);
         alpha_point = 0.75;
       }
     }
@@ -528,9 +528,9 @@ int main (int argc, char** argv)
       {
         const pcl::PointXYZRGB &p = (*scene) (j,i);
         std::size_t reverse_index = (height_1-i) * scene->width + j;
-        display_image->points[reverse_index].r = static_cast<float> (p.r) / 255.0;
-        display_image->points[reverse_index].g = static_cast<float> (p.g) / 255.0;
-        display_image->points[reverse_index].b = static_cast<float> (p.b) / 255.0;
+        display_image->points[reverse_index].r = static_cast<double> (p.r) / 255.0;
+        display_image->points[reverse_index].g = static_cast<double> (p.g) / 255.0;
+        display_image->points[reverse_index].b = static_cast<double> (p.b) / 255.0;
         tmp->points[reverse_index] = p;
       }
     }

@@ -771,13 +771,13 @@ double ON_3dmAnnotationSettings::WorldViewHatchScale() const
 void ON_3dmAnnotationSettings::SetWorldViewTextScale(double world_view_text_scale )
 {
   if ( ON_IsValid(world_view_text_scale) && world_view_text_scale > 0.0 )
-    m_world_view_text_scale = (float)world_view_text_scale;
+    m_world_view_text_scale = (double)world_view_text_scale;
 }
 
 void ON_3dmAnnotationSettings::SetWorldViewHatchScale(double world_view_hatch_scale )
 {
   if ( ON_IsValid(world_view_hatch_scale) && world_view_hatch_scale > 0.0 )
-    m_world_view_hatch_scale = (float)world_view_hatch_scale;
+    m_world_view_hatch_scale = (double)world_view_hatch_scale;
 }
 
 bool ON_3dmAnnotationSettings::IsAnnotationScalingEnabled() const
@@ -853,13 +853,13 @@ bool ON_3dmAnnotationSettings::Read( ON_BinaryArchive& file )
         // Added 25 August 2010 chunk version 1.1
         double d = m_world_view_text_scale;
         if (rc) rc = file.ReadDouble(&d);
-        if (rc && ON_IsValid(d) && d >= 0.0 ) m_world_view_text_scale = (float)d;
+        if (rc && ON_IsValid(d) && d >= 0.0 ) m_world_view_text_scale = (double)d;
         if (rc) rc = file.ReadChar(&m_bEnableAnnotationScaling);
         if ( minor_version >= 2 )
         {
           d = m_world_view_hatch_scale;
           if (rc) rc = file.ReadDouble(&d);
-          if (rc && ON_IsValid(d) && d >= 0.0) m_world_view_hatch_scale = (float)d;
+          if (rc && ON_IsValid(d) && d >= 0.0) m_world_view_hatch_scale = (double)d;
           if (rc) rc = file.ReadChar(&m_bEnableHatchScaling);
         }
       }

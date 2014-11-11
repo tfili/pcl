@@ -46,7 +46,7 @@
 template <typename PointIn, typename PointOut>
 pcl::filters::Convolution<PointIn, PointOut>::Convolution ()
   : borders_policy_ (BORDERS_POLICY_IGNORE)
-  , distance_threshold_ (std::numeric_limits<float>::infinity ())
+  , distance_threshold_ (std::numeric_limits<double>::infinity ())
   , input_ ()
   , kernel_ ()
   , half_width_ ()
@@ -67,8 +67,8 @@ pcl::filters::Convolution<PointIn, PointOut>::initCompute (PointCloud<PointOut>&
     PCL_THROW_EXCEPTION (InitFailedException,
                          "[pcl::filters::Convolution::initCompute] convolving element width must be odd.");
 
-  if (distance_threshold_ != std::numeric_limits<float>::infinity ())
-    distance_threshold_ *= static_cast<float> (kernel_.size () % 2) * distance_threshold_;
+  if (distance_threshold_ != std::numeric_limits<double>::infinity ())
+    distance_threshold_ *= static_cast<double> (kernel_.size () % 2) * distance_threshold_;
 
   half_width_ = static_cast<int> (kernel_.size ()) / 2;
   kernel_width_ = static_cast<int> (kernel_.size () - 1);
@@ -188,7 +188,7 @@ pcl::filters::Convolution<PointIn, PointOut>::convolveOneRowNonDense (int i, int
 {
   using namespace pcl::common;
   PointOut result;
-  float weight = 0;
+  double weight = 0;
   for (int k = kernel_width_, l = i - half_width_; k > -1; --k, ++l)
   {
     if (!isFinite ((*input_) (l,j)))
@@ -200,7 +200,7 @@ pcl::filters::Convolution<PointIn, PointOut>::convolveOneRowNonDense (int i, int
     }
   }
   if (weight == 0)
-    result.x = result.y = result.z = std::numeric_limits<float>::quiet_NaN ();
+    result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
   else
   {
     weight = 1.f/weight;
@@ -214,7 +214,7 @@ pcl::filters::Convolution<PointIn, PointOut>::convolveOneColNonDense (int i, int
 {
   using namespace pcl::common;
   PointOut result;
-  float weight = 0;
+  double weight = 0;
   for (int k = kernel_width_, l = j - half_width_; k > -1; --k, ++l)
   {
     if (!isFinite ((*input_) (i,l)))
@@ -226,7 +226,7 @@ pcl::filters::Convolution<PointIn, PointOut>::convolveOneColNonDense (int i, int
     }
   }
   if (weight == 0)
-    result.x = result.y = result.z = std::numeric_limits<float>::quiet_NaN ();
+    result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
   else
   {
     weight = 1.f/weight;
@@ -243,15 +243,15 @@ namespace pcl
     Convolution<pcl::PointXYZRGB, pcl::PointXYZRGB>::convolveOneRowDense (int i, int j)
     {
       pcl::PointXYZRGB result;
-      float r = 0, g = 0, b = 0;
+      double r = 0, g = 0, b = 0;
       for (int k = kernel_width_, l = i - half_width_; k > -1; --k, ++l)
       {
         result.x += (*input_) (l,j).x * kernel_[k];
         result.y += (*input_) (l,j).y * kernel_[k];
         result.z += (*input_) (l,j).z * kernel_[k];
-        r += kernel_[k] * static_cast<float> ((*input_) (l,j).r);
-        g += kernel_[k] * static_cast<float> ((*input_) (l,j).g);
-        b += kernel_[k] * static_cast<float> ((*input_) (l,j).b);
+        r += kernel_[k] * static_cast<double> ((*input_) (l,j).r);
+        g += kernel_[k] * static_cast<double> ((*input_) (l,j).g);
+        b += kernel_[k] * static_cast<double> ((*input_) (l,j).b);
       }
       result.r = static_cast<pcl::uint8_t> (r);
       result.g = static_cast<pcl::uint8_t> (g);
@@ -263,15 +263,15 @@ namespace pcl
     Convolution<pcl::PointXYZRGB, pcl::PointXYZRGB>::convolveOneColDense (int i, int j)
     {
       pcl::PointXYZRGB result;
-      float r = 0, g = 0, b = 0;
+      double r = 0, g = 0, b = 0;
       for (int k = kernel_width_, l = j - half_width_; k > -1; --k, ++l)
       {
         result.x += (*input_) (i,l).x * kernel_[k];
         result.y += (*input_) (i,l).y * kernel_[k];
         result.z += (*input_) (i,l).z * kernel_[k];
-        r += kernel_[k] * static_cast<float> ((*input_) (i,l).r);
-        g += kernel_[k] * static_cast<float> ((*input_) (i,l).g);
-        b += kernel_[k] * static_cast<float> ((*input_) (i,l).b);
+        r += kernel_[k] * static_cast<double> ((*input_) (i,l).r);
+        g += kernel_[k] * static_cast<double> ((*input_) (i,l).g);
+        b += kernel_[k] * static_cast<double> ((*input_) (i,l).b);
       }
       result.r = static_cast<pcl::uint8_t> (r);
       result.g = static_cast<pcl::uint8_t> (g);
@@ -283,8 +283,8 @@ namespace pcl
     Convolution<pcl::PointXYZRGB, pcl::PointXYZRGB>::convolveOneRowNonDense (int i, int j)
     {
       pcl::PointXYZRGB result;
-      float weight = 0;
-      float r = 0, g = 0, b = 0;
+      double weight = 0;
+      double r = 0, g = 0, b = 0;
       for (int k = kernel_width_, l = i - half_width_; k > -1; --k, ++l)
       {
         if (!isFinite ((*input_) (l,j)))
@@ -292,15 +292,15 @@ namespace pcl
         if (pcl::squaredEuclideanDistance ((*input_) (i,j), (*input_) (l,j)) < distance_threshold_)
         {
           result.x += (*input_) (l,j).x * kernel_[k]; result.y += (*input_) (l,j).y * kernel_[k]; result.z += (*input_) (l,j).z * kernel_[k];
-          r+= kernel_[k] * static_cast<float> ((*input_) (l,j).r);
-          g+= kernel_[k] * static_cast<float> ((*input_) (l,j).g);
-          b+= kernel_[k] * static_cast<float> ((*input_) (l,j).b);
+          r+= kernel_[k] * static_cast<double> ((*input_) (l,j).r);
+          g+= kernel_[k] * static_cast<double> ((*input_) (l,j).g);
+          b+= kernel_[k] * static_cast<double> ((*input_) (l,j).b);
           weight += kernel_[k];
         }
       }
 
       if (weight == 0)
-        result.x = result.y = result.z = std::numeric_limits<float>::quiet_NaN ();
+        result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
       else
       {
         weight = 1.f/weight;
@@ -317,8 +317,8 @@ namespace pcl
     Convolution<pcl::PointXYZRGB, pcl::PointXYZRGB>::convolveOneColNonDense (int i, int j)
     {
       pcl::PointXYZRGB result;
-      float weight = 0;
-      float r = 0, g = 0, b = 0;
+      double weight = 0;
+      double r = 0, g = 0, b = 0;
       for (int k = kernel_width_, l = j - half_width_; k > -1; --k, ++l)
       {
         if (!isFinite ((*input_) (i,l)))
@@ -326,14 +326,14 @@ namespace pcl
         if (pcl::squaredEuclideanDistance ((*input_) (i,j), (*input_) (i,l)) < distance_threshold_)
         {
           result.x += (*input_) (i,l).x * kernel_[k]; result.y += (*input_) (i,l).y * kernel_[k]; result.z += (*input_) (i,l).z * kernel_[k];
-          r+= kernel_[k] * static_cast<float> ((*input_) (i,l).r);
-          g+= kernel_[k] * static_cast<float> ((*input_) (i,l).g);
-          b+= kernel_[k] * static_cast<float> ((*input_) (i,l).b);
+          r+= kernel_[k] * static_cast<double> ((*input_) (i,l).r);
+          g+= kernel_[k] * static_cast<double> ((*input_) (i,l).g);
+          b+= kernel_[k] * static_cast<double> ((*input_) (i,l).b);
           weight+= kernel_[k];
         }
       }
       if (weight == 0)
-        result.x = result.y = result.z = std::numeric_limits<float>::quiet_NaN ();
+        result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
       else
       {
         weight = 1.f/weight;
@@ -351,12 +351,12 @@ namespace pcl
     Convolution<pcl::RGB, pcl::RGB>::convolveOneRowDense (int i, int j)
     {
       pcl::RGB result;
-      float r = 0, g = 0, b = 0;
+      double r = 0, g = 0, b = 0;
       for (int k = kernel_width_, l = i - half_width_; k > -1; --k, ++l)
       {
-        r += kernel_[k] * static_cast<float> ((*input_) (l,j).r);
-        g += kernel_[k] * static_cast<float> ((*input_) (l,j).g);
-        b += kernel_[k] * static_cast<float> ((*input_) (l,j).b);
+        r += kernel_[k] * static_cast<double> ((*input_) (l,j).r);
+        g += kernel_[k] * static_cast<double> ((*input_) (l,j).g);
+        b += kernel_[k] * static_cast<double> ((*input_) (l,j).b);
       }
       result.r = static_cast<pcl::uint8_t> (r);
       result.g = static_cast<pcl::uint8_t> (g);
@@ -368,12 +368,12 @@ namespace pcl
     Convolution<pcl::RGB, pcl::RGB>::convolveOneColDense (int i, int j)
     {
       pcl::RGB result;
-      float r = 0, g = 0, b = 0;
+      double r = 0, g = 0, b = 0;
       for (int k = kernel_width_, l = j - half_width_; k > -1; --k, ++l)
       {
-        r += kernel_[k] * static_cast<float> ((*input_) (i,l).r);
-        g += kernel_[k] * static_cast<float> ((*input_) (i,l).g);
-        b += kernel_[k] * static_cast<float> ((*input_) (i,l).b);
+        r += kernel_[k] * static_cast<double> ((*input_) (i,l).r);
+        g += kernel_[k] * static_cast<double> ((*input_) (i,l).g);
+        b += kernel_[k] * static_cast<double> ((*input_) (i,l).b);
       }
       result.r = static_cast<pcl::uint8_t> (r);
       result.g = static_cast<pcl::uint8_t> (g);

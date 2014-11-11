@@ -24,32 +24,32 @@ namespace Metrics
   template<>
     struct Accumulator<unsigned char>
     {
-      typedef float Type;
+      typedef double Type;
     };
   template<>
     struct Accumulator<unsigned short>
     {
-      typedef float Type;
+      typedef double Type;
     };
   template<>
     struct Accumulator<unsigned int>
     {
-      typedef float Type;
+      typedef double Type;
     };
   template<>
     struct Accumulator<char>
     {
-      typedef float Type;
+      typedef double Type;
     };
   template<>
     struct Accumulator<short>
     {
-      typedef float Type;
+      typedef double Type;
     };
   template<>
     struct Accumulator<int>
     {
-      typedef float Type;
+      typedef double Type;
     };
 
   template<class T>

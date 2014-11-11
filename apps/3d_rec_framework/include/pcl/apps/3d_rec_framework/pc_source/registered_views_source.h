@@ -118,7 +118,7 @@ namespace pcl
 
           model.views_.reset (new std::vector<typename pcl::PointCloud<PointInT>::Ptr>);
           model.poses_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
-          model.self_occlusions_.reset (new std::vector<float>);
+          model.self_occlusions_.reset (new std::vector<double>);
 
           if (bf::exists (trained_dir))
           {

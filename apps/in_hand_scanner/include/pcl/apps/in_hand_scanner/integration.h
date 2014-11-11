@@ -124,16 +124,16 @@ namespace pcl
         /** \brief Corresponding points are averaged out if their distance is below a distance threshold. Else the points are added to the mesh as new vertices (Set in cm^2).
           * \note Must be greater than zero.
           */
-        void  setMaxSquaredDistance (const float squared_distance);
-        float getMaxSquaredDistance () const;
+        void  setMaxSquaredDistance (const double squared_distance);
+        double getMaxSquaredDistance () const;
         /** @} */
 
         /** @{ */
         /** \brief Corresponding points are only averaged out if the angle between the normals is smaller than an angle threshold.
           * \note Must be between 0 and 180. Values outside this range are clamped to the nearest valid value.
           */
-        void  setMaxAngle (const float angle);
-        float getMaxAngle () const;
+        void  setMaxAngle (const double angle);
+        double getMaxAngle () const;
         /** @} */
 
         /** @{  */
@@ -169,7 +169,7 @@ namespace pcl
         typedef boost::shared_ptr <const KdTree> KdTreeConstPtr;
 
         uint8_t
-        trimRGB (const float val) const;
+        trimRGB (const double val) const;
 
         /** \brief Adds two triangles between points 0-1-3 and 1-2-3 to the mesh. */
         void
@@ -214,13 +214,13 @@ namespace pcl
         KdTreePtr kd_tree_;
 
         /** \brief Maximum squared distance below which points are averaged out. */
-        float max_squared_distance_;
+        double max_squared_distance_;
 
         /** \brief Maximum angle between normals below which points are averaged out. In degrees. */
-        float max_angle_;
+        double max_angle_;
 
         /** \brief Minimum weight above which points are added. */
-        float min_weight_;
+        double min_weight_;
 
         /** \brief Once a point reaches the maximum age it is decided if the point is removed or kept in the mesh. */
         unsigned int max_age_;

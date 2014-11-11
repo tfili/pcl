@@ -89,7 +89,7 @@ namespace pcl
       {
         public:
           virtual ~ErrorFunctor () {}
-          virtual float operator () (float d) const = 0;
+          virtual double operator () (double d) const = 0;
       };
 
       class HuberPenalty : public ErrorFunctor
@@ -97,8 +97,8 @@ namespace pcl
         private:
           HuberPenalty () {}
         public:
-          HuberPenalty (float threshold)  : threshold_ (threshold) {}
-          virtual float operator () (float e) const
+          HuberPenalty (double threshold)  : threshold_ (threshold) {}
+          virtual double operator () (double e) const
           { 
             if (e <= threshold_)
               return (0.5 * e*e); 
@@ -106,7 +106,7 @@ namespace pcl
               return (0.5 * threshold_ * (2.0 * fabs (e) - threshold_));
           }
         protected:
-          float threshold_;
+          double threshold_;
       };
 
       class TruncatedError : public ErrorFunctor
@@ -116,8 +116,8 @@ namespace pcl
         public:
           virtual ~TruncatedError () {}
 
-          TruncatedError (float threshold) : threshold_ (threshold) {}
-          virtual float operator () (float e) const
+          TruncatedError (double threshold) : threshold_ (threshold) {}
+          virtual double operator () (double e) const
           { 
             if (e <= threshold_)
               return (e / threshold_);
@@ -125,7 +125,7 @@ namespace pcl
               return (1.0);
           }
         protected:
-          float threshold_;
+          double threshold_;
       };
 
       typedef typename KdTreeFLANN<FeatureT>::Ptr FeatureKdTreePtr; 
@@ -168,10 +168,10 @@ namespace pcl
         * \param min_sample_distance the minimum distances between samples
         */
       void 
-      setMinSampleDistance (float min_sample_distance) { min_sample_distance_ = min_sample_distance; }
+      setMinSampleDistance (double min_sample_distance) { min_sample_distance_ = min_sample_distance; }
 
       /** \brief Get the minimum distances between samples, as set by the user */
-      float 
+      double 
       getMinSampleDistance () { return (min_sample_distance_); }
 
       /** \brief Set the number of samples to use during each iteration
@@ -223,7 +223,7 @@ namespace pcl
         * \param sample_indices the resulting sample indices
         */
       void 
-      selectSamples (const PointCloudSource &cloud, int nr_samples, float min_sample_distance, 
+      selectSamples (const PointCloudSource &cloud, int nr_samples, double min_sample_distance, 
                      std::vector<int> &sample_indices);
 
       /** \brief For each of the sample points, find a list of points in the target cloud whose features are similar to 
@@ -241,8 +241,8 @@ namespace pcl
         * \param cloud the input cloud
         * \param threshold distances greater than this value are capped
         */
-      float 
-      computeErrorMetric (const PointCloudSource &cloud, float threshold);
+      double 
+      computeErrorMetric (const PointCloudSource &cloud, double threshold);
 
       /** \brief Rigid transformation computation method.
         * \param output the transformed input point cloud dataset using the rigid transformation found
@@ -261,7 +261,7 @@ namespace pcl
       int nr_samples_;
 
       /** \brief The minimum distances between samples. */
-      float min_sample_distance_;
+      double min_sample_distance_;
 
       /** \brief The number of neighbors to use when selecting a random feature correspondence. */
       int k_correspondences_;

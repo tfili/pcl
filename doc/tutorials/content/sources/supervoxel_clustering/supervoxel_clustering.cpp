@@ -44,25 +44,25 @@ main (int argc, char ** argv)
 
   bool use_transform = ! pcl::console::find_switch (argc, argv, "--NT");
 
-  float voxel_resolution = 0.008f;
+  double voxel_resolution = 0.008f;
   bool voxel_res_specified = pcl::console::find_switch (argc, argv, "-v");
   if (voxel_res_specified)
     pcl::console::parse (argc, argv, "-v", voxel_resolution);
 
-  float seed_resolution = 0.1f;
+  double seed_resolution = 0.1f;
   bool seed_res_specified = pcl::console::find_switch (argc, argv, "-s");
   if (seed_res_specified)
     pcl::console::parse (argc, argv, "-s", seed_resolution);
 
-  float color_importance = 0.2f;
+  double color_importance = 0.2f;
   if (pcl::console::find_switch (argc, argv, "-c"))
     pcl::console::parse (argc, argv, "-c", color_importance);
 
-  float spatial_importance = 0.4f;
+  double spatial_importance = 0.4f;
   if (pcl::console::find_switch (argc, argv, "-z"))
     pcl::console::parse (argc, argv, "-z", spatial_importance);
 
-  float normal_importance = 1.0f;
+  double normal_importance = 1.0f;
   if (pcl::console::find_switch (argc, argv, "-n"))
     pcl::console::parse (argc, argv, "-n", normal_importance);
 

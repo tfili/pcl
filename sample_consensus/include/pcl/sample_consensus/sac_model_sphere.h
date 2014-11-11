@@ -226,7 +226,7 @@ namespace pcl
 #if defined BUILD_Maintainer && defined __GNUC__ && __GNUC__ == 4 && __GNUC_MINOR__ > 3
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
-      struct OptimizationFunctor : pcl::Functor<float>
+      struct OptimizationFunctor : pcl::Functor<double>
       {
         /** Functor constructor
           * \param[in] m_data_points the number of data points to evaluate
@@ -234,7 +234,7 @@ namespace pcl
           * \param[in] distance distance computation function pointer
           */
         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelSphere<PointT> *model) : 
-          pcl::Functor<float>(m_data_points), model_ (model) {}
+          pcl::Functor<double>(m_data_points), model_ (model) {}
 
         /** Cost function to be minimized
           * \param[in] x the variables array

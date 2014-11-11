@@ -89,9 +89,9 @@ namespace pcl
           * \note Only accepted if it is greater than 0.
           */
         void
-        setEpsilon (const float epsilon);
+        setEpsilon (const double epsilon);
 
-        float
+        double
         getEpsilon () const;
         /** @} */
 
@@ -111,9 +111,9 @@ namespace pcl
           * \note Must be between zero and one. Values outside this range are clamped to the nearest valid value.
           */
         void
-        setMinOverlap (const float overlap);
+        setMinOverlap (const double overlap);
 
-        float
+        double
         getMinOverlap () const;
         /** @} */
 
@@ -122,9 +122,9 @@ namespace pcl
           * \note Must be greater than zero.
           */
         void
-        setMaxFitness (const float fitness);
+        setMaxFitness (const double fitness);
 
-        float
+        double
         getMaxFitness () const;
         /** @} */
 
@@ -133,9 +133,9 @@ namespace pcl
           * \note Must be greater or equal one. Smaller values are set to one.
           */
         void
-        setCorrespondenceRejectionFactor (const float factor);
+        setCorrespondenceRejectionFactor (const double factor);
 
-        float
+        double
         getCorrespondenceRejectionFactor () const;
         /** @} */
 
@@ -144,9 +144,9 @@ namespace pcl
           * \note Must be between 180 degrees and 0. Values outside this range are clamped to the nearest valid value.
           */
         void
-        setMaxAngle (const float angle);
+        setMaxAngle (const double angle);
 
-        float
+        double
         getMaxAngle () const;
         /** @} */
 
@@ -208,16 +208,16 @@ namespace pcl
         KdTreePtr kd_tree_;
 
         // Convergence
-        float epsilon_; // in cm^2
+        double epsilon_; // in cm^2
 
         // Registration failure
         unsigned int max_iterations_;
-        float min_overlap_; // [0 1]
-        float max_fitness_; // in cm^2
+        double min_overlap_; // [0 1]
+        double max_fitness_; // in cm^2
 
         // Correspondence rejection
-        float factor_;
-        float max_angle_; // in degrees
+        double factor_;
+        double max_angle_; // in degrees
     };
   } // End namespace ihs
 } // End namespace pcl

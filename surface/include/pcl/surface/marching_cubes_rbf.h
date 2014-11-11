@@ -87,11 +87,11 @@ namespace pcl
         * \param[in] epsilon the value
         */
       inline void
-      setOffSurfaceDisplacement (float epsilon)
+      setOffSurfaceDisplacement (double epsilon)
       { off_surface_epsilon_ = epsilon; }
 
       /** \brief Get the off-surface points displacement value. */
-      inline float
+      inline double
       getOffSurfaceDisplacement ()
       { return off_surface_epsilon_; }
 
@@ -102,7 +102,7 @@ namespace pcl
       kernel (Eigen::Vector3d c, Eigen::Vector3d x);
 
       /** \brief The off-surface displacement value. */
-      float off_surface_epsilon_;
+      double off_surface_epsilon_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

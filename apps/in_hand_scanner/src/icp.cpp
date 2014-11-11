@@ -69,12 +69,12 @@ pcl::ihs::ICP::ICP ()
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::ICP::setEpsilon (const float epsilon)
+pcl::ihs::ICP::setEpsilon (const double epsilon)
 {
   if (epsilon > 0) epsilon_ = epsilon;
 }
 
-float
+double
 pcl::ihs::ICP::getEpsilon () const
 {
   return (epsilon_);
@@ -97,12 +97,12 @@ pcl::ihs::ICP::getMaxIterations () const
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::ICP::setMinOverlap (const float overlap)
+pcl::ihs::ICP::setMinOverlap (const double overlap)
 {
   min_overlap_ = pcl::ihs::clamp (overlap, 0.f, 1.f);
 }
 
-float
+double
 pcl::ihs::ICP::getMinOverlap () const
 {
   return (min_overlap_);
@@ -111,12 +111,12 @@ pcl::ihs::ICP::getMinOverlap () const
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::ICP::setMaxFitness (const float fitness)
+pcl::ihs::ICP::setMaxFitness (const double fitness)
 {
   if (fitness > 0) max_fitness_ = fitness;
 }
 
-float
+double
 pcl::ihs::ICP::getMaxFitness () const
 {
   return (max_fitness_);
@@ -125,12 +125,12 @@ pcl::ihs::ICP::getMaxFitness () const
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::ICP::setCorrespondenceRejectionFactor (const float factor)
+pcl::ihs::ICP::setCorrespondenceRejectionFactor (const double factor)
 {
   factor_ = factor < 1.f ? 1.f : factor;
 }
 
-float
+double
 pcl::ihs::ICP::getCorrespondenceRejectionFactor () const
 {
   return (factor_);
@@ -139,12 +139,12 @@ pcl::ihs::ICP::getCorrespondenceRejectionFactor () const
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::ICP::setMaxAngle (const float angle)
+pcl::ihs::ICP::setMaxAngle (const double angle)
 {
   max_angle_ = pcl::ihs::clamp (angle, 0.f, 180.f);
 }
 
-float
+double
 pcl::ihs::ICP::getMaxAngle () const
 {
   return (max_angle_);
@@ -177,13 +177,13 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
   double t_calc_trafo = 0.;
 
   // Convergence and registration failure
-  float current_fitness  = 0.f;
-  float previous_fitness = std::numeric_limits <float>::max ();
-  float delta_fitness    = std::numeric_limits <float>::max ();
-  float overlap          = std::numeric_limits <float>::quiet_NaN ();
+  double current_fitness  = 0.f;
+  double previous_fitness = std::numeric_limits <double>::max ();
+  double delta_fitness    = std::numeric_limits <double>::max ();
+  double overlap          = std::numeric_limits <double>::quiet_NaN ();
 
   // Outlier rejection
-  float squared_distance_threshold = std::numeric_limits<float>::max();
+  double squared_distance_threshold = std::numeric_limits<double>::max();
 
   // Transformation
   Eigen::Matrix4f T_cur = T_init;
@@ -205,7 +205,7 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
   t_build = sw.getTime ();
 
   std::vector <int>   index (1);
-  std::vector <float> squared_distance (1);
+  std::vector <double> squared_distance (1);
 
   // Clouds with one to one correspondences
   CloudNormal cloud_model_corr;
@@ -217,11 +217,11 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
   // ICP main loop
   unsigned int iter = 1;
   PointNormal pt_d;
-  const float dot_min = std::cos (max_angle_ * 17.45329252e-3); // deg to rad
+  const double dot_min = std::cos (max_angle_ * 17.45329252e-3); // deg to rad
   while (true)
   {
     // Accumulated error
-    float squared_distance_sum = 0.f;
+    double squared_distance_sum = 0.f;
 
     // NN search
     cloud_model_corr.clear ();
@@ -275,10 +275,10 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
 
     // NOTE: The fitness is calculated with the transformation from the previous iteration (I don't re-calculate it after the transformation estimation). This means that the actual fitness will be one iteration "better" than the calculated fitness suggests. This should be no problem because the difference is small at the state of convergence.
     previous_fitness           = current_fitness;
-    current_fitness            = squared_distance_sum / static_cast <float> (n_corr);
+    current_fitness            = squared_distance_sum / static_cast <double> (n_corr);
     delta_fitness              = std::abs (previous_fitness - current_fitness);
     squared_distance_threshold = factor_ * current_fitness;
-    overlap                    = static_cast <float> (n_corr) / static_cast <float> (n_data);
+    overlap                    = static_cast <double> (n_corr) / static_cast <double> (n_data);
 
     //    std::cerr << "Iter: " << std::left << std::setw(3) << iter
     //              << " | Overlap: " << std::setprecision(2) << std::setw(4) << overlap
@@ -458,7 +458,7 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
   CloudNormal::const_iterator it_s = cloud_source.begin ();
   CloudNormal::const_iterator it_t = cloud_target.begin ();
 
-  float accum = 0.f;
+  double accum = 0.f;
   Eigen::Vector4f pt_s, pt_t;
   for (; it_s!=cloud_source.end (); ++it_s, ++it_t)
   {
@@ -476,14 +476,14 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
   }
 
   // Inverse factor (do a multiplication instead of division later)
-  const float factor         = 2.f * static_cast <float> (n) / accum;
-  const float factor_squared = factor*factor;
+  const double factor         = 2.f * static_cast <double> (n) / accum;
+  const double factor_squared = factor*factor;
 
   // Covariance matrix C
-  Eigen::Matrix <float, 6, 6> C;
+  Eigen::Matrix <double, 6, 6> C;
 
   // Right hand side vector b
-  Eigen::Matrix <float, 6, 1> b;
+  Eigen::Matrix <double, 6, 1> b;
 
   // For Eigen vectorization: use 4x4 submatrixes instead of 3x3 submatrixes
   // -> top left 3x3 matrix will form the final C
@@ -500,7 +500,7 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
   Vec4Xf::const_iterator it_nor_t = nor_t.begin ();
 
   Eigen::Vector4f cross;
-  float dot;
+  double dot;
   for (; it_xyz_s!=xyz_s.end (); ++it_xyz_s, ++it_xyz_t, ++it_nor_t)
   {
     cross    = it_xyz_s->cross3 (*it_nor_t);
@@ -527,10 +527,10 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
 
   // Solve C * x = b with a Cholesky factorization with pivoting
   // x = [alpha; beta; gamma; trans_x; trans_y; trans_z]
-  Eigen::Matrix <float, 6, 1> x = C.selfadjointView <Eigen::Lower> ().ldlt ().solve (b);
+  Eigen::Matrix <double, 6, 1> x = C.selfadjointView <Eigen::Lower> ().ldlt ().solve (b);
 
   // The calculated transformation in the scaled coordinate system
-  const float
+  const double
       sa = std::sin (x (0)),
       ca = std::cos (x (0)),
       sb = std::sin (x (1)),

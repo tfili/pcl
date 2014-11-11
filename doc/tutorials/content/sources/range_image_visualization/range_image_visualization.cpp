@@ -14,7 +14,7 @@ typedef pcl::PointXYZ PointType;
 // --------------------
 // -----Parameters-----
 // --------------------
-float angular_resolution_x = 0.5f,
+double angular_resolution_x = 0.5f,
       angular_resolution_y = angular_resolution_x;
 pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 bool live_update = false;
@@ -28,8 +28,8 @@ printUsage (const char* progName)
   std::cout << "\n\nUsage: "<<progName<<" [options] <scene.pcd>\n\n"
             << "Options:\n"
             << "-------------------------------------------\n"
-            << "-rx <float>  angular resolution in degrees (default "<<angular_resolution_x<<")\n"
-            << "-ry <float>  angular resolution in degrees (default "<<angular_resolution_y<<")\n"
+            << "-rx <double>  angular resolution in degrees (default "<<angular_resolution_x<<")\n"
+            << "-ry <double>  angular resolution in degrees (default "<<angular_resolution_y<<")\n"
             << "-c <int>     coordinate frame (default "<< (int)coordinate_frame<<")\n"
             << "-l           live update - update the range image according to the selected view in the 3D viewer.\n"
             << "-h           this help\n"
@@ -103,9 +103,9 @@ main (int argc, char** argv)
   else
   {
     std::cout << "\nNo *.pcd file given => Genarating example point cloud.\n\n";
-    for (float x=-0.5f; x<=0.5f; x+=0.01f)
+    for (double x=-0.5f; x<=0.5f; x+=0.01f)
     {
-      for (float y=-0.5f; y<=0.5f; y+=0.01f)
+      for (double y=-0.5f; y<=0.5f; y+=0.01f)
       {
         PointType point;  point.x = x;  point.y = y;  point.z = 2.0f - y;
         point_cloud.points.push_back (point);
@@ -117,8 +117,8 @@ main (int argc, char** argv)
   // -----------------------------------------------
   // -----Create RangeImage from the PointCloud-----
   // -----------------------------------------------
-  float noise_level = 0.0;
-  float min_range = 0.0f;
+  double noise_level = 0.0;
+  double min_range = 0.0f;
   int border_size = 1;
   boost::shared_ptr<pcl::RangeImage> range_image_ptr(new pcl::RangeImage);
   pcl::RangeImage& range_image = *range_image_ptr;   

@@ -69,7 +69,7 @@ namespace pcl
         typedef boost::shared_ptr<const CorrespondenceRejectorDistance> ConstPtr;
 
         /** \brief Empty constructor. */
-        CorrespondenceRejectorDistance () : max_distance_(std::numeric_limits<float>::max ()),
+        CorrespondenceRejectorDistance () : max_distance_(std::numeric_limits<double>::max ()),
                                             data_container_ ()
         {
           rejection_name_ = "CorrespondenceRejectorDistance";
@@ -92,10 +92,10 @@ namespace pcl
           * \note Internally, the distance will be stored squared.
           */
         virtual inline void 
-        setMaximumDistance (float distance) { max_distance_ = distance * distance; };
+        setMaximumDistance (double distance) { max_distance_ = distance * distance; };
 
         /** \brief Get the maximum distance used for thresholding in correspondence rejection. */
-        inline float 
+        inline double 
         getMaximumDistance () { return std::sqrt (max_distance_); };
 
         /** \brief Provide a source point cloud dataset (must contain XYZ
@@ -194,7 +194,7 @@ namespace pcl
         /** \brief The maximum distance threshold between two correspondent points in source <-> target. If the
           * distance is larger than this threshold, the points will not be ignored in the alignment process.
           */
-        float max_distance_;
+        double max_distance_;
 
         typedef boost::shared_ptr<DataContainerInterface> DataContainerPtr;
 

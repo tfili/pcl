@@ -90,7 +90,7 @@ namespace pcl
     * \author Radu B. Rusu, Michael Dixon
     * \ingroup registration
     */
-  template <typename PointSource, typename PointTarget, typename Scalar = float>
+  template <typename PointSource, typename PointTarget, typename Scalar = double>
   class IterativeClosestPoint : public Registration<PointSource, PointTarget, Scalar>
   {
     public:
@@ -293,7 +293,7 @@ namespace pcl
     * \author Radu B. Rusu
     * \ingroup registration
     */
-  template <typename PointSource, typename PointTarget, typename Scalar = float>
+  template <typename PointSource, typename PointTarget, typename Scalar = double>
   class IterativeClosestPointWithNormals : public IterativeClosestPoint<PointSource, PointTarget, Scalar>
   {
     public:

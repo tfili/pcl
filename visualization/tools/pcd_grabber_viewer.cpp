@@ -161,13 +161,13 @@ main (int argc, char** argv)
   pcl::console::parse_argument (argc, argv, "-ax", axes);
   if (axes != 0.0 && cloud_viewer)
   {
-    float ax_x = 0.0, ax_y = 0.0, ax_z = 0.0;
+    double ax_x = 0.0, ax_y = 0.0, ax_z = 0.0;
     pcl::console::parse_3x_arguments (argc, argv, "-ax_pos", ax_x, ax_y, ax_z, false);
     // Draw XYZ axes if command-line enabled
     cloud_viewer->addCoordinateSystem (axes, ax_x, ax_y, ax_z, "global");
   }
 
-  float frames_per_second = 0; // 0 means only if triggered!
+  double frames_per_second = 0; // 0 means only if triggered!
   pcl::console::parse (argc, argv, "-fps", frames_per_second);
   if (frames_per_second < 0)
     frames_per_second = 0.0;

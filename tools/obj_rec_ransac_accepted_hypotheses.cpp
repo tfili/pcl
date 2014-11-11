@@ -132,9 +132,9 @@ vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, Poin
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_points->GetPoint (i, p);
-    pcl_points[i].x = static_cast<float> (p[0]);
-    pcl_points[i].y = static_cast<float> (p[1]);
-    pcl_points[i].z = static_cast<float> (p[2]);
+    pcl_points[i].x = static_cast<double> (p[0]);
+    pcl_points[i].y = static_cast<double> (p[1]);
+    pcl_points[i].z = static_cast<double> (p[2]);
   }
 
   // Check if we have normals
@@ -147,9 +147,9 @@ vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, Poin
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_normals->GetTuple (i, p);
-    pcl_normals[i].normal_x = static_cast<float> (p[0]);
-    pcl_normals[i].normal_y = static_cast<float> (p[1]);
-    pcl_normals[i].normal_z = static_cast<float> (p[2]);
+    pcl_normals[i].normal_x = static_cast<double> (p[0]);
+    pcl_normals[i].normal_y = static_cast<double> (p[1]);
+    pcl_normals[i].normal_z = static_cast<double> (p[2]);
   }
 
   return true;
@@ -160,7 +160,7 @@ vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, Poin
 void
 showHypothesisAsCoordinateFrame (Hypothesis& hypo, CallbackParameters* parameters, string frame_name)
 {
-  float rot_col[3], x_dir[3], y_dir[3], z_dir[3], origin[3], scale = 2.0f*parameters->objrec_.getPairWidth ();
+  double rot_col[3], x_dir[3], y_dir[3], z_dir[3], origin[3], scale = 2.0f*parameters->objrec_.getPairWidth ();
   pcl::ModelCoefficients coeffs; coeffs.values.resize (6);
 
   // Get the origin of the coordinate frame
@@ -215,7 +215,7 @@ compareHypotheses (const Hypothesis& a, const Hypothesis& b)
 //===============================================================================================================================
 
 void
-arrayToVtkMatrix (const float* a, vtkMatrix4x4* m)
+arrayToVtkMatrix (const double* a, vtkMatrix4x4* m)
 {
   // Setup the rotation
   m->SetElement (0, 0, a[0]); m->SetElement (0, 1, a[1]); m->SetElement (0, 2, a[2]);
@@ -350,21 +350,21 @@ update (CallbackParameters* params)
   }
 
   // Show the bounds of the scene octree
-  const float* ob = params->objrec_.getSceneOctree ().getBounds ();
+  const double* ob = params->objrec_.getSceneOctree ().getBounds ();
   params->viz_.addCube (ob[0], ob[1], ob[2], ob[3], ob[4], ob[5], 1.0, 1.0, 1.0);
 
 #if 0
   // Compute the angle
-  float angle = static_cast<float> (aux::getRandomInteger (0, 100));
+  double angle = static_cast<double> (aux::getRandomInteger (0, 100));
   angle -= AUX_PI_FLOAT*std::floor (angle/AUX_PI_FLOAT); // angle = angle mod pi
 
   // Compute the axis
-  Eigen::Matrix<float,3,1> axis;
-  axis(0,0) = static_cast<float> (aux::getRandomInteger (-100, 100));
-  axis(1,0) = static_cast<float> (aux::getRandomInteger (-100, 100));
-  axis(2,0) = static_cast<float> (aux::getRandomInteger (-100, 100));
+  Eigen::Matrix<double,3,1> axis;
+  axis(0,0) = static_cast<double> (aux::getRandomInteger (-100, 100));
+  axis(1,0) = static_cast<double> (aux::getRandomInteger (-100, 100));
+  axis(2,0) = static_cast<double> (aux::getRandomInteger (-100, 100));
   // Normalize the axis
-  float len = std::sqrt (axis(0,0)*axis(0,0) + axis(1,0)*axis(1,0) + axis(2,0)*axis(2,0));
+  double len = std::sqrt (axis(0,0)*axis(0,0) + axis(1,0)*axis(1,0) + axis(2,0)*axis(2,0));
   axis(0,0) = axis(0,0)/len;
   axis(1,0) = axis(1,0)/len;
   axis(2,0) = axis(2,0)/len;
@@ -373,14 +373,14 @@ update (CallbackParameters* params)
   cout << "Input axis = \n" << axis << endl;
 
   // The eigen axis-angle object
-  Eigen::AngleAxis<float> angle_axis(angle, axis);
+  Eigen::AngleAxis<double> angle_axis(angle, axis);
 
-  Eigen::Matrix<float,3,3> mat = angle_axis.toRotationMatrix ();
-  float m[9];
+  Eigen::Matrix<double,3,3> mat = angle_axis.toRotationMatrix ();
+  double m[9];
   aux::eigenMatrix3x3ToArray9RowMajor (mat, m);
 
   // Now compute back the angle and the axis based on eigen
-  float comp_angle, comp_axis[3];
+  double comp_angle, comp_axis[3];
   aux::rotationMatrixToAxisAngle (m, comp_axis, comp_angle);
   cout << "\nComputed angle = " << comp_angle << endl;
   cout << "Computed axis = \n" << comp_axis[0] << "\n" << comp_axis[1] << "\n" << comp_axis[2] << endl;
@@ -411,7 +411,7 @@ keyboardCB (const pcl::visualization::KeyboardEvent &event, void* params_void)
 //===============================================================================================================================
 
 void
-run (float pair_width, float voxel_size, float max_coplanarity_angle, int num_hypotheses_to_show)
+run (double pair_width, double voxel_size, double max_coplanarity_angle, int num_hypotheses_to_show)
 {
   PointCloud<PointXYZ>::Ptr scene_points (new PointCloud<PointXYZ> ()), model_points (new PointCloud<PointXYZ> ());
   PointCloud<Normal>::Ptr scene_normals (new PointCloud<Normal> ()), model_normals (new PointCloud<Normal> ());
@@ -479,12 +479,12 @@ main (int argc, char** argv)
   printf ("\nUsage: ./obj_rec_ransac_accepted_hypotheses <pair_width> <voxel_size> <max_coplanarity_angle> <n_hypotheses_to_show> <show_hypotheses_as_coordinate_frames>\n\n");
 
   const int num_params = 4;
-  float parameters[num_params] = {40.0f/*pair width*/, 5.0f/*voxel size*/, 15.0f/*max co-planarity angle*/, 1/*n_hypotheses_to_show*/};
+  double parameters[num_params] = {40.0f/*pair width*/, 5.0f/*voxel size*/, 15.0f/*max co-planarity angle*/, 1/*n_hypotheses_to_show*/};
   string parameter_names[num_params] = {"pair_width", "voxel_size", "max_coplanarity_angle", "n_hypotheses_to_show"};
 
   // Read the user input if any
   for ( int i = 0 ; i < argc-1 && i < num_params ; ++i )
-    parameters[i] = static_cast<float> (atof (argv[i+1]));
+    parameters[i] = static_cast<double> (atof (argv[i+1]));
 
   printf ("The following parameter values will be used:\n");
   for ( int i = 0 ; i < num_params ; ++i )

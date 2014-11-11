@@ -223,7 +223,7 @@ class PeoplePCDApp
       data_ready_cond_.notify_one();
     }
 
-    void source_cb2(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, float)
+    void source_cb2(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, double)
     {
       {                    
         boost::mutex::scoped_try_lock lock(data_ready_mutex_);
@@ -282,7 +282,7 @@ class PeoplePCDApp
       typedef boost::shared_ptr<openni_wrapper::Image> ImagePtr;
       
       boost::function<void (const boost::shared_ptr<const PointCloud<PointXYZRGBA> >&)> func1 = boost::bind (&PeoplePCDApp::source_cb1, this, _1);
-      boost::function<void (const ImagePtr&, const DepthImagePtr&, float constant)> func2 = boost::bind (&PeoplePCDApp::source_cb2, this, _1, _2, _3);                  
+      boost::function<void (const ImagePtr&, const DepthImagePtr&, double constant)> func2 = boost::bind (&PeoplePCDApp::source_cb2, this, _1, _2, _3);                  
       boost::signals2::connection c = cloud_cb_ ? capture_.registerCallback (func1) : capture_.registerCallback (func2);
 
       {

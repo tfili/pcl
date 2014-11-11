@@ -91,14 +91,14 @@ TEST(PCL_FeaturesGPU, normals_lowlevel)
         Normal n = source.normals->points[i];
 
         PointXYZ xyz = downloaded[i];
-        float curvature = xyz.data[3];               
+        double curvature = xyz.data[3];               
 
-        float abs_error = 0.01f;
+        double abs_error = 0.01f;
         ASSERT_NEAR(n.normal_x, xyz.x, abs_error);
         ASSERT_NEAR(n.normal_y, xyz.y, abs_error);
         ASSERT_NEAR(n.normal_z, xyz.z, abs_error);
 
-        float abs_error_curv = 0.01f;
+        double abs_error_curv = 0.01f;
         ASSERT_NEAR(n.curvature, curvature, abs_error_curv);
     }
 }
@@ -155,14 +155,14 @@ TEST(PCL_FeaturesGPU, normals_highlevel_1)
         Normal n = normals->points[i];
 
         PointXYZ xyz = downloaded[i];
-        float curvature = xyz.data[3];                        
+        double curvature = xyz.data[3];                        
 
-        float abs_error = 0.01f;
+        double abs_error = 0.01f;
         ASSERT_NEAR(n.normal_x, xyz.x, abs_error);
         ASSERT_NEAR(n.normal_y, xyz.y, abs_error);
         ASSERT_NEAR(n.normal_z, xyz.z, abs_error);
 
-        float abs_error_curv = 0.01f;
+        double abs_error_curv = 0.01f;
         ASSERT_NEAR(n.curvature, curvature, abs_error_curv);
     }
 }
@@ -220,14 +220,14 @@ TEST(PCL_FeaturesGPU, normals_highlevel_2)
         Normal n = normals->points[i];
 
         PointXYZ xyz = downloaded[i];
-        float curvature = xyz.data[3];                        
+        double curvature = xyz.data[3];                        
 
-        float abs_error = 0.01f;
+        double abs_error = 0.01f;
         ASSERT_NEAR(n.normal_x, xyz.x, abs_error);
         ASSERT_NEAR(n.normal_y, xyz.y, abs_error);
         ASSERT_NEAR(n.normal_z, xyz.z, abs_error);
 
-        float abs_error_curv = 0.01f;
+        double abs_error_curv = 0.01f;
         ASSERT_NEAR(n.curvature, curvature, abs_error_curv);
     }
 }
@@ -285,9 +285,9 @@ TEST(PCL_FeaturesGPU, normals_highlevel_3)
         Normal n = normals->points[i];
 
         PointXYZ xyz = downloaded[i];
-        float curvature = xyz.data[3];
+        double curvature = xyz.data[3];
 
-        float abs_error = 0.01f;
+        double abs_error = 0.01f;
 
         if (pcl_isnan(n.normal_x) || pcl_isnan(n.normal_y) || pcl_isnan(n.normal_z))
             continue;
@@ -300,7 +300,7 @@ TEST(PCL_FeaturesGPU, normals_highlevel_3)
         ASSERT_NEAR(n.normal_y, xyz.y, abs_error);
         ASSERT_NEAR(n.normal_z, xyz.z, abs_error);
 
-        float abs_error_curv = 0.01f;
+        double abs_error_curv = 0.01f;
         ASSERT_NEAR(n.curvature, curvature, abs_error_curv);
     }
 }
@@ -359,9 +359,9 @@ TEST(PCL_FeaturesGPU, normals_highlevel_4)
         Normal n = normals->points[i];
 
         PointXYZ xyz = downloaded[i];
-        float curvature = xyz.data[3];
+        double curvature = xyz.data[3];
 
-        float abs_error = 0.01f;
+        double abs_error = 0.01f;
 
         if (pcl_isnan(n.normal_x) || pcl_isnan(n.normal_y) || pcl_isnan(n.normal_z))
             continue;
@@ -374,7 +374,7 @@ TEST(PCL_FeaturesGPU, normals_highlevel_4)
         ASSERT_NEAR(n.normal_y, xyz.y, abs_error);
         ASSERT_NEAR(n.normal_z, xyz.z, abs_error);
 
-        float abs_error_curv = 0.01f;
+        double abs_error_curv = 0.01f;
         ASSERT_NEAR(n.curvature, curvature, abs_error_curv);
     }
 }

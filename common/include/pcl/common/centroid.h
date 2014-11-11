@@ -69,7 +69,7 @@ namespace pcl
   compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
                      Eigen::Vector4f &centroid)
   {
-    return (compute3DCentroid <PointT, float> (cloud_iterator, centroid));
+    return (compute3DCentroid <PointT, double> (cloud_iterator, centroid));
   }
 
   template <typename PointT> inline unsigned int
@@ -95,7 +95,7 @@ namespace pcl
   compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
                      Eigen::Vector4f &centroid)
   {
-    return (compute3DCentroid <PointT, float> (cloud, centroid));
+    return (compute3DCentroid <PointT, double> (cloud, centroid));
   }
 
   template <typename PointT> inline unsigned int
@@ -125,7 +125,7 @@ namespace pcl
                      const std::vector<int> &indices, 
                      Eigen::Vector4f &centroid)
   {
-    return (compute3DCentroid <PointT, float> (cloud, indices, centroid));
+    return (compute3DCentroid <PointT, double> (cloud, indices, centroid));
   }
 
   template <typename PointT> inline unsigned int
@@ -156,7 +156,7 @@ namespace pcl
                      const pcl::PointIndices &indices, 
                      Eigen::Vector4f &centroid)
   {
-    return (compute3DCentroid <PointT, float> (cloud, indices, centroid));
+    return (compute3DCentroid <PointT, double> (cloud, indices, centroid));
   }
 
   template <typename PointT> inline unsigned int
@@ -190,7 +190,7 @@ namespace pcl
                            const Eigen::Vector4f &centroid,
                            Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrix<PointT, float> (cloud, centroid, covariance_matrix));
+    return (computeCovarianceMatrix<PointT, double> (cloud, centroid, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -224,7 +224,7 @@ namespace pcl
                                      const Eigen::Vector4f &centroid,
                                      Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrixNormalized<PointT, float> (cloud, centroid, covariance_matrix));
+    return (computeCovarianceMatrixNormalized<PointT, double> (cloud, centroid, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -260,7 +260,7 @@ namespace pcl
                            const Eigen::Vector4f &centroid,
                            Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrix<PointT, float> (cloud, indices, centroid, covariance_matrix));
+    return (computeCovarianceMatrix<PointT, double> (cloud, indices, centroid, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -297,7 +297,7 @@ namespace pcl
                            const Eigen::Vector4f &centroid,
                            Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrix<PointT, float> (cloud, indices, centroid, covariance_matrix));
+    return (computeCovarianceMatrix<PointT, double> (cloud, indices, centroid, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -336,7 +336,7 @@ namespace pcl
                                      const Eigen::Vector4f &centroid,
                                      Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrixNormalized<PointT, float> (cloud, indices, centroid, covariance_matrix));
+    return (computeCovarianceMatrixNormalized<PointT, double> (cloud, indices, centroid, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -374,7 +374,7 @@ namespace pcl
                                      const Eigen::Vector4f &centroid,
                                      Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrixNormalized<PointT, float> (cloud, indices, centroid, covariance_matrix));
+    return (computeCovarianceMatrixNormalized<PointT, double> (cloud, indices, centroid, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -390,7 +390,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
     * \param[out] centroid the centroid of the set of points in the cloud
@@ -408,7 +408,7 @@ namespace pcl
                                   Eigen::Matrix3f &covariance_matrix,
                                   Eigen::Vector4f &centroid)
   {
-    return (computeMeanAndCovarianceMatrix<PointT, float> (cloud, covariance_matrix, centroid));
+    return (computeMeanAndCovarianceMatrix<PointT, double> (cloud, covariance_matrix, centroid));
   }
 
   template <typename PointT> inline unsigned int
@@ -423,7 +423,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
@@ -444,7 +444,7 @@ namespace pcl
                                   Eigen::Matrix3f &covariance_matrix,
                                   Eigen::Vector4f &centroid)
   {
-    return (computeMeanAndCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix, centroid));
+    return (computeMeanAndCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix, centroid));
   }
 
   template <typename PointT> inline unsigned int
@@ -460,7 +460,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] centroid the centroid of the set of points in the cloud
@@ -481,7 +481,7 @@ namespace pcl
                                   Eigen::Matrix3f &covariance_matrix,
                                   Eigen::Vector4f &centroid)
   {
-    return (computeMeanAndCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix, centroid));
+    return (computeMeanAndCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix, centroid));
   }
 
   template <typename PointT> inline unsigned int
@@ -497,7 +497,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
     * \return number of valid point used to determine the covariance matrix.
@@ -512,7 +512,7 @@ namespace pcl
   computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
                            Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrix<PointT, float> (cloud, covariance_matrix));
+    return (computeCovarianceMatrix<PointT, double> (cloud, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -526,7 +526,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
@@ -544,7 +544,7 @@ namespace pcl
                            const std::vector<int> &indices,
                            Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix));
+    return (computeCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -559,7 +559,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
@@ -577,7 +577,7 @@ namespace pcl
                            const pcl::PointIndices &indices,
                            Eigen::Matrix3f &covariance_matrix)
   {
-    return (computeCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix));
+    return (computeCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix));
   }
 
   template <typename PointT> inline unsigned int
@@ -607,7 +607,7 @@ namespace pcl
                     pcl::PointCloud<PointT> &cloud_out,
                     int npts = 0)
   {
-    return (demeanPointCloud<PointT, float> (cloud_iterator, centroid, cloud_out, npts));
+    return (demeanPointCloud<PointT, double> (cloud_iterator, centroid, cloud_out, npts));
   }
 
   template <typename PointT> void
@@ -635,7 +635,7 @@ namespace pcl
                     const Eigen::Vector4f &centroid,
                     pcl::PointCloud<PointT> &cloud_out)
   {
-    return (demeanPointCloud<PointT, float> (cloud_iterator, centroid, cloud_out));
+    return (demeanPointCloud<PointT, double> (cloud_iterator, centroid, cloud_out));
   }
 
   template <typename PointT> void
@@ -665,7 +665,7 @@ namespace pcl
                     const Eigen::Vector4f &centroid,
                     pcl::PointCloud<PointT> &cloud_out)
   {
-    return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
+    return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
   }
 
   template <typename PointT> void
@@ -696,7 +696,7 @@ namespace pcl
                     const Eigen::Vector4f &centroid,
                     pcl::PointCloud<PointT> &cloud_out)
   {
-    return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
+    return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
   }
 
   template <typename PointT> void
@@ -729,7 +729,7 @@ namespace pcl
                     Eigen::MatrixXf &cloud_out,
                     int npts = 0)
   {
-    return (demeanPointCloud<PointT, float> (cloud_iterator, centroid, cloud_out, npts));
+    return (demeanPointCloud<PointT, double> (cloud_iterator, centroid, cloud_out, npts));
   }
 
   template <typename PointT> void
@@ -759,7 +759,7 @@ namespace pcl
                     const Eigen::Vector4f &centroid,
                     Eigen::MatrixXf &cloud_out)
   {
-    return (demeanPointCloud<PointT, float> (cloud_in, centroid, cloud_out));
+    return (demeanPointCloud<PointT, double> (cloud_in, centroid, cloud_out));
   }
 
   template <typename PointT> void
@@ -791,7 +791,7 @@ namespace pcl
                     const Eigen::Vector4f &centroid,
                     Eigen::MatrixXf &cloud_out)
   {
-    return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
+    return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
   }
 
   template <typename PointT> void
@@ -824,7 +824,7 @@ namespace pcl
                     const Eigen::Vector4f &centroid,
                     Eigen::MatrixXf &cloud_out)
   {
-    return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
+    return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
   }
 
   template <typename PointT> void
@@ -883,7 +883,7 @@ namespace pcl
   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
                      Eigen::VectorXf &centroid)
   {
-    return (computeNDCentroid<PointT, float> (cloud, centroid));
+    return (computeNDCentroid<PointT, double> (cloud, centroid));
   }
 
   template <typename PointT> inline void
@@ -910,7 +910,7 @@ namespace pcl
                      const std::vector<int> &indices, 
                      Eigen::VectorXf &centroid)
   {
-    return (computeNDCentroid<PointT, float> (cloud, indices, centroid));
+    return (computeNDCentroid<PointT, double> (cloud, indices, centroid));
   }
 
   template <typename PointT> inline void
@@ -938,7 +938,7 @@ namespace pcl
                      const pcl::PointIndices &indices, 
                      Eigen::VectorXf &centroid)
   {
-    return (computeNDCentroid<PointT, float> (cloud, indices, centroid));
+    return (computeNDCentroid<PointT, double> (cloud, indices, centroid));
   }
 
   template <typename PointT> inline void

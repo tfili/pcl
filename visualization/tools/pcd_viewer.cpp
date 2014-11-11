@@ -167,7 +167,7 @@ pp_callback (const pcl::visualization::PointPickingEvent& event, void* cookie)
   }
   // Return the correct index in the cloud instead of the index on the screen
   std::vector<int> indices (1);
-  std::vector<float> distances (1);
+  std::vector<double> distances (1);
 
   // Because VTK/OpenGL stores data without NaN, we lose the 1-1 correspondence, so we must search for the real point
   pcl::PointXYZ picked_pt;
@@ -260,12 +260,12 @@ main (int argc, char** argv)
 
   int normals = 0;
   pcl::console::parse_argument (argc, argv, "-normals", normals);
-  float normals_scale = NORMALS_SCALE;
+  double normals_scale = NORMALS_SCALE;
   pcl::console::parse_argument (argc, argv, "-normals_scale", normals_scale);
 
   int pc = 0;
   pcl::console::parse_argument (argc, argv, "-pc", pc);
-  float pc_scale = PC_SCALE;
+  double pc_scale = PC_SCALE;
   pcl::console::parse_argument (argc, argv, "-pc_scale", pc_scale);
 
   bool use_vbos = false;
@@ -293,7 +293,7 @@ main (int argc, char** argv)
   {
     print_highlight ("Multi-viewport rendering enabled.\n");
 
-    y_s = static_cast<int>(floor (sqrt (static_cast<float>(p_file_indices.size () + vtk_file_indices.size ()))));
+    y_s = static_cast<int>(floor (sqrt (static_cast<double>(p_file_indices.size () + vtk_file_indices.size ()))));
     x_s = y_s + static_cast<int>(ceil (double (p_file_indices.size () + vtk_file_indices.size ()) / double (y_s) - y_s));
 
     if (p_file_indices.size () != 0)
@@ -330,7 +330,7 @@ main (int argc, char** argv)
   boost::shared_ptr<pcl::visualization::PCLPlotter> ph;
 #endif  
   // Using min_p, max_p to set the global Y min/max range for the histogram
-  float min_p = FLT_MAX; float max_p = -FLT_MAX;
+  double min_p = FLT_MAX; double max_p = -FLT_MAX;
 
   int k = 0, l = 0, viewport = 0;
   // Load the data files
@@ -673,7 +673,7 @@ main (int argc, char** argv)
   pcl::console::parse_argument (argc, argv, "-ax", axes);
   if (axes != 0.0 && p)
   {
-    float ax_x = 0.0, ax_y = 0.0, ax_z = 0.0;
+    double ax_x = 0.0, ax_y = 0.0, ax_z = 0.0;
     pcl::console::parse_3x_arguments (argc, argv, "-ax_pos", ax_x, ax_y, ax_z);
     // Draw XYZ axes if command-line enabled
     p->addCoordinateSystem (axes, ax_x, ax_y, ax_z, "global");

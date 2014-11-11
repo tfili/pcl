@@ -282,9 +282,9 @@ pcl::ConcaveHull<PointInT>::performReconstruction (PointCloud &alpha_shape, std:
 
         if (voronoi_centers_)
         {
-          voronoi_centers_->points[non_upper].x = static_cast<float> (facet->center[0]);
-          voronoi_centers_->points[non_upper].y = static_cast<float> (facet->center[1]);
-          voronoi_centers_->points[non_upper].z = static_cast<float> (facet->center[2]);
+          voronoi_centers_->points[non_upper].x = static_cast<double> (facet->center[0]);
+          voronoi_centers_->points[non_upper].y = static_cast<double> (facet->center[1]);
+          voronoi_centers_->points[non_upper].z = static_cast<double> (facet->center[2]);
         }
 
         non_upper++;
@@ -319,15 +319,15 @@ pcl::ConcaveHull<PointInT>::performReconstruction (PointCloud &alpha_shape, std:
               // check if individual triangle is good and add it to triangles_set
 
               PointInT a, b, c;
-              a.x = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[0].p))->point[0]);
-              a.y = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[0].p))->point[1]);
-              a.z = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[0].p))->point[2]);
-              b.x = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[1].p))->point[0]);
-              b.y = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[1].p))->point[1]);
-              b.z = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[1].p))->point[2]);
-              c.x = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[2].p))->point[0]);
-              c.y = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[2].p))->point[1]);
-              c.z = static_cast<float> ((static_cast<vertexT*>(ridge->vertices->e[2].p))->point[2]);
+              a.x = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[0].p))->point[0]);
+              a.y = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[0].p))->point[1]);
+              a.z = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[0].p))->point[2]);
+              b.x = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[1].p))->point[0]);
+              b.y = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[1].p))->point[1]);
+              b.z = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[1].p))->point[2]);
+              c.x = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[2].p))->point[0]);
+              c.y = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[2].p))->point[1]);
+              c.z = static_cast<double> ((static_cast<vertexT*>(ridge->vertices->e[2].p))->point[2]);
 
               double r = pcl::getCircumcircleRadius (a, b, c);
               if (r <= alpha_)
@@ -367,9 +367,9 @@ pcl::ConcaveHull<PointInT>::performReconstruction (PointCloud &alpha_shape, std:
         {
           if (!added_vertices[vertex->id])
           {
-            alpha_shape.points[vertices].x = static_cast<float> (vertex->point[0]);
-            alpha_shape.points[vertices].y = static_cast<float> (vertex->point[1]);
-            alpha_shape.points[vertices].z = static_cast<float> (vertex->point[2]);
+            alpha_shape.points[vertices].x = static_cast<double> (vertex->point[0]);
+            alpha_shape.points[vertices].y = static_cast<double> (vertex->point[1]);
+            alpha_shape.points[vertices].z = static_cast<double> (vertex->point[2]);
 
             qhid_to_pcidx[vertex->id] = vertices;   //map the vertex id of qhull to the point cloud index
             added_vertices[vertex->id] = true;
@@ -420,8 +420,8 @@ pcl::ConcaveHull<PointInT>::performReconstruction (PointCloud &alpha_shape, std:
 
           if (voronoi_centers_)
           {
-            voronoi_centers_->points[dd].x = static_cast<float> (facet->center[0]);
-            voronoi_centers_->points[dd].y = static_cast<float> (facet->center[1]);
+            voronoi_centers_->points[dd].x = static_cast<double> (facet->center[0]);
+            voronoi_centers_->points[dd].y = static_cast<double> (facet->center[1]);
             voronoi_centers_->points[dd].z = 0.0f;
           }
 
@@ -450,11 +450,11 @@ pcl::ConcaveHull<PointInT>::performReconstruction (PointCloud &alpha_shape, std:
         {
           if (!added_vertices[vertex->id])
           {
-            alpha_shape.points[vertices].x = static_cast<float> (vertex->point[0]);
-            alpha_shape.points[vertices].y = static_cast<float> (vertex->point[1]);
+            alpha_shape.points[vertices].x = static_cast<double> (vertex->point[0]);
+            alpha_shape.points[vertices].y = static_cast<double> (vertex->point[1]);
 
             if (dim_ > 2)
-              alpha_shape.points[vertices].z = static_cast<float> (vertex->point[2]);
+              alpha_shape.points[vertices].z = static_cast<double> (vertex->point[2]);
             else
               alpha_shape.points[vertices].z = 0;
 
@@ -574,7 +574,7 @@ pcl::ConcaveHull<PointInT>::performReconstruction (PointCloud &alpha_shape, std:
     tree.setInputCloud (input_, indices_);
 
     std::vector<int> neighbor;
-    std::vector<float> distances;
+    std::vector<double> distances;
     neighbor.resize (1);
     distances.resize (1);
 

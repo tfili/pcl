@@ -184,7 +184,7 @@ pcl::SVM::adaptLibSVMToInput (std::vector<SVMData> &training_set, svm_problem pr
       if (pcl_isfinite (prob.x[i][j].value))
       {
         seed.idx = prob.x[i][j].index;
-        seed.value = float (prob.x[i][j].value);
+        seed.value = double (prob.x[i][j].value);
         parent.SV.push_back (seed);
       }
 

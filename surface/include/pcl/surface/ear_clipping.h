@@ -87,7 +87,7 @@ namespace pcl
       /** \brief Compute the signed area of a polygon. 
         * \param[in] vertices the vertices representing the polygon 
         */
-      float
+      double
       area (const std::vector<uint32_t>& vertices);
 
       /** \brief Check if the triangle (u,v,w) is an ear. 
@@ -115,7 +115,7 @@ namespace pcl
        * \param[in] p1 the first 2D vector
        * \param[in] p2 the first 2D vector
        */
-      float
+      double
       crossProduct (const Eigen::Vector2f& p1, const Eigen::Vector2f& p2) const
       {
         return p1[0]*p2[1] - p1[1]*p2[0];

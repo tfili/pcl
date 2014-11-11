@@ -126,15 +126,15 @@ namespace pcl
 						
 			int particle_num_;
 
-			std::vector<float> step_noise_covariance_;
+			std::vector<double> step_noise_covariance_;
 
-      std::vector<float> initial_noise_covariance_;
+      std::vector<double> initial_noise_covariance_;
         
-      std::vector<float> initial_noise_mean_;
+      std::vector<double> initial_noise_mean_;
 
 			StateType motion_;
 
-			float motion_ratio_;
+			double motion_ratio_;
 
 			bool use_colors_;
 

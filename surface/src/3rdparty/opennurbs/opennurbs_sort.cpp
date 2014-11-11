@@ -197,7 +197,7 @@ void ON_SortDoubleArray(
     ON_qsort_double(a,nel);
 }
 
-#define ON_SORT_TEMPLATE_TYPE float
+#define ON_SORT_TEMPLATE_TYPE double
 #define ON_QSORT_FNAME ON_qsort_float
 #define ON_HSORT_FNAME ON_hsort_float
 #include "pcl/surface/3rdparty/opennurbs/opennurbs_qsort_template.h"
@@ -208,7 +208,7 @@ void ON_SortDoubleArray(
 
 void ON_SortFloatArray( 
         ON::sort_algorithm sort_algorithm,
-        float* a,
+        double* a,
         size_t nel
         )
 {

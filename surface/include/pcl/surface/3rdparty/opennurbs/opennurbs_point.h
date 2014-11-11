@@ -285,7 +285,7 @@ public:
   ON_2dPoint(const class ON_4fPoint&);  // from 4f point
   ON_2dPoint(const class ON_2fVector&); // from 2f point
   ON_2dPoint(const class ON_3fVector&); // from 3f point
-  ON_2dPoint(const float*);             // from float[2] array
+  ON_2dPoint(const double*);             // from double[2] array
 
   // (double*) conversion operators
   operator double*();
@@ -303,7 +303,7 @@ public:
   ON_2dPoint& operator=(const ON_4fPoint&);
   ON_2dPoint& operator=(const ON_2fVector&);
   ON_2dPoint& operator=(const ON_3fVector&);
-  ON_2dPoint& operator=(const float*);  // point = float[2] support
+  ON_2dPoint& operator=(const double*);  // point = double[2] support
 
   ON_2dPoint& operator*=(double);
   ON_2dPoint& operator/=(double);
@@ -316,8 +316,8 @@ public:
 
   ON_2dPoint  operator*(int) const;
   ON_2dPoint  operator/(int) const;
-  ON_2dPoint  operator*(float) const;
-  ON_2dPoint  operator/(float) const;
+  ON_2dPoint  operator*(double) const;
+  ON_2dPoint  operator/(double) const;
   ON_2dPoint  operator*(double) const;
   ON_2dPoint  operator/(double) const;
 
@@ -406,7 +406,7 @@ ON_DECL
 ON_2dPoint operator*(int, const ON_2dPoint&);
 
 ON_DECL
-ON_2dPoint operator*(float, const ON_2dPoint&);
+ON_2dPoint operator*(double, const ON_2dPoint&);
 
 ON_DECL
 ON_2dPoint operator*(double, const ON_2dPoint&);
@@ -437,7 +437,7 @@ public:
   ON_3dPoint(const class ON_4fPoint&);  // from 4f point
   ON_3dPoint(const class ON_2fVector&); // from 2f point
   ON_3dPoint(const class ON_3fVector&); // from 3f point
-  ON_3dPoint(const float*);             // from float[3] array
+  ON_3dPoint(const double*);             // from double[3] array
 
   // (double*) conversion operators
   operator double*();
@@ -455,7 +455,7 @@ public:
   ON_3dPoint& operator=(const class ON_4fPoint&);
   ON_3dPoint& operator=(const class ON_2fVector&);
   ON_3dPoint& operator=(const class ON_3fVector&);
-  ON_3dPoint& operator=(const float*);  // point = float[3] support
+  ON_3dPoint& operator=(const double*);  // point = double[3] support
 
   ON_3dPoint& operator*=(double);
   ON_3dPoint& operator/=(double);
@@ -466,8 +466,8 @@ public:
 
   ON_3dPoint  operator*(int) const;
   ON_3dPoint  operator/(int) const;
-  ON_3dPoint  operator*(float) const;
-  ON_3dPoint  operator/(float) const;
+  ON_3dPoint  operator*(double) const;
+  ON_3dPoint  operator/(double) const;
   ON_3dPoint  operator*(double) const;
   ON_3dPoint  operator/(double) const;
 
@@ -560,7 +560,7 @@ ON_DECL
 ON_3dPoint operator*(int, const ON_3dPoint&);
 
 ON_DECL
-ON_3dPoint operator*(float, const ON_3dPoint&);
+ON_3dPoint operator*(double, const ON_3dPoint&);
 
 ON_DECL
 ON_3dPoint operator*(double, const ON_3dPoint&);
@@ -589,7 +589,7 @@ public:
   ON_4dPoint(const ON_4fPoint& );     // from 3f point
   ON_4dPoint(const ON_2fVector& );    // from 2f vector
   ON_4dPoint(const ON_3fVector& );    // from 3f vector
-  ON_4dPoint(const float*);           // from float[4] array
+  ON_4dPoint(const double*);           // from double[4] array
 
   // (double*) conversion operators
   operator double*();
@@ -607,7 +607,7 @@ public:
   ON_4dPoint& operator=(const class ON_4fPoint&);
   ON_4dPoint& operator=(const class ON_2fVector&);
   ON_4dPoint& operator=(const class ON_3fVector&);
-  ON_4dPoint& operator=(const float*);  // point = float[4] support
+  ON_4dPoint& operator=(const double*);  // point = double[4] support
 
   ON_4dPoint& operator*=(double);
   ON_4dPoint& operator/=(double);
@@ -704,7 +704,7 @@ public:
   ON_2dVector(const ON_3fVector& ); // from 3f vector
   ON_2dVector(const ON_2fPoint& );  // from 2f point
   ON_2dVector(const ON_3fPoint& );  // from 3f point
-  ON_2dVector(const float*);        // from double[2] array
+  ON_2dVector(const double*);        // from double[2] array
 
   // (double*) conversion operators
   operator double*();
@@ -720,7 +720,7 @@ public:
   ON_2dVector& operator=(const ON_3fVector&);
   ON_2dVector& operator=(const ON_2fPoint&);
   ON_2dVector& operator=(const ON_3fPoint&);
-  ON_2dVector& operator=(const float*);  // vector = float[2] support
+  ON_2dVector& operator=(const double*);  // vector = double[2] support
 
   ON_2dVector  operator-() const;
 
@@ -736,8 +736,8 @@ public:
 
   ON_2dVector  operator*(int) const;
   ON_2dVector  operator/(int) const;
-  ON_2dVector  operator*(float) const;
-  ON_2dVector  operator/(float) const;
+  ON_2dVector  operator*(double) const;
+  ON_2dVector  operator/(double) const;
   ON_2dVector  operator*(double) const;
   ON_2dVector  operator/(double) const;
 
@@ -893,7 +893,7 @@ ON_DECL
 ON_2dVector operator*(int, const ON_2dVector&);
 
 ON_DECL
-ON_2dVector operator*(float, const ON_2dVector&);
+ON_2dVector operator*(double, const ON_2dVector&);
 
 ON_DECL
 ON_2dVector operator*(double, const ON_2dVector&);
@@ -983,7 +983,7 @@ public:
   ON_3dVector(const ON_3fVector& );  // from 3f vector
   ON_3dVector(const ON_2fPoint& );   // from 2f point
   ON_3dVector(const ON_3fPoint& );   // from 3f point
-  ON_3dVector(const float*);         // from float[3] array
+  ON_3dVector(const double*);         // from double[3] array
 
   // (double*) conversion operators
   operator double*();
@@ -999,7 +999,7 @@ public:
   ON_3dVector& operator=(const ON_3fVector&);
   ON_3dVector& operator=(const ON_2fPoint&);
   ON_3dVector& operator=(const ON_3fPoint&);
-  ON_3dVector& operator=(const float*);  // vector = float[3] support
+  ON_3dVector& operator=(const double*);  // vector = double[3] support
 
   ON_3dVector  operator-() const;
 
@@ -1015,8 +1015,8 @@ public:
 
   ON_3dVector  operator*(int) const;
   ON_3dVector  operator/(int) const;
-  ON_3dVector  operator*(float) const;
-  ON_3dVector  operator/(float) const;
+  ON_3dVector  operator*(double) const;
+  ON_3dVector  operator/(double) const;
   ON_3dVector  operator*(double) const;
   ON_3dVector  operator/(double) const;
 
@@ -1473,7 +1473,7 @@ ON_DECL
 ON_3dVector operator*(int, const ON_3dVector&);
 
 ON_DECL
-ON_3dVector operator*(float, const ON_3dVector&);
+ON_3dVector operator*(double, const ON_3dVector&);
 
 ON_DECL
 ON_3dVector operator*(double, const ON_3dVector&);

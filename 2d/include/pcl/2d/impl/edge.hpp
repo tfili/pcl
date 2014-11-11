@@ -218,10 +218,10 @@ pcl::Edge<PointInT, PointOutT>::cannyTraceEdge (
 
   if (newRow > 0 && newRow < static_cast<int> (maxima.height) && newCol > 0 && newCol < static_cast<int> (maxima.width))
   {
-    if (pt.intensity == 0.0f || pt.intensity == std::numeric_limits<float>::max ())
+    if (pt.intensity == 0.0f || pt.intensity == std::numeric_limits<double>::max ())
       return;
 
-    pt.intensity = std::numeric_limits<float>::max ();
+    pt.intensity = std::numeric_limits<double>::max ();
     cannyTraceEdge ( 1, 0, newRow, newCol, maxima);
     cannyTraceEdge (-1, 0, newRow, newCol, maxima);
     cannyTraceEdge ( 1, 1, newRow, newCol, maxima);
@@ -239,7 +239,7 @@ pcl::Edge<PointInT, PointOutT>::discretizeAngles (pcl::PointCloud<PointOutT> &th
 {
   const int height = thet.height;
   const int width = thet.width;
-  float angle;
+  double angle;
   for (int i = 0; i < height; i++)
   {
     for (int j = 0; j < width; j++)
@@ -264,7 +264,7 @@ pcl::Edge<PointInT, PointOutT>::discretizeAngles (pcl::PointCloud<PointOutT> &th
 template <typename PointInT, typename PointOutT> void
 pcl::Edge<PointInT, PointOutT>::suppressNonMaxima (
     const pcl::PointCloud<PointXYZIEdge> &edges, 
-    pcl::PointCloud<PointXYZI> &maxima, float tLow)
+    pcl::PointCloud<PointXYZI> &maxima, double tLow)
 {
   const int height = edges.height;
   const int width = edges.width;
@@ -328,8 +328,8 @@ pcl::Edge<PointInT, PointOutT>::suppressNonMaxima (
 template<typename PointInT, typename PointOutT> void
 pcl::Edge<PointInT, PointOutT>::detectEdgeCanny (pcl::PointCloud<PointOutT> &output)
 {
-  float tHigh = hysteresis_threshold_high_;
-  float tLow = hysteresis_threshold_low_;
+  double tHigh = hysteresis_threshold_high_;
+  double tLow = hysteresis_threshold_low_;
   const int height = input_->height;
   const int width = input_->width;
 
@@ -372,10 +372,10 @@ pcl::Edge<PointInT, PointOutT>::detectEdgeCanny (pcl::PointCloud<PointOutT> &out
   {
     for (int j = 0; j < width; j++)
     {
-      if ((*maxima)(j, i).intensity < tHigh || (*maxima)(j, i).intensity == std::numeric_limits<float>::max ())
+      if ((*maxima)(j, i).intensity < tHigh || (*maxima)(j, i).intensity == std::numeric_limits<double>::max ())
         continue;
 
-      (*maxima)(j, i).intensity = std::numeric_limits<float>::max ();
+      (*maxima)(j, i).intensity = std::numeric_limits<double>::max ();
       cannyTraceEdge ( 1, 0, i, j, *maxima);
       cannyTraceEdge (-1, 0, i, j, *maxima);
       cannyTraceEdge ( 1, 1, i, j, *maxima);
@@ -391,7 +391,7 @@ pcl::Edge<PointInT, PointOutT>::detectEdgeCanny (pcl::PointCloud<PointOutT> &out
   // Final thresholding
   for (size_t i = 0; i < input_->size (); ++i)
   {
-    if ((*maxima)[i].intensity == std::numeric_limits<float>::max ())
+    if ((*maxima)[i].intensity == std::numeric_limits<double>::max ())
       output[i].magnitude = 255;
     else
       output[i].magnitude = 0;
@@ -405,8 +405,8 @@ pcl::Edge<PointInT, PointOutT>::canny (
     const pcl::PointCloud<PointInT> &input_y,
     pcl::PointCloud<PointOutT> &output)
 {
-  float tHigh = hysteresis_threshold_high_;
-  float tLow = hysteresis_threshold_low_;
+  double tHigh = hysteresis_threshold_high_;
+  double tLow = hysteresis_threshold_low_;
   const int height = input_x.height;
   const int width = input_x.width;
 
@@ -446,10 +446,10 @@ pcl::Edge<PointInT, PointOutT>::canny (
   {
     for (int j = 0; j < width; j++)
     {
-      if ((*maxima)(j, i).intensity < tHigh || (*maxima)(j, i).intensity == std::numeric_limits<float>::max ())
+      if ((*maxima)(j, i).intensity < tHigh || (*maxima)(j, i).intensity == std::numeric_limits<double>::max ())
         continue;
 
-      (*maxima)(j, i).intensity = std::numeric_limits<float>::max ();
+      (*maxima)(j, i).intensity = std::numeric_limits<double>::max ();
       cannyTraceEdge ( 1, 0, i, j, *maxima);
       cannyTraceEdge (-1, 0, i, j, *maxima);
       cannyTraceEdge ( 1, 1, i, j, *maxima);
@@ -466,7 +466,7 @@ pcl::Edge<PointInT, PointOutT>::canny (
   {
     for (int j = 0; j < width; j++)
     {
-      if ((*maxima)(j, i).intensity == std::numeric_limits<float>::max ())
+      if ((*maxima)(j, i).intensity == std::numeric_limits<double>::max ())
         output (j, i).magnitude = 255;
       else
         output (j, i).magnitude = 0;
@@ -477,7 +477,7 @@ pcl::Edge<PointInT, PointOutT>::canny (
 //////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointOutT> void
 pcl::Edge<PointInT, PointOutT>::detectEdgeLoG (
-    const float kernel_sigma, const float kernel_size,
+    const double kernel_sigma, const double kernel_size,
     pcl::PointCloud<PointOutT> &output)
 {
   convolution_.setInputCloud (input_);

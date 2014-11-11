@@ -14,8 +14,8 @@ main (int , char **)
   cloud->points.resize (5);
   for (size_t i = 0; i < cloud->points.size (); ++i)
   {
-    cloud->points[i].x = float (i); 
-    cloud->points[i].y = float (i / 2);
+    cloud->points[i].x = double (i); 
+    cloud->points[i].y = double (i / 2);
     cloud->points[i].z = 0.0f;
   }
 

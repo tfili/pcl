@@ -36,9 +36,9 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
 
   typedef typename pcl::traits::fieldList<PointInT>::type FieldListM;
 
-  float rgb_m;
+  double rgb_m;
   bool exists_m;
-  pcl::for_each_type < FieldListM > (pcl::CopyIfFieldExists<PointInT, float> (scene_vis->points[0], "rgb", exists_m, rgb_m));
+  pcl::for_each_type < FieldListM > (pcl::CopyIfFieldExists<PointInT, double> (scene_vis->points[0], "rgb", exists_m, rgb_m));
 
   std::cout << "Color exists:" << static_cast<int> (exists_m) << std::endl;
   if (exists_m)
@@ -156,9 +156,9 @@ int main(int argc, char ** argv)
   int STRIDE_SW = 5;
   std::string forest_fn = "forest.txt";
   int use_normals = 0;
-  float trans_max_variance = 800.f;
+  double trans_max_variance = 800.f;
   int min_votes_size = 400;
-  float face_threshold = 0.95f;
+  double face_threshold = 0.95f;
   int heat_map = 1;
   int show_votes = 0;
   std::string test_directory;

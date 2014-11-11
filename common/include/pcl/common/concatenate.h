@@ -77,7 +77,7 @@ namespace pcl
       //boost::fusion::at_key<Key> (p2_) = boost::fusion::at_key<Key> (p1_);
       typedef typename pcl::traits::datatype<PointInT, Key>::type InT;
       typedef typename pcl::traits::datatype<PointOutT, Key>::type OutT;
-      // Note: don't currently support different types for the same field (e.g. converting double to float)
+      // Note: don't currently support different types for the same field (e.g. converting double to double)
       BOOST_MPL_ASSERT_MSG ((boost::is_same<InT, OutT>::value),
                             POINT_IN_AND_POINT_OUT_HAVE_DIFFERENT_TYPES_FOR_FIELD,
                             (Key, PointInT&, InT, PointOutT&, OutT));

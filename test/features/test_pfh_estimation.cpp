@@ -145,7 +145,7 @@ testIndicesAndSearchSurface (const typename PointCloud<PointT>::Ptr & points,
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, PFHEstimation)
 {
-  float f1, f2, f3, f4;
+  double f1, f2, f3, f4;
 
   // Estimate normals first
   NormalEstimation<PointXYZ, Normal> n;
@@ -327,8 +327,8 @@ TEST (PCL, FPFHEstimation)
   // weightPointSPFHSignature
   Eigen::VectorXf fpfh_histogram (nr_subdiv + nr_subdiv + nr_subdiv);
   fpfh_histogram.setZero ();
-  vector<float> dists (indices.size ());
-  for (size_t i = 0; i < dists.size (); ++i) dists[i] = static_cast<float> (i);
+  vector<double> dists (indices.size ());
+  for (size_t i = 0; i < dists.size (); ++i) dists[i] = static_cast<double> (i);
   fpfh.weightPointSPFHSignature (hist_f1, hist_f2, hist_f3, indices, dists, fpfh_histogram);
 
   EXPECT_NEAR (fpfh_histogram[0],  1.9798 ,  1e-2);
@@ -553,9 +553,9 @@ TEST (PCL, GFPFH)
         unsigned label = 1 + (std::abs (x+y+z) % num_classes);
         PointXYZL p;
         p.label = label;
-        p.x = static_cast<float> (x);
-        p.y = static_cast<float> (y);
-        p.z = static_cast<float> (z);
+        p.x = static_cast<double> (x);
+        p.y = static_cast<double> (y);
+        p.z = static_cast<double> (z);
         cloud->points.push_back (p);
       }
   cloud->width = static_cast<uint32_t> (cloud->points.size ());
@@ -569,7 +569,7 @@ TEST (PCL, GFPFH)
   PointCloud<GFPFHSignature16> descriptor;
   gfpfh.compute (descriptor);
 
-  const float ref_values[] = { 3216, 7760, 8740, 26584, 4645, 2995, 3029, 4349, 6192, 5440, 9514, 47563, 21814, 22073, 5734, 1253 };
+  const double ref_values[] = { 3216, 7760, 8740, 26584, 4645, 2995, 3029, 4349, 6192, 5440, 9514, 47563, 21814, 22073, 5734, 1253 };
 
   EXPECT_EQ (descriptor.points.size (), 1);
   for (size_t i = 0; i < size_t (descriptor.points[0].descriptorSize ()); ++i)

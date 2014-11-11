@@ -10,9 +10,9 @@
 #include <pcl/features/narf.h>
 #include <pcl/console/parse.h>
 
-float angular_resolution = 0.5f;
+double angular_resolution = 0.5f;
 int rotation_invariant = 0;
-float support_size = 0.3f;
+double support_size = 0.3f;
 int descriptor_size = 36;
 pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 bool setUnseenToMaxRange = false;
@@ -25,8 +25,8 @@ printUsage (const char* progName)
   std::cout << "\n\nUsage: "<<progName<<" [options] <scene.pcd>\n\n"
             << "Options:\n"
             << "-------------------------------------------\n"
-            << "-r <float>   angular resolution in degrees (default "<<angular_resolution<<")\n"
-            << "-s <float>   support size for the interest points (diameter of the used sphere - "
+            << "-r <double>   angular resolution in degrees (default "<<angular_resolution<<")\n"
+            << "-s <double>   support size for the interest points (diameter of the used sphere - "
             <<                                                     "default "<<support_size<<")\n"
             << "-d <int>     descriptor size (default "<<descriptor_size<<")\n"
             << "-c <int>     coordinate frame of the input point cloud (default "<< (int)coordinate_frame<<")\n"
@@ -105,8 +105,8 @@ main (int argc, char** argv)
   // -----------------------------------------------
   // -----Create RangeImage from the PointCloud-----
   // -----------------------------------------------
-  float noise_level = 0.0;
-  float min_range = 0.0f;
+  double noise_level = 0.0;
+  double min_range = 0.0f;
   int border_size = 1;
   boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
   pcl::RangeImage& range_image = *range_image_ptr;   
@@ -164,7 +164,7 @@ main (int argc, char** argv)
     //if (!range_image_widget.mouse_click_happened)
       continue;
     //range_image_widget.mouse_click_happened = false;
-    //float clicked_pixel_x_f = range_image_widget.last_clicked_point_x,
+    //double clicked_pixel_x_f = range_image_widget.last_clicked_point_x,
           //clicked_pixel_y_f = range_image_widget.last_clicked_point_y;
     int clicked_pixel_x, clicked_pixel_y;
     //range_image.real2DToInt2D (clicked_pixel_x_f, clicked_pixel_y_f, clicked_pixel_x, clicked_pixel_y);
@@ -185,25 +185,25 @@ main (int argc, char** argv)
     }
     
     int surface_patch_pixel_size = narf.getSurfacePatchPixelSize ();
-    float surface_patch_world_size = narf.getSurfacePatchWorldSize ();
+    double surface_patch_world_size = narf.getSurfacePatchWorldSize ();
     surface_patch_widget.showFloatImage (narf.getSurfacePatch (), surface_patch_pixel_size, surface_patch_pixel_size,
                                          -0.5f*surface_patch_world_size, 0.5f*surface_patch_world_size, true);
-    float surface_patch_rotation = narf.getSurfacePatchRotation ();
-    float patch_middle = 0.5f* (float (surface_patch_pixel_size-1));
-    float angle_step_size = pcl::deg2rad (360.0f)/narf.getDescriptorSize ();
-    float cell_size = surface_patch_world_size/float (surface_patch_pixel_size),
+    double surface_patch_rotation = narf.getSurfacePatchRotation ();
+    double patch_middle = 0.5f* (double (surface_patch_pixel_size-1));
+    double angle_step_size = pcl::deg2rad (360.0f)/narf.getDescriptorSize ();
+    double cell_size = surface_patch_world_size/double (surface_patch_pixel_size),
           cell_factor = 1.0f/cell_size,
           max_dist = 0.5f*surface_patch_world_size,
           line_length = cell_factor* (max_dist-0.5f*cell_size);
     for (int descriptor_value_idx=0; descriptor_value_idx<narf.getDescriptorSize (); ++descriptor_value_idx)
     {
-      float angle = descriptor_value_idx*angle_step_size + surface_patch_rotation;
+      double angle = descriptor_value_idx*angle_step_size + surface_patch_rotation;
       //surface_patch_widget.markLine (patch_middle, patch_middle, patch_middle+line_length*sinf (angle),
                                      //patch_middle+line_length*-cosf (angle), pcl::visualization::Vector3ub (0,255,0));
     }
-    std::vector<float> rotations, strengths;
+    std::vector<double> rotations, strengths;
     narf.getRotations (rotations, strengths);
-    float radius = 0.5f*surface_patch_pixel_size;
+    double radius = 0.5f*surface_patch_pixel_size;
     for (unsigned int i=0; i<rotations.size (); ++i)
     {
       //surface_patch_widget.markLine (radius-0.5, radius-0.5, radius-0.5f + 2.0f*radius*sinf (rotations[i]),
@@ -220,11 +220,11 @@ main (int argc, char** argv)
       continue;
     
     //descriptor_distances_widget.show (false);
-    float* descriptor_distance_image = new float[range_image.points.size ()];
+    double* descriptor_distance_image = new double[range_image.points.size ()];
     for (unsigned int point_index=0; point_index<range_image.points.size (); ++point_index)
     {
-      float& descriptor_distance = descriptor_distance_image[point_index];
-      descriptor_distance = std::numeric_limits<float>::infinity ();
+      double& descriptor_distance = descriptor_distance_image[point_index];
+      descriptor_distance = std::numeric_limits<double>::infinity ();
       std::vector<pcl::Narf*>& narfs_of_current_point = narfs[point_index];
       if (narfs_of_current_point.empty ())
         continue;
@@ -238,7 +238,7 @@ main (int argc, char** argv)
       }
     }
     descriptor_distances_widget.showFloatImage (descriptor_distance_image, range_image.width, range_image.height,
-                                               -std::numeric_limits<float>::infinity (), std::numeric_limits<float>::infinity (), true);
+                                               -std::numeric_limits<double>::infinity (), std::numeric_limits<double>::infinity (), true);
     delete[] descriptor_distance_image;
   }
 }

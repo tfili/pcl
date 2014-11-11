@@ -199,7 +199,7 @@ namespace pcl
        * \param similarity_threshold edge length similarity threshold
        */
       inline void
-      setSimilarityThreshold (float similarity_threshold)
+      setSimilarityThreshold (double similarity_threshold)
       {
         correspondence_rejector_poly_->setSimilarityThreshold (similarity_threshold);
       }
@@ -207,7 +207,7 @@ namespace pcl
       /** \brief Get the similarity threshold between edge lengths of the underlying polygonal correspondence rejector object,
        * \return edge length similarity threshold
        */
-      inline float
+      inline double
       getSimilarityThreshold () const
       {
         return correspondence_rejector_poly_->getSimilarityThreshold ();
@@ -217,7 +217,7 @@ namespace pcl
        * \param inlier_fraction required inlier fraction, must be in [0,1]
        */
       inline void
-      setInlierFraction (float inlier_fraction)
+      setInlierFraction (double inlier_fraction)
       {
         inlier_fraction_ = inlier_fraction;
       }
@@ -225,7 +225,7 @@ namespace pcl
       /** \brief Get the required inlier fraction
        * \return required inlier fraction in [0,1]
        */
-      inline float
+      inline double
       getInlierFraction () const
       {
         return inlier_fraction_;
@@ -287,7 +287,7 @@ namespace pcl
         * \param fitness_score output fitness score as RMSE 
         */
       void 
-      getFitness (std::vector<int>& inliers, float& fitness_score);
+      getFitness (std::vector<int>& inliers, double& fitness_score);
 
       /** \brief The source point cloud's feature descriptors. */
       FeatureCloudConstPtr input_features_;
@@ -308,7 +308,7 @@ namespace pcl
       CorrespondenceRejectorPolyPtr correspondence_rejector_poly_;
       
       /** \brief The fraction [0,1] of inlier points required for accepting a transformation */
-      float inlier_fraction_;
+      double inlier_fraction_;
       
       /** \brief Inlier points of final transformation as indices into source */
       std::vector<int> inliers_;

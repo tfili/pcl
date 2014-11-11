@@ -30,8 +30,8 @@ namespace pcl
   {
     typedef struct _SinglePoly
     {
-      float* vertices_;
-      float* colors_;
+      double* vertices_;
+      double* colors_;
       GLenum mode_;
       GLuint nvertices_;
     } SinglePoly;
@@ -133,8 +133,8 @@ namespace pcl
         draw();
 
       private:
-        float* vertices_;
-        float* colors_;
+        double* vertices_;
+        double* colors_;
 
         /*
           GL_POINTS;

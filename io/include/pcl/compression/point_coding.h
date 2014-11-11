@@ -81,7 +81,7 @@ namespace pcl
           * \param precision_arg: precision
           */
         inline void
-        setPrecision (float precision_arg)
+        setPrecision (double precision_arg)
         {
           pointCompressionResolution_ = precision_arg;
         }
@@ -89,7 +89,7 @@ namespace pcl
         /** \brief Retrieve precision of point information
           * \return precision
           */
-        inline float
+        inline double
         getPrecision ()
         {
           return (pointCompressionResolution_);
@@ -188,9 +188,9 @@ namespace pcl
             PointT& point = outputCloud_arg->points[beginIdx_arg + i];
 
             // decode point position
-            point.x = static_cast<float> (referencePoint_arg[0] + diffX * pointCompressionResolution_);
-            point.y = static_cast<float> (referencePoint_arg[1] + diffY * pointCompressionResolution_);
-            point.z = static_cast<float> (referencePoint_arg[2] + diffZ * pointCompressionResolution_);
+            point.x = static_cast<double> (referencePoint_arg[0] + diffX * pointCompressionResolution_);
+            point.y = static_cast<double> (referencePoint_arg[1] + diffY * pointCompressionResolution_);
+            point.z = static_cast<double> (referencePoint_arg[2] + diffZ * pointCompressionResolution_);
           }
         }
 
@@ -205,7 +205,7 @@ namespace pcl
         std::vector<char>::const_iterator pointDiffDataVectorIterator_;
 
         /** \brief Precision of point coding*/
-        float pointCompressionResolution_;
+        double pointCompressionResolution_;
     };
   }
 }

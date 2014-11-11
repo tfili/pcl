@@ -43,7 +43,7 @@
 bool
 pcl::computePPFPairFeature (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
                             const Eigen::Vector4f &p2, const Eigen::Vector4f &n2,
-                            float &f1, float &f2, float &f3, float &f4)
+                            double &f1, double &f2, double &f3, double &f4)
 {
   Eigen::Vector4f delta = p2 - p1;
   delta[3] = 0.0f;

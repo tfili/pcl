@@ -105,7 +105,7 @@ namespace pcl
         cudaEvent_t start_;
         cudaEvent_t end_;
   
-        float elapsed_time_;
+        double elapsed_time_;
   
         std::string title_;
     };

@@ -414,7 +414,7 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
       score += target_ndt.test (intm_cloud[i], cos_theta, sin_theta);
     
     PCL_DEBUG ("[pcl::NormalDistributionsTransform2D::computeTransformation] NDT score %f (x=%f,y=%f,r=%f)\n",
-      float (score.value), xytheta_transformation[0], xytheta_transformation[1], xytheta_transformation[2]
+      double (score.value), xytheta_transformation[0], xytheta_transformation[1], xytheta_transformation[2]
     );
 
     if (score.value != 0)
@@ -435,7 +435,7 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
         score.hessian += Eigen::Vector3d (-lambda, -lambda, -lambda).asDiagonal ();
         solver.compute (score.hessian, false);
         PCL_DEBUG ("[pcl::NormalDistributionsTransform2D::computeTransformation] adjust hessian: %f: new eigenvalues:%f %f %f\n",
-            float (lambda),
+            double (lambda),
             solver.eigenvalues ()[0].real (),
             solver.eigenvalues ()[1].real (),
             solver.eigenvalues ()[2].real ()
@@ -451,8 +451,8 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
       xytheta_transformation = new_transformation;
       
       // update transformation matrix from x, y, theta:
-      transformation.block<3,3> (0,0).matrix () = Eigen::Matrix3f (Eigen::AngleAxisf (static_cast<float> (xytheta_transformation[2]), Eigen::Vector3f::UnitZ ()));
-      transformation.block<3,1> (0,3).matrix () = Eigen::Vector3f (static_cast<float> (xytheta_transformation[0]), static_cast<float> (xytheta_transformation[1]), 0.0f);
+      transformation.block<3,3> (0,0).matrix () = Eigen::Matrix3f (Eigen::AngleAxisf (static_cast<double> (xytheta_transformation[2]), Eigen::Vector3f::UnitZ ()));
+      transformation.block<3,1> (0,3).matrix () = Eigen::Vector3f (static_cast<double> (xytheta_transformation[0]), static_cast<double> (xytheta_transformation[1]), 0.0f);
 
       //std::cout << "new transformation:\n" << transformation << std::endl;
     }

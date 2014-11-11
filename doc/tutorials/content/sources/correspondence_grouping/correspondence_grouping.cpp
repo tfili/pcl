@@ -26,12 +26,12 @@ bool show_keypoints_ (false);
 bool show_correspondences_ (false);
 bool use_cloud_resolution_ (false);
 bool use_hough_ (true);
-float model_ss_ (0.01f);
-float scene_ss_ (0.03f);
-float rf_rad_ (0.015f);
-float descr_rad_ (0.02f);
-float cg_size_ (0.01f);
-float cg_thresh_ (5.0f);
+double model_ss_ (0.01f);
+double scene_ss_ (0.03f);
+double rf_rad_ (0.015f);
+double descr_rad_ (0.02f);
+double cg_size_ (0.01f);
+double cg_thresh_ (5.0f);
 
 void
 showHelp (char *filename)
@@ -129,7 +129,7 @@ computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud)
   int n_points = 0;
   int nres;
   std::vector<int> indices (2);
-  std::vector<float> sqr_distances (2);
+  std::vector<double> sqr_distances (2);
   pcl::search::KdTree<PointType> tree;
   tree.setInputCloud (cloud);
 
@@ -189,7 +189,7 @@ main (int argc, char *argv[])
   //
   if (use_cloud_resolution_)
   {
-    float resolution = static_cast<float> (computeCloudResolution (model));
+    double resolution = static_cast<double> (computeCloudResolution (model));
     if (resolution != 0.0f)
     {
       model_ss_   *= resolution;
@@ -265,7 +265,7 @@ main (int argc, char *argv[])
   for (size_t i = 0; i < scene_descriptors->size (); ++i)
   {
     std::vector<int> neigh_indices (1);
-    std::vector<float> neigh_sqr_dists (1);
+    std::vector<double> neigh_sqr_dists (1);
     if (!pcl_isfinite (scene_descriptors->at (i).descriptor[0])) //skipping NaNs
     {
       continue;

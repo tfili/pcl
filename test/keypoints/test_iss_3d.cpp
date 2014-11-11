@@ -75,7 +75,7 @@ TEST (PCL, ISSKeypoint3D_WBE)
   // Compare to previously validated output
   //
   const size_t correct_nr_keypoints = 6;
-  const float correct_keypoints[correct_nr_keypoints][3] =
+  const double correct_keypoints[correct_nr_keypoints][3] =
     {
       // { x,  y,  z}
       {-0.071112f,  0.137670f,  0.047518f},
@@ -120,7 +120,7 @@ TEST (PCL, ISSKeypoint3D_BE)
   iss_detector.setThreshold21 (0.975);
   iss_detector.setThreshold32 (0.975);
   iss_detector.setMinNeighbors (5);
-  iss_detector.setAngleThreshold (static_cast<float> (M_PI) / 3.0);
+  iss_detector.setAngleThreshold (static_cast<double> (M_PI) / 3.0);
   iss_detector.setNumberOfThreads (1);
 
   iss_detector.setInputCloud (cloud);
@@ -131,7 +131,7 @@ TEST (PCL, ISSKeypoint3D_BE)
   // Compare to previously validated output
   //
   const size_t correct_nr_keypoints = 5;
-  const float correct_keypoints[correct_nr_keypoints][3] =
+  const double correct_keypoints[correct_nr_keypoints][3] =
     {
       // { x,  y,  z}
       {-0.052037f,  0.116800f,  0.034582f},

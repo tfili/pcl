@@ -38,7 +38,7 @@
 #ifndef PCL_CUDA_SAMPLE_CONSENSUS_MODEL_H_
 #define PCL_CUDA_SAMPLE_CONSENSUS_MODEL_H_
 
-#include <float.h>
+#include <double.h>
 #include <thrust/sequence.h>
 #include <thrust/count.h>
 #include <thrust/remove.h>
@@ -99,7 +99,7 @@ namespace pcl
         typedef boost::shared_ptr<typename Storage<int>::type> IndicesPtr;
         typedef boost::shared_ptr<const typename Storage<int>::type> IndicesConstPtr;
 
-        typedef typename Storage<float>::type Coefficients;
+        typedef typename Storage<double>::type Coefficients;
         typedef boost::shared_ptr <Coefficients> CoefficientsPtr;
         typedef boost::shared_ptr <const Coefficients> CoefficientsConstPtr;
 
@@ -194,7 +194,7 @@ namespace pcl
         */
   //      virtual void 
   //      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-  //                           std::vector<float> &distances) = 0;
+  //                           std::vector<double> &distances) = 0;
 
         /** \brief Select all the points which respect the given model
           * coefficients as inliers. Pure virtual.
@@ -208,23 +208,23 @@ namespace pcl
           */
         virtual int
         selectWithinDistance (const Coefficients &model_coefficients, 
-                              float threshold,
+                              double threshold,
                               IndicesPtr &inliers, IndicesPtr &inliers_stencil) = 0;
         virtual int
         selectWithinDistance (const Hypotheses &h, int idx,
-                              float threshold,
+                              double threshold,
                               IndicesPtr &inliers, IndicesPtr &inliers_stencil) = 0;
         virtual int
         selectWithinDistance (Hypotheses &h, int idx,
-                              float threshold,
+                              double threshold,
                               IndicesPtr &inliers_stencil,
                               float3 &centroid) = 0;
 
         virtual int
-        countWithinDistance (const Coefficients &model_coefficients, float threshold) = 0;
+        countWithinDistance (const Coefficients &model_coefficients, double threshold) = 0;
 
         virtual int
-        countWithinDistance (const Hypotheses &h, int idx, float threshold) = 0;
+        countWithinDistance (const Hypotheses &h, int idx, double threshold) = 0;
 
         int
         deleteIndices (const IndicesPtr &indices_stencil );
@@ -256,7 +256,7 @@ namespace pcl
   //      virtual bool 
   //      doSamplesVerifyModel (const std::set<int> &indices, 
   //                            const Eigen::VectorXf &model_coefficients, 
-  //                            float threshold) = 0;
+  //                            double threshold) = 0;
 
         /** \brief Provide a pointer to the input dataset
           * \param cloud the const boost shared pointer to a PointCloud message
@@ -311,7 +311,7 @@ namespace pcl
           * \todo change this to set limits on the entire model
           */
         inline void
-        setRadiusLimits (float min_radius, float max_radius)
+        setRadiusLimits (double min_radius, double max_radius)
         {
           radius_min_ = min_radius;
           radius_max_ = max_radius;
@@ -324,7 +324,7 @@ namespace pcl
           * \param max_radius the resultant maximum radius model
           */
         inline void
-        getRadiusLimits (float &min_radius, float &max_radius)
+        getRadiusLimits (double &min_radius, double &max_radius)
         {
           min_radius = radius_min_;
           max_radius = radius_max_;
@@ -360,7 +360,7 @@ namespace pcl
         /** \brief The minimum and maximum radius limits for the model.
           * Applicable to all models that estimate a radius. 
           */
-        float radius_min_, radius_max_;
+        double radius_min_, radius_max_;
 
         /** \brief Linear-Congruent random number generator engine. */
         thrust::minstd_rand rngl_;
@@ -388,10 +388,10 @@ namespace pcl
   //        * (The Euclidean distance will have weight 1-w.)
   //        */
   //      inline void 
-  //      setNormalDistanceWeight (float w) { normal_distance_weight_ = w; }
+  //      setNormalDistanceWeight (double w) { normal_distance_weight_ = w; }
   //
   //      /* \brief Get the normal angular distance weight. */
-  //      inline float 
+  //      inline double 
   //      getNormalDistanceWeight () { return (normal_distance_weight_); }
   //
   //      /* \brief Provide a pointer to the input dataset that contains the point
@@ -410,7 +410,7 @@ namespace pcl
   //      /* \brief The relative weight (between 0 and 1) to give to the angular
   //        * distance (0 to pi/2) between point normals and the plane normal. 
   //        */
-  //      float normal_distance_weight_;
+  //      double normal_distance_weight_;
   //
   //      /* \brief A pointer to the input dataset that contains the point normals
   //        * of the XYZ dataset. 

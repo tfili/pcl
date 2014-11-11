@@ -85,9 +85,9 @@ int main(int argc, char ** argv)
 {
   int STRIDE_SW = 4;
   int use_normals = 0;
-  float trans_max_variance = 1600.f;
+  double trans_max_variance = 1600.f;
   int min_votes_size = 300;
-  float face_threshold = 0.99f;
+  double face_threshold = 0.99f;
   int heat_map = 1;
   int show_votes = 0;
   int pose_refinement_ = 0;

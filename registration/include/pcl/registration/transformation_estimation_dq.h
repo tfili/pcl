@@ -49,11 +49,11 @@ namespace pcl
     /** @b TransformationEstimationDQ implements dual quaternion based estimation of
       * the transformation aligning the given correspondences.
       *
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Sergey Zagoruyko
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class TransformationEstimationDQ : public TransformationEstimation<PointSource, PointTarget, Scalar>
     {
       public:

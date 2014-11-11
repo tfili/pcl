@@ -85,7 +85,7 @@ pcl::PPFRGBEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudO
           Eigen::Affine3f transform_mg = Eigen::Translation3f ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
 
           Eigen::Vector3f model_point_transformed = transform_mg * model_point;
-          float angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
+          double angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
           if (sin (angle) * model_point_transformed(2) < 0.0f)
             angle *= (-1);
           p.alpha_m = -angle;
@@ -127,8 +127,8 @@ pcl::PPFRGBRegionEstimation<PointInT, PointNT, PointOutT>::computeFeature (Point
   {
     int i = (*indices_)[index_i];
     std::vector<int> nn_indices;
-    std::vector<float> nn_distances;
-    tree_->radiusSearch (i, static_cast<float> (search_radius_), nn_indices, nn_distances);
+    std::vector<double> nn_distances;
+    tree_->radiusSearch (i, static_cast<double> (search_radius_), nn_indices, nn_distances);
 
     PointOutT average_feature_nn;
     average_feature_nn.alpha_m = 0;
@@ -140,7 +140,7 @@ pcl::PPFRGBRegionEstimation<PointInT, PointNT, PointOutT>::computeFeature (Point
       int j = *nn_it;
       if (i != j)
       {
-        float f1, f2, f3, f4, r_ratio, g_ratio, b_ratio;
+        double f1, f2, f3, f4, r_ratio, g_ratio, b_ratio;
         if (pcl::computeRGBPairFeatures
             (input_->points[i].getVector4fMap (), normals_->points[i].getNormalVector4fMap (), input_->points[i].getRGBVector4i (),
              input_->points[j].getVector4fMap (), normals_->points[j].getNormalVector4fMap (), input_->points[j].getRGBVector4i (),
@@ -161,7 +161,7 @@ pcl::PPFRGBRegionEstimation<PointInT, PointNT, PointOutT>::computeFeature (Point
       }
     }
 
-    float normalization_factor = static_cast<float> (nn_indices.size ());
+    double normalization_factor = static_cast<double> (nn_indices.size ());
     average_feature_nn.f1 /= normalization_factor;
     average_feature_nn.f2 /= normalization_factor;
     average_feature_nn.f3 /= normalization_factor;

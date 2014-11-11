@@ -37,9 +37,9 @@ namespace pcl
         std::string line (linebuf);
         std::vector < std::string > strs;
         boost::split (strs, line, boost::is_any_of (" "));
-        centroid[0] = static_cast<float> (atof (strs[0].c_str ()));
-        centroid[1] = static_cast<float> (atof (strs[1].c_str ()));
-        centroid[2] = static_cast<float> (atof (strs[2].c_str ()));
+        centroid[0] = static_cast<double> (atof (strs[0].c_str ()));
+        centroid[1] = static_cast<double> (atof (strs[1].c_str ()));
+        centroid[2] = static_cast<double> (atof (strs[2].c_str ()));
 
         return true;
       }
@@ -69,7 +69,7 @@ namespace pcl
       }
 
       inline bool
-      writeFloatToFile (std::string file, float value)
+      writeFloatToFile (std::string file, double value)
       {
         std::ofstream out (file.c_str ());
         if (!out)
@@ -100,7 +100,7 @@ namespace pcl
       }
 
       inline bool
-      readFloatFromFile (std::string dir, std::string file, float& value)
+      readFloatFromFile (std::string dir, std::string file, double& value)
       {
 
         std::vector < std::string > strs;
@@ -120,13 +120,13 @@ namespace pcl
 
         char linebuf[1024];
         in.getline (linebuf, 1024);
-        value = static_cast<float> (atof (linebuf));
+        value = static_cast<double> (atof (linebuf));
 
         return true;
       }
 
       inline bool
-      readFloatFromFile (std::string file, float& value)
+      readFloatFromFile (std::string file, double& value)
       {
 
         std::ifstream in;
@@ -134,7 +134,7 @@ namespace pcl
 
         char linebuf[1024];
         in.getline (linebuf, 1024);
-        value = static_cast<float> (atof (linebuf));
+        value = static_cast<double> (atof (linebuf));
 
         return true;
       }
@@ -184,7 +184,7 @@ namespace pcl
 
         for (int i = 0; i < 16; i++)
         {
-          matrix (i % 4, i / 4) = static_cast<float> (atof (strs_2[i].c_str ()));
+          matrix (i % 4, i / 4) = static_cast<double> (atof (strs_2[i].c_str ()));
         }
 
         return true;
@@ -205,7 +205,7 @@ namespace pcl
 
         for (int i = 0; i < 16; i++)
         {
-          matrix (i % 4, i / 4) = static_cast<float> (atof (strs_2[i].c_str ()));
+          matrix (i % 4, i / 4) = static_cast<double> (atof (strs_2[i].c_str ()));
         }
 
         return true;
@@ -226,7 +226,7 @@ namespace pcl
 
         for (int i = 0; i < 16; i++)
         {
-          matrix (i / 4, i % 4) = static_cast<float> (atof (strs_2[i].c_str ()));
+          matrix (i / 4, i % 4) = static_cast<double> (atof (strs_2[i].c_str ()));
         }
 
         return true;

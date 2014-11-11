@@ -40,9 +40,9 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
           flann_model descr_model;
           descr_model.first = models->at (i);
-          int size_feat = sizeof(signature->points[0].histogram) / sizeof(float);
+          int size_feat = sizeof(signature->points[0].histogram) / sizeof(double);
           descr_model.second.resize (size_feat);
-          memcpy (&descr_model.second[0], &signature->points[0].histogram[0], size_feat * sizeof(float));
+          memcpy (&descr_model.second[0], &signature->points[0].histogram[0], size_feat * sizeof(double));
 
           flann_models_.push_back (descr_model);
         }
@@ -58,13 +58,13 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
   void
   pcl::rec_3d_framework::GlobalNNPipeline<Distance, PointInT, FeatureT>::nearestKSearch (flann::Index<DistT> * index, const flann_model &model,
                                                                                          int k, flann::Matrix<int> &indices,
-                                                                                         flann::Matrix<float> &distances)
+                                                                                         flann::Matrix<double> &distances)
   {
-    flann::Matrix<float> p = flann::Matrix<float> (new float[model.second.size ()], 1, model.second.size ());
-    memcpy (&p.ptr ()[0], &model.second[0], p.cols * p.rows * sizeof(float));
+    flann::Matrix<double> p = flann::Matrix<double> (new double[model.second.size ()], 1, model.second.size ());
+    memcpy (&p.ptr ()[0], &model.second[0], p.cols * p.rows * sizeof(double));
 
     indices = flann::Matrix<int> (new int[k], 1, k);
-    distances = flann::Matrix<float> (new float[k], 1, k);
+    distances = flann::Matrix<double> (new double[k], 1, k);
     index->knnSearch (p, indices, distances, k, flann::SearchParams (512));
     delete[] p.ptr ();
   }
@@ -101,14 +101,14 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
     {
       for (size_t idx = 0; idx < signatures.size (); idx++)
       {
-        float* hist = signatures[idx].points[0].histogram;
-        int size_feat = sizeof(signatures[idx].points[0].histogram) / sizeof(float);
-        std::vector<float> std_hist (hist, hist + size_feat);
+        double* hist = signatures[idx].points[0].histogram;
+        int size_feat = sizeof(signatures[idx].points[0].histogram) / sizeof(double);
+        std::vector<double> std_hist (hist, hist + size_feat);
         ModelT empty;
 
         flann_model histogram (empty, std_hist);
         flann::Matrix<int> indices;
-        flann::Matrix<float> distances;
+        flann::Matrix<double> distances;
         nearestKSearch (flann_index_, histogram, NN_, indices, distances);
 
         //gather NN-search results
@@ -147,7 +147,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
       for (it = category_map.begin (); it != category_map.end (); it++)
       {
-        float prob = static_cast<float> (it->second) / static_cast<float> (num_n);
+        double prob = static_cast<double> (it->second) / static_cast<double> (num_n);
         categories_.push_back (it->first);
         confidences_.push_back (prob);
       }

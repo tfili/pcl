@@ -97,10 +97,10 @@ namespace pcl
         * \param[in] support_radius support radius
         */
       void
-      setSupportRadius (float support_radius);
+      setSupportRadius (double support_radius);
 
       /** \brief Returns the support radius. */
-      float
+      double
       getSupportRadius () const;
 
       /** \brief This method sets the triangles of the mesh.
@@ -177,7 +177,7 @@ namespace pcl
         * \param[out] max stores the max point of the AABB
         */
       void
-      rotateCloud (const PointInT& axis, const float angle, const PointCloudIn& cloud, PointCloudIn& rotated_cloud,
+      rotateCloud (const PointInT& axis, const double angle, const PointCloudIn& cloud, PointCloudIn& rotated_cloud,
                    Eigen::Vector3f& min, Eigen::Vector3f& max) const;
 
       /** \brief This method projects the local surface onto the XY, XZ or YZ plane
@@ -196,7 +196,7 @@ namespace pcl
         * \param[out] moments set of computed moments
         */
       void
-      computeCentralMoments (const Eigen::MatrixXf& matrix, std::vector <float>& moments) const;
+      computeCentralMoments (const Eigen::MatrixXf& matrix, std::vector <double>& moments) const;
 
     private:
 
@@ -207,13 +207,13 @@ namespace pcl
       unsigned int number_of_rotations_;
 
       /** \brief Support radius that is used to crop the local surface of the point. */
-      float support_radius_;
+      double support_radius_;
 
       /** \brief Stores the squared support radius. Used to improve performance. */
-      float sqr_support_radius_;
+      double sqr_support_radius_;
 
       /** \brief Stores the angle step. Step is calculated with respect to number of rotations. */
-      float step_;
+      double step_;
 
       /** \brief Stores the set of triangles reprsenting the mesh. */
       std::vector <pcl::Vertices> triangles_;

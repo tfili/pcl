@@ -53,9 +53,9 @@ TEST (PCL, IntensityGradientEstimation)
   PointCloud<PointXYZI> cloud_xyzi;
   cloud_xyzi.height = 1;
   cloud_xyzi.is_dense = true;
-  for (float x = -5.0f; x <= 5.0f; x += 0.1f)
+  for (double x = -5.0f; x <= 5.0f; x += 0.1f)
   {
-    for (float y = -5.0f; y <= 5.0f; y += 0.1f)
+    for (double y = -5.0f; y <= 5.0f; y += 0.1f)
     {
       PointXYZI p;
       p.x = x;
@@ -94,28 +94,28 @@ TEST (PCL, IntensityGradientEstimation)
     const PointXYZI &p = cloud_ptr->points[i];
 
     // A pointer to the estimated gradient values
-    const float * g_est = gradient.points[i].gradient;
+    const double * g_est = gradient.points[i].gradient;
 
     // Compute the surface normal analytically.
-    float nx = -0.2f * p.x;
-    float ny = -0.5f;
-    float nz = 1.0f;
-    float magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
+    double nx = -0.2f * p.x;
+    double ny = -0.5f;
+    double nz = 1.0f;
+    double magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
     nx /= magnitude;
     ny /= magnitude;
     nz /= magnitude;
 
     // Compute the intensity gradient analytically...
-    float tmpx = 0.3f * powf (p.x, 2.0f);
-    float tmpy = 0.4f * p.y;
-    float tmpz = 1.0f;
+    double tmpx = 0.3f * powf (p.x, 2.0f);
+    double tmpy = 0.4f * p.y;
+    double tmpz = 1.0f;
     // ...and project the 3-D gradient vector onto the surface's tangent plane.
-    float gx = (1 - nx * nx) * tmpx + (-nx * ny) * tmpy + (-nx * nz) * tmpz;
-    float gy = (-ny * nx) * tmpx + (1 - ny * ny) * tmpy + (-ny * nz) * tmpz;
-    float gz = (-nz * nx) * tmpx + (-nz * ny) * tmpy + (1 - nz * nz) * tmpz;
+    double gx = (1 - nx * nx) * tmpx + (-nx * ny) * tmpy + (-nx * nz) * tmpz;
+    double gy = (-ny * nx) * tmpx + (1 - ny * ny) * tmpy + (-ny * nz) * tmpz;
+    double gz = (-nz * nx) * tmpx + (-nz * ny) * tmpy + (1 - nz * nz) * tmpz;
 
     // Compare the estimates to the derived values.
-    const float tolerance = 0.11f;
+    const double tolerance = 0.11f;
     EXPECT_NEAR (g_est[0], gx, tolerance);
     EXPECT_NEAR (g_est[1], gy, tolerance);
     EXPECT_NEAR (g_est[2], gz, tolerance);

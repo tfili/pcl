@@ -209,7 +209,7 @@ namespace pcl
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
       /** \brief Functor for the optimization function */
-      struct OptimizationFunctor : pcl::Functor<float>
+      struct OptimizationFunctor : pcl::Functor<double>
       {
         /** \brief Functor constructor
           * \param[in] m_data_points the number of data points to evaluate
@@ -217,7 +217,7 @@ namespace pcl
           * \param[in] distance distance computation function pointer
           */
         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCircle2D<PointT> *model) : 
-          pcl::Functor<float>(m_data_points), model_ (model) {}
+          pcl::Functor<double>(m_data_points), model_ (model) {}
 
         /** Cost function to be minimized
           * \param[in] x the variables array
@@ -230,8 +230,8 @@ namespace pcl
           for (int i = 0; i < values (); ++i)
           {
             // Compute the difference between the center of the circle and the datapoint X_i
-            float xt = model_->input_->points[(*model_->tmp_inliers_)[i]].x - x[0];
-            float yt = model_->input_->points[(*model_->tmp_inliers_)[i]].y - x[1];
+            double xt = model_->input_->points[(*model_->tmp_inliers_)[i]].x - x[0];
+            double yt = model_->input_->points[(*model_->tmp_inliers_)[i]].y - x[1];
             
             // g = sqrt ((x-a)^2 + (y-b)^2) - R
             fvec[i] = sqrtf (xt * xt + yt * yt) - x[2];

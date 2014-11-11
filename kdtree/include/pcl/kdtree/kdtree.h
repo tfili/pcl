@@ -136,7 +136,7 @@ namespace pcl
         */
       virtual int 
       nearestKSearch (const PointT &p_q, int k, 
-                      std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const = 0;
+                      std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const = 0;
 
       /** \brief Search for k-nearest neighbors for the given query point.
         * 
@@ -156,7 +156,7 @@ namespace pcl
         */
       virtual int 
       nearestKSearch (const PointCloud &cloud, int index, int k, 
-                      std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+                      std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const
       {
         assert (index >= 0 && index < static_cast<int> (cloud.points.size ()) && "Out-of-bounds error in nearestKSearch!");
         return (nearestKSearch (cloud.points[index], k, k_indices, k_sqr_distances));
@@ -173,7 +173,7 @@ namespace pcl
         */
       template <typename PointTDiff> inline int 
       nearestKSearchT (const PointTDiff &point, int k, 
-                       std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+                       std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const
       {
         PointT p;
         copyPoint (point, p);
@@ -199,7 +199,7 @@ namespace pcl
         */
       virtual int 
       nearestKSearch (int index, int k, 
-                      std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+                      std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const
       {
         if (indices_ == NULL)
         {
@@ -225,7 +225,7 @@ namespace pcl
         */
       virtual int 
       radiusSearch (const PointT &p_q, double radius, std::vector<int> &k_indices,
-                    std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const = 0;
+                    std::vector<double> &k_sqr_distances, unsigned int max_nn = 0) const = 0;
 
       /** \brief Search for all the nearest neighbors of the query point in a given radius.
         * 
@@ -246,7 +246,7 @@ namespace pcl
         */
       virtual int 
       radiusSearch (const PointCloud &cloud, int index, double radius, 
-                    std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, 
+                    std::vector<int> &k_indices, std::vector<double> &k_sqr_distances, 
                     unsigned int max_nn = 0) const
       {
         assert (index >= 0 && index < static_cast<int> (cloud.points.size ()) && "Out-of-bounds error in radiusSearch!");
@@ -265,7 +265,7 @@ namespace pcl
         */
       template <typename PointTDiff> inline int 
       radiusSearchT (const PointTDiff &point, double radius, std::vector<int> &k_indices,
-                     std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+                     std::vector<double> &k_sqr_distances, unsigned int max_nn = 0) const
       {
         PointT p;
         copyPoint (point, p);
@@ -293,7 +293,7 @@ namespace pcl
         */
       virtual int 
       radiusSearch (int index, double radius, std::vector<int> &k_indices,
-                    std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+                    std::vector<double> &k_sqr_distances, unsigned int max_nn = 0) const
       {
         if (indices_ == NULL)
         {
@@ -311,13 +311,13 @@ namespace pcl
         * \param[in] eps precision (error bound) for nearest neighbors searches
         */
       virtual inline void
-      setEpsilon (float eps)
+      setEpsilon (double eps)
       {
         epsilon_ = eps;
       }
 
       /** \brief Get the search epsilon precision (error bound) for nearest neighbors searches. */
-      inline float
+      inline double
       getEpsilon () const
       {
         return (epsilon_);
@@ -347,7 +347,7 @@ namespace pcl
       IndicesConstPtr indices_;
 
       /** \brief Epsilon precision (error bound) for nearest neighbors searches. */
-      float epsilon_;
+      double epsilon_;
 
       /** \brief Minimum allowed number of k nearest neighbors points that a viable result must contain. */
       int min_pts_;

@@ -66,7 +66,7 @@ pcl::GeneralizedIterativeClosestPoint<PointSource, PointTarget>::computeCovarian
 
   Eigen::Vector3d mean;
   std::vector<int> nn_indecies; nn_indecies.reserve (k_correspondences_);
-  std::vector<float> nn_dist_sq; nn_dist_sq.reserve (k_correspondences_);
+  std::vector<double> nn_dist_sq; nn_dist_sq.reserve (k_correspondences_);
 
   // We should never get there but who knows
   if(cloud_covariances.size () < cloud->size ())
@@ -372,7 +372,7 @@ pcl::GeneralizedIterativeClosestPoint<PointSource, PointTarget>::computeTransfor
   converged_ = false;
   double dist_threshold = corr_dist_threshold_ * corr_dist_threshold_;
   std::vector<int> nn_indices (1);
-  std::vector<float> nn_dists (1);
+  std::vector<double> nn_dists (1);
 
   while(!converged_)
   {
@@ -476,11 +476,11 @@ pcl::GeneralizedIterativeClosestPoint<PointSource, PointTarget>::applyState(Eige
 {
   // !!! CAUTION Stanford GICP uses the Z Y X euler angles convention
   Eigen::Matrix3f R;
-  R = Eigen::AngleAxisf (static_cast<float> (x[5]), Eigen::Vector3f::UnitZ ())
-    * Eigen::AngleAxisf (static_cast<float> (x[4]), Eigen::Vector3f::UnitY ())
-    * Eigen::AngleAxisf (static_cast<float> (x[3]), Eigen::Vector3f::UnitX ());
+  R = Eigen::AngleAxisf (static_cast<double> (x[5]), Eigen::Vector3f::UnitZ ())
+    * Eigen::AngleAxisf (static_cast<double> (x[4]), Eigen::Vector3f::UnitY ())
+    * Eigen::AngleAxisf (static_cast<double> (x[3]), Eigen::Vector3f::UnitX ());
   t.topLeftCorner<3,3> ().matrix () = R * t.topLeftCorner<3,3> ().matrix ();
-  Eigen::Vector4f T (static_cast<float> (x[0]), static_cast<float> (x[1]), static_cast<float> (x[2]), 0.0f);
+  Eigen::Vector4f T (static_cast<double> (x[0]), static_cast<double> (x[1]), static_cast<double> (x[2]), 0.0f);
   t.col (3) += T;
 }
 

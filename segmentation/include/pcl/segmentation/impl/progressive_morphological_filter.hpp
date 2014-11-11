@@ -78,11 +78,11 @@ pcl::ProgressiveMorphologicalFilter<PointT>::extract (std::vector<int>& ground)
   }
 
   // Compute the series of window sizes and height thresholds
-  std::vector<float> height_thresholds;
-  std::vector<float> window_sizes;
+  std::vector<double> height_thresholds;
+  std::vector<double> window_sizes;
   int iteration = 0;
-  float window_size = 0.0f;
-  float height_threshold = 0.0f;
+  double window_size = 0.0f;
+  double height_threshold = 0.0f;
 
   while (window_size < max_window_size_)
   {
@@ -132,7 +132,7 @@ pcl::ProgressiveMorphologicalFilter<PointT>::extract (std::vector<int>& ground)
     std::vector<int> pt_indices;
     for (size_t p_idx = 0; p_idx < ground.size (); ++p_idx)
     {
-      float diff = cloud->points[p_idx].z - cloud_f->points[p_idx].z;
+      double diff = cloud->points[p_idx].z - cloud_f->points[p_idx].z;
       if (diff < height_thresholds[i])
         pt_indices.push_back (ground[p_idx]);
     }

@@ -53,8 +53,8 @@ pcl::FastBilateralFilter<PointT>::applyFilter (PointCloud &output)
   }
 
   copyPointCloud (*input_, output);
-  float base_max = -std::numeric_limits<float>::max (),
-        base_min = std::numeric_limits<float>::max ();
+  double base_max = -std::numeric_limits<double>::max (),
+        base_min = std::numeric_limits<double>::max ();
   bool found_finite = false;
   for (size_t x = 0; x < output.width; ++x)
   {
@@ -81,26 +81,26 @@ pcl::FastBilateralFilter<PointT>::applyFilter (PointCloud &output)
         if (!pcl_isfinite (output (x, y).z))
           output (x, y).z = base_max;
 
-  const float base_delta = base_max - base_min;
+  const double base_delta = base_max - base_min;
 
   const size_t padding_xy = 2;
   const size_t padding_z  = 2;
 
-  const size_t small_width  = static_cast<size_t> (static_cast<float> (input_->width  - 1) / sigma_s_) + 1 + 2 * padding_xy;
-  const size_t small_height = static_cast<size_t> (static_cast<float> (input_->height - 1) / sigma_s_) + 1 + 2 * padding_xy;
+  const size_t small_width  = static_cast<size_t> (static_cast<double> (input_->width  - 1) / sigma_s_) + 1 + 2 * padding_xy;
+  const size_t small_height = static_cast<size_t> (static_cast<double> (input_->height - 1) / sigma_s_) + 1 + 2 * padding_xy;
   const size_t small_depth  = static_cast<size_t> (base_delta / sigma_r_)   + 1 + 2 * padding_z;
 
 
   Array3D data (small_width, small_height, small_depth);
   for (size_t x = 0; x < input_->width; ++x)
   {
-    const size_t small_x = static_cast<size_t> (static_cast<float> (x) / sigma_s_ + 0.5f) + padding_xy;
+    const size_t small_x = static_cast<size_t> (static_cast<double> (x) / sigma_s_ + 0.5f) + padding_xy;
     for (size_t y = 0; y < input_->height; ++y)
     {
-      const float z = output (x,y).z - base_min;
+      const double z = output (x,y).z - base_min;
 
-      const size_t small_y = static_cast<size_t> (static_cast<float> (y) / sigma_s_ + 0.5f) + padding_xy;
-      const size_t small_z = static_cast<size_t> (static_cast<float> (z) / sigma_r_ + 0.5f) + padding_z;
+      const size_t small_y = static_cast<size_t> (static_cast<double> (y) / sigma_s_ + 0.5f) + padding_xy;
+      const size_t small_z = static_cast<size_t> (static_cast<double> (z) / sigma_r_ + 0.5f) + padding_z;
 
       Eigen::Vector2f& d = data (small_x, small_y, small_z);
       d[0] += output (x,y).z;
@@ -142,9 +142,9 @@ pcl::FastBilateralFilter<PointT>::applyFilter (PointCloud &output)
     for (size_t x = 0; x < input_->width; x++)
       for (size_t y = 0; y < input_->height; y++)
       {
-        const float z = output (x,y).z - base_min;
-        const Eigen::Vector2f D = data.trilinear_interpolation (static_cast<float> (x) / sigma_s_ + padding_xy,
-                                                                static_cast<float> (y) / sigma_s_ + padding_xy,
+        const double z = output (x,y).z - base_min;
+        const Eigen::Vector2f D = data.trilinear_interpolation (static_cast<double> (x) / sigma_s_ + padding_xy,
+                                                                static_cast<double> (y) / sigma_s_ + padding_xy,
                                                                 z / sigma_r_ + padding_z);
         output(x,y).z = D[0];
       }
@@ -154,9 +154,9 @@ pcl::FastBilateralFilter<PointT>::applyFilter (PointCloud &output)
     for (size_t x = 0; x < input_->width; ++x)
       for (size_t y = 0; y < input_->height; ++y)
       {
-        const float z = output (x,y).z - base_min;
-        const Eigen::Vector2f D = data.trilinear_interpolation (static_cast<float> (x) / sigma_s_ + padding_xy,
-                                                                static_cast<float> (y) / sigma_s_ + padding_xy,
+        const double z = output (x,y).z - base_min;
+        const Eigen::Vector2f D = data.trilinear_interpolation (static_cast<double> (x) / sigma_s_ + padding_xy,
+                                                                static_cast<double> (y) / sigma_s_ + padding_xy,
                                                                 z / sigma_r_ + padding_z);
         output (x,y).z = D[0] / D[1];
       }
@@ -187,9 +187,9 @@ pcl::FastBilateralFilter<PointT>::Array3D::clamp (const size_t min_value,
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> Eigen::Vector2f
-pcl::FastBilateralFilter<PointT>::Array3D::trilinear_interpolation (const float x,
-                                                                    const float y,
-                                                                    const float z)
+pcl::FastBilateralFilter<PointT>::Array3D::trilinear_interpolation (const double x,
+                                                                    const double y,
+                                                                    const double z)
 {
   const size_t x_index  = clamp (0, x_dim_ - 1, static_cast<size_t> (x));
   const size_t xx_index = clamp (0, x_dim_ - 1, x_index + 1);
@@ -200,9 +200,9 @@ pcl::FastBilateralFilter<PointT>::Array3D::trilinear_interpolation (const float 
   const size_t z_index  = clamp (0, z_dim_ - 1, static_cast<size_t> (z));
   const size_t zz_index = clamp (0, z_dim_ - 1, z_index + 1);
 
-  const float x_alpha = x - static_cast<float> (x_index);
-  const float y_alpha = y - static_cast<float> (y_index);
-  const float z_alpha = z - static_cast<float> (z_index);
+  const double x_alpha = x - static_cast<double> (x_index);
+  const double y_alpha = y - static_cast<double> (y_index);
+  const double z_alpha = z - static_cast<double> (z_index);
 
   return
       (1.0f-x_alpha) * (1.0f-y_alpha) * (1.0f-z_alpha) * (*this)(x_index, y_index, z_index) +

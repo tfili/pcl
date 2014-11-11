@@ -115,10 +115,10 @@ namespace pcl
         * \param[in] step angle step
         */
       void
-      setAngleStep (const float step);
+      setAngleStep (const double step);
 
       /** \brief Returns the angle step. */
-      float
+      double
       getAngleStep () const;
 
       /** \brief This method allows to set the normalize_ flag. If set to false, then
@@ -139,10 +139,10 @@ namespace pcl
         * \param[in] point_mass point mass
         */
       void
-      setPointMass (const float point_mass);
+      setPointMass (const double point_mass);
 
       /** \brief Returns the mass of point. */
-      float
+      double
       getPointMass () const;
 
       /** \brief This method launches the computation of all features. After execution
@@ -181,7 +181,7 @@ namespace pcl
         * \param[out] minor minor eigen value
         */
       bool
-      getEigenValues (float& major, float& middle, float& minor) const;
+      getEigenValues (double& major, double& middle, double& minor) const;
 
       /** \brief This method gives access to the computed eigen vectors. It returns true
         * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
@@ -197,14 +197,14 @@ namespace pcl
         * \param[out] moment_of_inertia computed moments of inertia
         */
       bool
-      getMomentOfInertia (std::vector <float>& moment_of_inertia) const;
+      getMomentOfInertia (std::vector <double>& moment_of_inertia) const;
 
       /** \brief This method gives access to the computed ecentricities. It returns true
         * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
         * \param[out] eccentricity computed eccentricities
         */
       bool
-      getEccentricity (std::vector <float>& eccentricity) const;
+      getEccentricity (std::vector <double>& eccentricity) const;
 
       /** \brief This method gives access to the computed mass center. It returns true
         * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
@@ -223,7 +223,7 @@ namespace pcl
         * \param[out] rotated_vector resultant vector
         */
       void
-      rotateVector (const Eigen::Vector3f& vector, const Eigen::Vector3f& axis, const float angle, Eigen::Vector3f& rotated_vector) const;
+      rotateVector (const Eigen::Vector3f& vector, const Eigen::Vector3f& axis, const double angle, Eigen::Vector3f& rotated_vector) const;
 
       /** \brief This method computes center of mass and axis aligned bounding box. */
       void
@@ -237,7 +237,7 @@ namespace pcl
         * \param[out] covariance_matrix stores the computed covariance matrix
         */
       void
-      computeCovarianceMatrix (Eigen::Matrix <float, 3, 3>& covariance_matrix) const;
+      computeCovarianceMatrix (Eigen::Matrix <double, 3, 3>& covariance_matrix) const;
 
       /** \brief This method computes the covariance matrix for the given cloud.
         * It uses all points in the cloud, unlike the previous method that uses indices.
@@ -245,7 +245,7 @@ namespace pcl
         * \param[out] covariance_matrix stores the computed covariance matrix
         */
       void
-      computeCovarianceMatrix (PointCloudConstPtr cloud, Eigen::Matrix <float, 3, 3>& covariance_matrix) const;
+      computeCovarianceMatrix (PointCloudConstPtr cloud, Eigen::Matrix <double, 3, 3>& covariance_matrix) const;
 
       /** \brief This method calculates the eigen values and eigen vectors
         * for the given covariance matrix. Note that it returns normalized eigen
@@ -259,9 +259,9 @@ namespace pcl
         * \param[out] minor_value minor eigen value
         */
       void
-      computeEigenVectors (const Eigen::Matrix <float, 3, 3>& covariance_matrix, Eigen::Vector3f& major_axis,
-                           Eigen::Vector3f& middle_axis, Eigen::Vector3f& minor_axis, float& major_value, float& middle_value,
-                           float& minor_value);
+      computeEigenVectors (const Eigen::Matrix <double, 3, 3>& covariance_matrix, Eigen::Vector3f& major_axis,
+                           Eigen::Vector3f& middle_axis, Eigen::Vector3f& minor_axis, double& major_value, double& middle_value,
+                           double& minor_value);
 
       /** \brief This method returns the moment of inertia of a given input_ cloud.
         * Note that when moment of inertia is computed it is multiplied by the point mass.
@@ -269,7 +269,7 @@ namespace pcl
         * \param[in] current_axis axis that will be used in moment of inertia computation
         * \param[in] mean_value mean value(center of mass) of the cloud
         */
-      float
+      double
       calculateMomentOfInertia (const Eigen::Vector3f& current_axis, const Eigen::Vector3f& mean_value) const;
 
       /** \brief This method simply projects the given input_ cloud on the plane specified with
@@ -285,8 +285,8 @@ namespace pcl
         * \param[in] covariance_matrix covariance matrix of the projected cloud
         * \param[in] normal_vector normal vector of the plane, it is used to discard the
         *            third eigen vector and eigen value*/
-      float
-      computeEccentricity (const Eigen::Matrix <float, 3, 3>& covariance_matrix, const Eigen::Vector3f& normal_vector);
+      double
+      computeEccentricity (const Eigen::Matrix <double, 3, 3>& covariance_matrix, const Eigen::Vector3f& normal_vector);
 
     private:
 
@@ -295,10 +295,10 @@ namespace pcl
       bool is_valid_;
 
       /** \brief Stores the angle step */
-      float step_;
+      double step_;
 
       /** \brief Stores the mass of point in the cloud */
-      float point_mass_;
+      double point_mass_;
 
       /** \brief Stores the flag for mass normalization */
       bool normalize_;
@@ -316,19 +316,19 @@ namespace pcl
       Eigen::Vector3f minor_axis_;
 
       /** \brief Major eigen value */
-      float major_value_;
+      double major_value_;
 
       /** \brief Middle eigen value */
-      float middle_value_;
+      double middle_value_;
 
       /** \brief Minor eigen value */
-      float minor_value_;
+      double minor_value_;
 
       /** \brief Stores calculated moments of inertia */
-      std::vector <float> moment_of_inertia_;
+      std::vector <double> moment_of_inertia_;
 
       /** \brief Stores calculated eccentricities */
-      std::vector <float> eccentricity_;
+      std::vector <double> eccentricity_;
 
       /** \brief Min point of the axis aligned bounding box */
       PointT aabb_min_point_;

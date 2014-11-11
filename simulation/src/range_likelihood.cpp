@@ -22,7 +22,7 @@ static boost::minstd_rand generator (static_cast<unsigned int> (std::time (0)));
 using namespace std;
 
 // 301 values, 0.0 uniform  1.0 normal. properly truncated/normalized
-float normal_sigma0x5_normal1x0_range0to3_step0x01[] = {1.59576912f, 1.59545000f, 1.59449302f, 1.59289932f, 1.59067083f,
+double normal_sigma0x5_normal1x0_range0to3_step0x01[] = {1.59576912f, 1.59545000f, 1.59449302f, 1.59289932f, 1.59067083f,
                                                         1.58781019f, 1.58432085f, 1.58020697f, 1.57547345f, 1.57012594f,
                                                         1.56417078f, 1.55761504f, 1.55046646f, 1.54273348f, 1.53442517f,
                                                         1.52555126f, 1.51612211f, 1.50614865f, 1.49564242f, 1.48461552f,
@@ -87,12 +87,12 @@ float normal_sigma0x5_normal1x0_range0to3_step0x01[] = {1.59576912f, 1.59545000f
 // Where the above if lhoodf, this a hard coded/optimized version:
 //ratio = 0.99; r_min =0;  	r_max = 3;
 //lhood = ratio/(r_max -r_min)  + (1-ratio)*lhood ; hard_coded_log_lhood=log(lhood)
-float hard_coded_log_lhood[] = {-1.0614388f, -1.0614480f, -1.0614757f, -1.0615217f, -1.0615862f, -1.0616689f, -1.0617698f, -1.0618887f, -1.0620256f, -1.0621803f, -1.0623526f, -1.0625423f, -1.0627491f, -1.0629730f, -1.0632135f, -1.0634705f, -1.0637437f, -1.0640327f, -1.0643372f, -1.0646569f, -1.0649914f, -1.0653405f, -1.0657036f, -1.0660804f, -1.0664705f, -1.0668735f, -1.0672889f, -1.0677164f, -1.0681554f, -1.0686054f, -1.0690662f, -1.0695370f, -1.0700176f, -1.0705073f, -1.0710057f, -1.0715124f, -1.0720267f, -1.0725482f, -1.0730764f, -1.0736108f, -1.0741509f, -1.0746962f, -1.0752462f, -1.0758003f, -1.0763581f, -1.0769191f, -1.0774827f, -1.0780486f, -1.0786162f, -1.0791851f, -1.0797547f, -1.0803247f, -1.0808945f, -1.0814638f, -1.0820321f, -1.0825989f, -1.0831639f, -1.0837267f, -1.0842868f, -1.0848439f, -1.0853977f, -1.0859476f, -1.0864935f, -1.0870350f, -1.0875718f, -1.0881035f, -1.0886298f, -1.0891506f, -1.0896655f, -1.0901742f, -1.0906766f, -1.0911723f, -1.0916613f, -1.0921433f, -1.0926181f, -1.0930855f, -1.0935454f, -1.0939976f, -1.0944421f, -1.0948787f, -1.0953073f, -1.0957277f, -1.0961400f, -1.0965441f, -1.0969398f, -1.0973272f, -1.0977063f, -1.0980769f, -1.0984391f, -1.0987930f, -1.0991384f, -1.0994755f, -1.0998042f, -1.1001246f, -1.1004367f, -1.1007407f, -1.1010364f, -1.1013241f, -1.1016038f, -1.1018756f, -1.1021396f, -1.1023958f, -1.1026444f, -1.1028855f, -1.1031191f, -1.1033454f, -1.1035646f, -1.1037767f, -1.1039819f, -1.1041802f, -1.1043719f, -1.1045570f, -1.1047358f, -1.1049082f, -1.1050746f, -1.1052349f, -1.1053894f, -1.1055382f, -1.1056815f, -1.1058193f, -1.1059518f, -1.1060792f, -1.1062016f, -1.1063192f, -1.1064320f, -1.1065402f, -1.1066440f, -1.1067435f, -1.1068389f, -1.1069302f, -1.1070176f, -1.1071012f, -1.1071811f, -1.1072575f, -1.1073306f, -1.1074003f, -1.1074668f, -1.1075303f, -1.1075909f, -1.1076486f, -1.1077036f, -1.1077560f, -1.1078059f, -1.1078533f, -1.1078985f, -1.1079414f, -1.1079821f, -1.1080208f, -1.1080576f, -1.1080925f, -1.1081256f, -1.1081569f, -1.1081867f, -1.1082148f, -1.1082415f, -1.1082667f, -1.1082906f, -1.1083132f, -1.1083345f, -1.1083547f, -1.1083737f, -1.1083917f, -1.1084086f, -1.1084246f, -1.1084397f, -1.1084538f, -1.1084672f, -1.1084798f, -1.1084917f, -1.1085028f, -1.1085133f, -1.1085231f, -1.1085324f, -1.1085411f, -1.1085492f, -1.1085569f, -1.1085640f, -1.1085707f, -1.1085770f, -1.1085829f, -1.1085885f, -1.1085936f, -1.1085985f, -1.1086030f, -1.1086072f, -1.1086111f, -1.1086148f, -1.1086183f, -1.1086215f, -1.1086245f, -1.1086272f, -1.1086298f, -1.1086323f, -1.1086345f, -1.1086366f, -1.1086385f, -1.1086404f, -1.1086420f, -1.1086436f, -1.1086451f, -1.1086464f, -1.1086477f, -1.1086488f, -1.1086499f, -1.1086509f, -1.1086518f, -1.1086527f, -1.1086534f, -1.1086542f, -1.1086549f, -1.1086555f, -1.1086561f, -1.1086566f, -1.1086571f, -1.1086575f, -1.1086580f, -1.1086583f, -1.1086587f, -1.1086590f, -1.1086593f, -1.1086596f, -1.1086599f, -1.1086601f, -1.1086603f, -1.1086605f, -1.1086607f, -1.1086609f, -1.1086610f, -1.1086611f, -1.1086613f, -1.1086614f, -1.1086615f, -1.1086616f, -1.1086617f, -1.1086618f, -1.1086619f, -1.1086619f, -1.1086620f, -1.1086620f, -1.1086621f, -1.1086621f, -1.1086622f, -1.1086622f, -1.1086623f, -1.1086623f, -1.1086623f, -1.1086624f, -1.1086624f, -1.1086624f, -1.1086624f, -1.1086624f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f};
+double hard_coded_log_lhood[] = {-1.0614388f, -1.0614480f, -1.0614757f, -1.0615217f, -1.0615862f, -1.0616689f, -1.0617698f, -1.0618887f, -1.0620256f, -1.0621803f, -1.0623526f, -1.0625423f, -1.0627491f, -1.0629730f, -1.0632135f, -1.0634705f, -1.0637437f, -1.0640327f, -1.0643372f, -1.0646569f, -1.0649914f, -1.0653405f, -1.0657036f, -1.0660804f, -1.0664705f, -1.0668735f, -1.0672889f, -1.0677164f, -1.0681554f, -1.0686054f, -1.0690662f, -1.0695370f, -1.0700176f, -1.0705073f, -1.0710057f, -1.0715124f, -1.0720267f, -1.0725482f, -1.0730764f, -1.0736108f, -1.0741509f, -1.0746962f, -1.0752462f, -1.0758003f, -1.0763581f, -1.0769191f, -1.0774827f, -1.0780486f, -1.0786162f, -1.0791851f, -1.0797547f, -1.0803247f, -1.0808945f, -1.0814638f, -1.0820321f, -1.0825989f, -1.0831639f, -1.0837267f, -1.0842868f, -1.0848439f, -1.0853977f, -1.0859476f, -1.0864935f, -1.0870350f, -1.0875718f, -1.0881035f, -1.0886298f, -1.0891506f, -1.0896655f, -1.0901742f, -1.0906766f, -1.0911723f, -1.0916613f, -1.0921433f, -1.0926181f, -1.0930855f, -1.0935454f, -1.0939976f, -1.0944421f, -1.0948787f, -1.0953073f, -1.0957277f, -1.0961400f, -1.0965441f, -1.0969398f, -1.0973272f, -1.0977063f, -1.0980769f, -1.0984391f, -1.0987930f, -1.0991384f, -1.0994755f, -1.0998042f, -1.1001246f, -1.1004367f, -1.1007407f, -1.1010364f, -1.1013241f, -1.1016038f, -1.1018756f, -1.1021396f, -1.1023958f, -1.1026444f, -1.1028855f, -1.1031191f, -1.1033454f, -1.1035646f, -1.1037767f, -1.1039819f, -1.1041802f, -1.1043719f, -1.1045570f, -1.1047358f, -1.1049082f, -1.1050746f, -1.1052349f, -1.1053894f, -1.1055382f, -1.1056815f, -1.1058193f, -1.1059518f, -1.1060792f, -1.1062016f, -1.1063192f, -1.1064320f, -1.1065402f, -1.1066440f, -1.1067435f, -1.1068389f, -1.1069302f, -1.1070176f, -1.1071012f, -1.1071811f, -1.1072575f, -1.1073306f, -1.1074003f, -1.1074668f, -1.1075303f, -1.1075909f, -1.1076486f, -1.1077036f, -1.1077560f, -1.1078059f, -1.1078533f, -1.1078985f, -1.1079414f, -1.1079821f, -1.1080208f, -1.1080576f, -1.1080925f, -1.1081256f, -1.1081569f, -1.1081867f, -1.1082148f, -1.1082415f, -1.1082667f, -1.1082906f, -1.1083132f, -1.1083345f, -1.1083547f, -1.1083737f, -1.1083917f, -1.1084086f, -1.1084246f, -1.1084397f, -1.1084538f, -1.1084672f, -1.1084798f, -1.1084917f, -1.1085028f, -1.1085133f, -1.1085231f, -1.1085324f, -1.1085411f, -1.1085492f, -1.1085569f, -1.1085640f, -1.1085707f, -1.1085770f, -1.1085829f, -1.1085885f, -1.1085936f, -1.1085985f, -1.1086030f, -1.1086072f, -1.1086111f, -1.1086148f, -1.1086183f, -1.1086215f, -1.1086245f, -1.1086272f, -1.1086298f, -1.1086323f, -1.1086345f, -1.1086366f, -1.1086385f, -1.1086404f, -1.1086420f, -1.1086436f, -1.1086451f, -1.1086464f, -1.1086477f, -1.1086488f, -1.1086499f, -1.1086509f, -1.1086518f, -1.1086527f, -1.1086534f, -1.1086542f, -1.1086549f, -1.1086555f, -1.1086561f, -1.1086566f, -1.1086571f, -1.1086575f, -1.1086580f, -1.1086583f, -1.1086587f, -1.1086590f, -1.1086593f, -1.1086596f, -1.1086599f, -1.1086601f, -1.1086603f, -1.1086605f, -1.1086607f, -1.1086609f, -1.1086610f, -1.1086611f, -1.1086613f, -1.1086614f, -1.1086615f, -1.1086616f, -1.1086617f, -1.1086618f, -1.1086619f, -1.1086619f, -1.1086620f, -1.1086620f, -1.1086621f, -1.1086621f, -1.1086622f, -1.1086622f, -1.1086623f, -1.1086623f, -1.1086623f, -1.1086624f, -1.1086624f, -1.1086624f, -1.1086624f, -1.1086624f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086625f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f, -1.1086626f};
 
 // Disparity:
 // sigma 0.025
 double top_lookup[]={15.9577, 15.8165, 15.4003, 14.7308, 13.8422, 12.7779, 11.5877, 10.3231, 9.0345, 7.7674, 6.5604, 5.4433, 4.4368, 3.5527, 2.7947, 2.1596, 1.6395, 1.2227, 0.89578, 0.64471, 0.45584, 0.31662, 0.21604, 0.14482, 0.095364, 0.061691, 0.039205, 0.024476, 0.015011, 0.0090444, 0.0053532, 0.0031126, 0.001778, 0.0009977, 0.00054999, 0.00029784, 0.00015845, 8.2811e-05, 4.2517e-05, 2.1444e-05, 1.0625e-05, 5.1718e-06, 2.473e-06, 1.1617e-06, 5.361e-07, 2.4304e-07, 1.0824e-07, 4.7354e-08, 2.0353e-08, 8.5933e-09, 3.5644e-09, 1.4524e-09, 5.8138e-10, 2.2862e-10, 8.832e-11, 3.3518e-11, 1.2496e-11, 4.5766e-12, 1.6466e-12, 5.8201e-13, 2.0209e-13, 6.8935e-14, 2.31e-14, 7.6043e-15, 2.4592e-15, 7.8127e-16, 2.4383e-16, 7.4758e-17, 2.2517e-17, 6.6624e-18, 1.9366e-18, 5.5299e-19, 1.5512e-19, 4.2749e-20, 1.1573e-20, 3.0778e-21, 8.0413e-22, 2.0639e-22, 5.2038e-23, 1.289e-23, 3.1365e-24, 7.4975e-25, 1.7606e-25, 4.0617e-26, 9.2049e-27, 2.0493e-27, 4.4821e-28, 9.6302e-29, 2.0327e-29, 4.2148e-30, 8.5855e-31, 1.718e-31, 3.3774e-32, 6.5224e-33, 1.2374e-33, 2.3062e-34, 4.2225e-35, 7.5947e-36, 1.3419e-36, 2.3294e-37, 3.9721e-38, 6.6539e-39, 1.095e-39, 1.7703e-40, 2.8115e-41, 4.3864e-42, 6.7231e-43, 1.0123e-43, 1.4973e-44, 2.1758e-45, 3.1059e-46, 4.3555e-47, 6.0003e-48, 8.1205e-49, 1.0796e-49, 1.4101e-50, 1.8092e-51, 2.2804e-52, 2.8237e-53, 3.4349e-54, 4.1047e-55, 4.8186e-56, 5.5571e-57, 6.2958e-58, 7.007e-59, 7.6611e-60, 8.2287e-61, 8.6827e-62, 9.0002e-63, 9.165e-64, 9.1683e-65, 9.01e-66, 8.6984e-67, 8.2497e-68, 7.6862e-69, 7.035e-70, 6.3255e-71, 5.5874e-72, 4.8484e-73, 4.133e-74, 3.4611e-75, 2.8474e-76, 2.3012e-77, 1.827e-78, 1.425e-79, 1.0918e-80, 8.2183e-82, 6.077e-83, 4.4144e-84, 3.1502e-85, 2.2084e-86, 1.5209e-87, 1.029e-88, 6.8387e-90, 4.4651e-91, 2.864e-92, 1.8046e-93, 1.1171e-94, 6.793e-96, 4.058e-97, 2.3815e-98, 1.373e-99, 7.7759e-101, 4.3264e-102, 2.3647e-103, 1.2697e-104, 6.6975e-106, 3.4706e-107, 1.7667e-108, 8.8352e-110, 4.3405e-111, 2.0948e-112, 9.9319e-114, 4.6259e-115, 2.1166e-116, 9.514e-118, 4.2011e-119, 1.8224e-120, 7.7661e-122, 3.2512e-123, 1.3371e-124, 5.402e-126, 2.144e-127, 8.3597e-129, 3.202e-130, 1.2049e-131, 4.4538e-133, 1.6173e-134, 5.7697e-136, 2.022e-137, 6.9614e-139, 2.3544e-140, 7.8227e-142, 2.5533e-143, 8.1871e-145, 2.5789e-146, 7.9803e-148, 2.426e-149, 7.2448e-151, 2.1255e-152, 6.1257e-154, 1.7343e-155, 4.8239e-157, 1.3181e-158, 3.538e-160, 9.3294e-162, 2.4167e-163, 6.1502e-165, 1.5375e-166, 3.7761e-168, 9.1103e-170, 2.1593e-171, 5.0276e-173, 1.15e-174, 2.5841e-176, 5.7042e-178, 1.237e-179, 2.6352e-181, 5.5149e-183, 1.1338e-184, 2.29e-186, 4.5436e-188, 8.8561e-190, 1.6958e-191, 3.1899e-193, 5.8946e-195, 1.0701e-196, 1.9083e-198, 3.3433e-200, 5.7541e-202, 9.7287e-204, 1.6159e-205, 2.6366e-207, 4.2263e-209, 6.6552e-211, 1.0295e-212, 1.5645e-214, 2.3357e-216, 3.4256e-218, 4.9354e-220, 6.9855e-222, 9.7128e-224, 1.3267e-225, 1.7803e-227, 2.3468e-229, 3.039e-231, 3.8662e-233, 4.8318e-235, 5.9321e-237, 7.1548e-239, 8.4773e-241, 9.8673e-243, 1.1283e-244, 1.2674e-246, 1.3986e-248, 1.5162e-250, 1.6147e-252, 1.6893e-254, 1.7362e-256, 1.753e-258, 1.7388e-260, 1.6942e-262, 1.6218e-264, 1.525e-266, 1.4088e-268, 1.2785e-270, 1.1398e-272, 9.9826e-275, 8.5888e-277, 7.2594e-279, 6.0276e-281, 4.9167e-283, 3.9398e-285, 3.1014e-287, 2.3984e-289, 1.8221e-291, 1.3598e-293, 9.9699e-296, 7.1808e-298, 5.0808e-300, 3.5316e-302, 2.4115e-304, 1.6177e-306, 1.066e-308, 6.9011e-311, 4.3889e-313, 2.742e-315, 1.6829e-317, 1.0147e-319, 6.324e-322, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-float bottom_lookup[]={0.5f, 0.55304f, 0.60514f, 0.65542f, 0.7031f, 0.74751f, 0.78814f, 0.82468f, 0.85694f, 0.88493f, 0.90879f, 0.92877f, 0.9452f, 0.95848f, 0.96903f, 0.97725f, 0.98355f, 0.98829f, 0.9918f, 0.99435f, 0.99617f, 0.99744f, 0.99832f, 0.99892f, 0.99931f, 0.99957f, 0.99974f, 0.99984f, 0.99991f, 0.99994f, 0.99997f, 0.99998f, 0.99999f, 0.99999f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.99999f, 0.99999f, 0.99998f, 0.99997f, 0.99994f, 0.99991f, 0.99984f, 0.99974f, 0.99957f, 0.99931f, 0.99892f, 0.99832f, 0.99744f, 0.99617f, 0.99435f, 0.9918f, 0.98829f, 0.98355f, 0.97725f, 0.96903f, 0.95848f, 0.9452f, 0.92877f, 0.90879f, 0.88493f, 0.85694f, 0.82468f, 0.78814f, 0.74751f, 0.7031f, 0.65542f, 0.60514f, 0.55304f, 0.5f};
+double bottom_lookup[]={0.5f, 0.55304f, 0.60514f, 0.65542f, 0.7031f, 0.74751f, 0.78814f, 0.82468f, 0.85694f, 0.88493f, 0.90879f, 0.92877f, 0.9452f, 0.95848f, 0.96903f, 0.97725f, 0.98355f, 0.98829f, 0.9918f, 0.99435f, 0.99617f, 0.99744f, 0.99832f, 0.99892f, 0.99931f, 0.99957f, 0.99974f, 0.99984f, 0.99991f, 0.99994f, 0.99997f, 0.99998f, 0.99999f, 0.99999f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.99999f, 0.99999f, 0.99998f, 0.99997f, 0.99994f, 0.99991f, 0.99984f, 0.99974f, 0.99957f, 0.99931f, 0.99892f, 0.99832f, 0.99744f, 0.99617f, 0.99435f, 0.9918f, 0.98829f, 0.98355f, 0.97725f, 0.96903f, 0.95848f, 0.9452f, 0.92877f, 0.90879f, 0.88493f, 0.85694f, 0.82468f, 0.78814f, 0.74751f, 0.7031f, 0.65542f, 0.60514f, 0.55304f, 0.5f};
 
 using namespace pcl::simulation;
 
@@ -161,7 +161,7 @@ pcl::simulation::RangeLikelihood::RangeLikelihood (int rows, int cols, int row_h
   height_ = rows_ * row_height;
   width_ = cols_ * col_width;
 
-  depth_buffer_ = new float[width_*height_];
+  depth_buffer_ = new double[width_*height_];
   color_buffer_ = new uint8_t[width_*height_*3];
 
   // Set Default Camera Intrinstic Parameters. techquad
@@ -317,7 +317,7 @@ pcl::simulation::RangeLikelihood::RangeLikelihood (int rows, int cols, int row_h
   // Go back to the default pipeline
   glUseProgram (0);
 
-  score_buffer_ = new float[width_*height_];
+  score_buffer_ = new double[width_*height_];
 
 }
 
@@ -356,17 +356,17 @@ pcl::simulation::RangeLikelihood::setupProjectionMatrix ()
   glLoadIdentity ();
 
   // Prepare scaled simulated camera projection matrix
-  float sx = static_cast<float> (camera_width_) / static_cast<float> (col_width_);
-  float sy = static_cast<float> (camera_height_) / static_cast<float> (row_height_);
-  float width = static_cast<float> (col_width_);
-  float height = static_cast<float> (row_height_);
+  double sx = static_cast<double> (camera_width_) / static_cast<double> (col_width_);
+  double sy = static_cast<double> (camera_height_) / static_cast<double> (row_height_);
+  double width = static_cast<double> (col_width_);
+  double height = static_cast<double> (row_height_);
 
-  float fx = camera_fx_/sx;
-  float fy = camera_fy_/sy;
-  float cx = camera_cx_/sx;
-  float cy = camera_cy_/sy;
-  float m[16];
-  float z_nf = (z_near_-z_far_);
+  double fx = camera_fx_/sx;
+  double fy = camera_fy_/sy;
+  double cx = camera_cx_/sx;
+  double cy = camera_cy_/sy;
+  double m[16];
+  double z_nf = (z_near_-z_far_);
 
   m[0] = 2.0f*fx/width;  m[4] = 0;              m[ 8] = 1.0f-(2*cx/width);      m[12] = 0;
   m[1] = 0;              m[5] = 2.0f*fy/height; m[ 9] = 1.0f-(2*cy/height);     m[13] = 0;
@@ -378,8 +378,8 @@ pcl::simulation::RangeLikelihood::setupProjectionMatrix ()
 void
 pcl::simulation::RangeLikelihood::applyCameraTransform (const Eigen::Isometry3d & pose)
 {
-  float T[16];
-  Eigen::Matrix4f m = (pose.matrix ().inverse ()).cast<float> ();
+  double T[16];
+  Eigen::Matrix4f m = (pose.matrix ().inverse ()).cast<double> ();
   T[0] = m(0,0); T[4] = m(0,1); T[8] = m(0,2); T[12] = m(0,3);
   T[1] = m(1,0); T[5] = m(1,1); T[9] = m(1,2); T[13] = m(1,3);
   T[2] = m(2,0); T[6] = m(2,1); T[10] = m(2,2); T[14] = m(2,3);
@@ -402,7 +402,7 @@ pcl::simulation::RangeLikelihood::drawParticles (std::vector<Eigen::Isometry3d, 
 
       // Go from Z-up, X-forward coordinate frame
       // to OpenGL Z-out,Y-up [both Right Handed]
-      float T[16];
+      double T[16];
       T[0] =  0;   T[4] = -1.0; T[8] =  0; T[12] = 0;
       T[1] =  0;   T[5] = 0;    T[9] =  1; T[13] = 0;
       T[2] = -1.0; T[6] = 0;    T[10] = 0; T[14] = 0;
@@ -422,8 +422,8 @@ pcl::simulation::RangeLikelihood::drawParticles (std::vector<Eigen::Isometry3d, 
 /////////////////////////////////////////////////////////////////
 // Below are 4 previously used cost functions:
 // 0 original scoring method
-float
-costFunction0 (float ref_val,float depth_val)
+double
+costFunction0 (double ref_val,double depth_val)
 {
   return  (sqr(ref_val - depth_val));
 }
@@ -432,12 +432,12 @@ costFunction0 (float ref_val,float depth_val)
 // Empirical reverse mapping between depthbuffer and true depth:
 // Version 0: [25 aug 2011]
 // TRUEDEPTH =  1/(1.33 -(DEPTHBUFFER)*1.29)
-//float cost = sqr(ref[col%col_width] - 1/(1.33 -(*depth)*1.29));
+//double cost = sqr(ref[col%col_width] - 1/(1.33 -(*depth)*1.29));
 // Version 1: [29 aug 2011] Exact version using correct mappings:
-float
-costFunction1 (float ref_val, float depth_val)
+double
+costFunction1 (double ref_val, double depth_val)
 {
-  float cost = sqr (ref_val - 1/(1.4285f - (depth_val)*1.3788f));
+  double cost = sqr (ref_val - 1/(1.4285f - (depth_val)*1.3788f));
   //std::cout << " [" << ref_val << "," << 1/(1.4285 -(depth_val)*1.3788) << "] ";
   if (ref_val < 0)
   { // all images pixels with no range
@@ -452,10 +452,10 @@ costFunction1 (float ref_val, float depth_val)
 }
 
 // 1st working likelihood function (by far most commonly used)
-float
-costFunction2 (float ref_val, float depth_val)
+double
+costFunction2 (double ref_val, double depth_val)
 {
-  float min_dist = abs(ref_val - 1/(1.4285f - (depth_val)*1.3788f));
+  double min_dist = abs(ref_val - 1/(1.4285f - (depth_val)*1.3788f));
   int lup = static_cast<int> (ceil (min_dist*100)); // has resolution of 0.01m
 
   if (lup > 300)
@@ -485,13 +485,13 @@ costFunction2 (float ref_val, float depth_val)
     double r_max = 3; // metres
     lhood = ratio/(r_max -r_min) + (1-ratio)*lhood ;
   }
-  return static_cast<float> (log (lhood));
+  return static_cast<double> (log (lhood));
 }
 
-float
-costFunction3 (float ref_val,float depth_val)
+double
+costFunction3 (double ref_val,double depth_val)
 {
-  float log_lhood=0;
+  double log_lhood=0;
   // log(1) = 0 ---> has no effect
   if (ref_val < 0)
   {
@@ -503,7 +503,7 @@ costFunction3 (float ref_val,float depth_val)
   }
   else
   { // working range
-    float min_dist = abs (ref_val - 0.7253f/(1.0360f - (depth_val)));
+    double min_dist = abs (ref_val - 0.7253f/(1.0360f - (depth_val)));
 
     int lup = static_cast<int> (ceil (min_dist*100)); // has resulution of 0.01m
     if (lup > 300)
@@ -515,17 +515,17 @@ costFunction3 (float ref_val,float depth_val)
   return log_lhood;
 }
 
-float
-costFunction4(float ref_val,float depth_val)
+double
+costFunction4(double ref_val,double depth_val)
 {
-  float disparity_diff = abs( ( -0.7253f/ref_val +1.0360f ) -  depth_val );
+  double disparity_diff = abs( ( -0.7253f/ref_val +1.0360f ) -  depth_val );
 
   int top_lup = static_cast<int> (ceil (disparity_diff*300)); // has resulution of 0.001m
   if (top_lup > 300)
   {
     top_lup =300;
   }
-  float top = static_cast<float> (top_lookup[top_lup]);// round( abs(x-mu) *1000+1) );
+  double top = static_cast<double> (top_lookup[top_lup]);// round( abs(x-mu) *1000+1) );
 
   // bottom:
   //bottom = bottom_lookup(   round(mu*1000+1));
@@ -534,10 +534,10 @@ costFunction4(float ref_val,float depth_val)
   {
     bottom_lup =300;
   }
-  float bottom = bottom_lookup[bottom_lup];// round( abs(x-mu) *1000+1) );
+  double bottom = bottom_lookup[bottom_lup];// round( abs(x-mu) *1000+1) );
 
-  float proportion = 0.999f;
-  float lhood = proportion + (1-proportion)*(top/bottom);
+  double proportion = 0.999f;
+  double lhood = proportion + (1-proportion)*(top/bottom);
 
   // safety fix thats seems to be required due to opengl ayschronizate
   // ask hordur about this
@@ -584,10 +584,10 @@ double costFunction5(double measured_depth, double model_disp, double sigma, dou
 }
 
 void
-pcl::simulation::RangeLikelihood::computeScores (float* reference,
-                                                 std::vector<float> & scores)
+pcl::simulation::RangeLikelihood::computeScores (double* reference,
+                                                 std::vector<double> & scores)
 {
-  const float* depth = getDepthBuffer();
+  const double* depth = getDepthBuffer();
   // Mapping between disparity and range:
   // range or depth = 1/disparity
   //
@@ -607,12 +607,12 @@ pcl::simulation::RangeLikelihood::computeScores (float* reference,
   // for row across each image in a row of model images
   for (int row = 0; row < rows_*row_height_; row++)
   {
-    float* ref = reference + col_width_*(row % row_height_);
+    double* ref = reference + col_width_*(row % row_height_);
     // for each column: across each image in a column of model images
     for (int col = 0; col < cols_*col_width_; col++)
     {
-      float depth_val = (*depth++); // added jan 2012 - check this is not a breaking fix later mfallon
-      float score = 0;
+      double depth_val = (*depth++); // added jan 2012 - check this is not a breaking fix later mfallon
+      double score = 0;
       if (which_cost_function_ == 0)
       {
         score = costFunction0 (ref[col%col_width_],depth_val);
@@ -637,7 +637,7 @@ pcl::simulation::RangeLikelihood::computeScores (float* reference,
       {
 	//double sigma = 0.025;
 	//double floor_proportion_ = 0.999;
-        score = static_cast<float> (costFunction5 (ref[col%col_width_],depth_val,sigma_,floor_proportion_));
+        score = static_cast<double> (costFunction5 (ref[col%col_width_],depth_val,sigma_,floor_proportion_));
       }
       scores[row/row_height_ * cols_ + col/col_width_] += score;
       //std::cout << "(" << scores[row/row_height_ * cols_ + col/col_width_] <<"," << score << "," << ref[col%col_width_] << "," << depth_val << ") ";
@@ -665,10 +665,10 @@ pcl::simulation::RangeLikelihood::getPointCloud (pcl::PointCloud<pcl::PointXYZRG
 
   int points_added = 0;
 
-  float camera_fx_reciprocal_ = 1.0f / camera_fx_;
-  float camera_fy_reciprocal_ = 1.0f / camera_fy_;
-  float zn = z_near_;
-  float zf = z_far_;
+  double camera_fx_reciprocal_ = 1.0f / camera_fx_;
+  double camera_fy_reciprocal_ = 1.0f / camera_fy_;
+  double zn = z_near_;
+  double zf = z_far_;
 
   const uint8_t* color_buffer = getColorBuffer();
 
@@ -681,10 +681,10 @@ pcl::simulation::RangeLikelihood::getPointCloud (pcl::PointCloud<pcl::PointXYZRG
     {
       // Find XYZ from normalized 0->1 mapped disparity
       int idx = points_added; // y*camera_width_ + x;
-      float d = depth_buffer_[y*camera_width_ + x] ;
+      double d = depth_buffer_[y*camera_width_ + x] ;
       if (d < 1.0) // only add points with depth buffer less than max (20m) range
       {
-        float z = zf*zn/((zf-zn)*(d - zf/(zf-zn)));
+        double z = zf*zn/((zf-zn)*(d - zf/(zf-zn)));
 
         // TODO: add mode to ignore points with no return i.e. depth_buffer_ ==1
         // NB: OpenGL uses a Right Hand system with +X right, +Y up, +Z back out of the screen,
@@ -693,8 +693,8 @@ pcl::simulation::RangeLikelihood::getPointCloud (pcl::PointCloud<pcl::PointXYZRG
         // ... so by negating y we get to a right-hand computer vision system
         // which is also used by PCL and OpenNi
         pc->points[idx].z = z;
-        pc->points[idx].x = (static_cast<float> (x)-camera_cx_) * z * (-camera_fx_reciprocal_);
-        pc->points[idx].y = (static_cast<float> (y)-camera_cy_) * z * (-camera_fy_reciprocal_);
+        pc->points[idx].x = (static_cast<double> (x)-camera_cx_) * z * (-camera_fx_reciprocal_);
+        pc->points[idx].y = (static_cast<double> (y)-camera_cy_) * z * (-camera_fy_reciprocal_);
 
 	int rgb_idx = y*col_width_ + x;  //camera_width_
         pc->points[idx].b = color_buffer[rgb_idx*3+2]; // blue
@@ -716,7 +716,7 @@ pcl::simulation::RangeLikelihood::getPointCloud (pcl::PointCloud<pcl::PointXYZRG
          -1, 0,  0, 0,
           0, 1,  0, 0,
           0, 0,  0, 1;
-    Eigen::Matrix4f m = pose.matrix ().cast<float> ();
+    Eigen::Matrix4f m = pose.matrix ().cast<double> ();
     m = m * T;
     pcl::transformPointCloud (*pc, *pc, m);
   }
@@ -736,10 +736,10 @@ pcl::simulation::RangeLikelihood::getPointCloud (pcl::PointCloud<pcl::PointXYZRG
                    -1,  0, 0, 0,
                     0, -1, 0, 0,
                     0,  0, 0, 1;
-    Eigen::Matrix4f camera = pose.matrix ().cast<float> ();
+    Eigen::Matrix4f camera = pose.matrix ().cast<double> ();
     camera = camera * cam_to_body;
     pc->sensor_origin_ = camera.rightCols (1);
-    Eigen::Quaternion<float> quat (camera.block<3,3> (0,0));
+    Eigen::Quaternion<double> quat (camera.block<3,3> (0,0));
     pc->sensor_orientation_ = quat;
   }
 }
@@ -762,12 +762,12 @@ pcl::simulation::RangeLikelihood::addNoise ()
   // Add Gaussian Noise
   // TODO: make the variance a parameter
   // TODO: might want to add a range-based variance
-  float variance = 0.0015f;
+  double variance = 0.0015f;
   for (int i = 0; i < camera_width_*camera_height_ ; i++)
   {
     if (depth_buffer_[i] < 1)
     {
-      depth_buffer_[i] = depth_buffer_[i] + variance * static_cast<float> (sampleNormal ());
+      depth_buffer_[i] = depth_buffer_[i] + variance * static_cast<double> (sampleNormal ());
       if (depth_buffer_[i] > 1)
       {
         depth_buffer_[i] = 1.0;
@@ -786,7 +786,7 @@ pcl::simulation::RangeLikelihood::addNoise ()
   // The fitted model stated here cannot work for long ranges:
   // http://www.ros.org/wiki/kinect_calibration/technical
   // TODO: make a parameter
-  float bins = 470;
+  double bins = 470;
   for (int i = 0; i < camera_width_*camera_height_ ; i++)
   {
     depth_buffer_[i] =  ceil (depth_buffer_[i]*bins)/bins;
@@ -795,9 +795,9 @@ pcl::simulation::RangeLikelihood::addNoise ()
 }
 
 void
-RangeLikelihood::computeLikelihoods (float* reference,
+RangeLikelihood::computeLikelihoods (double* reference,
                                      std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > poses,
-                                     std::vector<float> & scores)
+                                     std::vector<double> & scores)
 {
   #if DO_TIMING_PROFILE
     vector<double> tic_toc;
@@ -831,7 +831,7 @@ RangeLikelihood::computeLikelihoods (float* reference,
     // Aggregate results (we do not use GPU to sum cpu scores)
     if (aggregate_on_cpu_)
     {
-      const float* score_buffer = getScoreBuffer();
+      const double* score_buffer = getScoreBuffer();
 
       for (int n = 0, row = 0; row < height_; ++row)
       {
@@ -849,7 +849,7 @@ RangeLikelihood::computeLikelihoods (float* reference,
       int reduced_col_width = col_width_ >> levels;
       int reduced_row_height = row_height_ >> levels;
 
-      float* score_sum = new float[reduced_width * reduced_height];
+      double* score_sum = new double[reduced_width * reduced_height];
       sum_reduce_.sum (score_texture_, score_sum);
       for (int n = 0, row = 0; row < reduced_height; ++row)
       {
@@ -870,7 +870,7 @@ RangeLikelihood::computeLikelihoods (float* reference,
 
 // Computes the likelihood scores using a shader
 void
-pcl::simulation::RangeLikelihood::computeScoresShader (float* reference)
+pcl::simulation::RangeLikelihood::computeScoresShader (double* reference)
 {
   if (gllib::getGLError () != GL_NO_ERROR)
   {
@@ -1035,7 +1035,7 @@ RangeLikelihood::render (const std::vector<Eigen::Isometry3d, Eigen::aligned_all
   score_buffer_dirty_ = true;
 }
 
-const float*
+const double*
 RangeLikelihood::getDepthBuffer ()
 {
   if (depth_buffer_dirty_)
@@ -1087,7 +1087,7 @@ RangeLikelihood::getColorBuffer ()
 }
 
 // The scores are in score_texture_
-const float*
+const double*
 RangeLikelihood::getScoreBuffer ()
 {
   if (score_buffer_dirty_ && !compute_likelihood_on_cpu_)

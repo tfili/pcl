@@ -63,7 +63,7 @@ namespace pcl
     typedef typename PointCloud::Ptr PointCloudPtr;
     typedef typename PointCloud::ConstPtr PointCloudConstPtr;
 
-    typedef typename Eigen::Matrix<float, Eigen::Dynamic, 1> Vector;
+    typedef typename Eigen::Matrix<double, Eigen::Dynamic, 1> Vector;
 
     public:
 
@@ -115,13 +115,13 @@ namespace pcl
         * \param[in] ratio sample the ratio of points to be sampled in each grid
         */
       inline void
-      setRatio (float ratio)
+      setRatio (double ratio)
       {
         ratio_ = ratio;
       }
 
       /** \brief Get the value of the internal \a ratio parameter. */
-      inline float
+      inline double
       getRatio () const
       {
         return ratio_;
@@ -134,7 +134,7 @@ namespace pcl
       /** \brief Random number seed. */
       unsigned int seed_;
       /** \brief Ratio of points to be sampled in each grid */
-      float ratio_;
+      double ratio_;
 
       /** \brief Sample of point indices into a separate PointCloud
         * \param[out] output the resultant point cloud
@@ -211,7 +211,7 @@ namespace pcl
         * \param[in] cut_dim the input dimension (0=x, 1=y, 2=z)
         * \param[in] cut_index the input index in the cloud
         */
-      float 
+      double 
       findCutVal (const PointCloud& cloud, const int cut_dim, const int cut_index);
 
       /** \brief Computes the normal for points in a grid. This is a port from features to avoid features dependency for
@@ -221,7 +221,7 @@ namespace pcl
         * \param[out] curvature the computed curvature
         */
       void 
-      computeNormal (const PointCloud& cloud, Eigen::Vector4f &normal, float& curvature);
+      computeNormal (const PointCloud& cloud, Eigen::Vector4f &normal, double& curvature);
 
       /** \brief Computes the covariance matrix for points in the cloud. This is a port from features to avoid features dependency for
         * filters
@@ -242,7 +242,7 @@ namespace pcl
         */
       void 
       solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-                            float &nx, float &ny, float &nz, float &curvature);
+                            double &nx, double &ny, double &nz, double &curvature);
   };
 }
 

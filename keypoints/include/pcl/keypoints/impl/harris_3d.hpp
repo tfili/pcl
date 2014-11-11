@@ -68,14 +68,14 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::setMethod (ResponseMethod m
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT, typename NormalT> void
-pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::setThreshold (float threshold)
+pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::setThreshold (double threshold)
 {
   threshold_= threshold;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT, typename NormalT> void
-pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::setRadius (float radius)
+pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::setRadius (double radius)
 {
   search_radius_ = radius;
 }
@@ -103,7 +103,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::setNormals (const PointClou
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT, typename NormalT> void
-pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::calculateNormalCovar (const std::vector<int>& neighbors, float* coefficients) const
+pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::calculateNormalCovar (const std::vector<int>& neighbors, double* coefficients) const
 {
   unsigned count = 0;
   // indices        0   1   2   3   4   5   6   7
@@ -118,7 +118,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::calculateNormalCovar (const
 
   __m128 norm2;
 
-  float zz = 0;
+  double zz = 0;
 
   for (std::vector<int>::const_iterator iIt = neighbors.begin(); iIt != neighbors.end(); ++iIt)
   {
@@ -151,17 +151,17 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::calculateNormalCovar (const
   }
   if (count > 0)
   {
-    norm2 = _mm_set1_ps (float(count));
+    norm2 = _mm_set1_ps (double(count));
     vec1 = _mm_div_ps (vec1, norm2);
     vec2 = _mm_div_ps (vec2, norm2);
     _mm_store_ps (coefficients, vec1);
     _mm_store_ps (coefficients + 4, vec2);
-    coefficients [7] = zz / float(count);
+    coefficients [7] = zz / double(count);
   }
   else
-    memset (coefficients, 0, sizeof (float) * 8);
+    memset (coefficients, 0, sizeof (double) * 8);
 #else
-  memset (coefficients, 0, sizeof (float) * 8);
+  memset (coefficients, 0, sizeof (double) * 8);
   for (std::vector<int>::const_iterator iIt = neighbors.begin(); iIt != neighbors.end(); ++iIt)
   {
     if (pcl_isfinite (normals_->points[*iIt].normal_x))
@@ -179,7 +179,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::calculateNormalCovar (const
   }
   if (count > 0)
   {
-    float norm = 1.0 / float (count);
+    double norm = 1.0 / double (count);
     coefficients[0] *= norm;
     coefficients[1] *= norm;
     coefficients[2] *= norm;
@@ -287,7 +287,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloud
         continue;
 
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (idx, search_radius_, nn_indices, nn_dists);
       bool is_maxima = true;
       for (std::vector<int>::const_iterator iIt = nn_indices.begin(); iIt != nn_indices.end(); ++iIt)
@@ -321,7 +321,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloud
 template <typename PointInT, typename PointOutT, typename NormalT> void
 pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseHarris (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [8];
+  PCL_ALIGN (16) double covar [8];
   output.resize (input_->size ());
 #ifdef _OPENMP
   #pragma omp parallel for shared (output) private (covar) num_threads(threads_)
@@ -329,18 +329,18 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseHarris (PointCloudO
   for (int pIdx = 0; pIdx < static_cast<int> (input_->size ()); ++pIdx)
   {
     const PointInT& pointIn = input_->points [pIdx];
-    output [pIdx].intensity = 0.0; //std::numeric_limits<float>::quiet_NaN ();
+    output [pIdx].intensity = 0.0; //std::numeric_limits<double>::quiet_NaN ();
     if (isFinite (pointIn))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (pointIn, search_radius_, nn_indices, nn_dists);
       calculateNormalCovar (nn_indices, covar);
 
-      float trace = covar [0] + covar [5] + covar [7];
+      double trace = covar [0] + covar [5] + covar [7];
       if (trace != 0)
       {
-        float det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
+        double det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
                   - covar [2] * covar [2] * covar [5]
                   - covar [1] * covar [1] * covar [7]
                   - covar [6] * covar [6] * covar [0];
@@ -360,7 +360,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseHarris (PointCloudO
 template <typename PointInT, typename PointOutT, typename NormalT> void
 pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseNoble (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [8];
+  PCL_ALIGN (16) double covar [8];
   output.resize (input_->size ());
 #ifdef _OPENMP
   #pragma omp parallel for shared (output) private (covar) num_threads(threads_)
@@ -372,13 +372,13 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseNoble (PointCloudOu
     if (isFinite (pointIn))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (pointIn, search_radius_, nn_indices, nn_dists);
       calculateNormalCovar (nn_indices, covar);
-      float trace = covar [0] + covar [5] + covar [7];
+      double trace = covar [0] + covar [5] + covar [7];
       if (trace != 0)
       {
-        float det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
+        double det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
                   - covar [2] * covar [2] * covar [5]
                   - covar [1] * covar [1] * covar [7]
                   - covar [6] * covar [6] * covar [0];
@@ -398,7 +398,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseNoble (PointCloudOu
 template <typename PointInT, typename PointOutT, typename NormalT> void
 pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseLowe (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [8];
+  PCL_ALIGN (16) double covar [8];
   output.resize (input_->size ());
 #ifdef _OPENMP
   #pragma omp parallel for shared (output) private (covar) num_threads(threads_)
@@ -410,13 +410,13 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseLowe (PointCloudOut
     if (isFinite (pointIn))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (pointIn, search_radius_, nn_indices, nn_dists);
       calculateNormalCovar (nn_indices, covar);
-      float trace = covar [0] + covar [5] + covar [7];
+      double trace = covar [0] + covar [5] + covar [7];
       if (trace != 0)
       {
-        float det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
+        double det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
                   - covar [2] * covar [2] * covar [5]
                   - covar [1] * covar [1] * covar [7]
                   - covar [6] * covar [6] * covar [0];
@@ -454,7 +454,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseCurvature (PointClo
 template <typename PointInT, typename PointOutT, typename NormalT> void
 pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseTomasi (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [8];
+  PCL_ALIGN (16) double covar [8];
   Eigen::Matrix3f covariance_matrix;
   output.resize (input_->size ());
 #ifdef _OPENMP
@@ -467,10 +467,10 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseTomasi (PointCloudO
     if (isFinite (pointIn))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (pointIn, search_radius_, nn_indices, nn_dists);
       calculateNormalCovar (nn_indices, covar);
-      float trace = covar [0] + covar [5] + covar [7];
+      double trace = covar [0] + covar [5] + covar [7];
       if (trace != 0)
       {
         covariance_matrix.coeffRef (0) = covar [0];
@@ -501,7 +501,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOu
   Eigen::Matrix3f NNT;
   Eigen::Matrix3f NNTInv;
   Eigen::Vector3f NNTp;
-  float diff;
+  double diff;
   const unsigned max_iterations = 10;
 #ifdef _OPENMP
   #pragma omp parallel for shared (corners) private (nnT, NNT, NNTInv, NNTp, diff) num_threads(threads_)
@@ -517,7 +517,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOu
       corner.y = corners[cIdx].y;
       corner.z = corners[cIdx].z;
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (corner, search_radius_, nn_indices, nn_dists);
       for (std::vector<int>::const_iterator iIt = nn_indices.begin(); iIt != nn_indices.end(); ++iIt)
       {

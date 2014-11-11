@@ -283,7 +283,7 @@ namespace pcl
         int
         getApproxIntersectedVoxelCentersBySegment (
             const Eigen::Vector3f& origin, const Eigen::Vector3f& end,
-            AlignedPointTVector &voxel_center_list, float precision = 0.2);
+            AlignedPointTVector &voxel_center_list, double precision = 0.2);
 
         /** \brief Delete leaf node / voxel at given point
          * \param[in] point_arg point addressing the voxel to be deleted.

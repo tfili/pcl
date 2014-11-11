@@ -117,9 +117,9 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           descr_model.view_id = view_id;
           descr_model.descriptor_id = descriptor_id;
 
-          int size_feat = sizeof(signature->points[0].histogram) / sizeof(float);
+          int size_feat = sizeof(signature->points[0].histogram) / sizeof(double);
           descr_model.descr.resize (size_feat);
-          memcpy (&descr_model.descr[0], &signature->points[0].histogram[0], size_feat * sizeof(float));
+          memcpy (&descr_model.descr[0], &signature->points[0].histogram[0], size_feat * sizeof(double));
 
           flann_models_.push_back (descr_model);
 
@@ -148,13 +148,13 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
   void
   pcl::rec_3d_framework::GlobalNNCRHRecognizer<Distance, PointInT, FeatureT>::nearestKSearch (flann::Index<DistT> * index, const flann_model &model,
                                                                                               int k, flann::Matrix<int> &indices,
-                                                                                              flann::Matrix<float> &distances)
+                                                                                              flann::Matrix<double> &distances)
   {
-    flann::Matrix<float> p = flann::Matrix<float> (new float[model.descr.size ()], 1, model.descr.size ());
-    memcpy (&p.ptr ()[0], &model.descr[0], p.cols * p.rows * sizeof(float));
+    flann::Matrix<double> p = flann::Matrix<double> (new double[model.descr.size ()], 1, model.descr.size ());
+    memcpy (&p.ptr ()[0], &model.descr[0], p.cols * p.rows * sizeof(double));
 
     indices = flann::Matrix<int> (new int[k], 1, k);
-    distances = flann::Matrix<float> (new float[k], 1, k);
+    distances = flann::Matrix<double> (new double[k], 1, k);
     index->knnSearch (p, indices, distances, k, flann::SearchParams (512));
     delete[] p.ptr ();
   }
@@ -195,16 +195,16 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         for (size_t idx = 0; idx < signatures.size (); idx++)
         {
 
-          float* hist = signatures[idx].points[0].histogram;
-          int size_feat = sizeof(signatures[idx].points[0].histogram) / sizeof(float);
-          std::vector<float> std_hist (hist, hist + size_feat);
+          double* hist = signatures[idx].points[0].histogram;
+          int size_feat = sizeof(signatures[idx].points[0].histogram) / sizeof(double);
+          std::vector<double> std_hist (hist, hist + size_feat);
           ModelT empty;
 
           flann_model histogram;
           histogram.descr = std_hist;
 
           flann::Matrix<int> indices;
-          flann::Matrix<float> distances;
+          flann::Matrix<double> distances;
           nearestKSearch (flann_index_, histogram, NN_, indices, distances);
 
           //gather NN-search results
@@ -232,7 +232,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         indices_scores_filtered.resize (num_n);
         indices_scores_filtered[0] = indices_scores[0];
 
-        float best_score = indices_scores[0].score_;
+        double best_score = indices_scores[0].score_;
         int kept = 1;
         for (int i = 1; i < num_n; ++i)
         {
@@ -319,7 +319,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         pcl::ScopeTime t ("Pose refinement");
 
         //Prepare scene and model clouds for the pose refinement step
-        float VOXEL_SIZE_ICP_ = 0.005f;
+        double VOXEL_SIZE_ICP_ = 0.005f;
         PointInTPtr cloud_voxelized_icp (new pcl::PointCloud<PointInT> ());
         pcl::VoxelGrid<PointInT> voxel_grid_icp;
         voxel_grid_icp.setInputCloud (processed);
@@ -436,7 +436,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
             boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_nor (rng, nd);
             // Noisify each point in the dataset
             for (size_t cp = 0; cp < view->points.size (); ++cp)
-              view->points[cp].z += static_cast<float> (var_nor ());
+              view->points[cp].z += static_cast<double> (var_nor ());
 
           }
 

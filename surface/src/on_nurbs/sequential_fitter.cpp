@@ -474,7 +474,7 @@ SequentialFitter::getClosestPointOnNurbs (
 }
 
 ON_NurbsSurface
-SequentialFitter::grow (float max_dist, float max_angle, unsigned min_length, unsigned max_length)
+SequentialFitter::grow (double max_dist, double max_angle, unsigned min_length, unsigned max_length)
 {
   unsigned num_bnd = unsigned (this->m_data.boundary_param.size ());
 
@@ -493,7 +493,7 @@ SequentialFitter::grow (float max_dist, float max_angle, unsigned min_length, un
     throw std::runtime_error ("[SequentialFitter::grow] size of boundary indices and boundary parameters do not match.");
   }
 
-  float angle = cosf (max_angle);
+  double angle = cosf (max_angle);
   unsigned bnd_moved (0);
 
   for (unsigned i = 0; i < num_bnd; i++)
@@ -541,7 +541,7 @@ SequentialFitter::grow (float max_dist, float max_angle, unsigned min_length, un
     bni.normalize ();
 
     // search for valid points along boundary normal in image space
-    float max_dist_sq = max_dist * max_dist;
+    double max_dist_sq = max_dist * max_dist;
     bool valid = false;
     pcl::PointXYZRGB point = m_cloud->at (this->m_boundary_indices->indices[i]);
     for (unsigned j = min_length; j < max_length; j++)

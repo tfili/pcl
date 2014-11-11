@@ -52,7 +52,7 @@
 using namespace std;
 
 const int MAX_CLUST_SIZE = 25000;
-const float CLUST_TOL = 0.05f;
+const double CLUST_TOL = 0.05f;
 
 pcl::gpu::people::RDFBodyPartsDetector::RDFBodyPartsDetector( const vector<string>& tree_files, int rows, int cols)    
 : max_cluster_size_(MAX_CLUST_SIZE), cluster_tolerance_(CLUST_TOL)
@@ -239,9 +239,9 @@ pcl::gpu::people::RDFBodyPartsDetector::process (const pcl::device::Depth& depth
           remap_[cc] = ccindex;
 
           blob_matrix_[label][ccindex].label = static_cast<part_t> (label);
-          blob_matrix_[label][ccindex].mean.coeffRef(0) = means[cc].x / static_cast<float> (rsizes[cc]);
-          blob_matrix_[label][ccindex].mean.coeffRef(1) = means[cc].y / static_cast<float> (rsizes[cc]);
-          blob_matrix_[label][ccindex].mean.coeffRef(2) = means[cc].z / static_cast<float> (rsizes[cc]);
+          blob_matrix_[label][ccindex].mean.coeffRef(0) = means[cc].x / static_cast<double> (rsizes[cc]);
+          blob_matrix_[label][ccindex].mean.coeffRef(1) = means[cc].y / static_cast<double> (rsizes[cc]);
+          blob_matrix_[label][ccindex].mean.coeffRef(2) = means[cc].z / static_cast<double> (rsizes[cc]);
           blob_matrix_[label][ccindex].indices.indices.reserve(rsizes[cc]);
         }
         blob_matrix_[label][ccindex].indices.indices.push_back(static_cast<int> (k));
@@ -333,9 +333,9 @@ pcl::gpu::people::RDFBodyPartsDetector::processSmooth (const pcl::device::Depth&
           remap_[cc] = ccindex;
 
           blob_matrix_[label][ccindex].label = static_cast<part_t> (label);
-          blob_matrix_[label][ccindex].mean.coeffRef(0) = means[cc].x / static_cast<float> (rsizes[cc]);
-          blob_matrix_[label][ccindex].mean.coeffRef(1) = means[cc].y / static_cast<float> (rsizes[cc]);
-          blob_matrix_[label][ccindex].mean.coeffRef(2) = means[cc].z / static_cast<float> (rsizes[cc]);
+          blob_matrix_[label][ccindex].mean.coeffRef(0) = means[cc].x / static_cast<double> (rsizes[cc]);
+          blob_matrix_[label][ccindex].mean.coeffRef(1) = means[cc].y / static_cast<double> (rsizes[cc]);
+          blob_matrix_[label][ccindex].mean.coeffRef(2) = means[cc].z / static_cast<double> (rsizes[cc]);
           blob_matrix_[label][ccindex].indices.indices.reserve(rsizes[cc]);
         }
         blob_matrix_[label][ccindex].indices.indices.push_back(static_cast<int> (k));

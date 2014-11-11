@@ -72,7 +72,7 @@ namespace pcl
       NNClassification () : tree_ (), classes_ (), labels_idx_ () {}
 
       /** \brief Result is a list of class labels and scores */
-      typedef std::pair<std::vector<std::string>, std::vector<float> > Result;
+      typedef std::pair<std::vector<std::string>, std::vector<double> > Result;
       typedef boost::shared_ptr<Result> ResultPtr;
 
       // TODO setIndices method, distance metrics and reset tree
@@ -182,10 +182,10 @@ namespace pcl
         * \return pair of label and score for each training class from the neighborhood
         */
       ResultPtr 
-      classify (const PointT &p_q, double radius, float gaussian_param, int max_nn = INT_MAX)
+      classify (const PointT &p_q, double radius, double gaussian_param, int max_nn = INT_MAX)
       {
         std::vector<int> k_indices;
-        std::vector<float> k_sqr_distances;
+        std::vector<double> k_sqr_distances;
         getSimilarExemplars (p_q, radius, k_indices, k_sqr_distances, max_nn);
         return (getGaussianBestScores (gaussian_param, k_indices, k_sqr_distances));
       }
@@ -199,7 +199,7 @@ namespace pcl
         * \return number of neighbors found
         */
       int 
-      getKNearestExemplars (const PointT &p_q, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances)
+      getKNearestExemplars (const PointT &p_q, int k, std::vector<int> &k_indices, std::vector<double> &k_sqr_distances)
       {
         k_indices.resize (k);
         k_sqr_distances.resize (k);
@@ -216,7 +216,7 @@ namespace pcl
         */
       int 
       getSimilarExemplars (const PointT &p_q, double radius, std::vector<int> &k_indices,
-                           std::vector<float> &k_sqr_distances, int max_nn = INT_MAX)
+                           std::vector<double> &k_sqr_distances, int max_nn = INT_MAX)
       {
         return (tree_->radiusSearch (p_q, radius, k_indices, k_sqr_distances, max_nn));
       }
@@ -226,11 +226,11 @@ namespace pcl
         * \param k_sqr_distances the resultant squared distances to the neighboring points
         * \return a square distance to each training class
         */
-      boost::shared_ptr<std::vector<float> > 
-      getSmallestSquaredDistances (std::vector<int> &k_indices, std::vector<float> &k_sqr_distances)
+      boost::shared_ptr<std::vector<double> > 
+      getSmallestSquaredDistances (std::vector<int> &k_indices, std::vector<double> &k_sqr_distances)
       {
         // Reserve space for distances
-        boost::shared_ptr<std::vector<float> > sqr_distances (new std::vector<float> (classes_.size (), FLT_MAX));
+        boost::shared_ptr<std::vector<double> > sqr_distances (new std::vector<double> (classes_.size (), FLT_MAX));
 
         // Select square distance to each class
         for (std::vector<int>::const_iterator i = k_indices.begin (); i != k_indices.end (); ++i)
@@ -246,24 +246,24 @@ namespace pcl
         * \return pair of label and score for each training class from the neighborhood
         */
       ResultPtr 
-      getLinearBestScores (std::vector<int> &k_indices, std::vector<float> &k_sqr_distances)
+      getLinearBestScores (std::vector<int> &k_indices, std::vector<double> &k_sqr_distances)
       {
         // Get smallest squared distances and transform them to a score for each class
-        boost::shared_ptr<std::vector<float> > sqr_distances = getSmallestSquaredDistances (k_indices, k_sqr_distances);
+        boost::shared_ptr<std::vector<double> > sqr_distances = getSmallestSquaredDistances (k_indices, k_sqr_distances);
 
         // Transform distances to scores
         double sum_dist = 0;
-        boost::shared_ptr<std::pair<std::vector<std::string>, std::vector<float> > > result (new std::pair<std::vector<std::string>, std::vector<float> > ());
+        boost::shared_ptr<std::pair<std::vector<std::string>, std::vector<double> > > result (new std::pair<std::vector<std::string>, std::vector<double> > ());
         result->first.reserve (classes_.size ());
         result->second.reserve (classes_.size ());
-        for (std::vector<float>::const_iterator it = sqr_distances->begin (); it != sqr_distances->end (); ++it)
+        for (std::vector<double>::const_iterator it = sqr_distances->begin (); it != sqr_distances->end (); ++it)
           if (*it != FLT_MAX)
           {
             result->first.push_back (classes_[it - sqr_distances->begin ()]);
             result->second.push_back (sqrt (*it));
             sum_dist += result->second.back ();
           }
-        for (std::vector<float>::iterator it = result->second.begin (); it != result->second.end (); ++it)
+        for (std::vector<double>::iterator it = result->second.begin (); it != result->second.end (); ++it)
           *it = 1 - *it/sum_dist;
 
         // Return label/score list pair
@@ -277,16 +277,16 @@ namespace pcl
         * \return pair of label and score for each training class from the neighborhood
         */
       ResultPtr 
-      getGaussianBestScores (float gaussian_param, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances)
+      getGaussianBestScores (double gaussian_param, std::vector<int> &k_indices, std::vector<double> &k_sqr_distances)
       {
         // Get smallest squared distances and transform them to a score for each class
-        boost::shared_ptr<std::vector<float> > sqr_distances = getSmallestSquaredDistances (k_indices, k_sqr_distances);
+        boost::shared_ptr<std::vector<double> > sqr_distances = getSmallestSquaredDistances (k_indices, k_sqr_distances);
 
         // Transform distances to scores
-        boost::shared_ptr<std::pair<std::vector<std::string>, std::vector<float> > > result (new std::pair<std::vector<std::string>, std::vector<float> > ());
+        boost::shared_ptr<std::pair<std::vector<std::string>, std::vector<double> > > result (new std::pair<std::vector<std::string>, std::vector<double> > ());
         result->first.reserve (classes_.size ());
         result->second.reserve (classes_.size ());
-        for (std::vector<float>::const_iterator it = sqr_distances->begin (); it != sqr_distances->end (); ++it)
+        for (std::vector<double>::const_iterator it = sqr_distances->begin (); it != sqr_distances->end (); ++it)
           if (*it != FLT_MAX)
           {
             result->first.push_back (classes_[it - sqr_distances->begin ()]);

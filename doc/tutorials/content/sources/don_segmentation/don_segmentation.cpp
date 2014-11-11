@@ -85,7 +85,7 @@ main (int argc, char *argv[])
    * NOTE: setting viewpoint is very important, so that we can ensure
    * normals are all pointed in the same direction!
    */
-  ne.setViewPoint (std::numeric_limits<float>::max (), std::numeric_limits<float>::max (), std::numeric_limits<float>::max ());
+  ne.setViewPoint (std::numeric_limits<double>::max (), std::numeric_limits<double>::max (), std::numeric_limits<double>::max ());
 
   // calculate normals with the small scale
   cout << "Calculating normals for scale..." << scale1 << endl;

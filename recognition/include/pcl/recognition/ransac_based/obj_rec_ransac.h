@@ -100,26 +100,26 @@ namespace pcl
         class Output
         {
           public:
-            Output (const std::string& object_name, const float rigid_transform[12], float match_confidence, void* user_data) :
+            Output (const std::string& object_name, const double rigid_transform[12], double match_confidence, void* user_data) :
               object_name_ (object_name),
               match_confidence_ (match_confidence),
               user_data_ (user_data)
             {
-              memcpy(this->rigid_transform_, rigid_transform, 12*sizeof (float));
+              memcpy(this->rigid_transform_, rigid_transform, 12*sizeof (double));
             }
             virtual ~Output (){}
 
           public:
             std::string object_name_;
-            float rigid_transform_[12];
-            float match_confidence_;
+            double rigid_transform_[12];
+            double match_confidence_;
             void* user_data_;
         };
 
         class OrientedPointPair
         {
             public:
-              OrientedPointPair (const float *p1, const float *n1, const float *p2, const float *n2)
+              OrientedPointPair (const double *p1, const double *n1, const double *p2, const double *n2)
               : p1_ (p1), n1_ (n1), p2_ (p2), n2_ (n2)
               {
               }
@@ -127,7 +127,7 @@ namespace pcl
               virtual ~OrientedPointPair (){}
 
             public:
-              const float *p1_, *n1_, *p2_, *n2_;
+              const double *p1_, *n1_, *p2_, *n2_;
         };
 
         class HypothesisCreator
@@ -136,10 +136,10 @@ namespace pcl
             HypothesisCreator (){}
             virtual ~HypothesisCreator (){}
 
-            Hypothesis* create (const SimpleOctree<Hypothesis, HypothesisCreator, float>::Node* ) const { return new Hypothesis ();}
+            Hypothesis* create (const SimpleOctree<Hypothesis, HypothesisCreator, double>::Node* ) const { return new Hypothesis ();}
         };
 
-        typedef SimpleOctree<Hypothesis, HypothesisCreator, float> HypothesisOctree;
+        typedef SimpleOctree<Hypothesis, HypothesisCreator, double> HypothesisOctree;
 
       public:
         /** \brief Constructor with some important parameters which can not be changed once an instance of that class is created.
@@ -151,7 +151,7 @@ namespace pcl
           * \param[in] voxel_size is the size of the leafs of the octree, i.e., the "size" of the discretization. Tradeoff: High values lead to less
           * computation time but ignore object details. Small values allow to better distinguish between objects, but will introduce more holes in the resulting
           * "voxel-surface" (especially for a sparsely sampled scene). */
-        ObjRecRANSAC (float pair_width, float voxel_size);
+        ObjRecRANSAC (double pair_width, double voxel_size);
         virtual ~ObjRecRANSAC ()
         {
           this->clear ();
@@ -175,14 +175,14 @@ namespace pcl
           * "ignore co-planar points" is on. Call this method before calling addModel. This method calls the corresponding
           * method of the model library. */
         inline void
-        setMaxCoplanarityAngleDegrees (float max_coplanarity_angle_degrees)
+        setMaxCoplanarityAngleDegrees (double max_coplanarity_angle_degrees)
         {
           max_coplanarity_angle_ = max_coplanarity_angle_degrees*AUX_DEG_TO_RADIANS;
           model_library_.setMaxCoplanarityAngleDegrees (max_coplanarity_angle_degrees);
         }
 
         inline void
-        setSceneBoundsEnlargementFactor (float value)
+        setSceneBoundsEnlargementFactor (double value)
         {
           scene_bounds_enlargement_factor_ = value;
         }
@@ -316,7 +316,7 @@ namespace pcl
           return (transform_space_);
         }
 
-        inline float
+        inline double
         getPairWidth () const
         {
           return pair_width_;
@@ -366,7 +366,7 @@ namespace pcl
         testHypothesis (Hypothesis* hypothesis, int& match, int& penalty) const;
 
         inline void
-        testHypothesisNormalBased (Hypothesis* hypothesis, float& match) const;
+        testHypothesisNormalBased (Hypothesis* hypothesis, double& match) const;
 
         void
         buildGraphOfCloseHypotheses (HypothesisOctree& hypotheses, ORRGraph<Hypothesis>& graph) const;
@@ -387,12 +387,12 @@ namespace pcl
     	 * rotational part (row major order) and the last 3 are the translation. */
         inline void
         computeRigidTransform(
-          const float *a1, const float *a1_n, const float *b1, const float* b1_n,
-          const float *a2, const float *a2_n, const float *b2, const float* b2_n,
-          float* rigid_transform) const
+          const double *a1, const double *a1_n, const double *b1, const double* b1_n,
+          const double *a2, const double *a2_n, const double *b2, const double* b2_n,
+          double* rigid_transform) const
         {
           // Some local variables
-          float o1[3], o2[3], x1[3], x2[3], y1[3], y2[3], z1[3], z2[3], tmp1[3], tmp2[3], Ro1[3], invFrame1[3][3];
+          double o1[3], o2[3], x1[3], x2[3], y1[3], y2[3], z1[3], z2[3], tmp1[3], tmp2[3], Ro1[3], invFrame1[3][3];
 
           // Compute the origins
           o1[0] = 0.5f*(a1[0] + b1[0]);
@@ -439,10 +439,10 @@ namespace pcl
           * \param n2
           * \param[out] signature is an array of three doubles saving the three angles in the order shown above. */
         static inline void
-        compute_oriented_point_pair_signature (const float *p1, const float *n1, const float *p2, const float *n2, float signature[3])
+        compute_oriented_point_pair_signature (const double *p1, const double *n1, const double *p2, const double *n2, double signature[3])
         {
           // Get the line from p1 to p2
-          float cl[3] = {p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]};
+          double cl[3] = {p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]};
           aux::normalize3 (cl);
 
           signature[0] = std::acos (aux::clamp (aux::dot3 (n1,cl), -1.0f, 1.0f)); cl[0] = -cl[0]; cl[1] = -cl[1]; cl[2] = -cl[2];
@@ -452,26 +452,26 @@ namespace pcl
 
       protected:
         // Parameters
-        float pair_width_;
-        float voxel_size_;
-        float position_discretization_;
-        float rotation_discretization_;
-        float abs_zdist_thresh_;
-        float relative_obj_size_;
-        float visibility_;
-        float relative_num_of_illegal_pts_;
-        float intersection_fraction_;
-        float max_coplanarity_angle_;
-        float scene_bounds_enlargement_factor_;
+        double pair_width_;
+        double voxel_size_;
+        double position_discretization_;
+        double rotation_discretization_;
+        double abs_zdist_thresh_;
+        double relative_obj_size_;
+        double visibility_;
+        double relative_num_of_illegal_pts_;
+        double intersection_fraction_;
+        double max_coplanarity_angle_;
+        double scene_bounds_enlargement_factor_;
         bool ignore_coplanar_opps_;
-        float frac_of_points_for_icp_refinement_;
+        double frac_of_points_for_icp_refinement_;
         bool do_icp_hypotheses_refinement_;
 
         ModelLibrary model_library_;
         ORROctree scene_octree_;
         ORROctreeZProjection scene_octree_proj_;
         RigidTransformSpace transform_space_;
-        TrimmedICP<pcl::PointXYZ, float> trimmed_icp_;
+        TrimmedICP<pcl::PointXYZ, double> trimmed_icp_;
         PointCloudIn::Ptr scene_octree_points_;
 
         std::list<OrientedPointPair> sampled_oriented_point_pairs_;

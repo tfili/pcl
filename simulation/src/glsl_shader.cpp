@@ -82,7 +82,7 @@ pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eige
 }
 
 void
-pcl::simulation::gllib::Program::setUniform (const std::string& name, float v)
+pcl::simulation::gllib::Program::setUniform (const std::string& name, double v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
   glUniform1f (loc, v);

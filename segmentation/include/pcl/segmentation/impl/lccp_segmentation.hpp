@@ -442,8 +442,8 @@ pcl::LCCPSegmentation<PointT>::connIsConvex (uint32_t source_label_arg,
 
   bool is_convex = true;
   bool is_smooth = true;
-  float normal_angle = std::acos (source_normal.getNormalVector3fMap ().dot (target_normal.getNormalVector3fMap ())) * 180. / M_PI;
-  //   float curvature_difference = std::fabs (SOURCE_NORMAL.curvature - TARGET_NORMAL.curvature);
+  double normal_angle = std::acos (source_normal.getNormalVector3fMap ().dot (target_normal.getNormalVector3fMap ())) * 180. / M_PI;
+  //   double curvature_difference = std::fabs (SOURCE_NORMAL.curvature - TARGET_NORMAL.curvature);
 
   //  Geometric comparisons
   pcl::PointXYZ vec_t_to_s, vec_s_to_t;
@@ -458,7 +458,7 @@ pcl::LCCPSegmentation<PointT>::connIsConvex (uint32_t source_label_arg,
 
   unitvec_s_to_t.getVector3fMap () = -unitvec_t_to_s.getVector3fMap ();
 
-  float dot_p_source, dot_p_target;
+  double dot_p_source, dot_p_target;
 
   // vec_t_to_s is the reference direction for angle measurements
   dot_p_source = unitvec_t_to_s.getVector3fMap ().dot (source_normal.getNormalVector3fMap ());
@@ -470,11 +470,11 @@ pcl::LCCPSegmentation<PointT>::connIsConvex (uint32_t source_label_arg,
   // Smoothness Check: Check if there is a step between adjacent patches
   if (use_smoothness_check_)
   {
-    float expected_distance = ncross.getNormalVector3fMap ().norm () * seed_resolution_;
-    float dot_p_1 = vec_t_to_s.getVector3fMap ().dot (source_normal.getNormalVector3fMap ());
-    float dot_p_2 = vec_s_to_t.getVector3fMap ().dot (target_normal.getNormalVector3fMap ());
-    float point_dist = (std::fabs (dot_p_1) < std::fabs (dot_p_2)) ? std::fabs (dot_p_1) : std::fabs (dot_p_2);
-    const float dist_smoothing = smoothness_threshold_ * voxel_resolution_;  // This is a slacking variable especially important for patches with very similar normals
+    double expected_distance = ncross.getNormalVector3fMap ().norm () * seed_resolution_;
+    double dot_p_1 = vec_t_to_s.getVector3fMap ().dot (source_normal.getNormalVector3fMap ());
+    double dot_p_2 = vec_s_to_t.getVector3fMap ().dot (target_normal.getNormalVector3fMap ());
+    double point_dist = (std::fabs (dot_p_1) < std::fabs (dot_p_2)) ? std::fabs (dot_p_1) : std::fabs (dot_p_2);
+    const double dist_smoothing = smoothness_threshold_ * voxel_resolution_;  // This is a slacking variable especially important for patches with very similar normals
 
     if (point_dist > (expected_distance + dist_smoothing))
     {
@@ -486,10 +486,10 @@ pcl::LCCPSegmentation<PointT>::connIsConvex (uint32_t source_label_arg,
   // Sanity Criterion: Check if definition convexity/concavity makes sense for connection of given patches
   ncross.getNormalVector3fMap ().normalize ();
 
-  float intersection_angle = std::acos (ncross.getNormalVector3fMap ().dot (unitvec_t_to_s.getVector3fMap ())) * 180. / M_PI;
-  float min_intersect_angle = (intersection_angle < 90.) ? intersection_angle : 180. - intersection_angle;
+  double intersection_angle = std::acos (ncross.getNormalVector3fMap ().dot (unitvec_t_to_s.getVector3fMap ())) * 180. / M_PI;
+  double min_intersect_angle = (intersection_angle < 90.) ? intersection_angle : 180. - intersection_angle;
 
-  float intersect_thresh = 60. * 1. / (1. + exp (-0.25 * (normal_angle - 25.)));
+  double intersect_thresh = 60. * 1. / (1. + exp (-0.25 * (normal_angle - 25.)));
   if (min_intersect_angle < intersect_thresh && use_sanity_check_)
   {
     // std::cout << "Concave/Convex not defined for given case!" << std::endl;

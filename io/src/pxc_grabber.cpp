@@ -128,11 +128,11 @@ pcl::PXCGrabber::getName () const
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::PXCGrabber::getFramesPerSecond () const
 {
   fps_mutex_.lock ();
-  float fps = fps_;
+  double fps = fps_;
   fps_mutex_.unlock ();
 
   return (fps);
@@ -204,10 +204,10 @@ pcl::PXCGrabber::processGrabbing ()
     const int image_height = rgb_image_info.height;
 
     // convert to point cloud
-    const float nan_value = std::numeric_limits<float>::quiet_NaN ();
+    const double nan_value = std::numeric_limits<double>::quiet_NaN ();
 
     int dwidth2 = ddata.pitches[0] / sizeof (pxcU16);
-    float *uvmap = (float*)ddata.planes[2];
+    double *uvmap = (double*)ddata.planes[2];
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA> (w, h));
     for (int j = 0, k = 0; j < h; j++)
     {
@@ -312,7 +312,7 @@ pcl::PXCGrabber::processGrabbing ()
     }
 
     fps_mutex_.lock ();
-    fps_ = static_cast<float> (total_time / capture_time_queue.size ());
+    fps_ = static_cast<double> (total_time / capture_time_queue.size ());
     fps_mutex_.unlock ();
   }
 }

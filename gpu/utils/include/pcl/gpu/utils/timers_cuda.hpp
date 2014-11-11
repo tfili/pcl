@@ -63,9 +63,9 @@ namespace pcl
             void start() { cudaEventRecord(start_, 0); }
             Timer& stop()  { cudaEventRecord(stop_, 0); cudaEventSynchronize(stop_); return *this; }
 
-            float time()
+            double time()
             {
-                float elapsed_time; 
+                double elapsed_time; 
                 cudaEventElapsedTime(&elapsed_time, start_, stop_);
                 return elapsed_time;
             }
@@ -83,7 +83,7 @@ namespace pcl
             }
             ~ScopeTimer()
             {
-                float elapsed_time; 
+                double elapsed_time; 
                 cudaEventRecord(stop);	
                 cudaEventSynchronize(stop);
                 cudaEventElapsedTime(&elapsed_time, start, stop);

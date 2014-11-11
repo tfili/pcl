@@ -181,7 +181,7 @@ namespace pcl
         * \param[out] cloud output 3D point cloud; it is organized and non-dense, with NaNs where 3D points are invalid
         */
       virtual bool 
-      getPointCloud (float u_c, float v_c, float focal, float baseline, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+      getPointCloud (double u_c, double v_c, double focal, double baseline, pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
       /** \brief computation of the 3D point cloud from the previously computed disparity map including color information
         * Note: the "compute" method must have been previously called at least once in order for this function
@@ -196,7 +196,7 @@ namespace pcl
         * output cloud a color triplet
         */
       virtual bool 
-      getPointCloud (float u_c, float v_c, float focal, float baseline, pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud,  pcl::PointCloud<pcl::RGB>::Ptr texture);
+      getPointCloud (double u_c, double v_c, double focal, double baseline, pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud,  pcl::PointCloud<pcl::RGB>::Ptr texture);
 
       /** \brief computation of a pcl::RGB cloud with scaled disparity values
         * it can be used to display a rescaled version of the disparity map by means of the pcl::ImageViewer
@@ -273,9 +273,9 @@ namespace pcl
       }
 
       inline short int 
-      computeStereoSubpixel (int dbest, float s1, float s2, float s3)
+      computeStereoSubpixel (int dbest, double s1, double s2, double s3)
       {
-        float den = (s1+s3-2*s2);
+        double den = (s1+s3-2*s2);
         if (den != 0)
           return (static_cast<short int> (16*dbest + floor(.5 + (((s1 - s3)*8) / den))));
         else
@@ -302,9 +302,9 @@ namespace pcl
       }
 
       inline short int 
-      doStereoRatioFilter (float *acc, short int dbest, float sad_min, int ratio_filter, int maxdisp, int precision = 100)
+      doStereoRatioFilter (double *acc, short int dbest, double sad_min, int ratio_filter, int maxdisp, int precision = 100)
       {
-        float sad_second_min = std::numeric_limits<float>::max ();
+        double sad_second_min = std::numeric_limits<double>::max ();
 
         for (int d = 0; d < dbest - 1; d++)
           if (acc[d] < sad_second_min)
@@ -314,7 +314,7 @@ namespace pcl
           if (acc[d] < sad_second_min)
             sad_second_min = acc[d];
 
-        if (sad_min * static_cast<float> (precision) > static_cast<float> (precision - ratio_filter) * sad_second_min)
+        if (sad_min * static_cast<double> (precision) > static_cast<double> (precision - ratio_filter) * sad_second_min)
           return (-2);
         else
           return (dbest);
@@ -333,10 +333,10 @@ namespace pcl
       }
 
       inline short int 
-      doStereoPeakFilter (float *acc, short int dbest, int peak_filter, int maxdisp)
+      doStereoPeakFilter (double *acc, short int dbest, int peak_filter, int maxdisp)
       {
-        float da = (dbest>1) ? ( acc[dbest-2] - acc[dbest] ) : (acc[dbest+2] - acc[dbest]);
-        float db =  (dbest<maxdisp-2) ? (acc[dbest+2] - acc[dbest]) : (acc[dbest-2] - acc[dbest]);
+        double da = (dbest>1) ? ( acc[dbest-2] - acc[dbest] ) : (acc[dbest+2] - acc[dbest]);
+        double db =  (dbest<maxdisp-2) ? (acc[dbest+2] - acc[dbest]) : (acc[dbest-2] - acc[dbest]);
 
         if (da + db < peak_filter)
           return (-4);

@@ -317,7 +317,7 @@ namespace pcl
         * \param distance vector of size 1 to store the distance to nearest neighbour found
         */
       inline bool 
-      searchForNeighbors (const PointSource &query, std::vector<int>& index, std::vector<float>& distance)
+      searchForNeighbors (const PointSource &query, std::vector<int>& index, std::vector<double>& distance)
       {
         int k = tree_->nearestKSearch (query, 1, index, distance);
         if (k == 0)

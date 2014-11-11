@@ -99,7 +99,7 @@ namespace pcl
                               Eigen::VectorXf &line,
                               double angular_tolerance = 0.1)
   {
-    return (planeWithPlaneIntersection<float> (plane_a, plane_b, line, angular_tolerance));
+    return (planeWithPlaneIntersection<double> (plane_a, plane_b, line, angular_tolerance));
   }
 
   PCL_EXPORTS inline bool
@@ -137,7 +137,7 @@ namespace pcl
                            Eigen::Vector3f &intersection_point,
                            double determinant_tolerance = 1e-6)
   {
-    return (threePlanesIntersection<float> (plane_a, plane_b, plane_c,
+    return (threePlanesIntersection<double> (plane_a, plane_b, plane_c,
                                             intersection_point, determinant_tolerance));
   }
 

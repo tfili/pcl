@@ -47,7 +47,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float       default_leaf_size = 0.01f;
+double       default_leaf_size = 0.01f;
 std::string default_field ("z");
 double      default_filter_min = -std::numeric_limits<double>::max ();
 double      default_filter_max = std::numeric_limits<double>::max ();
@@ -84,7 +84,7 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         float leaf_x, float leaf_y, float leaf_z, const std::string &field, double fmin, double fmax)
+         double leaf_x, double leaf_y, double leaf_z, const std::string &field, double fmin, double fmax)
 {
   TicToc tt;
   tt.tic ();
@@ -137,7 +137,7 @@ main (int argc, char** argv)
   }
 
   // Command line parsing
-  float leaf_x = default_leaf_size,
+  double leaf_x = default_leaf_size,
         leaf_y = default_leaf_size,
         leaf_z = default_leaf_size;
 
@@ -145,15 +145,15 @@ main (int argc, char** argv)
   parse_x_arguments (argc, argv, "-leaf", values);
   if (values.size () == 1)
   {
-    leaf_x = static_cast<float> (values[0]);
-    leaf_y = static_cast<float> (values[0]);
-    leaf_z = static_cast<float> (values[0]);
+    leaf_x = static_cast<double> (values[0]);
+    leaf_y = static_cast<double> (values[0]);
+    leaf_z = static_cast<double> (values[0]);
   }
   else if (values.size () == 3)
   {
-    leaf_x = static_cast<float> (values[0]);
-    leaf_y = static_cast<float> (values[1]);
-    leaf_z = static_cast<float> (values[2]);
+    leaf_x = static_cast<double> (values[0]);
+    leaf_y = static_cast<double> (values[1]);
+    leaf_z = static_cast<double> (values[2]);
   }
   else
   {

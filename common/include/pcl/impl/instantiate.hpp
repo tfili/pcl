@@ -44,7 +44,7 @@
 
 #include <pcl/pcl_config.h>
 
-//#define PCL_POINT_TYPES (bool)(int)(float)(double)
+//#define PCL_POINT_TYPES (bool)(int)(double)(double)
 //#define PCL_TEMPLATES (Type)(Othertype)
 
 //

@@ -76,7 +76,7 @@ namespace pcl
         * \param min_distance
         * \param[in] threshold the threshold to filter out weak corners
         */
-      HarrisKeypoint2D (ResponseMethod method = HARRIS, int window_width = 3, int window_height = 3, int min_distance = 5, float threshold = 0.0)
+      HarrisKeypoint2D (ResponseMethod method = HARRIS, int window_width = 3, int window_height = 3, int min_distance = 5, double threshold = 0.0)
       : threshold_ (threshold)
       , refine_ (false)
       , nonmax_ (true)
@@ -112,7 +112,7 @@ namespace pcl
         * \brief note non maxima suppression needs to be activated in order to use this feature.
         * \param[in] threshold 
         */
-      void setThreshold (float threshold);
+      void setThreshold (double threshold);
 
       /** \brief whether non maxima suppression should be applied or the response for each point should be returned
         * \note this value needs to be turned on in order to apply thresholding and refinement
@@ -153,9 +153,9 @@ namespace pcl
         * and window_width_ and window_height_
         */
       void 
-      computeSecondMomentMatrix (std::size_t pos, float* coefficients) const;
+      computeSecondMomentMatrix (std::size_t pos, double* coefficients) const;
       /// threshold for non maxima suppression 
-      float threshold_;
+      double threshold_;
       /// corner refinement 
       bool refine_;
       /// non maximas suppression

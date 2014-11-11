@@ -41,7 +41,7 @@
 #endif
 
 // All opennurbs code uses the "offical" _M_X64. Unfortunately, 
-// some Microsoft VC 2005 header files, like float.h do not.
+// some Microsoft VC 2005 header files, like double.h do not.
 // The Microsoft compiler should automatically defined both
 // _M_X64 and _M_AMD64 for the WIN64 platform.  If it doesn't,
 // then we have a serious problem because some system header
@@ -99,7 +99,7 @@
 #endif
 
 // All opennurbs code uses the "offical" _M_X64. Unfortunately, 
-// some Microsoft VC 2005 header files, like float.h do not.
+// some Microsoft VC 2005 header files, like double.h do not.
 // The Microsoft compiler should automatically defined both
 // _M_X64 and _M_AMD64 for the WIN64 platform.  If it doesn't,
 // then we have a serious problem because some system header

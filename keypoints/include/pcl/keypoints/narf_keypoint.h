@@ -80,23 +80,23 @@ class PCL_EXPORTS NarfKeypoint : public Keypoint<PointWithRange, int>
                      max_no_of_threads(1), use_recursive_scale_reduction(false),
                      calculate_sparse_interest_image(true) {}
       
-      float support_size;  //!< This defines the area 'covered' by an interest point (in meters)
+      double support_size;  //!< This defines the area 'covered' by an interest point (in meters)
       int max_no_of_interest_points;  //!< The maximum number of interest points that will be returned
-      float min_distance_between_interest_points;  /**< Minimum distance between maximas
+      double min_distance_between_interest_points;  /**< Minimum distance between maximas
                                                      *  (this is a factor for support_size, i.e. the distance is
                                                      *  min_distance_between_interest_points*support_size) */
-      float optimal_distance_to_high_surface_change;  /**< The distance we want keep between keypoints and areas
+      double optimal_distance_to_high_surface_change;  /**< The distance we want keep between keypoints and areas
                                                         *  of high surface change
                                                         *  (this is a factor for support_size, i.e., the distance is
                                                         *  optimal_distance_to_high_surface_change*support_size) */
-      float min_interest_value;  //!< The minimum value to consider a point as an interest point
-      float min_surface_change_score;  //!< The minimum value  of the surface change score to consider a point
+      double min_interest_value;  //!< The minimum value to consider a point as an interest point
+      double min_surface_change_score;  //!< The minimum value  of the surface change score to consider a point
       int optimal_range_image_patch_size;  /**< The size (in pixels) of the image patches from which the interest value
                                              *  should be computed. This influences, which range image is selected from
                                              *  the scale space to compute the interest value of a pixel at a certain
                                              *  distance. */
       // TODO:
-      float distance_for_additional_points;  /**< All points in this distance to a found maximum, that
+      double distance_for_additional_points;  /**< All points in this distance to a found maximum, that
                                                *  are above min_interest_value are also added as interest points
                                                *  (this is a factor for support_size, i.e. the distance is
                                                *  distance_for_additional_points*support_size) */
@@ -116,7 +116,7 @@ class PCL_EXPORTS NarfKeypoint : public Keypoint<PointWithRange, int>
     };
     
     // =====CONSTRUCTOR & DESTRUCTOR=====
-    NarfKeypoint (RangeImageBorderExtractor* range_image_border_extractor=NULL, float support_size=-1.0f);
+    NarfKeypoint (RangeImageBorderExtractor* range_image_border_extractor=NULL, double support_size=-1.0f);
     virtual ~NarfKeypoint ();
     
     // =====PUBLIC METHODS=====
@@ -137,7 +137,7 @@ class PCL_EXPORTS NarfKeypoint : public Keypoint<PointWithRange, int>
       setRangeImage (const RangeImage* range_image);
     
     /** Extract interest value per image point */
-    float*
+    double*
       getInterestImage () { calculateInterestImage(); return interest_image_;}
     
     //! Extract maxima from an interest image
@@ -182,12 +182,12 @@ class PCL_EXPORTS NarfKeypoint : public Keypoint<PointWithRange, int>
     using BaseClass::name_;
     RangeImageBorderExtractor* range_image_border_extractor_;
     Parameters parameters_;
-    float* interest_image_;
+    double* interest_image_;
     ::pcl::PointCloud<InterestPoint>* interest_points_;
     std::vector<bool> is_interest_point_image_;
     std::vector<RangeImage*> range_image_scale_space_;
     std::vector<RangeImageBorderExtractor*> border_extractor_scale_space_;
-    std::vector<float*> interest_image_scale_space_;
+    std::vector<double*> interest_image_scale_space_;
 };
 
 /** 

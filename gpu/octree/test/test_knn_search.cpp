@@ -65,7 +65,7 @@ using namespace std;
 struct PriorityPair
 {    
     int index;
-    float dist2;
+    double dist2;
 
     bool operator<(const PriorityPair& other) const { return dist2 < other.dist2; }
 
@@ -83,7 +83,7 @@ TEST(PCL_OctreeGPU, exactNeighbourSearch)
     data.shared_radius = data.cube_size/30.f;
     data.printParams();
 
-    const float host_octree_resolution = 25.f;
+    const double host_octree_resolution = 25.f;
     const int k = 1; // only this is supported
 
     //generate
@@ -119,7 +119,7 @@ TEST(PCL_OctreeGPU, exactNeighbourSearch)
 
     //prepare output buffers on host
     vector<vector<  int> > result_host(data.tests_num);   
-    vector<vector<float> >  dists_host(data.tests_num);    
+    vector<vector<double> >  dists_host(data.tests_num);    
     for(size_t i = 0; i < data.tests_num; ++i)
     {
         result_host[i].reserve(k);
@@ -146,7 +146,7 @@ TEST(PCL_OctreeGPU, exactNeighbourSearch)
     {           
         //cout << i << endl;
         vector<int>&   results_host_cur = result_host[i];
-        vector<float>&   dists_host_cur = dists_host[i];
+        vector<double>&   dists_host_cur = dists_host[i];
                 
         int beg = i * k;
         int end = beg + k;
@@ -165,7 +165,7 @@ TEST(PCL_OctreeGPU, exactNeighbourSearch)
             PriorityPair gpu;
             gpu.index = downloaded_cur[n];
 
-            float dist = (data.queries[i].getVector3fMap() - data.points[gpu.index].getVector3fMap()).norm();
+            double dist = (data.queries[i].getVector3fMap() - data.points[gpu.index].getVector3fMap()).norm();
             gpu.dist2 = dist * dist;
             pairs_gpu.push_back(gpu);
         }

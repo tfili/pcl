@@ -89,7 +89,7 @@ namespace pcl
         * \param[in] z leaf size z-axis
         */
       void
-      setVoxelGridLeafSize (const float x, const float y, const float z);
+      setVoxelGridLeafSize (const double x, const double y, const double z);
 
       void
       setNumberOfIterations (unsigned int n_iterations = 10) {n_iterations_ = n_iterations;};
@@ -108,7 +108,7 @@ namespace pcl
 
 
       void
-      createUnaryPotentials (std::vector<float> &unary,
+      createUnaryPotentials (std::vector<double> &unary,
                              std::vector<int> &colors,
                              unsigned int n_labels);
       
@@ -120,7 +120,7 @@ namespace pcl
        * \param[in] w weight
         */
       void
-      setSmoothnessKernelParameters (const float sx, const float sy, const float sz, const float w);
+      setSmoothnessKernelParameters (const double sx, const double sy, const double sz, const double w);
 
       /** \brief Set the appearanche kernel parameters.
        * \param[in] sx standard deviation x
@@ -132,15 +132,15 @@ namespace pcl
        * \param[in] w weight
         */
       void
-      setAppearanceKernelParameters (float sx, float sy, float sz, 
-                                     float sr, float sg, float sb,
-                                     float w);
+      setAppearanceKernelParameters (double sx, double sy, double sz, 
+                                     double sr, double sg, double sb,
+                                     double w);
 
 
       void
-      setSurfaceKernelParameters (float sx, float sy, float sz,
-                                  float snx, float sny, float snz,
-                                  float w);
+      setSurfaceKernelParameters (double sx, double sy, double sz,
+                                  double snx, double sny, double snz,
+                                  double w);
       
 
     protected:
@@ -181,7 +181,7 @@ namespace pcl
        * [2] = standard deviation z
        * [3] = weight
        */
-      float smoothness_kernel_param_[4];
+      double smoothness_kernel_param_[4];
 
       /** \brief appearance kernel parameters 
        * [0] = standard deviation x
@@ -192,9 +192,9 @@ namespace pcl
        * [5] = standard deviation blue
        * [6] = weight
        */
-      float appearance_kernel_param_[7];
+      double appearance_kernel_param_[7];
 
-      float surface_kernel_param_[7];
+      double surface_kernel_param_[7];
       
       
       unsigned int n_iterations_;

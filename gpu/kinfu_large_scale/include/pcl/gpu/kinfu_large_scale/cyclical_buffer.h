@@ -141,7 +141,7 @@ namespace pcl
           }
 
           /** \brief Returns the distance threshold between cube's center and target point that triggers a shift. */
-          float getDistanceThreshold () { return (distance_threshold_); }
+          double getDistanceThreshold () { return (distance_threshold_); }
 
           /** \brief get a pointer to the tsdf_buffer structure.
             * \return a pointer to the tsdf_buffer used by cyclical buffer object.
@@ -216,7 +216,7 @@ namespace pcl
           DeviceArray<PointXYZ> cloud_buffer_device_xyz_;
           
           /** \brief buffer used to extract Intensity values from GPU */
-          DeviceArray<float> cloud_buffer_device_intensities_;
+          DeviceArray<double> cloud_buffer_device_intensities_;
 
           /** \brief distance threshold (cube's center to target point) to trigger shift */
           double distance_threshold_;

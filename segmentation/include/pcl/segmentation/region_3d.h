@@ -90,7 +90,7 @@ namespace pcl
       }
 
       /** \brief Get the curvature of the region. */
-      float
+      double
       getCurvature () const
       {
         return (curvature_);
@@ -98,7 +98,7 @@ namespace pcl
 
       /** \brief Set the curvature of the region. */
       void
-      setCurvature (float curvature)
+      setCurvature (double curvature)
       {
         curvature_ = curvature;
       }
@@ -114,7 +114,7 @@ namespace pcl
       unsigned count_;
 
       /** \brief The mean curvature of the region. */
-      float curvature_;
+      double curvature_;
       
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

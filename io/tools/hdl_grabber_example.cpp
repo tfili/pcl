@@ -27,8 +27,8 @@ class SimpleHDLGrabber
     void 
     sectorScan (
         const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&, 
-        float,
-        float) 
+        double,
+        double) 
     {
       static unsigned count = 0;
       static double last = pcl::getTime ();
@@ -70,7 +70,7 @@ class SimpleHDLGrabber
     {
       pcl::HDLGrabber interface (calibrationFile, pcapFile);
       // make callback function from member function
-      boost::function<void(const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&, float, float)> f =
+      boost::function<void(const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&, double, double)> f =
           boost::bind(&SimpleHDLGrabber::sectorScan, this, _1, _2, _3);
 
       // connect callback function for desired signal. In this case its a sector with XYZ and intensity information

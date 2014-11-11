@@ -84,7 +84,7 @@ TEST (SampleConsensus, InfiniteLoop)
   cloud.points.resize (point_count);
   for (unsigned idx = 0; idx < point_count; ++idx)
   {
-    cloud.points[idx].x = static_cast<float> (idx);
+    cloud.points[idx].x = static_cast<double> (idx);
     cloud.points[idx].y = 0.0;
     cloud.points[idx].z = 0.0;
   }

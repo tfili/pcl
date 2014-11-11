@@ -80,8 +80,8 @@ namespace pcl
           pcl::IntegralImageNormalEstimation<PointTC, pcl::Normal>               ne_;
           pcl::OrganizedMultiPlaneSegmentation<PointTC, pcl::Normal, pcl::Label> mps_;
 
-          float   ne_NormalSmoothingSize_;
-          float   ne_MaxDepthChangeFactor_;
+          double   ne_NormalSmoothingSize_;
+          double   ne_MaxDepthChangeFactor_;
 
           int     mps_MinInliers_;
           double  mps_AngularThreshold_;
@@ -130,23 +130,23 @@ namespace pcl
 
           }
 
-          float getNeMaxDepthChangeFactor () const
+          double getNeMaxDepthChangeFactor () const
           {
             return ne_MaxDepthChangeFactor_;
           }
 
-          void setNeMaxDepthChangeFactor (float neMaxDepthChangeFactor)
+          void setNeMaxDepthChangeFactor (double neMaxDepthChangeFactor)
           {
             ne_MaxDepthChangeFactor_ = neMaxDepthChangeFactor;
             ne_.setMaxDepthChangeFactor (ne_MaxDepthChangeFactor_);
           }
 
-          float getNeNormalSmoothingSize () const
+          double getNeNormalSmoothingSize () const
           {
             return ne_NormalSmoothingSize_;
           }
 
-          void setNeNormalSmoothingSize (float neNormalSmoothingSize)
+          void setNeNormalSmoothingSize (double neNormalSmoothingSize)
           {
             ne_NormalSmoothingSize_ = neNormalSmoothingSize;
             ne_.setNormalSmoothingSize (ne_NormalSmoothingSize_);

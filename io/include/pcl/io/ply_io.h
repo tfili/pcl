@@ -55,18 +55,18 @@ namespace pcl
     *   - ply
     *   - format [ascii|binary_little_endian|binary_big_endian] 1.0
     *   - element vertex COUNT
-    *   - property float x 
-    *   - property float y 
-    *   - [property float z] 
-    *   - [property float normal_x] 
-    *   - [property float normal_y] 
-    *   - [property float normal_z] 
+    *   - property double x 
+    *   - property double y 
+    *   - [property double z] 
+    *   - [property double normal_x] 
+    *   - [property double normal_y] 
+    *   - [property double normal_z] 
     *   - [property uchar red] 
     *   - [property uchar green] 
     *   - [property uchar blue] ...
     *   - ascii/binary point coordinates
     *   - [element camera 1]
-    *   - [property float view_px] ...
+    *   - [property double view_px] ...
     *   - [element range_grid COUNT]
     *   - [property list uchar int vertex_indices]
     *   - end header
@@ -338,7 +338,7 @@ namespace pcl
       vertexColorCallback (const std::string& color_name, pcl::io::ply::uint8 color);
 
       /** Callback function for vertex intensity.
-        * converts intensity from int to float before writing it down in cloud data.
+        * converts intensity from int to double before writing it down in cloud data.
         * param[in] intensity
         */
       inline void
@@ -355,73 +355,73 @@ namespace pcl
         * param[in] value origin x value
         */
       inline void
-      originXCallback (const float& value) { origin_[0] = value; }
+      originXCallback (const double& value) { origin_[0] = value; }
       
       /** Callback function for origin y component.
         * param[in] value origin y value
         */
       inline void
-      originYCallback (const float& value) { origin_[1] = value; }
+      originYCallback (const double& value) { origin_[1] = value; }
 
       /** Callback function for origin z component.
         * param[in] value origin z value
         */      
       inline void
-      originZCallback (const float& value) { origin_[2] = value; }
+      originZCallback (const double& value) { origin_[2] = value; }
     
       /** Callback function for orientation x axis x component.
         * param[in] value orientation x axis x value
         */
       inline void
-      orientationXaxisXCallback (const float& value) { orientation_ (0,0) = value; }
+      orientationXaxisXCallback (const double& value) { orientation_ (0,0) = value; }
       
       /** Callback function for orientation x axis y component.
         * param[in] value orientation x axis y value
         */
       inline void
-      orientationXaxisYCallback (const float& value) { orientation_ (0,1) = value; }
+      orientationXaxisYCallback (const double& value) { orientation_ (0,1) = value; }
       
       /** Callback function for orientation x axis z component.
         * param[in] value orientation x axis z value
         */
       inline void
-      orientationXaxisZCallback (const float& value) { orientation_ (0,2) = value; }
+      orientationXaxisZCallback (const double& value) { orientation_ (0,2) = value; }
       
       /** Callback function for orientation y axis x component.
         * param[in] value orientation y axis x value
         */
       inline void
-      orientationYaxisXCallback (const float& value) { orientation_ (1,0) = value; }
+      orientationYaxisXCallback (const double& value) { orientation_ (1,0) = value; }
       
       /** Callback function for orientation y axis y component.
         * param[in] value orientation y axis y value
         */
       inline void
-      orientationYaxisYCallback (const float& value) { orientation_ (1,1) = value; }
+      orientationYaxisYCallback (const double& value) { orientation_ (1,1) = value; }
 
       /** Callback function for orientation y axis z component.
         * param[in] value orientation y axis z value
         */
       inline void
-      orientationYaxisZCallback (const float& value) { orientation_ (1,2) = value; }
+      orientationYaxisZCallback (const double& value) { orientation_ (1,2) = value; }
       
       /** Callback function for orientation z axis x component.
         * param[in] value orientation z axis x value
         */
       inline void
-      orientationZaxisXCallback (const float& value) { orientation_ (2,0) = value; }
+      orientationZaxisXCallback (const double& value) { orientation_ (2,0) = value; }
     
       /** Callback function for orientation z axis y component.
         * param[in] value orientation z axis y value
         */
       inline void
-      orientationZaxisYCallback (const float& value) { orientation_ (2,1) = value; }
+      orientationZaxisYCallback (const double& value) { orientation_ (2,1) = value; }
       
       /** Callback function for orientation z axis z component.
         * param[in] value orientation z axis z value
         */
       inline void
-      orientationZaxisZCallback (const float& value) { orientation_ (2,2) = value; }
+      orientationZaxisZCallback (const double& value) { orientation_ (2,2) = value; }
       
       /** Callback function to set the cloud height
         * param[in] height cloud height

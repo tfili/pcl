@@ -88,7 +88,7 @@ displayCurvature (pcl::PointCloud<PointT>& cloud, pcl::PointCloud<pcl::Normal>& 
 }
 
 void
-displayDistanceMap (pcl::PointCloud<PointT>& cloud, float* distance_map, boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer)
+displayDistanceMap (pcl::PointCloud<PointT>& cloud, double* distance_map, boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer)
 {
   pcl::PointCloud<pcl::PointXYZRGBA> distance_map_cloud = cloud;
   for (size_t i  = 0; i < cloud.points.size (); i++)
@@ -171,7 +171,7 @@ comparePointToRegion (PointT& pt, pcl::ModelCoefficients& model, pcl::PointCloud
   pt_vec[0] = pt.x;
   pt_vec[1] = pt.y;
   pt_vec[2] = pt.z;
-  Eigen::Vector3f projected (pt_vec - mc * float (ptp_dist));
+  Eigen::Vector3f projected (pt_vec - mc * double (ptp_dist));
   PointT projected_pt;
   projected_pt.x = projected[0];
   projected_pt.y = projected[1];
@@ -278,7 +278,7 @@ OrganizedSegmentationDemo::cloud_cb (const CloudConstPtr& cloud)
   pcl::PointCloud<pcl::Normal>::Ptr normal_cloud (new pcl::PointCloud<pcl::Normal>);
   ne.setInputCloud (cloud);
   ne.compute (*normal_cloud);
-  float* distance_map = ne.getDistanceMap ();
+  double* distance_map = ne.getDistanceMap ();
   boost::shared_ptr<pcl::EdgeAwarePlaneComparator<PointT,pcl::Normal> > eapc = boost::dynamic_pointer_cast<pcl::EdgeAwarePlaneComparator<PointT,pcl::Normal> >(edge_aware_comparator_);
   eapc->setDistanceMap (distance_map);
   eapc->setDistanceThreshold (0.01f, false);

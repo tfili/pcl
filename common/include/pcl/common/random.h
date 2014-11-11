@@ -63,11 +63,11 @@ namespace pcl
     {
       typedef boost::uniform_int<int> type;
     };
-    /// uniform distribution float specialized
+    /// uniform distribution double specialized
     template<> 
-    struct uniform_distribution<float> 
+    struct uniform_distribution<double> 
     {
-      typedef boost::uniform_real<float> type;
+      typedef boost::uniform_real<double> type;
     };
     ///  normal distribution
     template<typename T> 

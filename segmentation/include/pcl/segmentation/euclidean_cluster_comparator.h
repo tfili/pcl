@@ -114,13 +114,13 @@ namespace pcl
         * \param[in] angular_threshold the tolerance in radians
         */
       virtual inline void
-      setAngularThreshold (float angular_threshold)
+      setAngularThreshold (double angular_threshold)
       {
         angular_threshold_ = cosf (angular_threshold);
       }
       
       /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
-      inline float
+      inline double
       getAngularThreshold () const
       {
         return (acos (angular_threshold_) );
@@ -131,14 +131,14 @@ namespace pcl
         * \param depth_dependent
         */
       inline void
-      setDistanceThreshold (float distance_threshold, bool depth_dependent)
+      setDistanceThreshold (double distance_threshold, bool depth_dependent)
       {
         distance_threshold_ = distance_threshold;
         depth_dependent_ = depth_dependent;
       }
 
       /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
-      inline float
+      inline double
       getDistanceThreshold () const
       {
         return (distance_threshold_);
@@ -179,18 +179,18 @@ namespace pcl
         if ( (*exclude_labels_)[label1] || (*exclude_labels_)[label2])
           return false;
         
-        float dist_threshold = distance_threshold_;
+        double dist_threshold = distance_threshold_;
         if (depth_dependent_)
         {
           Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();
-          float z = vec.dot (z_axis_);
+          double z = vec.dot (z_axis_);
           dist_threshold *= z * z;
         }
 
-        float dx = input_->points[idx1].x - input_->points[idx2].x;
-        float dy = input_->points[idx1].y - input_->points[idx2].y;
-        float dz = input_->points[idx1].z - input_->points[idx2].z;
-        float dist = sqrtf (dx*dx + dy*dy + dz*dz);
+        double dx = input_->points[idx1].x - input_->points[idx2].x;
+        double dy = input_->points[idx1].y - input_->points[idx2].y;
+        double dz = input_->points[idx1].z - input_->points[idx2].z;
+        double dist = sqrtf (dx*dx + dy*dy + dz*dz);
 
         return (dist < dist_threshold);
       }
@@ -200,8 +200,8 @@ namespace pcl
       PointCloudLPtr labels_;
 
       boost::shared_ptr<std::vector<bool> > exclude_labels_;
-      float angular_threshold_;
-      float distance_threshold_;
+      double angular_threshold_;
+      double distance_threshold_;
       bool depth_dependent_;
       Eigen::Vector3f z_axis_;
   };

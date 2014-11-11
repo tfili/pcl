@@ -77,7 +77,7 @@ pcl::visualization::PCLContextItem::setColors (unsigned char r, unsigned char g,
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::PCLContextImageItem::set (float _x, float _y, vtkImageData *_image)
+pcl::visualization::PCLContextImageItem::set (double _x, double _y, vtkImageData *_image)
 {
   x = _x;
   y = _y;
@@ -95,7 +95,7 @@ pcl::visualization::PCLContextImageItem::Paint (vtkContext2D *painter)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::context_items::Point::set (float x, float y)
+pcl::visualization::context_items::Point::set (double x, double y)
 {
   params.resize (2);
   params[0] = x; params[1] = y;
@@ -103,7 +103,7 @@ pcl::visualization::context_items::Point::set (float x, float y)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::context_items::Circle::set (float x, float y, float radius)
+pcl::visualization::context_items::Circle::set (double x, double y, double radius)
 {
   params.resize (4);
   params[0] = x; params[1] = y; params[2] = radius; params[3] = radius - 1;
@@ -111,7 +111,7 @@ pcl::visualization::context_items::Circle::set (float x, float y, float radius)
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::context_items::Rectangle::set (float x, float y, float w, float h)
+pcl::visualization::context_items::Rectangle::set (double x, double y, double w, double h)
 {
   params.resize (4);
   params[0] = x; params[1] = y; params[2] = w; params[3] = h;
@@ -119,7 +119,7 @@ pcl::visualization::context_items::Rectangle::set (float x, float y, float w, fl
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::context_items::Line::set (float start_x, float start_y, float end_x, float end_y)
+pcl::visualization::context_items::Line::set (double start_x, double start_y, double end_x, double end_y)
 {
   params.resize (4);
   params[0] = start_x; params[1] = start_y; params[2] = end_x; params[3] = end_y;
@@ -127,7 +127,7 @@ pcl::visualization::context_items::Line::set (float start_x, float start_y, floa
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::context_items::Text::set (float x, float y, const std::string& _text)
+pcl::visualization::context_items::Text::set (double x, double y, const std::string& _text)
 {
   params.resize (2);
   params[0] = x; params[1] = y;
@@ -159,7 +159,7 @@ bool
 pcl::visualization::context_items::Rectangle::Paint (vtkContext2D *painter)
 {
   painter->GetPen ()->SetColor (colors);
-  float p[] = 
+  double p[] = 
   { 
     params[0], params[1], 
     params[2], params[1],

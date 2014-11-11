@@ -51,12 +51,12 @@ TEST (MomentOfInertia, FeatureExtraction)
   feature_extractor.setInputCloud (cloud);
   feature_extractor.compute ();
 
-  float major, middle, minor;
+  double major, middle, minor;
   feature_extractor.getEigenValues (major, middle, minor);
   EXPECT_LE (minor, middle);
   EXPECT_LE (middle, major);
 
-  float dot_product = 0.0f;
+  double dot_product = 0.0f;
   Eigen::Vector3f major_vec, middle_vec, minor_vec;
   feature_extractor.getEigenVectors (major_vec, middle_vec, minor_vec);
   dot_product = major_vec.dot (middle_vec);
@@ -66,8 +66,8 @@ TEST (MomentOfInertia, FeatureExtraction)
   dot_product = middle_vec.dot (minor_vec);
   EXPECT_NEAR (0.0f, dot_product, 0.00001f);
 
-  std::vector <float> moment_of_inertia;
-  std::vector <float> eccentricity;
+  std::vector <double> moment_of_inertia;
+  std::vector <double> eccentricity;
   feature_extractor.getMomentOfInertia (moment_of_inertia);
   feature_extractor.getEccentricity (eccentricity);
   unsigned int m_size = static_cast <unsigned int> (moment_of_inertia.size ());
@@ -79,8 +79,8 @@ TEST (MomentOfInertia, FeatureExtraction)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (MomentOfInertia, InvalidParameters)
 {
-  float angle_step = 0.0f;
-  float point_mass = 0.0f;
+  double angle_step = 0.0f;
+  double point_mass = 0.0f;
 
   pcl::MomentOfInertiaEstimation <pcl::PointXYZ> feature_extractor;
   feature_extractor.setInputCloud (cloud);

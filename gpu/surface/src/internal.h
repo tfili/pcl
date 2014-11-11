@@ -103,7 +103,7 @@ namespace pcl
 		  size_t cloud_size;
 
 		  InitalSimplex simplex;
-		  float cloud_diag;
+		  double cloud_diag;
 
 		  void computeInitalSimplex();
 

@@ -118,7 +118,7 @@ namespace pcl
       * \return index of found argument or -1 if arguments do not appear in list
       */
     PCL_EXPORTS int
-    parse_argument (int argc, char** argv, const char* str, float &val);
+    parse_argument (int argc, char** argv, const char* str, double &val);
     
     /** \brief Parse for a specific given command line argument.
       * \param[in] argc the number of command line arguments
@@ -171,7 +171,7 @@ namespace pcl
       * \return index of found argument or -1 if arguments do not appear in list
       */
     PCL_EXPORTS int
-    parse_2x_arguments (int argc, char** argv, const char* str, float &f, float &s, bool debug = true);
+    parse_2x_arguments (int argc, char** argv, const char* str, double &f, double &s, bool debug = true);
 
     /** \brief Parse for specific given command line arguments (2x values comma
       * separated).
@@ -211,7 +211,7 @@ namespace pcl
       * \return index of found argument or -1 if arguments do not appear in list
       */
     PCL_EXPORTS int
-    parse_3x_arguments (int argc, char** argv, const char* str, float &f, float &s, float &t, bool debug = true);
+    parse_3x_arguments (int argc, char** argv, const char* str, double &f, double &s, double &t, bool debug = true);
 
     /** \brief Parse for specific given command line arguments (3x values comma
       * separated).
@@ -261,7 +261,7 @@ namespace pcl
       * \return index of found argument or -1 if arguments do not appear in list
       */
     PCL_EXPORTS int
-    parse_x_arguments (int argc, char** argv, const char* str, std::vector<float>& v);
+    parse_x_arguments (int argc, char** argv, const char* str, std::vector<double>& v);
 
     /** \brief Parse for specific given command line arguments (N values comma
       * separated).
@@ -294,7 +294,7 @@ namespace pcl
       * \return true if found, false otherwise
       */
     PCL_EXPORTS bool
-    parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<float> &values);
+    parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<double> &values);
 
     /** \brief Parse for specific given command line arguments (multiple occurences
       * of the same command line parameter).

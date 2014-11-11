@@ -259,9 +259,9 @@ namespace pcl
       {
         for (int i = 0; i < 3; ++i)
           center[i] = 
-            min_p_[i] + static_cast<float> (index[i]) * 
-            static_cast<float> (leaf_size_) + 
-            static_cast<float> (leaf_size_) / 2.0f;
+            min_p_[i] + static_cast<double> (index[i]) * 
+            static_cast<double> (leaf_size_) + 
+            static_cast<double> (leaf_size_) / 2.0f;
       }
 
       /** \brief Given cell center, caluate the coordinates of the eight vertices of the cell
@@ -366,7 +366,7 @@ namespace pcl
       void
       getVectorAtPointKNN (const Eigen::Vector4f &p, 
                            std::vector<int> &k_indices, 
-                           std::vector<float> &k_squared_distances,
+                           std::vector<double> &k_squared_distances,
                            Eigen::Vector3f &vo);
 
       /** \brief Get the magnitude of the vector by summing up the distance.

@@ -841,7 +841,7 @@ double MarchingCubes::Interpolate( double v1 , double v2 ) { return v1/(v1-v2); 
 
 
 ///////////////////////////////////
-int MarchingCubes::GetIndex(const float v[Cube::CORNERS],float iso){
+int MarchingCubes::GetIndex(const double v[Cube::CORNERS],double iso){
   int idx=0;
   if (v[Cube::CornerIndex(0,0,0)] < iso) idx |=   1;
   if (v[Cube::CornerIndex(1,0,0)] < iso) idx |=   2;
@@ -853,7 +853,7 @@ int MarchingCubes::GetIndex(const float v[Cube::CORNERS],float iso){
   if (v[Cube::CornerIndex(0,1,1)] < iso) idx |= 128;
   return idx;
 }
-int MarchingCubes::GetFaceIndex(const float values[Cube::CORNERS],float iso,int faceIndex){
+int MarchingCubes::GetFaceIndex(const double values[Cube::CORNERS],double iso,int faceIndex){
   int i,j,x,y,z,idx=0;
   double v[2][2];
   Cube::FactorFaceIndex(faceIndex,x,y,z);
@@ -885,7 +885,7 @@ int MarchingCubes::GetFaceIndex(int mcIndex,int faceIndex){
   if (v[0][1]) idx |=   8;
   return idx;
 }
-int MarchingCubes::IsAmbiguous(const float v[Cube::CORNERS],float isoValue,int faceIndex){
+int MarchingCubes::IsAmbiguous(const double v[Cube::CORNERS],double isoValue,int faceIndex){
   int idx=GetFaceIndex(v,isoValue,faceIndex);
   return (idx==5) || (idx==10);
 }
@@ -893,12 +893,12 @@ int MarchingCubes::IsAmbiguous(int mcIndex,int faceIndex){
   int idx=GetFaceIndex(mcIndex,faceIndex);
   return (idx==5) || (idx==10);
 }
-int MarchingCubes::HasRoots(const float v[Cube::CORNERS],float isoValue){
+int MarchingCubes::HasRoots(const double v[Cube::CORNERS],double isoValue){
   int idx=GetIndex(v,isoValue);
   if(idx==0 || idx==255){return 0;}
   else{return 1;}
 }
-int MarchingCubes::HasRoots(const float v[Cube::CORNERS],float isoValue,int faceIndex){
+int MarchingCubes::HasRoots(const double v[Cube::CORNERS],double isoValue,int faceIndex){
   int idx=GetFaceIndex(v,isoValue,faceIndex);
   return (idx!=0) && (idx!=15);
 }
@@ -913,7 +913,7 @@ int MarchingCubes::HasEdgeRoots(int mcIndex,int edgeIndex){
       (!(mcIndex&(1<<MarchingCubes::cornerMap()[c1])) && !(mcIndex&(1<<MarchingCubes::cornerMap()[c2])))){return 0;}
   else{return 1;}
 }
-int MarchingCubes::AddTriangles(const float v[Cube::CORNERS],float iso,Triangle* isoTriangles){
+int MarchingCubes::AddTriangles(const double v[Cube::CORNERS],double iso,Triangle* isoTriangles){
   int idx,ntriang=0;
   Triangle tri;
 
@@ -941,7 +941,7 @@ int MarchingCubes::AddTriangles(const float v[Cube::CORNERS],float iso,Triangle*
   return ntriang;
 }
 
-int MarchingCubes::AddTriangleIndices( const float v[Cube::CORNERS] , float iso , int* isoIndices )
+int MarchingCubes::AddTriangleIndices( const double v[Cube::CORNERS] , double iso , int* isoIndices )
 {
   int idx,ntriang=0;
   idx=GetIndex(v,iso);
@@ -969,7 +969,7 @@ int MarchingCubes::AddTriangleIndices( int idx , int* isoIndices )
   return ntriang;
 }
 
-void MarchingCubes::SetVertex( int e , const float values[Cube::CORNERS] , float iso )
+void MarchingCubes::SetVertex( int e , const double values[Cube::CORNERS] , double iso )
 {
   double t;
   int o , i1 , i2;
@@ -990,7 +990,7 @@ void MarchingCubes::SetVertex( int e , const float values[Cube::CORNERS] , float
     break;
   }
 }
-float MarchingCubes::Interpolate( float v1 , float v2 ){ return v1/(v1-v2); }
+double MarchingCubes::Interpolate( double v1 , double v2 ){ return v1/(v1-v2); }
 
 }
 }

@@ -54,7 +54,7 @@ pcl::getAngle3D (const Eigen::Vector4f &v1, const Eigen::Vector4f &v2)
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 inline void
-pcl::getMeanStd (const std::vector<float> &values, double &mean, double &stddev)
+pcl::getMeanStd (const std::vector<double> &values, double &mean, double &stddev)
 {
   double sum = 0, sq_sum = 0;
 
@@ -115,9 +115,9 @@ pcl::getPointsInBox (const pcl::PointCloud<PointT> &cloud,
 template<typename PointT> inline void
 pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt)
 {
-  float max_dist = -FLT_MAX;
+  double max_dist = -FLT_MAX;
   int max_idx = -1;
-  float dist;
+  double dist;
 
   // If the data is dense, we don't need to check for NaN
   if (cloud.is_dense)
@@ -154,7 +154,7 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f
   if(max_idx != -1)
     max_pt = cloud.points[max_idx].getVector4fMap ();
   else
-    max_pt = Eigen::Vector4f(std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::quiet_NaN());
+    max_pt = Eigen::Vector4f(std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,9 +162,9 @@ template<typename PointT> inline void
 pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices,
                      const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt)
 {
-  float max_dist = -FLT_MAX;
+  double max_dist = -FLT_MAX;
   int max_idx = -1;
-  float dist;
+  double dist;
 
   // If the data is dense, we don't need to check for NaN
   if (cloud.is_dense)
@@ -204,7 +204,7 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int
   if(max_idx != -1)
     max_pt = cloud.points[max_idx].getVector4fMap ();
   else
-    max_pt = Eigen::Vector4f(std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::quiet_NaN(),std::numeric_limits<float>::quiet_NaN());
+    max_pt = Eigen::Vector4f(std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -374,7 +374,7 @@ pcl::getCircumcircleRadius (const PointT &pa, const PointT &pb, const PointT &pc
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> inline void 
-pcl::getMinMax (const PointT &histogram, int len, float &min_p, float &max_p)
+pcl::getMinMax (const PointT &histogram, int len, double &min_p, double &max_p)
 {
   min_p = FLT_MAX;
   max_p = -FLT_MAX;
@@ -387,10 +387,10 @@ pcl::getMinMax (const PointT &histogram, int len, float &min_p, float &max_p)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT> inline float
+template <typename PointT> inline double
 pcl::calculatePolygonArea (const pcl::PointCloud<PointT> &polygon) 
 {
-  float area = 0.0f;
+  double area = 0.0f;
   int num_points = polygon.size ();
   int j = 0;
   Eigen::Vector3f va,vb,res;

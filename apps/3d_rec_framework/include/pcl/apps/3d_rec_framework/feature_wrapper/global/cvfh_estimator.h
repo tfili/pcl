@@ -24,9 +24,9 @@ namespace pcl
       typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
       using GlobalEstimator<PointInT, FeatureT>::normal_estimator_;
       using GlobalEstimator<PointInT, FeatureT>::normals_;
-      float eps_angle_threshold_;
-      float curvature_threshold_;
-      float cluster_tolerance_factor_;
+      double eps_angle_threshold_;
+      double curvature_threshold_;
+      double cluster_tolerance_factor_;
       bool normalize_bins_;
       bool adaptative_MLS_;
 
@@ -40,7 +40,7 @@ namespace pcl
         cluster_tolerance_factor_ = 3.f;
       }
 
-      void setCVFHParams(float p1, float p2, float p3) {
+      void setCVFHParams(double p1, double p2, double p3) {
         eps_angle_threshold_ = p1;
         curvature_threshold_ = p2;
         cluster_tolerance_factor_ = p3;
@@ -67,8 +67,8 @@ namespace pcl
           typename search::KdTree<PointInT>::Ptr tree;
           Eigen::Vector4f centroid_cluster;
           pcl::compute3DCentroid (*in, centroid_cluster);
-          float dist_to_sensor = centroid_cluster.norm();
-          float sigma = dist_to_sensor * 0.01f;
+          double dist_to_sensor = centroid_cluster.norm();
+          double sigma = dist_to_sensor * 0.01f;
           mls.setSearchMethod(tree);
           mls.setSearchRadius (sigma);
           mls.setUpsamplingMethod (mls.SAMPLE_LOCAL_PLANE);
@@ -111,8 +111,8 @@ namespace pcl
         cvfh.setCurvatureThreshold (curvature_threshold_);
         cvfh.setNormalizeBins (normalize_bins_);
 
-        float radius = normal_estimator_->normal_radius_;
-        float cluster_tolerance_radius = normal_estimator_->grid_resolution_ * cluster_tolerance_factor_;
+        double radius = normal_estimator_->normal_radius_;
+        double cluster_tolerance_radius = normal_estimator_->grid_resolution_ * cluster_tolerance_factor_;
 
         if (normal_estimator_->compute_mesh_resolution_)
         {

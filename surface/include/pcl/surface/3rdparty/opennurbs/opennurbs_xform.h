@@ -45,14 +45,14 @@ public:
   // Microsoft's compiler won't pass double m[4][4] as a const double[4][4] arg.
   // Gnu's compiler handles this.
   ON_Xform( double[4][4] );       // from standard double m[4][4]
-  ON_Xform( float[4][4] );        // from standard float m[4][4]
+  ON_Xform( double[4][4] );        // from standard double m[4][4]
 #endif
   
   ON_Xform( const double[4][4] ); // from standard double m[4][4]
-  ON_Xform( const float[4][4] );  // from standard float m[4][4]
+  ON_Xform( const double[4][4] );  // from standard double m[4][4]
   
   ON_Xform( const double* );      // from array of 16 doubles (row0,row1,row2,row3)
-  ON_Xform( const float* );       // from array of 16 floats (row0,row1,row2,row3)
+  ON_Xform( const double* );       // from array of 16 floats (row0,row1,row2,row3)
   
   ON_Xform( const ON_Matrix& ); // from upper left 4x4 of an
                                     // arbitrary matrix.  Any missing
@@ -69,7 +69,7 @@ public:
 
   // xform = scalar results in a diagonal 3x3 with bottom row = 0,0,0,1
   ON_Xform& operator=( int );
-  ON_Xform& operator=( float );
+  ON_Xform& operator=( double );
   ON_Xform& operator=( double );
   ON_Xform& operator=( const ON_Matrix& ); // from upper left 4x4 of an
                                                // arbitrary matrix.  Any missing
@@ -812,11 +812,11 @@ public:
   int m_clip_plane_count; // (0 <= m_clip_plane_count <= max_clip_plane_count)
 
 private:
-  // The "float" should be a double, but that can't happen
+  // The "double" should be a double, but that can't happen
   // until V6 because it will brake the SDK.  Use the
   // SetClipPlaneTolerance() and ClipPlaneTolerance() 
   // functions to set and get this value.
-  float m_clip_plane_tolerance;
+  double m_clip_plane_tolerance;
 
 public:
   ON_PlaneEquation m_clip_plane[max_clip_plane_count];

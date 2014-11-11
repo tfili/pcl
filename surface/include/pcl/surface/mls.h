@@ -87,7 +87,7 @@ namespace pcl
       typedef typename PointCloudIn::Ptr PointCloudInPtr;
       typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
 
-      typedef boost::function<int (int, double, std::vector<int> &, std::vector<float> &)> SearchMethod;
+      typedef boost::function<int (int, double, std::vector<int> &, std::vector<double> &)> SearchMethod;
 
       enum UpsamplingMethod {NONE, DISTINCT_CLOUD, SAMPLE_LOCAL_PLANE, RANDOM_UNIFORM_DENSITY, VOXEL_GRID_DILATION};
 
@@ -133,7 +133,7 @@ namespace pcl
       {
         tree_ = tree;
         // Declare the search locator definition
-        int (KdTree::*radiusSearch)(int index, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn) const = &KdTree::radiusSearch;
+        int (KdTree::*radiusSearch)(int index, double radius, std::vector<int> &k_indices, std::vector<double> &k_sqr_distances, unsigned int max_nn) const = &KdTree::radiusSearch;
         search_method_ = boost::bind (radiusSearch, boost::ref (tree_), _1, _2, _3, _4, 0);
       }
 
@@ -261,13 +261,13 @@ namespace pcl
         * \param[in] voxel_size the edge length of a cubic voxel in the voxel grid
         */
       inline void
-      setDilationVoxelSize (float voxel_size) { voxel_size_ = voxel_size; }
+      setDilationVoxelSize (double voxel_size) { voxel_size_ = voxel_size; }
 
 
       /** \brief Get the voxel size for the voxel grid
         * \note Used only in the VOXEL_GRID_DILATION upsampling method
         */
-      inline float
+      inline double
       getDilationVoxelSize () { return voxel_size_; }
 
       /** \brief Set the number of dilation steps of the voxel grid
@@ -355,12 +355,12 @@ namespace pcl
                    const Eigen::Vector3d &a_v,
                    const Eigen::VectorXd a_c_vec,
                    const int a_num_neighbors,
-                   const float &a_curvature);
+                   const double &a_curvature);
 
         Eigen::Vector3d mean, plane_normal, u_axis, v_axis;
         Eigen::VectorXd c_vec;
         int num_neighbors;
-        float curvature;
+        double curvature;
         bool valid;
       };
 
@@ -380,7 +380,7 @@ namespace pcl
 
           MLSVoxelGrid (PointCloudInConstPtr& cloud,
                         IndicesPtr &indices,
-                        float voxel_size);
+                        double voxel_size);
 
           void
           dilate ();
@@ -422,12 +422,12 @@ namespace pcl
           HashMap voxel_grid_;
           Eigen::Vector4f bounding_min_, bounding_max_;
           uint64_t data_size_;
-          float voxel_size_;
+          double voxel_size_;
       };
 
 
       /** \brief Voxel size for the VOXEL_GRID_DILATION upsampling method */
-      float voxel_size_;
+      double voxel_size_;
 
       /** \brief Number of dilation steps for the VOXEL_GRID_DILATION upsampling method */
       int dilation_iteration_num_; 
@@ -444,7 +444,7 @@ namespace pcl
         * \param[out] sqr_distances the resultant squared distances from the query point to the k-nearest neighbors
         */
       inline int
-      searchForNeighbors (int index, std::vector<int> &indices, std::vector<float> &sqr_distances) const
+      searchForNeighbors (int index, std::vector<int> &indices, std::vector<double> &sqr_distances) const
       {
         return (search_method_ (index, search_radius_, indices, sqr_distances));
       }
@@ -464,7 +464,7 @@ namespace pcl
       void
       computeMLSPointNormal (int index,
                              const std::vector<int> &nn_indices,
-                             std::vector<float> &nn_sqr_dists,
+                             std::vector<double> &nn_sqr_dists,
                              PointCloudOut &projected_points,
                              NormalCloud &projected_points_normals,
                              PointIndices &corresponding_input_indices,
@@ -485,11 +485,11 @@ namespace pcl
         * \param[out] result_normal the normal of the resulting projected point
         */
       void
-      projectPointToMLSSurface (float &u_disp, float &v_disp,
+      projectPointToMLSSurface (double &u_disp, double &v_disp,
                                 Eigen::Vector3d &u_axis, Eigen::Vector3d &v_axis,
                                 Eigen::Vector3d &n_axis,
                                 Eigen::Vector3d &mean,
-                                float &curvature,
+                                double &curvature,
                                 Eigen::VectorXd &c_vec,
                                 int num_neighbors,
                                 PointOutT &result_point,
@@ -517,7 +517,7 @@ namespace pcl
         * \note Used only in the case of RANDOM_UNIFORM_DENSITY upsampling
         */
       boost::shared_ptr<boost::variate_generator<boost::mt19937&, 
-                                                 boost::uniform_real<float> > 
+                                                 boost::uniform_real<double> > 
                        > rng_uniform_distribution_;
 
       /** \brief Abstract class get name method. */

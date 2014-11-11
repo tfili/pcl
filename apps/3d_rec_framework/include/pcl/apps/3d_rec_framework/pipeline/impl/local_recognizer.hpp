@@ -66,14 +66,14 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           typename pcl::PointCloud<FeatureT>::Ptr signature (new pcl::PointCloud<FeatureT> ());
           pcl::io::loadPCDFile (full_file_name, *signature);
 
-          int size_feat = sizeof(signature->points[0].histogram) / sizeof(float);
+          int size_feat = sizeof(signature->points[0].histogram) / sizeof(double);
 
           for (size_t dd = 0; dd < signature->points.size (); dd++)
           {
             descr_model.keypoint_id = static_cast<int> (dd);
             descr_model.descr.resize (size_feat);
 
-            memcpy (&descr_model.descr[0], &signature->points[dd].histogram[0], size_feat * sizeof(float));
+            memcpy (&descr_model.descr[0], &signature->points[dd].histogram[0], size_feat * sizeof(double));
 
             flann_models_.push_back (descr_model);
           }
@@ -92,13 +92,13 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
   pcl::rec_3d_framework::LocalRecognitionPipeline<Distance, PointInT, FeatureT>::nearestKSearch (flann::Index<DistT> * index,
                                                                                                  const flann_model &model, int k,
                                                                                                  flann::Matrix<int> &indices,
-                                                                                                 flann::Matrix<float> &distances)
+                                                                                                 flann::Matrix<double> &distances)
   {
-    flann::Matrix<float> p = flann::Matrix<float> (new float[model.descr.size ()], 1, model.descr.size ());
-    memcpy (&p.ptr ()[0], &model.descr[0], p.cols * p.rows * sizeof(float));
+    flann::Matrix<double> p = flann::Matrix<double> (new double[model.descr.size ()], 1, model.descr.size ());
+    memcpy (&p.ptr ()[0], &model.descr[0], p.cols * p.rows * sizeof(double));
 
     indices = flann::Matrix<int> (new int[k], 1, k);
-    distances = flann::Matrix<float> (new float[k], 1, k);
+    distances = flann::Matrix<double> (new double[k], 1, k);
     index->knnSearch (p, indices, distances, k, flann::SearchParams (kdtree_splits_));
     delete[] p.ptr ();
   }
@@ -235,19 +235,19 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
     std::cout << "Number of keypoints:" << keypoints_pointcloud->points.size () << std::endl;
 
-    int size_feat = sizeof(signatures->points[0].histogram) / sizeof(float);
+    int size_feat = sizeof(signatures->points[0].histogram) / sizeof(double);
 
     //feature matching and object hypotheses
     std::map<std::string, ObjectHypothesis> object_hypotheses;
     {
       for (size_t idx = 0; idx < signatures->points.size (); idx++)
       {
-        float* hist = signatures->points[idx].histogram;
-        std::vector<float> std_hist (hist, hist + size_feat);
+        double* hist = signatures->points[idx].histogram;
+        std::vector<double> std_hist (hist, hist + size_feat);
         flann_model histogram;
         histogram.descr = std_hist;
         flann::Matrix<int> indices;
-        flann::Matrix<float> distances;
+        flann::Matrix<double> distances;
         nearestKSearch (flann_index_, histogram, 1, indices, distances);
 
         //read view pose and keypoint coordinates, transform keypoint coordinates to model coordinates
@@ -289,7 +289,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           oh.correspondences_to_inputcloud = corr;
           oh.correspondences_to_inputcloud->push_back (pcl::Correspondence (0, static_cast<int> (idx), distances[0][0]));
 
-          boost::shared_ptr < std::vector<float> > feat_dist (new std::vector<float>);
+          boost::shared_ptr < std::vector<double> > feat_dist (new std::vector<double>);
           feat_dist->push_back (distances[0][0]);
 
           oh.feature_distances_ = feat_dist;
@@ -300,7 +300,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
     typename std::map<std::string, ObjectHypothesis>::iterator it_map;
 
-    std::vector<float> feature_distance_avg;
+    std::vector<double> feature_distance_avg;
 
     {
       //pcl::ScopeTime t("Geometric verification, RANSAC and transform estimation");
@@ -330,7 +330,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
           for (size_t i = 0; i < corresp_clusters.size (); i++)
           {
-            if (static_cast<float> ((corresp_clusters[i]).size ()) < (threshold_accept_model_hypothesis_ * static_cast<float> (max_cardinality)))
+            if (static_cast<double> ((corresp_clusters[i]).size ()) < (threshold_accept_model_hypothesis_ * static_cast<double> (max_cardinality)))
             {
               good_indices_for_hypothesis[i] = false;
             }

@@ -42,7 +42,7 @@
 #include <pcl/features/grsd.h>
 ///////// STATIC /////////
 template <typename PointInT, typename PointNT, typename PointOutT> int
-pcl::GRSDEstimation<PointInT, PointNT, PointOutT>::getSimpleType (float min_radius, float max_radius,
+pcl::GRSDEstimation<PointInT, PointNT, PointOutT>::getSimpleType (double min_radius, double max_radius,
                                                                   double min_radius_plane,
                                                                   double max_radius_noise,
                                                                   double min_radius_cylinder,

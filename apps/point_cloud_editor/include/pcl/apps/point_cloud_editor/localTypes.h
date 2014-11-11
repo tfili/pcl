@@ -184,10 +184,10 @@ const unsigned int WINDOW_HEIGHT = 1000;
 
 /// The default z translation used to push the world origin in front of the
 /// display
-const float DISPLAY_Z_TRANSLATION = -2.0f;
+const double DISPLAY_Z_TRANSLATION = -2.0f;
 
 /// The radius of the trackball given as a percentage of the screen width
-const float TRACKBALL_RADIUS_SCALE = 0.4f;
+const double TRACKBALL_RADIUS_SCALE = 0.4f;
 
 
 

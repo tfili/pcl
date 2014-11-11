@@ -267,9 +267,9 @@ pcl::MaximumLikelihoodSampleConsensus<PointT>::computeMedian (
     Eigen::Vector4f &median)
 {
   // Copy the values to vectors for faster sorting
-  std::vector<float> x (indices->size ());
-  std::vector<float> y (indices->size ());
-  std::vector<float> z (indices->size ());
+  std::vector<double> x (indices->size ());
+  std::vector<double> y (indices->size ());
+  std::vector<double> z (indices->size ());
   for (size_t i = 0; i < indices->size (); ++i)
   {
     x[i] = cloud->points[(*indices)[i]].x;

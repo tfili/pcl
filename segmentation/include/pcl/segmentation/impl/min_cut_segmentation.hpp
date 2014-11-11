@@ -366,7 +366,7 @@ pcl::MinCutSegmentation<PointT>::buildGraph ()
   }
 
   std::vector<int> neighbours;
-  std::vector<float> distances;
+  std::vector<double> distances;
   search_->setInputCloud (input_, indices_);
   for (int i_point = 0; i_point < number_of_indices; i_point++)
   {

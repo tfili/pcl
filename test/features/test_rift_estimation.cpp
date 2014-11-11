@@ -51,9 +51,9 @@ TEST (PCL, RIFTEstimation)
   PointCloud<PointXYZI> cloud_xyzi;
   cloud_xyzi.height = 1;
   cloud_xyzi.is_dense = true;
-  for (float x = -10.0f; x <= 10.0f; x += 1.0f)
+  for (double x = -10.0f; x <= 10.0f; x += 1.0f)
   {
-    for (float y = -10.0f; y <= 10.0f; y += 1.0f)
+    for (double y = -10.0f; y <= 10.0f; y += 1.0f)
     {
       PointXYZI p;
       p.x = x;
@@ -78,24 +78,24 @@ TEST (PCL, RIFTEstimation)
     const PointXYZI &p = cloud_xyzi.points[i];
 
     // Compute the surface normal analytically.
-    float nx = p.x;
-    float ny = p.y;
-    float nz = p.z;
-    float magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
+    double nx = p.x;
+    double ny = p.y;
+    double nz = p.z;
+    double magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
     nx /= magnitude;
     ny /= magnitude;
     nz /= magnitude;
 
     // Compute the intensity gradient analytically...
-    float tmpx = -(p.x + 5.0f) / 4.0f / expf ((powf (p.x + 5.0f, 2.0f) + powf (p.y - 5.0f, 2.0f)) / 8.0f) - (p.x - 3.0f) / 25.0f
+    double tmpx = -(p.x + 5.0f) / 4.0f / expf ((powf (p.x + 5.0f, 2.0f) + powf (p.y - 5.0f, 2.0f)) / 8.0f) - (p.x - 3.0f) / 25.0f
         / expf ((powf (p.x - 3.0f, 2.0f) + powf (p.y + 2.0f, 2.0f)) / 50.0f);
-    float tmpy = -(p.y - 5.0f) / 4.0f / expf ((powf (p.x + 5.0f, 2.0f) + powf (p.y - 5.0f, 2.0f)) / 8.0f) - (p.y + 2.0f) / 25.0f
+    double tmpy = -(p.y - 5.0f) / 4.0f / expf ((powf (p.x + 5.0f, 2.0f) + powf (p.y - 5.0f, 2.0f)) / 8.0f) - (p.y + 2.0f) / 25.0f
         / expf ((powf (p.x - 3.0f, 2.0f) + powf (p.y + 2.0f, 2.0f)) / 50.0f);
-    float tmpz = 0.0f;
+    double tmpz = 0.0f;
     // ...and project the 3-D gradient vector onto the surface's tangent plane.
-    float gx = (1 - nx * nx) * tmpx + (-nx * ny) * tmpy + (-nx * nz) * tmpz;
-    float gy = (-ny * nx) * tmpx + (1 - ny * ny) * tmpy + (-ny * nz) * tmpz;
-    float gz = (-nz * nx) * tmpx + (-nz * ny) * tmpy + (1 - nz * nz) * tmpz;
+    double gx = (1 - nx * nx) * tmpx + (-nx * ny) * tmpy + (-nx * nz) * tmpz;
+    double gy = (-ny * nx) * tmpx + (1 - ny * ny) * tmpy + (-ny * nz) * tmpz;
+    double gz = (-nz * nx) * tmpx + (-nz * ny) * tmpy + (1 - nz * nz) * tmpz;
 
     gradient.points[i].gradient[0] = gx;
     gradient.points[i].gradient[1] = gy;
@@ -118,7 +118,7 @@ TEST (PCL, RIFTEstimation)
 
   // Compare to independently verified values
   const RIFTDescriptor &rift = rift_output.points[220];
-  const float correct_rift_feature_values[32] = {0.0187f, 0.0349f, 0.0647f, 0.0881f, 0.0042f, 0.0131f, 0.0346f, 0.0030f,
+  const double correct_rift_feature_values[32] = {0.0187f, 0.0349f, 0.0647f, 0.0881f, 0.0042f, 0.0131f, 0.0346f, 0.0030f,
                                                  0.0076f, 0.0218f, 0.0463f, 0.0030f, 0.0087f, 0.0288f, 0.0920f, 0.0472f,
                                                  0.0076f, 0.0420f, 0.0726f, 0.0669f, 0.0090f, 0.0901f, 0.1274f, 0.2185f,
                                                  0.0147f, 0.1222f, 0.3568f, 0.4348f, 0.0149f, 0.0806f, 0.2787f, 0.6864f};

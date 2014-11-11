@@ -237,7 +237,7 @@ namespace pcl
 
             Eigen::Vector3d helperVectorPC = P - C;
             // 1.1. get line parameter
-            //float lambda = (helperVectorPC.dot(N)) / N.squaredNorm() ;
+            //double lambda = (helperVectorPC.dot(N)) / N.squaredNorm() ;
             double lambda = (-(helperVectorPC.dot (N))) / N.dot (N);
             // Projected Point on plane
             Eigen::Vector3d P_proj = P + lambda * N;

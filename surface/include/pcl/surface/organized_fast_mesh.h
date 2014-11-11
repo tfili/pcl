@@ -102,7 +102,7 @@ namespace pcl
         * \param[in] max_edge_length the maximum edge length
         */
       inline void
-      setMaxEdgeLength (float max_edge_length)
+      setMaxEdgeLength (double max_edge_length)
       {
         max_edge_length_squared_ = max_edge_length * max_edge_length;
       };
@@ -159,7 +159,7 @@ namespace pcl
 
     protected:
       /** \brief max (squared) length of edge */
-      float max_edge_length_squared_;
+      double max_edge_length_squared_;
 
       /** \brief size of triangle edges (in pixels) for iterating over rows. */
       int triangle_pixel_size_rows_;
@@ -174,7 +174,7 @@ namespace pcl
       bool store_shadowed_faces_;
 
       /** \brief (Cosine of the) angle tolerance used when checking whether or not an edge between two points is shadowed. */
-      float cos_angle_tolerance_;
+      double cos_angle_tolerance_;
 
       /** \brief Perform the actual polygonal reconstruction.
         * \param[out] polygons the resultant polygons
@@ -243,13 +243,13 @@ namespace pcl
         * \param[in] field_z_idx the Z coordinate of the point
         */
       inline void
-      resetPointData (const int &point_index, pcl::PolygonMesh &mesh, const float &value = 0.0f,
+      resetPointData (const int &point_index, pcl::PolygonMesh &mesh, const double &value = 0.0f,
                       int field_x_idx = 0, int field_y_idx = 1, int field_z_idx = 2)
       {
-        float new_value = value;
-        memcpy (&mesh.cloud.data[point_index * mesh.cloud.point_step + mesh.cloud.fields[field_x_idx].offset], &new_value, sizeof (float));
-        memcpy (&mesh.cloud.data[point_index * mesh.cloud.point_step + mesh.cloud.fields[field_y_idx].offset], &new_value, sizeof (float));
-        memcpy (&mesh.cloud.data[point_index * mesh.cloud.point_step + mesh.cloud.fields[field_z_idx].offset], &new_value, sizeof (float));
+        double new_value = value;
+        memcpy (&mesh.cloud.data[point_index * mesh.cloud.point_step + mesh.cloud.fields[field_x_idx].offset], &new_value, sizeof (double));
+        memcpy (&mesh.cloud.data[point_index * mesh.cloud.point_step + mesh.cloud.fields[field_y_idx].offset], &new_value, sizeof (double));
+        memcpy (&mesh.cloud.data[point_index * mesh.cloud.point_step + mesh.cloud.fields[field_z_idx].offset], &new_value, sizeof (double));
       }
 
       /** \brief Check if a point is shadowed by another point
@@ -262,9 +262,9 @@ namespace pcl
         Eigen::Vector3f viewpoint = Eigen::Vector3f::Zero (); // TODO: allow for passing viewpoint information
         Eigen::Vector3f dir_a = viewpoint - point_a.getVector3fMap ();
         Eigen::Vector3f dir_b = point_b.getVector3fMap () - point_a.getVector3fMap ();
-        float distance_to_points = dir_a.norm ();
-        float distance_between_points = dir_b.norm ();
-        float cos_angle = dir_a.dot (dir_b) / (distance_to_points*distance_between_points);
+        double distance_to_points = dir_a.norm ();
+        double distance_between_points = dir_b.norm ();
+        double cos_angle = dir_a.dot (dir_b) / (distance_to_points*distance_between_points);
         if (cos_angle != cos_angle)
           cos_angle = 1.0f;
         return (fabs (cos_angle) >= cos_angle_tolerance_);

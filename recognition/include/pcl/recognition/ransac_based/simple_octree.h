@@ -53,7 +53,7 @@ namespace pcl
 {
   namespace recognition
   {
-    template<typename NodeData, typename NodeDataCreator, typename Scalar = float>
+    template<typename NodeData, typename NodeDataCreator, typename Scalar = double>
     class PCL_EXPORTS SimpleOctree
     {
       public:
@@ -97,7 +97,7 @@ namespace pcl
             inline Node*
             getParent (){ return parent_;}
 
-            inline float
+            inline double
             getRadius () const { return radius_;}
 
             inline bool

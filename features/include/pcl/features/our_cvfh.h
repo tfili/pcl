@@ -151,7 +151,7 @@ namespace pcl
        */
       void
       filterNormalsWithHighCurvature (const pcl::PointCloud<PointNT> & cloud, std::vector<int> & indices_to_use, std::vector<int> &indices_out,
-                                      std::vector<int> &indices_in, float threshold);
+                                      std::vector<int> &indices_in, double threshold);
 
       /** \brief Set the viewpoint.
        * \param[in] vpx the X coordinate of the viewpoint
@@ -159,7 +159,7 @@ namespace pcl
        * \param[in] vpz the Z coordinate of the viewpoint
        */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -170,7 +170,7 @@ namespace pcl
        * \param[in] radius_normals the radius
        */
       inline void
-      setRadiusNormals (float radius_normals)
+      setRadiusNormals (double radius_normals)
       {
         radius_normals_ = radius_normals;
       }
@@ -181,7 +181,7 @@ namespace pcl
        * \param[out] vpz the Z coordinate of the viewpoint
        */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz)
+      getViewPoint (double &vpx, double &vpy, double &vpz)
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -213,7 +213,7 @@ namespace pcl
        */
 
       inline void
-      setClusterTolerance (float d)
+      setClusterTolerance (double d)
       {
         cluster_tolerance_ = d;
       }
@@ -222,7 +222,7 @@ namespace pcl
        * \param[in] d the maximum deviation
        */
       inline void
-      setEPSAngleThreshold (float d)
+      setEPSAngleThreshold (double d)
       {
         eps_angle_threshold_ = d;
       }
@@ -231,7 +231,7 @@ namespace pcl
        * \param[in] d the curvature threshold
        */
       inline void
-      setCurvatureThreshold (float d)
+      setCurvatureThreshold (double d)
       {
         curv_threshold_ = d;
       }
@@ -276,7 +276,7 @@ namespace pcl
        * \param[in] rc the factor used to decide if a point is used to estimate a stable cluster
        */
       void
-      setRefineClusters (float rc)
+      setRefineClusters (double rc)
       {
         refine_clusters_ = rc;
       }
@@ -304,7 +304,7 @@ namespace pcl
        * \param[in] f the ratio between axes
        */
       void
-      setAxisRatio (float f)
+      setAxisRatio (double f)
       {
         axis_ratio_ = f;
       }
@@ -313,7 +313,7 @@ namespace pcl
        * \param[in] f the min axis value
        */
       void
-      setMinAxisValue (float f)
+      setMinAxisValue (double f)
       {
         min_axis_value_ = f;
       }
@@ -328,24 +328,24 @@ namespace pcl
       /** \brief Values describing the viewpoint ("pinhole" camera model assumed). 
        * By default, the viewpoint is set to 0,0,0.
        */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** \brief Size of the voxels after voxel gridding. IMPORTANT: Must match the voxel 
        * size of the training data or the normalize_bins_ flag must be set to true.
        */
-      float leaf_size_;
+      double leaf_size_;
 
       /** \brief Wether to normalize the signatures or not. Default: false. */
       bool normalize_bins_;
 
       /** \brief Curvature threshold for removing normals. */
-      float curv_threshold_;
+      double curv_threshold_;
 
       /** \brief allowed Euclidean distance between points to be added to the cluster. */
-      float cluster_tolerance_;
+      double cluster_tolerance_;
 
       /** \brief deviation of the normals between two points so they can be clustered together. */
-      float eps_angle_threshold_;
+      double eps_angle_threshold_;
 
       /** \brief Minimum amount of points in a clustered region to be considered stable for CVFH
        * computation.
@@ -353,16 +353,16 @@ namespace pcl
       size_t min_points_;
 
       /** \brief Radius for the normals computation. */
-      float radius_normals_;
+      double radius_normals_;
 
       /** \brief Factor for the cluster refinement */
-      float refine_clusters_;
+      double refine_clusters_;
 
       std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transforms_;
       std::vector<bool> valid_transforms_;
 
-      float axis_ratio_;
-      float min_axis_value_;
+      double axis_ratio_;
+      double min_axis_value_;
 
       /** \brief Estimate the OUR-CVFH descriptors at
        * a set of points given by <setInputCloud (), setIndices ()> using the surface in
@@ -389,7 +389,7 @@ namespace pcl
        */
       void
       extractEuclideanClustersSmooth (const pcl::PointCloud<pcl::PointNormal> &cloud, const pcl::PointCloud<pcl::PointNormal> &normals,
-                                      float tolerance, const pcl::search::Search<pcl::PointNormal>::Ptr &tree,
+                                      double tolerance, const pcl::search::Search<pcl::PointNormal>::Ptr &tree,
                                       std::vector<pcl::PointIndices> &clusters, double eps_angle, unsigned int min_pts_per_cluster = 1,
                                       unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ());
 

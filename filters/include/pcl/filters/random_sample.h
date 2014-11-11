@@ -139,10 +139,10 @@ namespace pcl
       /** \brief Return a random number fast using a LCG (Linear Congruential Generator) algorithm.
         * See http://software.intel.com/en-us/articles/fast-random-number-generator-on-the-intel-pentiumr-4-processor/ for more information.
         */
-      inline float
+      inline double
       unifRand ()
       {
-        return (static_cast<float>(rand () / double (RAND_MAX)));
+        return (static_cast<double>(rand () / double (RAND_MAX)));
         //return (((214013 * seed_ + 2531011) >> 16) & 0x7FFF);
       }
   };
@@ -228,10 +228,10 @@ namespace pcl
       /** \brief Return a random number fast using a LCG (Linear Congruential Generator) algorithm.
         * See http://software.intel.com/en-us/articles/fast-random-number-generator-on-the-intel-pentiumr-4-processor/ for more information.
         */
-      inline float
+      inline double
       unifRand ()
       {
-        return (static_cast<float> (rand () / double (RAND_MAX)));
+        return (static_cast<double> (rand () / double (RAND_MAX)));
         //return (((214013 * seed_ + 2531011) >> 16) & 0x7FFF);
       }
    };

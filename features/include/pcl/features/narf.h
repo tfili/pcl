@@ -82,18 +82,18 @@ namespace pcl
       /** Add features extracted at the given interest point and add them to the list */
       static void 
       extractFromRangeImageAndAddToList (const RangeImage& range_image, const Eigen::Vector3f& interest_point, int descriptor_size,
-                                         float support_size, bool rotation_invariant, std::vector<Narf*>& feature_list);
+                                         double support_size, bool rotation_invariant, std::vector<Narf*>& feature_list);
       /** Same as above */
       static void 
-      extractFromRangeImageAndAddToList (const RangeImage& range_image, float image_x, float image_y, int descriptor_size,
-                                         float support_size, bool rotation_invariant, std::vector<Narf*>& feature_list);
+      extractFromRangeImageAndAddToList (const RangeImage& range_image, double image_x, double image_y, int descriptor_size,
+                                         double support_size, bool rotation_invariant, std::vector<Narf*>& feature_list);
       /** Get a list of features from the given interest points. */
       static void 
       extractForInterestPoints (const RangeImage& range_image, const PointCloud<InterestPoint>& interest_points,
-                                int descriptor_size, float support_size, bool rotation_invariant, std::vector<Narf*>& feature_list);
+                                int descriptor_size, double support_size, bool rotation_invariant, std::vector<Narf*>& feature_list);
       /** Extract an NARF for every point in the range image. */
       static void 
-      extractForEveryRangeImagePointAndAddToList (const RangeImage& range_image, int descriptor_size, float support_size,
+      extractForEveryRangeImagePointAndAddToList (const RangeImage& range_image, int descriptor_size, double support_size,
                                                   bool rotation_invariant, std::vector<Narf*>& feature_list);
       
       // =====PUBLIC METHODS=====
@@ -103,33 +103,33 @@ namespace pcl
        *  descriptor_size_ determines the size of the descriptor,
        *  support_size determines the support size of the feature, meaning the size in the world it covers */
       bool 
-      extractFromRangeImage (const RangeImage& range_image, const Eigen::Affine3f& pose, int descriptor_size, float support_size,
+      extractFromRangeImage (const RangeImage& range_image, const Eigen::Affine3f& pose, int descriptor_size, double support_size,
                              int surface_patch_world_size=NARF_DEFAULT_SURFACE_PATCH_PIXEL_SIZE);
       
       //! Same as above, but determines the transformation from the surface in the range image
       bool 
-      extractFromRangeImage (const RangeImage& range_image, float x, float y, int descriptor_size, float support_size);
+      extractFromRangeImage (const RangeImage& range_image, double x, double y, int descriptor_size, double support_size);
 
       //! Same as above
       bool 
-      extractFromRangeImage (const RangeImage& range_image, const InterestPoint& interest_point, int descriptor_size, float support_size);
+      extractFromRangeImage (const RangeImage& range_image, const InterestPoint& interest_point, int descriptor_size, double support_size);
 
       //! Same as above
       bool 
-      extractFromRangeImage (const RangeImage& range_image, const Eigen::Vector3f& interest_point, int descriptor_size, float support_size);
+      extractFromRangeImage (const RangeImage& range_image, const Eigen::Vector3f& interest_point, int descriptor_size, double support_size);
 
       /** Same as above, but using the rotational invariant version by choosing the best extracted rotation around the normal.
        *  Use extractFromRangeImageAndAddToList if you want to enable the system to return multiple features with different rotations. */
       bool 
       extractFromRangeImageWithBestRotation (const RangeImage& range_image, const Eigen::Vector3f& interest_point,
-                                             int descriptor_size, float support_size);
+                                             int descriptor_size, double support_size);
       
       /* Get the dominant rotations of the current descriptor
        * \param rotations the returned rotations
        * \param strength values describing how pronounced the corresponding rotations are
        */
       void 
-      getRotations (std::vector<float>& rotations, std::vector<float>& strengths) const;
+      getRotations (std::vector<double>& rotations, std::vector<double>& strengths) const;
       
       /* Get the feature with a different rotation around the normal
        * You are responsible for deleting the new features!
@@ -138,15 +138,15 @@ namespace pcl
        * \param rvps returned features
        */
       void 
-      getRotatedVersions (const RangeImage& range_image, const std::vector<float>& rotations, std::vector<Narf*>& features) const;
+      getRotatedVersions (const RangeImage& range_image, const std::vector<double>& rotations, std::vector<Narf*>& features) const;
       
       //! Calculate descriptor distance, value in [0,1] with 0 meaning identical and 1 every cell above maximum distance
-      inline float 
+      inline double 
       getDescriptorDistance (const Narf& other) const;
       
       //! How many points on each beam of the gradient star are used to calculate the descriptor?
       inline int 
-      getNoOfBeamPoints () const { return (static_cast<int> (pcl_lrint (ceil (0.5f * float (surface_patch_pixel_size_))))); }
+      getNoOfBeamPoints () const { return (static_cast<int> (pcl_lrint (ceil (0.5f * double (surface_patch_pixel_size_))))); }
       
       //! Copy the descriptor and pose to the point struct Narf36
       inline void 
@@ -172,10 +172,10 @@ namespace pcl
       
       // =====GETTERS=====
       //! Getter (const) for the descriptor
-      inline const float* 
+      inline const double* 
       getDescriptor () const { return descriptor_;}
       //! Getter for the descriptor
-      inline float* 
+      inline double* 
       getDescriptor () { return descriptor_;}
       //! Getter (const) for the descriptor length
       inline const int& 
@@ -202,22 +202,22 @@ namespace pcl
       inline int& 
       getSurfacePatchPixelSize () { return surface_patch_pixel_size_;}
       //! Getter (const) for the world size of the surface patch
-      inline const float& 
+      inline const double& 
       getSurfacePatchWorldSize () const { return surface_patch_world_size_;}
       //! Getter for the world size of the surface patch
-      inline float& 
+      inline double& 
       getSurfacePatchWorldSize () { return surface_patch_world_size_;}
       //! Getter (const) for the rotation of the surface patch
-      inline const float& 
+      inline const double& 
       getSurfacePatchRotation () const { return surface_patch_rotation_;}
       //! Getter for the rotation of the surface patch
-      inline float& 
+      inline double& 
       getSurfacePatchRotation () { return surface_patch_rotation_;}
       //! Getter (const) for the surface patch
-      inline const float* 
+      inline const double* 
       getSurfacePatch () const { return surface_patch_;}
       //! Getter for the surface patch
-      inline float* 
+      inline double* 
       getSurfacePatch () { return surface_patch_;}
       //! Method to erase the surface patch and free the memory
       inline void 
@@ -226,10 +226,10 @@ namespace pcl
       // =====SETTERS=====
       //! Setter for the descriptor
       inline void 
-      setDescriptor (float* descriptor) { descriptor_ = descriptor;}
+      setDescriptor (double* descriptor) { descriptor_ = descriptor;}
       //! Setter for the surface patch
       inline void 
-      setSurfacePatch (float* surface_patch) { surface_patch_ = surface_patch;}
+      setSurfacePatch (double* surface_patch) { surface_patch_ = surface_patch;}
       
       // =====PUBLIC MEMBER VARIABLES=====
       
@@ -240,7 +240,7 @@ namespace pcl
         FeaturePointRepresentation(int nr_dimensions) { this->nr_dimensions_ = nr_dimensions; }
         /** \brief Empty destructor */
         virtual ~FeaturePointRepresentation () {}
-        virtual void copyToFloatArray (const PointT& p, float* out) const { memcpy(out, p->getDescriptor(), sizeof(*p->getDescriptor())*this->nr_dimensions_); }
+        virtual void copyToFloatArray (const PointT& p, double* out) const { memcpy(out, p->getDescriptor(), sizeof(*p->getDescriptor())*this->nr_dimensions_); }
       };
       
     protected:
@@ -252,7 +252,7 @@ namespace pcl
       void 
       deepCopy (const Narf& other);
       //! Get the surface patch with a blur on it
-      float* 
+      double* 
       getBlurredSurfacePatch (int new_pixel_size, int blur_radius) const;
       
       /** Write header to output stream */
@@ -272,11 +272,11 @@ namespace pcl
       // =====PROTECTED MEMBER VARIABLES=====
       Eigen::Vector3f position_;
       Eigen::Affine3f transformation_;
-      float* surface_patch_;
+      double* surface_patch_;
       int surface_patch_pixel_size_;
-      float surface_patch_world_size_;
-      float surface_patch_rotation_;
-      float* descriptor_;
+      double surface_patch_world_size_;
+      double surface_patch_rotation_;
+      double* descriptor_;
       int descriptor_size_;
 
       // =====STATIC PROTECTED=====

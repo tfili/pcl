@@ -71,8 +71,8 @@ namespace pcl
           * \param[in] no_sample_value defines which values in the depth data are indicating that no depth (disparity) could be determined .
           * \attention The focal length may change, depending whether the depth stream is registered/mapped to the RGB stream or not.
           */
-        DepthImage (FrameWrapper::Ptr depth_metadata, float baseline, float focal_length, pcl::uint64_t shadow_value, pcl::uint64_t no_sample_value);
-        DepthImage (FrameWrapper::Ptr depth_metadata, float baseline, float focal_length, pcl::uint64_t shadow_value, pcl::uint64_t no_sample_value, Timestamp time);
+        DepthImage (FrameWrapper::Ptr depth_metadata, double baseline, double focal_length, pcl::uint64_t shadow_value, pcl::uint64_t no_sample_value);
+        DepthImage (FrameWrapper::Ptr depth_metadata, double baseline, double focal_length, pcl::uint64_t shadow_value, pcl::uint64_t no_sample_value, Timestamp time);
 
         /** \brief Destructor. Never throws an exception. */
         ~DepthImage ();
@@ -86,22 +86,22 @@ namespace pcl
         /** \brief fills a user given block of memory with the disparity values with additional nearest-neighbor down-scaling.
           * \param[in] width the width of the desired disparity image.
           * \param[in] height the height of the desired disparity image.
-          * \param[in,out] disparity_buffer the float pointer to the actual memory buffer to be filled with the disparity values.
+          * \param[in,out] disparity_buffer the double pointer to the actual memory buffer to be filled with the disparity values.
           * \param[in] line_step if only a rectangular sub region of the buffer needs to be filled, then line_step is the
           *        width in bytes (not floats) of the original width of the depth buffer.
           */
         void
-        fillDisparityImage (unsigned width, unsigned height, float* disparity_buffer, unsigned line_step = 0) const;
+        fillDisparityImage (unsigned width, unsigned height, double* disparity_buffer, unsigned line_step = 0) const;
 
         /** \brief fills a user given block of memory with the disparity values with additional nearest-neighbor down-scaling.
           * \param[in] width width the width of the desired depth image.
           * \param[in] height height the height of the desired depth image.
-          * \param[in,out] depth_buffer the float pointer to the actual memory buffer to be filled with the depth values.
+          * \param[in,out] depth_buffer the double pointer to the actual memory buffer to be filled with the depth values.
           * \param[in] line_step if only a rectangular sub region of the buffer needs to be filled, then line_step is the
           *        width in bytes (not floats) of the original width of the depth buffer.
           */
         void
-        fillDepthImage (unsigned width, unsigned height, float* depth_buffer, unsigned line_step = 0) const;
+        fillDepthImage (unsigned width, unsigned height, double* depth_buffer, unsigned line_step = 0) const;
 
         /** \brief fills a user given block of memory with the raw values with additional nearest-neighbor down-scaling.
           * \param[in] width width the width of the desired raw image.
@@ -116,13 +116,13 @@ namespace pcl
         /** \brief method to access the baseline of the "stereo" frame that was used to retrieve the depth image.
           * \return baseline in meters
           */
-        float
+        double
         getBaseline () const;
 
         /** \brief method to access the focal length of the "stereo" frame that was used to retrieve the depth image.
           * \return focal length in pixels
           */
-        float
+        double
         getFocalLength () const;
 
         /** \brief method to access the shadow value, that indicates pixels lying in shadow in the depth image.
@@ -179,8 +179,8 @@ namespace pcl
       protected:
         pcl::io::FrameWrapper::Ptr wrapper_;
 
-        float baseline_;
-        float focal_length_;
+        double baseline_;
+        double focal_length_;
         pcl::uint64_t shadow_value_;
         pcl::uint64_t no_sample_value_;
         Timestamp timestamp_;

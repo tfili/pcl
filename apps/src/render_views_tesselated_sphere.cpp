@@ -134,7 +134,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
       sphere->GetPoint (ptIds_com[1], p2_com);
       sphere->GetPoint (ptIds_com[2], p3_com);
       vtkTriangle::TriangleCenter (p1_com, p2_com, p3_com, center);
-      cam_positions[i] = Eigen::Vector3f (float (center[0]), float (center[1]), float (center[2]));
+      cam_positions[i] = Eigen::Vector3f (double (center[0]), double (center[1]), double (center[2]));
       i++;
     }
 
@@ -146,7 +146,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
     {
       double cam_pos[3];
       sphere->GetPoint (i, cam_pos);
-      cam_positions[i] = Eigen::Vector3f (float (cam_pos[0]), float (cam_pos[1]), float (cam_pos[2]));
+      cam_positions[i] = Eigen::Vector3f (double (cam_pos[0]), double (cam_pos[1]), double (cam_pos[2]));
     }
   }
 
@@ -202,7 +202,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
     vtkSmartPointer<vtkCamera> cam_tmp = vtkSmartPointer<vtkCamera>::New ();
     cam_tmp->SetViewAngle (view_angle_);
 
-    Eigen::Vector3f cam_pos_3f (static_cast<float> (cam_pos[0]), static_cast<float> (cam_pos[1]), static_cast<float> (cam_pos[2]));
+    Eigen::Vector3f cam_pos_3f (static_cast<double> (cam_pos[0]), static_cast<double> (cam_pos[1]), static_cast<double> (cam_pos[2]));
     cam_pos_3f = cam_pos_3f.normalized ();
     Eigen::Vector3f test = Eigen::Vector3f::UnitY ();
 
@@ -281,7 +281,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
 
     for (int x = 0; x < 4; x++)
       for (int y = 0; y < 4; y++)
-        backToRealScale_eigen (x, y) = float (backToRealScale->GetMatrix ()->GetElement (x, y));
+        backToRealScale_eigen (x, y) = double (backToRealScale->GetMatrix ()->GetElement (x, y));
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
     cloud->points.resize (resolution_ * resolution_);
@@ -293,25 +293,25 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
       cloud->is_dense = false;
 
       double coords[3];
-      float * depth = new float[resolution_ * resolution_];
+      double * depth = new double[resolution_ * resolution_];
       render_win->GetZbufferData (0, 0, resolution_ - 1, resolution_ - 1, &(depth[0]));
 
       for (int x = 0; x < resolution_; x++)
       {
         for (int y = 0; y < resolution_; y++)
         {
-          float value = depth[y * resolution_ + x];
+          double value = depth[y * resolution_ + x];
           if (value == 1.0)
           {
-            cloud->at (y, x).x = cloud->at (y, x).y = cloud->at (y, x).z = std::numeric_limits<float>::quiet_NaN ();
+            cloud->at (y, x).x = cloud->at (y, x).y = cloud->at (y, x).z = std::numeric_limits<double>::quiet_NaN ();
           }
           else
           {
             worldPicker->Pick (x, y, value, renderer);
             worldPicker->GetPickPosition (coords);
-            cloud->at (y, x).x = static_cast<float> (coords[0]);
-            cloud->at (y, x).y = static_cast<float> (coords[1]);
-            cloud->at (y, x).z = static_cast<float> (coords[2]);
+            cloud->at (y, x).x = static_cast<double> (coords[0]);
+            cloud->at (y, x).y = static_cast<double> (coords[1]);
+            cloud->at (y, x).z = static_cast<double> (coords[2]);
             cloud->at (y, x).getVector4fMap () = backToRealScale_eigen
                                   * cloud->at (y, x).getVector4fMap ();
           }
@@ -327,7 +327,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
       cloud->height = 1;
 
       double coords[3];
-      float * depth = new float[resolution_ * resolution_];
+      double * depth = new double[resolution_ * resolution_];
       render_win->GetZbufferData (0, 0, resolution_ - 1, resolution_ - 1, &(depth[0]));
 
       int count_valid_depth_pixels = 0;
@@ -335,15 +335,15 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
       {
         for (int y = 0; y < resolution_; y++)
         {
-          float value = depth[y * resolution_ + x];
+          double value = depth[y * resolution_ + x];
           if (value == 1.0)
             continue;
 
           worldPicker->Pick (x, y, value, renderer);
           worldPicker->GetPickPosition (coords);
-          cloud->points[count_valid_depth_pixels].x = static_cast<float> (coords[0]);
-          cloud->points[count_valid_depth_pixels].y = static_cast<float> (coords[1]);
-          cloud->points[count_valid_depth_pixels].z = static_cast<float> (coords[2]);
+          cloud->points[count_valid_depth_pixels].x = static_cast<double> (coords[0]);
+          cloud->points[count_valid_depth_pixels].y = static_cast<double> (coords[1]);
+          cloud->points[count_valid_depth_pixels].z = static_cast<double> (coords[2]);
           cloud->points[count_valid_depth_pixels].getVector4fMap () = backToRealScale_eigen
                       * cloud->points[count_valid_depth_pixels].getVector4fMap ();
           count_valid_depth_pixels++;
@@ -439,7 +439,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
       }
 #endif
 
-      entropies_.push_back (float (visible_area / totalArea));
+      entropies_.push_back (double (visible_area / totalArea));
     }
 
     //transform cloud to give camera coordinates instead of world coordinates!
@@ -449,7 +449,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
 
     for (int x = 0; x < 4; x++)
       for (int y = 0; y < 4; y++)
-        trans_view (x, y) = float (view_transform->GetElement (x, y));
+        trans_view (x, y) = double (view_transform->GetElement (x, y));
 
     //NOTE: vtk view coordinate system is different than the standard camera coordinates (z forward, y down, x right)
     //thus, the fliping in y and z
@@ -489,7 +489,7 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
 
     for (int x = 0; x < 4; x++)
       for (int y = 0; y < 4; y++)
-        pose_view (x, y) = float (transOCtoCC->GetMatrix ()->GetElement (x, y));
+        pose_view (x, y) = double (transOCtoCC->GetMatrix ()->GetElement (x, y));
 
     poses_.push_back (pose_view);
 

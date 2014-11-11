@@ -83,7 +83,7 @@ namespace pcl
             * \param width
             */
           void
-          setCameraIntrinsics (float focal = 575.816f, float height = 480.0f, float width = 640.0f);
+          setCameraIntrinsics (double focal = 575.816f, double height = 480.0f, double width = 640.0f);
 
           /**Save Screenshot*/
           void
@@ -93,13 +93,13 @@ namespace pcl
 
           /**Write camera pose to file*/
           void 
-          writePose(const std::string &filename_pose, const Eigen::Vector3f &teVecs, const Eigen::Matrix<float, 3, 3, Eigen::RowMajor> &erreMats);
+          writePose(const std::string &filename_pose, const Eigen::Vector3f &teVecs, const Eigen::Matrix<double, 3, 3, Eigen::RowMajor> &erreMats);
 
           /**Counter of the number of screenshots taken*/
           int screenshot_counter;
           
           /** \brief Intrinsic parameters of depth camera. */
-          float focal_, height_, width_;
+          double focal_, height_, width_;
     };
   }
 }

@@ -101,7 +101,7 @@ namespace pcl
     */
   template <typename PointNT, typename PointOutT> Eigen::MatrixXf
   computeRSD (boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
-             const std::vector<int> &indices, const std::vector<float> &sqr_dists, double max_dist,
+             const std::vector<int> &indices, const std::vector<double> &sqr_dists, double max_dist,
              int nr_subdiv, double plane_radius, PointOutT &radii, bool compute_histogram = false);
 
   /** \brief @b RSDEstimation estimates the Radius-based Surface Descriptor (minimal and maximal radius of the local surface's curves)

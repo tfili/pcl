@@ -74,7 +74,7 @@ namespace pcl
       * \author Aravindhan K. Krishnan, Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename NormalT, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename NormalT, typename Scalar = double>
     class CorrespondenceEstimationNormalShooting : public CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>
     {
       public:

@@ -102,9 +102,9 @@ namespace pcl
       Z = 7.787 * Z + 16.0 / 116.0;
 
     Eigen::Vector3f colorLab;
-    colorLab[0] = static_cast<float> (116.0 * Y - 16.0);
-    colorLab[1] = static_cast<float> (500.0 * (X - Y));
-    colorLab[2] = static_cast<float> (200.0 * (Y - Z));
+    colorLab[0] = static_cast<double> (116.0 * Y - 16.0);
+    colorLab[1] = static_cast<double> (500.0 * (X - Y));
+    colorLab[2] = static_cast<double> (200.0 * (Y - Z));
 
     return colorLab;
   }
@@ -129,11 +129,11 @@ namespace pcl
     }
   }
 
-  GeneralizedIterativeClosestPoint6D::GeneralizedIterativeClosestPoint6D (float lab_weight) :
+  GeneralizedIterativeClosestPoint6D::GeneralizedIterativeClosestPoint6D (double lab_weight) :
       cloud_lab_ (new pcl::PointCloud<PointXYZLAB>), target_lab_ (new pcl::PointCloud<PointXYZLAB>), lab_weight_ (lab_weight)
   {
     // set rescale mask (leave x,y,z unchanged, scale L,a,b by lab_weight)
-    float alpha[6] = { 1.0, 1.0, 1.0, lab_weight_, lab_weight_, lab_weight_ };
+    double alpha[6] = { 1.0, 1.0, 1.0, lab_weight_, lab_weight_, lab_weight_ };
     point_rep_.setRescaleValues (alpha);
   }
 
@@ -165,7 +165,7 @@ namespace pcl
 
   bool
   GeneralizedIterativeClosestPoint6D::searchForNeighbors (const PointXYZLAB& query, std::vector<int>& index,
-      std::vector<float>& distance)
+      std::vector<double>& distance)
   {
     int k = target_tree_lab_.nearestKSearch (query, 1, index, distance);
 
@@ -201,7 +201,7 @@ namespace pcl
     converged_ = false;
     double dist_threshold = corr_dist_threshold_ * corr_dist_threshold_;
     std::vector<int> nn_indices (1);
-    std::vector<float> nn_dists (1);
+    std::vector<double> nn_dists (1);
 
     while (!converged_)
     {

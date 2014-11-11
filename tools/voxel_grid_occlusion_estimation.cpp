@@ -59,7 +59,7 @@ using namespace pcl::console;
 typedef PointXYZ PointT;
 typedef PointCloud<PointT> CloudT;
 
-float default_leaf_size = 0.01f;
+double default_leaf_size = 0.01f;
 
 vtkDataSet*
 createDataSetFromVTKPoints (vtkPoints *points)
@@ -171,7 +171,7 @@ int main (int argc, char** argv)
   }
 
   // Command line parsing
-  float leaf_x = default_leaf_size,
+  double leaf_x = default_leaf_size,
         leaf_y = default_leaf_size,
         leaf_z = default_leaf_size;
 
@@ -179,15 +179,15 @@ int main (int argc, char** argv)
   parse_x_arguments (argc, argv, "-leaf", values);
   if (values.size () == 1)
   {
-    leaf_x = static_cast<float> (values[0]);
-    leaf_y = static_cast<float> (values[0]);
-    leaf_z = static_cast<float> (values[0]);
+    leaf_x = static_cast<double> (values[0]);
+    leaf_y = static_cast<double> (values[0]);
+    leaf_z = static_cast<double> (values[0]);
   }
   else if (values.size () == 3)
   {
-    leaf_x = static_cast<float> (values[0]);
-    leaf_y = static_cast<float> (values[1]);
-    leaf_z = static_cast<float> (values[2]);
+    leaf_x = static_cast<double> (values[0]);
+    leaf_y = static_cast<double> (values[1]);
+    leaf_z = static_cast<double> (values[2]);
   }
   else
   {
@@ -245,9 +245,9 @@ int main (int argc, char** argv)
 
   for (size_t i = 0; i < input_cloud->points.size (); ++i)
   {
-    float x = input_cloud->points[i].x;
-    float y = input_cloud->points[i].y;
-    float z = input_cloud->points[i].z;
+    double x = input_cloud->points[i].x;
+    double y = input_cloud->points[i].y;
+    double z = input_cloud->points[i].z;
     Eigen::Vector3i c = vg.getGridCoordinates (x, y, z);
     Eigen::Vector4f xyz = vg.getCentroidCoordinate (c);
     PointT point;

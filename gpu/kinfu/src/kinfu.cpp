@@ -87,9 +87,9 @@ pcl::gpu::KinfuTracker::KinfuTracker (int rows, int cols) : rows_(rows), cols_(c
   const int iters[] = {10, 5, 4};
   std::copy (iters, iters + LEVELS, icp_iterations_);
 
-  const float default_distThres = 0.10f; //meters
-  const float default_angleThres = sin (20.f * 3.14159254f / 180.f);
-  const float default_tranc_dist = 0.03f; //meters
+  const double default_distThres = 0.10f; //meters
+  const double default_angleThres = sin (20.f * 3.14159254f / 180.f);
+  const double default_tranc_dist = 0.03f; //meters
 
   setIcpCorespFilteringParams (default_distThres, default_angleThres);
   tsdf_volume_->setTsdfTruncDist (default_tranc_dist);
@@ -104,7 +104,7 @@ pcl::gpu::KinfuTracker::KinfuTracker (int rows, int cols) : rows_(rows), cols_(c
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::KinfuTracker::setDepthIntrinsics (float fx, float fy, float cx, float cy)
+pcl::gpu::KinfuTracker::setDepthIntrinsics (double fx, double fy, double cx, double cy)
 {
   fx_ = fx;
   fy_ = fy;
@@ -114,7 +114,7 @@ pcl::gpu::KinfuTracker::setDepthIntrinsics (float fx, float fy, float cx, float 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::KinfuTracker::getDepthIntrinsics (float& fx, float& fy, float& cx, float& cy)
+pcl::gpu::KinfuTracker::getDepthIntrinsics (double& fx, double& fy, double& cx, double& cy)
 {
   fx = fx_;
   fy = fy_;
@@ -133,21 +133,21 @@ pcl::gpu::KinfuTracker::setInitalCameraPose (const Eigen::Affine3f& pose)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::KinfuTracker::setDepthTruncationForICP (float max_icp_distance)
+pcl::gpu::KinfuTracker::setDepthTruncationForICP (double max_icp_distance)
 {
   max_icp_distance_ = max_icp_distance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::KinfuTracker::setCameraMovementThreshold(float threshold)
+pcl::gpu::KinfuTracker::setCameraMovementThreshold(double threshold)
 {
   integration_metric_threshold_ = threshold;  
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::KinfuTracker::setIcpCorespFilteringParams (float distThreshold, float sineOfAngle)
+pcl::gpu::KinfuTracker::setIcpCorespFilteringParams (double distThreshold, double sineOfAngle)
 {
   distThres_  = distThreshold; //mm
   angleThres_ = sineOfAngle;
@@ -347,14 +347,14 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
               reset ();
               return (false);
             }
-            //float maxc = A.maxCoeff();
+            //double maxc = A.maxCoeff();
 
-            Eigen::Matrix<float, 6, 1> result = A.llt ().solve (b).cast<float>();
-            //Eigen::Matrix<float, 6, 1> result = A.jacobiSvd(ComputeThinU | ComputeThinV).solve(b);
+            Eigen::Matrix<double, 6, 1> result = A.llt ().solve (b).cast<double>();
+            //Eigen::Matrix<double, 6, 1> result = A.jacobiSvd(ComputeThinU | ComputeThinV).solve(b);
 
-            float alpha = result (0);
-            float beta  = result (1);
-            float gamma = result (2);
+            double alpha = result (0);
+            double beta  = result (1);
+            double gamma = result (2);
 
             Eigen::Matrix3f Rinc = (Eigen::Matrix3f)AngleAxisf (gamma, Vector3f::UnitZ ()) * AngleAxisf (beta, Vector3f::UnitY ()) * AngleAxisf (alpha, Vector3f::UnitX ());
             Vector3f tinc = result.tail<3> ();
@@ -390,9 +390,9 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
 
   ///////////////////////////////////////////////////////////////////////////////////////////
   // Integration check - We do not integrate volume if camera does not move.  
-  float rnorm = rodrigues2(Rcurr.inverse() * Rprev).norm();
-  float tnorm = (tcurr - tprev).norm();  
-  const float alpha = 1.f;
+  double rnorm = rodrigues2(Rcurr.inverse() * Rprev).norm();
+  double tnorm = (tcurr - tprev).norm();  
+  const double alpha = 1.f;
   bool integrate = (rnorm + alpha * tnorm)/2 >= integration_metric_threshold_;
 
   if (disable_icp_)
@@ -559,7 +559,7 @@ namespace pcl
   namespace gpu
   {
     PCL_EXPORTS void 
-    paint3DView(const KinfuTracker::View& rgb24, KinfuTracker::View& view, float colors_weight = 0.5f)
+    paint3DView(const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5f)
     {
       device::paint3DView(rgb24, view, colors_weight);
     }
@@ -620,7 +620,7 @@ namespace pcl
         vth *= theta;
         rx *= vth; ry *= vth; rz *= vth;
       }
-      return Eigen::Vector3d(rx, ry, rz).cast<float>();
+      return Eigen::Vector3d(rx, ry, rz).cast<double>();
     }
   }
 }

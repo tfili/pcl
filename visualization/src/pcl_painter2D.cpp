@@ -62,9 +62,9 @@ pcl::visualization::PCLPainter2D::PCLPainter2D(char const * name)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addLine (float x1, float y1, float x2, float y2)
+pcl::visualization::PCLPainter2D::addLine (double x1, double y1, double x2, double y2)
 {
-  std::vector<float> line (4);
+  std::vector<double> line (4);
   line[0] = x1;
   line[1] = y1;
   line[2] = x2;
@@ -76,16 +76,16 @@ pcl::visualization::PCLPainter2D::addLine (float x1, float y1, float x2, float y
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addLine (std::vector<float> p)
+pcl::visualization::PCLPainter2D::addLine (std::vector<double> p)
 {
   figures_.push_back (new FPolyLine2D(p, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addPoint (float x, float y)
+pcl::visualization::PCLPainter2D::addPoint (double x, double y)
 {
-  std::vector<float> points(2);
+  std::vector<double> points(2);
   points[0] = x; points[1] = y;
   
   figures_.push_back (new FPoints2D(points, current_pen_, current_brush_, current_transform_));
@@ -93,63 +93,63 @@ pcl::visualization::PCLPainter2D::addPoint (float x, float y)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addPoints (std::vector<float> p)
+pcl::visualization::PCLPainter2D::addPoints (std::vector<double> p)
 {
   figures_.push_back (new FPoints2D(p, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addRect (float x, float y, float width, float height)
+pcl::visualization::PCLPainter2D::addRect (double x, double y, double width, double height)
 {
-  float p[] = { x,       y,
+  double p[] = { x,       y,
                 x+width, y,
                 x+width, y+height,
                 x,       y+height};
   
-  std::vector<float> quad (p, p+8);
+  std::vector<double> quad (p, p+8);
   
   figures_.push_back (new FQuad2D(quad, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addQuad (std::vector<float> p)
+pcl::visualization::PCLPainter2D::addQuad (std::vector<double> p)
 {
   figures_.push_back (new FQuad2D(p, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addPolygon (std::vector<float> p)
+pcl::visualization::PCLPainter2D::addPolygon (std::vector<double> p)
 {
   figures_.push_back (new FPolygon2D(p, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addEllipse (float x, float y, float rx, float ry)
+pcl::visualization::PCLPainter2D::addEllipse (double x, double y, double rx, double ry)
 { 
   figures_.push_back (new FEllipticArc2D(x, y, rx, ry, 0, 360, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addCircle (float x, float y, float r)
+pcl::visualization::PCLPainter2D::addCircle (double x, double y, double r)
 {  
   figures_.push_back (new FEllipticArc2D(x, y, r, r, 0, 360, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addEllipticArc (float x, float y, float rx, float ry, float start_angle, float end_angle)
+pcl::visualization::PCLPainter2D::addEllipticArc (double x, double y, double rx, double ry, double start_angle, double end_angle)
 { 
   figures_.push_back (new FEllipticArc2D(x, y, rx, ry, start_angle, end_angle, current_pen_, current_brush_, current_transform_));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::visualization::PCLPainter2D::addArc (float x, float y, float r, float start_angle, float end_angle)
+pcl::visualization::PCLPainter2D::addArc (double x, double y, double r, double start_angle, double end_angle)
 { 
   figures_.push_back (new FEllipticArc2D(x, y, r, r, start_angle, end_angle, current_pen_, current_brush_, current_transform_));
 }
@@ -161,7 +161,7 @@ void pcl::visualization::PCLPainter2D::setPenColor (unsigned char r, unsigned ch
   current_pen_->SetColor (r, g, b, a);
 }
 
-void pcl::visualization::PCLPainter2D::setPenWidth (float w)
+void pcl::visualization::PCLPainter2D::setPenWidth (double w)
 {
   current_pen_->SetWidth (w);
 }
@@ -176,7 +176,7 @@ unsigned char* pcl::visualization::PCLPainter2D::getPenColor ()
   return current_pen_->GetColor ();
 }
 
-float pcl::visualization::PCLPainter2D::getPenWidth ()
+double pcl::visualization::PCLPainter2D::getPenWidth ()
 {
   return current_pen_->GetWidth ();
 }

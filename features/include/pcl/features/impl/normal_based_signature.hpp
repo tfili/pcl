@@ -49,14 +49,14 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
 
   PointFeature test_feature;
   (void)test_feature;
-  if (N_prime_ * M_prime_ != sizeof (test_feature.values) / sizeof (float))
+  if (N_prime_ * M_prime_ != sizeof (test_feature.values) / sizeof (double))
   {
-    PCL_ERROR ("NormalBasedSignatureEstimation: not using the proper signature size: %u vs %u\n", N_prime_ * M_prime_, sizeof (test_feature.values) / sizeof (float));
+    PCL_ERROR ("NormalBasedSignatureEstimation: not using the proper signature size: %u vs %u\n", N_prime_ * M_prime_, sizeof (test_feature.values) / sizeof (double));
     return;
   }
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   tree_->setInputCloud (input_);
   output.points.resize (indices_->size ());
@@ -101,9 +101,9 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
         }
         normal_v = normal.cross3 (normal_u);
 
-        Eigen::Vector4f zeta_point = 2.0f * static_cast<float> (l + 1) * scale_h_ / static_cast<float> (M_) * 
-            (cosf (2.0f * static_cast<float> (M_PI) * static_cast<float> ((k + 1) / N_)) * normal_u + 
-             sinf (2.0f * static_cast<float> (M_PI) * static_cast<float> ((k + 1) / N_)) * normal_v);
+        Eigen::Vector4f zeta_point = 2.0f * static_cast<double> (l + 1) * scale_h_ / static_cast<double> (M_) * 
+            (cosf (2.0f * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_u + 
+             sinf (2.0f * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_v);
 
         // Compute normal by using the neighbors
         Eigen::Vector4f zeta_point_plus_center = zeta_point + center_point;
@@ -122,7 +122,7 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
         
         Eigen::Vector4f average_normal = Eigen::Vector4f::Zero ();
 
-        float average_normalization_factor = 0.0f;
+        double average_normalization_factor = 0.0f;
 
         // Normals weighted by 1/squared_distances
         for (size_t nn_i = 0; nn_i < k_indices.size (); ++nn_i)
@@ -137,7 +137,7 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
           average_normalization_factor += 1.0f / k_sqr_distances[nn_i];
         }
         average_normal /= average_normalization_factor;
-        float s = zeta_point.dot (average_normal) / zeta_point.norm ();
+        double s = zeta_point.dot (average_normal) / zeta_point.norm ();
         s_row[l] = s;
       }
 
@@ -145,9 +145,9 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
       Eigen::VectorXf dct_row (M_);
       for (int m = 0; m < s_row.size (); ++m)
       {
-        float Xk = 0.0f;
+        double Xk = 0.0f;
         for (int n = 0; n < s_row.size (); ++n)
-          Xk += static_cast<float> (s_row[n] * cos (M_PI / (static_cast<double> (M_ * n) + 0.5) * static_cast<double> (k)));
+          Xk += static_cast<double> (s_row[n] * cos (M_PI / (static_cast<double> (M_ * n) + 0.5) * static_cast<double> (k)));
         dct_row[m] = Xk;
       }
       s_row = dct_row;
@@ -161,11 +161,11 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
       Eigen::VectorXf dft_col (N_);
       for (size_t k = 0; k < N_; ++k)
       {
-        float Xk_real = 0.0f, Xk_imag = 0.0f;
+        double Xk_real = 0.0f, Xk_imag = 0.0f;
         for (size_t n = 0; n < N_; ++n)
         {
-          Xk_real += static_cast<float> (s_matrix (n, column_i) * cos (2.0f * M_PI / static_cast<double> (N_ * k * n)));
-          Xk_imag += static_cast<float> (s_matrix (n, column_i) * sin (2.0f * M_PI / static_cast<double> (N_ * k * n)));
+          Xk_real += static_cast<double> (s_matrix (n, column_i) * cos (2.0f * M_PI / static_cast<double> (N_ * k * n)));
+          Xk_imag += static_cast<double> (s_matrix (n, column_i) * sin (2.0f * M_PI / static_cast<double> (N_ * k * n)));
         }
         dft_col[k] = sqrtf (Xk_real*Xk_real + Xk_imag*Xk_imag);
       }

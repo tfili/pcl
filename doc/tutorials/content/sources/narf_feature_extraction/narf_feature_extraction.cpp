@@ -17,8 +17,8 @@ typedef pcl::PointXYZ PointType;
 // --------------------
 // -----Parameters-----
 // --------------------
-float angular_resolution = 0.5f;
-float support_size = 0.2f;
+double angular_resolution = 0.5f;
+double support_size = 0.2f;
 pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 bool setUnseenToMaxRange = false;
 bool rotation_invariant = true;
@@ -32,10 +32,10 @@ printUsage (const char* progName)
   std::cout << "\n\nUsage: "<<progName<<" [options] <scene.pcd>\n\n"
             << "Options:\n"
             << "-------------------------------------------\n"
-            << "-r <float>   angular resolution in degrees (default "<<angular_resolution<<")\n"
+            << "-r <double>   angular resolution in degrees (default "<<angular_resolution<<")\n"
             << "-c <int>     coordinate frame (default "<< (int)coordinate_frame<<")\n"
             << "-m           Treat all unseen points to max range\n"
-            << "-s <float>   support size for the interest points (diameter of the used sphere - "
+            << "-s <double>   support size for the interest points (diameter of the used sphere - "
                                                                   "default "<<support_size<<")\n"
             << "-o <0/1>     switch rotational invariant version of the feature on/off"
             <<               " (default "<< (int)rotation_invariant<<")\n"
@@ -116,9 +116,9 @@ main (int argc, char** argv)
   {
     setUnseenToMaxRange = true;
     cout << "\nNo *.pcd file given => Genarating example point cloud.\n\n";
-    for (float x=-0.5f; x<=0.5f; x+=0.01f)
+    for (double x=-0.5f; x<=0.5f; x+=0.01f)
     {
-      for (float y=-0.5f; y<=0.5f; y+=0.01f)
+      for (double y=-0.5f; y<=0.5f; y+=0.01f)
       {
         PointType point;  point.x = x;  point.y = y;  point.z = 2.0f - y;
         point_cloud.points.push_back (point);
@@ -130,8 +130,8 @@ main (int argc, char** argv)
   // -----------------------------------------------
   // -----Create RangeImage from the PointCloud-----
   // -----------------------------------------------
-  float noise_level = 0.0;
-  float min_range = 0.0f;
+  double noise_level = 0.0;
+  double min_range = 0.0f;
   int border_size = 1;
   boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
   pcl::RangeImage& range_image = *range_image_ptr;   

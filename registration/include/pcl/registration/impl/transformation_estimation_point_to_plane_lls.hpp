@@ -171,15 +171,15 @@ estimateRigidTransformation (ConstCloudIterator<PointSource>& source_it, ConstCl
       continue;
     }
 
-    const float & sx = source_it->x;
-    const float & sy = source_it->y;
-    const float & sz = source_it->z;
-    const float & dx = target_it->x;
-    const float & dy = target_it->y;
-    const float & dz = target_it->z;
-    const float & nx = target_it->normal[0];
-    const float & ny = target_it->normal[1];
-    const float & nz = target_it->normal[2];
+    const double & sx = source_it->x;
+    const double & sy = source_it->y;
+    const double & sz = source_it->z;
+    const double & dx = target_it->x;
+    const double & dy = target_it->y;
+    const double & dz = target_it->z;
+    const double & nx = target_it->normal[0];
+    const double & ny = target_it->normal[1];
+    const double & nz = target_it->normal[2];
 
     double a = nz*sy - ny*sz;
     double b = nx*sz - nz*sx; 

@@ -52,18 +52,18 @@ namespace pcl
     BoundingBoxXYZ () : x (0.0f), y (0.0f), z (0.0f), width (0.0f), height (0.0f), depth (0.0f) {}
 
     /** \brief X-coordinate of the upper left front point */
-    float x;
+    double x;
     /** \brief Y-coordinate of the upper left front point */
-    float y;
+    double y;
     /** \brief Z-coordinate of the upper left front point */
-    float z;
+    double z;
 
     /** \brief Width of the bounding box */
-    float width;
+    double width;
     /** \brief Height of the bounding box */
-    float height;
+    double height;
     /** \brief Depth of the bounding box */
-    float depth;
+    double depth;
   };
 
   /** \brief High-level class for template matching using the LINEMOD approach based on RGB and Depth data.
@@ -87,7 +87,7 @@ namespace pcl
         /** \brief The ID of this detection. This is only valid for the last call of the method detect (...). */
         size_t detection_id;
         /** \brief The response of this detection. Responses are between 0 and 1, where 1 is best. */
-        float response;
+        double response;
         /** \brief The 3D bounding box of the detection. */
         BoundingBoxXYZ bounding_box;
         /** \brief The 2D template region of the detection. */
@@ -135,7 +135,7 @@ namespace pcl
         * \param[in] threshold The threshold used to decide where a template is detected.
         */
       inline void
-      setDetectionThreshold (float threshold)
+      setDetectionThreshold (double threshold)
       {
         linemod_.setDetectionThreshold (threshold);
       }
@@ -145,7 +145,7 @@ namespace pcl
         * \param[in] threshold The threshold on the magnitude of color gradients.
         */
       inline void
-      setGradientMagnitudeThreshold (const float threshold)
+      setGradientMagnitudeThreshold (const double threshold)
       {
         color_gradient_mod_.setGradientMagnitudeThreshold (threshold);
       }
@@ -158,7 +158,7 @@ namespace pcl
         *                      bounding box.
         */
       inline void
-      setIntersectionVolumeThreshold (const float threshold = 1.0f)
+      setIntersectionVolumeThreshold (const double threshold = 1.0f)
       {
         intersection_volume_threshold_ = threshold;
       }
@@ -214,9 +214,9 @@ namespace pcl
         */
       void
       detectSemiScaleInvariant (std::vector<typename pcl::LineRGBD<PointXYZT, PointRGBT>::Detection> & detections,
-                                float min_scale = 0.6944444f,
-                                float max_scale = 1.44f,
-                                float scale_multiplier = 1.2f);
+                                double min_scale = 0.6944444f,
+                                double max_scale = 1.44f,
+                                double scale_multiplier = 1.2f);
 
       /** \brief Computes and returns the point cloud of the specified detection. This is the template point 
         *        cloud transformed to the detection coordinates. The detection ID refers to the last call of 
@@ -279,7 +279,7 @@ namespace pcl
         * \param[in] box1 First bounding box.
         * \param[in] box2 Second bounding box.
         */
-      static float
+      static double
       computeBoundingBoxIntersectionVolume (const BoundingBoxXYZ &box1, const BoundingBoxXYZ &box2);
 
     private:
@@ -288,7 +288,7 @@ namespace pcl
       readLTMHeader (int fd, pcl::io::TARHeader &header);
 
       /** \brief Intersection volume threshold. */
-      float intersection_volume_threshold_;
+      double intersection_volume_threshold_;
 
       /** \brief LINEMOD instance. */
       public: pcl::LINEMOD linemod_;

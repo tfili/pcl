@@ -72,7 +72,7 @@ using namespace pcl::visualization;
 using namespace pcl::recognition;
 using namespace pcl::io;
 
-void run (const char *file_name, float voxel_size);
+void run (const char *file_name, double voxel_size);
 bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, PointCloud<Normal>* pcl_normals);
 void show_octree (ORROctree* octree, PCLVisualizer& viz, bool show_full_leaves_only);
 void node_to_cube (ORROctree::Node* node, vtkAppendPolyData* additive_octree);
@@ -104,7 +104,7 @@ int main (int argc, char ** argv)
   }
 
   // Get the voxel size
-  float voxel_size = static_cast<float> (atof (argv[2]));
+  double voxel_size = static_cast<double> (atof (argv[2]));
   if ( voxel_size <= 0.0 )
   {
     fprintf(stderr, "ERROR: leaf_size has to be positive and not %lf\n", voxel_size);
@@ -143,8 +143,8 @@ void updateViewer (ORROctree& octree, PCLVisualizer& viz, std::vector<ORROctree:
 {
   viz.removeAllShapes();
 
-  const float *b = (*leaf)->getBounds (), *center = (*leaf)->getData ()->getPoint ();
-  float radius = 0.1f*octree.getRoot ()->getRadius ();
+  const double *b = (*leaf)->getBounds (), *center = (*leaf)->getData ()->getPoint ();
+  double radius = 0.1f*octree.getRoot ()->getRadius ();
 
   // Add the main leaf as a cube
   viz.addCube (b[0], b[1], b[2], b[3], b[4], b[5], 0.0, 0.0, 1.0, "main cube");
@@ -180,7 +180,7 @@ void updateViewer (ORROctree& octree, PCLVisualizer& viz, std::vector<ORROctree:
 
 //===============================================================================================================================
 
-void run (const char* file_name, float voxel_size)
+void run (const char* file_name, double voxel_size)
 {
   PointCloud<PointXYZ>::Ptr points_in (new PointCloud<PointXYZ> ());
   PointCloud<PointXYZ>::Ptr points_out (new PointCloud<PointXYZ> ());
@@ -272,9 +272,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points,
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_points->GetPoint (i, p);
-    pcl_points[i].x = static_cast<float> (p[0]);
-    pcl_points[i].y = static_cast<float> (p[1]);
-    pcl_points[i].z = static_cast<float> (p[2]);
+    pcl_points[i].x = static_cast<double> (p[0]);
+    pcl_points[i].y = static_cast<double> (p[1]);
+    pcl_points[i].z = static_cast<double> (p[2]);
   }
 
   // Check if we have normals
@@ -286,9 +286,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points,
     for ( vtkIdType i = 0 ; i < num_points ; ++i )
     {
       vtk_normals->GetTuple (i, p);
-      (*pcl_normals)[i].normal_x = static_cast<float> (p[0]);
-      (*pcl_normals)[i].normal_y = static_cast<float> (p[1]);
-      (*pcl_normals)[i].normal_z = static_cast<float> (p[2]);
+      (*pcl_normals)[i].normal_x = static_cast<double> (p[0]);
+      (*pcl_normals)[i].normal_y = static_cast<double> (p[1]);
+      (*pcl_normals)[i].normal_z = static_cast<double> (p[2]);
     }
   }
 
@@ -300,7 +300,7 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points,
 void node_to_cube (ORROctree::Node* node, vtkAppendPolyData* additive_octree)
 {
   // Define the cube representing the leaf
-  const float *b = node->getBounds ();
+  const double *b = node->getBounds ();
   vtkSmartPointer<vtkCubeSource> cube = vtkSmartPointer<vtkCubeSource>::New ();
   cube->SetBounds (b[0], b[1], b[2], b[3], b[4], b[5]);
   cube->Update ();

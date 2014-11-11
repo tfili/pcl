@@ -59,7 +59,7 @@ namespace pcl
         unsigned char Green; // Green channel
         unsigned char Red; // Red channel
       };
-      float float_value;
+      double float_value;
       int int_value;
     } RGBValue;
 
@@ -72,7 +72,7 @@ namespace pcl
       * \param[out] fv the output Value component
       */ 
     void 
-    RGB2HSV (int r, int g, int b, float& fh, float& fs, float& fv)
+    RGB2HSV (int r, int g, int b, double& fh, double& fs, double& fv)
     {
       // mostly copied from opencv-svn/modules/imgproc/src/color.cpp
       // revision is 4351
@@ -135,9 +135,9 @@ namespace pcl
           (1 << (hsv_shift + 6))) >> (7 + hsv_shift);
                 
       h += h < 0 ? hr : 0;
-      fh = static_cast<float> (h) / 180.0f;
-      fs = static_cast<float> (s) / 255.0f;
-      fv = static_cast<float> (v) / 255.0f;
+      fh = static_cast<double> (h) / 180.0f;
+      fs = static_cast<double> (s) / 255.0f;
+      fv = static_cast<double> (v) / 255.0f;
     }
    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,30 +149,30 @@ namespace pcl
       source_rgb.int_value = source.rgba;
       target_rgb.int_value = target.rgba;
 
-      float source_h, source_s, source_v, target_h, target_s, target_v;
+      double source_h, source_s, source_v, target_h, target_s, target_v;
       RGB2HSV (source_rgb.Red, source_rgb.Blue, source_rgb.Green,
                source_h, source_s, source_v);
       RGB2HSV (target_rgb.Red, target_rgb.Blue, target_rgb.Green,
                target_h, target_s, target_v);
       // hue value is in 0 ~ 2pi, but circulated.
-      const float _h_diff = fabsf (source_h - target_h);
+      const double _h_diff = fabsf (source_h - target_h);
       // Also need to compute distance other way around circle - but need to check which is closer to 0
-      float _h_diff2;
+      double _h_diff2;
       if (source_h < target_h)
         _h_diff2 = fabsf (1.0f + source_h - target_h); //Add 2pi to source, subtract target
       else 
         _h_diff2 = fabsf (1.0f + target_h - source_h); //Add 2pi to target, subtract source
       
-      float h_diff;
+      double h_diff;
       //Now we need to choose the smaller distance
       if (_h_diff < _h_diff2)
-        h_diff = static_cast<float> (h_weight_) * _h_diff * _h_diff;
+        h_diff = static_cast<double> (h_weight_) * _h_diff * _h_diff;
       else
-        h_diff = static_cast<float> (h_weight_) * _h_diff2 * _h_diff2;
+        h_diff = static_cast<double> (h_weight_) * _h_diff2 * _h_diff2;
 
-      const float s_diff = static_cast<float> (s_weight_) * (source_s - target_s) * (source_s - target_s);
-      const float v_diff = static_cast<float> (v_weight_) * (source_v - target_v) * (source_v - target_v);
-      const float diff2 = h_diff + s_diff + v_diff;
+      const double s_diff = static_cast<double> (s_weight_) * (source_s - target_s) * (source_s - target_s);
+      const double v_diff = static_cast<double> (v_weight_) * (source_v - target_v) * (source_v - target_v);
+      const double diff2 = h_diff + s_diff + v_diff;
       
       return (1.0 / (1.0 + weight_ * diff2));
     }

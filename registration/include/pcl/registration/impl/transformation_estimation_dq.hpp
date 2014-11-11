@@ -178,14 +178,14 @@ pcl::registration::TransformationEstimationDQ<PointSource, PointTarget, Scalar>:
   C1 *= -2.0f;
   C2 *= 2.0f;
 
-  const Eigen::Matrix<Scalar,4,4> A = (0.25f/float(npts))*C2.transpose()*C2 - C1;
+  const Eigen::Matrix<Scalar,4,4> A = (0.25f/double(npts))*C2.transpose()*C2 - C1;
 
   const Eigen::EigenSolver< Eigen::Matrix<Scalar,4,4> > es(A);
 
   ptrdiff_t i;
   es.eigenvalues().real().maxCoeff(&i);
   const Eigen::Matrix<Scalar,4,1> qmat = es.eigenvectors().col(i).real();
-  const Eigen::Matrix<Scalar,4,1> smat = -(0.5f/float(npts))*C2*qmat;
+  const Eigen::Matrix<Scalar,4,1> smat = -(0.5f/double(npts))*C2*qmat;
 
   const Eigen::Quaternion<Scalar> q( qmat(3), qmat(0), qmat(1), qmat(2) );
   const Eigen::Quaternion<Scalar> s( smat(3), smat(0), smat(1), smat(2) );

@@ -56,8 +56,8 @@ toPCL (const PointCloudAOS<Host> &input,
     output.points[i].x = input.points[i].x;
     output.points[i].y = input.points[i].y;
     output.points[i].z = input.points[i].z;
-    // Pack RGB into a float
-    output.points[i].rgb = *(float*)(&input.points[i].rgb);
+    // Pack RGB into a double
+    output.points[i].rgb = *(double*)(&input.points[i].rgb);
 
     output.points[i].normal_x  = normals[i].x;
     output.points[i].normal_y  = normals[i].y;
@@ -86,8 +86,8 @@ toPCL (const PointCloudAOS<Device> &d_input,
     output.points[i].x = input.points[i].x;
     output.points[i].y = input.points[i].y;
     output.points[i].z = input.points[i].z;
-    // Pack RGB into a float
-    output.points[i].rgb = *(float*)(&input.points[i].rgb);
+    // Pack RGB into a double
+    output.points[i].rgb = *(double*)(&input.points[i].rgb);
 
     output.points[i].normal_x  = normals[i].x;
     output.points[i].normal_y  = normals[i].y;
@@ -110,8 +110,8 @@ toPCL (const PointCloudAOS<Host> &input,
     output.points[i].x = input.points[i].x;
     output.points[i].y = input.points[i].y;
     output.points[i].z = input.points[i].z;
-    // Pack RGB into a float
-    output.points[i].rgb = *(float*)(&input.points[i].rgb);
+    // Pack RGB into a double
+    output.points[i].rgb = *(double*)(&input.points[i].rgb);
   }
 
   output.width    = input.width;
@@ -139,8 +139,8 @@ toPCL (const PointCloudAOS<Device> &input,
     output.points[i].x = cloud.points[i].x;
     output.points[i].y = cloud.points[i].y;
     output.points[i].z = cloud.points[i].z;
-    // Pack RGB into a float
-    output.points[i].rgb = *(float*)(&cloud.points[i].rgb);
+    // Pack RGB into a double
+    output.points[i].rgb = *(double*)(&cloud.points[i].rgb);
   }
 
   output.width    = cloud.width;

@@ -127,8 +127,8 @@ namespace pcl
         * \param[out] rift_descriptor the resultant RIFT descriptor
         */
       void 
-      computeRIFT (const PointCloudIn &cloud, const PointCloudGradient &gradient, int p_idx, float radius,
-                   const std::vector<int> &indices, const std::vector<float> &squared_distances, 
+      computeRIFT (const PointCloudIn &cloud, const PointCloudGradient &gradient, int p_idx, double radius,
+                   const std::vector<int> &indices, const std::vector<double> &squared_distances, 
                    Eigen::MatrixXf &rift_descriptor);
 
     protected:

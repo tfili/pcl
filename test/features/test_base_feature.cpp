@@ -135,7 +135,7 @@ TEST (PCL, BaseFeature)
 
   // solvePlaneParameters (Vector)
   Eigen::Vector4f plane_parameters;
-  float curvature;
+  double curvature;
   solvePlaneParameters (covariance_matrix, centroid3, plane_parameters, curvature);
   EXPECT_NEAR (fabs (plane_parameters[0]), 0.035592, 1e-4);
   EXPECT_NEAR (fabs (plane_parameters[1]), 0.369596, 1e-4);
@@ -144,7 +144,7 @@ TEST (PCL, BaseFeature)
   EXPECT_NEAR (curvature, 0.0693136, 1e-4);
 
   // solvePlaneParameters
-  float nx, ny, nz;
+  double nx, ny, nz;
   solvePlaneParameters (covariance_matrix, nx, ny, nz, curvature);
   EXPECT_NEAR (fabs (nx), 0.035592, 1e-4);
   EXPECT_NEAR (fabs (ny), 0.369596, 1e-4);

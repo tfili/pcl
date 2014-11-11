@@ -66,8 +66,8 @@ namespace pcl
         class Model
         {
           public:
-            Model (const PointCloudIn& points, const PointCloudN& normals, float voxel_size, const std::string& object_name,
-                   float frac_of_points_for_registration, void* user_data = NULL)
+            Model (const PointCloudIn& points, const PointCloudN& normals, double voxel_size, const std::string& object_name,
+                   double frac_of_points_for_registration, void* user_data = NULL)
             : obj_name_(object_name),
               user_data_ (user_data)
             {
@@ -79,7 +79,7 @@ namespace pcl
 
               // Initialize
               std::vector<ORROctree::Node*>::const_iterator it = full_leaves.begin ();
-              const float *p = (*it)->getData ()->getPoint ();
+              const double *p = (*it)->getData ()->getPoint ();
               aux::copy3 (p, octree_center_of_mass_);
               bounds_of_octree_points_[0] = bounds_of_octree_points_[1] = p[0];
               bounds_of_octree_points_[2] = bounds_of_octree_points_[3] = p[1];
@@ -94,9 +94,9 @@ namespace pcl
 
               int num_octree_points = static_cast<int> (full_leaves.size ());
               // Finalize the center of mass computation
-              aux::mult3 (octree_center_of_mass_, 1.0f/static_cast<float> (num_octree_points));
+              aux::mult3 (octree_center_of_mass_, 1.0f/static_cast<double> (num_octree_points));
 
-              int num_points_for_registration = static_cast<int> (static_cast<float> (num_octree_points)*frac_of_points_for_registration);
+              int num_points_for_registration = static_cast<int> (static_cast<double> (num_octree_points)*frac_of_points_for_registration);
               points_for_registration_.resize (static_cast<size_t> (num_points_for_registration));
 
               // Prepare for random point sampling
@@ -144,13 +144,13 @@ namespace pcl
               return (user_data_);
             }
 
-            inline const float*
+            inline const double*
             getOctreeCenterOfMass () const
             {
               return (octree_center_of_mass_);
             }
 
-            inline const float*
+            inline const double*
             getBoundsOfOctreePoints () const
             {
               return (bounds_of_octree_points_);
@@ -165,20 +165,20 @@ namespace pcl
           protected:
             const std::string obj_name_;
             ORROctree octree_;
-            float octree_center_of_mass_[3];
-            float bounds_of_octree_points_[6];
+            double octree_center_of_mass_[3];
+            double bounds_of_octree_points_[6];
             PointCloudIn points_for_registration_;
             void* user_data_;
         };
 
         typedef std::list<std::pair<const ORROctree::Node::Data*, const ORROctree::Node::Data*> > node_data_pair_list;
         typedef std::map<const Model*, node_data_pair_list> HashTableCell;
-        typedef VoxelStructure<HashTableCell, float> HashTable;
+        typedef VoxelStructure<HashTableCell, double> HashTable;
 
       public:
         /** \brief This class is used by 'ObjRecRANSAC' to maintain the object models to be recognized. Normally, you do not need to use
           * this class directly. */
-        ModelLibrary (float pair_width, float voxel_size, float max_coplanarity_angle = 3.0f*AUX_DEG_TO_RADIANS/*3 degrees*/);
+        ModelLibrary (double pair_width, double voxel_size, double max_coplanarity_angle = 3.0f*AUX_DEG_TO_RADIANS/*3 degrees*/);
         virtual ~ModelLibrary ()
         {
           this->clear();
@@ -192,7 +192,7 @@ namespace pcl
           * be ignored in the off-line model pre-processing and in the online recognition phases. This makes sense only if
           * "ignore co-planar points" is on. Call this method before calling addModel. */
         inline void
-        setMaxCoplanarityAngleDegrees (float max_coplanarity_angle_degrees)
+        setMaxCoplanarityAngleDegrees (double max_coplanarity_angle_degrees)
         {
           max_coplanarity_angle_ = max_coplanarity_angle_degrees*AUX_DEG_TO_RADIANS;
         }
@@ -224,7 +224,7 @@ namespace pcl
           * Returns true if model successfully added and false otherwise (e.g., if object_name is not unique). */
         bool
         addModel (const PointCloudIn& points, const PointCloudN& normals, const std::string& object_name,
-                  float frac_of_points_for_registration, void* user_data = NULL);
+                  double frac_of_points_for_registration, void* user_data = NULL);
 
         /** \brief Returns the hash table built by this instance. */
         inline const HashTable&
@@ -259,9 +259,9 @@ namespace pcl
         addToHashTable (Model* model, const ORROctree::Node::Data* data1, const ORROctree::Node::Data* data2);
 
       protected:
-        float pair_width_;
-        float voxel_size_;
-        float max_coplanarity_angle_;
+        double pair_width_;
+        double voxel_size_;
+        double max_coplanarity_angle_;
         bool ignore_coplanar_opps_;
 
         std::map<std::string,Model*> models_;

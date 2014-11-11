@@ -465,7 +465,7 @@ namespace pcl
         //const PointT& pt0 = (*input_)[shuffled_indices_[0]];
 
         std::vector<int> indices;
-        std::vector<float> sqr_dists;
+        std::vector<double> sqr_dists;
 
         // If indices have been set when the search object was constructed,
         // radiusSearch() expects an index into the indices vector as its

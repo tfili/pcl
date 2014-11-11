@@ -67,7 +67,7 @@ namespace pcl
   inline void
   solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
                         const Eigen::Vector4f &point,
-                        Eigen::Vector4f &plane_parameters, float &curvature);
+                        Eigen::Vector4f &plane_parameters, double &curvature);
 
   /** \brief Solve the eigenvalues and eigenvectors of a given 3x3 covariance matrix, and estimate the least-squares
     * plane normal and surface curvature.
@@ -83,7 +83,7 @@ namespace pcl
     */
   inline void
   solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-                        float &nx, float &ny, float &nz, float &curvature);
+                        double &nx, double &ny, double &nz, double &curvature);
 
   ////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,8 +122,8 @@ namespace pcl
 
       typedef pcl::PointCloud<PointOutT> PointCloudOut;
 
-      typedef boost::function<int (size_t, double, std::vector<int> &, std::vector<float> &)> SearchMethod;
-      typedef boost::function<int (const PointCloudIn &cloud, size_t index, double, std::vector<int> &, std::vector<float> &)> SearchMethodSurface;
+      typedef boost::function<int (size_t, double, std::vector<int> &, std::vector<double> &)> SearchMethod;
+      typedef boost::function<int (const PointCloudIn &cloud, size_t index, double, std::vector<int> &, std::vector<double> &)> SearchMethodSurface;
 
     public:
       /** \brief Empty constructor. */
@@ -268,7 +268,7 @@ namespace pcl
         */
       inline int
       searchForNeighbors (size_t index, double parameter,
-                          std::vector<int> &indices, std::vector<float> &distances) const
+                          std::vector<int> &indices, std::vector<double> &distances) const
       {
         return (search_method_surface_ (*input_, index, parameter, indices, distances));
       }
@@ -286,7 +286,7 @@ namespace pcl
         */
       inline int
       searchForNeighbors (const PointCloudIn &cloud, size_t index, double parameter,
-                          std::vector<int> &indices, std::vector<float> &distances) const
+                          std::vector<int> &indices, std::vector<double> &distances) const
       {
         return (search_method_surface_ (cloud, index, parameter, indices, distances));
       }

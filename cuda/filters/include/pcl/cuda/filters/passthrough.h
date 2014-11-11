@@ -59,7 +59,7 @@ namespace pcl_cuda
   struct isFiniteSOA
   {
     __inline__ __device__ bool
-    operator () (const float &pt)
+    operator () (const double &pt)
     {
       return (isfinite (pt));
     }
@@ -169,7 +169,7 @@ namespace pcl_cuda
           // Allocate enough space
           output.resize (input_->size ());
           // Copy data
-          Device<float>::type::iterator nr_points = thrust::copy_if (input_->points_x.begin (), input_->points_x.end (), output.points_x.begin (), isFiniteSOA ());
+          Device<double>::type::iterator nr_points = thrust::copy_if (input_->points_x.begin (), input_->points_x.end (), output.points_x.begin (), isFiniteSOA ());
           nr_points = thrust::copy_if (input_->points_y.begin (), input_->points_y.end (), output.points_y.begin (), isFiniteSOA ());
           nr_points = thrust::copy_if (input_->points_z.begin (), input_->points_z.end (), output.points_z.begin (), isFiniteSOA ());
           output.resize (nr_points - output.points_z.begin ());

@@ -51,7 +51,7 @@ main (int argc, char **argv)
   // Downsample
   pcl::console::print_highlight ("Downsampling...\n");
   pcl::VoxelGrid<PointNT> grid;
-  const float leaf = 0.005f;
+  const double leaf = 0.005f;
   grid.setLeafSize (leaf, leaf, leaf);
   grid.setInputCloud (object);
   grid.filter (*object);

@@ -329,7 +329,7 @@ namespace pcl
        * \param comparison_transform the transformation of the comparison.
        */
       TfQuadraticXYZComparison (const pcl::ComparisonOps::CompareOp op, const Eigen::Matrix3f &comparison_matrix,
-                                const Eigen::Vector3f &comparison_vector, const float &comparison_scalar,
+                                const Eigen::Vector3f &comparison_vector, const double &comparison_scalar,
                                 const Eigen::Affine3f &comparison_transform = Eigen::Affine3f::Identity ());
 
       /** \brief set the operator "[OP]" of the comparison "p'Ap + 2v'p + c [OP] 0".
@@ -382,7 +382,7 @@ namespace pcl
       /** \brief set the scalar "c" of the comparison "p'Ap + 2v'p + c [OP] 0".
        */
       inline void
-      setComparisonScalar (const float &scalar)
+      setComparisonScalar (const double &scalar)
       {
         comp_scalar_ = scalar;
       }
@@ -432,7 +432,7 @@ namespace pcl
       Eigen::Matrix4f comp_matr_;
       Eigen::Vector4f comp_vect_;
 
-      float comp_scalar_;
+      double comp_scalar_;
 
     private:
       Eigen::Matrix4f tf_comp_matr_;
@@ -617,7 +617,7 @@ namespace pcl
         */
       ConditionalRemoval (int extract_removed_indices = false) :
         Filter<PointT>::Filter (extract_removed_indices), capable_ (false), keep_organized_ (false), condition_ (),
-        user_filter_value_ (std::numeric_limits<float>::quiet_NaN ())
+        user_filter_value_ (std::numeric_limits<double>::quiet_NaN ())
       {
         filter_name_ = "ConditionalRemoval";
       }
@@ -631,7 +631,7 @@ namespace pcl
       "please use the setCondition (ConditionBasePtr condition) function instead.")
       ConditionalRemoval (ConditionBasePtr condition, bool extract_removed_indices = false) :
         Filter<PointT>::Filter (extract_removed_indices), capable_ (false), keep_organized_ (false), condition_ (),
-        user_filter_value_ (std::numeric_limits<float>::quiet_NaN ())
+        user_filter_value_ (std::numeric_limits<double>::quiet_NaN ())
       {
         filter_name_ = "ConditionalRemoval";
         setCondition (condition);
@@ -663,7 +663,7 @@ namespace pcl
         * \param val the user given value that the filtered point dimensions should be set to
         */
       inline void
-      setUserFilterValue (float val)
+      setUserFilterValue (double val)
       {
         user_filter_value_ = val;
       }
@@ -698,7 +698,7 @@ namespace pcl
       /** \brief User given value to be set to any filtered point. Casted to
         * the correct field type. 
         */
-      float user_filter_value_;
+      double user_filter_value_;
   };
 }
 

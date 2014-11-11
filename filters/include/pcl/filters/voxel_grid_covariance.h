@@ -412,7 +412,7 @@ namespace pcl
        */
       int
       nearestKSearch (const PointT &point, int k,
-                      std::vector<LeafConstPtr> &k_leaves, std::vector<float> &k_sqr_distances)
+                      std::vector<LeafConstPtr> &k_leaves, std::vector<double> &k_sqr_distances)
       {
         k_leaves.clear ();
 
@@ -447,7 +447,7 @@ namespace pcl
        */
       inline int
       nearestKSearch (const PointCloud &cloud, int index, int k,
-                      std::vector<LeafConstPtr> &k_leaves, std::vector<float> &k_sqr_distances)
+                      std::vector<LeafConstPtr> &k_leaves, std::vector<double> &k_sqr_distances)
       {
         if (index >= static_cast<int> (cloud.points.size ()) || index < 0)
           return (0);
@@ -466,7 +466,7 @@ namespace pcl
        */
       int
       radiusSearch (const PointT &point, double radius, std::vector<LeafConstPtr> &k_leaves,
-                    std::vector<float> &k_sqr_distances, unsigned int max_nn = 0)
+                    std::vector<double> &k_sqr_distances, unsigned int max_nn = 0)
       {
         k_leaves.clear ();
 
@@ -502,7 +502,7 @@ namespace pcl
        */
       inline int
       radiusSearch (const PointCloud &cloud, int index, double radius,
-                    std::vector<LeafConstPtr> &k_leaves, std::vector<float> &k_sqr_distances,
+                    std::vector<LeafConstPtr> &k_leaves, std::vector<double> &k_sqr_distances,
                     unsigned int max_nn = 0)
       {
         if (index >= static_cast<int> (cloud.points.size ()) || index < 0)

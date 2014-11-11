@@ -66,11 +66,11 @@ namespace pcl
       * double score = tve.validateTransformation (source, target, transformation);
       * \endcode
       *
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class TransformationValidationEuclidean
     {
       public:
@@ -250,7 +250,7 @@ namespace pcl
             virtual ~MyPointRepresentation () {}
 
             virtual void
-            copyToFloatArray (const PointTarget &p, float * out) const
+            copyToFloatArray (const PointTarget &p, double * out) const
             {
               out[0] = p.x;
               out[1] = p.y;

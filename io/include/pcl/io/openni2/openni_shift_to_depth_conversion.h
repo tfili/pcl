@@ -85,7 +85,7 @@ namespace openni_wrapper
           // shift to depth calculation from opnni
           dFixedRefX = (static_cast<double>(i - nConstShift) / nParamCoeff)-0.375;
           dMetric = dFixedRefX * dPlanePixelSize;
-          lookupTable_[i] = static_cast<float>((nShiftScale * ((dMetric * dPlaneDsr / (dPlaneDcl - dMetric)) + dPlaneDsr) ) / 1000.0f);
+          lookupTable_[i] = static_cast<double>((nShiftScale * ((dMetric * dPlaneDsr / (dPlaneDcl - dMetric)) + dPlaneDsr) ) / 1000.0f);
         }
 
         init_ = true;
@@ -93,14 +93,14 @@ namespace openni_wrapper
 
       /** \brief Generate a look-up table for converting openni shift values to depth
          */
-      inline float
+      inline double
       shiftToDepth (uint16_t shift_val)
       {
         assert (init_);
 
-        static const float bad_point = std::numeric_limits<float>::quiet_NaN ();
+        static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
-        float ret = bad_point;
+        double ret = bad_point;
 
         // lookup depth value in shift lookup table
         if (shift_val<lookupTable_.size())
@@ -115,7 +115,7 @@ namespace openni_wrapper
       }
 
     protected:
-      std::vector<float> lookupTable_;
+      std::vector<double> lookupTable_;
       bool init_;
   } ;
 }

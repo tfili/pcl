@@ -60,7 +60,7 @@ namespace pcl
       public:
 
         static const int num_directions = 31;
-        typedef Eigen::Matrix <float, 4, num_directions> Vertices;
+        typedef Eigen::Matrix <double, 4, num_directions> Vertices;
 
         Dome ();
 

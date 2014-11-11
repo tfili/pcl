@@ -67,14 +67,14 @@ namespace pcl
         * \param[in] frames_per_second frames per second. If 0, start() functions like a trigger, publishing the next PCD in the list.
         * \param[in] repeat whether to play PCD file in an endless loop or not.
         */
-      PCDGrabberBase (const std::string& pcd_file, float frames_per_second, bool repeat);
+      PCDGrabberBase (const std::string& pcd_file, double frames_per_second, bool repeat);
 
       /** \brief Constructor taking a list of paths to PCD files, that are played in the order they appear in the list.
         * \param[in] pcd_files vector of paths to PCD files.
         * \param[in] frames_per_second frames per second. If 0, start() functions like a trigger, publishing the next PCD in the list.
         * \param[in] repeat whether to play PCD file in an endless loop or not.
         */
-      PCDGrabberBase (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat);
+      PCDGrabberBase (const std::vector<std::string>& pcd_files, double frames_per_second, bool repeat);
 
       /** \brief Copy constructor.
         * \param[in] src the PCD Grabber base object to copy into this
@@ -124,7 +124,7 @@ namespace pcl
       rewind ();
 
       /** \brief Returns the frames_per_second. 0 if grabber is trigger-based */
-      virtual float 
+      virtual double 
       getFramesPerSecond () const;
 
       /** \brief Returns whether the repeat flag is on */
@@ -156,8 +156,8 @@ namespace pcl
   template <typename PointT> class PCDGrabber : public PCDGrabberBase, public FileGrabber<PointT>
   {
     public:
-      PCDGrabber (const std::string& pcd_path, float frames_per_second = 0, bool repeat = false);
-      PCDGrabber (const std::vector<std::string>& pcd_files, float frames_per_second = 0, bool repeat = false);
+      PCDGrabber (const std::string& pcd_path, double frames_per_second = 0, bool repeat = false);
+      PCDGrabber (const std::vector<std::string>& pcd_files, double frames_per_second = 0, bool repeat = false);
       
       /** \brief Virtual destructor. */
       virtual ~PCDGrabber () throw () {}
@@ -179,33 +179,33 @@ namespace pcl
 #ifdef HAVE_OPENNI
       boost::signals2::signal<void (const boost::shared_ptr<openni_wrapper::DepthImage>&)>*     depth_image_signal_;
       boost::signals2::signal<void (const boost::shared_ptr<openni_wrapper::Image>&)>*     image_signal_;
-      boost::signals2::signal<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant)>*     image_depth_image_signal_;
+      boost::signals2::signal<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double constant)>*     image_depth_image_signal_;
 #endif
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   template<typename PointT>
-  PCDGrabber<PointT>::PCDGrabber (const std::string& pcd_path, float frames_per_second, bool repeat)
+  PCDGrabber<PointT>::PCDGrabber (const std::string& pcd_path, double frames_per_second, bool repeat)
   : PCDGrabberBase (pcd_path, frames_per_second, repeat)
   {
     signal_ = createSignal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>();
 #ifdef HAVE_OPENNI
     depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::DepthImage>&)> ();
     image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::Image>&)> ();
-    image_depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant)> ();
+    image_depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double constant)> ();
 #endif
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   template<typename PointT>
-  PCDGrabber<PointT>::PCDGrabber (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat)
+  PCDGrabber<PointT>::PCDGrabber (const std::vector<std::string>& pcd_files, double frames_per_second, bool repeat)
     : PCDGrabberBase (pcd_files, frames_per_second, repeat), signal_ ()
   {
     signal_ = createSignal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>();
 #ifdef HAVE_OPENNI
     depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::DepthImage>&)> ();
     image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::Image>&)> ();
-    image_depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant)> ();
+    image_depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double constant)> ();
 #endif
   }
 

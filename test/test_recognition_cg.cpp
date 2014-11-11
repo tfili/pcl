@@ -83,7 +83,7 @@ computeRmsE (const PointCloud<PointType>::ConstPtr &model, const PointCloud<Poin
   int found_points = 0;
 
   vector<int> neigh_indices (1);
-  vector<float> neigh_sqr_dists (1);
+  vector<double> neigh_sqr_dists (1);
   for (size_t i = 0; i < transformed_model.size (); ++i)
   {
 
@@ -223,7 +223,7 @@ main (int argc, char** argv)
     if ( pcl_isfinite( scene_descriptors_->at (i).descriptor[0] ) )
     {
       vector<int> neigh_indices (1);
-      vector<float> neigh_sqr_dists (1);
+      vector<double> neigh_sqr_dists (1);
       int found_neighs = match_search.nearestKSearch (scene_descriptors_->at (i), 1, neigh_indices, neigh_sqr_dists);
       if(found_neighs == 1 && neigh_sqr_dists[0] < 0.25f)
       {

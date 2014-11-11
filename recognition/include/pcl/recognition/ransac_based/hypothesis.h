@@ -60,10 +60,10 @@ namespace pcl
         : obj_model_ (obj_model)
         {}
 
-        HypothesisBase (const ModelLibrary::Model* obj_model, const float* rigid_transform)
+        HypothesisBase (const ModelLibrary::Model* obj_model, const double* rigid_transform)
         : obj_model_ (obj_model)
         {
-          memcpy (rigid_transform_, rigid_transform, 12*sizeof (float));
+          memcpy (rigid_transform_, rigid_transform, 12*sizeof (double));
         }
 
         virtual  ~HypothesisBase (){}
@@ -75,7 +75,7 @@ namespace pcl
         }
 
       public:
-        float rigid_transform_[12];
+        double rigid_transform_[12];
         const ModelLibrary::Model* obj_model_;
     };
 
@@ -101,7 +101,7 @@ namespace pcl
         const Hypothesis&
         operator =(const Hypothesis& src)
         {
-          memcpy (this->rigid_transform_, src.rigid_transform_, 12*sizeof (float));
+          memcpy (this->rigid_transform_, src.rigid_transform_, 12*sizeof (double));
           this->obj_model_  = src.obj_model_;
           this->match_confidence_  = src.match_confidence_;
           this->explained_pixels_ = src.explained_pixels_;
@@ -122,10 +122,10 @@ namespace pcl
         }
 
         void
-        computeBounds (float bounds[6]) const
+        computeBounds (double bounds[6]) const
         {
-          const float *b = obj_model_->getBoundsOfOctreePoints ();
-          float p[3];
+          const double *b = obj_model_->getBoundsOfOctreePoints ();
+          double p[3];
 
           // Initialize 'bounds'
           aux::transform (rigid_transform_, b[0], b[2], b[4], p);
@@ -144,13 +144,13 @@ namespace pcl
         }
 
         void
-        computeCenterOfMass (float center_of_mass[3]) const
+        computeCenterOfMass (double center_of_mass[3]) const
         {
           aux::transform (rigid_transform_, obj_model_->getOctreeCenterOfMass (), center_of_mass);
         }
 
       public:
-        float match_confidence_;
+        double match_confidence_;
         std::set<int> explained_pixels_;
         int linear_id_;
     };

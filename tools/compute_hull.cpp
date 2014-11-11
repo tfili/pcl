@@ -51,7 +51,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float default_alpha = 0.15f;
+double default_alpha = 0.15f;
 
 void
 printHelp (int, char **argv)
@@ -66,7 +66,7 @@ printHelp (int, char **argv)
 void
 compute (PointCloud<PointXYZ>::ConstPtr cloud_in,
          bool convex_concave_hull,
-         float alpha,
+         double alpha,
          PolygonMesh &mesh_out)
 {
   if (!convex_concave_hull)
@@ -101,7 +101,7 @@ main (int argc, char** argv)
 
   // Command line parsing
   bool convex_concave_hull = false;
-  float alpha = default_alpha;
+  double alpha = default_alpha;
 
   if (parse_argument (argc, argv, "-alpha", alpha) != -1)
     convex_concave_hull = true;

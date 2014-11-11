@@ -55,14 +55,14 @@ struct DataGenerator
     size_t data_size;            
     size_t tests_num;
 
-    float cube_size;
-    float max_radius;     
+    double cube_size;
+    double max_radius;     
 
-    float shared_radius;
+    double shared_radius;
 
     std::vector<PointType> points;
     std::vector<PointType> queries;
-    std::vector<float> radiuses;
+    std::vector<double> radiuses;
     std::vector< std::vector<int> > bfresutls;
 
     std::vector<int> indices;
@@ -80,9 +80,9 @@ struct DataGenerator
         points.resize(data_size);
         for(size_t i = 0; i < data_size; ++i)
         {            
-            points[i].x = ((float)rand())/RAND_MAX * cube_size;  
-            points[i].y = ((float)rand())/RAND_MAX * cube_size;  
-            points[i].z = ((float)rand())/RAND_MAX * cube_size;
+            points[i].x = ((double)rand())/RAND_MAX * cube_size;  
+            points[i].y = ((double)rand())/RAND_MAX * cube_size;  
+            points[i].z = ((double)rand())/RAND_MAX * cube_size;
         }
         
 
@@ -90,17 +90,17 @@ struct DataGenerator
         radiuses.resize(tests_num);
         for (size_t i = 0; i < tests_num; ++i)
         {            
-            queries[i].x = ((float)rand())/RAND_MAX * cube_size;  
-            queries[i].y = ((float)rand())/RAND_MAX * cube_size;  
-            queries[i].z = ((float)rand())/RAND_MAX * cube_size;  		
-            radiuses[i]  = ((float)rand())/RAND_MAX * max_radius;	
+            queries[i].x = ((double)rand())/RAND_MAX * cube_size;  
+            queries[i].y = ((double)rand())/RAND_MAX * cube_size;  
+            queries[i].z = ((double)rand())/RAND_MAX * cube_size;  		
+            radiuses[i]  = ((double)rand())/RAND_MAX * max_radius;	
         };        
 
         for(size_t i = 0; i < tests_num/2; ++i)
             indices.push_back(i*2);
     }
 
-    void bruteForceSearch(bool log = false, float radius = -1.f)
+    void bruteForceSearch(bool log = false, double radius = -1.f)
     {        
         if (log)
             std::cout << "BruteForceSearch";
@@ -120,16 +120,16 @@ struct DataGenerator
             std::vector<int>& curr_res = bfresutls[i];
             curr_res.clear();
                         
-            float query_radius = radius > 0 ? radius : radiuses[i];
+            double query_radius = radius > 0 ? radius : radiuses[i];
             const PointType& query = queries[i];
 
             for(size_t ind = 0; ind < points.size(); ++ind)
             {
                 const PointType& point = points[ind];
 
-                float dx = query.x - point.x;
-                float dy = query.y - point.y;
-                float dz = query.z - point.z;
+                double dx = query.x - point.x;
+                double dy = query.y - point.y;
+                double dz = query.z - point.z;
 
                 if (dx*dx + dy*dy + dz*dz < query_radius * query_radius)
                     curr_res.push_back(ind);

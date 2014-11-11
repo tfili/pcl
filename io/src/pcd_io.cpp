@@ -149,10 +149,10 @@ pcl::PCDReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
   // Seek at the given offset
   fs.seekg (offset, std::ios::beg);
 
-  // field_sizes represents the size of one element in a field (e.g., float = 4, char = 1)
+  // field_sizes represents the size of one element in a field (e.g., double = 4, char = 1)
   // field_counts represents the number of elements in a field (e.g., x = 1, normal_x = 1, fpfh = 33)
   std::vector<int> field_sizes, field_counts;
-  // field_types represents the type of data in a field (e.g., F = float, U = unsigned)
+  // field_types represents the type of data in a field (e.g., F = double, U = unsigned)
   std::vector<char> field_types;
   std::vector<std::string> st;
 
@@ -310,7 +310,7 @@ pcl::PCDReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
         if (st.size () < 8)
           throw "Not enough number of elements in <VIEWPOINT>! Need 7 values (tx ty tz qw qx qy qz).";
 
-        float x, y, z, w;
+        double x, y, z, w;
         sstream >> x >> y >> z ;
         origin      = Eigen::Vector4f (x, y, z, 0.0f);
         sstream >> w >> x >> y >> z;
@@ -432,10 +432,10 @@ pcl::PCDReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
   // Seek at the given offset
   fs.seekg (offset, std::ios::beg);
 
-  // field_sizes represents the size of one element in a field (e.g., float = 4, char = 1)
+  // field_sizes represents the size of one element in a field (e.g., double = 4, char = 1)
   // field_counts represents the number of elements in a field (e.g., x = 1, normal_x = 1, fpfh = 33)
   std::vector<int> field_sizes, field_counts;
-  // field_types represents the type of data in a field (e.g., F = float, U = unsigned)
+  // field_types represents the type of data in a field (e.g., F = double, U = unsigned)
   std::vector<char> field_types;
   std::vector<std::string> st;
 
@@ -1602,12 +1602,12 @@ pcl::PCDWriter::writeBinaryCompressed (const std::string &file_name, const pcl::
     }
   }
 
-  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<float> (data_size) * 1.5f + 8.0f)));
+  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<double> (data_size) * 1.5f + 8.0f)));
   // Compress the valid data
   unsigned int compressed_size = pcl::lzfCompress (only_valid_data, 
                                                    static_cast<unsigned int> (data_size), 
                                                    &temp_buf[8], 
-                                                   static_cast<unsigned int> (static_cast<float> (data_size) * 1.5f));
+                                                   static_cast<unsigned int> (static_cast<double> (data_size) * 1.5f));
   unsigned int compressed_final_size = 0;
   // Was the compression successful?
   if (compressed_size)

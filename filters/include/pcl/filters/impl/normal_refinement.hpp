@@ -81,7 +81,7 @@ pcl::NormalRefinement<NormalT>::applyFilter (PointCloud &output)
     PointCloud tmp = output;
     
     // Mean change in direction, measured by dot products
-    float ddot = 0.0f;
+    double ddot = 0.0f;
     
     // Loop over all points in current output and write refined normal to tmp
     int num_valids = 0;
@@ -101,7 +101,7 @@ pcl::NormalRefinement<NormalT>::applyFilter (PointCloud &output)
     }
     
     // Take mean of similarities
-    ddot /= static_cast<float> (num_valids);
+    ddot /= static_cast<double> (num_valids);
     
     // Negate to since we want an error measure to approach zero
     ddot = 1.0f - ddot;

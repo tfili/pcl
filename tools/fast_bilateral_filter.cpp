@@ -47,8 +47,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float default_sigma_s = 5.0f;
-float default_sigma_r = 0.03f;
+double default_sigma_s = 5.0f;
+double default_sigma_r = 0.03f;
 
 void
 printHelp (int, char **argv)
@@ -76,7 +76,7 @@ loadCloud (const string &filename, pcl::PCLPointCloud2 &cloud,
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         float sigma_s = 5.f, float sigma_r = 0.03f)
+         double sigma_s = 5.f, double sigma_r = 0.03f)
 {
   // Convert data to PointCloud<T>
   PointCloud<PointXYZ>::Ptr xyz (new PointCloud<PointXYZ>);
@@ -110,7 +110,7 @@ saveCloud (const string &filename, const pcl::PCLPointCloud2 &output,
 }
 
 int
-batchProcess (const vector<string> &pcd_files, string &output_dir, float sigma_s, float sigma_r)
+batchProcess (const vector<string> &pcd_files, string &output_dir, double sigma_s, double sigma_r)
 {
 #if _OPENMP
 #pragma omp parallel for
@@ -157,8 +157,8 @@ main (int argc, char** argv)
   bool batch_mode = false;
 
   // Command line parsing
-  float sigma_s = default_sigma_s;
-  float sigma_r = default_sigma_r;
+  double sigma_s = default_sigma_s;
+  double sigma_r = default_sigma_r;
   parse_argument (argc, argv, "-sigma_s", sigma_s);
   parse_argument (argc, argv, "-sigma_r", sigma_r);
   string input_dir, output_dir;

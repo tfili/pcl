@@ -59,13 +59,13 @@ namespace pcl
         * \param[in] factor the factor
         */
       inline void
-      setTargetReductionFactor (float factor)
+      setTargetReductionFactor (double factor)
       {
         target_reduction_factor_ = factor;
       }
 
       /** \brief Get the target reduction factor */
-      inline float
+      inline double
       getTargetReductionFactor ()
       {
         return target_reduction_factor_;
@@ -76,7 +76,7 @@ namespace pcl
       performProcessing (pcl::PolygonMesh &output);
 
     private:
-      float target_reduction_factor_;
+      double target_reduction_factor_;
 
       vtkSmartPointer<vtkPolyData> vtk_polygons_;
   };

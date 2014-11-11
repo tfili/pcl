@@ -77,7 +77,7 @@ namespace pcl
       /** \brief compute coherence between two pointclouds. */
       inline void
       compute (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices,
-               float &w_i);
+               double &w_i);
 
       /** \brief get a list of pcl::tracking::PointCoherence.*/
       inline std::vector<PointCoherencePtr>
@@ -107,7 +107,7 @@ namespace pcl
     protected:
       /** \brief Abstract method to compute coherence. */
       virtual void
-      computeCoherence (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, float &w_j) = 0;
+      computeCoherence (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, double &w_j) = 0;
       
       inline double calcPointCoherence (PointInT &source, PointInT &target);
       

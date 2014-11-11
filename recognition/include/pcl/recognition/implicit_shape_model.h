@@ -150,7 +150,7 @@ namespace pcl
         std::vector<int> k_ind_;
 
         /** \brief Stores square distances to the corresponding neighbours. */
-        std::vector<float> k_sqr_dist_;
+        std::vector<double> k_sqr_dist_;
     };
  
     /** \brief The assignment of this structure is to store the statistical/learned weights and other information
@@ -188,16 +188,16 @@ namespace pcl
       ISMModel & operator = (const ISMModel& other);
 
       /** \brief Stores statistical weights. */
-      std::vector<std::vector<float> > statistical_weights_;
+      std::vector<std::vector<double> > statistical_weights_;
 
       /** \brief Stores learned weights. */
-      std::vector<float> learned_weights_;
+      std::vector<double> learned_weights_;
 
       /** \brief Stores the class label for every direction. */
       std::vector<unsigned int> classes_;
 
       /** \brief Stores the sigma value for each class. This values were used to compute the learned weights. */
-      std::vector<float> sigmas_;
+      std::vector<double> sigmas_;
 
       /** \brief Stores the directions to objects center for each visual word. */
       Eigen::MatrixXf directions_to_center_;
@@ -289,7 +289,7 @@ namespace pcl
             * \param[in] max_count defines the max number of iterations
             * \param[in] epsilon defines the desired accuracy
             */
-          TC(int type, int max_count, float epsilon) :
+          TC(int type, int max_count, double epsilon) :
             type_ (type),
             max_count_ (max_count),
             epsilon_ (epsilon) {};
@@ -306,7 +306,7 @@ namespace pcl
           int max_count_;
 
           /** \brief Defines the accuracy for k-means clustering. */
-          float epsilon_;
+          double epsilon_;
         } TermCriteria;
 
         /** \brief Structure for storing the visual word. */
@@ -322,7 +322,7 @@ namespace pcl
           int class_;
 
           /** \brief Weight of the vote. */
-          float learned_weight_;
+          double learned_weight_;
 
           /** \brief Expected direction to center. */
           pcl::PointXYZ dir_to_center_;
@@ -368,14 +368,14 @@ namespace pcl
         setTrainingNormals (const std::vector< typename pcl::PointCloud<NormalT>::Ptr >& training_normals);
 
         /** \brief Returns the sampling size used for cloud simplification. */
-        float
+        double
         getSamplingSize ();
 
         /** \brief Changes the sampling size used for cloud simplification.
           * \param[in] sampling_size desired size of grid bin
           */
         void
-        setSamplingSize (float sampling_size);
+        setSamplingSize (double sampling_size);
 
         /** \brief Returns the current feature estimator used for extraction of the descriptors. */
         boost::shared_ptr<pcl::Feature<PointT, pcl::Histogram<FeatureSize> > >
@@ -399,7 +399,7 @@ namespace pcl
         setNumberOfClusters (unsigned int num_of_clusters);
 
         /** \brief Returns the array of sigma values. */
-        std::vector<float>
+        std::vector<double>
         getSigmaDists ();
 
         /** \brief This method allows to set the value of sigma used for calculating the learned weights for every single class.
@@ -409,7 +409,7 @@ namespace pcl
           * then it computes the average maximum distance and takes 10%. Note that each class has its own sigma value.
           */
         void
-        setSigmaDists (const std::vector<float>& training_sigmas);
+        setSigmaDists (const std::vector<double>& training_sigmas);
 
         /** \brief Returns the state of Nvot coeff from [Knopp et al., 2010, (4)],
           * if set to false then coeff is taken as 1.0. It is just a kind of heuristic.
@@ -464,7 +464,7 @@ namespace pcl
           * \param[out] sigmas computed sigmas.
           */
         void
-        calculateSigmas (std::vector<float>& sigmas);
+        calculateSigmas (std::vector<double>& sigmas);
 
         /** \brief This function forms a visual vocabulary and evaluates weights
           * described in [Knopp et al., 2010, (5)].
@@ -479,10 +479,10 @@ namespace pcl
         void
         calculateWeights (const std::vector< LocationInfo, Eigen::aligned_allocator<LocationInfo> >& locations,
                           const Eigen::MatrixXi &labels,
-                          std::vector<float>& sigmas,
+                          std::vector<double>& sigmas,
                           std::vector<std::vector<unsigned int> >& clusters,
-                          std::vector<std::vector<float> >& statistical_weights,
-                          std::vector<float>& learned_weights);
+                          std::vector<std::vector<double> >& statistical_weights,
+                          std::vector<double>& learned_weights);
 
         /** \brief Simplifies the cloud using voxel grid principles.
           * \param[in] in_point_cloud cloud that need to be simplified
@@ -571,7 +571,7 @@ namespace pcl
           * \param[in] vec_1 first vector
           * \param[in] vec_2 second vector
           */
-        float
+        double
         computeDistance (Eigen::VectorXf& vec_1, Eigen::VectorXf& vec_2);
 
         /** \brief Forbids the assignment operator. */
@@ -592,10 +592,10 @@ namespace pcl
         /** \brief This array stores the sigma values for each training class. If this array has a size equals 0, then
           * sigma values will be calculated automatically.
           */
-        std::vector<float> training_sigmas_;
+        std::vector<double> training_sigmas_;
 
         /** \brief This value is used for the simplification. It sets the size of grid bin. */
-        float sampling_size_;
+        double sampling_size_;
 
         /** \brief Stores the feature estimator. */
         boost::shared_ptr<pcl::Feature<PointT, pcl::Histogram<FeatureSize> > > feature_estimator_;
@@ -619,11 +619,11 @@ namespace pcl
 }
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::ISMPeak,
-  (float, x, x)
-  (float, y, y)
-  (float, z, z)
-  (float, density, ism_density)
-  (float, class_id, ism_class_id)
+  (double, x, x)
+  (double, y, y)
+  (double, z, z)
+  (double, density, ism_density)
+  (double, class_id, ism_class_id)
 )
 
 #endif  //#ifndef PCL_IMPLICIT_SHAPE_MODEL_H_

@@ -81,7 +81,7 @@ pcl::CRHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
   int nbins = nbins_;
   int bin_angle = 360 / nbins;
 
-  Eigen::Affine3f transformPC (Eigen::AngleAxisf (static_cast<float> (rotation), axis));
+  Eigen::Affine3f transformPC (Eigen::AngleAxisf (static_cast<double> (rotation), axis));
 
   pcl::PointCloud<pcl::PointNormal> grid;
   grid.points.resize (indices_->size ());
@@ -96,7 +96,7 @@ pcl::CRHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
 
   //fill spatial data vector
   kiss_fft_scalar * spatial_data = new kiss_fft_scalar[nbins];
-  float sum_w = 0, w = 0;
+  double sum_w = 0, w = 0;
   int bin = 0;
   for (size_t i = 0; i < grid.points.size (); ++i)
   {
