@@ -15,6 +15,17 @@ endif("${CMAKE_BUILD_TYPE}" STREQUAL "")
 project(PCL)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
+#############################################
+#           AGI Added Code
+#
+# This is so we don't have to search out
+# dependencies everytime we have to rebuild
+#############################################
+#set(BOOST_ROOT "../../AnalyticalGraphics/agi-point-cloud-converter/ThirdParty/boost_1_55_0/")
+set(EIGEN_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/dependencies/eigen")
+set(FLANN_LIBRARY "${CMAKE_SOURCE_DIR}/dependencies/flann-1.8.4/lib/${CMAKE_CFG_INTDIR}/flann.lib")
+set(FLANN_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/dependencies/flann-1.8.4/src/cpp")
+
 ### ---[ Find universal dependencies
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/" ${CMAKE_MODULE_PATH})
 
