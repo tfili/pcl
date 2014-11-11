@@ -78,7 +78,7 @@ namespace pcl
   
         eigen33 (cov, evecs, evals);
         //double curvature = evals.x / (evals.x + evals.y + evals.z);
-        double curvature = evals.x / (query_pt.z * (0.2f / 4.0f) * query_pt.z * (0.2f / 4.0f));
+        double curvature = evals.x / (query_pt.z * (0.2 / 4.0) * query_pt.z * (0.2 / 4.0));
   
         float3 mc = normalize (evecs.data[0]);
         // TODO: this should be an optional step, as it slows down eveything
@@ -107,7 +107,7 @@ namespace pcl
       {
         float3 query_pt = points_[idx];
         if (isnan(query_pt.z))
-          return make_float4 (0.0f,0.0f,0.0f,0.0f);
+          return make_float4 (0.0,0.0,0.0,0.0);
 
         int xIdx = idx % width_;
         int yIdx = idx / width_;
@@ -126,7 +126,7 @@ namespace pcl
         if (!west_valid & east_valid)
           horiz = points_[idx+1] - points_[idx];
         if (!west_valid & !east_valid)
-          return make_float4 (0.0f,0.0f,0.0f,1.0f);
+          return make_float4 (0.0,0.0,0.0,1.0);
 
         if (south_valid & north_valid)
           vert = points_[idx-width_] - points_[idx+width_];
@@ -135,7 +135,7 @@ namespace pcl
         if (!south_valid & north_valid)
           vert = points_[idx-width_] - points_[idx];
         if (!south_valid & !north_valid)
-          return make_float4 (0.0f,0.0f,0.0f,1.0f);
+          return make_float4 (0.0,0.0,0.0,1.0);
 
         float3 normal = cross (horiz, vert);
 
@@ -183,7 +183,7 @@ namespace pcl
                      normal.z * (query_pt.z - centroid.z) / sqrt(sqr_radius_) ; 
 
 
-        //return make_float4 (normal.x*proj, normal.y*proj, normal.z*proj, clamp (fabs (proj), 0.0f, 1.0f));
+        //return make_float4 (normal.x*proj, normal.y*proj, normal.z*proj, clamp (fabs (proj), 0.0, 1.0));
         return make_float4 (
            (centroid.x - query_pt.x) / sqrt(sqr_radius_) ,
            (centroid.y - query_pt.y) / sqrt(sqr_radius_) ,

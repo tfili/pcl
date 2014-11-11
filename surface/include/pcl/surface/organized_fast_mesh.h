@@ -85,12 +85,12 @@ namespace pcl
 
       /** \brief Constructor. Triangulation type defaults to \a QUAD_MESH. */
       OrganizedFastMesh ()
-      : max_edge_length_squared_ (0.025f)
+      : max_edge_length_squared_ (0.025)
       , triangle_pixel_size_rows_ (1)
       , triangle_pixel_size_columns_ (1)
       , triangulation_type_ (QUAD_MESH)
       , store_shadowed_faces_ (false)
-      , cos_angle_tolerance_ (fabsf (cosf (pcl::deg2rad (12.5f))))
+      , cos_angle_tolerance_ (fabsf (cos (pcl::deg2rad (12.5))))
       {
         check_tree_ = false;
       };
@@ -243,7 +243,7 @@ namespace pcl
         * \param[in] field_z_idx the Z coordinate of the point
         */
       inline void
-      resetPointData (const int &point_index, pcl::PolygonMesh &mesh, const double &value = 0.0f,
+      resetPointData (const int &point_index, pcl::PolygonMesh &mesh, const double &value = 0.0,
                       int field_x_idx = 0, int field_y_idx = 1, int field_z_idx = 2)
       {
         double new_value = value;
@@ -266,7 +266,7 @@ namespace pcl
         double distance_between_points = dir_b.norm ();
         double cos_angle = dir_a.dot (dir_b) / (distance_to_points*distance_between_points);
         if (cos_angle != cos_angle)
-          cos_angle = 1.0f;
+          cos_angle = 1.0;
         return (fabs (cos_angle) >= cos_angle_tolerance_);
         // TODO: check for both: angle almost 0/180 _and_ distance between points larger than noise level
       }

@@ -1064,7 +1064,7 @@ pcl::TextureMapping<PointInT>::getPointUVCoordinates(const PointInT &pt, const C
 
     // project point on camera's image plane
     UV_coordinates.x = static_cast<double> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
-    UV_coordinates.y = 1.0f - static_cast<double> ((focal_y * (pt.y / pt.z) + cy) / sizeY); //vertical
+    UV_coordinates.y = 1.0 - static_cast<double> ((focal_y * (pt.y / pt.z) + cy) / sizeY); //vertical
 
     // point is visible!
     if (UV_coordinates.x >= 0.0 && UV_coordinates.x <= 1.0 && UV_coordinates.y >= 0.0 && UV_coordinates.y <= 1.0)
@@ -1072,8 +1072,8 @@ pcl::TextureMapping<PointInT>::getPointUVCoordinates(const PointInT &pt, const C
   }
 
   // point is NOT visible by the camera
-  UV_coordinates.x = -1.0f;
-  UV_coordinates.y = -1.0f;
+  UV_coordinates.x = -1.0;
+  UV_coordinates.y = -1.0;
   return (false); // point was not visible by the camera
 }
 

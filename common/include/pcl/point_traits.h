@@ -284,7 +284,7 @@ namespace pcl
     * \code
     * PointT p;
     * typedef typename pcl::traits::fieldList<PointT>::type FieldList;
-    * pcl::for_each_type<FieldList> (pcl::SetIfFieldExists<PointT, double> (p, "intensity", 42.0f));
+    * pcl::for_each_type<FieldList> (pcl::SetIfFieldExists<PointT, double> (p, "intensity", 42.0));
     * \endcode
     */
   template <typename PointOutT, typename InT>

@@ -43,9 +43,9 @@ using std::cerr;
 namespace pcl 
 {
   /////////////////////////////////////////////////////////////////////////
-  RangeImagePlanar::RangeImagePlanar () : RangeImage (), focal_length_x_ (0.0f), focal_length_y_ (0.0f),
-                                          focal_length_x_reciprocal_ (0.0f), focal_length_y_reciprocal_ (0.0f),
-                                          center_x_ (0.0f), center_y_ (0.0f)
+  RangeImagePlanar::RangeImagePlanar () : RangeImage (), focal_length_x_ (0.0), focal_length_y_ (0.0),
+                                          focal_length_x_reciprocal_ (0.0), focal_length_y_reciprocal_ (0.0),
+                                          center_x_ (0.0), center_y_ (0.0)
   {
   }
 
@@ -62,16 +62,16 @@ namespace pcl
     //MEASURE_FUNCTION_TIME;
     reset ();
     
-    double original_angular_resolution = atanf (0.5f * static_cast<double> (di_width) / static_cast<double> (focal_length)) / (0.5f * static_cast<double> (di_width));
+    double original_angular_resolution = atan (0.5 * static_cast<double> (di_width) / static_cast<double> (focal_length)) / (0.5 * static_cast<double> (di_width));
     int skip = 1;
-    if (desired_angular_resolution >= 2.0f*original_angular_resolution)
+    if (desired_angular_resolution >= 2.0*original_angular_resolution)
       skip = static_cast<int> (pcl_lrint (floor (desired_angular_resolution / original_angular_resolution)));
 
     setAngularResolution (original_angular_resolution * static_cast<double> (skip));
     width  = di_width / skip;
     height = di_height / skip;
     focal_length_x_ = focal_length_y_ = focal_length / static_cast<double> (skip);
-    focal_length_x_reciprocal_ = focal_length_y_reciprocal_ = 1.0f / focal_length_x_;
+    focal_length_x_reciprocal_ = focal_length_y_reciprocal_ = 1.0 / focal_length_x_;
     center_x_ = static_cast<double> (di_width)  / static_cast<double> (2 * skip);
     center_y_ = static_cast<double> (di_height) / static_cast<double> (2 * skip);
     points.resize (width*height);
@@ -85,7 +85,7 @@ namespace pcl
       {
         PointWithRange& point = getPointNoCheck (x,y);
         double disparity = disparity_image[ (y*skip)*di_width + x*skip];
-        if (disparity <= 0.0f)
+        if (disparity <= 0.0)
         {
           //std::cout << disparity << ", "<<std::flush;
           point = unobserved_point;
@@ -121,18 +121,18 @@ namespace pcl
     //MEASURE_FUNCTION_TIME;
     reset ();
     
-    double original_angular_resolution = asinf (0.5f*static_cast<double> (di_width)/static_cast<double> (di_focal_length_x)) / (0.5f*static_cast<double> (di_width));
+    double original_angular_resolution = asin (0.5*static_cast<double> (di_width)/static_cast<double> (di_focal_length_x)) / (0.5*static_cast<double> (di_width));
     int skip = 1;
-    if (desired_angular_resolution >= 2.0f*original_angular_resolution)
+    if (desired_angular_resolution >= 2.0*original_angular_resolution)
       skip = static_cast<int> (pcl_lrint (floor (desired_angular_resolution / original_angular_resolution)));
 
     setAngularResolution (original_angular_resolution * static_cast<double> (skip));
     width  = di_width / skip;
     height = di_height / skip;
     focal_length_x_ = di_focal_length_x / static_cast<double> (skip);
-    focal_length_x_reciprocal_ = 1.0f / focal_length_x_;
+    focal_length_x_reciprocal_ = 1.0 / focal_length_x_;
     focal_length_y_ = di_focal_length_y / static_cast<double> (skip);
-    focal_length_y_reciprocal_ = 1.0f / focal_length_y_;
+    focal_length_y_reciprocal_ = 1.0 / focal_length_y_;
     center_x_ = static_cast<double> (di_center_x) / static_cast<double> (skip);
     center_y_ = static_cast<double> (di_center_y) / static_cast<double> (skip);
     points.resize (width * height);
@@ -143,7 +143,7 @@ namespace pcl
       {
         PointWithRange& point = getPointNoCheck (x, y);
         double depth = depth_image[ (y*skip)*di_width + x*skip];
-        if (depth <= 0.0f || !pcl_isfinite (depth))
+        if (depth <= 0.0 || !pcl_isfinite (depth))
         {
           point = unobserved_point;
           continue;
@@ -167,18 +167,18 @@ namespace pcl
     //MEASURE_FUNCTION_TIME;
     reset ();
     
-    double original_angular_resolution = asinf (0.5f*static_cast<double> (di_width)/static_cast<double> (di_focal_length_x)) / (0.5f*static_cast<double> (di_width));
+    double original_angular_resolution = asin (0.5*static_cast<double> (di_width)/static_cast<double> (di_focal_length_x)) / (0.5*static_cast<double> (di_width));
     int skip = 1;
-    if (desired_angular_resolution >= 2.0f*original_angular_resolution)
+    if (desired_angular_resolution >= 2.0*original_angular_resolution)
       skip = static_cast<int> (pcl_lrint (floor (desired_angular_resolution/original_angular_resolution)));
 
     setAngularResolution (original_angular_resolution * static_cast<double> (skip));
     width  = di_width / skip;
     height = di_height / skip;
     focal_length_x_ = di_focal_length_x / static_cast<double> (skip);
-    focal_length_x_reciprocal_ = 1.0f / focal_length_x_;
+    focal_length_x_reciprocal_ = 1.0 / focal_length_x_;
     focal_length_y_ = di_focal_length_y / static_cast<double> (skip);
-    focal_length_y_reciprocal_ = 1.0f / focal_length_y_;
+    focal_length_y_reciprocal_ = 1.0 / focal_length_y_;
     center_x_ = static_cast<double> (di_center_x) / static_cast<double> (skip);
     center_y_ = static_cast<double> (di_center_y) / static_cast<double> (skip);
     points.resize (width * height);
@@ -188,8 +188,8 @@ namespace pcl
       for (int x = 0; x < static_cast<int> (width); ++x)
       {
         PointWithRange& point = getPointNoCheck (x, y);
-        double depth = depth_image[ (y*skip)*di_width + x*skip] * 0.001f;
-        if (depth <= 0.0f || !pcl_isfinite (depth))
+        double depth = depth_image[ (y*skip)*di_width + x*skip] * 0.001;
+        if (depth <= 0.0 || !pcl_isfinite (depth))
         {
           point = unobserved_point;
           continue;
@@ -215,9 +215,9 @@ namespace pcl
     RangeImagePlanar& ret = * (static_cast<RangeImagePlanar*> (&half_image));
     
     ret.focal_length_x_ = focal_length_x_/2;
-    ret.focal_length_x_reciprocal_ = 1.0f/ret.focal_length_x_;
+    ret.focal_length_x_reciprocal_ = 1.0/ret.focal_length_x_;
     ret.focal_length_y_ = focal_length_y_/2;
-    ret.focal_length_y_reciprocal_ = 1.0f/ret.focal_length_y_;
+    ret.focal_length_y_reciprocal_ = 1.0/ret.focal_length_y_;
     ret.center_x_ = center_x_/2;
     ret.center_y_ = center_y_/2;
     BaseClass::getHalfImage (ret);
@@ -238,9 +238,9 @@ namespace pcl
     RangeImagePlanar& ret = * (static_cast<RangeImagePlanar*> (&sub_image));
     
     ret.focal_length_x_ = focal_length_x_ / static_cast<double> (combine_pixels);
-    ret.focal_length_x_reciprocal_ = 1.0f / ret.focal_length_x_;
+    ret.focal_length_x_reciprocal_ = 1.0 / ret.focal_length_x_;
     ret.focal_length_y_ = focal_length_x_ / static_cast<double> (combine_pixels);
-    ret.focal_length_y_reciprocal_ = 1.0f/ret.focal_length_y_;
+    ret.focal_length_y_reciprocal_ = 1.0/ret.focal_length_y_;
     ret.center_x_ = center_x_/2 - static_cast<double> (sub_image_image_offset_x);
     ret.center_y_ = center_y_/2 - static_cast<double> (sub_image_image_offset_y);
     BaseClass::getSubImage (sub_image_image_offset_x, sub_image_image_offset_y, sub_image_width,

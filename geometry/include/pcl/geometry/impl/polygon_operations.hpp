@@ -45,10 +45,10 @@ pcl::approximatePolygon (const PlanarPolygon<PointT>& polygon, PlanarPolygon<Poi
   const Eigen::Vector4d& coefficients = polygon.getCoefficients ();
   const typename pcl::PointCloud<PointT>::VectorType &contour = polygon.getContour ();
   
-  Eigen::Vector3d rotation_axis (coefficients[1], -coefficients[0], 0.0f);
+  Eigen::Vector3d rotation_axis (coefficients[1], -coefficients[0], 0.0);
   rotation_axis.normalize ();
 
-  double rotation_angle = acosf (coefficients [2]);
+  double rotation_angle = acos (coefficients [2]);
   Eigen::Affine3d transformation = Eigen::Translation3d (0, 0, coefficients [3]) * Eigen::AngleAxisd (rotation_angle, rotation_axis);
 
   typename pcl::PointCloud<PointT>::VectorType polygon2D (contour.size ());
@@ -81,7 +81,7 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
   
   if (closed)
   {
-    double max_distance = .0f;
+    double max_distance = .0;
     for (unsigned idx = 1; idx < polygon.size (); ++idx)
     {
       double distance = (polygon [0].x - polygon [idx].x) * (polygon [0].x - polygon [idx].x) + 
@@ -129,7 +129,7 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
     double line_y = polygon [currentInterval.second].x - polygon [currentInterval.first].x;
     double line_d = polygon [currentInterval.first].x * polygon [currentInterval.second].y - polygon [currentInterval.first].y * polygon [currentInterval.second].x;
     
-    double linelen = 1.0f / sqrtf (line_x * line_x + line_y * line_y);
+    double linelen = 1.0 / sqrt (line_x * line_x + line_y * line_y);
     
     line_x *= linelen;
     line_y *= linelen;
@@ -218,7 +218,7 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
       
       covariance.coeffRef (2) = covariance.coeff (1);
       
-      double norm = 1.0f / double (num_points);
+      double norm = 1.0 / double (num_points);
       centroid *= norm;
       covariance *= norm;
       covariance.coeffRef (0) -= centroid [0] * centroid [0];

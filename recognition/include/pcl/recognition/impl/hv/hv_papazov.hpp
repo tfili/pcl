@@ -179,7 +179,7 @@ template<typename ModelT, typename SceneT>
       {
         if (i != j)
         {
-          double n_conflicts = 0.f;
+          double n_conflicts = 0.;
           // count scene points explained by both models
           for (size_t k = 0; k < explained_by_RM_.size (); k++)
           {
@@ -202,7 +202,7 @@ template<typename ModelT, typename SceneT>
               }
 
               if (both_found)
-                n_conflicts += 1.f;
+                n_conflicts += 1.;
             }
           }
 

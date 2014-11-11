@@ -61,7 +61,7 @@ pcl::gpu::people::OrganizedPlaneDetector::OrganizedPlaneDetector(int rows, int c
   // Set NE defaults
   ne_.setNormalEstimationMethod (ne_.COVARIANCE_MATRIX);
   ne_.setMaxDepthChangeFactor (0.02f);
-  ne_.setNormalSmoothingSize (20.0f);
+  ne_.setNormalSmoothingSize (20.0);
 
   // Set MPS defaults
   mps_MinInliers_ = 10000;
@@ -112,7 +112,7 @@ pcl::gpu::people::OrganizedPlaneDetector::process(const PointCloud<PointTC>::Con
   {
     for(int idx = 0; idx < inlier_indices[plane].indices.size(); idx++)                               // iterate over all the indices in that plane
     {
-      P_l_host_.points[inlier_indices[plane].indices[idx]].probs[pcl::gpu::people::Background] = 1.f;   // set background at max
+      P_l_host_.points[inlier_indices[plane].indices[idx]].probs[pcl::gpu::people::Background] = 1.;   // set background at max
     }
   }
 }
@@ -144,7 +144,7 @@ pcl::gpu::people::OrganizedPlaneDetector::emptyHostLabelProbability(HostLabelPro
   {
     for(int label = 0; label < pcl::gpu::people::NUM_LABELS; label++)
     {
-      histogram.points[hist].probs[label] = 0.f;
+      histogram.points[hist].probs[label] = 0.;
     }
   }
 }
@@ -182,7 +182,7 @@ pcl::gpu::people::OrganizedPlaneDetector::copyAndClearHostLabelProbability(HostL
     for(int label = 0; label < pcl::gpu::people::NUM_LABELS; label++)
     {
       dst.points[hist].probs[label] = src.points[hist].probs[label];
-      src.points[hist].probs[label] = 0.f;
+      src.points[hist].probs[label] = 0.;
     }
   }
   return 1;

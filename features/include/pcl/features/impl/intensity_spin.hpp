@@ -65,14 +65,14 @@ pcl::IntensitySpinEstimation<PointInT, PointOutT>::computeIntensitySpinImage (
     max_intensity = (std::max) (max_intensity, cloud.points[indices[idx]].intensity);
   }
 
-  double constant = 1.0f / (2.0f * sigma_ * sigma_);
+  double constant = 1.0 / (2.0 * sigma_ * sigma_);
   // Compute the intensity spin image
   intensity_spin_image.setZero ();
   for (int idx = 0; idx < k; ++idx)
   {
     // Normalize distance and intensity values to: 0.0 <= d,i < nr_distance_bins,nr_intensity_bins
     const double eps = std::numeric_limits<double>::epsilon ();
-    double d = static_cast<double> (nr_distance_bins) * sqrtf (squared_distances[idx]) / (radius + eps);
+    double d = static_cast<double> (nr_distance_bins) * sqrt (squared_distances[idx]) / (radius + eps);
     double i = static_cast<double> (nr_intensity_bins) * 
               (cloud.points[indices[idx]].intensity - min_intensity) / (max_intensity - min_intensity + eps);
 
@@ -97,7 +97,7 @@ pcl::IntensitySpinEstimation<PointInT, PointOutT>::computeIntensitySpinImage (
         for (int d_idx = d_idx_min; d_idx <= d_idx_max; ++d_idx)
         {
           // Compute a "soft" update weight based on the distance between the point and the bin
-          double w = expf (-powf (d - static_cast<double> (d_idx), 2.0f) * constant - powf (i - static_cast<double> (i_idx), 2.0f) * constant);
+          double w = exp (-pow (d - static_cast<double> (d_idx), 2.0) * constant - pow (i - static_cast<double> (i_idx), 2.0) * constant);
           intensity_spin_image (i_idx, d_idx) += w;
         }
       }

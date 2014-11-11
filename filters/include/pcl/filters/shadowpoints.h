@@ -76,7 +76,7 @@ namespace pcl
       ShadowPoints (bool extract_removed_indices = false) : 
         FilterIndices<PointT> (extract_removed_indices),
         input_normals_ (), 
-        threshold_ (0.1f) 
+        threshold_ (0.1) 
       {
         filter_name_ = "ShadowPoints";
       }

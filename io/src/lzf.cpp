@@ -319,7 +319,7 @@ pcl::lzfDecompress (const void *const in_data,  unsigned int in_len,
     {
       unsigned int len = ctrl >> 5;
 
-      unsigned char *ref = op - ((ctrl & 0x1f) << 8) - 1;
+      unsigned char *ref = op - ((ctrl & 0x1) << 8) - 1;
 
       // Check for overflow
       if (ip >= in_end)

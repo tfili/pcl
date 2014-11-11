@@ -72,7 +72,7 @@ namespace pcl
 
       /** \brief Empty constructor for RGBPlaneCoefficientComparator. */
       RGBPlaneCoefficientComparator ()
-        : color_threshold_ (50.0f)
+        : color_threshold_ (50.0)
       {
       }
 
@@ -80,7 +80,7 @@ namespace pcl
         * \param[in] plane_coeff_d a reference to a vector of d coefficients of plane equations.  Must be the same size as the input cloud and input normals.  a, b, and c coefficients are in the input normals.
         */
       RGBPlaneCoefficientComparator (boost::shared_ptr<std::vector<double> >& plane_coeff_d) 
-        : PlaneCoefficientComparator<PointT, PointNT> (plane_coeff_d), color_threshold_ (50.0f)
+        : PlaneCoefficientComparator<PointT, PointNT> (plane_coeff_d), color_threshold_ (50.0)
       {
       }
       
@@ -116,7 +116,7 @@ namespace pcl
         double dx = input_->points[idx1].x - input_->points[idx2].x;
         double dy = input_->points[idx1].y - input_->points[idx2].y;
         double dz = input_->points[idx1].z - input_->points[idx2].z;
-        double dist = sqrtf (dx*dx + dy*dy + dz*dz);
+        double dist = sqrt (dx*dx + dy*dy + dz*dz);
         int dr = input_->points[idx1].r - input_->points[idx2].r;
         int dg = input_->points[idx1].g - input_->points[idx2].g;
         int db = input_->points[idx1].b - input_->points[idx2].b;

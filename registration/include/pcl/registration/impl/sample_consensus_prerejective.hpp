@@ -173,7 +173,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
     return;
   }
 
-  if (inlier_fraction_ < 0.0f || inlier_fraction_ > 1.0f)
+  if (inlier_fraction_ < 0.0 || inlier_fraction_ > 1.0)
   {
     PCL_ERROR ("[pcl::%s::computeTransformation] ", getClassName ().c_str ());
     PCL_ERROR ("Illegal inlier fraction %f, must be in [0,1]!\n",
@@ -182,7 +182,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
   }
   
   const double similarity_threshold = correspondence_rejector_poly_->getSimilarityThreshold ();
-  if (similarity_threshold < 0.0f || similarity_threshold >= 1.0f)
+  if (similarity_threshold < 0.0 || similarity_threshold >= 1.0)
   {
     PCL_ERROR ("[pcl::%s::computeTransformation] ", getClassName ().c_str ());
     PCL_ERROR ("Illegal prerejection similarity threshold %f, must be in [0,1[!\n",
@@ -216,7 +216,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
   double error;
   
   // If guess is not the Identity matrix we check it
-  if (!guess.isApprox (Eigen::Matrix4d::Identity (), 0.01f))
+  if (!guess.isApprox (Eigen::Matrix4d::Identity (), 0.01))
   {
     getFitness (inliers, error);
     inlier_fraction = static_cast<double> (inliers.size ()) / static_cast<double> (input_->size ());
@@ -297,7 +297,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::getFitness
   // Initialize variables
   inliers.clear ();
   inliers.reserve (input_->size ());
-  fitness_score = 0.0f;
+  fitness_score = 0.0;
   
   // Use squared distance for comparison with NN search results
   const double max_range = corr_dist_threshold_ * corr_dist_threshold_;

@@ -68,8 +68,8 @@ namespace pcl
 
       /** \brief Empty constructor. */
       FastBilateralFilter ()
-        : sigma_s_ (15.0f)
-        , sigma_r_ (0.05f)
+        : sigma_s_ (15.0)
+        , sigma_r_ (0.05)
         , early_division_ (false)
       { }
       
@@ -122,7 +122,7 @@ namespace pcl
             x_dim_ = width;
             y_dim_ = height;
             z_dim_ = depth;
-            v_ = std::vector<Eigen::Vector2d> (width*height*depth, Eigen::Vector2d (0.0f, 0.0f));
+            v_ = std::vector<Eigen::Vector2d> (width*height*depth, Eigen::Vector2d (0.0, 0.0));
           }
 
           inline Eigen::Vector2d&

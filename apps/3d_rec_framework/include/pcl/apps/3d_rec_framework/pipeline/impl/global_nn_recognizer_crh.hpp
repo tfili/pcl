@@ -319,7 +319,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         pcl::ScopeTime t ("Pose refinement");
 
         //Prepare scene and model clouds for the pose refinement step
-        double VOXEL_SIZE_ICP_ = 0.005f;
+        double VOXEL_SIZE_ICP_ = 0.005;
         PointInTPtr cloud_voxelized_icp (new pcl::PointCloud<PointInT> ());
         pcl::VoxelGrid<PointInT> voxel_grid_icp;
         voxel_grid_icp.setInputCloud (processed);
@@ -339,7 +339,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           reg.setInputSource (model_aligned); //model
           reg.setInputTarget (cloud_voxelized_icp); //scene
           reg.setMaximumIterations (ICP_iterations_);
-          reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 3.f);
+          reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 3.);
           reg.setTransformationEpsilon (1e-5);
 
           typename pcl::PointCloud<PointInT>::Ptr output_ (new pcl::PointCloud<PointInT> ());
@@ -364,7 +364,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
         for (size_t i = 0; i < models_->size (); i++)
         {
-          ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.005f);
+          ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.005);
           PointInTPtr model_aligned (new pcl::PointCloud<PointInT>);
           pcl::transformPointCloud (*model_cloud, *model_aligned, transforms_->at (i));
           aligned_models[i] = model_aligned;

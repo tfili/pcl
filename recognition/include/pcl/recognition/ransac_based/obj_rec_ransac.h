@@ -332,7 +332,7 @@ namespace pcl
         {
           // 'p_obj' is the probability that given that the first sample point belongs to an object,
           // the second sample point will belong to the same object
-          const double p_obj = 0.25f;
+          const double p_obj = 0.25;
           // old version: p = p_obj*relative_obj_size_*fraction_of_pairs_in_hash_table_;
           const double p = p_obj*relative_obj_size_;
 
@@ -395,13 +395,13 @@ namespace pcl
           double o1[3], o2[3], x1[3], x2[3], y1[3], y2[3], z1[3], z2[3], tmp1[3], tmp2[3], Ro1[3], invFrame1[3][3];
 
           // Compute the origins
-          o1[0] = 0.5f*(a1[0] + b1[0]);
-          o1[1] = 0.5f*(a1[1] + b1[1]);
-          o1[2] = 0.5f*(a1[2] + b1[2]);
+          o1[0] = 0.5*(a1[0] + b1[0]);
+          o1[1] = 0.5*(a1[1] + b1[1]);
+          o1[2] = 0.5*(a1[2] + b1[2]);
 
-          o2[0] = 0.5f*(a2[0] + b2[0]);
-          o2[1] = 0.5f*(a2[1] + b2[1]);
-          o2[2] = 0.5f*(a2[2] + b2[2]);
+          o2[0] = 0.5*(a2[0] + b2[0]);
+          o2[1] = 0.5*(a2[1] + b2[1]);
+          o2[2] = 0.5*(a2[2] + b2[2]);
 
           // Compute the x-axes
           aux::diff3 (b1, a1, x1); aux::normalize3 (x1);

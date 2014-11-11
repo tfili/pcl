@@ -131,8 +131,8 @@ pcl::search::OrganizedNeighbor<PointT>::nearestKSearch (const PointT &query,
   // project query point on the image plane
   //Eigen::Vector3d q = KR_ * query.getVector3dMap () + projection_matrix_.block <3, 1> (0, 3);
   Eigen::Vector3d q (KR_ * queryvec + projection_matrix_.block <3, 1> (0, 3));
-  int xBegin = int(q [0] / q [2] + 0.5f);
-  int yBegin = int(q [1] / q [2] + 0.5f);
+  int xBegin = int(q [0] / q [2] + 0.5);
+  int yBegin = int(q [1] / q [2] + 0.5);
   int xEnd   = xBegin + 1; // end is the pixel that is not used anymore, like in iterators
   int yEnd   = yBegin + 1;
 

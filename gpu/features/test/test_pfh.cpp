@@ -117,7 +117,7 @@ TEST(PCL_FeaturesGPU, pfh_low_level)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
         //printf("norm_diff/norm = %f %f %f\n", norm_diff/norm, norm_diff, norm);
     }
 }
@@ -196,7 +196,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level1)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -274,7 +274,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level2)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -352,7 +352,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level3)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }                            
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -430,7 +430,7 @@ TEST(PCL_FeaturesGPU, pfh_high_level4)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -529,6 +529,6 @@ TEST(PCL_FeaturesGPU, pfhrgb)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }
         if (norm != 0)            
-            ASSERT_LE(norm_diff/norm, 0.01f);
+            ASSERT_LE(norm_diff/norm, 0.01);
     }
 }

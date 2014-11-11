@@ -98,7 +98,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::initParticles (bool rese
     representative_state_.zero ();
     StateT offset = StateT::toState (trans_);
     representative_state_ = offset;
-    representative_state_.weight = 1.0f / static_cast<double> (particle_num_);
+    representative_state_.weight = 1.0 / static_cast<double> (particle_num_);
   }
 
   // sampling...
@@ -108,7 +108,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::initParticles (bool rese
     p.zero ();
     p.sample (initial_noise_mean_, initial_noise_covariance_);
     p = p + representative_state_;
-    p.weight = 1.0f / static_cast<double> (particle_num_);
+    p.weight = 1.0 / static_cast<double> (particle_num_);
     particles_->points.push_back (p); // update
   }
 }
@@ -142,7 +142,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::normalizeWeight ()
     else
     {
       for ( size_t i = 0; i < particles_->points.size (); i++ )
-        particles_->points[i].weight = 1.0f / static_cast<double> (particles_->points.size ());
+        particles_->points[i].weight = 1.0 / static_cast<double> (particles_->points.size ());
     }
     
     double sum = 0.0;
@@ -159,7 +159,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::normalizeWeight ()
     else
     {
       for ( size_t i = 0; i < particles_->points.size (); i++ )
-        particles_->points[i].weight = 1.0f / static_cast<double> (particles_->points.size ());
+        particles_->points[i].weight = 1.0 / static_cast<double> (particles_->points.size ());
     }
 }
 
@@ -378,7 +378,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::update ()
     StateT p = particles_->points[i];
     representative_state_ = representative_state_ + p * p.weight;
   }
-  representative_state_.weight = 1.0f / static_cast<double> (particles_->points.size ());
+  representative_state_.weight = 1.0 / static_cast<double> (particles_->points.size ());
   motion_ = representative_state_ - orig_representative;
 }
 

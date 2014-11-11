@@ -61,7 +61,7 @@ randomPointTriangle (double a1, double a2, double a3, double b1, double b2, doub
 {
   double r1 = static_cast<double> (uniform_deviate (rand ()));
   double r2 = static_cast<double> (uniform_deviate (rand ()));
-  double r1sqr = sqrtf (r1);
+  double r1sqr = sqrt (r1);
   double OneMinR1Sqr = (1 - r1sqr);
   double OneMinR2 = (1 - r2);
   a1 *= OneMinR1Sqr;
@@ -137,7 +137,7 @@ using namespace pcl::io;
 using namespace pcl::console;
 
 int default_number_samples = 100000;
-double default_leaf_size = 0.01f;
+double default_leaf_size = 0.01;
 
 void
 printHelp (int, char **argv)

@@ -49,9 +49,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT>
 pcl::RegionGrowingRGB<PointT, NormalT>::RegionGrowingRGB () :
-  color_p2p_threshold_ (1225.0f),
-  color_r2r_threshold_ (10.0f),
-  distance_threshold_ (0.05f),
+  color_p2p_threshold_ (1225.0),
+  color_r2r_threshold_ (10.0),
+  distance_threshold_ (0.05),
   region_neighbour_number_ (100),
   point_distances_ (0),
   segment_neighbours_ (0),
@@ -78,7 +78,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::~RegionGrowingRGB ()
 template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::getPointColorThreshold () const
 {
-  return (powf (color_p2p_threshold_, 0.5f));
+  return (pow (color_p2p_threshold_, 0.5));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::setPointColorThreshold (double thresh)
 template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::getRegionColorThreshold () const
 {
-  return (powf (color_r2r_threshold_, 0.5f));
+  return (pow (color_r2r_threshold_, 0.5));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::setRegionColorThreshold (double thresh)
 template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::getDistanceThreshold () const
 {
-  return (powf (distance_threshold_, 0.5f));
+  return (pow (distance_threshold_, 0.5));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,7 +232,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::prepareForSegmentation ()
   // if residual test is on then we need to check if all needed parameters were correctly initialized
   if (residual_flag_)
   {
-    if (residual_threshold_ <= 0.0f)
+    if (residual_threshold_ <= 0.0)
       return (false);
   }
 
@@ -244,7 +244,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::prepareForSegmentation ()
   // }
 
   // here we check the parameters related to color-based segmentation
-  if ( region_neighbour_number_ == 0 || color_p2p_threshold_ < 0.0f || color_r2r_threshold_ < 0.0f || distance_threshold_ < 0.0f )
+  if ( region_neighbour_number_ == 0 || color_p2p_threshold_ < 0.0 || color_r2r_threshold_ < 0.0 || distance_threshold_ < 0.0 )
     return (false);
 
   // from here we check those parameters that are always valuable
@@ -519,7 +519,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::applyRegionMergingAlgorithm ()
 template <typename PointT, typename NormalT> double
 pcl::RegionGrowingRGB<PointT, NormalT>::calculateColorimetricalDifference (std::vector<unsigned int>& first_color, std::vector<unsigned int>& second_color) const
 {
-  double difference = 0.0f;
+  double difference = 0.0;
   difference += double ((first_color[0] - second_color[0]) * (first_color[0] - second_color[0]));
   difference += double ((first_color[1] - second_color[1]) * (first_color[1] - second_color[1]));
   difference += double ((first_color[2] - second_color[2]) * (first_color[2] - second_color[2]));
@@ -628,7 +628,7 @@ pcl::RegionGrowingRGB<PointT, NormalT>::validatePoint (int initial_seed, int poi
   if (difference > color_p2p_threshold_)
     return (false);
 
-  double cosine_threshold = cosf (theta_threshold_);
+  double cosine_threshold = cos (theta_threshold_);
 
   // check the angle between normals if needed
   if (normal_flag_)

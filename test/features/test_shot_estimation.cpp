@@ -849,9 +849,9 @@ TEST (PCL,3DSCEstimation)
   //size_t nBinsL = 4;
   //size_t nBinsK = 4;
   //size_t nBinsJ = 4;
-  double radius = 20.0f * meshRes;
-  double rmin = radius / 10.0f;
-  double ptDensityRad = radius / 5.0f;
+  double radius = 20.0 * meshRes;
+  double rmin = radius / 10.0;
+  double ptDensityRad = radius / 5.0;
 
   PointCloud<PointXYZ>::Ptr cloudptr = cloud.makeShared ();
 
@@ -883,36 +883,36 @@ TEST (PCL,3DSCEstimation)
   // 3DSC does not define a repeatable local RF, we set it to zero to signal it to the user
   //EXPECT_NEAR ((*sc3ds)[0].rf[0], 0.2902f, 1e-4f);
   //EXPECT_NEAR ((*sc3ds)[0].rf[1], 0.7334f, 1e-4f);
-  //EXPECT_NEAR ((*sc3ds)[0].rf[2], -0.6146f, 1e-4f);
-  //EXPECT_NEAR ((*sc3ds)[0].rf[3], 0.9486f, 1e-4f);
-  //EXPECT_NEAR ((*sc3ds)[0].rf[4], -0.3051f, 1e-4f);
-  //EXPECT_NEAR ((*sc3ds)[0].rf[5], 0.0838f, 1e-4f);
-  //EXPECT_NEAR ((*sc3ds)[0].rf[6], -0.1261f, 1e-4f);
+  //EXPECT_NEAR ((*sc3ds)[0].rf[2], -0.6146, 1e-4f);
+  //EXPECT_NEAR ((*sc3ds)[0].rf[3], 0.9486, 1e-4f);
+  //EXPECT_NEAR ((*sc3ds)[0].rf[4], -0.3051, 1e-4f);
+  //EXPECT_NEAR ((*sc3ds)[0].rf[5], 0.0838, 1e-4f);
+  //EXPECT_NEAR ((*sc3ds)[0].rf[6], -0.1261, 1e-4f);
   //EXPECT_NEAR ((*sc3ds)[0].rf[7], -0.6074f, 1e-4f);
   //EXPECT_NEAR ((*sc3ds)[0].rf[8], -0.7843f, 1e-4f);
 
-  EXPECT_NEAR ((*sc3ds)[0].rf[0], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[1], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[2], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[3], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[4], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[5], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[6], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[7], 0.0f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[0].rf[8], 0.0f, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[0], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[1], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[2], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[3], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[4], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[5], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[6], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[7], 0.0, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[0].rf[8], 0.0, 1e-4f);
 
   //EXPECT_EQ ((*sc3ds)[0].descriptor.size (), 64);
 
   EXPECT_NEAR ((*sc3ds)[94].descriptor[88], 55.2712f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[94].descriptor[584], 71.1088f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[94].descriptor[1106], 79.5896f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[94].descriptor[1560], 0.f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[94].descriptor[1929], 36.0636f, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[94].descriptor[584], 71.1088, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[94].descriptor[1106], 79.5896, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[94].descriptor[1560], 0., 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[94].descriptor[1929], 36.0636, 1e-4f);
 
-  EXPECT_NEAR ((*sc3ds)[108].descriptor[67], 0.f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[108].descriptor[548], 126.141f, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[108].descriptor[67], 0., 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[108].descriptor[548], 126.141, 1e-4f);
   EXPECT_NEAR ((*sc3ds)[108].descriptor[1091], 30.4704f, 1e-4f);
-  EXPECT_NEAR ((*sc3ds)[108].descriptor[1421], 38.088f, 1e-4f);
+  EXPECT_NEAR ((*sc3ds)[108].descriptor[1421], 38.088, 1e-4f);
   EXPECT_NEAR ((*sc3ds)[108].descriptor[1900], 43.7994f, 1e-4f);
 
   // Test results when setIndices and/or setSearchSurface are used
@@ -927,9 +927,9 @@ TEST (PCL,3DSCEstimation)
 TEST (PCL, USCEstimation)
 {
   double meshRes = 0.002f;
-  double radius = 20.0f * meshRes;
-  double rmin = radius / 10.0f;
-  double ptDensityRad = radius / 5.0f;
+  double radius = 20.0 * meshRes;
+  double rmin = radius / 10.0;
+  double ptDensityRad = radius / 5.0;
 
   // estimate
   UniqueShapeContext<PointXYZ, UniqueShapeContext1960> uscd;
@@ -944,29 +944,29 @@ TEST (PCL, USCEstimation)
   uscd.compute (*uscds);
   EXPECT_EQ (uscds->size (), cloud.size ());
 
-  EXPECT_NEAR ((*uscds)[160].rf[0], -0.97767f, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].rf[0], -0.97767, 1e-4f);
   EXPECT_NEAR ((*uscds)[160].rf[1], 0.0353674f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].rf[2], -0.20715f, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].rf[2], -0.20715, 1e-4f);
   EXPECT_NEAR ((*uscds)[160].rf[3], 0.0125394f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].rf[4], 0.993798f, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].rf[4], 0.993798, 1e-4f);
   EXPECT_NEAR ((*uscds)[160].rf[5], 0.110493f, 1e-4f);
   EXPECT_NEAR ((*uscds)[160].rf[6], 0.209773f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].rf[7], 0.105428f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].rf[8], -0.972049f, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].rf[7], 0.105428, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].rf[8], -0.972049, 1e-4f);
 
   //EXPECT_EQ ((*uscds)[0].descriptor.size (), 64);
 
   EXPECT_NEAR ((*uscds)[160].descriptor[355], 123.0733f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].descriptor[494], 154.9401f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].descriptor[897], 0.f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].descriptor[1178], 62.7496f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[160].descriptor[1878], 31.3748f, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].descriptor[494], 154.9401, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].descriptor[897], 0., 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].descriptor[1178], 62.7496, 1e-4f);
+  EXPECT_NEAR ((*uscds)[160].descriptor[1878], 31.3748, 1e-4f);
 
-  EXPECT_NEAR ((*uscds)[168].descriptor[57], 39.4986f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[168].descriptor[704], 0.f, 1e-4f);
+  EXPECT_NEAR ((*uscds)[168].descriptor[57], 39.4986, 1e-4f);
+  EXPECT_NEAR ((*uscds)[168].descriptor[704], 0., 1e-4f);
   EXPECT_NEAR ((*uscds)[168].descriptor[906], 48.8803f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[168].descriptor[1175], 83.4680f, 1e-4f);
-  EXPECT_NEAR ((*uscds)[168].descriptor[1756], 65.1737f, 1e-4f);
+  EXPECT_NEAR ((*uscds)[168].descriptor[1175], 83.4680, 1e-4f);
+  EXPECT_NEAR ((*uscds)[168].descriptor[1756], 65.1737, 1e-4f);
 
   // Test results when setIndices and/or setSearchSurface are used
   boost::shared_ptr<vector<int> > test_indices (new vector<int> (0));

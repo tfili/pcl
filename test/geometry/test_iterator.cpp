@@ -46,7 +46,7 @@ template <typename PointT>
 void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsigned y_end, PointCloud<PointT>& cloud)
 {
   PointXYZ point;
-  point.x = point.y = point.z = 0.0f;
+  point.x = point.y = point.z = 0.0;
   for (unsigned yIdx = 0; yIdx < cloud.height; ++yIdx)
   {
     for (unsigned xIdx = 0; xIdx < cloud.width; ++xIdx)
@@ -54,7 +54,7 @@ void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsig
       PointT& point = cloud.points [yIdx * cloud.width + xIdx];
       point.x = double(xIdx);
       point.y = double(yIdx);
-      point.z = 0.0f;
+      point.z = 0.0;
     }
   }
 
@@ -67,7 +67,7 @@ void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsig
     PointT& point = cloud[*iterator];
     EXPECT_EQ (point.x, iterator.getColumnIndex ());
     EXPECT_EQ (point.y, iterator.getRowIndex ());
-    point.z = 1.0f;
+    point.z = 1.0;
     ++iterator;
     ++idx;
   }
@@ -106,7 +106,7 @@ void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsig
   for (unsigned idx = 0; idx < dmax; ++idx, xIdx += x_step, yIdx += y_step)
   {
     PointT& point = cloud.points [yIdx * cloud.width + xIdx];
-    EXPECT_EQ (point.z, 1.0f);
+    EXPECT_EQ (point.z, 1.0);
     point.z = 0.0;
   }
   // now all z-values should be 0 again!
@@ -116,9 +116,9 @@ void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsig
     {
       //std::cout << "testing  point: " << xIdx << " , " << yIdx << std::endl;
       PointT& point = cloud.points [yIdx * cloud.width + xIdx];
-//      if (point.z != 0.0f)
-//        std::cout << "point.z != 0.0f at: " << xIdx << " , " << yIdx << std::endl;
-      EXPECT_EQ (point.z, 0.0f);
+//      if (point.z != 0.0)
+//        std::cout << "point.z != 0.0 at: " << xIdx << " , " << yIdx << std::endl;
+      EXPECT_EQ (point.z, 0.0);
     }
   }
 }
@@ -127,7 +127,7 @@ template <typename PointT>
 void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsigned y_end, PointCloud<PointT>& cloud, bool neighorhood)
 {
   PointXYZ point;
-  point.x = point.y = point.z = 0.0f;
+  point.x = point.y = point.z = 0.0;
   for (unsigned yIdx = 0; yIdx < cloud.height; ++yIdx)
   {
     for (unsigned xIdx = 0; xIdx < cloud.width; ++xIdx)
@@ -135,7 +135,7 @@ void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsig
       PointT& point = cloud.points [yIdx * cloud.width + xIdx];
       point.x = double(xIdx);
       point.y = double(yIdx);
-      point.z = 0.0f;
+      point.z = 0.0;
     }
   }
 
@@ -155,7 +155,7 @@ void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsig
     EXPECT_EQ (point.x, iterator.getColumnIndex ());
     EXPECT_EQ (point.y, iterator.getRowIndex ());
     //std::cout << idx << " :: " << iterator.getPointIndex () << " :: " << iterator.getColumnIndex () << " , " << iterator.getRowIndex () << std::endl;
-    point.z = 1.0f;
+    point.z = 1.0;
     ++iterator;
     ++idx;
   }
@@ -169,7 +169,7 @@ void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsig
   else
     EXPECT_EQ (abs(dx) + abs(dy), idx);
   
-  double length = sqrtf (double (dx * dx + dy * dy));
+  double length = sqrt (double (dx * dx + dy * dy));
   double dir_x = double (dx) / length;
   double dir_y = double (dy) / length;
   
@@ -184,14 +184,14 @@ void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsig
         // point need to be close to line
         double distance = dir_x * double(yIdx - int(y_start)) - dir_y * double(xIdx - int(x_start));
         if (neighorhood)        
-          EXPECT_LE (fabs(distance), 0.5f);
+          EXPECT_LE (fabs(distance), 0.5);
         else
-          EXPECT_LE (fabs(distance), 0.70711f);
+          EXPECT_LE (fabs(distance), 0.70711);
         
         // and within the endpoints
         double lambda = dir_y * double(yIdx - int(y_start)) + dir_x * double(xIdx - int(x_start));
         EXPECT_LE (lambda, length);
-        EXPECT_GE (lambda, 0.0f);
+        EXPECT_GE (lambda, 0.0);
       }
     }
   }

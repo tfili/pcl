@@ -479,16 +479,16 @@ main (int argc, char** argv)
     mesh_material.tex_Ka.g = 0.2f;
     mesh_material.tex_Ka.b = 0.2f;
 
-    mesh_material.tex_Kd.r = 0.8f;
-    mesh_material.tex_Kd.g = 0.8f;
-    mesh_material.tex_Kd.b = 0.8f;
+    mesh_material.tex_Kd.r = 0.8;
+    mesh_material.tex_Kd.g = 0.8;
+    mesh_material.tex_Kd.b = 0.8;
 
-    mesh_material.tex_Ks.r = 1.0f;
-    mesh_material.tex_Ks.g = 1.0f;
-    mesh_material.tex_Ks.b = 1.0f;
+    mesh_material.tex_Ks.r = 1.0;
+    mesh_material.tex_Ks.g = 1.0;
+    mesh_material.tex_Ks.b = 1.0;
 
-    mesh_material.tex_d = 1.0f;
-    mesh_material.tex_Ns = 75.0f;
+    mesh_material.tex_d = 1.0;
+    mesh_material.tex_Ns = 75.0;
     mesh_material.tex_illum = 2;
 
     std::stringstream tex_name;

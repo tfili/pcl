@@ -115,7 +115,7 @@ TEST(PCL_FeaturesGPU, fpfh_low_level)
 
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }
-        ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+        ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -192,7 +192,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level1)
         }        
 
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -270,7 +270,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level2)
         }
         //cout << i << "->"<< norm_diff/norm << endl;
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -347,7 +347,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level3)
         }
         //cout << i << "->"<< norm_diff/norm << endl;
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -424,6 +424,6 @@ TEST(PCL_FeaturesGPU, fpfh_high_level4)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }            
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }

@@ -75,7 +75,7 @@ pcl::SmoothedSurfacesKeypoint<PointT, PointNT>::detectKeypoints (PointCloudT &ou
   std::vector<std::vector<double> > diffs (scales_.size ());
 
   // The cloud with the smallest scale has no differences
-  std::vector<double> aux_diffs (input_->points.size (), 0.0f);
+  std::vector<double> aux_diffs (input_->points.size (), 0.0);
   diffs[scales_[0].second] = aux_diffs;
 
   cloud_trees_[scales_[0].second]->setInputCloud (clouds_[scales_[0].second]);

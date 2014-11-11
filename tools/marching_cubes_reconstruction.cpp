@@ -48,11 +48,11 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-double default_iso_level = 0.0f;
+double default_iso_level = 0.0;
 int default_hoppe_or_rbf = 0;
-double default_extend_percentage = 0.0f;
+double default_extend_percentage = 0.0;
 int default_grid_res = 50;
-double default_off_surface_displacement = 0.01f;
+double default_off_surface_displacement = 0.01;
 
 void
 printHelp (int, char **argv)

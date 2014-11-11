@@ -86,7 +86,7 @@ namespace openni_wrapper
           // shift to depth calculation from opnni
           dFixedRefX = (static_cast<double>(i - nConstShift) / nParamCoeff)-0.375;
           dMetric = dFixedRefX * dPlanePixelSize;
-          lookupTable_[i] = static_cast<double>((nShiftScale * ((dMetric * dPlaneDsr / (dPlaneDcl - dMetric)) + dPlaneDsr) ) / 1000.0f);
+          lookupTable_[i] = static_cast<double>((nShiftScale * ((dMetric * dPlaneDsr / (dPlaneDcl - dMetric)) + dPlaneDsr) ) / 1000.0);
         }
 
         init_ = true;

@@ -77,11 +77,11 @@ namespace pcl
           max_z_bounds_ = 1.5;
           object_min_height_ = 0.01;
           object_max_height_ = 0.7;
-          object_cluster_tolerance_ = 0.05f;
+          object_cluster_tolerance_ = 0.05;
           object_cluster_min_size_ = 500;
           k_ = 50;
           sac_distance_threshold_ = 0.01;
-          downsample_leaf_ = 0.005f;
+          downsample_leaf_ = 0.005;
           wsize_ = 5;
         }
 

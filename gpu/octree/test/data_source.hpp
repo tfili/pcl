@@ -67,10 +67,10 @@ struct DataGenerator
 
     std::vector<int> indices;
 
-    DataGenerator() : data_size(871000), tests_num(10000), cube_size(1024.f)
+    DataGenerator() : data_size(871000), tests_num(10000), cube_size(1024.)
     {
-        max_radius    = cube_size/15.f;
-        shared_radius = cube_size/20.f;
+        max_radius    = cube_size/15.;
+        shared_radius = cube_size/20.;
     }
 
     void operator()()
@@ -100,7 +100,7 @@ struct DataGenerator
             indices.push_back(i*2);
     }
 
-    void bruteForceSearch(bool log = false, double radius = -1.f)
+    void bruteForceSearch(bool log = false, double radius = -1.)
     {        
         if (log)
             std::cout << "BruteForceSearch";

@@ -62,7 +62,7 @@ namespace pcl
             double dx = v1.x - v2.x;
             double dy = v1.y - v2.y;
             double dz = v1.z - v2.z;
-            return sqrtf(dx*dx + dy*dy + dz*dz);
+            return sqrt(dx*dx + dy*dy + dz*dz);
         }
         
         template<typename T> __device__ __forceinline__ float3 tr(const T& v)

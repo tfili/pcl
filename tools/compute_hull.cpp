@@ -51,7 +51,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-double default_alpha = 0.15f;
+double default_alpha = 0.15;
 
 void
 printHelp (int, char **argv)

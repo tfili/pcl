@@ -101,10 +101,10 @@ pcl::io::LZFDepth16ImageReader::read (
     }
   }
   cloud.sensor_origin_.setZero ();
-  cloud.sensor_orientation_.w () = 1.0f;
-  cloud.sensor_orientation_.x () = 0.0f;
-  cloud.sensor_orientation_.y () = 0.0f;
-  cloud.sensor_orientation_.z () = 0.0f;
+  cloud.sensor_orientation_.w () = 1.0;
+  cloud.sensor_orientation_.x () = 0.0;
+  cloud.sensor_orientation_.y () = 0.0;
+  cloud.sensor_orientation_.z () = 0.0;
   return (true);
 }
         
@@ -179,10 +179,10 @@ pcl::io::LZFDepth16ImageReader::readOMP (const std::string &filename,
     
   }
   cloud.sensor_origin_.setZero ();
-  cloud.sensor_orientation_.w () = 1.0f;
-  cloud.sensor_orientation_.x () = 0.0f;
-  cloud.sensor_orientation_.y () = 0.0f;
-  cloud.sensor_orientation_.z () = 0.0f;
+  cloud.sensor_orientation_.w () = 1.0;
+  cloud.sensor_orientation_.x () = 0.0;
+  cloud.sensor_orientation_.y () = 0.0;
+  cloud.sensor_orientation_.z () = 0.0;
   return (true);
 
 }

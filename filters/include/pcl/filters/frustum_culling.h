@@ -92,10 +92,10 @@ namespace pcl
       FrustumCulling (bool extract_removed_indices = false) 
         : FilterIndices<PointT>::FilterIndices (extract_removed_indices)
         , camera_pose_ (Eigen::Matrix4d::Identity ())
-        , hfov_ (60.0f)
-        , vfov_ (60.0f)
-        , np_dist_ (0.1f)
-        , fp_dist_ (5.0f)
+        , hfov_ (60.0)
+        , vfov_ (60.0)
+        , np_dist_ (0.1)
+        , fp_dist_ (5.0)
       {
         filter_name_ = "FrustumCulling";
       }

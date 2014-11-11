@@ -1764,7 +1764,7 @@ double ON_FloatFloor(double x)
   // what you deserve.
   //
   // ON_FLOAT_EPSILON = 1.192092896e-07 is the smallest number such that
-  // 1.0f + 1.192092896e-07f > 1.0f.  
+  // 1.0 + 1.192092896e-07 > 1.0.  
   //
   // If x < 0, then (1.0 + 0.5*1.192092896e-07)*x rounds x down so
   // that converting the double precision mantissa cannot create a
@@ -2177,15 +2177,15 @@ int ON_MeshIsManifold_CompareV( const void* a, const void* b )
   double d;
   const double* fa = (const double*)a;
   const double* fb = (const double*)b;
-  if ( 0.0f == (d = (*fa++ - *fb++)) )
+  if ( 0.0 == (d = (*fa++ - *fb++)) )
   {
-    if ( 0.0f == (d = (*fa++ - *fb++)) )
+    if ( 0.0 == (d = (*fa++ - *fb++)) )
     {
-      if ( 0.0f == (d = (*fa++ - *fb++)) )
+      if ( 0.0 == (d = (*fa++ - *fb++)) )
         return 0;
     }
   }
-  return ( d < 0.0f ) ? -1 : 1;
+  return ( d < 0.0 ) ? -1 : 1;
   */
 }
 
@@ -3605,48 +3605,48 @@ static int CompareMeshPoint(const void* a,const void* b,void* ptr)
   int j = (int)(((const char*)b) - mp->p0);
 
   d = mp->V[j].x - mp->V[i].x;
-  if ( d == 0.0f )
+  if ( d == 0.0 )
   {
     d = mp->V[j].y - mp->V[i].y;
-    if ( d == 0.0f )
+    if ( d == 0.0 )
     {
       d = mp->V[j].z - mp->V[i].z;
 
-      //if ( d == 0.0f )
+      //if ( d == 0.0 )
       //  return 0;
 
-      if ( d == 0.0f && 0 != mp->N)
+      if ( d == 0.0 && 0 != mp->N)
       {
         d = mp->N[j].x - mp->N[i].x;
-        if ( d == 0.0f )
+        if ( d == 0.0 )
         {
           d = mp->N[j].y - mp->N[i].y;
-          if ( d == 0.0f )
+          if ( d == 0.0 )
           {
             d = mp->N[j].z - mp->N[i].z;
           }
         }
       }
 
-      if ( d == 0.0f && 0 != mp->T)
+      if ( d == 0.0 && 0 != mp->T)
       {
         d = mp->T[j].x - mp->T[i].x;
-        if ( d == 0.0f )
+        if ( d == 0.0 )
         {
           d = mp->T[j].y - mp->T[i].y;
         }
       }
 
-      if ( d == 0.0f && 0 != mp->C )
+      if ( d == 0.0 && 0 != mp->C )
       {
         int u = ((int)mp->C[j])-((int)mp->C[i]);
         if ( u < 0 )
-          d = -1.0f;
+          d = -1.0;
         else if ( u > 0 )
-          d = 1.0f;
+          d = 1.0;
       }
 
-      if ( d == 0.0f && 0 != mp->K )
+      if ( d == 0.0 && 0 != mp->K )
       {
         double dk = mp->K[j].k1 - mp->K[i].k1;
         if ( dk < 0.0 )
@@ -3665,9 +3665,9 @@ static int CompareMeshPoint(const void* a,const void* b,void* ptr)
     }
   }
   
-  if ( d < 0.0f )
+  if ( d < 0.0 )
     return -1;
-  if ( d > 0.0f )
+  if ( d > 0.0 )
     return 1;
   return 0;
 }
@@ -5744,9 +5744,9 @@ bool ON_Mesh::ReverseTextureCoordinates( int dir )
     {
       ON_2fPoint& tc = m_T[i];
       if ( dir )
-        tc.y = 1.0f-tc.y;
+        tc.y = 1.0-tc.y;
       else
-        tc.x = 1.0f-tc.x;
+        tc.x = 1.0-tc.x;
     }
   }
 	return true;
@@ -6498,7 +6498,7 @@ bool ON_MeshTopology::SortVertexEdges(int topvi) const
     return true;
 
   // Divide the edges that use this vertex into two sets:
-  //   e1f[] = indices of edges that bound 1 face, 3 or 
+  //   e1[] = indices of edges that bound 1 face, 3 or 
   //           more faces, or no faces (in that order).
   //   e2f[] = indices of edges that bound exactly 2 faces.
   int i, j;
@@ -6507,14 +6507,14 @@ bool ON_MeshTopology::SortVertexEdges(int topvi) const
   int efcnt;
   int* new_tope = (int*)alloca(5*topv.m_tope_count*sizeof(new_tope[0]));
   int* e2f  = new_tope + topv.m_tope_count;
-  int* e1f  = e2f + topv.m_tope_count;
-  int e1fcnt = 0;
+  int* e1  = e2f + topv.m_tope_count;
+  int e1cnt = 0;
   int e2fcnt = 0;
   {
-    int* e3f  = e1f + topv.m_tope_count; // e3f[] = edges with 3 or more faces
-    int* e0f  = e3f + topv.m_tope_count; // e0f[] = edges with no faces
+    int* e3f  = e1 + topv.m_tope_count; // e3f[] = edges with 3 or more faces
+    int* e0  = e3f + topv.m_tope_count; // e0[] = edges with no faces
     int e3fcnt = 0;
-    int e0fcnt = 0;
+    int e0cnt = 0;
 
     for ( vei = 0; vei < topv.m_tope_count; vei++ )
     {
@@ -6534,11 +6534,11 @@ bool ON_MeshTopology::SortVertexEdges(int topvi) const
           {
           case 0: // edge has no faces 
             // (never happens if topology is from a valid ON_Mesh.)
-            e0f[e0fcnt++] = topei;                                   
+            e0[e0cnt++] = topei;                                   
             break;
 
           case 1: // edge has exactly one face
-            e1f[e1fcnt++] = topei; 
+            e1[e1cnt++] = topei; 
             break;
 
           case 2: // edge has exactly two faces
@@ -6554,21 +6554,21 @@ bool ON_MeshTopology::SortVertexEdges(int topvi) const
       }
     }
   
-    // append list of non-manifold edges (3 or more faces) to e1f[]
+    // append list of non-manifold edges (3 or more faces) to e1[]
     for ( i = 0; i < e3fcnt; i++ )
     {
-      e1f[e1fcnt++] = e3f[i];
+      e1[e1cnt++] = e3f[i];
     }
 
-    // append list of wire edges (0 faces) to e1f[]
-    for ( i = 0; i < e0fcnt; i++ )
+    // append list of wire edges (0 faces) to e1[]
+    for ( i = 0; i < e0cnt; i++ )
     {
-      e1f[e1fcnt++] = e0f[i];
+      e1[e1cnt++] = e0[i];
     }
 
-    e0fcnt = 0;
+    e0cnt = 0;
     e3fcnt = 0;
-    e0f = 0;
+    e0 = 0;
     e3f = 0;
   }
 
@@ -6576,7 +6576,7 @@ bool ON_MeshTopology::SortVertexEdges(int topvi) const
   // NOTE: The code below works for non-oriented meshes and
   //       non-manifold meshes.  If you change the code, you
   //       must make sure that it still works in these cases.
-  if ( e1fcnt + e2fcnt != topv.m_tope_count )
+  if ( e1cnt + e2fcnt != topv.m_tope_count )
   {
     ON_ERROR("ON_MeshTopology::SortVertexEdges() input vertex had bogus m_topei[]");
     return false;
@@ -6596,11 +6596,11 @@ bool ON_MeshTopology::SortVertexEdges(int topvi) const
       topei = next_topei;
       next_topei = -1;
     }
-    else if ( e1fcnt > 0 )
+    else if ( e1cnt > 0 )
     {
       // start a new group of edges
-      topei = *e1f++;
-      e1fcnt--;
+      topei = *e1++;
+      e1cnt--;
       vei1 = vei;
     }
     else if ( e2fcnt > 0 )
@@ -6671,16 +6671,16 @@ bool ON_MeshTopology::SortVertexEdges(int topvi) const
 
         // next_topei = candidate for the next edge
         //  Check to see that it is available by
-        //  finding it in the e1f[] or e2f[] arrays.
+        //  finding it in the e1[] or e2f[] arrays.
         j = 0;
-        for ( i = 0; i < e1fcnt; i++ )
+        for ( i = 0; i < e1cnt; i++ )
         {
-          if ( next_topei == e1f[i] )
+          if ( next_topei == e1[i] )
           {
-            // found it in the e1f list.
-            for ( j = i+1; j < e1fcnt; j++ )
-              e1f[j-1] = e1f[j];
-            e1fcnt--;
+            // found it in the e1 list.
+            for ( j = i+1; j < e1cnt; j++ )
+              e1[j-1] = e1[j];
+            e1cnt--;
             break;
           }
         }
@@ -7585,7 +7585,7 @@ const ON_MeshPartition* ON_Mesh::CreatePartition(
       //      fcenter = 0.333333333333333333f*(m_T[fvi[0]] + m_T[fvi[1]] + m_T[fvi[2]]);
       //    }
       //    else {
-      //      fcenter = 0.25f*(m_T[fvi[0]] + m_T[fvi[1]] + m_T[fvi[2]] + m_T[fvi[3]]);
+      //      fcenter = 0.25*(m_T[fvi[0]] + m_T[fvi[1]] + m_T[fvi[2]] + m_T[fvi[3]]);
       //    }
       //    fpt[fi].x = (int)floor(txdom.NormalizedParameterAt(fcenter.x)*100);
       //    fpt[fi].y = (int)floor(tydom.NormalizedParameterAt(fcenter.y)*100);
@@ -7605,7 +7605,7 @@ const ON_MeshPartition* ON_Mesh::CreatePartition(
       //      fcenter = 0.333333333333333333f*(m_V[fvi[0]] + m_V[fvi[1]] + m_V[fvi[2]]);
       //    }
       //    else {
-      //      fcenter = 0.25f*(m_V[fvi[0]] + m_V[fvi[1]] + m_V[fvi[2]] + m_V[fvi[3]]);
+      //      fcenter = 0.25*(m_V[fvi[0]] + m_V[fvi[1]] + m_V[fvi[2]] + m_V[fvi[3]]);
       //    }
       //    fpt[fi].x = (int)floor(vxdom.NormalizedParameterAt(fcenter.x)*100);
       //    fpt[fi].y = (int)floor(vydom.NormalizedParameterAt(fcenter.y)*100);

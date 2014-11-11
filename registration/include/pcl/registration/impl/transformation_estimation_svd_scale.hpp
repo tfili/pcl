@@ -78,7 +78,7 @@ pcl::registration::TransformationEstimationSVDScale<PointSource, PointTarget, Sc
   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> src_ = R4 * cloud_src_demean;
   
   double scale1, scale2;
-  double sum_ss = 0.0f, sum_tt = 0.0f, sum_tt_ = 0.0f;
+  double sum_ss = 0.0, sum_tt = 0.0, sum_tt_ = 0.0;
   for (unsigned corrIdx = 0; corrIdx < cloud_src_demean.cols (); ++corrIdx)
   {
     sum_ss += cloud_src_demean (0, corrIdx) * cloud_src_demean (0, corrIdx);

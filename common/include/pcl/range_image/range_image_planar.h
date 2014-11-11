@@ -141,8 +141,8 @@ namespace pcl
                                          int di_width, int di_height, double di_center_x, double di_center_y,
                                          double di_focal_length_x, double di_focal_length_y,
                                          const Eigen::Affine3d& sensor_pose,
-                                         CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0f,
-                                         double min_range=0.0f);
+                                         CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0,
+                                         double min_range=0.0);
       
       // Since we reimplement some of these overloaded functions, we have to do the following:
       using RangeImage::calculate3DPoint;

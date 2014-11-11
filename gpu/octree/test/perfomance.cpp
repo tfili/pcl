@@ -75,9 +75,9 @@ TEST(PCL_OctreeGPU, perfomance)
     DataGenerator data;
     data.data_size = 871000;
     data.tests_num = 10000;
-    data.cube_size = 1024.f;
-    data.max_radius    = data.cube_size/15.f;
-    data.shared_radius = data.cube_size/15.f;
+    data.cube_size = 1024.;
+    data.max_radius    = data.cube_size/15.;
+    data.shared_radius = data.cube_size/15.;
     data.printParams();
 
     //const int k = 32;
@@ -104,7 +104,7 @@ TEST(PCL_OctreeGPU, perfomance)
     cloud_host->points.resize (cloud_host->width * cloud_host->height);    
     std::transform(data.points.begin(), data.points.end(), cloud_host->points.begin(), DataGenerator::ConvPoint<pcl::PointXYZ>());
 
-    double host_octree_resolution = 25.f;    
+    double host_octree_resolution = 25.;    
     
     cout << "[!] Host octree resolution: " << host_octree_resolution << endl << endl;    
 

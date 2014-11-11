@@ -58,7 +58,7 @@ pcl::MeshSmoothingLaplacianVTK::performProcessing (pcl::PolygonMesh &output)
   vtk_smoother->SetInputData (vtk_polygons_);
 #endif
   vtk_smoother->SetNumberOfIterations (num_iter_);
-  if (convergence_ != 0.0f)
+  if (convergence_ != 0.0)
     vtk_smoother->SetConvergence (convergence_);
   vtk_smoother->SetRelaxationFactor (relaxation_factor_);
   vtk_smoother->SetFeatureEdgeSmoothing (feature_edge_smoothing_);

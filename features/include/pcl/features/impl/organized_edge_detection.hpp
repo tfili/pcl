@@ -137,7 +137,7 @@ pcl::OrganizedEdgeBase<PointT, PointLT>::extractEdges (pcl::PointCloud<PointLT>&
           if (fabsf (dist_dominant) > th_depth_discon_*fabsf (curr_depth))
           {
             // Found a depth discontinuity
-            if (dist_dominant > 0.f)
+            if (dist_dominant > 0.)
             {
               if (detecting_edge_types_ & EDGELABEL_OCCLUDED)
                 labels[curr_idx].label |= EDGELABEL_OCCLUDED;
@@ -198,7 +198,7 @@ pcl::OrganizedEdgeBase<PointT, PointLT>::extractEdges (pcl::PointCloud<PointLT>&
             if (fabsf (dist) > th_depth_discon_*fabsf (curr_depth))
             {
               // Found a depth discontinuity
-              if (dist > 0.f)
+              if (dist > 0.)
               {
                 if (detecting_edge_types_ & EDGELABEL_OCCLUDED)
                   labels[curr_idx].label |= EDGELABEL_OCCLUDED;
@@ -264,7 +264,7 @@ pcl::OrganizedEdgeFromRGB<PointT, PointLT>::extractEdges (pcl::PointCloud<PointL
     {
       for (uint32_t col=0; col<labels.width; col++)
       {
-        if (img_edge_rgb (col, row).magnitude == 255.f)
+        if (img_edge_rgb (col, row).magnitude == 255.)
           labels[row * labels.width + col].label |= EDGELABEL_RGB_CANNY;
       }
     }
@@ -322,7 +322,7 @@ pcl::OrganizedEdgeFromNormals<PointT, PointNT, PointLT>::extractEdges (pcl::Poin
     {
       for (uint32_t col=0; col<labels.width; col++)
       {
-        if (img_edge (col, row).magnitude == 255.f)
+        if (img_edge (col, row).magnitude == 255.)
           labels[row * labels.width + col].label |= EDGELABEL_HIGH_CURVATURE;
       }
     }

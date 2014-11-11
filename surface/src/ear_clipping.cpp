@@ -120,7 +120,7 @@ pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
     //using Stoke's law: http://code.activestate.com/recipes/578276-3d-polygon-area/
 
     int n = static_cast<int> (vertices.size ());
-    double area = 0.0f;
+    double area = 0.0;
     Eigen::Vector3d prev_p, cur_p;
     Eigen::Vector3d total (0,0,0);
     Eigen::Vector3d unit_normal;
@@ -143,7 +143,7 @@ pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
         area = total.dot( unit_normal );
     }
 
-    return area * 0.5f; 
+    return area * 0.5; 
 }
 
 
@@ -156,7 +156,7 @@ pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& verti
   p_v = points_->points[vertices[v]].getVector3dMap();
   p_w = points_->points[vertices[w]].getVector3dMap();
 
-  const double eps = 1e-15f;
+  const double eps = 1e-15;
   Eigen::Vector3d p_uv, p_uw;
   p_uv = p_v - p_u;
   p_uw = p_w - p_u;

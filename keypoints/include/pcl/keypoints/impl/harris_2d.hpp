@@ -312,7 +312,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseHarris (PointClo
     {
       computeSecondMomentMatrix (index, covar);
       double trace = covar [0] + covar [2];
-      if (trace != 0.f)
+      if (trace != 0.)
       {
         double det = covar[0] * covar[2] - covar[1] * covar[1];
         out_point.intensity = 0.04f + det - 0.04f * trace * trace;
@@ -420,7 +420,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseTomasi (PointClo
     {      
       computeSecondMomentMatrix (index, covar);
       // min egenvalue
-      out_point.intensity = ((covar[0] + covar[2] - sqrt((covar[0] - covar[2])*(covar[0] - covar[2]) + 4 * covar[1] * covar[1])) /2.0f);
+      out_point.intensity = ((covar[0] + covar[2] - sqrt((covar[0] - covar[2])*(covar[0] - covar[2]) + 4 * covar[1] * covar[1])) /2.0);
     }    
   }
   

@@ -81,7 +81,7 @@ pcl::PyramidFeatureHistogram<PointFeature>::comparePyramidFeatureHistograms (con
     PCL_ERROR ("[pcl::PyramidFeatureMatching::comparePyramidFeatureHistograms] The two given pyramids have different numbers of bins on level 0: %u vs %u\n", pyramid_a->hist_levels[0].hist.size (), pyramid_b->hist_levels[0].hist.size ());
     return -1;
   }
-  double match_count_level = 0.0f, match_count_prev_level = 0.0f;
+  double match_count_level = 0.0, match_count_prev_level = 0.0;
   for (size_t bin_i = 0; bin_i < pyramid_a->hist_levels[0].hist.size (); ++bin_i)
   {
     if (pyramid_a->hist_levels[0].hist[bin_i] < pyramid_b->hist_levels[0].hist[bin_i])
@@ -101,7 +101,7 @@ pcl::PyramidFeatureHistogram<PointFeature>::comparePyramidFeatureHistograms (con
     }
 
     match_count_prev_level = match_count_level;
-    match_count_level = 0.0f;
+    match_count_level = 0.0;
     for (size_t bin_i = 0; bin_i < pyramid_a->hist_levels[level_i].hist.size (); ++bin_i)
     {
       if (pyramid_a->hist_levels[level_i].hist[bin_i] < pyramid_b->hist_levels[level_i].hist[bin_i])
@@ -110,7 +110,7 @@ pcl::PyramidFeatureHistogram<PointFeature>::comparePyramidFeatureHistograms (con
         match_count_level += static_cast<double> (pyramid_b->hist_levels[level_i].hist[bin_i]);
     }
 
-    double level_normalization_factor = powf (2.0f, static_cast<double> (level_i));
+    double level_normalization_factor = pow (2.0, static_cast<double> (level_i));
     match_count += (match_count_level - match_count_prev_level) / level_normalization_factor;
   }
 
@@ -119,7 +119,7 @@ pcl::PyramidFeatureHistogram<PointFeature>::comparePyramidFeatureHistograms (con
   double self_similarity_a = static_cast<double> (pyramid_a->nr_features),
         self_similarity_b = static_cast<double> (pyramid_b->nr_features);
   PCL_DEBUG ("[pcl::PyramidFeatureMatching::comparePyramidFeatureHistograms] Self similarity measures: %f, %f\n", self_similarity_a, self_similarity_b);
-  match_count /= sqrtf (self_similarity_a * self_similarity_b);
+  match_count /= sqrt (self_similarity_a * self_similarity_b);
 
   return match_count;
 }
@@ -181,13 +181,13 @@ pcl::PyramidFeatureHistogram<PointFeature>::initializeHistogram ()
 
   nr_dimensions = dimension_range_target_.size ();
   nr_features = input_->points.size ();
-  double D = 0.0f;
+  double D = 0.0;
   for (std::vector<std::pair<double, double> >::iterator range_it = dimension_range_target_.begin (); range_it != dimension_range_target_.end (); ++range_it)
   {
     double aux = range_it->first - range_it->second;
     D += aux * aux;
   }
-  D = sqrtf (D);
+  D = sqrt (D);
   nr_levels = static_cast<size_t> (ceilf (Log2 (D)));
   PCL_DEBUG ("[pcl::PyramidFeatureHistogram::initializeHistogram] Pyramid will have %u levels with a hyper-parallelepiped diagonal size of %f\n", nr_levels, D);
 
@@ -200,8 +200,8 @@ pcl::PyramidFeatureHistogram<PointFeature>::initializeHistogram ()
     for (size_t dim_i = 0; dim_i < nr_dimensions; ++dim_i) 
     {
       bins_per_dimension[dim_i] = 
-        static_cast<size_t> (ceilf ((dimension_range_target_[dim_i].second - dimension_range_target_[dim_i].first) / (powf (2.0f, static_cast<double> (level_i)) * sqrtf (static_cast<double> (nr_dimensions)))));
-      bin_step[dim_i] = powf (2.0f, static_cast<double> (level_i)) * sqrtf (static_cast<double> (nr_dimensions));
+        static_cast<size_t> (ceilf ((dimension_range_target_[dim_i].second - dimension_range_target_[dim_i].first) / (pow (2.0, static_cast<double> (level_i)) * sqrt (static_cast<double> (nr_dimensions)))));
+      bin_step[dim_i] = pow (2.0, static_cast<double> (level_i)) * sqrt (static_cast<double> (nr_dimensions));
     }
     hist_levels[level_i] = PyramidFeatureHistogramLevel (bins_per_dimension, bin_step);
 

@@ -97,7 +97,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setGround (Eigen::VectorXd& 
 {
   ground_coeffs_ = ground_coeffs;
   ground_coeffs_set_ = true;
-  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
+  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0, 0.0, 0.0, ground_coeffs(3))).norm();
   applyTransformationGround();
 }
 

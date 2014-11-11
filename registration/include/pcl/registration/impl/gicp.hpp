@@ -474,13 +474,13 @@ pcl::GeneralizedIterativeClosestPoint<PointSource, PointTarget>::computeTransfor
 template <typename PointSource, typename PointTarget> void
 pcl::GeneralizedIterativeClosestPoint<PointSource, PointTarget>::applyState(Eigen::Matrix4d &t, const Vector6d& x) const
 {
-  // !!! CAUTION Stanford GICP uses the Z Y X euler angles convention
+  // !!! CAUTION Stanord GICP uses the Z Y X euler angles convention
   Eigen::Matrix3d R;
   R = Eigen::AngleAxisd (static_cast<double> (x[5]), Eigen::Vector3d::UnitZ ())
     * Eigen::AngleAxisd (static_cast<double> (x[4]), Eigen::Vector3d::UnitY ())
     * Eigen::AngleAxisd (static_cast<double> (x[3]), Eigen::Vector3d::UnitX ());
   t.topLeftCorner<3,3> ().matrix () = R * t.topLeftCorner<3,3> ().matrix ();
-  Eigen::Vector4d T (static_cast<double> (x[0]), static_cast<double> (x[1]), static_cast<double> (x[2]), 0.0f);
+  Eigen::Vector4d T (static_cast<double> (x[0]), static_cast<double> (x[1]), static_cast<double> (x[2]), 0.0);
   t.col (3) += T;
 }
 

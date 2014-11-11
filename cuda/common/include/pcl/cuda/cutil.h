@@ -560,7 +560,7 @@ extern "C" {
     //! @param reference  handle to the reference data / gold image
     //! @param data       handle to the computed data
     //! @param len        number of elements in reference and data
-    //! @param threshold  tolerance % # of comparison errors (0.15f = 15%)
+    //! @param threshold  tolerance % # of comparison errors (0.15 = 15%)
     ////////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API
@@ -588,7 +588,7 @@ extern "C" {
     //! @param data       handle to the computed data
     //! @param len        number of elements in reference and data
     //! @param epsilon    epsilon to use for the comparison
-    //! @param threshold  tolerance % # of comparison errors (0.15f = 15%)
+    //! @param threshold  tolerance % # of comparison errors (0.15 = 15%)
     ////////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING
     CUTBoolean CUTIL_API
@@ -660,7 +660,7 @@ extern "C" {
     //! @param src_file   filename for the image to be compared
     //! @param data       filename for the reference data / gold image
     //! @param epsilon    epsilon to use for the comparison
-    //! @param threshold  threshold of pixels that can still mismatch to pass (i.e. 0.15f = 15% must pass)
+    //! @param threshold  threshold of pixels that can still mismatch to pass (i.e. 0.15 = 15% must pass)
     //! $param verboseErrors output details of image mismatch to std::err
     ////////////////////////////////////////////////////////////////////////////////
     DLL_MAPPING

@@ -196,7 +196,7 @@ namespace pcl
               Eigen::Matrix4d inv = pose.inverse();
               model.poses_->push_back (inv);
 
-              model.self_occlusions_->push_back (-1.f);
+              model.self_occlusions_->push_back (-1.);
 
             }
 

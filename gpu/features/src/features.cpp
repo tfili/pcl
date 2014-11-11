@@ -47,7 +47,7 @@ using namespace pcl::device;
 /////////////////////////////////////////////////////////////////////////
 /// Feature
 
-pcl::gpu::Feature::Feature() { radius_ = 0.f, max_results_ = 0; } 
+pcl::gpu::Feature::Feature() { radius_ = 0., max_results_ = 0; } 
 void pcl::gpu::Feature::setInputCloud(const PointCloud& cloud) { cloud_ = cloud; }
 void pcl::gpu::Feature::setSearchSurface(const PointCloud& surface) { surface_ = surface; }
 void pcl::gpu::Feature::setIndices(const Indices& indices) { indices_ = indices; }
@@ -344,7 +344,7 @@ void pcl::gpu::PrincipalCurvaturesEstimation::compute(DeviceArray<PrincipalCurva
     Static<sizeof(PPFRGBRegionEstimation:: PointType) == sizeof(device:: PointType)>::check();
     Static<sizeof(PPFRGBRegionEstimation::NormalType) == sizeof(device::NormalType)>::check();    
 
-    assert(/*!indices_.empty() && */!cloud_.empty() && max_results_ > 0 && radius_ > 0.f);
+    assert(/*!indices_.empty() && */!cloud_.empty() && max_results_ > 0 && radius_ > 0.);
     assert(surface_.empty() ? normals_.size() == cloud_.size() : normals_.size() == surface_.size());
 
     PointCloud& surface = surface_.empty() ? cloud_ : surface_;
@@ -372,7 +372,7 @@ void pcl::gpu::PrincipalCurvaturesEstimation::compute(DeviceArray<PrincipalCurva
 
 pcl::gpu::VFHEstimation::VFHEstimation()
 {     
-    vpx_ =  vpy_ =  vpz_ = 0.f;
+    vpx_ =  vpy_ =  vpz_ = 0.;
 
     //default parameters to compute VFH
     use_given_normal_ = false;
@@ -451,7 +451,7 @@ void pcl::gpu::VFHEstimation::compute(DeviceArray<VFHSignature308>& feature)
 void pcl::gpu::SpinImageEstimation::setImageWidth (unsigned int bin_count) { image_width_ = bin_count; }
 void pcl::gpu::SpinImageEstimation::setSupportAngle (double support_angle_cos) 
 {
-    if (0.f > support_angle_cos || support_angle_cos > 1.f)  // may be permit negative cosine?
+    if (0. > support_angle_cos || support_angle_cos > 1.)  // may be permit negative cosine?
 		pcl::gpu::error("Cosine of support angle should be between 0 and 1", __FILE__, __LINE__);
     support_angle_cos_ = support_angle_cos;
 }

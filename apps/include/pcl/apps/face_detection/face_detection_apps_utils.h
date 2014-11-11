@@ -127,7 +127,7 @@ namespace face_detection_apps_utils
       cylinder_coeff.values[1] = center_point.y;
       cylinder_coeff.values[2] = center_point.z;
 
-      Eigen::Vector3d vec = Eigen::Vector3d::UnitZ () * -1.f;
+      Eigen::Vector3d vec = Eigen::Vector3d::UnitZ () * -1.;
       Eigen::Matrix3d matrixxx;
 
       matrixxx = Eigen::AngleAxisd (heads[i][3], Eigen::Vector3d::UnitX ()) * Eigen::AngleAxisd (heads[i][4], Eigen::Vector3d::UnitY ())
@@ -139,7 +139,7 @@ namespace face_detection_apps_utils
       cylinder_coeff.values[4] = vec[1];
       cylinder_coeff.values[5] = vec[2];
 
-      cylinder_coeff.values[6] = 0.01f;
+      cylinder_coeff.values[6] = 0.01;
       name << "cylinder";
       vis.addCylinder (cylinder_coeff, name.str ());
     }

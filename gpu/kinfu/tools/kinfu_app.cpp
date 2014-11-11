@@ -92,7 +92,7 @@ namespace pcl
 {
   namespace gpu
   {
-    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5f);
+    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5);
     void mergePointNormal (const DeviceArray<PointXYZ>& cloud, const DeviceArray<Normal>& normals, DeviceArray<PointNormal>& output);
   }
 
@@ -212,8 +212,8 @@ struct SampledScopeTime : public StopWatch
     if (i_ % EACH == 0 && i_)
     {
       boost::posix_time::ptime endtime_ = boost::posix_time::microsec_clock::local_time();
-      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000.f * EACH / time_ms_ << "fps )"
-           << "( real: " << 1000.f * EACH / (endtime_-starttime_).total_milliseconds() << "fps )"  << endl;
+      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000. * EACH / time_ms_ << "fps )"
+           << "( real: " << 1000. * EACH / (endtime_-starttime_).total_milliseconds() << "fps )"  << endl;
       time_ms_ = 0;
       starttime_ = endtime_;
     }
@@ -650,22 +650,22 @@ struct KinFuApp
   enum { PCD_BIN = 1, PCD_ASCII = 2, PLY = 3, MESH_PLY = 7, MESH_VTK = 8 };
   
   KinFuApp(pcl::Grabber& source, double vsz, int icp, int viz, boost::shared_ptr<CameraPoseProcessor> pose_processor=boost::shared_ptr<CameraPoseProcessor> () ) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
-      registration_ (false), integrate_colors_ (false), focal_length_(-1.f), capture_ (source), scene_cloud_view_(viz), image_view_(viz), time_ms_(0), icp_(icp), viz_(viz), pose_processor_ (pose_processor)
+      registration_ (false), integrate_colors_ (false), focal_length_(-1.), capture_ (source), scene_cloud_view_(viz), image_view_(viz), time_ms_(0), icp_(icp), viz_(viz), pose_processor_ (pose_processor)
   {    
     //Init Kinfu Tracker
     Eigen::Vector3d volume_size = Vector3d::Constant (vsz/*meters*/);    
     kinfu_.volume().setSize (volume_size);
 
-    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.f), Vector3d::UnitX());
-    Eigen::Vector3d t = volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
+    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.), Vector3d::UnitX());
+    Eigen::Vector3d t = volume_size * 0.5 - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
     Eigen::Affine3d pose = Eigen::Translation3d (t) * Eigen::AngleAxisd (R);
 
     kinfu_.setInitalCameraPose (pose);
-    kinfu_.volume().setTsdfTruncDist (0.030f/*meters*/);    
-    kinfu_.setIcpCorespFilteringParams (0.1f/*meters*/, sin ( pcl::deg2rad(20.f) ));
-    //kinfu_.setDepthTruncationForICP(5.f/*meters*/);
-    kinfu_.setCameraMovementThreshold(0.001f);
+    kinfu_.volume().setTsdfTruncDist (0.030/*meters*/);    
+    kinfu_.setIcpCorespFilteringParams (0.1/*meters*/, sin ( pcl::deg2rad(20.) ));
+    //kinfu_.setDepthTruncationForICP(5./*meters*/);
+    kinfu_.setCameraMovementThreshold(0.001);
 
     if (!icp)
       kinfu_.disableIcp();
@@ -741,7 +741,7 @@ struct KinFuApp
   void 
   enableTruncationScaling()
   {
-    kinfu_.volume().setTsdfTruncDist (kinfu_.volume().getSize()(0) / 100.0f);
+    kinfu_.volume().setTsdfTruncDist (kinfu_.volume().getSize()(0) / 100.0);
   }
 
   void
@@ -1215,7 +1215,7 @@ main (int argc, char* argv[])
     }
     else if (pc::parse_argument (argc, argv, "-pcd", pcd_dir) > 0)
     {
-      double fps_pcd = 15.0f;
+      double fps_pcd = 15.0;
       pc::parse_argument (argc, argv, "-pcd_fps", fps_pcd);
 
       vector<string> pcd_files = getPcdFilesInDir(pcd_dir);    
@@ -1242,7 +1242,7 @@ main (int argc, char* argv[])
   }
   catch (const pcl::PCLException& /*e*/) { return cout << "Can't open depth source" << endl, -1; }
 
-  double volume_size = 3.f;
+  double volume_size = 3.;
   pc::parse_argument (argc, argv, "-volume_size", volume_size);
 
   int icp = 1, visualization = 1;

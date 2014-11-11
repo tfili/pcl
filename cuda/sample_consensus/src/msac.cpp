@@ -159,13 +159,13 @@ pcl_cuda::MultiRandomSampleConsensus<Storage>::computeModel (int debug_verbosity
 
         // Compute the k parameter (k=log(z)/log(1-w^n))
         double w = (double)((double)n_best_inliers_count / (double)nr_remaining_points);
-        double p_no_outliers = 1.0f - pow (w, 1.0f);
+        double p_no_outliers = 1.0 - pow (w, 1.0);
         p_no_outliers = (std::max) (std::numeric_limits<double>::epsilon (), p_no_outliers);       // Avoid division by -Inf
-        p_no_outliers = (std::min) (1.0f - std::numeric_limits<double>::epsilon (), p_no_outliers);   // Avoid division by 0.
-        if (p_no_outliers == 1.0f)
+        p_no_outliers = (std::min) (1.0 - std::numeric_limits<double>::epsilon (), p_no_outliers);   // Avoid division by 0.
+        if (p_no_outliers == 1.0)
           k++;
         else
-          k = log (1.0f - probability_) / log (p_no_outliers);
+          k = log (1.0 - probability_) / log (p_no_outliers);
       }
 
       //fprintf (stderr, "[pcl_cuda::MultiRandomSampleConsensus::computeModel] Trial %d out of %f: %d inliers (best is: %d so far).\n",
@@ -186,16 +186,16 @@ pcl_cuda::MultiRandomSampleConsensus<Storage>::computeModel (int debug_verbosity
 
           // Compute the k parameter (k=log(z)/log(1-w^n))
           double w = (double)((double)min_nr_in_shape / (double)nr_remaining_points);
-          double p_no_outliers = 1.0f - pow (w, 1.0f);
+          double p_no_outliers = 1.0 - pow (w, 1.0);
           p_no_outliers = (std::max) (std::numeric_limits<double>::epsilon (), p_no_outliers);       // Avoid division by -Inf
-          p_no_outliers = (std::min) (1.0f - std::numeric_limits<double>::epsilon (), p_no_outliers);   // Avoid division by 0.
-          if (p_no_outliers != 1.0f)
+          p_no_outliers = (std::min) (1.0 - std::numeric_limits<double>::epsilon (), p_no_outliers);   // Avoid division by 0.
+          if (p_no_outliers != 1.0)
           {
-            if (log (1.0f - probability_) / log (p_no_outliers) < valid_iterations) // we won't find a model with min_nr_in_shape points anymore...
+            if (log (1.0 - probability_) / log (p_no_outliers) < valid_iterations) // we won't find a model with min_nr_in_shape points anymore...
               find_no_better = true;
             else
               if (debug_verbosity_level > 1)
-                std::cerr << "------->" << log (1.0f - probability_) / log (p_no_outliers) << "  -vs-  " << valid_iterations << std::endl;
+                std::cerr << "------->" << log (1.0 - probability_) / log (p_no_outliers) << "  -vs-  " << valid_iterations << std::endl;
           }
         }
 
@@ -280,13 +280,13 @@ pcl_cuda::MultiRandomSampleConsensus<Storage>::computeModel (int debug_verbosity
 
               // Compute the k parameter (k=log(z)/log(1-w^n))
               double w = (double)((double)n_best_inliers_count / (double)nr_remaining_points);
-              double p_no_outliers = 1.0f - pow (w, 1.0f);
+              double p_no_outliers = 1.0 - pow (w, 1.0);
               p_no_outliers = (std::max) (std::numeric_limits<double>::epsilon (), p_no_outliers);       // Avoid division by -Inf
-              p_no_outliers = (std::min) (1.0f - std::numeric_limits<double>::epsilon (), p_no_outliers);   // Avoid division by 0.
-              if (p_no_outliers == 1.0f)
+              p_no_outliers = (std::min) (1.0 - std::numeric_limits<double>::epsilon (), p_no_outliers);   // Avoid division by 0.
+              if (p_no_outliers == 1.0)
                 k++;
               else
-                k = log (1.0f - probability_) / log (p_no_outliers);
+                k = log (1.0 - probability_) / log (p_no_outliers);
             }
             
           }

@@ -109,14 +109,14 @@ main (int argc, char** argv)
   printf ("\nUsage: ./pcl_obj_rec_ransac_scene_opps <pair_width> <voxel_size> <max_coplanarity_angle>\n\n");
 
   const int num_params = 3;
-  double parameters[num_params] = {40.0f/*pair width*/, 5.0f/*voxel size*/, 15.0f/*max co-planarity angle*/};
+  double parameters[num_params] = {40.0/*pair width*/, 5.0/*voxel size*/, 15.0/*max co-planarity angle*/};
   string parameter_names[num_params] = {"pair_width", "voxel_size", "max_coplanarity_angle"};
 
   // Read the user input if any
   for ( int i = 0 ; i < argc-1 && i < num_params ; ++i )
   {
     parameters[i] = static_cast<double> (atof (argv[i+1]));
-    if ( parameters[i] <= 0.0f )
+    if ( parameters[i] <= 0.0 )
     {
       fprintf(stderr, "ERROR: the %i-th parameter has to be positive and not %f\n", i+1, parameters[i]);
       return (-1);
@@ -213,7 +213,7 @@ run (double pair_width, double voxel_size, double max_coplanarity_angle)
 #if defined _SHOW_OCTREE_NORMALS_ && defined _SHOW_OCTREE_POINTS_
   PointCloud<Normal>::Ptr normals_octree (new PointCloud<Normal> ());
   objrec.getSceneOctree ().getNormalsOfFullLeaves (*normals_octree);
-  viz.addPointCloudNormals<PointXYZ,Normal> (points_octree, normals_octree, 1, 6.0f, "normals out");
+  viz.addPointCloudNormals<PointXYZ,Normal> (points_octree, normals_octree, 1, 6.0, "normals out");
 #endif
 
   // Enter the main loop

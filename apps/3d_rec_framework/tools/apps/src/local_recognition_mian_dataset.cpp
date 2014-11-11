@@ -127,7 +127,7 @@ template<template<class > class DistT, typename PointT, typename FeatureT>
         typename pcl::PointCloud<PointT>::Ptr scene (new pcl::PointCloud<PointT> ());
         pcl::io::loadPCDFile (file.str (), *scene);
 
-        local.setVoxelSizeICP (0.005f);
+        local.setVoxelSizeICP (0.005);
         local.setInputCloud (scene);
         {
           pcl::ScopeTime ttt ("Recognition");
@@ -148,33 +148,33 @@ template<template<class > class DistT, typename PointT, typename FeatureT>
           std::stringstream name;
           name << "cloud_" << j;
 
-          ConstPointInTPtr model_cloud = models->at (j).getAssembled (0.0025f);
+          ConstPointInTPtr model_cloud = models->at (j).getAssembled (0.0025);
           typename pcl::PointCloud<PointT>::Ptr model_aligned (new pcl::PointCloud<PointT>);
           pcl::transformPointCloud (*model_cloud, *model_aligned, transforms->at (j));
 
           double r, g, b;
           std::cout << models->at (j).id_ << std::endl;
-          r = 255.0f;
-          g = 0.0f;
-          b = 0.0f;
+          r = 255.0;
+          g = 0.0;
+          b = 0.0;
 
           if (models->at (j).id_.compare ("cheff") == 0)
           {
-            r = 0.0f;
-            g = 255.0f;
-            b = 0.0f;
+            r = 0.0;
+            g = 255.0;
+            b = 0.0;
           }
           else if (models->at (j).id_.compare ("chicken_high") == 0)
           {
-            r = 0.0f;
-            g = 255.0f;
-            b = 255.0f;
+            r = 0.0;
+            g = 255.0;
+            b = 255.0;
           }
           else if (models->at (j).id_.compare ("parasaurolophus_high") == 0)
           {
-            r = 255.0f;
-            g = 255.0f;
-            b = 0.f;
+            r = 255.0;
+            g = 255.0;
+            b = 0.;
           }
           else
           {
@@ -231,7 +231,7 @@ template<template<class > class DistT, typename PointT, typename FeatureT>
           std::stringstream name;
           name << "cloud_" << j;
 
-          ConstPointInTPtr model_cloud = models->at (j).getAssembled (0.0025f);
+          ConstPointInTPtr model_cloud = models->at (j).getAssembled (0.0025);
           typename pcl::PointCloud<PointT>::Ptr model_aligned (new pcl::PointCloud<PointT>);
           pcl::transformPointCloud (*model_cloud, *model_aligned, transforms->at (j));
 
@@ -301,7 +301,7 @@ getModelsInDirectory (bf::path & dir, std::string & rel_path_so_far, std::vector
 typedef pcl::ReferenceFrame RFType;
 
 int CG_SIZE_ = 3;
-double CG_THRESHOLD_ = 0.005f;
+double CG_THRESHOLD_ = 0.005;
 
 /** Based on the paper:
   * "A Global Hypotheses Verification Method for 3D Object Recognition",
@@ -327,8 +327,8 @@ main (int argc, char ** argv)
   int detect_clutter = 1;
   int hv_method = 0;
   int use_hv = 1;
-  double thres_hyp_ = 0.2f;
-  double desc_radius = 0.04f;
+  double thres_hyp_ = 0.2;
+  double desc_radius = 0.04;
 
   pcl::console::parse_argument (argc, argv, "-models_dir", path);
   pcl::console::parse_argument (argc, argv, "-training_dir", training_dir);
@@ -379,9 +379,9 @@ main (int argc, char ** argv)
   mesh_source->setPath (path);
   mesh_source->setResolution (250);
   mesh_source->setTesselationLevel (1);
-  mesh_source->setViewAngle (57.f);
-  mesh_source->setRadiusSphere (1.5f);
-  mesh_source->setModelScale (0.001f);
+  mesh_source->setViewAngle (57.);
+  mesh_source->setRadiusSphere (1.5);
+  mesh_source->setModelScale (0.001);
   mesh_source->generate (training_dir);
 
   boost::shared_ptr<pcl::rec_3d_framework::Source<pcl::PointXYZ> > cast_source;
@@ -393,15 +393,15 @@ main (int argc, char ** argv)
   normal_estimator->setCMR (false);
   normal_estimator->setDoVoxelGrid (true);
   normal_estimator->setRemoveOutliers (true);
-  normal_estimator->setValuesForCMRFalse (0.003f, 0.012f);
+  normal_estimator->setValuesForCMRFalse (0.003, 0.012);
 
   //configure keypoint extractor
   boost::shared_ptr<pcl::rec_3d_framework::UniformSamplingExtractor<pcl::PointXYZ> >
                                                                                      uniform_keypoint_extractor (
                                                                                                                  new pcl::rec_3d_framework::UniformSamplingExtractor<
                                                                                                                      pcl::PointXYZ>);
-  //uniform_keypoint_extractor->setSamplingDensity (0.01f);
-  uniform_keypoint_extractor->setSamplingDensity (0.005f);
+  //uniform_keypoint_extractor->setSamplingDensity (0.01);
+  uniform_keypoint_extractor->setSamplingDensity (0.005);
   uniform_keypoint_extractor->setFilterPlanar (true);
 
   boost::shared_ptr<pcl::rec_3d_framework::KeypointExtractor<pcl::PointXYZ> > keypoint_extractor;
@@ -418,29 +418,29 @@ main (int argc, char ** argv)
 
   //configure hypothesis verificator
   boost::shared_ptr<pcl::PapazovHV<pcl::PointXYZ, pcl::PointXYZ> > papazov (new pcl::PapazovHV<pcl::PointXYZ, pcl::PointXYZ>);
-  papazov->setResolution (0.005f);
-  papazov->setInlierThreshold (0.005f);
-  papazov->setSupportThreshold (0.08f);
-  papazov->setPenaltyThreshold (0.05f);
-  papazov->setConflictThreshold (0.02f);
-  papazov->setOcclusionThreshold (0.01f);
+  papazov->setResolution (0.005);
+  papazov->setInlierThreshold (0.005);
+  papazov->setSupportThreshold (0.08);
+  papazov->setPenaltyThreshold (0.05);
+  papazov->setConflictThreshold (0.02);
+  papazov->setOcclusionThreshold (0.01);
 
   boost::shared_ptr<pcl::GlobalHypothesesVerification<pcl::PointXYZ, pcl::PointXYZ> > go (
                                                                                           new pcl::GlobalHypothesesVerification<pcl::PointXYZ,
                                                                                               pcl::PointXYZ>);
-  go->setResolution (0.005f);
+  go->setResolution (0.005);
   go->setMaxIterations (7000);
-  go->setInlierThreshold (0.005f);
+  go->setInlierThreshold (0.005);
   go->setRadiusClutter (0.04f);
-  go->setRegularizer (3.f);
-  go->setClutterRegularizer (7.5f);
+  go->setRegularizer (3.);
+  go->setClutterRegularizer (7.5);
   go->setDetectClutter (detect_clutter);
-  go->setOcclusionThreshold (0.01f);
+  go->setOcclusionThreshold (0.01);
 
-  boost::shared_ptr<pcl::GreedyVerification<pcl::PointXYZ, pcl::PointXYZ> > greedy (new pcl::GreedyVerification<pcl::PointXYZ, pcl::PointXYZ> (3.f));
-  greedy->setResolution (0.005f);
-  greedy->setInlierThreshold (0.005f);
-  greedy->setOcclusionThreshold (0.01f);
+  boost::shared_ptr<pcl::GreedyVerification<pcl::PointXYZ, pcl::PointXYZ> > greedy (new pcl::GreedyVerification<pcl::PointXYZ, pcl::PointXYZ> (3.));
+  greedy->setResolution (0.005);
+  greedy->setInlierThreshold (0.005);
+  greedy->setOcclusionThreshold (0.01);
 
   boost::shared_ptr<pcl::HypothesisVerification<pcl::PointXYZ, pcl::PointXYZ> > cast_hv_alg;
 
@@ -462,7 +462,7 @@ main (int argc, char ** argv)
     estimator.reset (new pcl::rec_3d_framework::SHOTLocalEstimation<pcl::PointXYZ, pcl::Histogram<352> >);
     estimator->setNormalEstimator (normal_estimator);
     estimator->addKeypointExtractor (keypoint_extractor);
-    estimator->setSupportRadius (0.04f);
+    estimator->setSupportRadius (0.04);
 
     boost::shared_ptr<pcl::rec_3d_framework::LocalEstimator<pcl::PointXYZ, pcl::Histogram<352> > > cast_estimator;
     cast_estimator = boost::dynamic_pointer_cast<pcl::rec_3d_framework::LocalEstimator<pcl::PointXYZ, pcl::Histogram<352> > > (estimator);
@@ -478,7 +478,7 @@ main (int argc, char ** argv)
     local.setUseCache (static_cast<bool> (use_cache));
     local.initialize (static_cast<bool> (force_retrain));
 
-    uniform_keypoint_extractor->setSamplingDensity (0.005f);
+    uniform_keypoint_extractor->setSamplingDensity (0.005);
     local.setICPIterations (icp_iterations);
     local.setKdtreeSplits (splits);
 
@@ -512,7 +512,7 @@ main (int argc, char ** argv)
     local.initialize (static_cast<bool> (force_retrain));
     local.setThresholdAcceptHyp (thres_hyp_);
 
-    uniform_keypoint_extractor->setSamplingDensity (0.005f);
+    uniform_keypoint_extractor->setSamplingDensity (0.005);
     local.setICPIterations (icp_iterations);
     local.setKdtreeSplits (splits);
 
@@ -543,7 +543,7 @@ main (int argc, char ** argv)
     local.setUseCache (static_cast<bool> (use_cache));
     local.initialize (static_cast<bool> (force_retrain));
 
-    uniform_keypoint_extractor->setSamplingDensity (0.005f);
+    uniform_keypoint_extractor->setSamplingDensity (0.005);
     local.setICPIterations (icp_iterations);
     local.setKdtreeSplits (splits);
 

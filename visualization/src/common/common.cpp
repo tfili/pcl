@@ -354,7 +354,7 @@ pcl::visualization::viewScreenArea (
     sum += (dst[i].x () - dst[(i+1) % num].x ()) * (dst[i].y () + dst[(i+1) % num].y ());
   }
 
-  return (fabsf (double (sum * 0.5f)));
+  return (fabsf (double (sum * 0.5)));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -384,16 +384,16 @@ pcl::visualization::Camera::computeViewMatrix (Eigen::Matrix4d &view_mat) const
 void
 pcl::visualization::Camera::computeProjectionMatrix (Eigen::Matrix4d& proj) const
 {
-  double top    = static_cast<double> (clip[0]) * tanf (0.5f * static_cast<double> (fovy));
+  double top    = static_cast<double> (clip[0]) * tan (0.5 * static_cast<double> (fovy));
   double left   = -top * static_cast<double> (window_size[0] / window_size[1]);
   double right  = -left;
   double bottom = -top;
 
   double temp1, temp2, temp3, temp4;
-	temp1 = 2.0f * static_cast<double> (clip[0]);
-	temp2 = 1.0f / (right - left);
-	temp3 = 1.0f / (top - bottom);
-	temp4 = 1.0f / static_cast<double> (clip[1] - clip[0]);
+	temp1 = 2.0 * static_cast<double> (clip[0]);
+	temp2 = 1.0 / (right - left);
+	temp3 = 1.0 / (top - bottom);
+	temp4 = 1.0 / static_cast<double> (clip[1] - clip[0]);
 
   proj.setZero ();
 

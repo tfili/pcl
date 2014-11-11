@@ -88,19 +88,19 @@ std::string scene_filename_;
 //Algorithm params 
 bool show_keypoints_ (false);
 bool use_hough_ (true);
-double model_ss_ (0.02f);
-double scene_ss_ (0.02f);
-double rf_rad_ (0.015f);
-double descr_rad_ (0.02f);
-double cg_size_ (0.01f);
-double cg_thresh_ (5.0f);
+double model_ss_ (0.02);
+double scene_ss_ (0.02);
+double rf_rad_ (0.015);
+double descr_rad_ (0.02);
+double cg_size_ (0.01);
+double cg_thresh_ (5.0);
 int icp_max_iter_ (5);
-double icp_corr_distance_ (0.005f);
-double hv_clutter_reg_ (5.0f);
-double hv_inlier_th_ (0.005f);
-double hv_occlusion_th_ (0.01f);
-double hv_rad_clutter_ (0.03f);
-double hv_regularizer_ (3.0f);
+double icp_corr_distance_ (0.005);
+double hv_clutter_reg_ (5.0);
+double hv_inlier_th_ (0.005);
+double hv_occlusion_th_ (0.01);
+double hv_rad_clutter_ (0.03);
+double hv_regularizer_ (3.0);
 double hv_rad_normals_ (0.05);
 bool hv_detect_clutter_ (true);
 
@@ -305,7 +305,7 @@ main (int argc,
       continue;
     }
     int found_neighs = match_search.nearestKSearch (scene_descriptors->at (i), 1, neigh_indices, neigh_sqr_dists);
-    if (found_neighs == 1 && neigh_sqr_dists[0] < 0.25f)
+    if (found_neighs == 1 && neigh_sqr_dists[0] < 0.25)
     {
       pcl::Correspondence corr (neigh_indices[0], static_cast<int> (i), neigh_sqr_dists[0]);
       model_scene_corrs->push_back (corr);

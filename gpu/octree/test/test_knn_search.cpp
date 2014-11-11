@@ -78,12 +78,12 @@ TEST(PCL_OctreeGPU, exactNeighbourSearch)
     DataGenerator data;
     data.data_size = 871000;
     data.tests_num = 10000;    
-    data.cube_size = 1024.f;
-    data.max_radius    = data.cube_size/30.f;
-    data.shared_radius = data.cube_size/30.f;
+    data.cube_size = 1024.;
+    data.max_radius    = data.cube_size/30.;
+    data.shared_radius = data.cube_size/30.;
     data.printParams();
 
-    const double host_octree_resolution = 25.f;
+    const double host_octree_resolution = 25.;
     const int k = 1; // only this is supported
 
     //generate

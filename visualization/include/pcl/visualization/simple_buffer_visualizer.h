@@ -132,7 +132,7 @@ namespace pcl
           * \note This functionality does not work yet at time of commit (see http://dev.pointclouds.org/issues/829)
           */
         void
-        setAutomaticBackgroundColorControl (const bool value = true, const double threshold = 0.0f)
+        setAutomaticBackgroundColorControl (const bool value = true, const double threshold = 0.0)
         {
           control_background_color_ = value;
 
@@ -188,12 +188,12 @@ namespace pcl
         initGUIValues ()
         {
           control_background_color_ = false;
-          lowest_threshold_ = 0.0f;  
+          lowest_threshold_ = 0.0;  
 
           handle_y_scale_ = false;      
 
-          min_ =  -1.0f; // numeric_limits<double>::max( );
-          max_ =  1.0f; // numeric_limits<double>::min( );  
+          min_ =  -1.0; // numeric_limits<double>::max( );
+          max_ =  1.0; // numeric_limits<double>::min( );  
         }
     
         /** \brief visualizer object */

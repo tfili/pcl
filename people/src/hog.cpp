@@ -98,10 +98,10 @@ pcl::people::HOG::gradMag( double *I, int h, int w, int d, double *M, double *O 
   }
   // compute gradient magnitude (M) and normalize Gx
   for( y=0; y<h4/4; y++ ) {
-    _m = pcl::sse_min( pcl::sse_rcpsqrt(_M2[y]), pcl::sse_set(1e10f) );
+    _m = pcl::sse_min( pcl::sse_rcpsqrt(_M2[y]), pcl::sse_set(1e10) );
     _M2[y] = pcl::sse_rcp(_m);
     _Gx[y] = pcl::sse_mul( pcl::sse_mul(_Gx[y],_m), pcl::sse_set(acMult) );
-    _Gx[y] = pcl::sse_xor( _Gx[y], pcl::sse_and(_Gy[y], pcl::sse_set(-0.f)) );
+    _Gx[y] = pcl::sse_xor( _Gx[y], pcl::sse_and(_Gy[y], pcl::sse_set(-0.)) );
   };
 
   memcpy( M+x*h, M2, h*sizeof(double) );
@@ -151,9 +151,9 @@ pcl::people::HOG::gradMag( double *I, int h, int w, int d, double *M, double *O 
   // compute gradient magnitude (M) and normalize Gx
   for( y=0; y<h4; y++ ) 
   {
-  m = 1.0f/sqrtf(M2[y]);
-  m = m < 1e10f ? m : 1e10f;
-    M2[y] = 1.0f / m;
+  m = 1.0/sqrt(M2[y]);
+  m = m < 1e10 ? m : 1e10;
+    M2[y] = 1.0 / m;
     Gx[y] = ((Gx[y] * m) * acMult);
     if (Gy[y] < 0)
     Gx[y] = -Gx[y];
@@ -199,7 +199,7 @@ pcl::people::HOG::gradHist( double *M, double *O, int h, int w, int bin_size, in
 #if defined(__SSE2__)
       double ms[4], xyd, yb, xd, yd; __m128 _m, _m0, _m1;
       bool hasLf, hasRt; int xb0, yb0;
-      if( x==0 ) { init=(0+.5f)*sInv-0.5f; xb=init; }
+      if( x==0 ) { init=(0+.5)*sInv-0.5; xb=init; }
       hasLf = xb>=0; xb0 = hasLf?(int)xb:-1; hasRt = xb0 < wb-1;
       xd=xb-xb0; xb+=sInv; yb=init; y=0;
       // macros for code conciseness
@@ -232,7 +232,7 @@ pcl::people::HOG::gradHist( double *M, double *O, int h, int w, int bin_size, in
 #else
       double ms[4], xyd, yb, xd, yd;  
       bool hasLf, hasRt; int xb0, yb0;
-      if( x==0 ) { init=(0+.5f)*sInv-0.5f; xb=init; }
+      if( x==0 ) { init=(0+.5)*sInv-0.5; xb=init; }
       hasLf = xb>=0; xb0 = hasLf?(int)xb:-1; hasRt = xb0 < wb-1;
       xd=xb-xb0; xb+=sInv; yb=init; y=0;
       // macros for code conciseness
@@ -359,7 +359,7 @@ pcl::people::HOG::grad1 (double *I, double *Gx, double *Gy, int h, int w, int x)
 #if defined(__SSE2__)
   int y, y1; double *Ip, *In, r; __m128 *_Ip, *_In, *_G, _r;
   // compute column of Gx
-  Ip=I-h; In=I+h; r=.5f;
+  Ip=I-h; In=I+h; r=.5;
   if(x==0) { r=1; Ip+=h; } else if(x==w-1) { r=1; In-=h; }
   if( h<4 || h%4>0 || (size_t(I)&15) || (size_t(Gx)&15) ) {
   for( y=0; y<h; y++ ) *Gx++=(*In++-*Ip++)*r;
@@ -370,13 +370,13 @@ pcl::people::HOG::grad1 (double *I, double *Gx, double *Gy, int h, int w, int x)
   // compute column of Gy
   #define GRADY(r) *Gy++=(*In++-*Ip++)*r;
   Ip=I; In=Ip+1;
-  // GRADY(1); Ip--; for(y=1; y<h-1; y++) GRADY(.5f); In--; GRADY(1);
+  // GRADY(1); Ip--; for(y=1; y<h-1; y++) GRADY(.5); In--; GRADY(1);
   y1=((~((size_t) Gy) + 1) & 15)/4; if(y1==0) y1=4; if(y1>h-1) y1=h-1;
-  GRADY(1); Ip--; for(y=1; y<y1; y++) GRADY(.5f);
-  _r = pcl::sse_set(.5f); _G=(__m128*) Gy;
+  GRADY(1); Ip--; for(y=1; y<y1; y++) GRADY(.5);
+  _r = pcl::sse_set(.5); _G=(__m128*) Gy;
   for(; y+4<h-1; y+=4, Ip+=4, In+=4, Gy+=4)
   *_G++=pcl::sse_mul(pcl::sse_sub(pcl::sse_ldu(*In),pcl::sse_ldu(*Ip)),_r);
-  for(; y<h-1; y++) GRADY(.5f); In--; GRADY(1);
+  for(; y<h-1; y++) GRADY(.5); In--; GRADY(1);
   #undef GRADY
 #else
   int y, y1;
@@ -385,7 +385,7 @@ pcl::people::HOG::grad1 (double *I, double *Gx, double *Gy, int h, int w, int x)
   // compute column of Gx
   Ip = I - h;
   In = I + h;
-  r = .5f;
+  r = .5;
   
   if(x == 0)
   {
@@ -404,13 +404,13 @@ pcl::people::HOG::grad1 (double *I, double *Gx, double *Gy, int h, int w, int x)
   // compute column of Gy
   #define GRADY(r) *Gy++=(*In++-*Ip++)*r;
   Ip=I; In=Ip+1;
-  // GRADY(1); Ip--; for(y=1; y<h-1; y++) GRADY(.5f); In--; GRADY(1);
+  // GRADY(1); Ip--; for(y=1; y<h-1; y++) GRADY(.5); In--; GRADY(1);
   y1=((~((size_t) Gy) + 1) & 15)/4; if(y1==0) y1=4; if(y1>h-1) y1=h-1;
-  GRADY(1); Ip--; for(y=1; y<y1; y++) GRADY(.5f);
+  GRADY(1); Ip--; for(y=1; y<y1; y++) GRADY(.5);
   
-  r = 0.5f;
+  r = 0.5;
   for(; y<h-1; y++)
-    GRADY(.5f); In--; GRADY(1);
+    GRADY(.5); In--; GRADY(1);
   #undef GRADY
 #endif
 }
@@ -422,10 +422,10 @@ pcl::people::HOG::acosTable () const
   static double a[25000]; static bool init=false;
   if( init ) return a+n2; ni = 2.02f/(double) n;
   for( i=0; i<n; i++ ) {
-    t = i*ni - 1.01f;
+    t = i*ni - 1.01;
     t = t<-1 ? -1 : (t>1 ? 1 : t);
     t = (double) acos( t );
-    a[i] = (t <= M_PI-1e-5f) ? t : 0;
+    a[i] = (t <= M_PI-1e-5) ? t : 0;
   }
   init=true; return a+n2;
 }
@@ -436,7 +436,7 @@ pcl::people::HOG::gradQuantize (double *O, double *M, int *O0, int *O1, double *
 #if defined(__SSE2__)
   // assumes all *OUTPUT* matrices are 4-byte aligned
   int i, o0, o1; double o, od, m;
-  __m128i _o0, _o1, *_O0, *_O1; __m128 _o, _o0f, _m, *_M0, *_M1;
+  __m128i _o0, _o1, *_O0, *_O1; __m128 _o, _o0, _m, *_M0, *_M1;
   // define useful constants
   const double oMult=(double)n_orients/M_PI; const int oMax=n_orients*nb;
   const __m128 _norm=pcl::sse_set(norm), _oMult=pcl::sse_set(oMult), _nbf=pcl::sse_set((double)nb);
@@ -445,10 +445,10 @@ pcl::people::HOG::gradQuantize (double *O, double *M, int *O0, int *O1, double *
   // perform the majority of the work with sse
   _O0=(__m128i*) O0; _O1=(__m128i*) O1; _M0=(__m128*) M0; _M1=(__m128*) M1;
   for( i=0; i<=n-4; i+=4 ) {
-  _o=pcl::sse_mul(pcl::sse_ldu(O[i]),_oMult); _o0f=pcl::sse_cvt(pcl::sse_cvt(_o)); _o0=pcl::sse_cvt(pcl::sse_mul(_o0f,_nbf));
+  _o=pcl::sse_mul(pcl::sse_ldu(O[i]),_oMult); _o0=pcl::sse_cvt(pcl::sse_cvt(_o)); _o0=pcl::sse_cvt(pcl::sse_mul(_o0,_nbf));
   _o1=pcl::sse_add(_o0,_nb); _o1=pcl::sse_and(pcl::sse_cmpgt(_oMax,_o1),_o1);
   *_O0++=_o0; *_O1++=_o1; _m=pcl::sse_mul(pcl::sse_ldu(M[i]),_norm);
-  *_M1=pcl::sse_mul(pcl::sse_sub(_o,_o0f),_m); *_M0=pcl::sse_sub(_m,*_M1); _M0++; _M1++;
+  *_M1=pcl::sse_mul(pcl::sse_sub(_o,_o0),_m); *_M0=pcl::sse_sub(_m,*_M1); _M0++; _M1++;
   }
 
   // compute trailing locations without sse

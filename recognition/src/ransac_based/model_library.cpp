@@ -62,7 +62,7 @@ ModelLibrary::ModelLibrary (double pair_width, double voxel_size, double max_cop
   num_of_cells_[2] = 60;
 
   // Compute the bounds of the hash table
-  double eps = 0.000001f; // To be sure that an angle of 0 or PI will not be excluded because it lies on the boundary of the voxel structure
+  double eps = 0.000001; // To be sure that an angle of 0 or PI will not be excluded because it lies on the boundary of the voxel structure
   double bounds[6] = {-eps, static_cast<double> (M_PI) + eps,
                      -eps, static_cast<double> (M_PI) + eps,
                      -eps, static_cast<double> (M_PI) + eps};

@@ -94,17 +94,17 @@ pcl::FastBilateralFilter<PointT>::applyFilter (PointCloud &output)
   Array3D data (small_width, small_height, small_depth);
   for (size_t x = 0; x < input_->width; ++x)
   {
-    const size_t small_x = static_cast<size_t> (static_cast<double> (x) / sigma_s_ + 0.5f) + padding_xy;
+    const size_t small_x = static_cast<size_t> (static_cast<double> (x) / sigma_s_ + 0.5) + padding_xy;
     for (size_t y = 0; y < input_->height; ++y)
     {
       const double z = output (x,y).z - base_min;
 
-      const size_t small_y = static_cast<size_t> (static_cast<double> (y) / sigma_s_ + 0.5f) + padding_xy;
-      const size_t small_z = static_cast<size_t> (static_cast<double> (z) / sigma_r_ + 0.5f) + padding_z;
+      const size_t small_y = static_cast<size_t> (static_cast<double> (y) / sigma_s_ + 0.5) + padding_xy;
+      const size_t small_z = static_cast<size_t> (static_cast<double> (z) / sigma_r_ + 0.5) + padding_z;
 
       Eigen::Vector2d& d = data (small_x, small_y, small_z);
       d[0] += output (x,y).z;
-      d[1] += 1.0f;
+      d[1] += 1.0;
     }
   }
 
@@ -205,13 +205,13 @@ pcl::FastBilateralFilter<PointT>::Array3D::trilinear_interpolation (const double
   const double z_alpha = z - static_cast<double> (z_index);
 
   return
-      (1.0f-x_alpha) * (1.0f-y_alpha) * (1.0f-z_alpha) * (*this)(x_index, y_index, z_index) +
-      x_alpha        * (1.0f-y_alpha) * (1.0f-z_alpha) * (*this)(xx_index, y_index, z_index) +
-      (1.0f-x_alpha) * y_alpha        * (1.0f-z_alpha) * (*this)(x_index, yy_index, z_index) +
-      x_alpha        * y_alpha        * (1.0f-z_alpha) * (*this)(xx_index, yy_index, z_index) +
-      (1.0f-x_alpha) * (1.0f-y_alpha) * z_alpha        * (*this)(x_index, y_index, zz_index) +
-      x_alpha        * (1.0f-y_alpha) * z_alpha        * (*this)(xx_index, y_index, zz_index) +
-      (1.0f-x_alpha) * y_alpha        * z_alpha        * (*this)(x_index, yy_index, zz_index) +
+      (1.0-x_alpha) * (1.0-y_alpha) * (1.0-z_alpha) * (*this)(x_index, y_index, z_index) +
+      x_alpha        * (1.0-y_alpha) * (1.0-z_alpha) * (*this)(xx_index, y_index, z_index) +
+      (1.0-x_alpha) * y_alpha        * (1.0-z_alpha) * (*this)(x_index, yy_index, z_index) +
+      x_alpha        * y_alpha        * (1.0-z_alpha) * (*this)(xx_index, yy_index, z_index) +
+      (1.0-x_alpha) * (1.0-y_alpha) * z_alpha        * (*this)(x_index, y_index, zz_index) +
+      x_alpha        * (1.0-y_alpha) * z_alpha        * (*this)(xx_index, y_index, zz_index) +
+      (1.0-x_alpha) * y_alpha        * z_alpha        * (*this)(x_index, yy_index, zz_index) +
       x_alpha        * y_alpha        * z_alpha        * (*this)(xx_index, yy_index, zz_index);
 }
 

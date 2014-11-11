@@ -86,10 +86,10 @@ namespace pcl
         * \param[in] angular_threshold to test if normals are parallel
         * \param[in] intensity_threshold to test if points are of same color
         */
-      SUSANKeypoint (double radius = 0.01f, 
-                     double distance_threshold = 0.001f, 
-                     double angular_threshold = 0.0001f, 
-                     double intensity_threshold = 7.0f)
+      SUSANKeypoint (double radius = 0.01, 
+                     double distance_threshold = 0.001, 
+                     double angular_threshold = 0.0001, 
+                     double intensity_threshold = 7.0)
         : distance_threshold_ (distance_threshold)
         , angular_threshold_ (angular_threshold)
         , intensity_threshold_ (intensity_threshold)

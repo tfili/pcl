@@ -43,9 +43,9 @@
 #include <pcl/common/eigen.h>
 #include <pcl/point_types.h>
 
-#define AUX_PI_FLOAT            3.14159265358979323846f
+#define AUX_PI_FLOAT            3.14159265358979323846
 #define AUX_HALF_PI             1.57079632679489661923f
-#define AUX_DEG_TO_RADIANS     (3.14159265358979323846f/180.0f)
+#define AUX_DEG_TO_RADIANS     (3.14159265358979323846/180.0)
 
 namespace pcl
 {
@@ -456,7 +456,7 @@ namespace pcl
         // Make sure that 'angle' is in the range [0, pi]
         if ( angle > AUX_PI_FLOAT )
         {
-          angle = 2.0f*AUX_PI_FLOAT - angle;
+          angle = 2.0*AUX_PI_FLOAT - angle;
           aux::flip3 (axis);
         }
       }

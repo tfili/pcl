@@ -85,10 +85,10 @@ namespace pcl
 
         /** \brief Empty constructor that sets all the intrinsic calibration to the default Kinect values. */
         CorrespondenceEstimationOrganizedProjection ()
-          : fx_ (525.f)
-          , fy_ (525.f)
-          , cx_ (319.5f)
-          , cy_ (239.5f)
+          : fx_ (525.)
+          , fy_ (525.)
+          , cx_ (319.5)
+          , cy_ (239.5)
           , src_to_tgt_transformation_ (Eigen::Matrix4d::Identity ())
           , depth_threshold_ (std::numeric_limits<double>::max ())
           , projection_matrix_ (Eigen::Matrix3d::Identity ())

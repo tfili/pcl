@@ -41,11 +41,11 @@
 #include <pcl/apps/point_cloud_editor/cloud.h>
 #include <pcl/apps/point_cloud_editor/selection.h>
 
-const double Select2DTool::DEFAULT_TOOL_DISPLAY_SIZE_ = 2.0f;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_SIZE_ = 2.0;
 
-const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_RED_ = 1.0f;
-const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_GREEN_ = 1.0f;
-const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_BLUE_ = 1.0f;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_RED_ = 1.0;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_GREEN_ = 1.0;
+const double Select2DTool::DEFAULT_TOOL_DISPLAY_COLOR_BLUE_ = 1.0;
 
 
 Select2DTool::Select2DTool (SelectionPtr selection_ptr, CloudPtr cloud_ptr)

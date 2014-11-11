@@ -48,7 +48,7 @@ main ()
 {
   pcl::ScopeTime scope_time ("Test loop");
   {
-    double total = 0.0f;
+    double total = 0.0;
     for (size_t i = 0; i < 1e4; ++i)
     {
       total += static_cast<double> (i);

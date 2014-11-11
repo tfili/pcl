@@ -51,11 +51,11 @@
 template <typename PointT>
 pcl::ApproximateProgressiveMorphologicalFilter<PointT>::ApproximateProgressiveMorphologicalFilter () :
   max_window_size_ (33),
-  slope_ (0.7f),
-  max_distance_ (10.0f),
-  initial_distance_ (0.15f),
-  cell_size_ (1.0f),
-  base_ (2.0f),
+  slope_ (0.7),
+  max_distance_ (10.0),
+  initial_distance_ (0.15),
+  cell_size_ (1.0),
+  base_ (2.0),
   exponential_ (true),
   threads_ (0)
 {
@@ -83,9 +83,9 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
   std::vector<double> window_sizes;
   std::vector<int> half_sizes;
   int iteration = 0;
-  int half_size = 0.0f;
-  double window_size = 0.0f;
-  double height_threshold = 0.0f;
+  int half_size = 0.0;
+  double window_size = 0.0;
+  double height_threshold = 0.0;
 
   while (window_size < max_window_size_)
   {

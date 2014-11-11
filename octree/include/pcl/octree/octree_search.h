@@ -469,7 +469,7 @@ namespace pcl
                               unsigned char &a) const
         {
           // Account for division by zero when direction vector is 0.0
-          const double epsilon = 1e-10f;
+          const double epsilon = 1e-10;
           if (direction.x () == 0.0)
             direction.x () = epsilon;
           if (direction.y () == 0.0)

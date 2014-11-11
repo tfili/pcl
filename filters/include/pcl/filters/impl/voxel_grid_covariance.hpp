@@ -191,9 +191,9 @@ pcl::VoxelGridCovariance<PointT>::applyFilter (PointCloud &output)
           // fill r/g/b data
           int rgb;
           memcpy (&rgb, reinterpret_cast<const char*> (&input_->points[cp]) + rgba_index, sizeof (int));
-          centroid[centroid_size - 3] = static_cast<double> ((rgb >> 16) & 0x0000ff);
-          centroid[centroid_size - 2] = static_cast<double> ((rgb >> 8) & 0x0000ff);
-          centroid[centroid_size - 1] = static_cast<double> ((rgb) & 0x0000ff);
+          centroid[centroid_size - 3] = static_cast<double> ((rgb >> 16) & 0x0000f);
+          centroid[centroid_size - 2] = static_cast<double> ((rgb >> 8) & 0x0000f);
+          centroid[centroid_size - 1] = static_cast<double> ((rgb) & 0x0000f);
         }
         pcl::for_each_type<FieldList> (NdCopyPointEigenFunctor<PointT> (input_->points[cp], centroid));
         leaf.centroid += centroid;
@@ -251,9 +251,9 @@ pcl::VoxelGridCovariance<PointT>::applyFilter (PointCloud &output)
           // Fill r/g/b data, assuming that the order is BGRA
           int rgb;
           memcpy (&rgb, reinterpret_cast<const char*> (&input_->points[cp]) + rgba_index, sizeof (int));
-          centroid[centroid_size - 3] = static_cast<double> ((rgb >> 16) & 0x0000ff);
-          centroid[centroid_size - 2] = static_cast<double> ((rgb >> 8) & 0x0000ff);
-          centroid[centroid_size - 1] = static_cast<double> ((rgb) & 0x0000ff);
+          centroid[centroid_size - 3] = static_cast<double> ((rgb >> 16) & 0x0000f);
+          centroid[centroid_size - 2] = static_cast<double> ((rgb >> 8) & 0x0000f);
+          centroid[centroid_size - 1] = static_cast<double> ((rgb) & 0x0000f);
         }
         pcl::for_each_type<FieldList> (NdCopyPointEigenFunctor<PointT> (input_->points[cp], centroid));
         leaf.centroid += centroid;

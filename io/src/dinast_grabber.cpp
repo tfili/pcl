@@ -335,14 +335,14 @@ pcl::DinastGrabber::getXYZIPointCloud ()
       cloud->points[depth_idx].x = static_cast<double> ((dist * s_theta * c_ksai) / 500.0 + 0.5);
       cloud->points[depth_idx].y = static_cast<double> ((dist * s_theta * s_ksai) / 500.0 + 0.5);
       cloud->points[depth_idx].z = static_cast<double> (dist * c_theta);
-      if (cloud->points[depth_idx].z < 0.01f)
-        cloud->points[depth_idx].z = 0.01f;
-      cloud->points[depth_idx].z /= 500.0f;
+      if (cloud->points[depth_idx].z < 0.01)
+        cloud->points[depth_idx].z = 0.01;
+      cloud->points[depth_idx].z /= 500.0;
       cloud->points[depth_idx].intensity = static_cast<double> (pixel);
 
       
       // Get rid of the noise
-      if(cloud->points[depth_idx].z > 0.8f || cloud->points[depth_idx].z < 0.02f)
+      if(cloud->points[depth_idx].z > 0.8 || cloud->points[depth_idx].z < 0.02f)
       {
         cloud->points[depth_idx].x = std::numeric_limits<double>::quiet_NaN ();
       	cloud->points[depth_idx].y = std::numeric_limits<double>::quiet_NaN ();

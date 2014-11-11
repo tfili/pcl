@@ -280,19 +280,19 @@ namespace pcl
   {
     inline PointXYZ (const _PointXYZ &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
     }
 
     inline PointXYZ ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
     }
 
     inline PointXYZ (double _x, double _y, double _z)
     {
       x = _x; y = _y; z = _z;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
 
     friend std::ostream& operator << (std::ostream& os, const PointXYZ& p);
@@ -322,9 +322,9 @@ namespace pcl
     *
     * \code
     * int rgb = ...;
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)     & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)     & 0x0000f;
     * \endcode
     *
     */
@@ -363,7 +363,7 @@ namespace pcl
 
     inline Intensity ()
     {
-      intensity = 0.0f;
+      intensity = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const Intensity& p);
@@ -449,20 +449,20 @@ namespace pcl
   {
     inline PointXYZI (const _PointXYZI &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       intensity = p.intensity;
     }
 
     inline PointXYZI ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      intensity = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      intensity = 0.0;
     }
     inline PointXYZI (double _intensity)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       intensity = _intensity;
     }
     friend std::ostream& operator << (std::ostream& os, const PointXYZI& p);
@@ -481,14 +481,14 @@ namespace pcl
   {
     inline PointXYZL (const _PointXYZL &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       label = p.label;
     }
 
     inline PointXYZL ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       label = 0;
     }
   
@@ -526,9 +526,9 @@ namespace pcl
     *
     * \code
     * int rgb = ...;
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)     & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)     & 0x0000f;
     * \endcode
     *
     * \ingroup common
@@ -537,14 +537,14 @@ namespace pcl
   {
     inline PointXYZRGBA (const _PointXYZRGBA &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgba = p.rgba;
     }
 
     inline PointXYZRGBA ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = 0;
       a = 255;
     }
@@ -590,9 +590,9 @@ namespace pcl
     * PointXYZRGB p;
     * // unpack rgb into r/g/b
     * uint32_t rgb = *reinterpret_cast<int*>(&p.rgb);
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)       & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)       & 0x0000f;
     * \endcode
     *
     *
@@ -604,20 +604,20 @@ namespace pcl
   {
     inline PointXYZRGB (const _PointXYZRGB &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgb = p.rgb;
     }
 
     inline PointXYZRGB ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = a = 0;
     }
     inline PointXYZRGB (uint8_t _r, uint8_t _g, uint8_t _b)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = _r;
       g = _g;
       b = _b;
@@ -634,23 +634,23 @@ namespace pcl
   {
     inline PointXYZRGBL (const _PointXYZRGBL &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgba = p.rgba;
       label = p.label;
     }
 
     inline PointXYZRGBL ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = 0;
       a = 0;
       label = 255;
     }
     inline PointXYZRGBL (uint8_t _r, uint8_t _g, uint8_t _b, uint32_t _label)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = _r;
       g = _g;
       b = _b;
@@ -684,20 +684,20 @@ namespace pcl
   {
     inline PointXYZHSV (const _PointXYZHSV &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       h = p.h; s = p.s; v = p.v;
     }
 
     inline PointXYZHSV ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       h = s = v = data_c[3] = 0;
     }
     inline PointXYZHSV (double _h, double _v, double _s)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       h = _h; v = _v; s = _s;
       data_c[3] = 0;
     }
@@ -776,13 +776,13 @@ namespace pcl
     inline Normal (const _Normal &p)
     {
       normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
       curvature = p.curvature;
     }
 
     inline Normal ()
     {
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       curvature = 0;
     }
 
@@ -790,7 +790,7 @@ namespace pcl
     {
       normal_x = n_x; normal_y = n_y; normal_z = n_z;
       curvature = 0;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
     }
 
     friend std::ostream& operator << (std::ostream& os, const Normal& p);
@@ -813,18 +813,18 @@ namespace pcl
     inline Axis (const _Axis &p)
     {
       normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
     }
 
     inline Axis ()
     {
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
     }
 
     inline Axis (double n_x, double n_y, double n_z)
     {
       normal_x = n_x; normal_y = n_y; normal_z = n_z;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
     }
 
     friend std::ostream& operator << (std::ostream& os, const Axis& p);
@@ -855,16 +855,16 @@ namespace pcl
   {
     inline PointNormal (const _PointNormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
     }
 
     inline PointNormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointNormal& p);
@@ -909,9 +909,9 @@ namespace pcl
     * PointXYZRGB p;
     * // unpack rgb into r/g/b
     * uint32_t rgb = *reinterpret_cast<int*>(&p.rgb);
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)       & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)       & 0x0000f;
     * \endcode
     *
     *
@@ -922,18 +922,18 @@ namespace pcl
   {
     inline PointXYZRGBNormal (const _PointXYZRGBNormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
       rgba = p.rgba;
     }
 
     inline PointXYZRGBNormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = a = 0;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       curvature = 0;
     }
 
@@ -964,18 +964,18 @@ namespace pcl
   {
     inline PointXYZINormal (const _PointXYZINormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
       intensity = p.intensity;
     }
 
     inline PointXYZINormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
-      intensity = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
+      intensity = 0.0;
       curvature = 0;
     }
   
@@ -1007,17 +1007,17 @@ namespace pcl
   {
     inline PointXYZLNormal (const _PointXYZLNormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
       label = p.label;
     }
 
     inline PointXYZLNormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       label = 0;
       curvature = 0;
     }
@@ -1050,15 +1050,15 @@ namespace pcl
   {
     inline PointWithRange (const _PointWithRange &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       range = p.range;
     }
 
     inline PointWithRange ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      range = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      range = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointWithRange& p);
@@ -1089,15 +1089,15 @@ namespace pcl
   {
     inline PointWithViewpoint (const _PointWithViewpoint &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       vp_x = p.vp_x; vp_y = p.vp_y; vp_z = p.vp_z;
     }
 
-    inline PointWithViewpoint (double _x = 0.0f, double _y = 0.0f, double _z = 0.0f,
-                               double _vp_x = 0.0f, double _vp_y = 0.0f, double _vp_z = 0.0f)
+    inline PointWithViewpoint (double _x = 0.0, double _y = 0.0, double _z = 0.0,
+                               double _vp_x = 0.0, double _vp_y = 0.0, double _vp_z = 0.0)
     {
       x = _x; y = _y; z = _z;
-      data[3] = 1.0f;
+      data[3] = 1.0;
       vp_x = _vp_x; vp_y = _vp_y; vp_z = _vp_z;
     }
   
@@ -1501,7 +1501,7 @@ namespace pcl
   {
     inline PointWithScale (const _PointWithScale &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       scale = p.scale;
       angle = p.angle;
       response = p.response;
@@ -1510,12 +1510,12 @@ namespace pcl
 
     inline PointWithScale ()
     {
-      x = y = z = 0.0f;
-      scale = 1.0f;
-      angle = -1.0f;
-      response = 0.0f;
+      x = y = z = 0.0;
+      scale = 1.0;
+      angle = -1.0;
+      response = 0.0;
       octave = 0;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
 
     inline PointWithScale (double _x, double _y, double _z, double _scale)
@@ -1524,10 +1524,10 @@ namespace pcl
       y = _y;
       z = _z;
       scale = _scale;
-      angle = -1.0f;
-      response = 0.0f;
+      angle = -1.0;
+      response = 0.0;
       octave = 0;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
 
     inline PointWithScale (double _x, double _y, double _z, double _scale, double _angle, double _response, int _octave)
@@ -1539,7 +1539,7 @@ namespace pcl
       angle = _angle;
       response = _response;
       octave = _octave;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointWithScale& p);
@@ -1573,7 +1573,7 @@ namespace pcl
   {
     inline PointSurfel (const _PointSurfel &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgba = p.rgba;
       radius = p.radius;
       confidence = p.confidence;
@@ -1582,11 +1582,11 @@ namespace pcl
 
     inline PointSurfel ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       rgba = 0;
-      radius = confidence = curvature = 0.0f;
+      radius = confidence = curvature = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointSurfel& p);

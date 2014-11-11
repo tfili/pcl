@@ -142,7 +142,7 @@ TEST (Convolution, gaussianSmooth)
 
   k->setKernelType(kernel<pcl::PointXYZI>::GAUSSIAN);
   k->setKernelSize(3);
-  k->setKernelSigma(1.0f);
+  k->setKernelSigma(1.0);
   k->fetchKernel (*kernel_cloud);
 
   conv->setKernel(*kernel_cloud);

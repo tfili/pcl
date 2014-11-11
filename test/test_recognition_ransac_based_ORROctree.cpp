@@ -90,7 +90,7 @@ estimateNormals(pcl::PointCloud<PointT>::Ptr cloud, pcl::PointCloud<pcl::Normal>
 TEST (ORROctreeTest, OctreeSphereIntersection)
 {
   double voxel_size = 0.02f;
-  double pair_width = 0.05f;
+  double pair_width = 0.05;
   double frac_of_points_for_registration = 0.3f;
   std::string object_name = "test_object";
 

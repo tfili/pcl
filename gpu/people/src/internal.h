@@ -69,8 +69,8 @@ namespace pcl
 
         void setDefaultPPIfIncorrect(int cols, int rows)
         {
-          cx = cx > 0 ? cx : cols/2 - 0.5f;
-          cy = cy > 0 ? cy : rows/2 - 0.5f;
+          cx = cx > 0 ? cx : cols/2 - 0.5;
+          cy = cy > 0 ? cy : rows/2 - 0.5;
         }
     };
 

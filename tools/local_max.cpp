@@ -54,7 +54,7 @@ typedef PointXYZ PointType;
 typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
-double default_radius = 1.0f;
+double default_radius = 1.0;
 
 void
 printHelp (int, char **argv)

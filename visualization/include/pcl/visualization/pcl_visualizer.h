@@ -617,7 +617,7 @@ namespace pcl
         addPointCloudPrincipalCurvatures (
             const typename pcl::PointCloud<PointNT>::ConstPtr &cloud,
             const typename pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
-            int level = 100, double scale = 1.0f,
+            int level = 100, double scale = 1.0,
             const std::string &id = "cloud", int viewport = 0);
         
         /** \brief Add the estimated principal curvatures of a Point Cloud to screen.
@@ -634,7 +634,7 @@ namespace pcl
             const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
             const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
             const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
-            int level = 100, double scale = 1.0f,
+            int level = 100, double scale = 1.0,
             const std::string &id = "cloud", int viewport = 0);
 
         /** \brief Add the estimated surface intensity gradients of a Point Cloud to screen.

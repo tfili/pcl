@@ -125,8 +125,8 @@ pcl::registration::TransformationEstimation2D<PointSource, PointTarget, Scalar>:
   source_it.reset (); target_it.reset ();
 
   // ignore z component
-  centroid_src[2] = 0.0f;
-  centroid_tgt[2] = 0.0f;
+  centroid_src[2] = 0.0;
+  centroid_tgt[2] = 0.0;
   // Subtract the centroids from source, target
   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> cloud_src_demean, cloud_tgt_demean;
   demeanPointCloud (source_it, centroid_src, cloud_src_demean);

@@ -522,7 +522,7 @@ pcl::OpenNIGrabber::imageDepthImageCallback (const boost::shared_ptr<openni_wrap
 
   if (image_depth_image_signal_->num_slots () > 0)
   {
-    double constant = 1.0f / device_->getDepthFocalLength (depth_width_);
+    double constant = 1.0 / device_->getDepthFocalLength (depth_width_);
     image_depth_image_signal_->operator()(image, depth_image, constant);
   }
 }
@@ -538,7 +538,7 @@ pcl::OpenNIGrabber::irDepthImageCallback (const boost::shared_ptr<openni_wrapper
 
   if (ir_depth_image_signal_->num_slots () > 0)
   {
-    double constant = 1.0f / device_->getDepthFocalLength (depth_width_);
+    double constant = 1.0 / device_->getDepthFocalLength (depth_width_);
     ir_depth_image_signal_->operator()(ir_image, depth_image, constant);
   }
 }
@@ -555,16 +555,16 @@ pcl::OpenNIGrabber::convertToXYZPointCloud (const boost::shared_ptr<openni_wrapp
 
   cloud->points.resize (cloud->height * cloud->width);
 
-  register double constant_x = 1.0f / device_->getDepthFocalLength (depth_width_);
-  register double constant_y = 1.0f / device_->getDepthFocalLength (depth_width_);
-  register double centerX = ((double)cloud->width - 1.f) / 2.f;
-  register double centerY = ((double)cloud->height - 1.f) / 2.f;
+  register double constant_x = 1.0 / device_->getDepthFocalLength (depth_width_);
+  register double constant_y = 1.0 / device_->getDepthFocalLength (depth_width_);
+  register double centerX = ((double)cloud->width - 1.) / 2.;
+  register double centerY = ((double)cloud->height - 1.) / 2.;
 
   if (pcl_isfinite (depth_focal_length_x_))
-    constant_x =  1.0f / static_cast<double> (depth_focal_length_x_);
+    constant_x =  1.0 / static_cast<double> (depth_focal_length_x_);
 
   if (pcl_isfinite (depth_focal_length_y_))
-    constant_y =  1.0f / static_cast<double> (depth_focal_length_y_);
+    constant_y =  1.0 / static_cast<double> (depth_focal_length_y_);
   
   if (pcl_isfinite (depth_principal_point_x_))
     centerX =  static_cast<double> (depth_principal_point_x_);
@@ -608,16 +608,16 @@ pcl::OpenNIGrabber::convertToXYZPointCloud (const boost::shared_ptr<openni_wrapp
         pt.x = pt.y = pt.z = bad_point;
         continue;
       }
-      pt.z = depth_map[depth_idx] * 0.001f;
+      pt.z = depth_map[depth_idx] * 0.001;
       pt.x = (static_cast<double> (u) - centerX) * pt.z * constant_x;
       pt.y = (static_cast<double> (v) - centerY) * pt.z * constant_y;
     }
   }
   cloud->sensor_origin_.setZero ();
-  cloud->sensor_orientation_.w () = 1.0f;
-  cloud->sensor_orientation_.x () = 0.0f;
-  cloud->sensor_orientation_.y () = 0.0f;
-  cloud->sensor_orientation_.z () = 0.0f;  
+  cloud->sensor_orientation_.w () = 1.0;
+  cloud->sensor_orientation_.x () = 0.0;
+  cloud->sensor_orientation_.y () = 0.0;
+  cloud->sensor_orientation_.z () = 0.0;  
   return (cloud);
 }
 
@@ -636,17 +636,17 @@ pcl::OpenNIGrabber::convertToXYZRGBPointCloud (const boost::shared_ptr<openni_wr
 
   cloud->points.resize (cloud->height * cloud->width);
 
-  //double constant = 1.0f / device_->getImageFocalLength (depth_width_);
-  register double constant_x = 1.0f / device_->getImageFocalLength (depth_width_);
-  register double constant_y = 1.0f / device_->getImageFocalLength (depth_width_);
-  register double centerX = ((double)cloud->width - 1.f) / 2.f;
-  register double centerY = ((double)cloud->height - 1.f) / 2.f;
+  //double constant = 1.0 / device_->getImageFocalLength (depth_width_);
+  register double constant_x = 1.0 / device_->getImageFocalLength (depth_width_);
+  register double constant_y = 1.0 / device_->getImageFocalLength (depth_width_);
+  register double centerX = ((double)cloud->width - 1.) / 2.;
+  register double centerY = ((double)cloud->height - 1.) / 2.;
 
   if (pcl_isfinite (rgb_focal_length_x_))
-    constant_x =  1.0f / static_cast<double> (rgb_focal_length_x_);
+    constant_x =  1.0 / static_cast<double> (rgb_focal_length_x_);
 
   if (pcl_isfinite (rgb_focal_length_y_))
-    constant_y =  1.0f / static_cast<double> (rgb_focal_length_y_);
+    constant_y =  1.0 / static_cast<double> (rgb_focal_length_y_);
   
   if (pcl_isfinite (rgb_principal_point_x_))
     centerX =  static_cast<double> (rgb_principal_point_x_);
@@ -705,7 +705,7 @@ pcl::OpenNIGrabber::convertToXYZRGBPointCloud (const boost::shared_ptr<openni_wr
           depth_map[value_idx] != depth_image->getNoSampleValue () &&
           depth_map[value_idx] != depth_image->getShadowValue ())
       {
-        pt.z = depth_map[value_idx] * 0.001f;
+        pt.z = depth_map[value_idx] * 0.001;
         pt.x = (static_cast<double> (u) - centerX) * pt.z * constant_x;
         pt.y = (static_cast<double> (v) - centerY) * pt.z * constant_y;
       }
@@ -760,17 +760,17 @@ pcl::OpenNIGrabber::convertToXYZIPointCloud (const boost::shared_ptr<openni_wrap
 
   cloud->points.resize (cloud->height * cloud->width);
 
-  //double constant = 1.0f / device_->getImageFocalLength (cloud->width);
-  register double constant_x = 1.0f / device_->getImageFocalLength (cloud->width);
-  register double constant_y = 1.0f / device_->getImageFocalLength (cloud->width);
-  register double centerX = ((double)cloud->width - 1.f) / 2.f;
-  register double centerY = ((double)cloud->height - 1.f) / 2.f;
+  //double constant = 1.0 / device_->getImageFocalLength (cloud->width);
+  register double constant_x = 1.0 / device_->getImageFocalLength (cloud->width);
+  register double constant_y = 1.0 / device_->getImageFocalLength (cloud->width);
+  register double centerX = ((double)cloud->width - 1.) / 2.;
+  register double centerY = ((double)cloud->height - 1.) / 2.;
 
   if (pcl_isfinite (rgb_focal_length_x_))
-    constant_x =  1.0f / static_cast<double> (rgb_focal_length_x_);
+    constant_x =  1.0 / static_cast<double> (rgb_focal_length_x_);
 
   if (pcl_isfinite (rgb_focal_length_y_))
-    constant_y =  1.0f / static_cast<double> (rgb_focal_length_y_);
+    constant_y =  1.0 / static_cast<double> (rgb_focal_length_y_);
 
   if (pcl_isfinite (rgb_principal_point_x_))
     centerX = static_cast<double>(rgb_principal_point_x_);
@@ -815,7 +815,7 @@ pcl::OpenNIGrabber::convertToXYZIPointCloud (const boost::shared_ptr<openni_wrap
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f;
+        pt.z = depth_map[depth_idx] * 0.001;
         pt.x = (static_cast<double> (u) - centerX) * pt.z * constant_x;
         pt.y = (static_cast<double> (v) - centerY) * pt.z * constant_y;
       }

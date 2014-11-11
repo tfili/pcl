@@ -179,7 +179,7 @@ Triangulation::convertSurface2PolygonMesh (const ON_NurbsSurface &nurbs, Polygon
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   mesh.polygons.clear ();
-  createVertices (cloud, double (x0), double (y0), 0.0f, double (w), double (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (mesh.polygons, 0, resolution, resolution);
 
   for (unsigned i = 0; i < cloud->size (); i++)
@@ -219,7 +219,7 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   std::vector<pcl::Vertices> polygons;
-  createVertices (cloud, double (x0), double (y0), 0.0f, double (w), double (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (polygons, 0, resolution, resolution);
 
   vector_vec2d points (cloud->size (), Eigen::Vector2d ());
@@ -346,7 +346,7 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   std::vector<pcl::Vertices> polygons;
-  createVertices (cloud, double (x0), double (y0), 0.0f, double (w), double (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (polygons, 0, resolution, resolution);
 
   vector_vec2d points (cloud->size (), Eigen::Vector2d ());
@@ -482,7 +482,7 @@ Triangulation::convertSurface2Vertices (const ON_NurbsSurface &nurbs, pcl::Point
   double y1 = nurbs.Knot (1, nurbs.KnotCount (1) - 1);
   double h = y1 - y0;
 
-  createVertices (cloud, double (x0), double (y0), 0.0f, double (w), double (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (vertices, 0, resolution, resolution);
 
   for (unsigned i = 0; i < cloud->size (); i++)

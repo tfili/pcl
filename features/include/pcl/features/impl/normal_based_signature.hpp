@@ -78,32 +78,32 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
         Eigen::Vector4d normal_u = Eigen::Vector4d::Zero ();
         Eigen::Vector4d normal_v = Eigen::Vector4d::Zero ();
 
-        if (fabs (normal.x ()) > 0.0001f)
+        if (fabs (normal.x ()) > 0.0001)
         {
           normal_u.x () = - normal.y () / normal.x ();
-          normal_u.y () = 1.0f;
-          normal_u.z () = 0.0f;
+          normal_u.y () = 1.0;
+          normal_u.z () = 0.0;
           normal_u.normalize ();
 
         }
-        else if (fabs (normal.y ()) > 0.0001f)
+        else if (fabs (normal.y ()) > 0.0001)
         {
-          normal_u.x () = 1.0f;
+          normal_u.x () = 1.0;
           normal_u.y () = - normal.x () / normal.y ();
-          normal_u.z () = 0.0f;
+          normal_u.z () = 0.0;
           normal_u.normalize ();
         }
         else
         {
-          normal_u.x () = 0.0f;
-          normal_u.y () = 1.0f;
+          normal_u.x () = 0.0;
+          normal_u.y () = 1.0;
           normal_u.z () = - normal.y () / normal.z ();
         }
         normal_v = normal.cross3 (normal_u);
 
-        Eigen::Vector4d zeta_point = 2.0f * static_cast<double> (l + 1) * scale_h_ / static_cast<double> (M_) * 
-            (cosf (2.0f * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_u + 
-             sinf (2.0f * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_v);
+        Eigen::Vector4d zeta_point = 2.0 * static_cast<double> (l + 1) * scale_h_ / static_cast<double> (M_) * 
+            (cos (2.0 * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_u + 
+             sin (2.0 * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_v);
 
         // Compute normal by using the neighbors
         Eigen::Vector4d zeta_point_plus_center = zeta_point + center_point;
@@ -122,19 +122,19 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
         
         Eigen::Vector4d average_normal = Eigen::Vector4d::Zero ();
 
-        double average_normalization_factor = 0.0f;
+        double average_normalization_factor = 0.0;
 
         // Normals weighted by 1/squared_distances
         for (size_t nn_i = 0; nn_i < k_indices.size (); ++nn_i)
         {
-          if (k_sqr_distances[nn_i] < 1e-7f)
+          if (k_sqr_distances[nn_i] < 1e-7)
           {
             average_normal = normals_->points[k_indices[nn_i]].getNormalVector4dMap ();
-            average_normalization_factor = 1.0f;
+            average_normalization_factor = 1.0;
             break;
           }
           average_normal += normals_->points[k_indices[nn_i]].getNormalVector4dMap () / k_sqr_distances[nn_i];
-          average_normalization_factor += 1.0f / k_sqr_distances[nn_i];
+          average_normalization_factor += 1.0 / k_sqr_distances[nn_i];
         }
         average_normal /= average_normalization_factor;
         double s = zeta_point.dot (average_normal) / zeta_point.norm ();
@@ -145,7 +145,7 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
       Eigen::VectorXd dct_row (M_);
       for (int m = 0; m < s_row.size (); ++m)
       {
-        double Xk = 0.0f;
+        double Xk = 0.0;
         for (int n = 0; n < s_row.size (); ++n)
           Xk += static_cast<double> (s_row[n] * cos (M_PI / (static_cast<double> (M_ * n) + 0.5) * static_cast<double> (k)));
         dct_row[m] = Xk;
@@ -161,13 +161,13 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
       Eigen::VectorXd dft_col (N_);
       for (size_t k = 0; k < N_; ++k)
       {
-        double Xk_real = 0.0f, Xk_imag = 0.0f;
+        double Xk_real = 0.0, Xk_imag = 0.0;
         for (size_t n = 0; n < N_; ++n)
         {
-          Xk_real += static_cast<double> (s_matrix (n, column_i) * cos (2.0f * M_PI / static_cast<double> (N_ * k * n)));
-          Xk_imag += static_cast<double> (s_matrix (n, column_i) * sin (2.0f * M_PI / static_cast<double> (N_ * k * n)));
+          Xk_real += static_cast<double> (s_matrix (n, column_i) * cos (2.0 * M_PI / static_cast<double> (N_ * k * n)));
+          Xk_imag += static_cast<double> (s_matrix (n, column_i) * sin (2.0 * M_PI / static_cast<double> (N_ * k * n)));
         }
-        dft_col[k] = sqrtf (Xk_real*Xk_real + Xk_imag*Xk_imag);
+        dft_col[k] = sqrt (Xk_real*Xk_real + Xk_imag*Xk_imag);
       }
       dft_matrix.col (column_i).matrix () = dft_col;
     }

@@ -122,10 +122,10 @@ namespace pcl
         , k_correspondences_ (2)
         , feature_tree_ (new pcl::KdTreeFLANN<FeatureT>)
         , correspondence_rejector_poly_ (new CorrespondenceRejectorPoly)
-        , inlier_fraction_ (0.0f)
+        , inlier_fraction_ (0.0)
       {
         reg_name_ = "SampleConsensusPrerejective";
-        correspondence_rejector_poly_->setSimilarityThreshold (0.6f);
+        correspondence_rejector_poly_->setSimilarityThreshold (0.6);
         max_iterations_ = 5000;
         transformation_estimation_.reset (new pcl::registration::TransformationEstimationSVD<PointSource, PointTarget>);
       };

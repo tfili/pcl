@@ -456,8 +456,8 @@ pcl::apps::RenderViewsTesselatedSphere::generateViews() {
     for (size_t i = 0; i < cloud->points.size (); i++)
     {
       cloud->points[i].getVector4dMap () = trans_view * cloud->points[i].getVector4dMap ();
-      cloud->points[i].y *= -1.0f;
-      cloud->points[i].z *= -1.0f;
+      cloud->points[i].y *= -1.0;
+      cloud->points[i].z *= -1.0;
     }
 
     renderer->RemoveActor (actor_view);

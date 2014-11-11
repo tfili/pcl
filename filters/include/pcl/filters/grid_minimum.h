@@ -91,7 +91,7 @@ namespace pcl
       {
         resolution_ = resolution;
         // Use multiplications instead of divisions
-        inverse_resolution_ = 1.0f / resolution_;
+        inverse_resolution_ = 1.0 / resolution_;
       }
 
       /** \brief Get the grid resolution. */

@@ -75,8 +75,8 @@ namespace pcl
       double maxDepth, focalLength, disparityShift, disparityScale;
 
       // no disparity scaling/shifting required during decoding
-      disparityScale = 1.0f;
-      disparityShift = 0.0f;
+      disparityScale = 1.0;
+      disparityShift = 0.0;
 
       analyzeOrganizedCloud (cloud_arg, maxDepth, focalLength);
 
@@ -143,10 +143,10 @@ namespace pcl
 
         PCL_INFO("*** POINTCLOUD ENCODING ***\n");
         PCL_INFO("Number of encoded points: %ld\n", pointCount);
-        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<double> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0f);
-        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0f);
+        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<double> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0);
+        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0);
         PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<double> (bytesPerPoint));
-        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0f);
+        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0);
         PCL_INFO("Compression ratio: %.2f\n\n", static_cast<double> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
       }
 
@@ -261,10 +261,10 @@ namespace pcl
 
          PCL_INFO("*** POINTCLOUD ENCODING ***\n");
          PCL_INFO("Number of encoded points: %ld\n", pointCount);
-         PCL_INFO("Size of uncompressed disparity map+color image: %.2f kBytes\n", (static_cast<double> (pointCount) * (sizeof(uint8_t)*3+sizeof(uint16_t))) / 1024.0f);
-         PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0f);
+         PCL_INFO("Size of uncompressed disparity map+color image: %.2f kBytes\n", (static_cast<double> (pointCount) * (sizeof(uint8_t)*3+sizeof(uint16_t))) / 1024.0);
+         PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0);
          PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<double> (bytesPerPoint));
-         PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (sizeof(uint8_t)*3+sizeof(uint16_t)) * 100.0f);
+         PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (sizeof(uint8_t)*3+sizeof(uint16_t)) * 100.0);
          PCL_INFO("Compression ratio: %.2f\n\n", static_cast<double> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
        }
 
@@ -282,7 +282,7 @@ namespace pcl
       uint32_t cloud_height;
       double maxDepth;
       double focalLength;
-      double disparityShift = 0.0f;
+      double disparityShift = 0.0;
       double disparityScale;
 
       // disparity and rgb image data
@@ -344,7 +344,7 @@ namespace pcl
         decodePNGToImage (compressedColor, colorData, png_width, png_height, png_channels);
       }
 
-      if (disparityShift==0.0f)
+      if (disparityShift==0.0)
       {
         // reconstruct point cloud
         OrganizedConversion<PointT>::convert (disparityData,
@@ -389,10 +389,10 @@ namespace pcl
 
         PCL_INFO("*** POINTCLOUD DECODING ***\n");
         PCL_INFO("Number of encoded points: %ld\n", pointCount);
-        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<double> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0f);
-        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0f);
+        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<double> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0);
+        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0);
         PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<double> (bytesPerPoint));
-        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0f);
+        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0);
         PCL_INFO("Compression ratio: %.2f\n\n", static_cast<double> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
       }
 
@@ -439,7 +439,7 @@ namespace pcl
               maxDepth = point.z;
 
               // Calculate focal length
-              focalLength = 2.0f / (point.x / (static_cast<double> (x) * point.z) + point.y / (static_cast<double> (y) * point.z));
+              focalLength = 2.0 / (point.x / (static_cast<double> (x) * point.z) + point.y / (static_cast<double> (y) * point.z));
             }
           }
         }

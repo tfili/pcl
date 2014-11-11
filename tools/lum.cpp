@@ -70,7 +70,7 @@ main (int argc, char **argv)
 
   pcl::registration::LUM<PointType> lum;
   lum.setMaxIterations (lumIter);
-  lum.setConvergenceThreshold (0.001f);
+  lum.setConvergenceThreshold (0.001);
 
   std::vector<int> pcd_indices;
   pcd_indices = pcl::console::parse_file_extension_argument (argc, argv, ".pcd");

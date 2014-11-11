@@ -81,7 +81,7 @@ pcl::NormalRefinement<NormalT>::applyFilter (PointCloud &output)
     PointCloud tmp = output;
     
     // Mean change in direction, measured by dot products
-    double ddot = 0.0f;
+    double ddot = 0.0;
     
     // Loop over all points in current output and write refined normal to tmp
     int num_valids = 0;
@@ -104,7 +104,7 @@ pcl::NormalRefinement<NormalT>::applyFilter (PointCloud &output)
     ddot /= static_cast<double> (num_valids);
     
     // Negate to since we want an error measure to approach zero
-    ddot = 1.0f - ddot;
+    ddot = 1.0 - ddot;
     
     // Update output
     output = tmp;

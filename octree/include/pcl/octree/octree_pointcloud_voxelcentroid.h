@@ -112,7 +112,7 @@ namespace pcl
           }
           else
           {
-            centroid_arg *= 0.0f;
+            centroid_arg *= 0.0;
           }
         }
 
@@ -123,7 +123,7 @@ namespace pcl
           using namespace pcl::common;
 
           point_counter_ = 0;
-          point_sum_ *= 0.0f;
+          point_sum_ *= 0.0;
         }
 
       private:

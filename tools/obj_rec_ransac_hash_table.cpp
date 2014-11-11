@@ -96,7 +96,7 @@ main (int argc, char** argv)
   double diag = static_cast<double> (sqrt (my_sqr (b[1]-b[0]) + my_sqr (b[3]-b[2]) + my_sqr (b[5]-b[4])));
 
   // Create the recognition object (we need it only for its hash table)
-  ObjRecRANSAC objrec (diag/8.0f, diag/60.0f);
+  ObjRecRANSAC objrec (diag/8.0, diag/60.0);
   objrec.addModel (points_in, normals_in, "test_model");
 
   // Start visualization (and the main VTK loop)
@@ -186,7 +186,7 @@ visualize (const ModelLibrary::HashTable& hash_table)
 
   // Now, that we have the max. number of entries, we can compute the
   // right scale factor for the spheres
-  double s = (0.5f*spacing)/static_cast<double> (max_num_entries);
+  double s = (0.5*spacing)/static_cast<double> (max_num_entries);
 
   cout << "s = " << s << ", max_num_entries = " << max_num_entries << endl;
 

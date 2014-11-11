@@ -330,7 +330,7 @@ pcl::OrganizedMultiPlaneSegmentation<PointT, PointNT, PointLT>::refine (std::vec
     grow_labels[model_label] = true;
   }
   
-  //refinement_compare_->setDistanceThreshold (0.015f, true);
+  //refinement_compare_->setDistanceThreshold (0.015, true);
   refinement_compare_->setInputCloud (input_);
   refinement_compare_->setLabels (labels);
   refinement_compare_->setModelCoefficients (model_coefficients);

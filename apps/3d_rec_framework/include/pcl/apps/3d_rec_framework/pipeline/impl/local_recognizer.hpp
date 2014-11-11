@@ -315,7 +315,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         std::cout << "Instances:" << corresp_clusters.size () << " Total correspondences:" << (*it_map).second.correspondences_to_inputcloud->size () << " " << it_map->first << std::endl;
         std::vector<bool> good_indices_for_hypothesis (corresp_clusters.size (), true);
 
-        if (threshold_accept_model_hypothesis_ < 1.f)
+        if (threshold_accept_model_hypothesis_ < 1.)
         {
           //sort the hypotheses for each model according to their correspondences and take those that are threshold_accept_model_hypothesis_ over the max cardinality
           int max_cardinality = -1;
@@ -388,7 +388,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
         rej->setInputTarget (cloud_voxelized_icp);
         rej->setMaximumIterations (1000);
-        rej->setInlierThreshold (0.005f);
+        rej->setInlierThreshold (0.005);
         rej->setInputSource (model_aligned);
 
         pcl::IterativeClosestPoint<PointInT, PointInT> reg;
@@ -396,7 +396,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         reg.setInputTarget (cloud_voxelized_icp); //scene
         reg.setInputSource (model_aligned); //model
         reg.setMaximumIterations (ICP_iterations_);
-        reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 4.f);
+        reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 4.);
 
         typename pcl::PointCloud<PointInT>::Ptr output_ (new pcl::PointCloud<PointInT> ());
         reg.align (*output_);
@@ -419,7 +419,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
       aligned_models.resize (models_->size ());
       for (size_t i = 0; i < models_->size (); i++)
       {
-        ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.0025f);
+        ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.0025);
         //ConstPointInTPtr model_cloud = models_->at (i).getAssembled (VOXEL_SIZE_ICP_);
         PointInTPtr model_aligned (new pcl::PointCloud<PointInT>);
         pcl::transformPointCloud (*model_cloud, *model_aligned, transforms_->at (i));

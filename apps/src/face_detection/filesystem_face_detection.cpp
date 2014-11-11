@@ -119,7 +119,7 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
       cylinder_coeff.values[4] = ea[1];
       cylinder_coeff.values[5] = ea[2];
 
-      Eigen::Vector3d vec = Eigen::Vector3d::UnitZ () * -1.f;
+      Eigen::Vector3d vec = Eigen::Vector3d::UnitZ () * -1.;
       Eigen::Matrix3d matrixxx;
 
       matrixxx = Eigen::AngleAxisd (ea[0], Eigen::Vector3d::UnitX ()) * Eigen::AngleAxisd (ea[1], Eigen::Vector3d::UnitY ())
@@ -132,7 +132,7 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
       cylinder_coeff.values[4] = vec[1];
       cylinder_coeff.values[5] = vec[2];
 
-      cylinder_coeff.values[6] = 0.01f;
+      cylinder_coeff.values[6] = 0.01;
       vis.addCylinder (cylinder_coeff, "cylinder");
     }
   }
@@ -156,9 +156,9 @@ int main(int argc, char ** argv)
   int STRIDE_SW = 5;
   std::string forest_fn = "forest.txt";
   int use_normals = 0;
-  double trans_max_variance = 800.f;
+  double trans_max_variance = 800.;
   int min_votes_size = 400;
-  double face_threshold = 0.95f;
+  double face_threshold = 0.95;
   int heat_map = 1;
   int show_votes = 0;
   std::string test_directory;

@@ -72,7 +72,7 @@ namespace pcl
 
         /** \brief Empty constructor. */
         CorrespondenceRejectorTrimmed () : 
-          overlap_ratio_ (0.5f),
+          overlap_ratio_ (0.5),
           nr_min_correspondences_ (0)
         {
           rejection_name_ = "CorrespondenceRejectorTrimmed";

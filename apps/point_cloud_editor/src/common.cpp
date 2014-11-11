@@ -45,9 +45,9 @@
 void
 setIdentity(double* matrix)
 {
-  std::fill_n(matrix, MATRIX_SIZE, 0.0f);
+  std::fill_n(matrix, MATRIX_SIZE, 0.0);
   for (unsigned int i = 0; i < MATRIX_SIZE; i+=MATRIX_SIZE_DIM+1)
-    matrix[i] = 1.0f;
+    matrix[i] = 1.0;
 }
 
 void

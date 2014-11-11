@@ -114,9 +114,9 @@ namespace pcl
                                                    bool convertToMono = false,
                                                    bool bShowStatistics_arg = true,
                                                    int pngLevel_arg = -1,
-                                                   double focalLength_arg = 525.0f,
-                                                   double disparityShift_arg = 174.825f,
-                                                   double disparityScale_arg = -0.161175f);
+                                                   double focalLength_arg = 525.0,
+                                                   double disparityShift_arg = 174.825,
+                                                   double disparityScale_arg = -0.161175);
 
         /** \brief Decode point cloud from input stream
          * \param[in] compressedDataIn_arg: binary input stream containing compressed data

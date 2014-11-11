@@ -51,7 +51,7 @@ namespace pcl
   {
     public:
       /** \brief Constructor. */
-      inline PointXY32f () : x (0.0f), y (0.0f) {}
+      inline PointXY32f () : x (0.0), y (0.0) {}
       /** \brief Destructor. */
       inline virtual ~PointXY32f () {}
 

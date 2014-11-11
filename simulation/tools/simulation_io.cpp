@@ -53,7 +53,7 @@ pcl::simulation::SimExample::SimExample(int argc, char** argv,
   for (int i=0; i<2048; i++)
   {
     double v = i/2048.0;
-    v = powf(v, 3)* 6;
+    v = pow(v, 3)* 6;
     t_gamma[i] = v*6*256;
   }  
 }

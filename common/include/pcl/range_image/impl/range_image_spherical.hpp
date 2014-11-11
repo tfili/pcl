@@ -46,8 +46,8 @@ RangeImageSpherical::calculate3DPoint (double image_x, double image_y, double ra
   double angle_x, angle_y;
   getAnglesFromImagePoint (image_x, image_y, angle_x, angle_y);
 
-  double cosY = cosf (angle_y);
-  point = Eigen::Vector3d (range * sinf (angle_x) * cosY, range * sinf (angle_y), range * cosf (angle_x)*cosY);
+  double cosY = cos (angle_y);
+  point = Eigen::Vector3d (range * sin (angle_x) * cosY, range * sin (angle_y), range * cos (angle_x)*cosY);
   point = to_world_system_ * point;
 }
 
@@ -65,7 +65,7 @@ RangeImageSpherical::getImagePoint (const Eigen::Vector3d& point, double& image_
 void
 RangeImageSpherical::getAnglesFromImagePoint (double image_x, double image_y, double& angle_x, double& angle_y) const
 {
-  angle_y = (image_y+static_cast<double> (image_offset_y_))*angular_resolution_y_ - 0.5f*static_cast<double> (M_PI);
+  angle_y = (image_y+static_cast<double> (image_offset_y_))*angular_resolution_y_ - 0.5*static_cast<double> (M_PI);
   angle_x = ((image_x+ static_cast<double> (image_offset_x_))*angular_resolution_x_ - static_cast<double> (M_PI));
 }
 /////////////////////////////////////////////////////////////////////////
@@ -73,6 +73,6 @@ void
 RangeImageSpherical::getImagePointFromAngles (double angle_x, double angle_y, double& image_x, double& image_y) const
 {
   image_x = (angle_x + static_cast<double> (M_PI))*angular_resolution_x_reciprocal_ - static_cast<double> (image_offset_x_);
-  image_y = (angle_y + 0.5f*static_cast<double> (M_PI))*angular_resolution_y_reciprocal_ - static_cast<double> (image_offset_y_);
+  image_y = (angle_y + 0.5*static_cast<double> (M_PI))*angular_resolution_y_reciprocal_ - static_cast<double> (image_offset_y_);
 }
 }  // namespace end

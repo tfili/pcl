@@ -133,10 +133,10 @@ namespace pcl
       {
         public:
           VoxelData ():
-            xyz_ (0.0f, 0.0f, 0.0f),
-            rgb_ (0.0f, 0.0f, 0.0f),
-            normal_ (0.0f, 0.0f, 0.0f, 0.0f),
-            curvature_ (0.0f),
+            xyz_ (0.0, 0.0, 0.0),
+            rgb_ (0.0, 0.0, 0.0),
+            normal_ (0.0, 0.0, 0.0, 0.0),
+            curvature_ (0.0),
             owner_ (0)
             {}
 

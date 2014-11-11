@@ -61,7 +61,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::co
   pcl::PointCloud<Normal>::Ptr normal_cloud (new pcl::PointCloud<Normal> ());
   NormalEstimation<PointType, Normal> norm_est;
   norm_est.setInputCloud (input);
-  if (local_rf_normals_search_radius_ <= 0.0f)
+  if (local_rf_normals_search_radius_ <= 0.0)
   {
     norm_est.setKSearch (15);
   }

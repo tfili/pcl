@@ -16,7 +16,7 @@ main (int , char **)
   {
     cloud->points[i].x = double (i); 
     cloud->points[i].y = double (i / 2);
-    cloud->points[i].z = 0.0f;
+    cloud->points[i].z = 0.0;
   }
 
   // Start the visualizer

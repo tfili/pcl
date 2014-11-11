@@ -78,16 +78,16 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computePointNormal
   }
 
   double smoothingSize = normal_smoothing_size_;
-  if (use_depth_dependent_smoothing_) smoothingSize = smoothingSize*(pz+0.5f);
+  if (use_depth_dependent_smoothing_) smoothingSize = smoothingSize*(pz+0.5);
 
   const int smoothingSizeInt = static_cast<int> (smoothingSize);
 
-  double matA0 = 0.0f;
-  double matA1 = 0.0f;
-  double matA3 = 0.0f;
+  double matA0 = 0.0;
+  double matA1 = 0.0;
+  double matA3 = 0.0;
 
-  double vecb0 = 0.0f;
-  double vecb1 = 0.0f;
+  double vecb0 = 0.0;
+  double vecb1 = 0.0;
 
   for (int v = y - smoothingSizeInt; v <= y + smoothingSizeInt; v += smoothingSizeInt)
   {
@@ -107,7 +107,7 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computePointNormal
       const double i = qx - px;
       const double j = qy - py;
 
-      double depthChangeThreshold = pz*pz * 0.05f * max_depth_change_factor_;
+      double depthChangeThreshold = pz*pz * 0.05 * max_depth_change_factor_;
       if (use_depth_dependent_smoothing_) depthChangeThreshold *= pz;
 
       const double f = fabs (delta) > depthChangeThreshold ? 0 : 1;
@@ -130,7 +130,7 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computePointNormal
 
   const double length = nx * nx + ny * ny + nz * nz;
 
-  if (length <= 0.01f)
+  if (length <= 0.01)
   {
     normal.normal_x = bad_point;
     normal.normal_y = bad_point;
@@ -139,7 +139,7 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computePointNormal
   }
   else
   {
-    const double normInv = 1.0f / sqrtf (length);
+    const double normInv = 1.0 / sqrt (length);
 
     normal.normal_x = -nx * normInv;
     normal.normal_y = -ny * normInv;
@@ -171,7 +171,7 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computeFeature (Po
   // => \Delta D = (X^T X)^{-1} X^T Y
   // => \Delta D = (A)^{-1} b
 
-  //const double smoothingSize = 30.0f;
+  //const double smoothingSize = 30.0;
   for (int y = 0; y < height; ++y)
   {
     for (int x = 0; x < width; ++x)
@@ -184,21 +184,21 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computeFeature (Po
 
       if (pcl_isnan(px)) continue;
 
-      //double depthDependentSmoothingSize = smoothingSize + pz / 10.0f;
+      //double depthDependentSmoothingSize = smoothingSize + pz / 10.0;
 
       double smoothingSize = normal_smoothing_size_;
       //if (use_depth_dependent_smoothing_) smoothingSize *= pz;
       //if (use_depth_dependent_smoothing_) smoothingSize += pz*5;
-      //if (smoothingSize < 1.0f) smoothingSize += 1.0f;
+      //if (smoothingSize < 1.0) smoothingSize += 1.0;
 
       const int smoothingSizeInt = static_cast<int>(smoothingSize);
 
-      double matA0 = 0.0f;
-      double matA1 = 0.0f;
-      double matA3 = 0.0f;
+      double matA0 = 0.0;
+      double matA1 = 0.0;
+      double matA3 = 0.0;
 
-      double vecb0 = 0.0f;
-      double vecb1 = 0.0f;
+      double vecb0 = 0.0;
+      double vecb1 = 0.0;
 
       for (int v = y - smoothingSizeInt; v <= y + smoothingSizeInt; v += smoothingSizeInt)
       {
@@ -218,12 +218,12 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computeFeature (Po
           const double i = qx - px;
           const double j = qy - py;
 
-          const double depthDependendDepthChange = (max_depth_change_factor_ * (fabsf (pz) + 1.0f) * 2.0f);
+          const double depthDependendDepthChange = (max_depth_change_factor_ * (fabsf (pz) + 1.0) * 2.0);
           const double f = fabs(delta) > depthDependendDepthChange ? 0 : 1;
 
-          //double f = fabs(delta) > (pz * 0.05f - 0.3f) ? 0 : 1;
-          //const double f = fabs(delta) > (pz*pz * 0.05f * max_depth_change_factor_) ? 0 : 1;
-          //double f = Math.Abs(delta) > (depth * Math.Log(depth + 1.0) * 0.02f - 0.2f) ? 0 : 1;
+          //double f = fabs(delta) > (pz * 0.05 - 0.3f) ? 0 : 1;
+          //const double f = fabs(delta) > (pz*pz * 0.05 * max_depth_change_factor_) ? 0 : 1;
+          //double f = Math.Abs(delta) > (depth * Math.Log(depth + 1.0) * 0.02 - 0.2) ? 0 : 1;
 
           matA0 += f * i * i;
           matA1 += f * i * j;
@@ -243,7 +243,7 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computeFeature (Po
 
       const double length = nx * nx + ny * ny + nz * nz;
 
-      if (length <= 0.0f)
+      if (length <= 0.0)
       {
         output.points[index].normal_x = bad_point;
         output.points[index].normal_y = bad_point;
@@ -252,7 +252,7 @@ pcl::LinearLeastSquaresNormalEstimation<PointInT, PointOutT>::computeFeature (Po
       }
       else
       {
-        const double normInv = 1.0f / sqrtf (length);
+        const double normInv = 1.0 / sqrt (length);
 
         output.points[index].normal_x = nx * normInv;
         output.points[index].normal_y = ny * normInv;

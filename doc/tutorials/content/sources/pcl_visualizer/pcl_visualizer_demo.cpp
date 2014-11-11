@@ -291,8 +291,8 @@ main (int argc, char** argv)
     for (double angle(0.0); angle <= 360.0; angle += 5.0)
     {
       pcl::PointXYZ basic_point;
-      basic_point.x = 0.5 * cosf (pcl::deg2rad(angle));
-      basic_point.y = sinf (pcl::deg2rad(angle));
+      basic_point.x = 0.5 * cos (pcl::deg2rad(angle));
+      basic_point.y = sin (pcl::deg2rad(angle));
       basic_point.z = z;
       basic_cloud_ptr->points.push_back(basic_point);
 

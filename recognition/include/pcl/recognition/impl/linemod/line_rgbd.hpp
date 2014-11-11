@@ -165,11 +165,11 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::loadTemplates (const std::string &file_name
     PointCloud<PointXYZRGBA> & template_point_cloud = template_point_clouds_[i];
     BoundingBoxXYZ & bb = bounding_boxes_[i];
     bb.x = bb.y = bb.z = std::numeric_limits<double>::max ();
-    bb.width = bb.height = bb.depth = 0.0f;
+    bb.width = bb.height = bb.depth = 0.0;
 
-    double center_x = 0.0f;
-    double center_y = 0.0f;
-    double center_z = 0.0f;
+    double center_x = 0.0;
+    double center_y = 0.0;
+    double center_z = 0.0;
     double min_x = std::numeric_limits<double>::max ();
     double min_y = std::numeric_limits<double>::max ();
     double min_z = std::numeric_limits<double>::max ();
@@ -206,9 +206,9 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::loadTemplates (const std::string &file_name
     bb.height = max_y - min_y;
     bb.depth  = max_z - min_z;
 
-    bb.x = (min_x + bb.width / 2.0f) - center_x - bb.width / 2.0f;
-    bb.y = (min_y + bb.height / 2.0f) - center_y - bb.height / 2.0f;
-    bb.z = (min_z + bb.depth / 2.0f) - center_z - bb.depth / 2.0f;
+    bb.x = (min_x + bb.width / 2.0) - center_x - bb.width / 2.0;
+    bb.y = (min_y + bb.height / 2.0) - center_y - bb.height / 2.0;
+    bb.z = (min_z + bb.depth / 2.0) - center_z - bb.depth / 2.0;
 
     for (size_t j = 0; j < template_point_cloud.size (); ++j)
     {
@@ -252,11 +252,11 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::createAndAddTemplate (
     PointCloud<PointXYZRGBA> & template_point_cloud = template_point_clouds_[i];
     BoundingBoxXYZ & bb = bounding_boxes_[i];
     bb.x = bb.y = bb.z = std::numeric_limits<double>::max ();
-    bb.width = bb.height = bb.depth = 0.0f;
+    bb.width = bb.height = bb.depth = 0.0;
 
-    double center_x = 0.0f;
-    double center_y = 0.0f;
-    double center_z = 0.0f;
+    double center_x = 0.0;
+    double center_y = 0.0;
+    double center_z = 0.0;
     double min_x = std::numeric_limits<double>::max ();
     double min_y = std::numeric_limits<double>::max ();
     double min_z = std::numeric_limits<double>::max ();
@@ -293,9 +293,9 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::createAndAddTemplate (
     bb.height = max_y - min_y;
     bb.depth  = max_z - min_z;
 
-    bb.x = (min_x + bb.width / 2.0f) - center_x - bb.width / 2.0f;
-    bb.y = (min_y + bb.height / 2.0f) - center_y - bb.height / 2.0f;
-    bb.z = (min_z + bb.depth / 2.0f) - center_z - bb.depth / 2.0f;
+    bb.x = (min_x + bb.width / 2.0) - center_x - bb.width / 2.0;
+    bb.y = (min_y + bb.height / 2.0) - center_y - bb.height / 2.0;
+    bb.z = (min_z + bb.depth / 2.0) - center_z - bb.depth / 2.0;
 
     for (size_t j = 0; j < template_point_cloud.size (); ++j)
     {
@@ -344,11 +344,11 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::addTemplate (const SparseQuantizedMultiModT
     PointCloud<PointXYZRGBA> & template_point_cloud = template_point_clouds_[i];
     BoundingBoxXYZ & bb = bounding_boxes_[i];
     bb.x = bb.y = bb.z = std::numeric_limits<double>::max ();
-    bb.width = bb.height = bb.depth = 0.0f;
+    bb.width = bb.height = bb.depth = 0.0;
 
-    double center_x = 0.0f;
-    double center_y = 0.0f;
-    double center_z = 0.0f;
+    double center_x = 0.0;
+    double center_y = 0.0;
+    double center_z = 0.0;
     double min_x = std::numeric_limits<double>::max ();
     double min_y = std::numeric_limits<double>::max ();
     double min_z = std::numeric_limits<double>::max ();
@@ -385,9 +385,9 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::addTemplate (const SparseQuantizedMultiModT
     bb.height = max_y - min_y;
     bb.depth  = max_z - min_z;
 
-    bb.x = (min_x + bb.width / 2.0f) - center_x - bb.width / 2.0f;
-    bb.y = (min_y + bb.height / 2.0f) - center_y - bb.height / 2.0f;
-    bb.z = (min_z + bb.depth / 2.0f) - center_z - bb.depth / 2.0f;
+    bb.x = (min_x + bb.width / 2.0) - center_x - bb.width / 2.0;
+    bb.y = (min_y + bb.height / 2.0) - center_y - bb.height / 2.0;
+    bb.z = (min_z + bb.depth / 2.0) - center_z - bb.depth / 2.0;
 
     for (size_t j = 0; j < template_point_cloud.size (); ++j)
     {
@@ -458,9 +458,9 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::detect (
     //  << linemod_template.region.width << ", "
     //  << linemod_template.region.height << std::endl;
 
-    double center_x = 0.0f;
-    double center_y = 0.0f;
-    double center_z = 0.0f;
+    double center_x = 0.0;
+    double center_y = 0.0;
+    double center_z = 0.0;
     size_t counter = 0;
     for (size_t row_index = start_y; row_index < end_y; ++row_index)
     {
@@ -477,7 +477,7 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::detect (
         }
       }
     }
-    const double inv_counter = 1.0f / static_cast<double> (counter);
+    const double inv_counter = 1.0 / static_cast<double> (counter);
     center_x *= inv_counter;
     center_y *= inv_counter;
     center_z *= inv_counter;
@@ -559,9 +559,9 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::detectSemiScaleInvariant (
     //  << linemod_template.region.width << ", "
     //  << linemod_template.region.height << std::endl;
 
-    double center_x = 0.0f;
-    double center_y = 0.0f;
-    double center_z = 0.0f;
+    double center_x = 0.0;
+    double center_y = 0.0;
+    double center_z = 0.0;
     size_t counter = 0;
     for (size_t row_index = start_y; row_index < end_y; ++row_index)
     {
@@ -578,7 +578,7 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::detectSemiScaleInvariant (
         }
       }
     }
-    const double inv_counter = 1.0f / static_cast<double> (counter);
+    const double inv_counter = 1.0 / static_cast<double> (counter);
     center_x *= inv_counter;
     center_y *= inv_counter;
     center_z *= inv_counter;
@@ -766,9 +766,9 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::applyProjectiveDepthICPOnDetections ()
     // apply ransac on matches
     const size_t nr_matches = depth_matches.size ();
     const size_t nr_iterations = 100; // todo: should be a parameter...
-    const double inlier_threshold = 0.01f; // 5cm // todo: should be a parameter...
+    const double inlier_threshold = 0.01; // 5cm // todo: should be a parameter...
     size_t best_nr_inliers = 0;
-    double best_z_translation = 0.0f;
+    double best_z_translation = 0.0;
     for (size_t iteration_index = 0; iteration_index < nr_iterations; ++iteration_index)
     {
       const size_t rand_index = (rand () * nr_matches) / RAND_MAX;
@@ -793,7 +793,7 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::applyProjectiveDepthICPOnDetections ()
       }
     }
 
-    double average_depth = 0.0f;
+    double average_depth = 0.0;
     size_t average_counter = 0;
     for (size_t match_index = 0; match_index < nr_matches; ++match_index)
     {
@@ -808,7 +808,7 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::applyProjectiveDepthICPOnDetections ()
     }
     average_depth /= static_cast<double> (average_counter);
 
-    detection.bounding_box.z = bounding_boxes_[template_id].z + average_depth;// - detection.bounding_box.depth/2.0f;
+    detection.bounding_box.z = bounding_boxes_[template_id].z + average_depth;// - detection.bounding_box.depth/2.0;
   }
 }
 
@@ -828,7 +828,7 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::removeOverlappingDetections ()
                                       * detections_[detection_index_1].bounding_box.depth;
 
       if (detections_[detection_index_1].object_id != detections_[detection_index_2].object_id)
-        overlaps (detection_index_1, detection_index_2) = 0.0f;
+        overlaps (detection_index_1, detection_index_2) = 0.0;
       else
         overlaps (detection_index_1, detection_index_2) = computeBoundingBoxIntersectionVolume (
           detections_[detection_index_1].bounding_box, 
@@ -879,16 +879,16 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::removeOverlappingDetections ()
   {
     std::vector<size_t> & cluster = clusters[cluster_id];
     
-    double average_center_x = 0.0f;
-    double average_center_y = 0.0f;
-    double average_center_z = 0.0f;
-    double weight_sum = 0.0f;
+    double average_center_x = 0.0;
+    double average_center_y = 0.0;
+    double average_center_z = 0.0;
+    double weight_sum = 0.0;
 
-    double best_response = 0.0f;
+    double best_response = 0.0;
     size_t best_detection_id = 0;
 
-    double average_region_x = 0.0f;
-    double average_region_y = 0.0f;
+    double average_region_x = 0.0;
+    double average_region_y = 0.0;
 
     const size_t elements_in_cluster = cluster.size ();
     for (size_t cluster_index = 0; cluster_index < elements_in_cluster; ++cluster_index)
@@ -904,9 +904,9 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::removeOverlappingDetections ()
       }
 
       const Detection & d = detections_[detection_id];
-      const double p_center_x = d.bounding_box.x + d.bounding_box.width / 2.0f;
-      const double p_center_y = d.bounding_box.y + d.bounding_box.height / 2.0f;
-      const double p_center_z = d.bounding_box.z + d.bounding_box.depth / 2.0f;
+      const double p_center_x = d.bounding_box.x + d.bounding_box.width / 2.0;
+      const double p_center_y = d.bounding_box.y + d.bounding_box.height / 2.0;
+      const double p_center_z = d.bounding_box.z + d.bounding_box.depth / 2.0;
 
       average_center_x += p_center_x * weight;
       average_center_y += p_center_y * weight;
@@ -923,14 +923,14 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::removeOverlappingDetections ()
     detection.detection_id = cluster_id;
     detection.response = best_response;
 
-    const double inv_weight_sum = 1.0f / weight_sum;
+    const double inv_weight_sum = 1.0 / weight_sum;
     const double best_detection_bb_width  = detections_[best_detection_id].bounding_box.width;
     const double best_detection_bb_height = detections_[best_detection_id].bounding_box.height;
     const double best_detection_bb_depth  = detections_[best_detection_id].bounding_box.depth;
 
-    detection.bounding_box.x = average_center_x * inv_weight_sum - best_detection_bb_width/2.0f;
-    detection.bounding_box.y = average_center_y * inv_weight_sum - best_detection_bb_height/2.0f;
-    detection.bounding_box.z = average_center_z * inv_weight_sum - best_detection_bb_depth/2.0f;
+    detection.bounding_box.x = average_center_x * inv_weight_sum - best_detection_bb_width/2.0;
+    detection.bounding_box.y = average_center_y * inv_weight_sum - best_detection_bb_height/2.0;
+    detection.bounding_box.z = average_center_z * inv_weight_sum - best_detection_bb_depth/2.0;
     detection.bounding_box.width  = best_detection_bb_width;
     detection.bounding_box.height = best_detection_bb_height;
     detection.bounding_box.depth  = best_detection_bb_depth;
@@ -977,8 +977,8 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::computeBoundingBoxIntersectionVolume (
   const double intersection_height = yi_max - yi_min;
   const double intersection_depth  = zi_max - zi_min;
 
-  if (intersection_width <= 0.0f || intersection_height <= 0.0f || intersection_depth <= 0.0f)
-    return 0.0f;
+  if (intersection_width <= 0.0 || intersection_height <= 0.0 || intersection_depth <= 0.0)
+    return 0.0;
 
   const double intersection_volume = intersection_width * intersection_height * intersection_depth;
 

@@ -231,7 +231,7 @@ pcl::features::ISMVoteList<PointT>::validateTree ()
       tree_ = boost::shared_ptr<pcl::KdTreeFLANN<pcl::InterestPoint> > (new pcl::KdTreeFLANN<pcl::InterestPoint> ());
     tree_->setInputCloud (votes_);
     k_ind_.resize ( votes_->points.size (), -1 );
-    k_sqr_dist_.resize ( votes_->points.size (), 0.0f );
+    k_sqr_dist_.resize ( votes_->points.size (), 0.0 );
     tree_is_valid_ = true;
   }
 }
@@ -322,13 +322,13 @@ pcl::features::ISMModel::ISMModel (ISMModel const & copy)
   this->descriptors_dimension_ = copy.descriptors_dimension_;
 
   std::vector<double> vec;
-  vec.resize (this->number_of_clusters_, 0.0f);
+  vec.resize (this->number_of_clusters_, 0.0);
   this->statistical_weights_.resize (this->number_of_classes_, vec);
   for (unsigned int i_class = 0; i_class < this->number_of_classes_; i_class++)
     for (unsigned int i_cluster = 0; i_cluster < this->number_of_clusters_; i_cluster++)
       this->statistical_weights_[i_class][i_cluster] = copy.statistical_weights_[i_class][i_cluster];
 
-  this->learned_weights_.resize (this->number_of_visual_words_, 0.0f);
+  this->learned_weights_.resize (this->number_of_visual_words_, 0.0);
   for (unsigned int i_visual_word = 0; i_visual_word < this->number_of_visual_words_; i_visual_word++)
     this->learned_weights_[i_visual_word] = copy.learned_weights_[i_visual_word];
 
@@ -336,7 +336,7 @@ pcl::features::ISMModel::ISMModel (ISMModel const & copy)
   for (unsigned int i_visual_word = 0; i_visual_word < this->number_of_visual_words_; i_visual_word++)
     this->classes_[i_visual_word] = copy.classes_[i_visual_word];
 
-  this->sigmas_.resize (this->number_of_classes_, 0.0f);
+  this->sigmas_.resize (this->number_of_classes_, 0.0);
   for (unsigned int i_class = 0; i_class < this->number_of_classes_; i_class++)
     this->sigmas_[i_class] = copy.sigmas_[i_class];
 
@@ -434,14 +434,14 @@ pcl::features::ISMModel::loadModelFromfile (std::string& file_name)
 
   //read statistical weights
   std::vector<double> vec;
-  vec.resize (number_of_clusters_, 0.0f);
+  vec.resize (number_of_clusters_, 0.0);
   statistical_weights_.resize (number_of_classes_, vec);
   for (unsigned int i_class = 0; i_class < number_of_classes_; i_class++)
     for (unsigned int i_cluster = 0; i_cluster < number_of_clusters_; i_cluster++)
       input_file >> statistical_weights_[i_class][i_cluster];
 
   //read learned weights
-  learned_weights_.resize (number_of_visual_words_, 0.0f);
+  learned_weights_.resize (number_of_visual_words_, 0.0);
   for (unsigned int i_visual_word = 0; i_visual_word < number_of_visual_words_; i_visual_word++)
     input_file >> learned_weights_[i_visual_word];
 
@@ -451,7 +451,7 @@ pcl::features::ISMModel::loadModelFromfile (std::string& file_name)
     input_file >> classes_[i_visual_word];
 
   //read sigmas
-  sigmas_.resize (number_of_classes_, 0.0f);
+  sigmas_.resize (number_of_classes_, 0.0);
   for (unsigned int i_class = 0; i_class < number_of_classes_; i_class++)
     input_file >> sigmas_[i_class];
 
@@ -514,13 +514,13 @@ pcl::features::ISMModel::operator = (const pcl::features::ISMModel& other)
     this->descriptors_dimension_ = other.descriptors_dimension_;
 
     std::vector<double> vec;
-    vec.resize (number_of_clusters_, 0.0f);
+    vec.resize (number_of_clusters_, 0.0);
     this->statistical_weights_.resize (this->number_of_classes_, vec);
     for (unsigned int i_class = 0; i_class < this->number_of_classes_; i_class++)
       for (unsigned int i_cluster = 0; i_cluster < this->number_of_clusters_; i_cluster++)
         this->statistical_weights_[i_class][i_cluster] = other.statistical_weights_[i_class][i_cluster];
 
-    this->learned_weights_.resize (this->number_of_visual_words_, 0.0f);
+    this->learned_weights_.resize (this->number_of_visual_words_, 0.0);
     for (unsigned int i_visual_word = 0; i_visual_word < this->number_of_visual_words_; i_visual_word++)
       this->learned_weights_[i_visual_word] = other.learned_weights_[i_visual_word];
 
@@ -528,7 +528,7 @@ pcl::features::ISMModel::operator = (const pcl::features::ISMModel& other)
     for (unsigned int i_visual_word = 0; i_visual_word < this->number_of_visual_words_; i_visual_word++)
       this->classes_[i_visual_word] = other.classes_[i_visual_word];
 
-    this->sigmas_.resize (this->number_of_classes_, 0.0f);
+    this->sigmas_.resize (this->number_of_classes_, 0.0);
     for (unsigned int i_class = 0; i_class < this->number_of_classes_; i_class++)
       this->sigmas_[i_class] = other.sigmas_[i_class];
 
@@ -552,7 +552,7 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::ImplicitSh
   training_classes_ (0),
   training_normals_ (0),
   training_sigmas_ (0),
-  sampling_size_ (0.1f),
+  sampling_size_ (0.1),
   feature_estimator_ (),
   number_of_clusters_ (184),
   n_vot_ON_ (true)
@@ -861,7 +861,7 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::extractDes
   for (size_t i_cloud = 0; i_cloud < training_clouds_.size (); i_cloud++)
   {
     //compute the center of the training object
-    Eigen::Vector3d models_center (0.0f, 0.0f, 0.0f);
+    Eigen::Vector3d models_center (0.0, 0.0, 0.0);
     const size_t num_of_points =  training_clouds_[i_cloud]->points.size ();
     typename pcl::PointCloud<PointT>::iterator point_j;
     for (point_j = training_clouds_[i_cloud]->begin (); point_j != training_clouds_[i_cloud]->end (); point_j++)
@@ -929,7 +929,7 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::clusterDes
     points_to_cluster,
     number_of_clusters_,
     labels,
-    TermCriteria(TermCriteria::EPS|TermCriteria::COUNT, 10, 0.01f),//1000
+    TermCriteria(TermCriteria::EPS|TermCriteria::COUNT, 10, 0.01),//1000
     5,
     PP_CENTERS,
     clusters_centers);
@@ -943,7 +943,7 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::calculateS
 {
   if (training_sigmas_.size () != 0)
   {
-    sigmas.resize (training_sigmas_.size (), 0.0f);
+    sigmas.resize (training_sigmas_.size (), 0.0);
     for (unsigned int i_sigma = 0; i_sigma < training_sigmas_.size (); i_sigma++)
       sigmas[i_sigma] = training_sigmas_[i_sigma];
     return;
@@ -951,7 +951,7 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::calculateS
 
   sigmas.clear ();
   unsigned int number_of_classes = *std::max_element (training_classes_.begin (), training_classes_.end () ) + 1;
-  sigmas.resize (number_of_classes, 0.0f);
+  sigmas.resize (number_of_classes, 0.0);
 
   std::vector<double> vec;
   std::vector<std::vector<double> > objects_sigmas;
@@ -960,12 +960,12 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::calculateS
   unsigned int number_of_objects = static_cast<unsigned int> (training_clouds_.size ());
   for (unsigned int i_object = 0; i_object < number_of_objects; i_object++)
   {
-    double max_distance = 0.0f;
+    double max_distance = 0.0;
     unsigned int number_of_points = static_cast<unsigned int> (training_clouds_[i_object]->points.size ());
     for (unsigned int i_point = 0; i_point < number_of_points - 1; i_point++)
       for (unsigned int j_point = i_point + 1; j_point < number_of_points; j_point++)
       {
-        double curr_distance = 0.0f;
+        double curr_distance = 0.0;
         curr_distance += training_clouds_[i_object]->points[i_point].x * training_clouds_[i_object]->points[j_point].x;
         curr_distance += training_clouds_[i_object]->points[i_point].y * training_clouds_[i_object]->points[j_point].y;
         curr_distance += training_clouds_[i_object]->points[i_point].z * training_clouds_[i_object]->points[j_point].z;
@@ -979,11 +979,11 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::calculateS
 
   for (unsigned int i_class = 0; i_class < number_of_classes; i_class++)
   {
-    double sig = 0.0f;
+    double sig = 0.0;
     unsigned int number_of_objects_in_class = static_cast<unsigned int> (objects_sigmas[i_class].size ());
     for (unsigned int i_object = 0; i_object < number_of_objects_in_class; i_object++)
       sig += objects_sigmas[i_class][i_object];
-    sig /= (static_cast<double> (number_of_objects_in_class) * 10.0f);
+    sig /= (static_cast<double> (number_of_objects_in_class) * 10.0);
     sigmas[i_class] = sig;
   }
 }
@@ -1001,11 +1001,11 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::calculateW
   unsigned int number_of_classes = *std::max_element (training_classes_.begin (), training_classes_.end () ) + 1;
   //Temporary variable
   std::vector<double> vec;
-  vec.resize (number_of_clusters_, 0.0f);
+  vec.resize (number_of_clusters_, 0.0);
   statistical_weights.clear ();
   learned_weights.clear ();
   statistical_weights.resize (number_of_classes, vec);
-  learned_weights.resize (locations.size (), 0.0f);
+  learned_weights.resize (locations.size (), 0.0);
 
   //Temporary variable
   std::vector<int> vect;
@@ -1104,16 +1104,16 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::calculateW
       double part_1 = static_cast<double> (n_vw[i_class]);
 	  double part_2 = static_cast<double> (n_vot[i_cluster]);
       double part_3 = static_cast<double> (n_vot_2[i_cluster][i_class]) / static_cast<double> (n_ftr[i_class]);
-      double part_4 = 0.0f;
+      double part_4 = 0.0;
 
       if (!n_vot_ON_)
-        part_2 = 1.0f;
+        part_2 = 1.0;
 
       for (unsigned int j_class = 0; j_class < number_of_classes; j_class++)
         if (n_ftr[j_class] != 0)
           part_4 += static_cast<double> (n_vot_2[i_cluster][j_class]) / static_cast<double> (n_ftr[j_class]);
 
-      statistical_weights[i_class][i_cluster] = (1.0f / part_1) * (1.0f / part_2) * part_3 / part_4;
+      statistical_weights[i_class][i_cluster] = (1.0 / part_1) * (1.0 / part_2) * part_3 / part_4;
     }
   }//next cluster
 }
@@ -1205,23 +1205,23 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::alignYCoor
   Eigen::Matrix3d rotation_matrix_X;
   Eigen::Matrix3d rotation_matrix_Z;
 
-  double A = 0.0f;
-  double B = 0.0f;
-  double sign = -1.0f;
+  double A = 0.0;
+  double B = 0.0;
+  double sign = -1.0;
 
   double denom_X = static_cast<double> (sqrt (in_normal.normal_z * in_normal.normal_z + in_normal.normal_y * in_normal.normal_y));
   A = in_normal.normal_y / denom_X;
   B = sign * in_normal.normal_z / denom_X;
-  rotation_matrix_X << 1.0f,   0.0f,   0.0f,
-                       0.0f,      A,     -B,
-                       0.0f,      B,      A;
+  rotation_matrix_X << 1.0,   0.0,   0.0,
+                       0.0,      A,     -B,
+                       0.0,      B,      A;
 
   double denom_Z = static_cast<double> (sqrt (in_normal.normal_x * in_normal.normal_x + in_normal.normal_y * in_normal.normal_y));
   A = in_normal.normal_y / denom_Z;
   B = sign * in_normal.normal_x / denom_Z;
-  rotation_matrix_Z <<    A,     -B,   0.0f,
-                          B,      A,   0.0f,
-                       0.0f,   0.0f,   1.0f;
+  rotation_matrix_Z <<    A,     -B,   0.0,
+                          B,      A,   0.0,
+                       0.0,   0.0,   1.0;
 
   result = rotation_matrix_X * rotation_matrix_Z;
 
@@ -1361,12 +1361,12 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::computeKMe
           counters[i_label]++;
         }
         if (iter > 0)
-          max_center_shift = 0.0f;
+          max_center_shift = 0.0;
         for (int i_cl_center = 0; i_cl_center < number_of_clusters; i_cl_center++)
         {
           if (counters[i_cl_center] != 0)
           {
-            double scale = 1.0f / static_cast<double> (counters[i_cl_center]);
+            double scale = 1.0 / static_cast<double> (counters[i_cl_center]);
             for (int i_dim = 0; i_dim < feature_dimension; i_dim++)
               centers (i_cl_center, i_dim) *= scale;
           }
@@ -1380,7 +1380,7 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::computeKMe
 
           if (iter > 0)
           {
-            double dist = 0.0f;
+            double dist = 0.0;
             for (int i_dim = 0; i_dim < feature_dimension; i_dim++)
             {
               double diff = centers (i_cl_center, i_dim) - old_centers (i_cl_center, i_dim);
@@ -1390,7 +1390,7 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::computeKMe
           }
         }
       }
-      compactness = 0.0f;
+      compactness = 0.0;
       for (unsigned int i_point = 0; i_point < number_of_points; i_point++)
       {
         Eigen::VectorXd sample (feature_dimension);
@@ -1508,13 +1508,13 @@ pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::generateRa
   Eigen::VectorXd& center)
 {
   size_t dimension = boxes.size ();
-  double margin = 1.0f / static_cast<double> (dimension);
+  double margin = 1.0 / static_cast<double> (dimension);
 
   for (unsigned int i_dim = 0; i_dim < dimension; i_dim++)
   {
     unsigned int random_integer = rand () - 1;
     double random_float = static_cast<double> (random_integer) / static_cast<double> (std::numeric_limits<unsigned int>::max ());
-    center (i_dim) = (random_float * (1.0f + margin * 2.0f)- margin) * (boxes[i_dim] (1) - boxes[i_dim] (0)) + boxes[i_dim] (0);
+    center (i_dim) = (random_float * (1.0 + margin * 2.0)- margin) * (boxes[i_dim] (1) - boxes[i_dim] (0)) + boxes[i_dim] (0);
   }
 }
 
@@ -1523,7 +1523,7 @@ template <int FeatureSize, typename PointT, typename NormalT> double
 pcl::ism::ImplicitShapeModelEstimation<FeatureSize, PointT, NormalT>::computeDistance (Eigen::VectorXd& vec_1, Eigen::VectorXd& vec_2)
 {
   size_t dimension = vec_1.rows () > 1 ? vec_1.rows () : vec_1.cols ();
-  double distance = 0.0f;
+  double distance = 0.0;
   for(unsigned int i_dim = 0; i_dim < dimension; i_dim++)
   {
     double diff = vec_1 (i_dim) - vec_2 (i_dim);

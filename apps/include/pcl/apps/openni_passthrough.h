@@ -104,8 +104,8 @@ class OpenNIPassthrough : public QMainWindow
     void
     adjustPassThroughValues (int new_value)
     {
-      pass_.setFilterLimits (0.0f, double (new_value) / 10.0f);
-      PCL_INFO ("Changed passthrough maximum value to: %f\n", double (new_value) / 10.0f);
+      pass_.setFilterLimits (0.0, double (new_value) / 10.0);
+      PCL_INFO ("Changed passthrough maximum value to: %f\n", double (new_value) / 10.0);
     }
     
   private slots:

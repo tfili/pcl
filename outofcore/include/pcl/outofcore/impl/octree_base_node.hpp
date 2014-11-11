@@ -1470,8 +1470,8 @@ namespace pcl
             pcl::fromPCLPointCloud2 ( *tmp_blob, *tmp_cloud );
             assert (tmp_blob->width*tmp_blob->height == tmp_cloud->width*tmp_cloud->height );
 
-            Eigen::Vector4d min_pt ( static_cast<double> ( min_bb[0] ), static_cast<double> ( min_bb[1] ), static_cast<double> ( min_bb[2] ), 1.0f);
-            Eigen::Vector4d max_pt ( static_cast<double> ( max_bb[0] ), static_cast<double> ( max_bb[1] ) , static_cast<double>( max_bb[2] ), 1.0f );
+            Eigen::Vector4d min_pt ( static_cast<double> ( min_bb[0] ), static_cast<double> ( min_bb[1] ), static_cast<double> ( min_bb[2] ), 1.0);
+            Eigen::Vector4d max_pt ( static_cast<double> ( max_bb[0] ), static_cast<double> ( max_bb[1] ) , static_cast<double>( max_bb[2] ), 1.0 );
                 
             std::vector<int> indices;
 

@@ -57,7 +57,7 @@
 pcl::PXCGrabber::PXCGrabber ()
   : pp_ ()
   , running_ (false)
-  , fps_ (0.0f)
+  , fps_ (0.0)
 {
   point_cloud_signal_      = createSignal<sig_cb_pxc_point_cloud> ();
   point_cloud_rgb_signal_  = createSignal<sig_cb_pxc_point_cloud_rgb> ();
@@ -166,7 +166,7 @@ pcl::PXCGrabber::processGrabbing ()
 
   pcl::StopWatch stop_watch;
   std::queue<double> capture_time_queue;
-  double total_time = 0.0f;
+  double total_time = 0.0;
 
   stop_watch.reset ();
 
@@ -213,8 +213,8 @@ pcl::PXCGrabber::processGrabbing ()
     {
       for (int i = 0; i < w; i++, k++)
       {
-        int xx = (int) (uvmap[(j*w+i)*2+0]*image_width+0.5f);
-        int yy = (int) (uvmap[(j*w+i)*2+1]*image_height+0.5f);
+        int xx = (int) (uvmap[(j*w+i)*2+0]*image_width+0.5);
+        int yy = (int) (uvmap[(j*w+i)*2+1]*image_height+0.5);
 
         unsigned int idx = 3*(j*w + i);
         short x = vertices[idx];
@@ -252,9 +252,9 @@ pcl::PXCGrabber::processGrabbing ()
         else
         {
           // normalize vertices to meters
-          cloud->points[k].x = x / 1000.0f;
-          cloud->points[k].y = y / 1000.0f;
-          cloud->points[k].z = z / 1000.0f;
+          cloud->points[k].x = x / 1000.0;
+          cloud->points[k].y = y / 1000.0;
+          cloud->points[k].z = z / 1000.0;
           cloud->points[k].r = r;
           cloud->points[k].g = g;
           cloud->points[k].b = b;

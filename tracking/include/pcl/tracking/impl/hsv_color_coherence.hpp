@@ -135,9 +135,9 @@ namespace pcl
           (1 << (hsv_shift + 6))) >> (7 + hsv_shift);
                 
       h += h < 0 ? hr : 0;
-      fh = static_cast<double> (h) / 180.0f;
-      fs = static_cast<double> (s) / 255.0f;
-      fv = static_cast<double> (v) / 255.0f;
+      fh = static_cast<double> (h) / 180.0;
+      fs = static_cast<double> (s) / 255.0;
+      fv = static_cast<double> (v) / 255.0;
     }
    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,9 +159,9 @@ namespace pcl
       // Also need to compute distance other way around circle - but need to check which is closer to 0
       double _h_diff2;
       if (source_h < target_h)
-        _h_diff2 = fabsf (1.0f + source_h - target_h); //Add 2pi to source, subtract target
+        _h_diff2 = fabsf (1.0 + source_h - target_h); //Add 2pi to source, subtract target
       else 
-        _h_diff2 = fabsf (1.0f + target_h - source_h); //Add 2pi to target, subtract source
+        _h_diff2 = fabsf (1.0 + target_h - source_h); //Add 2pi to target, subtract source
       
       double h_diff;
       //Now we need to choose the smaller distance

@@ -71,9 +71,9 @@ namespace pcl
       GroundPlaneComparator ()
         : normals_ ()
         , plane_coeff_d_ ()
-        , angular_threshold_ (cosf (pcl::deg2rad (2.0f)))
-        , road_angular_threshold_ ( cosf(pcl::deg2rad (10.0f)))
-        , distance_threshold_ (0.1f)
+        , angular_threshold_ (cos (pcl::deg2rad (2.0)))
+        , road_angular_threshold_ ( cos(pcl::deg2rad (10.0)))
+        , distance_threshold_ (0.1)
         , depth_dependent_ (true)
         , z_axis_ (Eigen::Vector3d (0.0, 0.0, 1.0) )
         , desired_road_axis_ (Eigen::Vector3d(0.0, -1.0, 0.0))
@@ -86,11 +86,11 @@ namespace pcl
       GroundPlaneComparator (boost::shared_ptr<std::vector<double> >& plane_coeff_d) 
         : normals_ ()
         , plane_coeff_d_ (plane_coeff_d)
-        , angular_threshold_ (cosf (pcl::deg2rad (3.0f)))
-        , distance_threshold_ (0.1f)
+        , angular_threshold_ (cos (pcl::deg2rad (3.0)))
+        , distance_threshold_ (0.1)
         , depth_dependent_ (true)
-        , z_axis_ (Eigen::Vector3d (0.0f, 0.0f, 1.0f))
-        , road_angular_threshold_ ( cosf(pcl::deg2rad (40.0f)))
+        , z_axis_ (Eigen::Vector3d (0.0, 0.0, 1.0))
+        , road_angular_threshold_ ( cos(pcl::deg2rad (40.0)))
         , desired_road_axis_ (Eigen::Vector3d(0.0, -1.0, 0.0))
       {
       }
@@ -156,7 +156,7 @@ namespace pcl
       virtual void
       setAngularThreshold (double angular_threshold)
       {
-        angular_threshold_ = cosf (angular_threshold);
+        angular_threshold_ = cos (angular_threshold);
       }
 
       /** \brief Set the tolerance in radians for difference in normal direction between a point and the expected ground normal.
@@ -165,7 +165,7 @@ namespace pcl
       virtual void
       setGroundAngularThreshold (double angular_threshold)
       {
-        road_angular_threshold_ = cosf (angular_threshold);
+        road_angular_threshold_ = cos (angular_threshold);
       }
 
       /** \brief Set the expected ground plane normal with respect to the sensor.  Pixels labeled as ground must be within ground_angular_threshold radians of this normal to be labeled as ground.
@@ -182,7 +182,7 @@ namespace pcl
       inline double
       getAngularThreshold () const
       {
-        return (acosf (angular_threshold_) );
+        return (acos (angular_threshold_) );
       }
 
       /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.

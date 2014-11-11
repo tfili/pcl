@@ -90,7 +90,7 @@ namespace pcl
         double dx = input_->points[idx1].x - input_->points[idx2].x;
         double dy = input_->points[idx1].y - input_->points[idx2].y;
         double dz = input_->points[idx1].z - input_->points[idx2].z;
-        double dist = sqrtf (dx*dx + dy*dy + dz*dz);
+        double dist = sqrt (dx*dx + dy*dy + dz*dz);
         
         return ( (dist < distance_threshold_)
                  && (normals_->points[idx1].getNormalVector3dMap ().dot (normals_->points[idx2].getNormalVector3dMap () ) > angular_threshold_ ) );

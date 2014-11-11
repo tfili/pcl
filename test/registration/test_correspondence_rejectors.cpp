@@ -92,8 +92,8 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
   
   // Transform the target
   pcl::PointCloud<pcl::PointXYZ> target;
-  Eigen::Vector3d t(0.1f, 0.2f, 0.3f);
-  Eigen::Quaterniond q (double (std::cos (0.5*M_PI_4)), 0.0f, 0.0f, double (std::sin (0.5*M_PI_4)));
+  Eigen::Vector3d t(0.1, 0.2f, 0.3f);
+  Eigen::Quaterniond q (double (std::cos (0.5*M_PI_4)), 0.0, 0.0, double (std::sin (0.5*M_PI_4)));
   pcl::transformPointCloud (cloud, target, t, q);
   
   // Noisify the target with a known seed and N(0, 0.005) using deterministic sampling
@@ -115,7 +115,7 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
   pcl::registration::CorrespondenceRejectorPoly<pcl::PointXYZ, pcl::PointXYZ> reject;
   reject.setIterations (10000);
   reject.setCardinality (3);
-  reject.setSimilarityThreshold (0.75f);
+  reject.setSimilarityThreshold (0.75);
   reject.setInputSource (cloud.makeShared ());
   reject.setInputTarget (target.makeShared ());
   
@@ -132,7 +132,7 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
    * but not too many
    */
   EXPECT_GE(accepted_frac, ground_truth_frac);
-  EXPECT_LE(accepted_frac, 1.5f*ground_truth_frac);
+  EXPECT_LE(accepted_frac, 1.5*ground_truth_frac);
   
   /*
    * Test criterion 2: expect high precision/recall. The true positives are the unscrambled correspondences

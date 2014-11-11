@@ -124,7 +124,7 @@ TEST(PCL_FeaturesGPU, vfh1)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }
@@ -191,7 +191,7 @@ TEST(PCL_FeaturesGPU, vfh_norm_bins_false)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }
@@ -258,7 +258,7 @@ TEST(PCL_FeaturesGPU, vfh_norm_distance_true)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }
@@ -326,7 +326,7 @@ TEST(PCL_FeaturesGPU, vfh_fill_size_component_true)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }

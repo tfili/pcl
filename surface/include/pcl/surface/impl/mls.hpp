@@ -113,7 +113,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::process (PointCloudOut &output)
     case (RANDOM_UNIFORM_DENSITY):
     {
       rng_alg_.seed (static_cast<unsigned> (std::time (0)));
-      double tmp = static_cast<double> (search_radius_ / 2.0f);
+      double tmp = static_cast<double> (search_radius_ / 2.0);
       boost::uniform_real<double> uniform_distrib (-tmp, tmp);
       rng_uniform_distribution_.reset (new boost::variate_generator<boost::mt19937&, boost::uniform_real<double> > (rng_alg_, uniform_distrib));
 
@@ -206,7 +206,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::computeMLSPointNormal (int index,
   // Vector in which the polynomial coefficients will be put
   Eigen::VectorXd c_vec;
   // Local coordinate system (Darboux frame)
-  Eigen::Vector3d v_axis (0.0f, 0.0f, 0.0f), u_axis (0.0f, 0.0f, 0.0f);
+  Eigen::Vector3d v_axis (0.0, 0.0, 0.0), u_axis (0.0, 0.0, 0.0);
 
 
 
@@ -416,8 +416,8 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::projectPointToMLSSurface (double &
                                                                         PointOutT &result_point,
                                                                         pcl::Normal &result_normal) const
 {
-  double n_disp = 0.0f;
-  double d_u = 0.0f, d_v = 0.0f;
+  double n_disp = 0.0;
+  double d_u = 0.0, d_v = 0.0;
 
   // HARDCODED 5*nr_coeff_ to guarantee that the computed polynomial had a proper point set basis
   if (polynomial_fit_ && num_neighbors >= 5*nr_coeff_ && pcl_isfinite (c_vec[0]))
@@ -425,7 +425,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::projectPointToMLSSurface (double &
     // Compute the displacement along the normal using the fitted polynomial
     // and compute the partial derivatives needed for estimating the normal
     int j = 0;
-    double u_pow = 1.0f, v_pow = 1.0f, u_pow_prev = 1.0f, v_pow_prev = 1.0f;
+    double u_pow = 1.0, v_pow = 1.0, u_pow_prev = 1.0, v_pow_prev = 1.0;
     for (int ui = 0; ui <= order_; ++ui)
     {
       v_pow = 1;

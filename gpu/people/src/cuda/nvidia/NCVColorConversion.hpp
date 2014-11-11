@@ -56,7 +56,7 @@ static void _pixColorConv(const Tin &pixIn, Tout &pixOut);
 template<typename Tin, typename Tout> struct __pixColorConv<NCVColorSpaceRGBA, NCVColorSpaceGray, Tin, Tout> {
 static void _pixColorConv(const Tin &pixIn, Tout &pixOut)
 {
-    Ncv32f luma = 0.299f * pixIn.x + 0.587f * pixIn.y + 0.114f * pixIn.z;
+    Ncv32f luma = 0.299 * pixIn.x + 0.587 * pixIn.y + 0.114f * pixIn.z;
     _TDemoteClampNN(luma, pixOut.x);
 }};
 

@@ -340,7 +340,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseHarris (PointCloudO
       double trace = covar [0] + covar [5] + covar [7];
       if (trace != 0)
       {
-        double det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
+        double det = covar [0] * covar [5] * covar [7] + 2.0 * covar [1] * covar [2] * covar [6]
                   - covar [2] * covar [2] * covar [5]
                   - covar [1] * covar [1] * covar [7]
                   - covar [6] * covar [6] * covar [0];
@@ -378,7 +378,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseNoble (PointCloudOu
       double trace = covar [0] + covar [5] + covar [7];
       if (trace != 0)
       {
-        double det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
+        double det = covar [0] * covar [5] * covar [7] + 2.0 * covar [1] * covar [2] * covar [6]
                   - covar [2] * covar [2] * covar [5]
                   - covar [1] * covar [1] * covar [7]
                   - covar [6] * covar [6] * covar [0];
@@ -416,7 +416,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseLowe (PointCloudOut
       double trace = covar [0] + covar [5] + covar [7];
       if (trace != 0)
       {
-        double det = covar [0] * covar [5] * covar [7] + 2.0f * covar [1] * covar [2] * covar [6]
+        double det = covar [0] * covar [5] * covar [7] + 2.0 * covar [1] * covar [2] * covar [6]
                   - covar [2] * covar [2] * covar [5]
                   - covar [1] * covar [1] * covar [7]
                   - covar [6] * covar [6] * covar [0];

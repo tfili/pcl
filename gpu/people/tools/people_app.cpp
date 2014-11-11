@@ -98,7 +98,7 @@ struct SampledScopeTime : public StopWatch
     time_ms_ += getTime ();    
     if (i_ % EACH == 0 && i_)
     {
-      cout << "[~SampledScopeTime] : Average frame time = " << time_ms_ / EACH << "ms ( " << 1000.f * EACH / time_ms_ << "fps )" << endl;
+      cout << "[~SampledScopeTime] : Average frame time = " << time_ms_ / EACH << "ms ( " << 1000. * EACH / time_ms_ << "fps )" << endl;
       time_ms_ = 0;        
     }
     ++i_;

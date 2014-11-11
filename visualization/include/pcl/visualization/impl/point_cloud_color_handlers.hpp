@@ -255,15 +255,15 @@ pcl::visualization::PointCloudColorHandlerHSVField<PointT>::getColor (vtkSmartPo
 
       // Fill color data with HSV here:
       // restrict the hue value to [0,360[
-      h = h < 0.0f ? h - (((int)h)/360 - 1)*360 : h - (((int)h)/360)*360;
+      h = h < 0.0 ? h - (((int)h)/360 - 1)*360 : h - (((int)h)/360)*360;
 
       // restrict s and v to [0,1]
-      if (s > 1.0f) s = 1.0f;
-      if (s < 0.0f) s = 0.0f;
-      if (v > 1.0f) v = 1.0f;
-      if (v < 0.0f) v = 0.0f;
+      if (s > 1.0) s = 1.0;
+      if (s < 0.0) s = 0.0;
+      if (v > 1.0) v = 1.0;
+      if (v < 0.0) v = 0.0;
 
-      if (s == 0.0f)
+      if (s == 0.0)
       {
         colors[idx] = colors[idx+1] = colors[idx+2] = v*255;
       }
@@ -307,15 +307,15 @@ pcl::visualization::PointCloudColorHandlerHSVField<PointT>::getColor (vtkSmartPo
 
       // Fill color data with HSV here:
       // restrict the hue value to [0,360[
-      h = h < 0.0f ? h - (((int)h)/360 - 1)*360 : h - (((int)h)/360)*360;
+      h = h < 0.0 ? h - (((int)h)/360 - 1)*360 : h - (((int)h)/360)*360;
 
       // restrict s and v to [0,1]
-      if (s > 1.0f) s = 1.0f;
-      if (s < 0.0f) s = 0.0f;
-      if (v > 1.0f) v = 1.0f;
-      if (v < 0.0f) v = 0.0f;
+      if (s > 1.0) s = 1.0;
+      if (s < 0.0) s = 0.0;
+      if (v > 1.0) v = 1.0;
+      if (v < 0.0) v = 0.0;
 
-      if (s == 0.0f)
+      if (s == 0.0)
       {
         colors[idx] = colors[idx+1] = colors[idx+2] = v*255;
       }

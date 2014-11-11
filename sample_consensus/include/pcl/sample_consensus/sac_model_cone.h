@@ -328,7 +328,7 @@ namespace pcl
           double opening_angle = x[6];
 
           double apexdotdir = apex.dot (axis_dir);
-          double dirdotdir = 1.0f / axis_dir.dot (axis_dir);
+          double dirdotdir = 1.0 / axis_dir.dot (axis_dir);
 
           for (int i = 0; i < values (); ++i)
           {
@@ -343,7 +343,7 @@ namespace pcl
 
             // Calculate the actual radius of the cone at the level of the projected point
             Eigen::Vector4d height = apex-pt_proj;
-            double actual_cone_radius = tanf (opening_angle) * height.norm ();
+            double actual_cone_radius = tan (opening_angle) * height.norm ();
 
             fvec[i] = static_cast<double> (pcl::sqrPointToLineDistance (pt, apex, axis_dir) - actual_cone_radius * actual_cone_radius);
           }

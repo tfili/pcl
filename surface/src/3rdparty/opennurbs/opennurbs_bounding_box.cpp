@@ -1930,7 +1930,7 @@ bool ON_GetPointListBoundingBox(
     if ( is_rat ) 
     {
       // skip bogus starting points
-      while ( count > 0 && points[wi] == 0.0f ) 
+      while ( count > 0 && points[wi] == 0.0 ) 
       {
         count--;
         points += stride;
@@ -2241,7 +2241,7 @@ OUTPUT:
         if ( count > 0 ) {
           if ( !bGrowBox ) 
           {
-            ON_ArrayScale( dim, 1.0f/points[dim], points, boxmin );
+            ON_ArrayScale( dim, 1.0/points[dim], points, boxmin );
             memcpy( boxmax, boxmin, dim*sizeof(*boxmax) );
             points += stride;
             count--;

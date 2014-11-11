@@ -390,12 +390,12 @@ pcl::getMinMax (const PointT &histogram, int len, double &min_p, double &max_p)
 template <typename PointT> inline double
 pcl::calculatePolygonArea (const pcl::PointCloud<PointT> &polygon) 
 {
-  double area = 0.0f;
+  double area = 0.0;
   int num_points = polygon.size ();
   int j = 0;
   Eigen::Vector3d va,vb,res;
 
-  res(0) = res(1) = res(2) = 0.0f;
+  res(0) = res(1) = res(2) = 0.0;
   for (int i = 0; i < num_points; ++i) 
   {
     j = (i + 1) % num_points;

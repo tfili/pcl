@@ -100,9 +100,9 @@ TEST (PCL, findFeatureCorrespondences)
   feature0.height = feature1.height = feature2.height = feature3.height = 1;
   feature0.is_dense = feature1.is_dense = feature2.is_dense = feature3.is_dense = true;
 
-  for (double x = -5.0f; x <= 5.0f; x += 0.2f)
+  for (double x = -5.0; x <= 5.0; x += 0.2f)
   {
-    for (double y = -5.0f; y <= 5.0f; y += 0.2f)
+    for (double y = -5.0; y <= 5.0; y += 0.2f)
     {
       FeatureT f;
       f.histogram[0] = x;
@@ -110,15 +110,15 @@ TEST (PCL, findFeatureCorrespondences)
       feature0.points.push_back (f);
 
       f.histogram[0] = x;
-      f.histogram[1] = y - 2.5f;
+      f.histogram[1] = y - 2.5;
       feature1.points.push_back (f);
 
-      f.histogram[0] = x - 2.0f;
-      f.histogram[1] = y + 1.5f;
+      f.histogram[0] = x - 2.0;
+      f.histogram[1] = y + 1.5;
       feature2.points.push_back (f);
 
-      f.histogram[0] = x + 2.0f;
-      f.histogram[1] = y + 1.5f;
+      f.histogram[0] = x + 2.0;
+      f.histogram[1] = y + 1.5;
       feature3.points.push_back (f);
     }
   }
@@ -592,7 +592,7 @@ TEST (PCL, NormalDistributionsTransform)
 
   NormalDistributionsTransform<PointT, PointT> reg;
   reg.setStepSize (0.05);
-  reg.setResolution (0.025f);
+  reg.setResolution (0.025);
   reg.setInputSource (src);
   reg.setInputTarget (tgt);
   reg.setMaximumIterations (50);
@@ -631,7 +631,7 @@ TEST (PCL, SampleConsensusInitialAlignment)
 {
   // Transform the source cloud by a large amount
   Eigen::Vector3d initial_offset (100, 0, 0);
-  double angle = static_cast<double> (M_PI) / 2.0f;
+  double angle = static_cast<double> (M_PI) / 2.0;
   Eigen::Quaterniond initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);
@@ -670,7 +670,7 @@ TEST (PCL, SampleConsensusInitialAlignment)
 
   // Initialize Sample Consensus Initial Alignment (SAC-IA)
   SampleConsensusInitialAlignment<PointXYZ, PointXYZ, FPFHSignature33> reg;
-  reg.setMinSampleDistance (0.05f);
+  reg.setMinSampleDistance (0.05);
   reg.setMaxCorrespondenceDistance (0.1);
   reg.setMaximumIterations (1000);
 
@@ -721,7 +721,7 @@ TEST (PCL, SampleConsensusPrerejective)
   
   // Transform the source cloud by a large amount
   Eigen::Vector3d initial_offset (100, 0, 0);
-  double angle = static_cast<double> (M_PI) / 2.0f;
+  double angle = static_cast<double> (M_PI) / 2.0;
   Eigen::Quaterniond initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);
@@ -764,7 +764,7 @@ TEST (PCL, SampleConsensusPrerejective)
   SampleConsensusPrerejective<PointXYZ, PointXYZ, FPFHSignature33> reg;
   reg.setMaxCorrespondenceDistance (0.1);
   reg.setMaximumIterations (5000);
-  reg.setSimilarityThreshold (0.6f);
+  reg.setSimilarityThreshold (0.6);
   reg.setCorrespondenceRandomness (2);
   
   // Set source and target cloud/features
@@ -779,7 +779,7 @@ TEST (PCL, SampleConsensusPrerejective)
   // Check output consistency and quality of alignment
   EXPECT_EQ (static_cast<int> (cloud_reg.points.size ()), static_cast<int> (cloud_source.points.size ()));
   double inlier_fraction = static_cast<double> (reg.getInliers ().size ()) / static_cast<double> (cloud_source.points.size ());
-  EXPECT_GT (inlier_fraction, 0.95f);
+  EXPECT_GT (inlier_fraction, 0.95);
   
   // Check again, for all possible caching schemes
   typedef pcl::PointXYZ PointT;
@@ -804,7 +804,7 @@ TEST (PCL, SampleConsensusPrerejective)
     // Check output consistency and quality of alignment
     EXPECT_EQ (int (cloud_reg.points.size ()), int (cloud_source.points.size ()));
     inlier_fraction = static_cast<double> (reg.getInliers ().size ()) / static_cast<double> (cloud_source.points.size ());
-    EXPECT_GT (inlier_fraction, 0.95f);
+    EXPECT_GT (inlier_fraction, 0.95);
   }
 }
 
@@ -843,9 +843,9 @@ TEST (PCL, PyramidFeatureHistogram)
 
   vector<pair<double, double> > dim_range_input, dim_range_target;
   for (size_t i = 0; i < 3; ++i) dim_range_input.push_back (pair<double, double> (static_cast<double> (-M_PI), static_cast<double> (M_PI)));
-  dim_range_input.push_back (pair<double, double> (0.0f, 1.0f));
-  for (size_t i = 0; i < 3; ++i) dim_range_target.push_back (pair<double, double> (static_cast<double> (-M_PI) * 10.0f, static_cast<double> (M_PI) * 10.0f));
-  dim_range_target.push_back (pair<double, double> (0.0f, 50.0f));
+  dim_range_input.push_back (pair<double, double> (0.0, 1.0));
+  for (size_t i = 0; i < 3; ++i) dim_range_target.push_back (pair<double, double> (static_cast<double> (-M_PI) * 10.0, static_cast<double> (M_PI) * 10.0));
+  dim_range_target.push_back (pair<double, double> (0.0, 50.0));
 
 
   PyramidFeatureHistogram<PPFSignature>::Ptr pyramid_source (new PyramidFeatureHistogram<PPFSignature> ()),
@@ -864,8 +864,8 @@ TEST (PCL, PyramidFeatureHistogram)
   EXPECT_NEAR (similarity_value, 0.74101555347442627, 1e-4);
 
   vector<pair<double, double> > dim_range_target2;
-  for (size_t i = 0; i < 3; ++i) dim_range_target2.push_back (pair<double, double> (static_cast<double> (-M_PI) * 5.0f, static_cast<double> (M_PI) * 5.0f));
-    dim_range_target2.push_back (pair<double, double> (0.0f, 20.0f));
+  for (size_t i = 0; i < 3; ++i) dim_range_target2.push_back (pair<double, double> (static_cast<double> (-M_PI) * 5.0, static_cast<double> (M_PI) * 5.0));
+    dim_range_target2.push_back (pair<double, double> (0.0, 20.0));
 
   pyramid_source->setTargetDimensionRange (dim_range_target2);
   pyramid_source->compute ();
@@ -878,8 +878,8 @@ TEST (PCL, PyramidFeatureHistogram)
 
 
   vector<pair<double, double> > dim_range_target3;
-  for (size_t i = 0; i < 3; ++i) dim_range_target3.push_back (pair<double, double> (static_cast<double> (-M_PI) * 2.0f, static_cast<double> (M_PI) * 2.0f));
-  dim_range_target3.push_back (pair<double, double> (0.0f, 10.0f));
+  for (size_t i = 0; i < 3; ++i) dim_range_target3.push_back (pair<double, double> (static_cast<double> (-M_PI) * 2.0, static_cast<double> (M_PI) * 2.0));
+  dim_range_target3.push_back (pair<double, double> (0.0, 10.0));
 
   pyramid_source->setTargetDimensionRange (dim_range_target3);
   pyramid_source->compute ();

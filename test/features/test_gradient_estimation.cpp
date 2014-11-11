@@ -53,15 +53,15 @@ TEST (PCL, IntensityGradientEstimation)
   PointCloud<PointXYZI> cloud_xyzi;
   cloud_xyzi.height = 1;
   cloud_xyzi.is_dense = true;
-  for (double x = -5.0f; x <= 5.0f; x += 0.1f)
+  for (double x = -5.0; x <= 5.0; x += 0.1)
   {
-    for (double y = -5.0f; y <= 5.0f; y += 0.1f)
+    for (double y = -5.0; y <= 5.0; y += 0.1)
     {
       PointXYZI p;
       p.x = x;
       p.y = y;
-      p.z = 0.1f * powf (x, 2.0f) + 0.5f * y + 1.0f;
-      p.intensity = 0.1f * powf (x, 3.0f) + 0.2f * powf (y, 2.0f) + 1.0f * p.z + 20000.0f;
+      p.z = 0.1 * pow (x, 2.0) + 0.5 * y + 1.0;
+      p.intensity = 0.1 * pow (x, 3.0) + 0.2f * pow (y, 2.0) + 1.0 * p.z + 20000.0;
 
       cloud_xyzi.points.push_back (p);
     }
@@ -98,24 +98,24 @@ TEST (PCL, IntensityGradientEstimation)
 
     // Compute the surface normal analytically.
     double nx = -0.2f * p.x;
-    double ny = -0.5f;
-    double nz = 1.0f;
-    double magnitude = sqrtf (nx * nx + ny * ny + nz * nz);
+    double ny = -0.5;
+    double nz = 1.0;
+    double magnitude = sqrt (nx * nx + ny * ny + nz * nz);
     nx /= magnitude;
     ny /= magnitude;
     nz /= magnitude;
 
     // Compute the intensity gradient analytically...
-    double tmpx = 0.3f * powf (p.x, 2.0f);
+    double tmpx = 0.3f * pow (p.x, 2.0);
     double tmpy = 0.4f * p.y;
-    double tmpz = 1.0f;
+    double tmpz = 1.0;
     // ...and project the 3-D gradient vector onto the surface's tangent plane.
     double gx = (1 - nx * nx) * tmpx + (-nx * ny) * tmpy + (-nx * nz) * tmpz;
     double gy = (-ny * nx) * tmpx + (1 - ny * ny) * tmpy + (-ny * nz) * tmpz;
     double gz = (-nz * nx) * tmpx + (-nz * ny) * tmpy + (1 - nz * nz) * tmpz;
 
     // Compare the estimates to the derived values.
-    const double tolerance = 0.11f;
+    const double tolerance = 0.11;
     EXPECT_NEAR (g_est[0], gx, tolerance);
     EXPECT_NEAR (g_est[1], gy, tolerance);
     EXPECT_NEAR (g_est[2], gz, tolerance);

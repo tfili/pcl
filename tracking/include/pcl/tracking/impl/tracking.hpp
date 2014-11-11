@@ -32,21 +32,21 @@ namespace pcl
       inline ParticleXYZRPY ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYZRPY (double _x, double _y, double _z)
       {
         x = _x; y = _y; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYZRPY (double _x, double _y, double _z, double _roll, double _pitch, double _yaw)
       {
         x = _x; y = _y; z = _z;
         roll = _roll; pitch = _pitch; yaw = _yaw;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -187,21 +187,21 @@ namespace pcl
       inline ParticleXYZR ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYZR (double _x, double _y, double _z)
       {
         x = _x; y = _y; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYZR (double _x, double _y, double _z, double, double _pitch, double)
       {
         x = _x; y = _y; z = _z;
         roll = 0; pitch = _pitch; yaw = 0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -342,21 +342,21 @@ namespace pcl
       inline ParticleXYRPY ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYRPY (double _x, double, double _z)
       {
         x = _x; y = 0; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYRPY (double _x, double, double _z, double _roll, double _pitch, double _yaw)
       {
         x = _x; y = 0; z = _z;
         roll = _roll; pitch = _pitch; yaw = _yaw;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -495,21 +495,21 @@ namespace pcl
       inline ParticleXYRP ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYRP (double _x, double, double _z)
       {
         x = _x; y = 0; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYRP (double _x, double, double _z, double, double _pitch, double _yaw)
       {
         x = _x; y = 0; z = _z;
         roll = 0; pitch = _pitch; yaw = _yaw;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -648,21 +648,21 @@ namespace pcl
       inline ParticleXYR ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYR (double _x, double, double _z)
       {
         x = _x; y = 0; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline ParticleXYR (double _x, double, double _z, double, double _pitch, double)
       {
         x = _x; y = 0; z = _z;
         roll = 0; pitch = _pitch; yaw = 0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int

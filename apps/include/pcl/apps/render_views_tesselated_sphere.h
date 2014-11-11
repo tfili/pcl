@@ -58,7 +58,7 @@ namespace pcl
         tesselation_level_ = 1;
         use_vertices_ = false;
         view_angle_ = 57;
-        radius_sphere_ = 1.f;
+        radius_sphere_ = 1.;
         compute_entropy_ = false;
         gen_organized_ = false;
         campos_constraints_func_ = camPosConstraintsAllTrue ();

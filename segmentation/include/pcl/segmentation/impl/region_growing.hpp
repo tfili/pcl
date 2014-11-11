@@ -60,9 +60,9 @@ pcl::RegionGrowing<PointT, NormalT>::RegionGrowing () :
   smooth_mode_flag_ (true),
   curvature_flag_ (true),
   residual_flag_ (false),
-  theta_threshold_ (30.0f / 180.0f * static_cast<double> (M_PI)),
-  residual_threshold_ (0.05f),
-  curvature_threshold_ (0.05f),
+  theta_threshold_ (30.0 / 180.0 * static_cast<double> (M_PI)),
+  residual_threshold_ (0.05),
+  curvature_threshold_ (0.05),
   neighbour_number_ (30),
   search_ (),
   normals_ (),
@@ -318,7 +318,7 @@ pcl::RegionGrowing<PointT, NormalT>::prepareForSegmentation ()
   // if residual test is on then we need to check if all needed parameters were correctly initialized
   if (residual_flag_)
   {
-    if (residual_threshold_ <= 0.0f)
+    if (residual_threshold_ <= 0.0)
       return (false);
   }
 
@@ -494,7 +494,7 @@ pcl::RegionGrowing<PointT, NormalT>::validatePoint (int initial_seed, int point,
 {
   is_a_seed = true;
 
-  double cosine_threshold = cosf (theta_threshold_);
+  double cosine_threshold = cos (theta_threshold_);
   double data[4];
 
   data[0] = input_->points[point].data[0];

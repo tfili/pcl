@@ -62,7 +62,7 @@ typedef short            WeightT;
 string cloud_file  = "cloud.pcd";
 string volume_file = "tsdf_volume.dat";
 
-double min_trunc_dist = 30.0f;
+double min_trunc_dist = 30.0;
 
 bool quit = false, save = false;
 bool extract_cloud_volume = false;
@@ -91,7 +91,7 @@ public:
 
     // truncation distance
     Eigen::Vector3d voxel_size = volume_size.array() / volume_res.array().cast<double>();
-    trunc_dist_ = max ((double)min_trunc_dist, 2.1f * max (voxel_size[0], max (voxel_size[1], voxel_size[2])));
+    trunc_dist_ = max ((double)min_trunc_dist, 2.1 * max (voxel_size[0], max (voxel_size[1], voxel_size[2])));
   };
 
   /** \brief Creates the TSDF volume on the GPU
@@ -150,7 +150,7 @@ DeviceVolume::createFromDepth (const pcl::device::PtrStepSz<const unsigned short
 
   // initial camera rotation and translation
   Matrix3drm      init_Rcam = Eigen::Matrix3d::Identity ();
-  Eigen::Vector3d init_tcam = volume_size_ * 0.5f - Eigen::Vector3d (0, 0, volume_size_(2)/2 * 1.2f);
+  Eigen::Vector3d init_tcam = volume_size_ * 0.5 - Eigen::Vector3d (0, 0, volume_size_(2)/2 * 1.2f);
 
   Matrix3drm init_Rcam_inv = init_Rcam.inverse ();
   device::Mat33&  device_Rcam_inv = device_cast<device::Mat33> (init_Rcam_inv);
@@ -251,7 +251,7 @@ convertDepthRGBToCloud (const pcl::device::PtrStepSz<const unsigned short> &dept
 
       PointT &point = cloud->at (x, y);
 
-      point.z = depth_row_ptr[x] / 1000.0f;
+      point.z = depth_row_ptr[x] / 1000.0;
       point.x = u * point.z;
       point.y = v * point.z;
 

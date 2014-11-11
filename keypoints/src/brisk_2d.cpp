@@ -139,7 +139,7 @@ pcl::keypoints::brisk::ScaleSpace::getKeypoints (
                               delta_x, delta_y);
 
       // store:
-      keypoints.push_back (pcl::PointWithScale (point.u + delta_x, point.v + delta_y, 0.0f, basic_size_, -1, max, 0));
+      keypoints.push_back (pcl::PointWithScale (point.u + delta_x, point.v + delta_y, 0.0, basic_size_, -1, max, 0));
     }
     return;
   }
@@ -187,7 +187,7 @@ pcl::keypoints::brisk::ScaleSpace::getKeypoints (
         // store:
         keypoints.push_back (pcl::PointWithScale ((point.u + delta_x) * l.getScale () + l.getOffset (),     // x
                                                   (point.v + delta_y) * l.getScale () + l.getOffset (),     // y
-                                                  0.0f,                                           // z
+                                                  0.0,                                           // z
                                                   basic_size_ * l.getScale (),                         // size
                                                   -1,                                             // angle
                                                   max,                                            // response
@@ -217,7 +217,7 @@ pcl::keypoints::brisk::ScaleSpace::getKeypoints (
         // finally store the detected keypoint:
         if (score > double (threshold_))
         {
-          keypoints.push_back (pcl::PointWithScale (x, y, 0.0f, basic_size_ * scale, -1, score, i));
+          keypoints.push_back (pcl::PointWithScale (x, y, 0.0, basic_size_ * scale, -1, score, i));
         }
       }
     }
@@ -292,27 +292,27 @@ pcl::keypoints::brisk::ScaleSpace::getScoreBelow (
   if (layer % 2 == 0)
   { // octave
     sixth_x = 8 * x_layer + 1;
-    xf = double (sixth_x) / 6.0f;
+    xf = double (sixth_x) / 6.0;
     sixth_y = 8 * y_layer + 1;
-    yf = double (sixth_y) / 6.0f;
+    yf = double (sixth_y) / 6.0;
 
     // scaling:
-    offs = 2.0f / 3.0f;
-    area = 4.0f * offs * offs;
-    scaling  = static_cast<int> (4194304.0f / area);
+    offs = 2.0 / 3.0;
+    area = 4.0 * offs * offs;
+    scaling  = static_cast<int> (4194304.0 / area);
     scaling2 = static_cast<int> (double (scaling) * area);
   }
   else
   {
     quarter_x = 6 * x_layer + 1;
-    xf = double (quarter_x) / 4.0f;
+    xf = double (quarter_x) / 4.0;
     quarter_y = 6 * y_layer + 1;
-    yf = double (quarter_y) / 4.0f;
+    yf = double (quarter_y) / 4.0;
 
     // scaling:
-    offs = 3.0f / 4.0f;
-    area = 4.0f * offs * offs;
-    scaling  = static_cast<int> (4194304.0f / area);
+    offs = 3.0 / 4.0;
+    area = 4.0 * offs * offs;
+    scaling  = static_cast<int> (4194304.0 / area);
     scaling2 = static_cast<int> (double (scaling) * area);
   }
 
@@ -328,10 +328,10 @@ pcl::keypoints::brisk::ScaleSpace::getScoreBelow (
   const int y_bottom = int (y1  + 0.5);
 
   // overlap area - multiplication factors:
-  const double r_x_1 = double (x_left) - x_1 + 0.5f;
-  const double r_y_1 = double (y_top) - y_1  + 0.5f;
-  const double r_x1  = x1 - double (x_right) + 0.5f;
-  const double r_y1  = y1 - double (y_bottom) + 0.5f;
+  const double r_x_1 = double (x_left) - x_1 + 0.5;
+  const double r_y_1 = double (y_top) - y_1  + 0.5;
+  const double r_x1  = x1 - double (x_right) + 0.5;
+  const double r_y1  = y1 - double (y_bottom) + 0.5;
   const int dx  = x_right - x_left - 1;
   const int dy = y_bottom - y_top - 1;
   const int A = static_cast<int> ((r_x_1 * r_y_1) * double (scaling));
@@ -574,8 +574,8 @@ pcl::keypoints::brisk::ScaleSpace::refine3D (
     if (scale > 1.0)
     {
       // interpolate the position:
-      const double r0 = (1.5f - scale) / .5f;
-      const double r1 = 1.0f - r0;
+      const double r0 = (1.5 - scale) / .5;
+      const double r1 = 1.0 - r0;
       x = (r0 * delta_x_layer + r1 * delta_x_above + double (x_layer))
           * this_layer.getScale () + this_layer.getOffset ();
       y = (r0 * delta_y_layer + r1 * delta_y_above + double (y_layer))
@@ -586,16 +586,16 @@ pcl::keypoints::brisk::ScaleSpace::refine3D (
       if (layer == 0)
       {
         // interpolate the position:
-        const double r0 = (scale - 0.5f) / 0.5f;
-        const double r_1 = 1.0f - r0;
+        const double r0 = (scale - 0.5) / 0.5;
+        const double r_1 = 1.0 - r0;
         x = r0 * delta_x_layer + r_1 * delta_x_below + double (x_layer);
         y = r0 * delta_y_layer + r_1 * delta_y_below + double (y_layer);
       }
       else
       {
         // interpolate the position:
-        const double r0 = (scale - 0.75f) / 0.25f;
-        const double r_1 = 1.0f -r0;
+        const double r0 = (scale - 0.75) / 0.25;
+        const double r_1 = 1.0 -r0;
         x = (r0 * delta_x_layer + r_1 * delta_x_below + double (x_layer))
             * this_layer.getScale () +this_layer.getOffset ();
         y = (r0 * delta_y_layer + r_1 * delta_y_below + double (y_layer))
@@ -634,8 +634,8 @@ pcl::keypoints::brisk::ScaleSpace::refine3D (
     if (scale > 1.0)
     {
       // interpolate the position:
-      const double r0 = 4.0f - scale * 3.0f;
-      const double r1 = 1.0f - r0;
+      const double r0 = 4.0 - scale * 3.0;
+      const double r1 = 1.0 - r0;
       x = (r0 * delta_x_layer + r1 * delta_x_above + double (x_layer))
            * this_layer.getScale () + this_layer.getOffset ();
       y = (r0 * delta_y_layer + r1 * delta_y_above + double (y_layer))
@@ -644,8 +644,8 @@ pcl::keypoints::brisk::ScaleSpace::refine3D (
     else
     {
       // interpolate the position:
-      const double r0 = scale * 3.0f - 2.0f;
-      const double r_1 = 1.0f - r0;
+      const double r0 = scale * 3.0 - 2.0;
+      const double r_1 = 1.0 - r0;
       x = (r0 * delta_x_layer + r_1 * delta_x_below + double (x_layer))
            * this_layer.getScale () + this_layer.getOffset ();
       y = (r0 * delta_y_layer + r_1 * delta_y_below + double (y_layer))
@@ -681,33 +681,33 @@ pcl::keypoints::brisk::ScaleSpace::getScoreMaxAbove (
   if (layer % 2 == 0) 
   {
     // octave
-    x_1  = double (4 * (x_layer) - 1 - 2) / 6.0f;
-    x1   = double (4 * (x_layer) - 1 + 2) / 6.0f;
-    y_1  = double (4 * (y_layer) - 1 - 2) / 6.0f;
-    y1   = double (4 * (y_layer) - 1 + 2) / 6.0f;
+    x_1  = double (4 * (x_layer) - 1 - 2) / 6.0;
+    x1   = double (4 * (x_layer) - 1 + 2) / 6.0;
+    y_1  = double (4 * (y_layer) - 1 - 2) / 6.0;
+    y1   = double (4 * (y_layer) - 1 + 2) / 6.0;
   }
   else
   {
     // intra
-    x_1 = double (6 * (x_layer) - 1 - 3) / 8.0f;
-    x1  = double (6 * (x_layer) - 1 + 3) / 8.0f;
-    y_1 = double (6 * (y_layer) - 1 - 3) / 8.0f;
-    y1  = double (6 * (y_layer) - 1 + 3) / 8.0f;
+    x_1 = double (6 * (x_layer) - 1 - 3) / 8.0;
+    x1  = double (6 * (x_layer) - 1 + 3) / 8.0;
+    y_1 = double (6 * (y_layer) - 1 - 3) / 8.0;
+    y1  = double (6 * (y_layer) - 1 + 3) / 8.0;
   }
 
   // check the first row
   //int max_x = int (x_1) + 1;
   //int max_y = int (y_1) + 1;
-  int max_x = int (x_1 + 1.0f);
-  int max_y = int (y_1 + 1.0f);
+  int max_x = int (x_1 + 1.0);
+  int max_y = int (y_1 + 1.0);
   double tmp_max = 0;
-  double max = layer_above.getAgastScore (x_1, y_1, 1,1.0f);
+  double max = layer_above.getAgastScore (x_1, y_1, 1,1.0);
 
   if (max > threshold) return (0);
   //for (int x = int (x_1) + 1; x <= int (x1); x++)
-  for (int x = int (x_1 + 1.0f); x <= int (x1); x++)
+  for (int x = int (x_1 + 1.0); x <= int (x1); x++)
   {
-    tmp_max = layer_above.getAgastScore (double (x), y_1, 1,1.0f);
+    tmp_max = layer_above.getAgastScore (double (x), y_1, 1,1.0);
 
     if (tmp_max > threshold) return (0);
     if (tmp_max > max)
@@ -716,7 +716,7 @@ pcl::keypoints::brisk::ScaleSpace::getScoreMaxAbove (
       max_x = x;
     }
   }
-  tmp_max = layer_above.getAgastScore (x1, y_1, 1,1.0f);
+  tmp_max = layer_above.getAgastScore (x1, y_1, 1,1.0);
   
   if (tmp_max > threshold) return (0);
   if (tmp_max > max)
@@ -811,20 +811,20 @@ pcl::keypoints::brisk::ScaleSpace::getScoreMaxAbove (
   bool returnrefined = true;
   if (layer % 2 == 0)
   {
-    dx = (real_x * 6.0f + 1.0f) / 4.0f - double (x_layer);
-    dy = (real_y * 6.0f + 1.0f) / 4.0f - double (y_layer);
+    dx = (real_x * 6.0 + 1.0) / 4.0 - double (x_layer);
+    dy = (real_y * 6.0 + 1.0) / 4.0 - double (y_layer);
   }
   else
   {
-    dx = (real_x * 8.0f + 1.0f) / 6.0f - double (x_layer);
-    dy = (real_y * 8.0f + 1.0f) / 6.0f - double (y_layer);
+    dx = (real_x * 8.0 + 1.0) / 6.0 - double (x_layer);
+    dy = (real_y * 8.0 + 1.0) / 6.0 - double (y_layer);
   }
 
   // saturate
-  if (dx > 1.0f)  { dx = 1.0f;  returnrefined = false; }
-  if (dx < -1.0f) { dx = -1.0f; returnrefined = false; }
-  if (dy > 1.0f)  { dy = 1.0f;  returnrefined = false; }
-  if (dy < -1.0f) { dy = -1.0f; returnrefined = false; }
+  if (dx > 1.0)  { dx = 1.0;  returnrefined = false; }
+  if (dx < -1.0) { dx = -1.0; returnrefined = false; }
+  if (dy > 1.0)  { dy = 1.0;  returnrefined = false; }
+  if (dy < -1.0) { dy = -1.0; returnrefined = false; }
 
   // done and ok.
   ismax = true;
@@ -850,17 +850,17 @@ pcl::keypoints::brisk::ScaleSpace::getScoreMaxBelow (
   if (layer % 2 == 0)
   {
     // octave
-    x_1 = double (8 * (x_layer) + 1 - 4) / 6.0f;
-    x1  = double (8 * (x_layer) + 1 + 4) / 6.0f;
-    y_1 = double (8 * (y_layer) + 1 - 4) / 6.0f;
-    y1  = double (8 * (y_layer) + 1 + 4) / 6.0f;
+    x_1 = double (8 * (x_layer) + 1 - 4) / 6.0;
+    x1  = double (8 * (x_layer) + 1 + 4) / 6.0;
+    y_1 = double (8 * (y_layer) + 1 - 4) / 6.0;
+    y1  = double (8 * (y_layer) + 1 + 4) / 6.0;
   }
   else
   {
-    x_1 = double (6 * (x_layer) + 1 - 3) / 4.0f;
-    x1  = double (6 * (x_layer) + 1 + 3) / 4.0f;
-    y_1 = double (6 * (y_layer) + 1 - 3) / 4.0f;
-    y1  = double (6 * (y_layer) + 1 + 3) / 4.0f;
+    x_1 = double (6 * (x_layer) + 1 - 3) / 4.0;
+    x1  = double (6 * (x_layer) + 1 + 3) / 4.0;
+    y_1 = double (6 * (y_layer) + 1 - 3) / 4.0;
+    y1  = double (6 * (y_layer) + 1 + 3) / 4.0;
   }
 
   // the layer below
@@ -997,20 +997,20 @@ pcl::keypoints::brisk::ScaleSpace::getScoreMaxBelow (
   bool returnrefined = true;
   if (layer % 2 == 0)
   {
-    dx = (real_x * 6.0f + 1.0f) / 8.0f - double (x_layer);
-    dy = (real_y * 6.0f + 1.0f) / 8.0f - double (y_layer);
+    dx = (real_x * 6.0 + 1.0) / 8.0 - double (x_layer);
+    dy = (real_y * 6.0 + 1.0) / 8.0 - double (y_layer);
   }
   else
   {
-    dx = (real_x * 4.0f - 1.0f) / 6.0f - double (x_layer);
-    dy = (real_y * 4.0f - 1.0f) / 6.0f - double (y_layer);
+    dx = (real_x * 4.0 - 1.0) / 6.0 - double (x_layer);
+    dy = (real_y * 4.0 - 1.0) / 6.0 - double (y_layer);
   }
 
   // saturate
-  if (dx > 1.0f)  { dx = 1.0f;  returnrefined = false; }
-  if (dx < -1.0f) { dx = -1.0f; returnrefined = false; }
-  if (dy > 1.0f)  { dy = 1.0f;  returnrefined = false; }
-  if (dy < -1.0f) { dy = -1.0f; returnrefined = false; }
+  if (dx > 1.0)  { dx = 1.0;  returnrefined = false; }
+  if (dx < -1.0) { dx = -1.0; returnrefined = false; }
+  if (dy > 1.0)  { dy = 1.0;  returnrefined = false; }
+  if (dy < -1.0) { dy = -1.0; returnrefined = false; }
 
   // done and ok.
   ismax = true;
@@ -1040,17 +1040,17 @@ pcl::keypoints::brisk::ScaleSpace::refine1D (
     if (s0 >= s_05 && s0 >= s05)
     {
       max = s0;
-      return (1.0f);
+      return (1.0);
     }
     if (s_05 >= s0 && s_05 >= s05)
     {
       max = s_05;
-      return (0.75f);
+      return (0.75);
     }
     if (s05 >= s0 && s05 >= s_05)
     {
       max = s05;
-      return (1.5f);
+      return (1.5);
     }
   }
 
@@ -1058,14 +1058,14 @@ pcl::keypoints::brisk::ScaleSpace::refine1D (
   // calculate max location:
   double ret_val = -double (three_b) / double (2 * three_a);
   // saturate and return
-  if (ret_val < 0.75f)
-    ret_val= 0.75f;
+  if (ret_val < 0.75)
+    ret_val= 0.75;
   else 
-    if (ret_val > 1.5f) 
-      ret_val= 1.5f; // allow to be slightly off bounds ...?
+    if (ret_val > 1.5) 
+      ret_val= 1.5; // allow to be slightly off bounds ...?
   int three_c = +24 * i_05  -27 * i0    +6 * i05;
   max = double (three_c) + double (three_a) * ret_val * ret_val + double (three_b) * ret_val;
-  max /= 3072.0f;
+  max /= 3072.0;
   return (ret_val);
 }
 
@@ -1089,12 +1089,12 @@ pcl::keypoints::brisk::ScaleSpace::refine1D_1 (
     if (s0 >= s_05 && s0 >= s05)
     {
       max = s0;
-      return (1.0f);
+      return (1.0);
     }
     if(s_05>=s0 && s_05>=s05)
     {
       max = s_05;
-      return (0.6666666666666666666666666667f);
+      return (0.6666666666666666666666666667);
     }
     if (s05 >= s0 && s05 >= s_05)
     {
@@ -1107,14 +1107,14 @@ pcl::keypoints::brisk::ScaleSpace::refine1D_1 (
   // calculate max location:
   double ret_val = -double (two_b) / double (2 * two_a);
   // saturate and return
-  if (ret_val < 0.6666666666666666666666666667f)
-    ret_val = 0.666666666666666666666666667f;
+  if (ret_val < 0.6666666666666666666666666667)
+    ret_val = 0.666666666666666666666666667;
   else 
     if (ret_val > 1.33333333333333333333333333f) 
       ret_val = 1.333333333333333333333333333f;
   int two_c = +12 * i_05  -16 * i0    +6 * i05;
   max = double (two_c) + double (two_a) * ret_val * ret_val + double (two_b) * ret_val;
-  max /= 2048.0f;
+  max /= 2048.0;
   return (ret_val);
 }
 
@@ -1138,17 +1138,17 @@ pcl::keypoints::brisk::ScaleSpace::refine1D_2 (
     if (s0 >= s_05 && s0 >= s05)
     {
       max = s0;
-      return (1.0f);
+      return (1.0);
     }
     if (s_05 >= s0 && s_05 >= s05)
     {
       max = s_05;
-      return (0.7f);
+      return (0.7);
     }
     if (s05 >= s0 && s05 >= s_05)
     {
       max = s05;
-      return (1.5f);
+      return (1.5);
     }
   }
 
@@ -1156,14 +1156,14 @@ pcl::keypoints::brisk::ScaleSpace::refine1D_2 (
   // calculate max location:
   double ret_val = -double (b) / double (2 * a);
   // saturate and return
-  if (ret_val < 0.7f) 
-    ret_val = 0.7f;
+  if (ret_val < 0.7) 
+    ret_val = 0.7;
   else 
-    if (ret_val > 1.5f) 
-      ret_val = 1.5f; // allow to be slightly off bounds ...?
+    if (ret_val > 1.5) 
+      ret_val = 1.5; // allow to be slightly off bounds ...?
   int c = +3 * i_05  -3 * i0    +1 * i05;
   max = double (c) + double(a) * ret_val * ret_val + double (b) * ret_val;
-  max /= 1024.0f;
+  max /= 1024.0;
   return (ret_val);
 }
 
@@ -1193,36 +1193,36 @@ pcl::keypoints::brisk::ScaleSpace::subpixel2D (
 
   if (H_det == 0)
   {
-    delta_x = 0.0f;
-    delta_y = 0.0f;
-    return (double (coeff6) / 18.0f);
+    delta_x = 0.0;
+    delta_y = 0.0;
+    return (double (coeff6) / 18.0);
   }
 
   if (!(H_det > 0 && coeff1 < 0))
   {
     // The maximum must be at the one of the 4 patch corners.
     int tmp_max = coeff3 + coeff4 + coeff5;
-    delta_x = 1.0f; delta_y = 1.0f;
+    delta_x = 1.0; delta_y = 1.0;
 
     int tmp = -coeff3 + coeff4 - coeff5;
     if (tmp > tmp_max)
     {
       tmp_max = tmp;
-      delta_x = -1.0f; delta_y = 1.0f;
+      delta_x = -1.0; delta_y = 1.0;
     }
     tmp = coeff3 - coeff4 - coeff5;
     if (tmp > tmp_max)
     {
       tmp_max = tmp;
-      delta_x = 1.0f; delta_y = -1.0f;
+      delta_x = 1.0; delta_y = -1.0;
     }
     tmp = -coeff3 - coeff4 + coeff5;
     if (tmp > tmp_max)
     {
       tmp_max = tmp;
-      delta_x = -1.0f; delta_y = -1.0f;
+      delta_x = -1.0; delta_y = -1.0;
     }
-    return (double (tmp_max + coeff1 + coeff2 + coeff6) / 18.0f);
+    return (double (tmp_max + coeff1 + coeff2 + coeff6) / 18.0);
   }
 
   // this is hopefully the normal outcome of the Hessian test
@@ -1230,48 +1230,48 @@ pcl::keypoints::brisk::ScaleSpace::subpixel2D (
   delta_y = double (2 * coeff1 * coeff4 - coeff3 * coeff5) / double (-H_det);
   // TODO: this is not correct, but easy, so perform a real boundary maximum search:
   bool tx = false; bool tx_ = false; bool ty = false; bool ty_ = false;
-  if (delta_x > 1.0f) tx = true;
-  else if (delta_x < -1.0f) tx_=true;
-  if (delta_y > 1.0f) ty = true;
-  if (delta_y < -1.0f) ty_ = true;
+  if (delta_x > 1.0) tx = true;
+  else if (delta_x < -1.0) tx_=true;
+  if (delta_y > 1.0) ty = true;
+  if (delta_y < -1.0) ty_ = true;
 
   if (tx || tx_ || ty || ty_)
   {
     // get two candidates:
-    double delta_x1 = 0.0f, delta_x2 = 0.0f, delta_y1 = 0.0f, delta_y2 = 0.0f;
+    double delta_x1 = 0.0, delta_x2 = 0.0, delta_y1 = 0.0, delta_y2 = 0.0;
     if (tx) 
     {
-      delta_x1 = 1.0f;
+      delta_x1 = 1.0;
       delta_y1 = -double (coeff4 + coeff5) / double (2.0 * coeff2);
-      if (delta_y1 > 1.0f) delta_y1 = 1.0f; else if (delta_y1 < -1.0f) delta_y1 = -1.0f;
+      if (delta_y1 > 1.0) delta_y1 = 1.0; else if (delta_y1 < -1.0) delta_y1 = -1.0;
     }
     else if (tx_) 
     {
-      delta_x1 = -1.0f;
+      delta_x1 = -1.0;
       delta_y1 = -double (coeff4 - coeff5) / double (2.0 * coeff2);
-      if (delta_y1 > 1.0f) delta_y1 = 1.0f; else if (delta_y1 < -1.0f) delta_y1 = -1.0f;
+      if (delta_y1 > 1.0) delta_y1 = 1.0; else if (delta_y1 < -1.0) delta_y1 = -1.0;
     }
     if (ty) 
     {
-      delta_y2 = 1.0f;
+      delta_y2 = 1.0;
       delta_x2 = -double (coeff3 + coeff5) / double (2.0 * coeff1);
-      if (delta_x2 > 1.0f) delta_x2 = 1.0f; else if (delta_x2 < -1.0f) delta_x2 = -1.0f;
+      if (delta_x2 > 1.0) delta_x2 = 1.0; else if (delta_x2 < -1.0) delta_x2 = -1.0;
     }
     else if (ty_) 
     {
-      delta_y2 = -1.0f;
+      delta_y2 = -1.0;
       delta_x2 = -double (coeff3 - coeff5) / double (2.0 * coeff1);
-      if (delta_x2 > 1.0f) delta_x2 = 1.0f; else if (delta_x2 < -1.0f) delta_x2 = -1.0f;
+      if (delta_x2 > 1.0) delta_x2 = 1.0; else if (delta_x2 < -1.0) delta_x2 = -1.0;
     }
     // insert both options for evaluation which to pick
     double max1 = (double (coeff1) * delta_x1 * delta_x1 + double (coeff2) * delta_y1 * delta_y1
                  +double (coeff3) * delta_x1 + double (coeff4) * delta_y1
                  +double (coeff5) * delta_x1 * delta_y1
-                 +double (coeff6)) / 18.0f;
+                 +double (coeff6)) / 18.0;
     double max2 = (double (coeff1) * delta_x2 * delta_x2 + double (coeff2) * delta_y2 * delta_y2
                  +double (coeff3) * delta_x2 + double (coeff4) * delta_y2
                  +double (coeff5) * delta_x2 * delta_y2
-                 +double (coeff6)) / 18.0f;
+                 +double (coeff6)) / 18.0;
     if (max1 > max2) 
     {
       delta_x = delta_x1;
@@ -1290,7 +1290,7 @@ pcl::keypoints::brisk::ScaleSpace::subpixel2D (
   return ((double (coeff1) * delta_x * delta_x + double (coeff2) * delta_y * delta_y
           +double (coeff3) * delta_x + double (coeff4) * delta_y
           +double (coeff5) * delta_x * delta_y
-          +double (coeff6)) / 18.0f);
+          +double (coeff6)) / 18.0);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -1325,8 +1325,8 @@ pcl::keypoints::brisk::Layer::Layer (const pcl::keypoints::brisk::Layer& layer, 
     img_.resize (img_width_ * img_height_);
 
     halfsample (layer.img_, layer.img_width_, layer.img_height_, img_, img_width_, img_height_);
-    scale_  = layer.scale_ * 2.0f;
-    offset_ = 0.5f * scale_ - 0.5f;
+    scale_  = layer.scale_ * 2.0;
+    offset_ = 0.5 * scale_ - 0.5;
   }
   else 
   {
@@ -1335,8 +1335,8 @@ pcl::keypoints::brisk::Layer::Layer (const pcl::keypoints::brisk::Layer& layer, 
     img_.resize (img_width_ * img_height_);
 
     twothirdsample (layer.img_, layer.img_width_, layer.img_height_, img_, img_width_, img_height_);
-    scale_  = layer.scale_ * 1.5f;
-    offset_ = 0.5f * scale_ - 0.5f;
+    scale_  = layer.scale_ * 1.5;
+    offset_ = 0.5 * scale_ - 0.5;
   }
  
   scores_ = std::vector<unsigned char> (img_width_ * img_height_, 0);
@@ -1414,15 +1414,15 @@ pcl::keypoints::brisk::Layer::getAgastScore_5_8 (int x, int y, uint8_t threshold
 pcl::uint8_t 
 pcl::keypoints::brisk::Layer::getAgastScore (double xf, double yf, uint8_t threshold, double scale)
 {
-  if (scale <= 1.0f)
+  if (scale <= 1.0)
   {
     // just do an interpolation inside the layer
     const int x = int (xf);
     const double rx1 = xf - double (x);
-    const double rx = 1.0f - rx1;
+    const double rx = 1.0 - rx1;
     const int y = int (yf);
     const double ry1 = yf -double (y);
-    const double ry  = 1.0f -ry1;
+    const double ry  = 1.0 -ry1;
 
     const double value = rx  * ry  * getAgastScore (x,     y,     threshold)+
             rx1 * ry  * getAgastScore (x + 1, y,     threshold)+
@@ -1435,10 +1435,10 @@ pcl::keypoints::brisk::Layer::getAgastScore (double xf, double yf, uint8_t thres
   else
   {
     // this means we overlap area smoothing
-    const double halfscale = scale / 2.0f;
+    const double halfscale = scale / 2.0;
     // get the scores first:
-    for (int x = int (xf - halfscale); x <= int (xf + halfscale + 1.0f); x++)
-      for (int y = int (yf - halfscale); y <= int (yf + halfscale + 1.0f); y++)
+    for (int x = int (xf - halfscale); x <= int (xf + halfscale + 1.0); x++)
+      for (int y = int (yf - halfscale); y <= int (yf + halfscale + 1.0); y++)
         getAgastScore (x, y, threshold);
     // get the smoothed value
     return (getValue (scores_, img_width_, img_height_, xf, yf, scale));
@@ -1462,8 +1462,8 @@ pcl::keypoints::brisk::Layer::getValue (
   const int& imagecols = width;
 
   // get the sigma_half:
-  const double sigma_half = scale / 2.0f;
-  const double area = 4.0f * sigma_half * sigma_half;
+  const double sigma_half = scale / 2.0;
+  const double area = 4.0 * sigma_half * sigma_half;
 
   // calculate output:
   int ret_val;
@@ -1490,8 +1490,8 @@ pcl::keypoints::brisk::Layer::getValue (
   // this is the standard case (simple, not speed optimized yet):
 
   // scaling:
-  const int scaling  = static_cast<int> (4194304.0f / area);
-  const int scaling2 = static_cast<int> (double (scaling) * area / 1024.0f);
+  const int scaling  = static_cast<int> (4194304.0 / area);
+  const int scaling2 = static_cast<int> (double (scaling) * area / 1024.0);
 
   // calculate borders
   const double x_1 = xf - sigma_half;
@@ -1499,16 +1499,16 @@ pcl::keypoints::brisk::Layer::getValue (
   const double y_1 = yf - sigma_half;
   const double y1  = yf + sigma_half;
 
-  const int x_left   = int (x_1 + 0.5f);
-  const int y_top    = int (y_1 + 0.5f);
-  const int x_right  = int (x1 + 0.5f);
-  const int y_bottom = int (y1 + 0.5f);
+  const int x_left   = int (x_1 + 0.5);
+  const int y_top    = int (y_1 + 0.5);
+  const int x_right  = int (x1 + 0.5);
+  const int y_bottom = int (y1 + 0.5);
 
   // overlap area - multiplication factors:
-  const double r_x_1 = double (x_left) - x_1 + 0.5f;
-  const double r_y_1 = double (y_top)  - y_1 + 0.5f;
-  const double r_x1  = x1 - double (x_right) + 0.5f;
-  const double r_y1  = y1 - double (y_bottom) + 0.5f;
+  const double r_x_1 = double (x_left) - x_1 + 0.5;
+  const double r_y_1 = double (y_top)  - y_1 + 0.5;
+  const double r_x1  = x1 - double (x_right) + 0.5;
+  const double r_y1  = y1 - double (y_bottom) + 0.5;
   const int dx = x_right  - x_left - 1;
   const int dy = y_bottom - y_top  - 1;
   const int A = static_cast<int> ((r_x_1 * r_y_1) * double (scaling));

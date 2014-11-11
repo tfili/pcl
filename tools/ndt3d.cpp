@@ -58,7 +58,7 @@ main (int argc, char **argv)
   int iter = 35;
   pcl::console::parse_argument (argc, argv, "-i", iter);
 
-  double ndt_res = 1.0f;
+  double ndt_res = 1.0;
   pcl::console::parse_argument (argc, argv, "-r", ndt_res);
 
   double step_size = 0.1;

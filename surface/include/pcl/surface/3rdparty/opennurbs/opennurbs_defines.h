@@ -207,7 +207,7 @@
 // because many calculation convert double texture coordinates
 // to doubles and the "unset"ness attribute is lost.
 */
-#define ON_UNSET_FLOAT -1.234321e+38f
+#define ON_UNSET_FLOAT -1.234321e+38
 
 
 ON_BEGIN_EXTERNC

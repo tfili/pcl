@@ -215,15 +215,15 @@ TEST (PCL, UpdateMesh_With_TextureMapping)
     //tex_material.tex_Ka.g = 0.2f;
     //tex_material.tex_Ka.b = 0.2f;
 
-    //tex_material.tex_Kd.r = 0.8f;
-    //tex_material.tex_Kd.g = 0.8f;
-    //tex_material.tex_Kd.b = 0.8f;
+    //tex_material.tex_Kd.r = 0.8;
+    //tex_material.tex_Kd.g = 0.8;
+    //tex_material.tex_Kd.b = 0.8;
 
-    //tex_material.tex_Ks.r = 1.0f;
-    //tex_material.tex_Ks.g = 1.0f;
-    //tex_material.tex_Ks.b = 1.0f;
-    //tex_material.tex_d = 1.0f;
-    //tex_material.tex_Ns = 0.0f;
+    //tex_material.tex_Ks.r = 1.0;
+    //tex_material.tex_Ks.g = 1.0;
+    //tex_material.tex_Ks.b = 1.0;
+    //tex_material.tex_d = 1.0;
+    //tex_material.tex_Ns = 0.0;
     //tex_material.tex_illum = 2;
 
     //// set texture material paramaters

@@ -65,9 +65,9 @@ TEST(PCL_OctreeGPU, batchRadiusSearch)
     DataGenerator data;
     data.data_size = 871000;
     data.tests_num = 10000;
-    data.cube_size = 1024.f;
-    data.max_radius    = data.cube_size/30.f;
-    data.shared_radius = data.cube_size/30.f;
+    data.cube_size = 1024.;
+    data.max_radius    = data.cube_size/30.;
+    data.shared_radius = data.cube_size/30.;
     data.printParams();
 
     const int max_answers = 333;
@@ -163,7 +163,7 @@ TEST(PCL_OctreeGPU, batchRadiusSearch)
         //ASSERT_EQ ( ( results_bf == results_host ), true );           
     }    
 
-    double avg_size1 = std::accumulate(sizes1.begin(), sizes1.end(), 0) * (1.f/sizes1.size());
+    double avg_size1 = std::accumulate(sizes1.begin(), sizes1.end(), 0) * (1./sizes1.size());
 
     cout << "avg_result_size1 = " << avg_size1 << endl;
     ASSERT_GT(avg_size1, 5);    
@@ -192,7 +192,7 @@ TEST(PCL_OctreeGPU, batchRadiusSearch)
         //ASSERT_EQ ( ( results_bf == results_host ), true );           
     }    
 
-    double avg_size2 = std::accumulate(sizes2.begin(), sizes2.end(), 0) * (1.f/sizes2.size());
+    double avg_size2 = std::accumulate(sizes2.begin(), sizes2.end(), 0) * (1./sizes2.size());
 
     cout << "avg_result_size2 = " << avg_size2 << endl;
     ASSERT_GT(avg_size2, 5);
@@ -221,7 +221,7 @@ TEST(PCL_OctreeGPU, batchRadiusSearch)
         //ASSERT_EQ ( ( results_bf == results_host ), true );           
     }
 
-    double avg_size3 = std::accumulate(sizes3.begin(), sizes3.end(), 0) * (1.f/sizes3.size());
+    double avg_size3 = std::accumulate(sizes3.begin(), sizes3.end(), 0) * (1./sizes3.size());
 
     cout << "avg_result_size3 = " << avg_size3 << endl;
     ASSERT_GT(avg_size3, 5);

@@ -35,7 +35,7 @@ namespace pcl
     {
       double r1 = static_cast<double> (uniform_deviate (rand ()));
       double r2 = static_cast<double> (uniform_deviate (rand ()));
-      double r1sqr = sqrtf (r1);
+      double r1sqr = sqrt (r1);
       double OneMinR1Sqr = (1 - r1sqr);
       double OneMinR2 = (1 - r2);
       a1 *= OneMinR1Sqr;
@@ -50,7 +50,7 @@ namespace pcl
       p[0] = static_cast<double> (c1);
       p[1] = static_cast<double> (c2);
       p[2] = static_cast<double> (c3);
-      p[3] = 0.f;
+      p[3] = 0.;
     }
 
     inline void
@@ -101,7 +101,7 @@ namespace pcl
 
         for (i = 0; i < n_samples; i++)
         {
-          Eigen::Vector4d p (0.f, 0.f, 0.f, 0.f);
+          Eigen::Vector4d p (0., 0., 0., 0.);
           randPSurface (polydata, &cumulativeAreas, totalArea, p);
           cloud_out.points[i].x = static_cast<double> (p[0]);
           cloud_out.points[i].y = static_cast<double> (p[1]);
@@ -111,7 +111,7 @@ namespace pcl
 
     template<typename PointT>
       inline void
-      uniform_sampling (std::string & file, size_t n_samples, typename pcl::PointCloud<PointT> & cloud_out, double scale = 1.f)
+      uniform_sampling (std::string & file, size_t n_samples, typename pcl::PointCloud<PointT> & cloud_out, double scale = 1.)
       {
 
         vtkSmartPointer < vtkPLYReader > reader = vtkSmartPointer<vtkPLYReader>::New ();
@@ -119,7 +119,7 @@ namespace pcl
 
         vtkSmartPointer < vtkPolyDataMapper > mapper = vtkSmartPointer<vtkPolyDataMapper>::New ();
 
-        if (scale == 1.f)
+        if (scale == 1.)
         {
           mapper->SetInputConnection (reader->GetOutputPort ());
           mapper->Update ();

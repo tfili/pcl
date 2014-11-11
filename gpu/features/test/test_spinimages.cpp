@@ -141,7 +141,7 @@ TEST(PCL_FeaturesGPU, spinImages_rectangular)
         }        
 
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -231,7 +231,7 @@ TEST(PCL_FeaturesGPU, spinImages_radial)
         }        
 
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -411,6 +411,6 @@ TEST(PCL_FeaturesGPU, spinImages_radial_angular)
         }        
 
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }

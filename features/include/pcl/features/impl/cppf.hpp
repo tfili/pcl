@@ -52,7 +52,7 @@ pcl::CPPFEstimation<PointInT, PointNT, PointOutT>::CPPFEstimation ()
   feature_name_ = "CPPFEstimation";
   // Slight hack in order to pass the check for the presence of a search method in Feature::initCompute ()
   Feature<PointInT, PointOutT>::tree_.reset (new pcl::search::KdTree <PointInT> ());
-  Feature<PointInT, PointOutT>::search_radius_ = 1.0f;
+  Feature<PointInT, PointOutT>::search_radius_ = 1.0;
 }
 
 
@@ -88,13 +88,13 @@ pcl::CPPFEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
           Eigen::Vector3d model_reference_point = input_->points[i].getVector3dMap (),
                           model_reference_normal = normals_->points[i].getNormalVector3dMap (),
                           model_point = input_->points[j].getVector3dMap ();
-          Eigen::AngleAxisd rotation_mg (acosf (model_reference_normal.dot (Eigen::Vector3d::UnitX ())),
+          Eigen::AngleAxisd rotation_mg (acos (model_reference_normal.dot (Eigen::Vector3d::UnitX ())),
                                          model_reference_normal.cross (Eigen::Vector3d::UnitX ()).normalized ());
           Eigen::Affine3d transform_mg = Eigen::Translation3d ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
 
           Eigen::Vector3d model_point_transformed = transform_mg * model_point;
-          double angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
-          if (sin (angle) * model_point_transformed(2) < 0.0f)
+          double angle = atan2 ( -model_point_transformed(2), model_point_transformed(1));
+          if (sin (angle) * model_point_transformed(2) < 0.0)
             angle *= (-1);
           p.alpha_m = -angle;
         }

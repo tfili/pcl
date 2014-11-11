@@ -49,9 +49,9 @@ pcl::SupervoxelClustering<PointT>::SupervoxelClustering (double voxel_resolution
   seed_resolution_ (seed_resolution),
   adjacency_octree_ (),
   voxel_centroid_cloud_ (),
-  color_importance_ (0.1f),
+  color_importance_ (0.1),
   spatial_importance_ (0.4f),
-  normal_importance_ (1.0f)
+  normal_importance_ (1.0)
 {
   adjacency_octree_.reset (new OctreeAdjacencyT (resolution_));
   if (use_single_camera_transform)
@@ -124,7 +124,7 @@ pcl::SupervoxelClustering<PointT>::extract (std::map<uint32_t,typename Supervoxe
   
   
   //std::cout << "Expanding the supervoxels" << std::endl;
-  int max_depth = static_cast<int> (1.8f*seed_resolution_/resolution_);
+  int max_depth = static_cast<int> (1.8*seed_resolution_/resolution_);
   expandSupervoxels (max_depth);
   //double t_iterate = timer_.getTime ();
     
@@ -154,7 +154,7 @@ pcl::SupervoxelClustering<PointT>::refineSupervoxels (int num_itr, std::map<uint
     return;
   }
 
-  int max_depth = static_cast<int> (1.8f*seed_resolution_/resolution_);
+  int max_depth = static_cast<int> (1.8*seed_resolution_/resolution_);
   for (int i = 0; i < num_itr; ++i)
   {
     for (typename HelperListT::iterator sv_itr = supervoxel_helpers_.begin (); sv_itr != supervoxel_helpers_.end (); ++sv_itr)
@@ -274,8 +274,8 @@ pcl::SupervoxelClustering<PointT>::computeVoxelData ()
       }
       //Compute normal
       pcl::computePointNormal (*voxel_centroid_cloud_, indices, new_voxel_data.normal_, new_voxel_data.curvature_);
-      pcl::flipNormalTowardsViewpoint (voxel_centroid_cloud_->points[new_voxel_data.idx_], 0.0f,0.0f,0.0f, new_voxel_data.normal_);
-      new_voxel_data.normal_[3] = 0.0f;
+      pcl::flipNormalTowardsViewpoint (voxel_centroid_cloud_->points[new_voxel_data.idx_], 0.0,0.0,0.0, new_voxel_data.normal_);
+      new_voxel_data.normal_[3] = 0.0;
       new_voxel_data.normal_.normalize ();
       new_voxel_data.owner_ = 0;
       new_voxel_data.distance_ = std::numeric_limits<double>::max ();
@@ -396,10 +396,10 @@ pcl::SupervoxelClustering<PointT>::selectInitialSupervoxelSeeds (std::vector<int
   std::vector<int> neighbors;
   std::vector<double> sqr_distances;
   seed_indices.reserve (seed_indices_orig.size ());
-  double search_radius = 0.5f*seed_resolution_;
+  double search_radius = 0.5*seed_resolution_;
   // This is number of voxels which fit in a planar slice through search volume
   // Area of planar slice / area of voxel side
-  double min_points = 0.05f * (search_radius)*(search_radius) * 3.1415926536f  / (resolution_*resolution_);
+  double min_points = 0.05 * (search_radius)*(search_radius) * 3.1415926536  / (resolution_*resolution_);
   for (size_t i = 0; i < seed_indices_orig.size (); ++i)
   {
     int num = voxel_kdtree_->radiusSearch (seed_indices_orig[i], search_radius , neighbors, sqr_distances);
@@ -462,8 +462,8 @@ pcl::SupervoxelClustering<PointT>::voxelDataDistance (const VoxelData &v1, const
 {
   
   double spatial_dist = (v1.xyz_ - v2.xyz_).norm () / seed_resolution_;
-  double color_dist =  (v1.rgb_ - v2.rgb_).norm () / 255.0f;
-  double cos_angle_normal = 1.0f - std::abs (v1.normal_.dot (v2.normal_));
+  double color_dist =  (v1.rgb_ - v2.rgb_).norm () / 255.0;
+  double cos_angle_normal = 1.0 - std::abs (v1.normal_.dot (v2.normal_));
  // std::cout << "s="<<spatial_dist<<"  c="<<color_dist<<"   an="<<cos_angle_normal<<"\n";
   return  cos_angle_normal * normal_importance_ + color_dist * color_importance_+ spatial_dist * spatial_importance_;
   
@@ -860,8 +860,8 @@ pcl::SupervoxelClustering<PointT>::SupervoxelHelper::refineNormals ()
     }
     //Compute normal
     pcl::computePointNormal (*parent_->voxel_centroid_cloud_, indices, voxel_data.normal_, voxel_data.curvature_);
-    pcl::flipNormalTowardsViewpoint (parent_->voxel_centroid_cloud_->points[voxel_data.idx_], 0.0f,0.0f,0.0f, voxel_data.normal_);
-    voxel_data.normal_[3] = 0.0f;
+    pcl::flipNormalTowardsViewpoint (parent_->voxel_centroid_cloud_->points[voxel_data.idx_], 0.0,0.0,0.0, voxel_data.normal_);
+    voxel_data.normal_[3] = 0.0;
     voxel_data.normal_.normalize ();
   }
 }

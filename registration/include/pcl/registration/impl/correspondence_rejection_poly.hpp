@@ -82,7 +82,7 @@ pcl::registration::CorrespondenceRejectorPoly<SourceT, TargetT>::getRemainingCor
   }
   
   // Check similarity
-  if (similarity_threshold_ < 0.0f || similarity_threshold_ > 1.0f)
+  if (similarity_threshold_ < 0.0 || similarity_threshold_ > 1.0)
   {
     PCL_ERROR ("[pcl::registration::%s::getRemainingCorrespondences] Invalid edge length similarity - must be in [0,1]!. Returning all input correspondences.\n",
                getClassName ().c_str() );
@@ -125,19 +125,19 @@ pcl::registration::CorrespondenceRejectorPoly<SourceT, TargetT>::getRemainingCor
   }
   
   // Now calculate the acceptance rate of each correspondence
-  std::vector<double> accept_rate (nr_correspondences, 0.0f);
+  std::vector<double> accept_rate (nr_correspondences, 0.0);
   for (int i = 0; i < nr_correspondences; ++i)
   {
     const int numsi = num_samples[i];
     if (numsi == 0)
-      accept_rate[i] = 0.0f;
+      accept_rate[i] = 0.0;
     else
       accept_rate[i] = static_cast<double> (num_accepted[i]) / static_cast<double> (numsi);
   }
   
   // Compute a histogram in range [0,1] for acceptance rates
   const int hist_size = nr_correspondences / 2; // TODO: Optimize this
-  const std::vector<int> histogram = computeHistogram (accept_rate, 0.0f, 1.0f, hist_size);
+  const std::vector<int> histogram = computeHistogram (accept_rate, 0.0, 1.0, hist_size);
   
   // Find the cut point between outliers and inliers using Otsu's thresholding method
   const int cut_idx = findThresholdOtsu (histogram);

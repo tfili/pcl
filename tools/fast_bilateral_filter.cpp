@@ -47,7 +47,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-double default_sigma_s = 5.0f;
+double default_sigma_s = 5.0;
 double default_sigma_r = 0.03f;
 
 void
@@ -76,7 +76,7 @@ loadCloud (const string &filename, pcl::PCLPointCloud2 &cloud,
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         double sigma_s = 5.f, double sigma_r = 0.03f)
+         double sigma_s = 5., double sigma_r = 0.03f)
 {
   // Convert data to PointCloud<T>
   PointCloud<PointXYZ>::Ptr xyz (new PointCloud<PointXYZ>);

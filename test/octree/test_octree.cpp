@@ -256,7 +256,7 @@ TEST (PCL, Octree_Dynamic_Depth_Test)
 
   int test, point;
 
-  double resolution = 0.01f;
+  double resolution = 0.01;
 
   const static size_t leafAggSize = 5;
 
@@ -714,7 +714,7 @@ TEST (PCL, Octree_Pointcloud_Test)
 
   int test, point;
 
-  double resolution = 0.01f;
+  double resolution = 0.01;
 
   // instantiate OctreePointCloudSinglePoint and OctreePointCloudPointVector classes
   OctreePointCloudSinglePoint<PointXYZ> octreeA (resolution);
@@ -856,16 +856,16 @@ TEST (PCL, Octree_Pointcloud_Density_Test)
 
   PointCloud<PointXYZ>::Ptr cloudIn (new PointCloud<PointXYZ> ());
 
-  for (double z = 0.05f; z < 7.0f; z += 0.1f)
-    for (double y = 0.05f; y < 7.0f; y += 0.1f)
-      for (double x = 0.05f; x < 7.0f; x += 0.1f)
+  for (double z = 0.05; z < 7.0; z += 0.1)
+    for (double y = 0.05; y < 7.0; y += 0.1)
+      for (double x = 0.05; x < 7.0; x += 0.1)
         cloudIn->push_back (PointXYZ (x, y, z));
 
   cloudIn->width = static_cast<uint32_t> (cloudIn->points.size ());
   cloudIn->height = 1;
 
-  OctreePointCloudDensity<PointXYZ> octreeA (1.0f); // low resolution
-  OctreePointCloudDensity<PointXYZ> octreeB (0.00001f); // high resolution
+  OctreePointCloudDensity<PointXYZ> octreeA (1.0); // low resolution
+  OctreePointCloudDensity<PointXYZ> octreeB (0.00001); // high resolution
 
   octreeA.defineBoundingBox (7.0, 7.0, 7.0);
   octreeB.defineBoundingBox (7.0, 7.0, 7.0);
@@ -878,14 +878,14 @@ TEST (PCL, Octree_Pointcloud_Density_Test)
   octreeB.addPointsFromInputCloud ();
 
   // check density information
-  for (double z = 1.5f; z < 3.5f; z += 1.0f)
-    for (double y = 1.5f; y < 3.5f; y += 1.0f)
-      for (double x = 1.5f; x < 3.5f; x += 1.0f)
+  for (double z = 1.5; z < 3.5; z += 1.0)
+    for (double y = 1.5; y < 3.5; y += 1.0)
+      for (double x = 1.5; x < 3.5; x += 1.0)
         ASSERT_EQ(octreeA.getVoxelDensityAtPoint (PointXYZ(x, y, z)), 1000u);
 
-  for (double z = 0.05f; z < 5.0f; z += 0.1f)
-    for (double y = 0.05f; y < 5.0f; y += 0.1f)
-      for (double x = 0.05f; x < 5.0f; x += 0.1f)
+  for (double z = 0.05; z < 5.0; z += 0.1)
+    for (double y = 0.05; y < 5.0; y += 0.1)
+      for (double x = 0.05; x < 5.0; x += 0.1)
         ASSERT_EQ(octreeB.getVoxelDensityAtPoint (PointXYZ(x, y, z)), 1u);
 }
 
@@ -895,15 +895,15 @@ TEST (PCL, Octree_Pointcloud_Iterator_Test)
 
   PointCloud<PointXYZ>::Ptr cloudIn (new PointCloud<PointXYZ> ());
 
-  for (double z = 0.05f; z < 7.0f; z += 0.1f)
-    for (double y = 0.05f; y < 7.0f; y += 0.1f)
-      for (double x = 0.05f; x < 7.0f; x += 0.1f)
+  for (double z = 0.05; z < 7.0; z += 0.1)
+    for (double y = 0.05; y < 7.0; y += 0.1)
+      for (double x = 0.05; x < 7.0; x += 0.1)
         cloudIn->push_back (PointXYZ (x, y, z));
 
   cloudIn->width = static_cast<uint32_t> (cloudIn->points.size ());
   cloudIn->height = 1;
 
-  OctreePointCloud<PointXYZ> octreeA (1.0f); // low resolution
+  OctreePointCloud<PointXYZ> octreeA (1.0); // low resolution
 
   // add point data to octree
   octreeA.setInputCloud (cloudIn);
@@ -982,7 +982,7 @@ TEST(PCL, Octree_Pointcloud_Occupancy_Test)
 
   PointCloud<PointXYZ>::Ptr cloudIn (new PointCloud<PointXYZ> ());
 
-  OctreePointCloudOccupancy<PointXYZ> octree (0.00001f);
+  OctreePointCloudOccupancy<PointXYZ> octree (0.00001);
 
   size_t i;
 
@@ -1025,7 +1025,7 @@ TEST (PCL, Octree_Pointcloud_Change_Detector_Test)
 
   PointCloud<PointXYZ>::Ptr cloudIn (new PointCloud<PointXYZ> ());
 
-  OctreePointCloudChangeDetector<PointXYZ> octree (0.01f);
+  OctreePointCloudChangeDetector<PointXYZ> octree (0.01);
 
   size_t i;
 
@@ -1088,7 +1088,7 @@ TEST (PCL, Octree_Pointcloud_Voxel_Centroid_Test)
 
   PointCloud<PointXYZ>::Ptr cloudIn (new PointCloud<PointXYZ> ());
 
-  OctreePointCloudVoxelCentroid<PointXYZ> octree (1.0f);
+  OctreePointCloudVoxelCentroid<PointXYZ> octree (1.0);
   octree.defineBoundingBox (10.0, 10.0, 10.0);
 
   size_t i;
@@ -1105,7 +1105,7 @@ TEST (PCL, Octree_Pointcloud_Voxel_Centroid_Test)
     // these three points should always be assigned to the same voxel in the octree
     cloudIn->points[i * 3 + 0] = PointXYZ (static_cast<double> (i) + 0.2f, static_cast<double> (i) + 0.2f, static_cast<double> (i) + 0.2f);
     cloudIn->points[i * 3 + 1] = PointXYZ (static_cast<double> (i) + 0.4f, static_cast<double> (i) + 0.4f, static_cast<double> (i) + 0.4f);
-    cloudIn->points[i * 3 + 2] = PointXYZ (static_cast<double> (i) + 0.6f, static_cast<double> (i) + 0.6f, static_cast<double> (i) + 0.6f);
+    cloudIn->points[i * 3 + 2] = PointXYZ (static_cast<double> (i) + 0.6, static_cast<double> (i) + 0.6, static_cast<double> (i) + 0.6);
   }
 
   // assign point cloud to octree
@@ -1134,9 +1134,9 @@ TEST (PCL, Octree_Pointcloud_Voxel_Centroid_Test)
   for (i = 0; i < 10; i++)
   {
     // these three points should always be assigned to the same voxel in the octree
-    cloudIn->points[i * 3 + 0] = PointXYZ (static_cast<double> (i) + 0.1f, static_cast<double> (i) + 0.1f, static_cast<double> (i) + 0.1f);
+    cloudIn->points[i * 3 + 0] = PointXYZ (static_cast<double> (i) + 0.1, static_cast<double> (i) + 0.1, static_cast<double> (i) + 0.1);
     cloudIn->points[i * 3 + 1] = PointXYZ (static_cast<double> (i) + 0.4f, static_cast<double> (i) + 0.4f, static_cast<double> (i) + 0.4f);
-    cloudIn->points[i * 3 + 2] = PointXYZ (static_cast<double> (i) + 0.7f, static_cast<double> (i) + 0.7f, static_cast<double> (i) + 0.7f);
+    cloudIn->points[i * 3 + 2] = PointXYZ (static_cast<double> (i) + 0.7, static_cast<double> (i) + 0.7, static_cast<double> (i) + 0.7);
   }
 
   // add points from new cloud to octree
@@ -1581,7 +1581,7 @@ TEST (PCL, Octree_Pointcloud_Ray_Traversal)
     double tmin = 1.0;
     for (unsigned int j = 1; j < 4; j++)
     {
-      tmin = tmin - 0.25f;
+      tmin = tmin - 0.25;
       Eigen::Vector3d n_p = o + (tmin * dir);
       cloudIn->points[j] = pcl::PointXYZ (n_p[0], n_p[1], n_p[2]);
     }
@@ -1636,7 +1636,7 @@ TEST (PCL, Octree_Pointcloud_Adjacency)
     // instantiate point cloud
     PointCloud<PointXYZ>::Ptr cloudIn (new PointCloud<PointXYZ> ());
     
-    double resolution = static_cast<double> (0.01 * rand () / RAND_MAX) + 0.00001f;
+    double resolution = static_cast<double> (0.01 * rand () / RAND_MAX) + 0.00001;
     //Define a random point
     PointXYZ point (static_cast<double> (0.5 * rand () / RAND_MAX), 
                     static_cast<double> (0.5 * rand () / RAND_MAX),
@@ -1655,7 +1655,7 @@ TEST (PCL, Octree_Pointcloud_Adjacency)
       {
         for (int dz = -1; dz <= 1; ++dz)
         {
-          double factor = 1.0f;//*std::sqrt (dx*dx + dy*dy + dz*dz);          
+          double factor = 1.0;//*std::sqrt (dx*dx + dy*dy + dz*dz);          
           PointXYZ neighbor (point.x+dx*resolution*factor, point.y+dy*resolution*factor, point.z+dz*resolution*factor); 
           cloudIn->push_back (neighbor);
         }

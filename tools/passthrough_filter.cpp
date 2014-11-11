@@ -50,8 +50,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-double default_min = 0.0f,
-      default_max = 1.0f;
+double default_min = 0.0,
+      default_max = 1.0;
 bool default_inside = true;
 bool default_keep_organized = true;
 std::string default_field_name = "z";

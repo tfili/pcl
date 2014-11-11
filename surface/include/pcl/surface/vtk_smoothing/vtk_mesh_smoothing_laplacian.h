@@ -57,11 +57,11 @@ namespace pcl
         : MeshProcessing ()
         , vtk_polygons_ ()
         , num_iter_ (20)
-        , convergence_ (0.0f)
-        , relaxation_factor_ (0.01f)
+        , convergence_ (0.0)
+        , relaxation_factor_ (0.01)
         , feature_edge_smoothing_ (false)
-        , feature_angle_ (45.f)
-        , edge_angle_ (15.f)
+        , feature_angle_ (45.)
+        , edge_angle_ (15.)
         , boundary_smoothing_ (true)
       {};
 

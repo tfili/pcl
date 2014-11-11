@@ -452,7 +452,7 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
       
       // update transformation matrix from x, y, theta:
       transformation.block<3,3> (0,0).matrix () = Eigen::Matrix3d (Eigen::AngleAxisd (static_cast<double> (xytheta_transformation[2]), Eigen::Vector3d::UnitZ ()));
-      transformation.block<3,1> (0,3).matrix () = Eigen::Vector3d (static_cast<double> (xytheta_transformation[0]), static_cast<double> (xytheta_transformation[1]), 0.0f);
+      transformation.block<3,1> (0,3).matrix () = Eigen::Vector3d (static_cast<double> (xytheta_transformation[0]), static_cast<double> (xytheta_transformation[1]), 0.0);
 
       //std::cout << "new transformation:\n" << transformation << std::endl;
     }

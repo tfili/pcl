@@ -79,14 +79,14 @@ main (int argc, char** argv)
   printf ("\nUsage: ./pcl_obj_rec_ransac_model_opps <pair_width> <voxel_size> <max_coplanarity_angle>\n\n");
 
   const int num_params = 3;
-  double parameters[num_params] = {10.0f/*pair width*/, 5.0f/*voxel size*/, 5.0f/*max co-planarity angle*/};
+  double parameters[num_params] = {10.0/*pair width*/, 5.0/*voxel size*/, 5.0/*max co-planarity angle*/};
   string parameter_names[num_params] = {"pair_width", "voxel_size", "max_coplanarity_angle"};
 
   // Read the user input if any
   for ( int i = 0 ; i < argc-1 && i < num_params ; ++i )
   {
     parameters[i] = static_cast<double> (atof (argv[i+1]));
-    if ( parameters[i] <= 0.0f )
+    if ( parameters[i] <= 0.0 )
     {
       fprintf(stderr, "ERROR: the %i-th parameter has to be positive and not %f\n", i+1, parameters[i]);
       return (-1);
@@ -152,7 +152,7 @@ void run (double pair_width, double voxel_size, double max_coplanarity_angle)
   PointCloud<Normal>::Ptr octree_normals (new PointCloud<Normal> ());
 
   model->getOctree ().getNormalsOfFullLeaves (*octree_normals);
-  viz.addPointCloudNormals<PointXYZ,Normal> (octree_points, octree_normals, 1, 6.0f, "octree normals");
+  viz.addPointCloudNormals<PointXYZ,Normal> (octree_points, octree_normals, 1, 6.0, "octree normals");
 #endif
 
   // Enter the main loop
@@ -222,7 +222,7 @@ void showModelOpps (PCLVisualizer& viz, const ModelLibrary::HashTable& hash_tabl
   vtk_hedge_hog->SetInputData (vtk_opps);
 #endif
   vtk_hedge_hog->SetVectorModeToUseNormal ();
-  vtk_hedge_hog->SetScaleFactor (0.5f*pair_width);
+  vtk_hedge_hog->SetScaleFactor (0.5*pair_width);
   vtk_hedge_hog->Update ();
   // Show the opps' normals
   viz.addModelFromPolyData (vtk_hedge_hog->GetOutput (), "opps' normals");

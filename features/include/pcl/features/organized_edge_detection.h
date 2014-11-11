@@ -75,7 +75,7 @@ namespace pcl
 
       /** \brief Constructor for OrganizedEdgeBase */
       OrganizedEdgeBase ()
-        : th_depth_discon_ (0.02f)
+        : th_depth_discon_ (0.02)
         , max_search_neighbors_ (50)
         , detecting_edge_types_ (EDGELABEL_NAN_BOUNDARY | EDGELABEL_OCCLUDING | EDGELABEL_OCCLUDED)
       {
@@ -296,7 +296,7 @@ namespace pcl
         : OrganizedEdgeBase<PointT, PointLT> ()
         , normals_ ()
         , th_hc_canny_low_ (0.4f)
-        , th_hc_canny_high_ (1.1f)
+        , th_hc_canny_high_ (1.1)
       {
         this->setEdgeType (EDGELABEL_NAN_BOUNDARY | EDGELABEL_OCCLUDING | EDGELABEL_OCCLUDED | EDGELABEL_HIGH_CURVATURE);
       }

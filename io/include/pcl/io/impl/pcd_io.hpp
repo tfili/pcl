@@ -352,12 +352,12 @@ pcl::PCDWriter::writeBinaryCompressed (const std::string &file_name,
     }
   }
 
-  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<double> (data_size) * 1.5f + 8.0f)));
+  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<double> (data_size) * 1.5 + 8.0)));
   // Compress the valid data
   unsigned int compressed_size = pcl::lzfCompress (only_valid_data, 
                                                    static_cast<uint32_t> (data_size), 
                                                    &temp_buf[8], 
-                                                   static_cast<uint32_t> (static_cast<double>(data_size) * 1.5f));
+                                                   static_cast<uint32_t> (static_cast<double>(data_size) * 1.5));
   unsigned int compressed_final_size = 0;
   // Was the compression successful?
   if (compressed_size)

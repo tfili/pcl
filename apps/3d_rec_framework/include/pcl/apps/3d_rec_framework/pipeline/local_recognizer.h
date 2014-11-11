@@ -153,7 +153,7 @@ namespace pcl
           vis_corresp_.addPointCloud<PointInT> (cloud, random_handler, "points");
 
           typename pcl::PointCloud<PointInT>::ConstPtr cloud_sampled;
-          cloud_sampled = oh.model_.getAssembled (0.0025f);
+          cloud_sampled = oh.model_.getAssembled (0.0025);
 
           pcl::visualization::PointCloudColorHandlerCustom<PointInT> random_handler_sampled (cloud_sampled, 0, 0, 255);
           vis_corresp_.addPointCloud<PointInT> (cloud_sampled, random_handler_sampled, "sampled");
@@ -186,7 +186,7 @@ namespace pcl
           ICP_iterations_ = 30;
           kdtree_splits_ = 512;
           search_model_ = "";
-          VOXEL_SIZE_ICP_ = 0.0025f;
+          VOXEL_SIZE_ICP_ = 0.0025;
           compute_table_plane_ = false;
         }
 

@@ -41,10 +41,10 @@
 using namespace pcl::gpu;
 using namespace std;
 
-const double Evaluation::fx = 525.0f;
-const double Evaluation::fy = 525.0f;
-const double Evaluation::cx = 319.5f;
-const double Evaluation::cy = 239.5f;
+const double Evaluation::fx = 525.0;
+const double Evaluation::fy = 525.0;
+const double Evaluation::cx = 319.5;
+const double Evaluation::cy = 239.5;
 
 #ifndef HAVE_OPENCV
 

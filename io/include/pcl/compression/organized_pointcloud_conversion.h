@@ -168,7 +168,7 @@ namespace pcl
         centerX = static_cast<int> (width_arg / 2);
         centerY = static_cast<int> (height_arg / 2);
 
-        const double fl_const = 1.0f / focalLength_arg;
+        const double fl_const = 1.0 / focalLength_arg;
         static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
@@ -237,7 +237,7 @@ namespace pcl
         centerX = static_cast<int> (width_arg / 2);
         centerY = static_cast<int> (height_arg / 2);
 
-        const double fl_const = 1.0f / focalLength_arg;
+        const double fl_const = 1.0 / focalLength_arg;
         static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
@@ -325,9 +325,9 @@ namespace pcl
             {
               // Encode point color
               const uint32_t rgb = *reinterpret_cast<const int*> (&point.rgb);
-              uint8_t grayvalue = static_cast<uint8_t>(0.2989 * static_cast<double>((rgb >> 16) & 0x0000ff) +
-                                                       0.5870 * static_cast<double>((rgb >> 8)  & 0x0000ff) +
-                                                       0.1140 * static_cast<double>((rgb >> 0)  & 0x0000ff));
+              uint8_t grayvalue = static_cast<uint8_t>(0.2989 * static_cast<double>((rgb >> 16) & 0x0000f) +
+                                                       0.5870 * static_cast<double>((rgb >> 8)  & 0x0000f) +
+                                                       0.1140 * static_cast<double>((rgb >> 0)  & 0x0000f));
 
               rgbData_arg.push_back (grayvalue);
             } else
@@ -335,9 +335,9 @@ namespace pcl
               // Encode point color
               const uint32_t rgb = *reinterpret_cast<const int*> (&point.rgb);
 
-              rgbData_arg.push_back ( (rgb >> 16) & 0x0000ff);
-              rgbData_arg.push_back ( (rgb >> 8) & 0x0000ff);
-              rgbData_arg.push_back ( (rgb >> 0) & 0x0000ff);
+              rgbData_arg.push_back ( (rgb >> 16) & 0x0000f);
+              rgbData_arg.push_back ( (rgb >> 8) & 0x0000f);
+              rgbData_arg.push_back ( (rgb >> 0) & 0x0000f);
             }
 
 
@@ -422,7 +422,7 @@ namespace pcl
         centerX = static_cast<int>(width_arg/2);
         centerY = static_cast<int>(height_arg/2);
 
-        const double fl_const = 1.0f/focalLength_arg;
+        const double fl_const = 1.0/focalLength_arg;
         static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
@@ -480,7 +480,7 @@ namespace pcl
             {
               // Define bad point
               newPoint.x = newPoint.y = newPoint.z = bad_point;
-              newPoint.rgb = 0.0f;
+              newPoint.rgb = 0.0;
             }
 
             // Add point to cloud
@@ -540,7 +540,7 @@ namespace pcl
         centerX = static_cast<int>(width_arg/2);
         centerY = static_cast<int>(height_arg/2);
 
-        const double fl_const = 1.0f/focalLength_arg;
+        const double fl_const = 1.0/focalLength_arg;
         static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
@@ -598,7 +598,7 @@ namespace pcl
             {
               // Define bad point
               newPoint.x = newPoint.y = newPoint.z = bad_point;
-              newPoint.rgb = 0.0f;
+              newPoint.rgb = 0.0;
             }
 
             // Add point to cloud

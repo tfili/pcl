@@ -132,7 +132,7 @@ namespace pcl
       /** \brief Constructor. */
       SampleConsensusInitialAlignment () : 
         input_features_ (), target_features_ (), 
-        nr_samples_(3), min_sample_distance_ (0.0f), k_correspondences_ (10), 
+        nr_samples_(3), min_sample_distance_ (0.0), k_correspondences_ (10), 
         feature_tree_ (new pcl::KdTreeFLANN<FeatureT>),
         error_functor_ ()
       {
@@ -140,7 +140,7 @@ namespace pcl
         max_iterations_ = 1000;
 
         // Setting a non-std::numeric_limits<double>::max () value to corr_dist_threshold_ to make it play nicely with TruncatedError
-        corr_dist_threshold_ = 100.0f;
+        corr_dist_threshold_ = 100.0;
         transformation_estimation_.reset (new pcl::registration::TransformationEstimationSVD<PointSource, PointTarget>);
       };
 

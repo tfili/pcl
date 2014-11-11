@@ -62,9 +62,9 @@ TEST (PCL, PointXYZRGB)
   p.rgb = *reinterpret_cast<double*>(&rgb);
 
   rgb = *reinterpret_cast<int*>(&p.rgb);
-  uint8_t rr = (rgb >> 16) & 0x0000ff;
-  uint8_t gg = (rgb >> 8)  & 0x0000ff;
-  uint8_t bb = (rgb)       & 0x0000ff;
+  uint8_t rr = (rgb >> 16) & 0x0000f;
+  uint8_t gg = (rgb >> 8)  & 0x0000f;
+  uint8_t bb = (rgb)       & 0x0000f;
 
   EXPECT_EQ (r, rr);
   EXPECT_EQ (g, gg);
@@ -75,9 +75,9 @@ TEST (PCL, PointXYZRGB)
 
   p.r = 0; p.g = 127; p.b = 0;
   rgb = *reinterpret_cast<int*>(&p.rgb);
-  rr = (rgb >> 16) & 0x0000ff;
-  gg = (rgb >> 8)  & 0x0000ff;
-  bb = (rgb)       & 0x0000ff;
+  rr = (rgb >> 16) & 0x0000f;
+  gg = (rgb >> 8)  & 0x0000f;
+  bb = (rgb)       & 0x0000f;
 
   EXPECT_EQ (rr, 0);
   EXPECT_EQ (gg, 127);
@@ -96,9 +96,9 @@ TEST (PCL, PointXYZRGBNormal)
   p.rgb = *reinterpret_cast<double*>(&rgb);
 
   rgb = *reinterpret_cast<int*>(&p.rgb);
-  uint8_t rr = (rgb >> 16) & 0x0000ff;
-  uint8_t gg = (rgb >> 8)  & 0x0000ff;
-  uint8_t bb = (rgb)       & 0x0000ff;
+  uint8_t rr = (rgb >> 16) & 0x0000f;
+  uint8_t gg = (rgb >> 8)  & 0x0000f;
+  uint8_t bb = (rgb)       & 0x0000f;
 
   EXPECT_EQ (r, rr);
   EXPECT_EQ (g, gg);
@@ -109,9 +109,9 @@ TEST (PCL, PointXYZRGBNormal)
 
   p.r = 0; p.g = 127; p.b = 0;
   rgb = *reinterpret_cast<int*>(&p.rgb);
-  rr = (rgb >> 16) & 0x0000ff;
-  gg = (rgb >> 8)  & 0x0000ff;
-  bb = (rgb)       & 0x0000ff;
+  rr = (rgb >> 16) & 0x0000f;
+  gg = (rgb >> 8)  & 0x0000f;
+  bb = (rgb)       & 0x0000f;
 
   EXPECT_EQ (rr, 0);
   EXPECT_EQ (gg, 127);
@@ -148,7 +148,7 @@ TEST (PCL, Common)
 TEST (PCL, Eigen)
 {
   Eigen::Matrix3d mat, vec;
-  mat << 0.000536227f, -1.56178e-05f, -9.47391e-05f, -1.56178e-05f, 0.000297322f, -0.000148785f, -9.47391e-05f, -0.000148785f, 9.7827e-05f;
+  mat << 0.000536227, -1.56178e-05, -9.47391e-05, -1.56178e-05, 0.000297322f, -0.000148785, -9.47391e-05, -0.000148785, 9.7827e-05;
   Eigen::Vector3d val;
 
   eigen33 (mat, vec, val);
@@ -189,7 +189,7 @@ TEST (PCL, PointCloud)
   for (uint32_t i = 0; i < cloud.width*cloud.height; ++i)
   {
     double j = static_cast<double> (i);
-    cloud.points.push_back (PointXYZ (3.0f * j + 0.0f, 3.0f * j + 1.0f, 3.0f * j + 2.0f));
+    cloud.points.push_back (PointXYZ (3.0 * j + 0.0, 3.0 * j + 1.0, 3.0 * j + 2.0));
   }
 
   Eigen::MatrixXd mat_xyz1 = cloud.getMatrixXdMap ();
@@ -367,8 +367,8 @@ TYPED_TEST(RGBPointTypesTest, GetBGRVectorXcMap)
 TEST (PCL, Intersections)
 {
   Eigen::VectorXd zline (6), yline (6);
-  zline[0] = 0.543892f; zline[1] = -0.515623f; zline[2] = 1.321f;   zline[3] = 0.0266191f; zline[4] = 0.600215f;  zline[5] = -0.0387667f;
-  yline[0] = 0.493479f; yline[1] = 0.169246f;  yline[2] = 1.22677f; yline[3] = 0.5992f;    yline[4] = 0.0505085f; yline[5] = 0.405749f;
+  zline[0] = 0.543892f; zline[1] = -0.515623f; zline[2] = 1.321;   zline[3] = 0.0266191; zline[4] = 0.600215;  zline[5] = -0.0387667;
+  yline[0] = 0.493479; yline[1] = 0.169246;  yline[2] = 1.22677; yline[3] = 0.5992f;    yline[4] = 0.0505085; yline[5] = 0.405749;
 
   Eigen::Vector4d pt;
   EXPECT_EQ ((pcl::lineWithLineIntersection (zline, yline, pt)), true);
@@ -377,8 +377,8 @@ TEST (PCL, Intersections)
   EXPECT_NEAR (pt[2], 1.27636,  1e-3);
   EXPECT_EQ (pt[3], 0);
 
-  zline << 0.545203f, -0.514419f, 1.31967f, 0.0243372f, 0.597946f, -0.0413579f;
-  yline << 0.492706f,  0.164196f, 1.23192f, 0.598704f,  0.0442014f, 0.411328f;
+  zline << 0.545203f, -0.514419, 1.31967, 0.0243372f, 0.597946, -0.0413579;
+  yline << 0.492706,  0.164196, 1.23192f, 0.598704f,  0.0442014f, 0.411328;
   EXPECT_EQ ((pcl::lineWithLineIntersection (zline, yline, pt)), false);
   //intersection: [ 3.06416e+08    15.2237     3.06416e+08       4.04468e-34 ]
 }

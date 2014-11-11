@@ -65,7 +65,7 @@ pcl::Poisson<PointNT>::Poisson ()
   : depth_ (8)
   , min_depth_ (5)
   , point_weight_ (4)
-  , scale_ (1.1f)
+  , scale_ (1.1)
   , solver_divide_ (8)
   , iso_divide_ (8)
   , samples_per_node_ (1.0)
@@ -153,7 +153,7 @@ pcl::Poisson<PointNT>::performReconstruction (PolygonMesh &output)
 {
   poisson::CoredVectorMeshData mesh;
   poisson::Point3D<double> center;
-  double scale = 1.0f;
+  double scale = 1.0;
 
   switch (degree_)
   {
@@ -234,7 +234,7 @@ pcl::Poisson<PointNT>::performReconstruction (pcl::PointCloud<PointNT> &points,
 {
   poisson::CoredVectorMeshData mesh;
   poisson::Point3D<double> center;
-  double scale = 1.0f;
+  double scale = 1.0;
 
   switch (degree_)
   {

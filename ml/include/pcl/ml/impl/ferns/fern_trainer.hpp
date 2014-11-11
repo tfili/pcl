@@ -125,14 +125,14 @@ pcl::FernTrainer<FeatureType, DataSet, LabelType, ExampleIndex, NodeType>::train
 
     // compute information gain
     int best_feature_index = -1;
-    double best_feature_threshold = 0.0f;
-    double best_feature_information_gain = 0.0f;
+    double best_feature_threshold = 0.0;
+    double best_feature_information_gain = 0.0;
 
     for (size_t feature_index = 0; feature_index < num_of_features_; ++feature_index)
     {
       for (size_t threshold_index = 0; threshold_index < num_of_thresholds_; ++threshold_index)
       {
-        double information_gain = 0.0f;
+        double information_gain = 0.0;
         for (size_t branch_index = 0; branch_index < branch_feature_results[feature_index].size (); ++branch_index)
         {
           const double branch_information_gain = stats_estimator_->computeInformationGain (data_set_,

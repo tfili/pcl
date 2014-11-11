@@ -286,9 +286,9 @@ pcl::cloud_composer::ProjectModel::insertNewCloudFromRGBandDepth ()
   int centerY = static_cast<int>(cloud->height / 2.0);
   unsigned short* depth_pixel;
   unsigned char* color_pixel;
-  double scale = 1.0f/1000.0f;
-  double focal_length = 525.0f;
-  double fl_const = 1.0f / focal_length;
+  double scale = 1.0/1000.0;
+  double focal_length = 525.0;
+  double fl_const = 1.0 / focal_length;
   depth_pixel = static_cast<unsigned short*>(depth_image->GetScalarPointer (depth_dims[0]-1,depth_dims[1]-1,0));
   color_pixel = static_cast<unsigned char*> (rgb_image->GetScalarPointer (depth_dims[0]-1,depth_dims[1]-1,0));
   
@@ -300,7 +300,7 @@ pcl::cloud_composer::ProjectModel::insertNewCloudFromRGBandDepth ()
       //  uint8_t* p_i = &(cloud_blob->data[y * cloud_blob->row_step + x * cloud_blob->point_step]);
       double depth = (double)(*depth_pixel) * scale;
     //  qDebug () << "Depth = "<<depth;
-      if (depth == 0.0f)
+      if (depth == 0.0)
       {
         new_point.x = new_point.y = new_point.z = std::numeric_limits<double>::quiet_NaN ();
       }

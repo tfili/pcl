@@ -144,7 +144,7 @@ void updateViewer (ORROctree& octree, PCLVisualizer& viz, std::vector<ORROctree:
   viz.removeAllShapes();
 
   const double *b = (*leaf)->getBounds (), *center = (*leaf)->getData ()->getPoint ();
-  double radius = 0.1f*octree.getRoot ()->getRadius ();
+  double radius = 0.1*octree.getRoot ()->getRadius ();
 
   // Add the main leaf as a cube
   viz.addCube (b[0], b[1], b[2], b[3], b[4], b[5], 0.0, 0.0, 1.0, "main cube");
@@ -173,7 +173,7 @@ void updateViewer (ORROctree& octree, PCLVisualizer& viz, std::vector<ORROctree:
     sphere_coeffs.values[0] = rand_leaf->getCenter ()[0];
     sphere_coeffs.values[1] = rand_leaf->getCenter ()[1];
     sphere_coeffs.values[2] = rand_leaf->getCenter ()[2];
-    sphere_coeffs.values[3] = 0.5f*(b[1] - b[0]);
+    sphere_coeffs.values[3] = 0.5*(b[1] - b[0]);
     viz.addSphere (sphere_coeffs, "random_full_leaf");
   }
 }
@@ -223,7 +223,7 @@ void run (const char* file_name, double voxel_size)
   viz.addPointCloud (points_in, "cloud in");
   viz.addPointCloud (points_out, "cloud out");
   if ( normals_in->size () )
-    viz.addPointCloudNormals<PointXYZ,Normal> (points_out, normals_out, 1, 6.0f, "normals out");
+    viz.addPointCloudNormals<PointXYZ,Normal> (points_out, normals_out, 1, 6.0, "normals out");
 
   // Change the appearance
   viz.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 2, "cloud in");

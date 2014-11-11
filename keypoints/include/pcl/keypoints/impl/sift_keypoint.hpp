@@ -120,7 +120,7 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypoints (PointCloudOut &output)
   for (int i_octave = 0; i_octave < nr_octaves_; ++i_octave)
   {
     // Downsample the point cloud
-    const double s = 1.0f * scale; // note: this can be adjusted
+    const double s = 1.0 * scale; // note: this can be adjusted
     voxel_grid.setLeafSize (s, s, s);
     voxel_grid.setInputCloud (cloud);
     boost::shared_ptr<pcl::PointCloud<PointInT> > temp (new pcl::PointCloud<PointInT>);    
@@ -157,7 +157,7 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypointsForOctave (
   std::vector<double> scales (nr_scales_per_octave + 3);
   for (int i_scale = 0; i_scale <= nr_scales_per_octave + 2; ++i_scale)
   {
-    scales[i_scale] = base_scale * powf (2.0f, (1.0f * static_cast<double> (i_scale) - 1.0f) / static_cast<double> (nr_scales_per_octave));
+    scales[i_scale] = base_scale * pow (2.0, (1.0 * static_cast<double> (i_scale) - 1.0) / static_cast<double> (nr_scales_per_octave));
   }
   Eigen::MatrixXd diff_of_gauss;
   computeScaleSpace (input, tree, scales, diff_of_gauss);
@@ -211,7 +211,7 @@ void pcl::SIFTKeypoint<PointInT, PointOutT>::computeScaleSpace (
   diff_of_gauss.resize (input.size (), scales.size () - 1);
 
   // For efficiency, we will only filter over points within 3 standard deviations 
-  const double max_radius = 3.0f * scales.back ();
+  const double max_radius = 3.0 * scales.back ();
 
   for (int i_point = 0; i_point < static_cast<int> (input.size ()); ++i_point)
   {
@@ -223,21 +223,21 @@ void pcl::SIFTKeypoint<PointInT, PointOutT>::computeScaleSpace (
     //   here instead of using searchForNeighbors.
 
     // For each scale, compute the Gaussian "filter response" at the current point
-    double filter_response = 0.0f;
+    double filter_response = 0.0;
     double previous_filter_response;
     for (size_t i_scale = 0; i_scale < scales.size (); ++i_scale)
     {
-      double sigma_sqr = powf (scales[i_scale], 2.0f);
+      double sigma_sqr = pow (scales[i_scale], 2.0);
 
-      double numerator = 0.0f;
-      double denominator = 0.0f;
+      double numerator = 0.0;
+      double denominator = 0.0;
       for (size_t i_neighbor = 0; i_neighbor < nn_indices.size (); ++i_neighbor)
       {
         const double &value = getFieldValue_ (input.points[nn_indices[i_neighbor]]);
         const double &dist_sqr = nn_dist[i_neighbor];
         if (dist_sqr <= 9*sigma_sqr)
         {
-          double w = expf (-0.5f * dist_sqr / sigma_sqr);
+          double w = exp (-0.5 * dist_sqr / sigma_sqr);
           numerator += value * w;
           denominator += w;
         }

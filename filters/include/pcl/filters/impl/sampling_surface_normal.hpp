@@ -304,7 +304,7 @@ pcl::SamplingSurfaceNormal<PointT>::findCutVal (
   else if (cut_dim == 2)
     return (cloud.points[cut_index].z);
 
-  return (0.0f);
+  return (0.0);
 }
 
 

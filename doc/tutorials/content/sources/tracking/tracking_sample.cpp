@@ -114,7 +114,7 @@ drawResult (pcl::visualization::PCLVisualizer& viz)
   Eigen::Affine3d transformation = tracker_->toEigenMatrix (result);
 
   //move close to camera a little for better visualization
-  transformation.translation () += Eigen::Vector3d (0.0f, 0.0f, -0.005f);
+  transformation.translation () += Eigen::Vector3d (0.0, 0.0, -0.005);
   CloudPtr result_cloud (new Cloud ());
   pcl::transformPointCloud<RefPointType> (*(tracker_->getReferenceCloud ()), *result_cloud, transformation);
 
@@ -213,12 +213,12 @@ main (int argc, char** argv)
     (new KLDAdaptiveParticleFilterOMPTracker<RefPointType, ParticleT> (8));
 
   ParticleT bin_size;
-  bin_size.x = 0.1f;
-  bin_size.y = 0.1f;
-  bin_size.z = 0.1f;
-  bin_size.roll = 0.1f;
-  bin_size.pitch = 0.1f;
-  bin_size.yaw = 0.1f;
+  bin_size.x = 0.1;
+  bin_size.y = 0.1;
+  bin_size.z = 0.1;
+  bin_size.roll = 0.1;
+  bin_size.pitch = 0.1;
+  bin_size.yaw = 0.1;
 
 
   //Set all parameters for  KLDAdaptiveParticleFilterOMPTracker

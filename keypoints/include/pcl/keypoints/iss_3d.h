@@ -120,7 +120,7 @@ namespace pcl
       , edge_points_ (0)
       , min_neighbors_ (5)
       , normals_ (new pcl::PointCloud<NormalT>)
-      , angle_threshold_ (static_cast<double> (M_PI) / 2.0f)
+      , angle_threshold_ (static_cast<double> (M_PI) / 2.0)
       , threads_ (0)
       {
         name_ = "ISSKeypoint3D";

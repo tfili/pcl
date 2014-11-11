@@ -61,7 +61,7 @@ TEST (PCL, InverseGeneral3x3f)
   Eigen::Matrix<Scalar, 3, 3> result = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Eigen::Matrix<Scalar, 3, 3> error = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Scalar determinant;
-  const Scalar epsilon = 1e-5f;
+  const Scalar epsilon = 1e-5;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major
@@ -181,7 +181,7 @@ TEST (PCL, InverseSymmetric3x3f)
   Eigen::Matrix<Scalar, 3, 3> result = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Eigen::Matrix<Scalar, 3, 3> error = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Scalar determinant;
-  const Scalar epsilon = 1e-5f;
+  const Scalar epsilon = 1e-5;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major
@@ -314,7 +314,7 @@ TEST (PCL, Inverse2x2f)
   Eigen::Matrix<Scalar, 2, 2> result = Eigen::Matrix<Scalar, 2, 2>::Zero ();
   Eigen::Matrix<Scalar, 2, 2> error = Eigen::Matrix<Scalar, 2, 2>::Zero ();
   Scalar determinant;
-  const Scalar epsilon = 1e-6f;
+  const Scalar epsilon = 1e-6;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major
@@ -540,7 +540,7 @@ TEST (PCL, eigen22f)
   Eigen::Matrix<Scalar, 2, 2> c_error;
   Scalar diff;
 
-  const Scalar epsilon = 3.1e-5f;
+  const Scalar epsilon = 3.1e-5;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major

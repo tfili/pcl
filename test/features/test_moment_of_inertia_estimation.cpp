@@ -56,15 +56,15 @@ TEST (MomentOfInertia, FeatureExtraction)
   EXPECT_LE (minor, middle);
   EXPECT_LE (middle, major);
 
-  double dot_product = 0.0f;
+  double dot_product = 0.0;
   Eigen::Vector3d major_vec, middle_vec, minor_vec;
   feature_extractor.getEigenVectors (major_vec, middle_vec, minor_vec);
   dot_product = major_vec.dot (middle_vec);
-  EXPECT_NEAR (0.0f, dot_product, 0.00001f);
+  EXPECT_NEAR (0.0, dot_product, 0.00001);
   dot_product = major_vec.dot (minor_vec);
-  EXPECT_NEAR (0.0f, dot_product, 0.00001f);
+  EXPECT_NEAR (0.0, dot_product, 0.00001);
   dot_product = middle_vec.dot (minor_vec);
-  EXPECT_NEAR (0.0f, dot_product, 0.00001f);
+  EXPECT_NEAR (0.0, dot_product, 0.00001);
 
   std::vector <double> moment_of_inertia;
   std::vector <double> eccentricity;
@@ -79,31 +79,31 @@ TEST (MomentOfInertia, FeatureExtraction)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (MomentOfInertia, InvalidParameters)
 {
-  double angle_step = 0.0f;
-  double point_mass = 0.0f;
+  double angle_step = 0.0;
+  double point_mass = 0.0;
 
   pcl::MomentOfInertiaEstimation <pcl::PointXYZ> feature_extractor;
   feature_extractor.setInputCloud (cloud);
 
-  angle_step = 0.0f;
+  angle_step = 0.0;
   feature_extractor.setAngleStep (angle_step);
   angle_step = feature_extractor.getAngleStep ();
-  EXPECT_LT (0.0f, angle_step);
+  EXPECT_LT (0.0, angle_step);
 
-  angle_step = -1.0f;
+  angle_step = -1.0;
   feature_extractor.setAngleStep (angle_step);
   angle_step = feature_extractor.getAngleStep ();
-  EXPECT_LT (0.0f, angle_step);
+  EXPECT_LT (0.0, angle_step);
 
-  point_mass = 0.0f;
+  point_mass = 0.0;
   feature_extractor.setPointMass (point_mass);
   point_mass = feature_extractor.getPointMass ();
-  EXPECT_LT (0.0f, point_mass);
+  EXPECT_LT (0.0, point_mass);
 
-  point_mass = -1.0f;
+  point_mass = -1.0;
   feature_extractor.setPointMass (point_mass);
   point_mass = feature_extractor.getPointMass ();
-  EXPECT_LT (0.0f, point_mass);
+  EXPECT_LT (0.0, point_mass);
 }
 
 /* ---[ */

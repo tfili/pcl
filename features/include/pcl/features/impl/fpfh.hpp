@@ -70,7 +70,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (
   int nr_bins_f3 = static_cast<int> (hist_f3.cols ());
 
   // Factorization constant
-  double hist_incr = 100.0f / static_cast<double>(indices.size () - 1);
+  double hist_incr = 100.0 / static_cast<double>(indices.size () - 1);
 
   // Iterate over all the points in the neighborhood
   for (size_t idx = 0; idx < indices.size (); ++idx)
@@ -128,7 +128,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::weightPointSPFHSignature (
       continue;
 
     // Standard weighting function used
-    weight = 1.0f / dists[idx];
+    weight = 1.0 / dists[idx];
 
     // Weight the SPFH of the query point with the SPFH of its neighbors
     for (int f1_i = 0; f1_i < nr_bins_f1; ++f1_i)

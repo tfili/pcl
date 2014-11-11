@@ -104,7 +104,7 @@ pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3d& came
 void
 pcl::gpu::kinfuLS::RayCaster::generateSceneView(View& view) const
 {
-  generateSceneView(view, volume_size_ * (-3.f));
+  generateSceneView(view, volume_size_ * (-3.));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

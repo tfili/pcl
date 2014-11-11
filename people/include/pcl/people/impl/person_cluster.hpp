@@ -69,17 +69,17 @@ pcl::people::PersonCluster<PointT>::init (
   head_centroid_ = head_centroid;
   person_confidence_ = std::numeric_limits<double>::quiet_NaN();
 
-  min_x_ = 1000.0f;
-  min_y_ = 1000.0f;
-  min_z_ = 1000.0f;
+  min_x_ = 1000.0;
+  min_y_ = 1000.0;
+  min_z_ = 1000.0;
 
-  max_x_ = -1000.0f;
-  max_y_ = -1000.0f;
-  max_z_ = -1000.0f;
+  max_x_ = -1000.0;
+  max_y_ = -1000.0;
+  max_z_ = -1000.0;
 
-  sum_x_ = 0.0f;
-  sum_y_ = 0.0f;
-  sum_z_ = 0.0f;
+  sum_x_ = 0.0;
+  sum_y_ = 0.0;
+  sum_z_ = 0.0;
 
   n_ = 0;
 
@@ -109,7 +109,7 @@ pcl::people::PersonCluster<PointT>::init (
   c_z_ = sum_z_ / n_;
 
 
-  Eigen::Vector4d height_point(c_x_, c_y_, c_z_, 1.0f);
+  Eigen::Vector4d height_point(c_x_, c_y_, c_z_, 1.0);
   if(!vertical_)
   {
     height_point(1) = min_y_;
@@ -127,15 +127,15 @@ pcl::people::PersonCluster<PointT>::init (
 
   if(head_centroid_)
   {
-    double sum_x = 0.0f;
-    double sum_y = 0.0f;
-    double sum_z = 0.0f;
+    double sum_x = 0.0;
+    double sum_y = 0.0;
+    double sum_z = 0.0;
     int n = 0;
 
     double head_threshold_value;    // vertical coordinate of the lowest head point
     if (!vertical_)
     {
-      head_threshold_value = min_y_ + height_ / 8.0f;    // head is suppose to be 1/8 of the human height
+      head_threshold_value = min_y_ + height_ / 8.0;    // head is suppose to be 1/8 of the human height
       for (std::vector<int>::const_iterator pit = points_indices_.indices.begin(); pit != points_indices_.indices.end(); pit++)
       {
         PointT* p = &input_cloud->points[*pit];
@@ -151,7 +151,7 @@ pcl::people::PersonCluster<PointT>::init (
     }
     else
     {
-      head_threshold_value = max_x_ - height_ / 8.0f;    // head is suppose to be 1/8 of the human height
+      head_threshold_value = max_x_ - height_ / 8.0;    // head is suppose to be 1/8 of the human height
       for (std::vector<int>::const_iterator pit = points_indices_.indices.begin(); pit != points_indices_.indices.end(); pit++)
       {
         PointT* p = &input_cloud->points[*pit];
@@ -191,7 +191,7 @@ pcl::people::PersonCluster<PointT>::init (
     angle_max_ = std::max(std::atan2(min_z, min_x), std::atan2(max_z, min_x));
     angle_min_ = std::min(std::atan2(min_z, max_x), std::atan2(max_z, max_x));
 
-    Eigen::Vector4d c_point(c_x_, c_y_, c_z_, 1.0f);
+    Eigen::Vector4d c_point(c_x_, c_y_, c_z_, 1.0);
     double t = c_point.dot(ground_coeffs) / std::pow(sqrt_ground_coeffs, 2);
     double bottom_x = c_x_ - ground_coeffs(0) * t;
     double bottom_y = c_y_ - ground_coeffs(1) * t;
@@ -230,7 +230,7 @@ pcl::people::PersonCluster<PointT>::init (
     angle_max_ = std::max(std::atan2(min_z_, min_y_), std::atan2(max_z_, min_y_));
     angle_min_ = std::min(std::atan2(min_z_, max_y_), std::atan2(max_z_, max_y_));
 
-    Eigen::Vector4d c_point(c_x_, c_y_, c_z_, 1.0f);
+    Eigen::Vector4d c_point(c_x_, c_y_, c_z_, 1.0);
     double t = c_point.dot(ground_coeffs) / std::pow(sqrt_ground_coeffs, 2);
     double bottom_x = c_x_ - ground_coeffs(0) * t;
     double bottom_y = c_y_ - ground_coeffs(1) * t;
@@ -266,7 +266,7 @@ pcl::people::PersonCluster<PointT>::getHeight ()
 template <typename PointT> double
 pcl::people::PersonCluster<PointT>::updateHeight (const Eigen::VectorXd& ground_coeffs)
 {
-  double sqrt_ground_coeffs = (ground_coeffs - Eigen::Vector4d(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
+  double sqrt_ground_coeffs = (ground_coeffs - Eigen::Vector4d(0.0, 0.0, 0.0, ground_coeffs(3))).norm();
   return (updateHeight(ground_coeffs, sqrt_ground_coeffs));
 }
 
@@ -275,9 +275,9 @@ pcl::people::PersonCluster<PointT>::updateHeight (const Eigen::VectorXd& ground_
 {
   Eigen::Vector4d height_point;
   if (!vertical_)
-    height_point << c_x_, min_y_, c_z_, 1.0f;
+    height_point << c_x_, min_y_, c_z_, 1.0;
   else
-    height_point << max_x_, c_y_, c_z_, 1.0f;
+    height_point << max_x_, c_y_, c_z_, 1.0;
 
   double height = std::fabs(height_point.dot(ground_coeffs));
   height /= sqrt_ground_coeffs;

@@ -83,8 +83,8 @@ namespace pcl
         CorrespondenceRejectorPoly ()
           : iterations_ (10000)
           , cardinality_ (3)
-          , similarity_threshold_ (0.75f)
-          , similarity_threshold_squared_ (0.75f * 0.75f)
+          , similarity_threshold_ (0.75)
+          , similarity_threshold_squared_ (0.75 * 0.75)
         {
           rejection_name_ = "CorrespondenceRejectorPoly";
         }

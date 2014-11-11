@@ -54,7 +54,7 @@ using namespace std;
 TEST (PCL, FeaturePtr)
 {
   VFHEstimation<PointXYZ, PointNormal, VFHSignature308>::Ptr vfh (new VFHEstimation<PointXYZ, PointNormal, VFHSignature308> ());
-  vfh->setViewPoint (1.0f, 1.0f, 1.0f);
+  vfh->setViewPoint (1.0, 1.0, 1.0);
 
   UniqueShapeContext<PointXYZ, UniqueShapeContext1960, ReferenceFrame>::Ptr usc (new UniqueShapeContext<PointXYZ, UniqueShapeContext1960, ReferenceFrame> ());
   usc->setMinimalRadius (5);

@@ -107,7 +107,7 @@ namespace pcl
       CRHAlignment() {
         max_peaks_ = 5;
         quantile_ = 0.2f;
-        accept_threshold_ = 0.8f;
+        accept_threshold_ = 0.8;
       }
 
       /** \brief returns the computed transformations
@@ -197,7 +197,7 @@ namespace pcl
 
         kiss_fft_cpx * multAB = new kiss_fft_cpx[nr_bins_after_padding];
         for (int i = 0; i < nr_bins_after_padding; i++)
-          multAB[i].r = multAB[i].i = 0.f;
+          multAB[i].r = multAB[i].i = 0.;
 
         int k = 0;
         multAB[k].r = input_ftt_negate.points[0].histogram[0] * target_ftt.points[0].histogram[0];
@@ -213,7 +213,7 @@ namespace pcl
           multAB[k].r = a * c - b * d;
           multAB[k].i = b * c + a * d;
 
-          double tmp = sqrtf (multAB[k].r * multAB[k].r + multAB[k].i * multAB[k].i);
+          double tmp = sqrt (multAB[k].r * multAB[k].r + multAB[k].i * multAB[k].i);
 
           multAB[k].r /= tmp;
           multAB[k].i /= tmp;

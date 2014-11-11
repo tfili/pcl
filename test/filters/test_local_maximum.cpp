@@ -64,12 +64,12 @@ TEST (Filters, LocalMaximum)
 
   LocalMaximum<PointXYZ> lm;
   lm.setInputCloud (cloud_in.makeShared ());
-  lm.setRadius (1.0f);
+  lm.setRadius (1.0);
   lm.filter (cloud_out);
 
-  EXPECT_EQ (0.25f, cloud_out[0].z);
-  EXPECT_EQ (0.50f, cloud_out[1].z);
-  EXPECT_EQ (2.00f, cloud_out[2].z);
+  EXPECT_EQ (0.25, cloud_out[0].z);
+  EXPECT_EQ (0.50, cloud_out[1].z);
+  EXPECT_EQ (2.00, cloud_out[2].z);
   EXPECT_EQ (3, cloud_out.size ());
 }
 

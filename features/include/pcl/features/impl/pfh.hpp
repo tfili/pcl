@@ -65,7 +65,7 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computePointPFHSignature (
   pfh_histogram.setZero ();
 
   // Factorization constant
-  double hist_incr = 100.0f / static_cast<double> (indices.size () * (indices.size () - 1) / 2);
+  double hist_incr = 100.0 / static_cast<double> (indices.size () * (indices.size () - 1) / 2);
 
   std::pair<int, int> key;
   // Iterate over all the points in the neighborhood

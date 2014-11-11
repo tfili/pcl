@@ -291,12 +291,12 @@ pcl::people::PersonClassifier<PointT>::evaluate (PointCloudPtr& image,
   if (!vertical)
   {
     pixel_height = bottom(1) - top(1);
-    pixel_width = pixel_height / 2.0f;
+    pixel_width = pixel_height / 2.0;
   }
   else
   {
     pixel_width = top(0) - bottom(0);
-    pixel_height = pixel_width / 2.0f;
+    pixel_height = pixel_width / 2.0;
   }
   double pixel_xc = centroid(0);
   double pixel_yc = centroid(1);

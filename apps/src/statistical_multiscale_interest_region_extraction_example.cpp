@@ -45,7 +45,7 @@ using namespace pcl;
 using namespace std;
 
 const double subsampling_leaf_size = 0.003f;
-const double base_scale = 0.005f;
+const double base_scale = 0.005;
 
 
 int
@@ -73,7 +73,7 @@ main (int, char **argv)
   {
     PCL_INFO ("%f ", base_scale_aux);
     scale_vector.push_back (base_scale_aux);
-    base_scale_aux *= 1.6f;
+    base_scale_aux *= 1.6;
   }
   PCL_INFO ("\n");
   region_extraction.setInputCloud (cloud_subsampled);

@@ -68,15 +68,15 @@ TEST (PCL, PCLVisualizer_camera)
 
   // First test if the intrinsic+extrinsic to OpenGL conversion works back and forth
   Eigen::Matrix3d given_intrinsics (Eigen::Matrix3d::Identity ());
-  given_intrinsics (0, 0) = 525.f;
-  given_intrinsics (1, 1) = 525.f;
-  given_intrinsics (0, 2) = 320.f;
-  given_intrinsics (1, 2) = 240.f;
+  given_intrinsics (0, 0) = 525.;
+  given_intrinsics (1, 1) = 525.;
+  given_intrinsics (0, 2) = 320.;
+  given_intrinsics (1, 2) = 240.;
 
   double M_PIf = static_cast<double> (M_PI);
   Eigen::Matrix4d given_extrinsics (Eigen::Matrix4d::Identity ());
-  given_extrinsics.block<3, 3> (0, 0) = Eigen::AngleAxisd (30.f * M_PIf / 180.f, Eigen::Vector3d (1.f, 0.f, 0.f)).matrix ();
-  given_extrinsics.block<3, 1> (0, 3) = Eigen::Vector3d (10.f, 15.f, 20.f);
+  given_extrinsics.block<3, 3> (0, 0) = Eigen::AngleAxisd (30. * M_PIf / 180., Eigen::Vector3d (1., 0., 0.)).matrix ();
+  given_extrinsics.block<3, 1> (0, 3) = Eigen::Vector3d (10., 15., 20.);
 
   visualizer.setCameraParameters (given_intrinsics, given_extrinsics);
   Eigen::Matrix4d viewer_pose = visualizer.getViewerPose ().matrix ();
@@ -88,10 +88,10 @@ TEST (PCL, PCLVisualizer_camera)
 
   // Next, check if setting the OpenGL settings translate well back
   // Look towards the x-axis, which equates to a 90 degree rotation around the y-axis
-  Eigen::Vector3d trans (10.f, 2.f, 20.f);
+  Eigen::Vector3d trans (10., 2., 20.);
   visualizer.setCameraPosition (trans[0], trans[1], trans[2], trans[0] + 1., trans[1], trans[2], 0., 1., 0.);
   viewer_pose = visualizer.getViewerPose ().matrix ();
-  Eigen::Matrix3d expected_rotation = Eigen::AngleAxisd (M_PIf / 2.0f, Eigen::Vector3d (0.f, 1.f, 0.f)).matrix ();
+  Eigen::Matrix3d expected_rotation = Eigen::AngleAxisd (M_PIf / 2.0, Eigen::Vector3d (0., 1., 0.)).matrix ();
   for (size_t i = 0; i < 3; ++i)
     for (size_t j = 0; j < 3; ++j)
       EXPECT_NEAR (viewer_pose (i, j), expected_rotation (i, j), 1e-6);

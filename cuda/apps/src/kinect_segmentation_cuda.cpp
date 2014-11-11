@@ -224,7 +224,7 @@ class Segmentation
         if (normal_method == 1)
           normals = computeFastPointNormals<Storage> (data);
         else
-          normals = computePointNormals<Storage> (data->points.begin (), data->points.end (), focallength, data, radius_cm / 100.0f, nr_neighbors);
+          normals = computePointNormals<Storage> (data->points.begin (), data->points.end (), focallength, data, radius_cm / 100.0, nr_neighbors);
         cudaThreadSynchronize ();
       }
 
@@ -311,9 +311,9 @@ class Segmentation
                 //color.r = (int)(rand () * trand);
                 //color.g = (int)(rand () * trand);
                 //color.b = (int)(rand () * trand);
-                color.r = (1.0f + coeffs[i].x) * 128;
-                color.g = (1.0f + coeffs[i].y) * 128;
-                color.b = (1.0f + coeffs[i].z) * 128;
+                color.r = (1.0 + coeffs[i].x) * 128;
+                color.g = (1.0 + coeffs[i].y) * 128;
+                color.b = (1.0 + coeffs[i].z) * 128;
                 {
                   ScopeTimeCPU t ("coloring planes");
                   colorIndices<Storage> (data, inliers_stencil, color);

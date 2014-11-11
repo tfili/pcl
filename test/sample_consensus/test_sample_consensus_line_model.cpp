@@ -56,16 +56,16 @@ TEST (SampleConsensusModelLine, RANSAC)
   PointCloud<PointXYZ> cloud;
   cloud.points.resize (10);
 
-  cloud.points[0].getVector3dMap () <<  1.0f,  2.00f,  3.00f;
-  cloud.points[1].getVector3dMap () <<  4.0f,  5.00f,  6.00f;
-  cloud.points[2].getVector3dMap () <<  7.0f,  8.00f,  9.00f;
-  cloud.points[3].getVector3dMap () << 10.0f, 11.00f, 12.00f;
-  cloud.points[4].getVector3dMap () << 13.0f, 14.00f, 15.00f;
-  cloud.points[5].getVector3dMap () << 16.0f, 17.00f, 18.00f;
-  cloud.points[6].getVector3dMap () << 19.0f, 20.00f, 21.00f;
-  cloud.points[7].getVector3dMap () << 22.0f, 23.00f, 24.00f;
-  cloud.points[8].getVector3dMap () << -5.0f,  1.57f,  0.75f;
-  cloud.points[9].getVector3dMap () <<  4.0f,  2.00f,  3.00f;
+  cloud.points[0].getVector3dMap () <<  1.0,  2.00,  3.00;
+  cloud.points[1].getVector3dMap () <<  4.0,  5.00,  6.00;
+  cloud.points[2].getVector3dMap () <<  7.0,  8.00,  9.00;
+  cloud.points[3].getVector3dMap () << 10.0, 11.00, 12.00;
+  cloud.points[4].getVector3dMap () << 13.0, 14.00, 15.00;
+  cloud.points[5].getVector3dMap () << 16.0, 17.00, 18.00;
+  cloud.points[6].getVector3dMap () << 19.0, 20.00, 21.00;
+  cloud.points[7].getVector3dMap () << 22.0, 23.00, 24.00;
+  cloud.points[8].getVector3dMap () << -5.0,  1.57,  0.75;
+  cloud.points[9].getVector3dMap () <<  4.0,  2.00,  3.00;
 
   // Create a shared line model pointer directly
   SampleConsensusModelLinePtr model (new SampleConsensusModelLine<PointXYZ> (cloud.makeShared ()));

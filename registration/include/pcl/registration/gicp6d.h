@@ -68,8 +68,8 @@ namespace pcl
   {
     inline PointXYZLAB ()
     {
-      x = y = z = 0.0f; data[3]     = 1.0f;  // important for homogeneous coordinates
-      L = a = b = 0.0f; data_lab[3] = 0.0f;
+      x = y = z = 0.0; data[3]     = 1.0;  // important for homogeneous coordinates
+      L = a = b = 0.0; data_lab[3] = 0.0;
     }
   };
 }

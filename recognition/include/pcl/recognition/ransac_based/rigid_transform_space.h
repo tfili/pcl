@@ -100,7 +100,7 @@ namespace pcl
             {
               if ( num_transforms_ >= 2 )
               {
-                double factor = 1.0f/static_cast<double> (num_transforms_);
+                double factor = 1.0/static_cast<double> (num_transforms_);
                 aux::mult3 (axis_angle_, factor);
                 aux::mult3 (translation_, factor);
                 num_transforms_ = 1;
@@ -199,7 +199,7 @@ namespace pcl
           * and the angle is its magnitude. This is represented in an octree with bounds [-pi, pi]^3. */
         RotationSpace (double discretization)
         {
-          double min = -(AUX_PI_FLOAT + 0.000000001f), max = AUX_PI_FLOAT + 0.000000001f;
+          double min = -(AUX_PI_FLOAT + 0.000000001), max = AUX_PI_FLOAT + 0.000000001;
           double bounds[6] = {min, max, min, max, min, max};
 
           // Build the voxel structure

@@ -52,8 +52,8 @@ pcl::computeRoots2 (const Scalar& b, const Scalar& c, Roots& roots)
 
   Scalar sd = ::std::sqrt (d);
 
-  roots (2) = 0.5f * (b + sd);
-  roots (1) = 0.5f * (b - sd);
+  roots (2) = 0.5 * (b + sd);
+  roots (1) = 0.5 * (b - sd);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -587,10 +587,10 @@ pcl::getTransFromUnitVectorsZY (const Eigen::Vector3d& z_axis,
   Eigen::Vector3d tmp1 = (z_axis.cross(tmp0)).normalized();
   Eigen::Vector3d tmp2 = z_axis.normalized();
   
-  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0f;
-  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0f;
-  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0f;
-  transformation(3,0)=0.0f;    transformation(3,1)=0.0f;    transformation(3,2)=0.0f;    transformation(3,3)=1.0f;
+  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0;
+  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0;
+  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0;
+  transformation(3,0)=0.0;    transformation(3,1)=0.0;    transformation(3,2)=0.0;    transformation(3,3)=1.0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -613,10 +613,10 @@ pcl::getTransFromUnitVectorsXY (const Eigen::Vector3d& x_axis,
   Eigen::Vector3d tmp1 = (tmp2.cross(x_axis)).normalized();
   Eigen::Vector3d tmp0 = x_axis.normalized();
   
-  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0f;
-  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0f;
-  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0f;
-  transformation(3,0)=0.0f;    transformation(3,1)=0.0f;    transformation(3,2)=0.0f;    transformation(3,3)=1.0f;
+  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0;
+  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0;
+  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0;
+  transformation(3,0)=0.0;    transformation(3,1)=0.0;    transformation(3,2)=0.0;    transformation(3,3)=1.0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

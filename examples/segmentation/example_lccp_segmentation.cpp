@@ -243,11 +243,11 @@ LCCPSegmentation Parameters: \n\
 
   ///  Default values of parameters before parsing
   // Supervoxel Stuff
-  double voxel_resolution = 0.0075f;
+  double voxel_resolution = 0.0075;
   double seed_resolution = 0.03f;
-  double color_importance = 0.0f;
-  double spatial_importance = 1.0f;
-  double normal_importance = 4.0f;
+  double color_importance = 0.0;
+  double spatial_importance = 1.0;
+  double normal_importance = 4.0;
   bool use_single_cam_transform = false;
   bool use_supervoxel_refinement = false;
 

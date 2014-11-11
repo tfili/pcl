@@ -64,18 +64,18 @@ namespace pcl
         ntrees_ = 10;
         forest_filename_ = std::string ("forest.txt");
         nfeatures_ = 10000;
-        thres_face_ = 1.f;
+        thres_face_ = 1.;
         num_images_ = 1000;
-        trans_max_variance_ = 1600.f;
+        trans_max_variance_ = 1600.;
         used_for_pose_ = std::numeric_limits<int>::max ();
         use_normals_ = false;
         directory_ = std::string ("");
         HEAD_ST_DIAMETER_ = 0.2364f;
-        larger_radius_ratio_ = 1.5f;
+        larger_radius_ratio_ = 1.5;
         face_heat_map_.reset ();
         model_path_ = std::string ("face_mesh.ply");
         pose_refinement_ = false;
-        res_ = 0.005f;
+        res_ = 0.005;
       }
 
       virtual ~RFFaceDetectorTrainer()
@@ -200,7 +200,7 @@ namespace pcl
           for (size_t j = 0; j < head_center_votes_clustered_[i].size (); j++, p++)
           {
             votes_cloud->points[p].getVector3dMap () = head_center_votes_clustered_[i][j];
-            votes_cloud->points[p].intensity = 0.1f * static_cast<double> (i);
+            votes_cloud->points[p].intensity = 0.1 * static_cast<double> (i);
           }
         }
 
@@ -219,7 +219,7 @@ namespace pcl
           for (size_t j = 0; j < head_center_original_votes_clustered_[i].size (); j++, p++)
           {
             votes_cloud->points[p].getVector3dMap () = head_center_original_votes_clustered_[i][j];
-            votes_cloud->points[p].intensity = 0.1f * static_cast<double> (i);
+            votes_cloud->points[p].intensity = 0.1 * static_cast<double> (i);
           }
         }
 

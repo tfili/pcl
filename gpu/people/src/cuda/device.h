@@ -58,7 +58,7 @@ namespace pcl
 
     __device__ __forceinline__ float3 computePoint(unsigned short depth, int x, int y, const Intr& intr)
     {                  
-       double z = depth * 0.001f; // mm -> meters
+       double z = depth * 0.001; // mm -> meters
        float3 result;
        
        result.x = z * (x - intr.cx) / intr.fx;

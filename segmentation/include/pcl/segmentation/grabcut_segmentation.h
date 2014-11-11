@@ -309,7 +309,7 @@ namespace pcl
     * "GrabCut — Interactive Foreground Extraction using Iterated Graph Cuts" by
     * Carsten Rother, Vladimir Kolmogorov and Andrew Blake.
     *
-    * \author Justin Talbot, jtalbot@stanford.edu placed in Public Domain, 2010
+    * \author Justin Talbot, jtalbot@stanord.edu placed in Public Domain, 2010
     * \author Nizar Sallem port to PCL and adaptation of original code.
     * \ingroup segmentation
     */
@@ -326,7 +326,7 @@ namespace pcl
       using PCLBase<PointT>::fake_indices_;
 
       /// Constructor
-      GrabCut (uint32_t K = 5, double lambda = 50.f)
+      GrabCut (uint32_t K = 5, double lambda = 50.)
         : K_ (K)
         , lambda_ (lambda)
         , nb_neighbours_ (9)

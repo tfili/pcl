@@ -57,18 +57,18 @@ typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
 std::string default_distribution = "uniform";
-double default_xmin = 0.0f;
-double default_xmax = 1.0f;
-double default_xmean = 0.0f;
-double default_xstddev = 1.0f;
-double default_ymin = 0.0f;
-double default_ymax = 1.0f;
-double default_ymean = 0.0f;
-double default_ystddev = 1.0f;
-double default_zmin = 0.0f;
-double default_zmax = 1.0f;
-double default_zmean = 0.0f;
-double default_zstddev = 1.0f;
+double default_xmin = 0.0;
+double default_xmax = 1.0;
+double default_xmean = 0.0;
+double default_xstddev = 1.0;
+double default_ymin = 0.0;
+double default_ymax = 1.0;
+double default_ymean = 0.0;
+double default_ystddev = 1.0;
+double default_zmin = 0.0;
+double default_zmax = 1.0;
+double default_zmean = 0.0;
+double default_zstddev = 1.0;
 int default_size = 10000;
 
 void

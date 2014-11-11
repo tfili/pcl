@@ -108,9 +108,9 @@ template<typename Tin> static inline __host__ __device__ void _TDemoteClampZ(Tin
 template<typename Tin> static inline __host__ __device__ void _TDemoteClampZ(Tin &a, Ncv32f &out) {out = (Ncv32f)a;}
 
 //TODO: consider using CUDA intrinsics to avoid branching
-template<typename Tin> static inline __host__ __device__ void _TDemoteClampNN(Tin &a, Ncv8u &out) {out = (Ncv8u)CLAMP_0_255(a+0.5f);}
-template<typename Tin> static inline __host__ __device__ void _TDemoteClampNN(Tin &a, Ncv16u &out) {out = (Ncv16u)CLAMP(a+0.5f, 0, USHRT_MAX);}
-template<typename Tin> static inline __host__ __device__ void _TDemoteClampNN(Tin &a, Ncv32u &out) {out = (Ncv32u)CLAMP(a+0.5f, 0, UINT_MAX);}
+template<typename Tin> static inline __host__ __device__ void _TDemoteClampNN(Tin &a, Ncv8u &out) {out = (Ncv8u)CLAMP_0_255(a+0.5);}
+template<typename Tin> static inline __host__ __device__ void _TDemoteClampNN(Tin &a, Ncv16u &out) {out = (Ncv16u)CLAMP(a+0.5, 0, USHRT_MAX);}
+template<typename Tin> static inline __host__ __device__ void _TDemoteClampNN(Tin &a, Ncv32u &out) {out = (Ncv32u)CLAMP(a+0.5, 0, UINT_MAX);}
 template<typename Tin> static inline __host__ __device__ void _TDemoteClampNN(Tin &a, Ncv32f &out) {out = (Ncv32f)a;}
 
 template<typename Tout> inline Tout _pixMakeZero();
@@ -123,9 +123,9 @@ template<> static inline __host__ __device__ ushort4 _pixMakeZero<ushort4>() {re
 template<> static inline __host__ __device__ uint1 _pixMakeZero<uint1>() {return make_uint1(0);}
 template<> static inline __host__ __device__ uint3 _pixMakeZero<uint3>() {return make_uint3(0,0,0);}
 template<> static inline __host__ __device__ uint4 _pixMakeZero<uint4>() {return make_uint4(0,0,0,0);}
-template<> static inline __host__ __device__ float1 _pixMakeZero<float1>() {return make_float1(0.f);}
-template<> static inline __host__ __device__ float3 _pixMakeZero<float3>() {return make_float3(0.f,0.f,0.f);}
-template<> static inline __host__ __device__ float4 _pixMakeZero<float4>() {return make_float4(0.f,0.f,0.f,0.f);}
+template<> static inline __host__ __device__ float1 _pixMakeZero<float1>() {return make_float1(0.);}
+template<> static inline __host__ __device__ float3 _pixMakeZero<float3>() {return make_float3(0.,0.,0.);}
+template<> static inline __host__ __device__ float4 _pixMakeZero<float4>() {return make_float4(0.,0.,0.,0.);}
 template<> static inline __host__ __device__ double1 _pixMakeZero<double1>() {return make_double1(0.);}
 template<> static inline __host__ __device__ double3 _pixMakeZero<double3>() {return make_double3(0.,0.,0.);}
 template<> static inline __host__ __device__ double4 _pixMakeZero<double4>() {return make_double4(0.,0.,0.,0.);}

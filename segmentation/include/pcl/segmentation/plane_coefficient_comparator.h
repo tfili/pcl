@@ -71,7 +71,7 @@ namespace pcl
       PlaneCoefficientComparator ()
         : normals_ ()
         , plane_coeff_d_ ()
-        , angular_threshold_ (pcl::deg2rad (2.0f))
+        , angular_threshold_ (pcl::deg2rad (2.0))
         , distance_threshold_ (0.02f)
         , depth_dependent_ (true)
         , z_axis_ (Eigen::Vector3d (0.0, 0.0, 1.0) )
@@ -84,10 +84,10 @@ namespace pcl
       PlaneCoefficientComparator (boost::shared_ptr<std::vector<double> >& plane_coeff_d) 
         : normals_ ()
         , plane_coeff_d_ (plane_coeff_d)
-        , angular_threshold_ (pcl::deg2rad (2.0f))
+        , angular_threshold_ (pcl::deg2rad (2.0))
         , distance_threshold_ (0.02f)
         , depth_dependent_ (true)
-        , z_axis_ (Eigen::Vector3d (0.0f, 0.0f, 1.0f) )
+        , z_axis_ (Eigen::Vector3d (0.0, 0.0, 1.0) )
       {
       }
       
@@ -150,14 +150,14 @@ namespace pcl
       virtual void
       setAngularThreshold (double angular_threshold)
       {
-        angular_threshold_ = cosf (angular_threshold);
+        angular_threshold_ = cos (angular_threshold);
       }
       
       /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
       inline double
       getAngularThreshold () const
       {
-        return (acosf (angular_threshold_) );
+        return (acos (angular_threshold_) );
       }
 
       /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.

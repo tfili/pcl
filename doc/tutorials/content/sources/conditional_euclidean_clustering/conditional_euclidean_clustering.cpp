@@ -12,7 +12,7 @@ typedef pcl::PointXYZINormal PointTypeFull;
 bool
 enforceIntensitySimilarity (const PointTypeFull& point_a, const PointTypeFull& point_b, double squared_distance)
 {
-  if (fabs (point_a.intensity - point_b.intensity) < 5.0f)
+  if (fabs (point_a.intensity - point_b.intensity) < 5.0)
     return (true);
   else
     return (false);
@@ -22,7 +22,7 @@ bool
 enforceCurvatureOrIntensitySimilarity (const PointTypeFull& point_a, const PointTypeFull& point_b, double squared_distance)
 {
   Eigen::Map<const Eigen::Vector3d> point_a_normal = point_a.normal, point_b_normal = point_b.normal;
-  if (fabs (point_a.intensity - point_b.intensity) < 5.0f)
+  if (fabs (point_a.intensity - point_b.intensity) < 5.0)
     return (true);
   if (fabs (point_a_normal.dot (point_b_normal)) < 0.05)
     return (true);
@@ -35,14 +35,14 @@ customRegionGrowing (const PointTypeFull& point_a, const PointTypeFull& point_b,
   Eigen::Map<const Eigen::Vector3d> point_a_normal = point_a.normal, point_b_normal = point_b.normal;
   if (squared_distance < 10000)
   {
-    if (fabs (point_a.intensity - point_b.intensity) < 8.0f)
+    if (fabs (point_a.intensity - point_b.intensity) < 8.0)
       return (true);
     if (fabs (point_a_normal.dot (point_b_normal)) < 0.06)
       return (true);
   }
   else
   {
-    if (fabs (point_a.intensity - point_b.intensity) < 3.0f)
+    if (fabs (point_a.intensity - point_b.intensity) < 3.0)
       return (true);
   }
   return (false);

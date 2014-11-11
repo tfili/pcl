@@ -135,7 +135,7 @@ pcl::io::saveVTKFile (const std::string &file_name,
         int r = color.r;
         int g = color.g;
         int b = color.b;
-        fs << static_cast<double> (r) / 255.0f << " " << static_cast<double> (g) / 255.0f << " " << static_cast<double> (b) / 255.0f;
+        fs << static_cast<double> (r) / 255.0 << " " << static_cast<double> (g) / 255.0 << " " << static_cast<double> (b) / 255.0;
       }
       fs << std::endl;
     }
@@ -222,7 +222,7 @@ pcl::io::saveVTKFile (const std::string &file_name,
         int r = color.r;
         int g = color.g;
         int b = color.b;
-        fs << static_cast<double> (r) / 255.0f << " " << static_cast<double> (g) / 255.0f << " " << static_cast<double> (b) / 255.0f;
+        fs << static_cast<double> (r) / 255.0 << " " << static_cast<double> (g) / 255.0 << " " << static_cast<double> (b) / 255.0;
       }
       fs << std::endl;
     }

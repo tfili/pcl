@@ -276,8 +276,8 @@ namespace pcl
       {
         const size_t num_of_examples = examples.size ();
 
-        LabelDataType sum = 0.0f;
-        LabelDataType sqr_sum = 0.0f;
+        LabelDataType sum = 0.0;
+        LabelDataType sqr_sum = 0.0;
         for (size_t example_index = 0; example_index < num_of_examples; ++example_index)
         {
           const LabelDataType label = label_data[example_index];

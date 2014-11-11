@@ -101,7 +101,7 @@ namespace pcl
     double x_times_z, y_times_z;
     double x1, x2, y1, y2;
 
-    // see http://www.wolframalpha.com/input/?i=solve+%5By%2Fsqrt%28f^2%2By^2%29*c-f%2Fsqrt%28f^2%2By^2%29*b%2Br%3D%3D0%2C+f%3D1%2C+y%5D
+    // see http://www.wolframalpha.com/input/?i=solve+%5By%2Fsqrt%28^2%2By^2%29*c-f%2Fsqrt%28^2%2By^2%29*b%2Br%3D%3D0%2C+f%3D1%2C+y%5D
     // where b = p_q_arg.y, c = p_q_arg.z, r = radius_arg, f = focalLength_
 
     r_sqr = squared_radius_arg;

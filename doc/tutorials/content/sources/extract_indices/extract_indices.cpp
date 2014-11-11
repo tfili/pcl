@@ -23,7 +23,7 @@ main (int argc, char** argv)
   // Create the filtering object: downsample the dataset using a leaf size of 1cm
   pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
   sor.setInputCloud (cloud_blob);
-  sor.setLeafSize (0.01f, 0.01f, 0.01f);
+  sor.setLeafSize (0.01, 0.01, 0.01);
   sor.filter (*cloud_filtered_blob);
 
   // Convert to the templated PointCloud

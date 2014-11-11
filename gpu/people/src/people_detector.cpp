@@ -60,7 +60,7 @@ using namespace pcl::gpu::people;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 pcl::gpu::people::PeopleDetector::PeopleDetector() 
-    : fx_(525.f), fy_(525.f), cx_(319.5f), cy_(239.5f), delta_hue_tolerance_(5)
+    : fx_(525.), fy_(525.), cx_(319.5), cy_(239.5), delta_hue_tolerance_(5)
 {
   PCL_DEBUG ("[pcl::gpu::people::PeopleDetector] : (D) : Constructor called\n");
 

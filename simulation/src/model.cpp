@@ -29,9 +29,9 @@ pcl::simulation::TriangleMeshModel::TriangleMeshModel (pcl::PolygonMesh::Ptr plg
         uint32_t pt = apoly_in.vertices[j];
         tmp = newcloud.points[pt].getVector4dMap();
         vertices.push_back (Vertex (Eigen::Vector3d (tmp (0), tmp (1), tmp (2)),
-                                    Eigen::Vector3d (newcloud.points[pt].r/255.0f,
-                                                     newcloud.points[pt].g/255.0f,
-                                                     newcloud.points[pt].b/255.0f)));
+                                    Eigen::Vector3d (newcloud.points[pt].r/255.0,
+                                                     newcloud.points[pt].g/255.0,
+                                                     newcloud.points[pt].b/255.0)));
         indices.push_back (indices.size ());
       }
     }
@@ -141,10 +141,10 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
 	apoly.vertices_[3*j + 1] = tmp (1);
 	apoly.vertices_[3*j + 2] = tmp (2);
 	// r,g,b: input is ints 0->255, opengl wants floats 0->1
-	apoly.colors_[4*j + 0] = newcloud.points[pt].r/255.0f; // Red
-	apoly.colors_[4*j + 1] = newcloud.points[pt].g/255.0f; // Green
-	apoly.colors_[4*j + 2] = newcloud.points[pt].b/255.0f; // Blue
-	apoly.colors_[4*j + 3] = 1.0f; // transparancy? unnecessary?
+	apoly.colors_[4*j + 0] = newcloud.points[pt].r/255.0; // Red
+	apoly.colors_[4*j + 1] = newcloud.points[pt].g/255.0; // Green
+	apoly.colors_[4*j + 2] = newcloud.points[pt].b/255.0; // Blue
+	apoly.colors_[4*j + 3] = 1.0; // transparancy? unnecessary?
       }
       polygons.push_back (apoly);
     }
@@ -171,9 +171,9 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
 	apoly.vertices_[3*j + 1] = tmp (1);
 	apoly.vertices_[3*j + 2] = tmp (2);
 	// r,g,b: input is ints 0->255, opengl wants floats 0->1
-	apoly.colors_[4*j + 0] = 1.0f; // Red
-	apoly.colors_[4*j + 1] = 0.0f; // Green
-	apoly.colors_[4*j + 2] = 0.0f; // Blue
+	apoly.colors_[4*j + 0] = 1.0; // Red
+	apoly.colors_[4*j + 1] = 0.0; // Green
+	apoly.colors_[4*j + 2] = 0.0; // Blue
 	apoly.colors_[4*j + 3] = 1.0;
       }
       polygons.push_back (apoly);
@@ -222,9 +222,9 @@ pcl::simulation::PointCloudModel::PointCloudModel (GLenum mode, pcl::PointCloud<
     vertices_[3*i + 1] = pc->points[i].y;
     vertices_[3*i + 2] = pc->points[i].z;
 
-    colors_[4*i + 0] = pc->points[i].r / 255.0f;
-    colors_[4*i + 1] = pc->points[i].g / 255.0f;
-    colors_[4*i + 2] = pc->points[i].b / 255.0f;
+    colors_[4*i + 0] = pc->points[i].r / 255.0;
+    colors_[4*i + 1] = pc->points[i].g / 255.0;
+    colors_[4*i + 2] = pc->points[i].b / 255.0;
     colors_[4*i + 3] = 1.0;
   }
 }
@@ -243,9 +243,9 @@ pcl::simulation::PointCloudModel::draw ()
   glEnableClientState (GL_VERTEX_ARRAY);
   glEnableClientState (GL_COLOR_ARRAY);
 
-  double att[3] = {0.0f, 0.25f, 0.0f};
-  glPointParameterf(GL_POINT_SIZE_MIN, 1.0f);
-  glPointParameterf(GL_POINT_SIZE_MAX, 500.0f); 
+  double att[3] = {0.0, 0.25, 0.0};
+  glPointParameterf(GL_POINT_SIZE_MIN, 1.0);
+  glPointParameterf(GL_POINT_SIZE_MAX, 500.0); 
   glPointParameterfv(GL_POINT_DISTANCE_ATTENUATION, att);
   glEnable(GL_POINT_SPRITE);
 

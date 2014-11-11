@@ -49,7 +49,7 @@
 template <typename PointNT>
 pcl::MarchingCubesRBF<PointNT>::MarchingCubesRBF ()
   : MarchingCubes<PointNT> (),
-    off_surface_epsilon_ (0.1f)
+    off_surface_epsilon_ (0.1)
 {
 }
 

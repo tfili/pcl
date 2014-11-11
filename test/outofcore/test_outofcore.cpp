@@ -131,7 +131,7 @@ TEST (PCL, Outofcore_Octree_Build)
   //boost::uniform_real<double> dist(0,1);
 
   // For testing less sparse
-  boost::normal_distribution<double> dist (0.5f, .1f);
+  boost::normal_distribution<double> dist (0.5, .1);
 
   // Create a point
   PointT p;
@@ -180,7 +180,7 @@ TEST (PCL, Outofcore_Octree_Build_LOD)
   // For testing sparse
   //boost::uniform_real<double> dist(0,1);
   // For testing less sparse
-  boost::normal_distribution<double> dist (0.5f, .1f);
+  boost::normal_distribution<double> dist (0.5, .1);
 
   // Create a point
   PointT p;
@@ -329,7 +329,7 @@ TEST (PCL, Outofcore_Ram_Tree)
 
   boost::mt19937 rng (rngseed);
   //boost::uniform_real<double> dist(0,1);//for testing sparse
-  boost::normal_distribution<double> dist (0.5f, .1f);//for testing less sparse
+  boost::normal_distribution<double> dist (0.5, .1);//for testing less sparse
   PointT p;
 
   points.resize (numPts);
@@ -406,7 +406,7 @@ class OutofcoreTest : public testing::Test
 
     virtual void SetUp ()
     {
-      smallest_voxel_dim = 3.0f;
+      smallest_voxel_dim = 3.0;
     }
 
     virtual void TearDown ()
@@ -563,9 +563,9 @@ TEST_F (OutofcoreTest, Outofcore_PointsOnBoundaries)
   for (int i=0; i<8; i++)
   {
     PointT tmp;
-    tmp.x = static_cast<double> (pow (-1.0, i)) * 1.0f;
-    tmp.y = static_cast<double> (pow (-1.0, i+1)) * 1.0f;
-    tmp.z = static_cast<double> (pow (-1.0, 3*i)) * 1.0f;
+    tmp.x = static_cast<double> (pow (-1.0, i)) * 1.0;
+    tmp.y = static_cast<double> (pow (-1.0, i+1)) * 1.0;
+    tmp.z = static_cast<double> (pow (-1.0, 3*i)) * 1.0;
     
     cloud->points.push_back (tmp);
   }

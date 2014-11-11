@@ -64,7 +64,7 @@ namespace pcl
     inline double
     operator () (const PointXYZRGB & p) const
     {
-      return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) / 1000.0f);
+      return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) / 1000.0);
     }
   };
   template<>
@@ -73,7 +73,7 @@ namespace pcl
     inline double
     operator () (const PointXYZRGBA & p) const
     {
-      return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) / 1000.0f);
+      return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) / 1000.0);
     }
   };
 

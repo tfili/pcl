@@ -57,11 +57,11 @@ typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
 int default_max_window_size = 33;
-double default_slope = 0.7f;
-double default_max_distance = 10.0f;
-double default_initial_distance = 0.15f;
-double default_cell_size = 1.0f;
-double default_base = 2.0f;
+double default_slope = 0.7;
+double default_max_distance = 10.0;
+double default_initial_distance = 0.15;
+double default_cell_size = 1.0;
+double default_base = 2.0;
 bool default_exponential = true;
 int default_verbosity_level = 3;
 

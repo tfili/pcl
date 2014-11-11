@@ -163,9 +163,9 @@ void pcl::gpu::printCudaDeviceInfo(int device)
         printf("\nDevice %d: \"%s\"\n", dev, prop.name);        
         printf("  CUDA Driver Version / Runtime Version          %d.%d / %d.%d\n", driverVersion/1000, driverVersion%100, runtimeVersion/1000, runtimeVersion%100);
         printf("  CUDA Capability Major/Minor version number:    %d.%d\n", prop.major, prop.minor);        
-        printf("  Total amount of global memory:                 %.0f MBytes (%llu bytes)\n", (double)prop.totalGlobalMem/1048576.0f, (unsigned long long) prop.totalGlobalMem);            
+        printf("  Total amount of global memory:                 %.0 MBytes (%llu bytes)\n", (double)prop.totalGlobalMem/1048576.0, (unsigned long long) prop.totalGlobalMem);            
         printf("  (%2d) Multiprocessors x (%2d) CUDA Cores/MP:     %d CUDA Cores\n", prop.multiProcessorCount, sm_cores, sm_cores * prop.multiProcessorCount);
-        printf("  GPU Clock Speed:                               %.2f GHz\n", prop.clockRate * 1e-6f);
+        printf("  GPU Clock Speed:                               %.2f GHz\n", prop.clockRate * 1e-6);
 
 #if (CUDART_VERSION >= 4000)
         // This is not available in the CUDA Runtime API, so we make the necessary calls the driver API to support this for output
@@ -243,7 +243,7 @@ void pcl::gpu::printShortCudaDeviceInfo(int device)
         cudaSafeCall( cudaGetDeviceProperties(&prop, dev) );
 
         const char *arch_str = prop.major < 2 ? " (pre-Fermi)" : "";
-        printf("[pcl::gpu::printShortCudaDeviceInfo] : Device %d:  \"%s\"  %.0fMb", dev, prop.name, (double)prop.totalGlobalMem/1048576.0f);
+        printf("[pcl::gpu::printShortCudaDeviceInfo] : Device %d:  \"%s\"  %.0Mb", dev, prop.name, (double)prop.totalGlobalMem/1048576.0);
         printf(", sm_%d%d%s, %d cores", prop.major, prop.minor, arch_str, convertSMVer2Cores(prop.major, prop.minor) * prop.multiProcessorCount);                
         printf(", Driver/Runtime ver.%d.%d/%d.%d\n", driverVersion/1000, driverVersion%100, runtimeVersion/1000, runtimeVersion%100);
     }

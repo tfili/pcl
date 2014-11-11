@@ -93,7 +93,7 @@ namespace pcl
 
 # define pcl_isnan(x)    _isnan(x)
 # define pcl_isfinite(x) (_finite(x) != 0)
-# define pcl_isinf(x)    (_finite(x) == 0)
+# define pcl_isin(x)    (_finite(x) == 0)
 
 # define __PRETTY_FUNCTION__ __FUNCTION__
 # define __func__ __FUNCTION__
@@ -103,14 +103,14 @@ namespace pcl
 # include <math.h>
 # define pcl_isnan(x)    std::isnan(x)
 # define pcl_isfinite(x) std::isfinite(x)
-# define pcl_isinf(x)    std::isinf(x)
+# define pcl_isin(x)    std::isin(x)
 
 #elif _GLIBCXX_USE_C99_MATH
 // Are the C++ cmath functions enabled?
 # include <cmath>
 # define pcl_isnan(x)    std::isnan(x)
 # define pcl_isfinite(x) std::isfinite(x)
-# define pcl_isinf(x)    std::isinf(x)
+# define pcl_isin(x)    std::isin(x)
 
 #elif __PATHCC__
 # include <cmath>
@@ -122,14 +122,14 @@ pcl_isnan (T &val)
 }
 //# define pcl_isnan(x)    std::isnan(x)
 # define pcl_isfinite(x) std::isfinite(x)
-# define pcl_isinf(x)    std::isinf(x)
+# define pcl_isin(x)    std::isin(x)
 
 #else
 // Use the math.h macros
 # include <math.h>
 # define pcl_isnan(x)    isnan(x)
 # define pcl_isfinite(x) isfinite(x)
-# define pcl_isinf(x)    isinf(x)
+# define pcl_isin(x)    isin(x)
 
 #endif
 
@@ -157,7 +157,7 @@ pcl_round (double number)
 __inline float
 pcl_round (float number)
 {
-  return (number < 0.0f ? ceilf (number - 0.5f) : floorf (number + 0.5f));
+  return (number < 0.0 ? ceilf (number - 0.5) : floorf (number + 0.5));
 }
 
 #ifdef __GNUC__

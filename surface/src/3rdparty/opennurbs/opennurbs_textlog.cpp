@@ -563,7 +563,7 @@ void ON_TextLog::Print( const ON_Matrix& M, const char* sPreamble, int precision
     if ( precision > 3 ) {
       for ( column_index = 0; column_index < column_count; column_index++ ) {
         x = M.m[row_index][column_index];
-        Print( " %8f",x);
+        Print( " %8",x);
       }
       Print("\n");
     }

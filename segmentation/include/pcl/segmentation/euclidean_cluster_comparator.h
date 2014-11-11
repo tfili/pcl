@@ -73,8 +73,8 @@ namespace pcl
       /** \brief Empty constructor for EuclideanClusterComparator. */
       EuclideanClusterComparator ()
         : normals_ ()
-        , angular_threshold_ (0.0f)
-        , distance_threshold_ (0.005f)
+        , angular_threshold_ (0.0)
+        , distance_threshold_ (0.005)
         , depth_dependent_ ()
         , z_axis_ ()
       {
@@ -116,7 +116,7 @@ namespace pcl
       virtual inline void
       setAngularThreshold (double angular_threshold)
       {
-        angular_threshold_ = cosf (angular_threshold);
+        angular_threshold_ = cos (angular_threshold);
       }
       
       /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
@@ -190,7 +190,7 @@ namespace pcl
         double dx = input_->points[idx1].x - input_->points[idx2].x;
         double dy = input_->points[idx1].y - input_->points[idx2].y;
         double dz = input_->points[idx1].z - input_->points[idx2].z;
-        double dist = sqrtf (dx*dx + dy*dy + dz*dz);
+        double dist = sqrt (dx*dx + dy*dy + dz*dz);
 
         return (dist < dist_threshold);
       }

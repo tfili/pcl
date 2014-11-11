@@ -261,14 +261,14 @@ pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT, BranchContainerT>
                          camera_pos.y,
                          camera_pos.z);
   
-  Eigen::Vector3d leaf_centroid(static_cast<double> ((static_cast<double> (key.x) + 0.5f) * this->resolution_ + this->min_x_),
-                                static_cast<double> ((static_cast<double> (key.y) + 0.5f) * this->resolution_ + this->min_y_), 
-                                static_cast<double> ((static_cast<double> (key.z) + 0.5f) * this->resolution_ + this->min_z_));
+  Eigen::Vector3d leaf_centroid(static_cast<double> ((static_cast<double> (key.x) + 0.5) * this->resolution_ + this->min_x_),
+                                static_cast<double> ((static_cast<double> (key.y) + 0.5) * this->resolution_ + this->min_y_), 
+                                static_cast<double> ((static_cast<double> (key.z) + 0.5) * this->resolution_ + this->min_z_));
   Eigen::Vector3d direction = sensor - leaf_centroid;
   
   double norm = direction.norm ();
   direction.normalize ();
-  double precision = 1.0f;
+  double precision = 1.0;
   const double step_size = static_cast<const double> (resolution_) * precision;
   const int nsteps = std::max (1, static_cast<int> (norm / step_size));
   

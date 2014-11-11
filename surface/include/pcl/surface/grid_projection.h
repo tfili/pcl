@@ -261,7 +261,7 @@ namespace pcl
           center[i] = 
             min_p_[i] + static_cast<double> (index[i]) * 
             static_cast<double> (leaf_size_) + 
-            static_cast<double> (leaf_size_) / 2.0f;
+            static_cast<double> (leaf_size_) / 2.0;
       }
 
       /** \brief Given cell center, caluate the coordinates of the eight vertices of the cell

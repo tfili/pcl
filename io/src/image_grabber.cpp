@@ -582,17 +582,17 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
   double centerX, centerY;
   if (manual_intrinsics_)
   {
-    scaleFactorX = 1.f / static_cast<double> (focal_length_x_);
-    scaleFactorY = 1.f / static_cast<double> (focal_length_y_);
+    scaleFactorX = 1. / static_cast<double> (focal_length_x_);
+    scaleFactorY = 1. / static_cast<double> (focal_length_y_);
     centerX = static_cast<double> (principal_point_x_);
     centerY = static_cast<double> (principal_point_y_);
   }
   else
   {
     // The 525 factor default is only true for VGA. If not, we should scale
-    scaleFactorX = scaleFactorY = 1/525.f * 640.f / static_cast<double> (dims[0]);
-    centerX = ((double)dims[0] - 1.f)/2.f;
-    centerY = ((double)dims[1] - 1.f)/2.f;
+    scaleFactorX = scaleFactorY = 1/525. * 640. / static_cast<double> (dims[0]);
+    centerX = ((double)dims[0] - 1.)/2.;
+    centerY = ((double)dims[1] - 1.)/2.;
   }
 
   if(rgb_image_files_.size() > 0)
@@ -609,7 +609,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
       {
         pcl::PointXYZRGBA &pt = cloud_color.at (x,y);
         double depth = static_cast<double> (*depth_pixel) * depth_image_units_;
-        if (depth == 0.0f) 
+        if (depth == 0.0) 
           pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
         else
         {
@@ -646,7 +646,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
       {
         pcl::PointXYZ &pt = cloud.at (x,y);
         double depth = static_cast<double> (*depth_pixel) * depth_image_units_;
-        if (depth == 0.0f) 
+        if (depth == 0.0) 
           pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
         else
         {

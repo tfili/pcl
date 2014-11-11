@@ -91,19 +91,19 @@ SelectionTransformTool::update (int x, int y, BitMask, BitMask buttons)
   {
     // selection motion is not applied directly (waits for end)
     // as such we can not update x and y immediately
-    double scale = 1.0f / cloud_ptr_->getScalingFactor();
+    double scale = 1.0 / cloud_ptr_->getScalingFactor();
     cloud_ptr_->setSelectionTranslation ((double) dx * translate_factor_ * scale,
                                          (double) -dy * translate_factor_ * scale,
-                                         0.0f);
+                                         0.0);
     return;
   }
   else if (modifiers_ & ALT)
   {
     // selection motion is not applied directly (waits for end)
     // as such we can not update x and y immediately
-    double scale = 1.0f / cloud_ptr_->getScalingFactor();
-    cloud_ptr_->setSelectionTranslation (0.0f,
-                                         0.0f,
+    double scale = 1.0 / cloud_ptr_->getScalingFactor();
+    cloud_ptr_->setSelectionTranslation (0.0,
+                                         0.0,
                                          (double) dy * translate_factor_ * scale);
     return;
   }
@@ -128,7 +128,7 @@ SelectionTransformTool::end (int x, int y, BitMask modifiers, BitMask buttons)
   if (!(buttons & LEFT))
     return;
 
-  double scale = 1.0f / cloud_ptr_->getScalingFactor();
+  double scale = 1.0 / cloud_ptr_->getScalingFactor();
   int dx = (x - x_);
   int dy = (y - y_);
   update(x, y, modifiers, buttons);
@@ -136,25 +136,25 @@ SelectionTransformTool::end (int x, int y, BitMask modifiers, BitMask buttons)
   {
     boost::shared_ptr<TransformCommand> c(new TransformCommand(selection_ptr_,
       cloud_ptr_, transform_matrix_, (double) dx * translate_factor_ * scale,
-      (double) -dy * translate_factor_ * scale, 0.0f));
+      (double) -dy * translate_factor_ * scale, 0.0));
     command_queue_ptr_->execute(c);
   }
   else if (modifiers_ & ALT)
   {
     boost::shared_ptr<TransformCommand> c(new TransformCommand(selection_ptr_,
-      cloud_ptr_, transform_matrix_, 0.0f, 0.0f,
+      cloud_ptr_, transform_matrix_, 0.0, 0.0,
       (double) dy * translate_factor_ * scale));
     command_queue_ptr_->execute(c);
   }
   else
   {
     boost::shared_ptr<TransformCommand> c(new TransformCommand(selection_ptr_,
-      cloud_ptr_, transform_matrix_, 0.0f, 0.0f, 0.0f));
+      cloud_ptr_, transform_matrix_, 0.0, 0.0, 0.0));
     command_queue_ptr_->execute(c);
   }
   setIdentity(transform_matrix_);
   cloud_ptr_->setSelectionRotation(transform_matrix_);
-  cloud_ptr_->setSelectionTranslation(0.0f, 0.0f, 0.0f);
+  cloud_ptr_->setSelectionTranslation(0.0, 0.0, 0.0);
 }
 
 /*void
@@ -165,8 +165,8 @@ SelectionTransformTool::getRotateMatrix (int dx, int dy,
 {
   setIdentity(rotation_matrix_a);
   setIdentity(rotation_matrix_b);
-  double rad_dx = (double) dx  * M_PI / 180.0f;
-  double rad_dy = (double) dy  * M_PI / 180.0f;
+  double rad_dx = (double) dx  * M_PI / 180.0;
+  double rad_dy = (double) dy  * M_PI / 180.0;
   rotation_matrix_a[5]  = std::cos(rad_dy);
   rotation_matrix_a[6]  = std::sin(rad_dy);
   rotation_matrix_a[9]  = -std::sin(rad_dy);
@@ -192,8 +192,8 @@ SelectionTransformTool::findSelectionCenter ()
 {
   if (!selection_ptr_ || selection_ptr_->empty())
     return;
-  double min_xyz[XYZ_SIZE] = {0.0f};
-  double max_xyz[XYZ_SIZE] = {0.0f};
+  double min_xyz[XYZ_SIZE] = {0.0};
+  double max_xyz[XYZ_SIZE] = {0.0};
   Selection::const_iterator it = selection_ptr_->begin();
   double *pt = &((cloud_ptr_->getObjectSpacePoint(*it)).data[X]);
   std::copy(pt, pt+XYZ_SIZE, max_xyz);
@@ -210,7 +210,7 @@ SelectionTransformTool::findSelectionCenter ()
   }
   for (unsigned int j = 0; j < XYZ_SIZE; ++j)
   {
-    center_xyz_[j] = 0.5f * (max_xyz[j] + min_xyz[j]);
+    center_xyz_[j] = 0.5 * (max_xyz[j] + min_xyz[j]);
   }
 }
 

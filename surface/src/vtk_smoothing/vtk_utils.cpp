@@ -247,7 +247,7 @@ pcl::VTKUtils::mesh2vtk (const pcl::PolygonMesh& mesh, vtkSmartPointer<vtkPolyDa
   {
     vtkSmartPointer<vtkFloatArray> normals = vtkSmartPointer<vtkFloatArray>::New ();
     normals->SetNumberOfComponents (3);
-    double nx = 0.0f, ny = 0.0f, nz = 0.0f;
+    double nx = 0.0, ny = 0.0, nz = 0.0;
     for (vtkIdType cp = 0; cp < nr_points; ++cp)
     {
       memcpy (&nx, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_x].offset], sizeof(double));

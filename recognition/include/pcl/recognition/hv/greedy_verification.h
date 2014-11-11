@@ -165,7 +165,7 @@ namespace pcl
       /** \brief Constructor
        * \param[in] reg Regularizer value
        **/
-      GreedyVerification (double reg = 1.5f) :
+      GreedyVerification (double reg = 1.5) :
         HypothesisVerification<ModelT, SceneT> ()
       {
         regularizer_ = reg;

@@ -85,7 +85,7 @@ void
 pcl::simulation::gllib::Program::setUniform (const std::string& name, double v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
-  glUniform1f (loc, v);
+  glUniform1 (loc, v);
 }
 
 void

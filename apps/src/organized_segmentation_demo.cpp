@@ -27,9 +27,9 @@ displayPlanarRegions (std::vector<pcl::PlanarRegion<PointT>, Eigen::aligned_allo
     Eigen::Vector3d centroid = regions[i].getCentroid ();
     Eigen::Vector4d model = regions[i].getCoefficients ();
     pcl::PointXYZ pt1 = pcl::PointXYZ (centroid[0], centroid[1], centroid[2]);
-    pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5f * model[0]),
-                                       centroid[1] + (0.5f * model[1]),
-                                       centroid[2] + (0.5f * model[2]));
+    pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5 * model[0]),
+                                       centroid[1] + (0.5 * model[1]),
+                                       centroid[2] + (0.5 * model[2]));
     sprintf (name, "normal_%d", unsigned (i));
     viewer->addArrow (pt2, pt1, 1.0, 0, 0, false, name);
     
@@ -247,8 +247,8 @@ OrganizedSegmentationDemo::OrganizedSegmentationDemo (pcl::Grabber& grabber) : g
   // Set up Normal Estimation
   //ne.setNormalEstimationMethod (ne.SIMPLE_3D_GRADIENT);
   ne.setNormalEstimationMethod (ne.COVARIANCE_MATRIX);
-  ne.setMaxDepthChangeFactor (0.02f);
-  ne.setNormalSmoothingSize (20.0f);
+  ne.setMaxDepthChangeFactor (0.02);
+  ne.setNormalSmoothingSize (20.0);
 
   plane_comparator_.reset (new pcl::PlaneCoefficientComparator<PointT, pcl::Normal> ());
   euclidean_comparator_.reset (new pcl::EuclideanPlaneCoefficientComparator<PointT, pcl::Normal> ());
@@ -281,7 +281,7 @@ OrganizedSegmentationDemo::cloud_cb (const CloudConstPtr& cloud)
   double* distance_map = ne.getDistanceMap ();
   boost::shared_ptr<pcl::EdgeAwarePlaneComparator<PointT,pcl::Normal> > eapc = boost::dynamic_pointer_cast<pcl::EdgeAwarePlaneComparator<PointT,pcl::Normal> >(edge_aware_comparator_);
   eapc->setDistanceMap (distance_map);
-  eapc->setDistanceThreshold (0.01f, false);
+  eapc->setDistanceThreshold (0.01, false);
 
   // Segment Planes
   double mps_start = pcl::getTime ();
@@ -322,7 +322,7 @@ OrganizedSegmentationDemo::cloud_cb (const CloudConstPtr& cloud)
     euclidean_cluster_comparator_->setInputCloud (cloud);
     euclidean_cluster_comparator_->setLabels (labels);
     euclidean_cluster_comparator_->setExcludeLabels (plane_labels);
-    euclidean_cluster_comparator_->setDistanceThreshold (0.01f, false);
+    euclidean_cluster_comparator_->setDistanceThreshold (0.01, false);
 
     pcl::PointCloud<pcl::Label> euclidean_labels;
     std::vector<pcl::PointIndices> euclidean_label_indices;
@@ -383,7 +383,7 @@ OrganizedSegmentationDemo::timeoutSlot ()
       if (display_normals_)
       {
         vis_->removePointCloud ("normals");
-        vis_->addPointCloudNormals<PointT,pcl::Normal>(boost::make_shared<pcl::PointCloud<PointT> >(prev_cloud_), boost::make_shared<pcl::PointCloud<pcl::Normal> >(prev_normals_), 10, 0.05f, "normals");
+        vis_->addPointCloudNormals<PointT,pcl::Normal>(boost::make_shared<pcl::PointCloud<PointT> >(prev_cloud_), boost::make_shared<pcl::PointCloud<pcl::Normal> >(prev_normals_), 10, 0.05, "normals");
         vis_->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_OPACITY, 0.5, "normals");
       }
       else

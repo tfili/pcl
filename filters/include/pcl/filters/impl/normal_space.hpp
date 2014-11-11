@@ -123,7 +123,7 @@ pcl::NormalSpaceSampling<PointT, NormalT>::findBin (const double *normal, unsign
   double max_cos = 1.0;
   double min_cos = -1.0;
 
-//  dcos = cosf (normal[0]);
+//  dcos = cos (normal[0]);
   dcos = normal[0];
   bin_size = (max_cos - min_cos) / static_cast<double> (binsx_);
 
@@ -138,7 +138,7 @@ pcl::NormalSpaceSampling<PointT, NormalT>::findBin (const double *normal, unsign
   }
   t[0] = k;
 
-//  dcos = cosf (normal[1]);
+//  dcos = cos (normal[1]);
   dcos = normal[1];
   bin_size = (max_cos - min_cos) / static_cast<double> (binsy_);
 
@@ -153,7 +153,7 @@ pcl::NormalSpaceSampling<PointT, NormalT>::findBin (const double *normal, unsign
   }
   t[1] = k;
     
-//  dcos = cosf (normal[2]);
+//  dcos = cos (normal[2]);
   dcos = normal[2];
   bin_size = (max_cos - min_cos) / static_cast<double> (binsz_);
 

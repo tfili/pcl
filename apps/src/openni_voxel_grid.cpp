@@ -166,12 +166,12 @@ main (int argc, char ** argv)
   if (pcl::console::find_argument (argc, argv, "-h") != -1)
     usage (argv);
 
-  double min_v = 0.0f, max_v = 5.0f;
+  double min_v = 0.0, max_v = 5.0;
   pcl::console::parse_2x_arguments (argc, argv, "-minmax", min_v, max_v);
   std::string field_name ("z");
   pcl::console::parse_argument (argc, argv, "-field", field_name);
   PCL_INFO ("Filtering data on %s between %f -> %f.\n", field_name.c_str (), min_v, max_v);
-  double leaf_x = 0.01f, leaf_y = 0.01f, leaf_z = 0.01f;
+  double leaf_x = 0.01, leaf_y = 0.01, leaf_z = 0.01;
   pcl::console::parse_3x_arguments (argc, argv, "-leaf", leaf_x, leaf_y, leaf_z);
   PCL_INFO ("Using %f, %f, %f as a leaf size for VoxelGrid.\n", leaf_x, leaf_y, leaf_z);
 

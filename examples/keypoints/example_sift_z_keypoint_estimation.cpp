@@ -81,10 +81,10 @@ main(int, char** argv)
   std::cout << "points: " << cloud_xyz->points.size () <<std::endl;
   
   // Parameters for sift computation
-  const double min_scale = 0.005f;
+  const double min_scale = 0.005;
   const int n_octaves = 6;
   const int n_scales_per_octave = 4;
-  const double min_contrast = 0.005f;
+  const double min_contrast = 0.005;
   
   // Estimate the sift interest points using z values from xyz as the Intensity variants
   pcl::SIFTKeypoint<pcl::PointXYZ, pcl::PointWithScale> sift;

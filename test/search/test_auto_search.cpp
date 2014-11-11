@@ -53,9 +53,9 @@ void
 init ()
 {
   double resolution = 0.1;
-  for (double z = -0.5f; z <= 0.5f; z += resolution)
-    for (double y = -0.5f; y <= 0.5f; y += resolution)
-      for (double x = -0.5f; x <= 0.5f; x += resolution)
+  for (double z = -0.5; z <= 0.5; z += resolution)
+    for (double y = -0.5; y <= 0.5; y += resolution)
+      for (double x = -0.5; x <= 0.5; x += resolution)
         cloud.points.push_back (PointXYZ (x, y, z));
   cloud.width  = cloud.points.size ();
   cloud.height = 1;
@@ -273,7 +273,7 @@ TEST (PCL, KdTreeWrapper_nearestKSearch)
 
   pcl::search::Search<PointXYZ>* kdtree = new pcl::search::AutotunedSearch<PointXYZ>(pcl::search::KDTREE);
   kdtree->setInputCloud (cloud.makeShared ());
-  PointXYZ test_point (0.01f, 0.01f, 0.01f);
+  PointXYZ test_point (0.01, 0.01, 0.01);
   unsigned int no_of_neighbors = 20;
   multimap<double, int> sorted_brute_force_result;
   for (size_t i = 0; i < cloud.points.size (); ++i)
@@ -281,7 +281,7 @@ TEST (PCL, KdTreeWrapper_nearestKSearch)
     double distance = euclideanDistance (cloud.points[i], test_point);
     sorted_brute_force_result.insert (make_pair (distance, (int) i));
   }
-  double max_dist = 0.0f;
+  double max_dist = 0.0;
   unsigned int counter = 0;
   for (multimap<double, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end () && counter < no_of_neighbors; ++it)
   {

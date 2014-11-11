@@ -135,7 +135,7 @@ void pcl::RFFaceDetectorTrainer::faceVotesClustering()
   }
 
   //mean shift
-  //double SMALL_HEAD_RADIUS = HEAD_ST_DIAMETER_ / 6.f;
+  //double SMALL_HEAD_RADIUS = HEAD_ST_DIAMETER_ / 6.;
   double SMALL_HEAD_RADIUS_SQ = HEAD_ST_DIAMETER_ * HEAD_ST_DIAMETER_ / 36.;
   int msi = 10;
   std::cout << "Number of clusters:" << clusters_mean.size () << " votes:" << head_center_votes_.size () << std::endl;
@@ -434,7 +434,7 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
   if (pose_refinement_ && (head_clusters_centers_.size () > 0))
   {
     Eigen::Matrix4d icp_trans;
-    double max_distance = 0.015f;
+    double max_distance = 0.015;
     int iter = icp_iterations_;
 
     pcl::PointCloud<pcl::PointNormal>::Ptr cloud_voxelized (new pcl::PointCloud<pcl::PointNormal> ());
@@ -445,7 +445,7 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
       NormalEstimator_ n3d;
       n3d.setNormalEstimationMethod (n3d.COVARIANCE_MATRIX);
       n3d.setInputCloud (input_);
-      n3d.setRadiusSearch (0.f);
+      n3d.setRadiusSearch (0.);
       n3d.setKSearch (10);
       n3d.compute (*scene_normals);
     }

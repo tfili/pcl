@@ -471,7 +471,7 @@ pcl::io::mesh2vtk (const pcl::PolygonMesh& mesh, vtkSmartPointer<vtkPolyData>& p
   {
     vtkSmartPointer<vtkFloatArray> normals = vtkSmartPointer<vtkFloatArray>::New ();
     normals->SetNumberOfComponents (3);
-    double nx = 0.0f, ny = 0.0f, nz = 0.0f;
+    double nx = 0.0, ny = 0.0, nz = 0.0;
     for (vtkIdType cp = 0; cp < nr_points; ++cp)
     {
       memcpy (&nx, &mesh.cloud.data[cp*mesh.cloud.point_step+mesh.cloud.fields[idx_normal_x].offset], sizeof (double));
@@ -525,7 +525,7 @@ pcl::io::saveRangeImagePlanarFilePNG (
 #else
   shiftScaleFilter->SetInputData (image);
 #endif
-  shiftScaleFilter->SetShift(-1.0f * image->GetScalarRange()[0]); // brings the lower bound to 0
+  shiftScaleFilter->SetShift(-1.0 * image->GetScalarRange()[0]); // brings the lower bound to 0
   shiftScaleFilter->SetScale(newRange/oldRange);
   shiftScaleFilter->Update();
 

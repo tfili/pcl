@@ -115,10 +115,10 @@ pcl::FastBilateralFilterOMP<PointT>::applyFilter (PointCloud &output)
       for (size_t y = start_y; y < end_y && y < input_->height; ++y)
       {
         const double z = output (x,y).z - base_min;
-        const size_t small_z = static_cast<size_t> (static_cast<double> (z) / sigma_r_ + 0.5f) + padding_z;
+        const size_t small_z = static_cast<size_t> (static_cast<double> (z) / sigma_r_ + 0.5) + padding_z;
         Eigen::Vector2d& d = data (small_x, small_y, small_z);
         d[0] += output (x,y).z;
-        d[1] += 1.0f;
+        d[1] += 1.0;
       }
     }
   }

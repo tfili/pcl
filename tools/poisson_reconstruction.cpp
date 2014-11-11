@@ -53,7 +53,7 @@ using namespace pcl::console;
 int default_depth = 8;
 int default_solver_divide = 8;
 int default_iso_divide = 8;
-double default_point_weight = 4.0f;
+double default_point_weight = 4.0;
 
 void
 printHelp (int, char **argv)

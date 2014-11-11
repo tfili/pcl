@@ -72,7 +72,7 @@ namespace pcl
             * \param[in] cube_size physical size (in meters) of the volume (here, a cube) represented by the TSDF buffer.
             * \param[in] nb_voxels_per_axis number of voxels per axis of the volume represented by the TSDF buffer.
             */
-          CyclicalBuffer (const double distance_threshold, const double cube_size = 3.f, const int nb_voxels_per_axis = 512)
+          CyclicalBuffer (const double distance_threshold, const double cube_size = 3., const int nb_voxels_per_axis = 512)
           {
             distance_threshold_ = distance_threshold;
             buffer_.volume_size.x = cube_size; 
@@ -196,8 +196,8 @@ namespace pcl
           void resetBuffer (TsdfVolume::Ptr tsdf_volume)
           {
             buffer_.origin_GRID.x = 0; buffer_.origin_GRID.y = 0; buffer_.origin_GRID.z = 0;
-            buffer_.origin_GRID_global.x = 0.f; buffer_.origin_GRID_global.y = 0.f; buffer_.origin_GRID_global.z = 0.f;
-            buffer_.origin_metric.x = 0.f; buffer_.origin_metric.y = 0.f; buffer_.origin_metric.z = 0.f;
+            buffer_.origin_GRID_global.x = 0.; buffer_.origin_GRID_global.y = 0.; buffer_.origin_GRID_global.z = 0.;
+            buffer_.origin_metric.x = 0.; buffer_.origin_metric.y = 0.; buffer_.origin_metric.z = 0.;
             initBuffer (tsdf_volume);
           }
           

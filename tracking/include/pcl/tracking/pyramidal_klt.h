@@ -90,7 +90,7 @@ namespace pcl
           max_iterations_ = 10;
           keypoints_nbr_ = 100;
           min_eigenvalue_threshold_ = 1e-4;
-          kernel_ << 1.f/16 ,1.f/4 ,3.f/8 ,1.f/4 ,1.f/16;
+          kernel_ << 1./16 ,1./4 ,3./8 ,1./4 ,1./16;
           kernel_size_2_ = kernel_.size () / 2;
           kernel_last_ = kernel_.size () -1;
         }

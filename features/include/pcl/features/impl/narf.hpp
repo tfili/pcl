@@ -63,9 +63,9 @@ inline void Narf::copyToNarf36(Narf36& narf36) const
 
 //inline double Narf::getDescriptorDistance(const Narf& other) const
 //{
-  //double middle_value = 0.1f;
-  //double normalization_factor1 = 1.0f/middle_value,
-        //normalization_factor2 = 1.0f/(1.0f-middle_value);
+  //double middle_value = 0.1;
+  //double normalization_factor1 = 1.0/middle_value,
+        //normalization_factor2 = 1.0/(1.0-middle_value);
   //const double* descriptor1_ptr = descriptor_;
   //const double* descriptor2_ptr = other.getDescriptor();
   //double ret = 0;
@@ -74,15 +74,15 @@ inline void Narf::copyToNarf36(Narf36& narf36) const
     //if (diff < middle_value)
     //{
       //diff = diff*normalization_factor1;
-      //diff = 0.5f*diff*diff;
-      ////diff = 0.5f*powf(diff, 2);
+      //diff = 0.5*diff*diff;
+      ////diff = 0.5*pow(diff, 2);
     //}
     //else
     //{
       //diff = (diff - middle_value)*normalization_factor2;
-      //diff = 0.5f + 0.5f*diff;
-      ////diff = 0.5f + 0.5f*sqrtf(diff);
-      ////diff = 0.5f + 0.5f*powf(diff, 0.3f);
+      //diff = 0.5 + 0.5*diff;
+      ////diff = 0.5 + 0.5*sqrt(diff);
+      ////diff = 0.5 + 0.5*pow(diff, 0.3f);
     //}
     //ret += diff;
   //}

@@ -98,7 +98,7 @@ pcl::gpu::RayCaster::run(const TsdfVolume& volume, const Affine3d& camera_pose)
 void
 pcl::gpu::RayCaster::generateSceneView(View& view) const
 {
-  generateSceneView(view, volume_size_ * (-3.f));
+  generateSceneView(view, volume_size_ * (-3.));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

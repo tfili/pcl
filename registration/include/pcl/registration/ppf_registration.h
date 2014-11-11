@@ -75,14 +75,14 @@ namespace pcl
        * \param angle_discretization_step the step value between each bin of the hash map for the angular values
        * \param distance_discretization_step the step value between each bin of the hash map for the distance values
        */
-      PPFHashMapSearch (double angle_discretization_step = 12.0f / 180.0f * static_cast<double> (M_PI),
-                        double distance_discretization_step = 0.01f)
+      PPFHashMapSearch (double angle_discretization_step = 12.0 / 180.0 * static_cast<double> (M_PI),
+                        double distance_discretization_step = 0.01)
         : alpha_m_ ()
         , feature_hash_map_ (new FeatureHashMapType)
         , internals_initialized_ (false)
         , angle_discretization_step_ (angle_discretization_step)
         , distance_discretization_step_ (distance_discretization_step)
-        , max_dist_ (-1.0f)
+        , max_dist_ (-1.0)
       {
       }
 
@@ -182,8 +182,8 @@ namespace pcl
       :  Registration<PointSource, PointTarget> (),
          search_method_ (),
          scene_reference_point_sampling_rate_ (5),
-         clustering_position_diff_threshold_ (0.01f),
-         clustering_rotation_diff_threshold_ (20.0f / 180.0f * static_cast<double> (M_PI))
+         clustering_position_diff_threshold_ (0.01),
+         clustering_rotation_diff_threshold_ (20.0 / 180.0 * static_cast<double> (M_PI))
       {}
 
       /** \brief Method for setting the position difference clustering parameter

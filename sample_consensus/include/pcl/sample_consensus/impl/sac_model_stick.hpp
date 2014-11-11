@@ -157,7 +157,7 @@ pcl::SampleConsensusModelStick<PointT>::selectWithinDistance (
     //double u = dir.dot (line_dir);
 
     // If the point falls outside of the segment, ignore it
-    //if (u < 0.0f || u > 1.0f)
+    //if (u < 0.0 || u > 1.0)
     //  continue;
 
     double sqr_distance = dir.cross3 (line_dir).squaredNorm ();
@@ -204,7 +204,7 @@ pcl::SampleConsensusModelStick<PointT>::countWithinDistance (
     //double u = dir.dot (line_dir);
 
     // If the point falls outside of the segment, ignore it
-    //if (u < 0.0f || u > 1.0f)
+    //if (u < 0.0 || u > 1.0)
     //  continue;
 
     double sqr_distance = dir.cross3 (line_dir).squaredNorm ();

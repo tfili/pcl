@@ -3696,8 +3696,8 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
     for (size_t i = 0; i < cloud->points.size (); i++)
     {
       cloud->points[i].getVector4dMap () = trans_view * cloud->points[i].getVector4dMap ();
-      cloud->points[i].y *= -1.0f;
-      cloud->points[i].z *= -1.0f;
+      cloud->points[i].y *= -1.0;
+      cloud->points[i].z *= -1.0;
     }
 
     renderer->RemoveActor (actor_view);
@@ -3749,8 +3749,8 @@ pcl::visualization::PCLVisualizer::renderView (int xres, int yres, pcl::PointClo
   win_->SetSize (xres, yres);
   win_->Render ();
 
-  double dwidth = 2.0f / double (xres),
-        dheight = 2.0f / double (yres);
+  double dwidth = 2.0 / double (xres),
+        dheight = 2.0 / double (yres);
 
   cloud->points.resize (xres * yres);
   cloud->width = xres;
@@ -3788,13 +3788,13 @@ pcl::visualization::PCLVisualizer::renderView (int xres, int yres, pcl::PointClo
         continue;
       }
 
-      Eigen::Vector4d world_coords (dwidth  * double (x) - 1.0f,
-                                    dheight * double (y) - 1.0f,
+      Eigen::Vector4d world_coords (dwidth  * double (x) - 1.0,
+                                    dheight * double (y) - 1.0,
                                     depth[ptr],
-                                    1.0f);
+                                    1.0);
       world_coords = mat1 * world_coords;
 
-      double w3 = 1.0f / world_coords[3];
+      double w3 = 1.0 / world_coords[3];
       world_coords[0] *= w3;
       // vtk view coordinate system is different than the standard camera coordinates (z forward, y down, x right), thus, the fliping in y and z
       world_coords[1] *= -w3;
@@ -3970,7 +3970,7 @@ pcl::visualization::PCLVisualizer::convertToVtkMatrix (
   vtk_matrix->SetElement (0, 3, origin (0));
   vtk_matrix->SetElement (1, 3, origin (1));
   vtk_matrix->SetElement (2, 3, origin (2));
-  vtk_matrix->SetElement (3, 3, 1.0f);
+  vtk_matrix->SetElement (3, 3, 1.0);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -4236,9 +4236,9 @@ pcl::visualization::PCLVisualizer::FPSCallback::Execute (
     vtkObject* caller, unsigned long, void*)
 {
   vtkRenderer *ren = reinterpret_cast<vtkRenderer *> (caller);
-  double fps = 1.0f / static_cast<double> (ren->GetLastRenderTimeInSeconds ());
+  double fps = 1.0 / static_cast<double> (ren->GetLastRenderTimeInSeconds ());
   char buf[128];
-  sprintf (buf, "%.1f FPS", fps);
+  sprintf (buf, "%.1 FPS", fps);
   actor->SetInput (buf);
 }
 

@@ -69,7 +69,7 @@ main (int argc, char ** argv)
   double threshold = 0.001;
   pcl::filters::Convolution<pcl::PointXYZRGB, pcl::PointXYZRGB> convolution;
   Eigen::ArrayXf gaussian_kernel(5);
-  gaussian_kernel << 1.f/16, 1.f/4, 3.f/8, 1.f/4, 1.f/16;
+  gaussian_kernel << 1./16, 1./4, 3./8, 1./4, 1./16;
   pcl::console::print_info ("convolution kernel:");
   for (int i = 0; i < gaussian_kernel.size (); ++i)
     pcl::console::print_info (" %f", gaussian_kernel[i]);

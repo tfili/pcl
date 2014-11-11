@@ -140,7 +140,7 @@ namespace pcl
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT>
 pcl::ColorModality<PointInT>::ColorModality ()
-  : feature_distance_threshold_ (1.0f), quantized_colors_ (), filtered_quantized_colors_ (), spreaded_filtered_quantized_colors_ ()
+  : feature_distance_threshold_ (1.0), quantized_colors_ (), filtered_quantized_colors_ (), spreaded_filtered_quantized_colors_ ()
 {
 }
 
@@ -266,7 +266,7 @@ void pcl::ColorModality<PointInT>::extractFeatures (const MaskMap & mask,
   }
 
   for (typename std::list<Candidate>::iterator iter = list1.begin (); iter != list1.end (); ++iter)
-    iter->distance *= 1.0f / weights[iter->bin_index];
+    iter->distance *= 1.0 / weights[iter->bin_index];
 
   list1.sort ();
 
@@ -435,18 +435,18 @@ pcl::ColorModality<PointInT>::quantizeColorOnRGBExtrema (const double r,
                                                          const double g,
                                                          const double b)
 {
-  const double r_inv = 255.0f-r;
-  const double g_inv = 255.0f-g;
-  const double b_inv = 255.0f-b;
+  const double r_inv = 255.0-r;
+  const double g_inv = 255.0-g;
+  const double b_inv = 255.0-b;
 
-  const double dist_0 = (r*r + g*g + b*b)*2.0f;
+  const double dist_0 = (r*r + g*g + b*b)*2.0;
   const double dist_1 = r*r + g*g + b_inv*b_inv;
   const double dist_2 = r*r + g_inv*g_inv+ b*b;
   const double dist_3 = r*r + g_inv*g_inv + b_inv*b_inv;
   const double dist_4 = r_inv*r_inv + g*g + b*b;
   const double dist_5 = r_inv*r_inv + g*g + b_inv*b_inv;
   const double dist_6 = r_inv*r_inv + g_inv*g_inv+ b*b;
-  const double dist_7 = (r_inv*r_inv + g_inv*g_inv + b_inv*b_inv)*1.5f;
+  const double dist_7 = (r_inv*r_inv + g_inv*g_inv + b_inv*b_inv)*1.5;
 
   const double min_dist = std::min (std::min (std::min (dist_0, dist_1), std::min (dist_2, dist_3)), std::min (std::min (dist_4, dist_5), std::min (dist_6, dist_7)));
 
@@ -498,7 +498,7 @@ pcl::ColorModality<PointInT>::computeDistanceMap (const MaskMap & input,
   for (size_t index = 0; index < width*height; ++index)
   {
     if (mask_map[index] == 0)
-      distance_map[index] = 0.0f;
+      distance_map[index] = 0.0;
     else
       distance_map[index] = static_cast<double> (width + height);
   }
@@ -511,9 +511,9 @@ pcl::ColorModality<PointInT>::computeDistanceMap (const MaskMap & input,
     for (size_t ci = 1; ci < width; ++ci)
     {
       const double up_left  = previous_row [ci - 1] + 1.4f; //distance_map[(ri-1)*input_->width + ci-1] + 1.4f;
-      const double up       = previous_row [ci]     + 1.0f; //distance_map[(ri-1)*input_->width + ci] + 1.0f;
+      const double up       = previous_row [ci]     + 1.0; //distance_map[(ri-1)*input_->width + ci] + 1.0;
       const double up_right = previous_row [ci + 1] + 1.4f; //distance_map[(ri-1)*input_->width + ci+1] + 1.4f;
-      const double left     = current_row  [ci - 1] + 1.0f; //distance_map[ri*input_->width + ci-1] + 1.0f;
+      const double left     = current_row  [ci - 1] + 1.0; //distance_map[ri*input_->width + ci-1] + 1.0;
       const double center   = current_row  [ci];            //distance_map[ri*input_->width + ci];
 
       const double min_value = std::min (std::min (up_left, up), std::min (left, up_right));
@@ -533,9 +533,9 @@ pcl::ColorModality<PointInT>::computeDistanceMap (const MaskMap & input,
     for (int ci = static_cast<int> (width)-2; ci >= 0; --ci)
     {
       const double lower_left  = next_row    [ci - 1] + 1.4f; //distance_map[(ri+1)*input_->width + ci-1] + 1.4f;
-      const double lower       = next_row    [ci]     + 1.0f; //distance_map[(ri+1)*input_->width + ci] + 1.0f;
+      const double lower       = next_row    [ci]     + 1.0; //distance_map[(ri+1)*input_->width + ci] + 1.0;
       const double lower_right = next_row    [ci + 1] + 1.4f; //distance_map[(ri+1)*input_->width + ci+1] + 1.4f;
-      const double right       = current_row [ci + 1] + 1.0f; //distance_map[ri*input_->width + ci+1] + 1.0f;
+      const double right       = current_row [ci + 1] + 1.0; //distance_map[ri*input_->width + ci+1] + 1.0;
       const double center      = current_row [ci];            //distance_map[ri*input_->width + ci];
 
       const double min_value = std::min (std::min (lower_left, lower), std::min (right, lower_right));

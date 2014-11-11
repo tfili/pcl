@@ -255,7 +255,7 @@ TEST (PCL, Octree_RadiusSearch_GPU)
         5.0 * ((double)rand () / (double)RAND_MAX));
   }
 
-  Search<PointXYZ>* octree = new pcl::octree::OctreeWrapper<PointXYZ>(0.1f);
+  Search<PointXYZ>* octree = new pcl::octree::OctreeWrapper<PointXYZ>(0.1);
   octree->setInputCloud(cloudIn);
 
   std::vector <PointXYZ > point;

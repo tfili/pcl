@@ -75,8 +75,8 @@ namespace pcl
     filter (typename pcl::PointCloud<SceneT>::ConstPtr & organized_cloud, typename pcl::PointCloud<ModelT>::ConstPtr & to_be_filtered, double f,
             double threshold)
     {
-      double cx = (static_cast<double> (organized_cloud->width) / 2.f - 0.5f);
-      double cy = (static_cast<double> (organized_cloud->height) / 2.f - 0.5f);
+      double cx = (static_cast<double> (organized_cloud->width) / 2. - 0.5);
+      double cy = (static_cast<double> (organized_cloud->height) / 2. - 0.5);
       typename pcl::PointCloud<ModelT>::Ptr filtered (new pcl::PointCloud<ModelT> ());
 
       std::vector<int> indices_to_keep;
@@ -119,8 +119,8 @@ namespace pcl
     filter (typename pcl::PointCloud<SceneT>::Ptr & organized_cloud, typename pcl::PointCloud<ModelT>::Ptr & to_be_filtered, double f,
             double threshold, bool check_invalid_depth = true)
     {
-      double cx = (static_cast<double> (organized_cloud->width) / 2.f - 0.5f);
-      double cy = (static_cast<double> (organized_cloud->height) / 2.f - 0.5f);
+      double cx = (static_cast<double> (organized_cloud->width) / 2. - 0.5);
+      double cy = (static_cast<double> (organized_cloud->height) / 2. - 0.5);
       typename pcl::PointCloud<ModelT>::Ptr filtered (new pcl::PointCloud<ModelT> ());
 
       std::vector<int> indices_to_keep;
@@ -166,8 +166,8 @@ namespace pcl
     getOccludedCloud (typename pcl::PointCloud<SceneT>::Ptr & organized_cloud, typename pcl::PointCloud<ModelT>::Ptr & to_be_filtered, double f,
                       double threshold, bool check_invalid_depth = true)
     {
-      double cx = (static_cast<double> (organized_cloud->width) / 2.f - 0.5f);
-      double cy = (static_cast<double> (organized_cloud->height) / 2.f - 0.5f);
+      double cx = (static_cast<double> (organized_cloud->width) / 2. - 0.5);
+      double cy = (static_cast<double> (organized_cloud->height) / 2. - 0.5);
       typename pcl::PointCloud<ModelT>::Ptr filtered (new pcl::PointCloud<ModelT> ());
 
       std::vector<int> indices_to_keep;

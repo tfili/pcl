@@ -48,12 +48,12 @@
     const unsigned char max = std::max (in[0], std::max (in[1], in[2]));
     const unsigned char min = std::min (in[0], std::min (in[1], in[2]));
 
-    out[2] = static_cast <double> (max) / 255.f;
+    out[2] = static_cast <double> (max) / 255.;
 
     if (max == 0) // division by zero
     {
-      out[1] = 0.f;
-      out[0] = 0.f; // h = -1.f;
+      out[1] = 0.;
+      out[0] = 0.; // h = -1.;
       return;
     }
 
@@ -66,11 +66,11 @@
       return;
     }
 
-    if      (max == in[0]) out[0] = 60.f * (      static_cast <double> (in[1] - in[2]) / diff);
-    else if (max == in[1]) out[0] = 60.f * (2.f + static_cast <double> (in[2] - in[0]) / diff);
-    else                  out[0] = 60.f * (4.f + static_cast <double> (in[0] - in[1]) / diff); // max == b
+    if      (max == in[0]) out[0] = 60. * (     static_cast <double> (in[1] - in[2]) / diff);
+    else if (max == in[1]) out[0] = 60. * (2. + static_cast <double> (in[2] - in[0]) / diff);
+    else                   out[0] = 60. * (4. + static_cast <double> (in[0] - in[1]) / diff); // max == b
 
-    if (out[0] < 0.f) out[0] += 360.f;
+    if (out[0] < 0.) out[0] += 360.;
   }
   
 bool
@@ -79,7 +79,7 @@ pcl::computeCPPFPairFeature (const Eigen::Vector4d &p1, const Eigen::Vector4d &n
                             double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7, double &f8, double &f9, double &f10)
 {
   Eigen::Vector4d delta = p2 - p1;
-  delta[3] = 0.0f;
+  delta[3] = 0.0;
   // f4 = ||delta||
   f4 = delta.norm ();
 

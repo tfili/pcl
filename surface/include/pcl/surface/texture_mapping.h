@@ -223,7 +223,7 @@ namespace pcl
 
           // project point on image frame
           UV_coordinates[0] = static_cast<double> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
-          UV_coordinates[1] = 1.0f - static_cast<double> (((focal_y * (pt.y / pt.z) + cy) / sizeY)); //vertical
+          UV_coordinates[1] = 1.0 - static_cast<double> (((focal_y * (pt.y / pt.z) + cy) / sizeY)); //vertical
 
           // point is visible!
           if (UV_coordinates[0] >= 0.0 && UV_coordinates[0] <= 1.0 && UV_coordinates[1] >= 0.0 && UV_coordinates[1]

@@ -139,7 +139,7 @@ pcl::io::LZFImageWriter::compress (const char* input,
   unsigned int compressed_size = pcl::lzfCompress (input,
                                                    uncompressed_size,
                                                    &output[header_size],
-                                                   uint32_t (finput_size * 1.5f));
+                                                   uint32_t (finput_size * 1.5));
 
   uint32_t compressed_final_size = 0;
   if (compressed_size)
@@ -176,7 +176,7 @@ pcl::io::LZFDepth16ImageWriter::write (const char* data,
 {
   // Prepare the compressed depth buffer
   unsigned int depth_size = width * height * 2;
-  char* compressed_depth = static_cast<char*> (malloc (size_t (double (depth_size) * 1.5f + double (LZF_HEADER_SIZE))));
+  char* compressed_depth = static_cast<char*> (malloc (size_t (double (depth_size) * 1.5 + double (LZF_HEADER_SIZE))));
 
   size_t compressed_size = compress (data,
                                      depth_size,
@@ -206,7 +206,7 @@ pcl::io::LZFImageWriter::writeParameter (const double &parameter,
   {
     boost::property_tree::xml_parser::read_xml (filename, pt, boost::property_tree::xml_parser::trim_whitespace);
   }
-  catch (std::exception& e)
+  catch (std::exception&)
   {}
 
   pt.put (tag, parameter);
@@ -225,7 +225,7 @@ pcl::io::LZFDepth16ImageWriter::writeParameters (const pcl::io::CameraParameters
   {
     boost::property_tree::xml_parser::read_xml (filename, pt, boost::property_tree::xml_parser::trim_whitespace);
   }
-  catch (std::exception& e)
+  catch (std::exception&)
   {}
 
   pt.put ("depth.focal_length_x", parameters.focal_length_x);
@@ -256,7 +256,7 @@ pcl::io::LZFRGB24ImageWriter::write (const char *data,
     rrggbb[ptr3] = data[i * 3 + 2];
   }
 
-  char* compressed_rgb = static_cast<char*> (malloc (size_t (double (rrggbb.size ()) * 1.5f + double (LZF_HEADER_SIZE))));
+  char* compressed_rgb = static_cast<char*> (malloc (size_t (double (rrggbb.size ()) * 1.5 + double (LZF_HEADER_SIZE))));
   size_t compressed_size = compress (reinterpret_cast<const char*> (&rrggbb[0]), 
                                      uint32_t (rrggbb.size ()),
                                      width, height,
@@ -285,7 +285,7 @@ pcl::io::LZFRGB24ImageWriter::writeParameters (const pcl::io::CameraParameters &
   {
     boost::property_tree::xml_parser::read_xml (filename, pt, boost::property_tree::xml_parser::trim_whitespace);
   }
-  catch (std::exception& e)
+  catch (std::exception&)
   {}
 
   pt.put ("rgb.focal_length_x", parameters.focal_length_x);
@@ -317,7 +317,7 @@ pcl::io::LZFYUV422ImageWriter::write (const char *data,
     uuyyvv[ptr3] = data[i * 4 + 2];       // v
   }
 
-  char* compressed_yuv = static_cast<char*> (malloc (size_t (double (uuyyvv.size ()) * 1.5f + double (LZF_HEADER_SIZE))));
+  char* compressed_yuv = static_cast<char*> (malloc (size_t (double (uuyyvv.size ()) * 1.5 + double (LZF_HEADER_SIZE))));
   size_t compressed_size = compress (reinterpret_cast<const char*> (&uuyyvv[0]), 
                                      uint32_t (uuyyvv.size ()),
                                      width, height,
@@ -343,7 +343,7 @@ pcl::io::LZFBayer8ImageWriter::write (const char *data,
                                       const std::string &filename)
 {
   unsigned int bayer_size = width * height;
-  char* compressed_bayer = static_cast<char*> (malloc (size_t (double (bayer_size) * 1.5f + double (LZF_HEADER_SIZE))));
+  char* compressed_bayer = static_cast<char*> (malloc (size_t (double (bayer_size) * 1.5 + double (LZF_HEADER_SIZE))));
   size_t compressed_size = compress (data,
                                      bayer_size,
                                      width, height,

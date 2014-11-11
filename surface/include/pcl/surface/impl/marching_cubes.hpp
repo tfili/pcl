@@ -116,8 +116,8 @@ pcl::MarchingCubes<PointNT>::createSurface (std::vector<double> &leaf_node,
   if (edgeTable[cubeindex] == 0)
     return;
 
-  //Eigen::Vector4d index_3df (index_3d[0], index_3d[1], index_3d[2], 0.0f);
-  Eigen::Vector3d center;// TODO coeff wise product = min_p_ + Eigen::Vector4d (1.0f/res_x_, 1.0f/res_y_, 1.0f/res_z_) * index_3df * (max_p_ - min_p_);
+  //Eigen::Vector4d index_3df (index_3d[0], index_3d[1], index_3d[2], 0.0);
+  Eigen::Vector3d center;// TODO coeff wise product = min_p_ + Eigen::Vector4d (1.0/res_x_, 1.0/res_y_, 1.0/res_z_) * index_3df * (max_p_ - min_p_);
   center[0] = min_p_[0] + (max_p_[0] - min_p_[0]) * double (index_3d[0]) / double (res_x_);
   center[1] = min_p_[1] + (max_p_[1] - min_p_[1]) * double (index_3d[1]) / double (res_y_);
   center[2] = min_p_[2] + (max_p_[2] - min_p_[2]) * double (index_3d[2]) / double (res_z_);
@@ -191,7 +191,7 @@ template <typename PointNT> void
 pcl::MarchingCubes<PointNT>::getNeighborList1D (std::vector<double> &leaf,
                                                 Eigen::Vector3i &index3d)
 {
-  leaf = std::vector<double> (8, 0.0f);
+  leaf = std::vector<double> (8, 0.0);
 
   leaf[0] = getGridValue (index3d);
   leaf[1] = getGridValue (index3d + Eigen::Vector3i (1, 0, 0));
@@ -210,11 +210,11 @@ pcl::MarchingCubes<PointNT>::getGridValue (Eigen::Vector3i pos)
 {
   /// TODO what to return?
   if (pos[0] < 0 || pos[0] >= res_x_)
-    return -1.0f;
+    return -1.0;
   if (pos[1] < 0 || pos[1] >= res_y_)
-    return -1.0f;
+    return -1.0;
   if (pos[2] < 0 || pos[2] >= res_z_)
-    return -1.0f;
+    return -1.0;
 
   return grid_[pos[0]*res_y_*res_z_ + pos[1]*res_z_ + pos[2]];
 }
@@ -234,7 +234,7 @@ pcl::MarchingCubes<PointNT>::performReconstruction (pcl::PolygonMesh &output)
   }
 
   // Create grid
-  grid_ = std::vector<double> (res_x_*res_y_*res_z_, 0.0f);
+  grid_ = std::vector<double> (res_x_*res_y_*res_z_, 0.0);
 
   // Populate tree
   tree_->setInputCloud (input_);
@@ -289,7 +289,7 @@ pcl::MarchingCubes<PointNT>::performReconstruction (pcl::PointCloud<PointNT> &po
   }
 
   // Create grid
-  grid_ = std::vector<double> (res_x_*res_y_*res_z_, 0.0f);
+  grid_ = std::vector<double> (res_x_*res_y_*res_z_, 0.0);
 
   // Populate tree
   tree_->setInputCloud (input_);

@@ -112,7 +112,7 @@ void processAndSave( vtkSmartPointer<vtkImageData>  depth_data,
   pc_image.width = pc_depth.width = pc_xyzrgba.width = rgb_dimensions[0];
   pc_image.height = pc_depth.height = pc_xyzrgba.height = rgb_dimensions[1];
 
-  double constant = 1.0f / focal_length;
+  double constant = 1.0 / focal_length;
   double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   for(int v = 0; v < rgb_dimensions[1]; v++)
@@ -136,9 +136,9 @@ void processAndSave( vtkSmartPointer<vtkImageData>  depth_data,
 
       if(d != 0 && !pcl_isnan(d) && !pcl_isnan(d))
       {
-        xyzrgba_point.z = d * 0.001f;
-        xyzrgba_point.x = static_cast<double> (u) * d * 0.001f * constant;
-        xyzrgba_point.y = static_cast<double> (v) * d * 0.001f * constant;
+        xyzrgba_point.z = d * 0.001;
+        xyzrgba_point.x = static_cast<double> (u) * d * 0.001 * constant;
+        xyzrgba_point.y = static_cast<double> (v) * d * 0.001 * constant;
       }
       else
       {

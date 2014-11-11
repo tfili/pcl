@@ -81,7 +81,7 @@ pcl::io::openni2::OpenNI2Device::OpenNI2Device (const std::string& device_URI) :
   {
     double baseline;
     getDepthVideoStream ()->getProperty (XN_STREAM_PROPERTY_EMITTER_DCMOS_DISTANCE, &baseline); // Device specific -- from PS1080.h
-    baseline_ = static_cast<double> (baseline * 0.01f);  // baseline from cm -> meters
+    baseline_ = static_cast<double> (baseline * 0.01);  // baseline from cm -> meters
   }
   shadow_value_ = 0;     // This does not exist in OpenNI 2, and is maintained for compatibility with the OpenNI 1.x grabber
   no_sample_value_ = 0;  // This does not exist in OpenNI 2, and is maintained for compatibility with the OpenNI 1.x grabber
@@ -96,7 +96,7 @@ pcl::io::openni2::OpenNI2Device::OpenNI2Device (const std::string& device_URI) :
 
   if (openni_device_->isFile ())
   {
-    openni_device_->getPlaybackControl ()->setSpeed (1.0f);
+    openni_device_->getPlaybackControl ()->setSpeed (1.0);
   }
 
   device_info_ = boost::make_shared<openni::DeviceInfo>();
@@ -171,7 +171,7 @@ pcl::io::openni2::OpenNI2Device::getIRFocalLength () const
 
   int frameWidth = stream->getVideoMode ().getResolutionX ();
   double hFov = stream->getHorizontalFieldOfView ();
-  double calculatedFocalLengthX = frameWidth / (2.0f * tan (hFov / 2.0f));
+  double calculatedFocalLengthX = frameWidth / (2.0 * tan (hFov / 2.0));
   return (calculatedFocalLengthX);
 }
 
@@ -182,7 +182,7 @@ pcl::io::openni2::OpenNI2Device::getColorFocalLength () const
 
   int frameWidth = stream->getVideoMode ().getResolutionX ();
   double hFov = stream->getHorizontalFieldOfView ();
-  double calculatedFocalLengthX = frameWidth / (2.0f * tan (hFov / 2.0f));
+  double calculatedFocalLengthX = frameWidth / (2.0 * tan (hFov / 2.0));
   return (calculatedFocalLengthX);
 }
 
@@ -193,7 +193,7 @@ pcl::io::openni2::OpenNI2Device::getDepthFocalLength () const
 
   int frameWidth = stream->getVideoMode ().getResolutionX ();
   double hFov = stream->getHorizontalFieldOfView ();
-  double calculatedFocalLengthX = frameWidth / (2.0f * tan (hFov / 2.0f));
+  double calculatedFocalLengthX = frameWidth / (2.0 * tan (hFov / 2.0));
   return (calculatedFocalLengthX);
 }
 

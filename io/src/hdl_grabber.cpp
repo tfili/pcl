@@ -324,7 +324,7 @@ pcl::HDLGrabber::toPointClouds (HDLDataPacket *dataPacket)
 
   time_t  time_;
   time(&time_);
-  time_t velodyneTime = (time_ & 0x00000000ffffffffl) << 32 | dataPacket->gpsTimestamp;
+  time_t velodyneTime = (time_ & 0x00000000fffffffl) << 32 | dataPacket->gpsTimestamp;
 
   current_scan_xyz_->header.stamp = velodyneTime;
   current_scan_xyzrgb_->header.stamp = velodyneTime;
@@ -452,8 +452,8 @@ void
 pcl::HDLGrabber::fireCurrentScan (const unsigned short startAngle,
     const unsigned short endAngle)
 {
-  const double start = static_cast<double> (startAngle) / 100.0f;
-  const double end = static_cast<double> (endAngle) / 100.0f;
+  const double start = static_cast<double> (startAngle) / 100.0;
+  const double end = static_cast<double> (endAngle) / 100.0;
 
   if (scan_xyz_signal_->num_slots () > 0)
     scan_xyz_signal_->operator () (current_scan_xyz_, start, end);
@@ -565,7 +565,7 @@ pcl::HDLGrabber::getName () const
 double
 pcl::HDLGrabber::getFramesPerSecond () const
 {
-  return (0.0f);
+  return (0.0);
 }
 
 /////////////////////////////////////////////////////////////////////////////

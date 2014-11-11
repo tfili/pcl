@@ -358,7 +358,7 @@ void ICCVTutorial<FeatureType>::reconstructSurface ()
   // apply grid filtering to reduce amount of points as well as to make them uniform distributed
   pcl::VoxelGrid<pcl::PointXYZRGB> voxel_grid;
   voxel_grid.setInputCloud(merged);
-  voxel_grid.setLeafSize (0.002f, 0.002f, 0.002f);
+  voxel_grid.setLeafSize (0.002, 0.002, 0.002);
   voxel_grid.setDownsampleAllData(true);
   voxel_grid.filter(*merged);
 
@@ -537,7 +537,7 @@ main (int argc, char ** argv)
   if (keypoint_type == 1)
   {
     pcl::SIFTKeypoint<pcl::PointXYZRGB, pcl::PointXYZI>* sift3D = new pcl::SIFTKeypoint<pcl::PointXYZRGB, pcl::PointXYZI>;
-    sift3D->setScales (0.01f, 3, 2);
+    sift3D->setScales (0.01, 3, 2);
     sift3D->setMinimumContrast (0.0);
     keypoint_detector.reset (sift3D);
   }
@@ -545,8 +545,8 @@ main (int argc, char ** argv)
   {
     pcl::HarrisKeypoint3D<pcl::PointXYZRGB,pcl::PointXYZI>* harris3D = new pcl::HarrisKeypoint3D<pcl::PointXYZRGB,pcl::PointXYZI> (pcl::HarrisKeypoint3D<pcl::PointXYZRGB,pcl::PointXYZI>::HARRIS);
     harris3D->setNonMaxSupression (true);
-    harris3D->setRadius (0.01f);
-    harris3D->setRadiusSearch (0.01f);
+    harris3D->setRadius (0.01);
+    harris3D->setRadiusSearch (0.01);
     keypoint_detector.reset (harris3D);
     switch (keypoint_type)
     {
@@ -598,7 +598,7 @@ main (int argc, char ** argv)
   else if (surface_type == 2)
   {
     pcl::MarchingCubes<pcl::PointXYZRGBNormal>* mc = new pcl::MarchingCubesHoppe<pcl::PointXYZRGBNormal>;
-    mc->setIsoLevel (0.001f);
+    mc->setIsoLevel (0.001);
     mc->setGridResolution (50, 50, 50);
     surface_reconstruction.reset(mc);
   }

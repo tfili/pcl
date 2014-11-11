@@ -304,7 +304,7 @@ namespace pcl
         * \param[in] colors_weight weight for colors   
         */
       void 
-      paint3DView(const PtrStep<uchar3>& colors, PtrStepSz<uchar3> dst, double colors_weight = 0.5f);
+      paint3DView(const PtrStep<uchar3>& colors, PtrStepSz<uchar3> dst, double colors_weight = 0.5);
 
       /** \brief Performs resize of vertex map to next pyramid level by averaging each four points
         * \param[in] input vertext map
@@ -403,7 +403,7 @@ namespace pcl
       inline bool 
       valid_host (double value)
       {
-        return *reinterpret_cast<int*>(&value) != 0x7fffffff; //QNAN
+        return *reinterpret_cast<int*>(&value) != 0x7ffffff; //QNAN
       }
 
       /** \brief synchronizes CUDA execution */

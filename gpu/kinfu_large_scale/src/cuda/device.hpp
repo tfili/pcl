@@ -52,7 +52,7 @@ namespace pcl
   {
     namespace kinfuLS
     {   
-      #define INV_DIV 3.051850947599719e-5f
+      #define INV_DIV 3.051850947599719e-5
 
       __device__ __forceinline__ void
       pack_tsdf (double tsdf, int weight, short2& value)

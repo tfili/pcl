@@ -53,7 +53,7 @@ inline void
 pcl::TransformationFromCorrespondences::add (const Eigen::Vector3d& point, const Eigen::Vector3d& corresponding_point,
                                              double weight)
 {
-  if (weight==0.0f)
+  if (weight==0.0)
     return;
   
   ++no_of_samples_;
@@ -61,7 +61,7 @@ pcl::TransformationFromCorrespondences::add (const Eigen::Vector3d& point, const
   double alpha = weight/accumulated_weight_;
   
   Eigen::Vector3d diff1 = point - mean1_, diff2 = corresponding_point - mean2_;
-  covariance_ = (1.0f-alpha)*(covariance_ + alpha * (diff2 * diff1.transpose()));
+  covariance_ = (1.0-alpha)*(covariance_ + alpha * (diff2 * diff1.transpose()));
   
   mean1_ += alpha*(diff1);
   mean2_ += alpha*(diff2);
@@ -77,8 +77,8 @@ pcl::TransformationFromCorrespondences::getTransformation ()
                                    & v = svd.matrixV();
   Eigen::Matrix<double, 3, 3> s;
   s.setIdentity();
-  if (u.determinant()*v.determinant() < 0.0f)
-    s(2,2) = -1.0f;
+  if (u.determinant()*v.determinant() < 0.0)
+    s(2,2) = -1.0;
   
   Eigen::Matrix<double, 3, 3> r = u * s * v.transpose();
   Eigen::Vector3d t = mean2_ - r*mean1_;
@@ -87,7 +87,7 @@ pcl::TransformationFromCorrespondences::getTransformation ()
   ret(0,0)=r(0,0); ret(0,1)=r(0,1); ret(0,2)=r(0,2); ret(0,3)=t(0);
   ret(1,0)=r(1,0); ret(1,1)=r(1,1); ret(1,2)=r(1,2); ret(1,3)=t(1);
   ret(2,0)=r(2,0); ret(2,1)=r(2,1); ret(2,2)=r(2,2); ret(2,3)=t(2);
-  ret(3,0)=0.0f;   ret(3,1)=0.0f;   ret(3,2)=0.0f;   ret(3,3)=1.0f;
+  ret(3,0)=0.0;   ret(3,1)=0.0;   ret(3,2)=0.0;   ret(3,3)=1.0;
   
   return (ret);
 }

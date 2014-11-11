@@ -67,8 +67,8 @@ typedef pcl::visualization::PointCloudGeometryHandler<pcl::PCLPointCloud2> Geome
 typedef GeometryHandler::Ptr GeometryHandlerPtr;
 typedef GeometryHandler::ConstPtr GeometryHandlerConstPtr;
 
-#define NORMALS_SCALE 0.01f
-#define PC_SCALE 0.001f
+#define NORMALS_SCALE 0.01
+#define PC_SCALE 0.001
 
 bool
 isValidFieldName (const std::string &field)

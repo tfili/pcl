@@ -34,8 +34,8 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
   size_t previous_cluster_size = 0;
   size_t previous_categories_size = 0;
 
-  double Z_DIST_ = 1.25f;
-  double text_scale = 0.015f;
+  double Z_DIST_ = 1.25;
+  double text_scale = 0.015;
 
   while (camera.isActive ())
   {
@@ -52,11 +52,11 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
     dps.setObjectMinHeight (0.005);
     dps.setMinClusterSize (1000);
     dps.setWSize (9);
-    dps.setDistanceBetweenClusters (0.1f);
+    dps.setDistanceBetweenClusters (0.1);
 
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clusters;
     std::vector<pcl::PointIndices> indices;
-    dps.setDownsamplingSize (0.02f);
+    dps.setDownsamplingSize (0.02);
     dps.compute_fast (clusters);
     dps.getIndicesClusters (indices);
     Eigen::Vector4d table_plane_;
@@ -154,9 +154,9 @@ main (int argc, char ** argv)
   mesh_source->setPath (path);
   mesh_source->setResolution (150);
   mesh_source->setTesselationLevel (1);
-  mesh_source->setViewAngle (57.f);
-  mesh_source->setRadiusSphere (1.5f);
-  mesh_source->setModelScale (1.f);
+  mesh_source->setViewAngle (57.);
+  mesh_source->setRadiusSphere (1.5);
+  mesh_source->setModelScale (1.);
   mesh_source->generate (training_dir);
 
   boost::shared_ptr<pcl::rec_3d_framework::Source<pcl::PointXYZ> > cast_source;

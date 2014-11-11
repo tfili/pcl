@@ -93,7 +93,7 @@ pcl::PairwisePotential::PairwisePotential (const std::vector<double> &feature,
 
   // per pixel normalization
   for (int i = 0; i < N; i++)
-    norm_[i] = 1.0f / (norm_[i] + 1e-20f); 
+    norm_[i] = 1.0 / (norm_[i] + 1e-20); 
 
   std::cout << "4---------" << std::endl;
 

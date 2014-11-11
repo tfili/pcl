@@ -80,16 +80,16 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
                                                            int max_no_of_tested_combinations, int max_no_of_results,
                                                            pcl::PosesFromMatches::PoseEstimatesVector& pose_estimates) const
 {
-  const Eigen::Vector3d x_direction (1.0f, 0.0f, 0.0f),
-                        y_direction (0.0f, 1.0f, 0.0f),
-                        z_direction (0.0f, 0.0f, 1.0f);
+  const Eigen::Vector3d x_direction (1.0, 0.0, 0.0),
+                        y_direction (0.0, 1.0, 0.0),
+                        z_direction (0.0, 0.0, 1.0);
   
   int max_correspondence_idx = static_cast<int> (correspondences.size ());
   int counter_for_tested_combinations = 0,
       counter_for_added_pose_estimates = 0;
-  double max_distance_quotient = 1.0f+parameters_.max_correspondence_distance_error,
-        max_distance_quotient_squared=powf (max_distance_quotient, 2),
-        min_distance_quotient = 1.0f / (max_distance_quotient),
+  double max_distance_quotient = 1.0+parameters_.max_correspondence_distance_error,
+        max_distance_quotient_squared=pow (max_distance_quotient, 2),
+        min_distance_quotient = 1.0 / (max_distance_quotient),
         min_distance_quotient_squared = std::pow (min_distance_quotient, 2);
 
   pcl::TransformationFromCorrespondences transformation_from_correspondeces;
@@ -121,12 +121,12 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
       if (   distance_quotient_squared < min_distance_quotient_squared
           || distance_quotient_squared > max_distance_quotient_squared)
       {
-        //std::cout << "Skipping because of mismatching distances "<<sqrtf (distance1_squared)
-        //          << " and "<<sqrtf (distance1_corr_squared)<<".\n";
+        //std::cout << "Skipping because of mismatching distances "<<sqrt (distance1_squared)
+        //          << " and "<<sqrt (distance1_corr_squared)<<".\n";
         continue;
       }
       
-      double distance = sqrtf (distance_squared);
+      double distance = sqrt (distance_squared);
       
       Eigen::Vector3d corr3=corr1, corr4=corr2;
       corr3[0]+=distance; corr4[0]+=distance;
@@ -174,7 +174,7 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
       ++counter_for_added_pose_estimates;
       PoseEstimate pose_estimate;
       pose_estimate.transformation = transformation_from_correspondeces.getTransformation ();
-      pose_estimate.score = 0.5f * (correspondence1.distance + correspondence2.distance); // TODO: based
+      pose_estimate.score = 0.5 * (correspondence1.distance + correspondence2.distance); // TODO: based
                                                                                 // on the measured distance_errors?
       pose_estimate.correspondence_indices.push_back (correspondence1_idx);
       pose_estimate.correspondence_indices.push_back (correspondence2_idx);
@@ -194,16 +194,16 @@ pcl::PosesFromMatches::estimatePosesUsing3Correspondences (const PointCorrespond
                                                            int max_no_of_tested_combinations, int max_no_of_results,
                                                            PosesFromMatches::PoseEstimatesVector& pose_estimates) const
 {
-  const Eigen::Vector3d x_direction (1.0f, 0.0f, 0.0f),
-                        y_direction (0.0f, 1.0f, 0.0f),
-                        z_direction (0.0f, 0.0f, 1.0f);
+  const Eigen::Vector3d x_direction (1.0, 0.0, 0.0),
+                        y_direction (0.0, 1.0, 0.0),
+                        z_direction (0.0, 0.0, 1.0);
   
   int max_correspondence_idx = static_cast<int> (correspondences.size ());
   int counter_for_tested_combinations = 0,
       counter_for_added_pose_estimates = 0;
-  double max_distance_quotient = 1.0f+parameters_.max_correspondence_distance_error,
+  double max_distance_quotient = 1.0+parameters_.max_correspondence_distance_error,
         max_distance_quotient_squared = std::pow (max_distance_quotient, 2),
-        min_distance_quotient = 1.0f / (max_distance_quotient),
+        min_distance_quotient = 1.0 / (max_distance_quotient),
         min_distance_quotient_squared = std::pow (min_distance_quotient, 2);
 
   pcl::TransformationFromCorrespondences transformation_from_correspondeces;
@@ -262,7 +262,7 @@ pcl::PosesFromMatches::estimatePosesUsing3Correspondences (const PointCorrespond
         ++counter_for_added_pose_estimates;
         PoseEstimate pose_estimate;
         pose_estimate.transformation = transformation_from_correspondeces.getTransformation ();
-        pose_estimate.score = (correspondence1.distance + correspondence2.distance + correspondence3.distance) / 3.0f; // TODO: based
+        pose_estimate.score = (correspondence1.distance + correspondence2.distance + correspondence3.distance) / 3.0; // TODO: based
                                                                                   // on the measured distance_errors?
         pose_estimate.correspondence_indices.push_back (correspondence1_idx);
         pose_estimate.correspondence_indices.push_back (correspondence2_idx);

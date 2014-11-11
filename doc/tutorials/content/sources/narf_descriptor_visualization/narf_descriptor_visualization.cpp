@@ -10,7 +10,7 @@
 #include <pcl/features/narf.h>
 #include <pcl/console/parse.h>
 
-double angular_resolution = 0.5f;
+double angular_resolution = 0.5;
 int rotation_invariant = 0;
 double support_size = 0.3f;
 int descriptor_size = 36;
@@ -106,11 +106,11 @@ main (int argc, char** argv)
   // -----Create RangeImage from the PointCloud-----
   // -----------------------------------------------
   double noise_level = 0.0;
-  double min_range = 0.0f;
+  double min_range = 0.0;
   int border_size = 1;
   boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
   pcl::RangeImage& range_image = *range_image_ptr;   
-  range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
+  range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0), pcl::deg2rad (180.0),
                                    scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
   range_image.integrateFarRanges (far_ranges);
   if (setUnseenToMaxRange)
@@ -187,30 +187,30 @@ main (int argc, char** argv)
     int surface_patch_pixel_size = narf.getSurfacePatchPixelSize ();
     double surface_patch_world_size = narf.getSurfacePatchWorldSize ();
     surface_patch_widget.showFloatImage (narf.getSurfacePatch (), surface_patch_pixel_size, surface_patch_pixel_size,
-                                         -0.5f*surface_patch_world_size, 0.5f*surface_patch_world_size, true);
+                                         -0.5*surface_patch_world_size, 0.5*surface_patch_world_size, true);
     double surface_patch_rotation = narf.getSurfacePatchRotation ();
-    double patch_middle = 0.5f* (double (surface_patch_pixel_size-1));
-    double angle_step_size = pcl::deg2rad (360.0f)/narf.getDescriptorSize ();
+    double patch_middle = 0.5* (double (surface_patch_pixel_size-1));
+    double angle_step_size = pcl::deg2rad (360.0)/narf.getDescriptorSize ();
     double cell_size = surface_patch_world_size/double (surface_patch_pixel_size),
-          cell_factor = 1.0f/cell_size,
-          max_dist = 0.5f*surface_patch_world_size,
-          line_length = cell_factor* (max_dist-0.5f*cell_size);
+          cell_factor = 1.0/cell_size,
+          max_dist = 0.5*surface_patch_world_size,
+          line_length = cell_factor* (max_dist-0.5*cell_size);
     for (int descriptor_value_idx=0; descriptor_value_idx<narf.getDescriptorSize (); ++descriptor_value_idx)
     {
       double angle = descriptor_value_idx*angle_step_size + surface_patch_rotation;
-      //surface_patch_widget.markLine (patch_middle, patch_middle, patch_middle+line_length*sinf (angle),
-                                     //patch_middle+line_length*-cosf (angle), pcl::visualization::Vector3ub (0,255,0));
+      //surface_patch_widget.markLine (patch_middle, patch_middle, patch_middle+line_length*sin (angle),
+                                     //patch_middle+line_length*-cos (angle), pcl::visualization::Vector3ub (0,255,0));
     }
     std::vector<double> rotations, strengths;
     narf.getRotations (rotations, strengths);
-    double radius = 0.5f*surface_patch_pixel_size;
+    double radius = 0.5*surface_patch_pixel_size;
     for (unsigned int i=0; i<rotations.size (); ++i)
     {
-      //surface_patch_widget.markLine (radius-0.5, radius-0.5, radius-0.5f + 2.0f*radius*sinf (rotations[i]),
-                                                //radius-0.5f - 2.0f*radius*cosf (rotations[i]), pcl::visualization::Vector3ub (255,0,0));
+      //surface_patch_widget.markLine (radius-0.5, radius-0.5, radius-0.5 + 2.0*radius*sin (rotations[i]),
+                                                //radius-0.5 - 2.0*radius*cos (rotations[i]), pcl::visualization::Vector3ub (255,0,0));
     }
     
-    descriptor_widget.showFloatImage (narf.getDescriptor (), narf.getDescriptorSize (), 1, -0.1f, 0.3f, true);
+    descriptor_widget.showFloatImage (narf.getDescriptor (), narf.getDescriptorSize (), 1, -0.1, 0.3f, true);
 
     //===================================
     //=====Compare with all features=====

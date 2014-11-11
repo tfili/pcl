@@ -35,9 +35,9 @@ namespace pcl
       CVFHEstimation ()
       {
         eps_angle_threshold_ = 0.13f;
-        curvature_threshold_ = 0.035f;
+        curvature_threshold_ = 0.035;
         normalize_bins_ = true;
-        cluster_tolerance_factor_ = 3.f;
+        cluster_tolerance_factor_ = 3.;
       }
 
       void setCVFHParams(double p1, double p2, double p3) {
@@ -68,7 +68,7 @@ namespace pcl
           Eigen::Vector4d centroid_cluster;
           pcl::compute3DCentroid (*in, centroid_cluster);
           double dist_to_sensor = centroid_cluster.norm();
-          double sigma = dist_to_sensor * 0.01f;
+          double sigma = dist_to_sensor * 0.01;
           mls.setSearchMethod(tree);
           mls.setSearchRadius (sigma);
           mls.setUpsamplingMethod (mls.SAMPLE_LOCAL_PLANE);

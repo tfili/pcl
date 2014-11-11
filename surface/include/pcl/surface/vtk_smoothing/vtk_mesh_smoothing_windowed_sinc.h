@@ -56,10 +56,10 @@ namespace pcl
       MeshSmoothingWindowedSincVTK ()
         : MeshProcessing (),
           num_iter_ (20),
-          pass_band_ (0.1f),
+          pass_band_ (0.1),
           feature_edge_smoothing_ (false),
-          feature_angle_ (45.f),
-          edge_angle_ (15.f),
+          feature_angle_ (45.),
+          edge_angle_ (15.),
           boundary_smoothing_ (true),
           normalize_coordinates_ (false)
       {};

@@ -422,7 +422,7 @@ pcl::ConcaveHull<PointInT>::performReconstruction (PointCloud &alpha_shape, std:
           {
             voronoi_centers_->points[dd].x = static_cast<double> (facet->center[0]);
             voronoi_centers_->points[dd].y = static_cast<double> (facet->center[1]);
-            voronoi_centers_->points[dd].z = 0.0f;
+            voronoi_centers_->points[dd].z = 0.0;
           }
 
           ++dd;

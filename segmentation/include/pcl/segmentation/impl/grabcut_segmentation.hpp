@@ -409,7 +409,7 @@ pcl::GrabCut<PointT>::computeBetaNonOrganized ()
             ++edges;
           }
           else
-            links.weights.push_back (0.f);
+            links.weights.push_back (0.);
         }
       }
     }
@@ -439,7 +439,7 @@ pcl::GrabCut<PointT>::computeBetaOrganized ()
       {
         std::size_t upleft = (y+1)  * input_->width + x - 1;
         links.indices[0] = upleft;
-        links.dists[0] = sqrt (2.f);
+        links.dists[0] = sqrt (2.);
         double color_dist =  squaredEuclideanDistance (image_->points[point_index],
                                                       image_->points[upleft]);
         links.weights[0] = color_dist;
@@ -463,7 +463,7 @@ pcl::GrabCut<PointT>::computeBetaOrganized ()
       {
         std::size_t upright = (y+1) * input_->width + x + 1;
         links.indices[2] = upright;
-        links.dists[2] = sqrt (2.f);
+        links.dists[2] = sqrt (2.);
         double color_dist =  squaredEuclideanDistance (image_->points[point_index],
                                                       image_->points [upright]);
         links.weights[2] = color_dist;

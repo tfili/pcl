@@ -54,7 +54,7 @@
 #define PST_RAD_PI_7_8 2.7488935718910690836548129603691
 
 const double zeroDoubleEps15 = 1E-15;
-const float zeroFloatEps8 = 1E-8f;
+const float zeroFloatEps8 = 1E-8;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 /** \brief Check if val1 and val2 are equals.
@@ -102,18 +102,18 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::RGB2CIELAB (un
   {
     for (int i = 0; i < 256; i++)
     {
-      double f = static_cast<double> (i) / 255.0f;
+      double f = static_cast<double> (i) / 255.0;
       if (f > 0.04045)
-        sRGB_LUT[i] = powf ((f + 0.055f) / 1.055f, 2.4f);
+        sRGB_LUT[i] = pow ((f + 0.055) / 1.055, 2.4);
       else
-        sRGB_LUT[i] = f / 12.92f;
+        sRGB_LUT[i] = f / 12.92;
     }
 
     for (int i = 0; i < 4000; i++)
     {
-      double f = static_cast<double> (i) / 4000.0f;
+      double f = static_cast<double> (i) / 4000.0;
       if (f > 0.008856)
-        sXYZ_LUT[i] = static_cast<double> (powf (f, 0.3333f));
+        sXYZ_LUT[i] = static_cast<double> (pow (f, 0.3333));
       else
         sXYZ_LUT[i] = static_cast<double>((7.787 * f) + (16.0 / 116.0));
     }
@@ -124,11 +124,11 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::RGB2CIELAB (un
   double fb = sRGB_LUT[B];
 
   // Use white = D65
-  const double x = fr * 0.412453f + fg * 0.357580f + fb * 0.180423f;
-  const double y = fr * 0.212671f + fg * 0.715160f + fb * 0.072169f;
-  const double z = fr * 0.019334f + fg * 0.119193f + fb * 0.950227f;
+  const double x = fr * 0.412453f + fg * 0.357580 + fb * 0.180423f;
+  const double y = fr * 0.212671 + fg * 0.715160 + fb * 0.072169;
+  const double z = fr * 0.019334f + fg * 0.119193f + fb * 0.950227;
 
-  double vx = x / 0.95047f;
+  double vx = x / 0.95047;
   double vy = y;
   double vz = z / 1.08883f;
 
@@ -136,21 +136,21 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::RGB2CIELAB (un
   vy = sXYZ_LUT[int(vy*4000)];
   vz = sXYZ_LUT[int(vz*4000)];
 
-  L = 116.0f * vy - 16.0f;
+  L = 116.0 * vy - 16.0;
   if (L > 100)
-    L = 100.0f;
+    L = 100.0;
 
-  A = 500.0f * (vx - vy);
+  A = 500.0 * (vx - vy);
   if (A > 120)
-    A = 120.0f;
+    A = 120.0;
   else if (A <- 120)
-    A = -120.0f;
+    A = -120.0;
 
-  B2 = 200.0f * (vy - vz);
+  B2 = 200.0 * (vy - vz);
   if (B2 > 120)
-    B2 = 120.0f;
+    B2 = 120.0;
   else if (B2<- 120)
-    B2 = -120.0f;
+    B2 = -120.0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +230,7 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::createBinDistan
   }
   if (nan_counter > 0)
     PCL_WARN ("[pcl::%s::createBinDistanceShape] Point %d has %d (%f%%) NaN normals in its neighbourhood\n",
-      getClassName ().c_str (), index, nan_counter, (static_cast<double>(nan_counter)*100.f/static_cast<double>(indices.size ())));
+      getClassName ().c_str (), index, nan_counter, (static_cast<double>(nan_counter)*100./static_cast<double>(indices.size ())));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -683,9 +683,9 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSH
     double LRef, aRef, bRef;
 
     RGB2CIELAB (redRef, greenRef, blueRef, LRef, aRef, bRef);
-    LRef /= 100.0f;
-    aRef /= 120.0f;
-    bRef /= 120.0f;    //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
+    LRef /= 100.0;
+    aRef /= 120.0;
+    bRef /= 120.0;    //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
 
     for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
     {
@@ -699,9 +699,9 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSH
       double L, a, b;
 
       RGB2CIELAB (red, green, blue, L, a, b);
-      L /= 100.0f;
-      a /= 120.0f;
-      b /= 120.0f;   //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
+      L /= 100.0;
+      a /= 120.0;
+      b /= 120.0;   //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
 
       double colorDistance = (fabs (LRef - L) + ((fabs (aRef - a) + fabs (bRef - b)) / 2)) /3;
 

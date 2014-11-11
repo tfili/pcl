@@ -202,7 +202,7 @@ namespace pcl
 template <typename PointInT>
 pcl::ColorGradientDOTModality<PointInT>::
 ColorGradientDOTModality (const size_t bin_size)
-  : bin_size_ (bin_size), gradient_magnitude_threshold_ (80.0f), color_gradients_ (), dominant_quantized_color_gradients_ ()
+  : bin_size_ (bin_size), gradient_magnitude_threshold_ (80.0), color_gradients_ (), dominant_quantized_color_gradients_ ()
 {
 }
 
@@ -242,7 +242,7 @@ computeMaxColorGradients ()
   color_gradients_.width = width;
   color_gradients_.height = height;
 
-  const double pi = tan(1.0f)*4;
+  const double pi = tan(1.0)*4;
   for (int row_index = 0; row_index < height-2; ++row_index)
   {
     for (int col_index = 0; col_index < width-2; ++col_index)
@@ -283,13 +283,13 @@ computeMaxColorGradients ()
       if (sqr_mag_r > sqr_mag_g && sqr_mag_r > sqr_mag_b)
       {
         gradient.magnitude = sqrt (sqr_mag_r);
-        gradient.angle = atan2 (r_dy, r_dx) * 180.0f / pi;
+        gradient.angle = atan2 (r_dy, r_dx) * 180.0 / pi;
       }
       else if (sqr_mag_g > sqr_mag_b)
       {
         //GradientXY gradient;
         gradient.magnitude = sqrt (sqr_mag_g);
-        gradient.angle = atan2 (g_dy, g_dx) * 180.0f / pi;
+        gradient.angle = atan2 (g_dy, g_dx) * 180.0 / pi;
         //gradient.x = col_index;
         //gradient.y = row_index;
 
@@ -299,7 +299,7 @@ computeMaxColorGradients ()
       {
         //GradientXY gradient;
         gradient.magnitude = sqrt (sqr_mag_b);
-        gradient.angle = atan2 (b_dy, b_dx) * 180.0f / pi;
+        gradient.angle = atan2 (b_dy, b_dx) * 180.0 / pi;
         //gradient.x = col_index;
         //gradient.y = row_index;
 
@@ -336,10 +336,10 @@ computeMaxColorGradients ()
 //  const size_t num_gradient_bins = 7;
 //  const size_t max_num_of_gradients = 7;
 //  
-//  const double divisor = 180.0f / (num_gradient_bins - 1.0f);
+//  const double divisor = 180.0 / (num_gradient_bins - 1.0);
 //  
-//  double global_max_gradient = 0.0f;
-//  double local_max_gradient = 0.0f;
+//  double global_max_gradient = 0.0;
+//  double local_max_gradient = 0.0;
 //  
 //  unsigned char * peak_pointer = dominant_quantized_color_gradients_.getData ();
 //  
@@ -371,7 +371,7 @@ computeMaxColorGradients ()
 //
 //          // find maximum gradient magnitude in current bin
 //          {
-//            local_max_gradient = 0.0f;
+//            local_max_gradient = 0.0;
 //            for (size_t row_sub_index = 0; row_sub_index < bin_size; ++row_sub_index)
 //            {
 //              for (size_t col_sub_index = 0; col_sub_index < bin_size; ++col_sub_index)
@@ -400,7 +400,7 @@ computeMaxColorGradients ()
 //            
 //            // find next location and value of maximum gradient magnitude in current region
 //            {
-//              max_gradient = 0.0f;
+//              max_gradient = 0.0;
 //              for (size_t row_sub_index = 0; row_sub_index < bin_size; ++row_sub_index)
 //              {
 //                for (size_t col_sub_index = 0; col_sub_index < bin_size; ++col_sub_index)
@@ -433,7 +433,7 @@ computeMaxColorGradients ()
 //            
 //            ++counter;
 //            
-//            const size_t angle = static_cast<size_t> (180 + color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).angle + 0.5f);
+//            const size_t angle = static_cast<size_t> (180 + color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).angle + 0.5);
 //            const size_t bin_index = static_cast<size_t> ((angle >= 180 ? angle-180 : angle)/divisor);
 //            
 //            *peak_pointer |= 1 << bin_index;
@@ -442,7 +442,7 @@ computeMaxColorGradients ()
 //            y_coordinates.push_back (max_gradient_pos_y + y_position);
 //            values.push_back (max_gradient);
 //            
-//            color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).magnitude = -1.0f;
+//            color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).magnitude = -1.0;
 //          }
 //          
 //          // reset values which have been set to -1
@@ -498,10 +498,10 @@ computeDominantQuantizedGradients ()
   const size_t num_gradient_bins = 7;
   const size_t max_num_of_gradients = 1;
   
-  const double divisor = 180.0f / (num_gradient_bins - 1.0f);
+  const double divisor = 180.0 / (num_gradient_bins - 1.0);
   
-  double global_max_gradient = 0.0f;
-  double local_max_gradient = 0.0f;
+  double global_max_gradient = 0.0;
+  double local_max_gradient = 0.0;
   
   unsigned char * peak_pointer = dominant_quantized_color_gradients_.getData ();
   memset (peak_pointer, 0, output_width*output_height);
@@ -527,7 +527,7 @@ computeDominantQuantizedGradients ()
             
         // find next location and value of maximum gradient magnitude in current region
         {
-          max_gradient = 0.0f;
+          max_gradient = 0.0;
           for (size_t row_sub_index = 0; row_sub_index < bin_size_; ++row_sub_index)
           {
             for (size_t col_sub_index = 0; col_sub_index < bin_size_; ++col_sub_index)
@@ -546,7 +546,7 @@ computeDominantQuantizedGradients ()
             
         if (max_gradient >= gradient_magnitude_threshold_)
         {
-          const size_t angle = static_cast<size_t> (180 + color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).angle + 0.5f);
+          const size_t angle = static_cast<size_t> (180 + color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).angle + 0.5);
           const size_t bin_index = static_cast<size_t> ((angle >= 180 ? angle-180 : angle)/divisor);
             
           *peak_pointer |= 1 << bin_index;
@@ -558,7 +558,7 @@ computeDominantQuantizedGradients ()
         //y_coordinates.push_back (max_gradient_pos_y + y_position);
         //values.push_back (max_gradient);
             
-        //color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).magnitude = -1.0f;
+        //color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).magnitude = -1.0;
       }
 
       //// reset values which have been set to -1
@@ -616,10 +616,10 @@ computeInvariantQuantizedMap (const MaskMap & mask,
   const size_t num_gradient_bins = 7;
   const size_t max_num_of_gradients = 7;
   
-  const double divisor = 180.0f / (num_gradient_bins - 1.0f);
+  const double divisor = 180.0 / (num_gradient_bins - 1.0);
   
-  double global_max_gradient = 0.0f;
-  double local_max_gradient = 0.0f;
+  double global_max_gradient = 0.0;
+  double local_max_gradient = 0.0;
   
   unsigned char * peak_pointer = map.getData ();
   
@@ -653,7 +653,7 @@ computeInvariantQuantizedMap (const MaskMap & mask,
 
           // find maximum gradient magnitude in current bin
           {
-            local_max_gradient = 0.0f;
+            local_max_gradient = 0.0;
             for (size_t row_sub_index = 0; row_sub_index < bin_size_; ++row_sub_index)
             {
               for (size_t col_sub_index = 0; col_sub_index < bin_size_; ++col_sub_index)
@@ -682,7 +682,7 @@ computeInvariantQuantizedMap (const MaskMap & mask,
             
             // find next location and value of maximum gradient magnitude in current region
             {
-              max_gradient = 0.0f;
+              max_gradient = 0.0;
               for (size_t row_sub_index = 0; row_sub_index < bin_size_; ++row_sub_index)
               {
                 for (size_t col_sub_index = 0; col_sub_index < bin_size_; ++col_sub_index)
@@ -715,7 +715,7 @@ computeInvariantQuantizedMap (const MaskMap & mask,
             
             ++counter;
             
-            const size_t angle = static_cast<size_t> (180 + color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).angle + 0.5f);
+            const size_t angle = static_cast<size_t> (180 + color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).angle + 0.5);
             const size_t bin_index = static_cast<size_t> ((angle >= 180 ? angle-180 : angle)/divisor);
             
             *peak_pointer |= 1 << bin_index;
@@ -724,7 +724,7 @@ computeInvariantQuantizedMap (const MaskMap & mask,
             y_coordinates.push_back (max_gradient_pos_y + y_position);
             values.push_back (max_gradient);
             
-            color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).magnitude = -1.0f;
+            color_gradients_ (max_gradient_pos_x + x_position, max_gradient_pos_y + y_position).magnitude = -1.0;
           }
           
           // reset values which have been set to -1

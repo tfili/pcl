@@ -317,8 +317,8 @@ pcl::apps::DominantPlaneSegmentation<PointType>::compute_fast (std::vector<Cloud
   //connected components on the binary image
 
   std::map<double, double> connected_labels;
-  double c_intensity = 0.1f;
-  double intensity_incr = 0.1f;
+  double c_intensity = 0.1;
+  double intensity_incr = 0.1;
 
   {
 

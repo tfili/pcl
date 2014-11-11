@@ -45,13 +45,13 @@ template <typename PointInT, typename PointOutT, typename KeypointT, typename In
 pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::BRISK2DEstimation ()
   : rotation_invariance_enabled_ (true)
   , scale_invariance_enabled_ (true)
-  , pattern_scale_ (1.0f)
+  , pattern_scale_ (1.0)
   , input_cloud_ (), keypoints_ (), scale_range_ (), pattern_points_ (), points_ ()
   , n_rot_ (1024), scale_list_ (NULL), size_list_ (NULL)
   , scales_ (64)
   , scalerange_ (30)
   , basic_size_ (12.0)
-  , strings_ (0), d_max_ (0.0f), d_min_ (0.0f), short_pairs_ (), long_pairs_ ()
+  , strings_ (0), d_max_ (0.0), d_min_ (0.0), short_pairs_ (), long_pairs_ ()
   , no_short_pairs_ (0), no_long_pairs_ (0)
   , intensity_ ()
   , name_ ("BRISK2Destimation")
@@ -64,13 +64,13 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::BRISK2DEstim
   // this is the standard pattern found to be suitable also
   r_list.resize (5);
   n_list.resize (5);
-  const double f = 0.85f * pattern_scale_;
+  const double f = 0.85 * pattern_scale_;
 
-  r_list[0] = f * 0.0f;
-  r_list[1] = f * 2.9f;
-  r_list[2] = f * 4.9f;
-  r_list[3] = f * 7.4f;
-  r_list[4] = f * 10.8f;
+  r_list[0] = f * 0.0;
+  r_list[1] = f * 2.9;
+  r_list[2] = f * 4.9;
+  r_list[3] = f * 7.4;
+  r_list[4] = f * 10.8;
 
   n_list[0] = 1;
   n_list[1] = 10;
@@ -78,7 +78,7 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::BRISK2DEstim
   n_list[3] = 15;
   n_list[4] = 20;
 
-  generateKernel (r_list, n_list, 5.85f * pattern_scale_, 8.2f * pattern_scale_);
+  generateKernel (r_list, n_list, 5.85 * pattern_scale_, 8.2 * pattern_scale_);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::generateKern
           pattern_iterator->y = scale_list_[scale] * radius_list[ring] * static_cast<double> (sin (alpha + theta));
           // and the gaussian kernel sigma
           if (ring == 0)
-            pattern_iterator->sigma = sigma_scale * scale_list_[scale] * 0.5f;
+            pattern_iterator->sigma = sigma_scale * scale_list_[scale] * 0.5;
           else
             pattern_iterator->sigma = static_cast<double> (sigma_scale * scale_list_[scale] * (double (radius_list[ring])) * sin (M_PI / double (number_list[ring])));
 
@@ -234,7 +234,7 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::smoothedInte
 
   // get the sigma:
   const double sigma_half = brisk_point.sigma;
-  const double area = 4.0f * sigma_half * sigma_half;
+  const double area = 4.0 * sigma_half * sigma_half;
 
   // Get the point step
 
@@ -274,8 +274,8 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::smoothedInte
   // this is the standard case (simple, not speed optimized yet):
 
   // scaling:
-  const int scaling  = static_cast<int> (4194304.0f / area);
-  const int scaling2 = static_cast<int> (double (scaling) * area / 1024.0f);
+  const int scaling  = static_cast<int> (4194304.0 / area);
+  const int scaling2 = static_cast<int> (double (scaling) * area / 1024.0);
 
   // the integral image is larger:
   const int integralcols = imagecols + 1;
@@ -292,10 +292,10 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::smoothedInte
   const int y_bottom = int (y1 + 0.5);
 
   // overlap area - multiplication factors:
-  const double r_x_1 = double (x_left) - x_1  + 0.5f;
-  const double r_y_1 = double (y_top)  - y_1  + 0.5f;
-  const double r_x1  = x1 - double (x_right)  + 0.5f;
-  const double r_y1  = y1 - double (y_bottom) + 0.5f;
+  const double r_x_1 = double (x_left) - x_1  + 0.5;
+  const double r_y_1 = double (y_top)  - y_1  + 0.5;
+  const double r_x1  = x1 - double (x_right)  + 0.5;
+  const double r_y1  = y1 - double (y_bottom) + 0.5;
   const int dx = x_right  - x_left - 1;
   const int dy = y_bottom - y_top  - 1;
   const int A = static_cast<int> ((r_x_1 * r_y_1) * double (scaling));
@@ -469,24 +469,24 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::compute (
   kscales.resize (ksize);
  
   // initialize constants
-  static const double log2 = 0.693147180559945f;
+  static const double log2 = 0.693147180559945;
   static const double lb_scalerange = std::log (scalerange_) / (log2);
 
   typename std::vector<KeypointT, Eigen::aligned_allocator<KeypointT> >::iterator beginning = keypoints_->points.begin ();
   std::vector<int>::iterator beginningkscales = kscales.begin ();
   
-  static const double basic_size_06 = basic_size_ * 0.6f;
+  static const double basic_size_06 = basic_size_ * 0.6;
   unsigned int basicscale = 0;
 
   if (!scale_invariance_enabled_)
-    basicscale = std::max (static_cast<int> (double (scales_) / lb_scalerange * (log (1.45f * basic_size_ / (basic_size_06)) / log2) + 0.5f), 0);
+    basicscale = std::max (static_cast<int> (double (scales_) / lb_scalerange * (log (1.45 * basic_size_ / (basic_size_06)) / log2) + 0.5), 0);
 
   for (size_t k = 0; k < ksize; k++)
   {
     unsigned int scale;
     if (scale_invariance_enabled_)
     {
-      scale = std::max (static_cast<int> (double (scales_) / lb_scalerange * (log (keypoints_->points[k].size / (basic_size_06)) / log2) + 0.5f), 0);
+      scale = std::max (static_cast<int> (double (scales_) / lb_scalerange * (log (keypoints_->points[k].size / (basic_size_06)) / log2) + 0.5), 0);
       // saturate
       if (scale >= scales_) scale = scales_ - 1;
       kscales[k] = scale;
@@ -594,8 +594,8 @@ pcl::BRISK2DEstimation<PointInT, PointOutT, KeypointT, IntensityT>::compute (
           direction0 += tmp0;
           direction1 += tmp1;
         }
-        kp.angle = atan2f (double (direction1), double (direction0)) / double (M_PI) * 180.0f;
-        theta = static_cast<int> ((double (n_rot_) * kp.angle) / (360.0f) + 0.5f);
+        kp.angle = atan2 (double (direction1), double (direction0)) / double (M_PI) * 180.0;
+        theta = static_cast<int> ((double (n_rot_) * kp.angle) / (360.0) + 0.5);
         if (theta < 0)
           theta += n_rot_;
         if (theta >= int (n_rot_))

@@ -49,16 +49,16 @@ pcl::gpu::kinfuLS::CyclicalBuffer::checkForShift (const TsdfVolume::Ptr volume, 
 
   // project the target point in the cube
   pcl::PointXYZ targetPoint;
-  targetPoint.x = 0.0f;
-  targetPoint.y = 0.0f;
+  targetPoint.x = 0.0;
+  targetPoint.y = 0.0;
   targetPoint.z = distance_camera_target; // place the point at camera position + distance_camera_target on Z
   targetPoint = pcl::transformPoint (targetPoint, cam_pose);
 
   // check distance from the cube's center
   pcl::PointXYZ center_cube;
-  center_cube.x = buffer_.origin_metric.x + buffer_.volume_size.x/2.0f;
-  center_cube.y = buffer_.origin_metric.y + buffer_.volume_size.y/2.0f;
-  center_cube.z = buffer_.origin_metric.z + buffer_.volume_size.z/2.0f;
+  center_cube.x = buffer_.origin_metric.x + buffer_.volume_size.x/2.0;
+  center_cube.y = buffer_.origin_metric.y + buffer_.volume_size.y/2.0;
+  center_cube.z = buffer_.origin_metric.z + buffer_.volume_size.z/2.0;
 
   if (pcl::euclideanDistance (targetPoint, center_cube) > distance_threshold_)
     result = true;
@@ -174,9 +174,9 @@ pcl::gpu::kinfuLS::CyclicalBuffer::computeAndSetNewCubeMetricOrigin (const pcl::
 {
   // compute new origin for the cube, based on the target point
   float3 new_cube_origin_meters;
-  new_cube_origin_meters.x = target_point.x - buffer_.volume_size.x/2.0f;
-  new_cube_origin_meters.y = target_point.y - buffer_.volume_size.y/2.0f;
-  new_cube_origin_meters.z = target_point.z - buffer_.volume_size.z/2.0f;
+  new_cube_origin_meters.x = target_point.x - buffer_.volume_size.x/2.0;
+  new_cube_origin_meters.y = target_point.y - buffer_.volume_size.y/2.0;
+  new_cube_origin_meters.z = target_point.z - buffer_.volume_size.z/2.0;
   PCL_INFO ("The old cube's metric origin was    (%f, %f, %f).\n", buffer_.origin_metric.x, buffer_.origin_metric.y, buffer_.origin_metric.z);
   PCL_INFO ("The new cube's metric origin is now (%f, %f, %f).\n", new_cube_origin_meters.x, new_cube_origin_meters.y, new_cube_origin_meters.z);
 

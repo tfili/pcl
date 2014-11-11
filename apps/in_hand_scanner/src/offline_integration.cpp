@@ -74,8 +74,8 @@ pcl::ihs::OfflineIntegration::OfflineIntegration (Base* parent)
     destructor_called_ (false)
 {
   normal_estimation_->setNormalEstimationMethod (NormalEstimation::AVERAGE_3D_GRADIENT);
-  normal_estimation_->setMaxDepthChangeFactor (0.02f); // in meters
-  normal_estimation_->setNormalSmoothingSize (10.0f);
+  normal_estimation_->setMaxDepthChangeFactor (0.02); // in meters
+  normal_estimation_->setNormalSmoothingSize (10.0);
 
   integration_->setMaxSquaredDistance (1e-4); // in m^2
   integration_->setMinDirections (2);

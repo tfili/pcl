@@ -50,7 +50,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-double default_leaf_size = 0.005f;
+double default_leaf_size = 0.005;
 double default_feature_threshold = 5.0;
 double default_normal_radius_search = 0.03;
 

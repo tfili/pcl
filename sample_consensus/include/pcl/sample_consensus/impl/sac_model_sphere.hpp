@@ -106,11 +106,11 @@ pcl::SampleConsensusModelSphere<PointT>::computeModelCoefficients (
 
   // Center (x , y, z)
   model_coefficients.resize (4);
-  model_coefficients[0] = 0.5f * m12 / m11;
-  model_coefficients[1] = 0.5f * m13 / m11;
-  model_coefficients[2] = 0.5f * m14 / m11;
+  model_coefficients[0] = 0.5 * m12 / m11;
+  model_coefficients[1] = 0.5 * m13 / m11;
+  model_coefficients[2] = 0.5 * m14 / m11;
   // Radius
-  model_coefficients[3] = sqrtf (
+  model_coefficients[3] = sqrt (
                                  model_coefficients[0] * model_coefficients[0] +
                                  model_coefficients[1] * model_coefficients[1] +
                                  model_coefficients[2] * model_coefficients[2] - m15 / m11);
@@ -135,7 +135,7 @@ pcl::SampleConsensusModelSphere<PointT>::getDistancesToModel (
   for (size_t i = 0; i < indices_->size (); ++i)
     // Calculate the distance from the point to the sphere as the difference between
     //dist(point,sphere_origin) and sphere_radius
-    distances[i] = fabs (sqrtf (
+    distances[i] = fabs (sqrt (
                                ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                                ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 
@@ -166,7 +166,7 @@ pcl::SampleConsensusModelSphere<PointT>::selectWithinDistance (
   // Iterate through the 3d points and calculate the distances from them to the sphere
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    double distance = fabs (sqrtf (
+    double distance = fabs (sqrt (
                           ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                           ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 
@@ -206,7 +206,7 @@ pcl::SampleConsensusModelSphere<PointT>::countWithinDistance (
   {
     // Calculate the distance from the point to the sphere as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    if (fabs (sqrtf (
+    if (fabs (sqrt (
                     ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                     ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 

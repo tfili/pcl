@@ -116,7 +116,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::getDistancesToModel (const Eigen::Vec
   for (size_t i = 0; i < indices_->size (); ++i)
     // Calculate the distance from the point to the circle as the difference between
     // dist(point,circle_origin) and circle_radius
-    distances[i] = fabsf (sqrtf (
+    distances[i] = fabsf (sqrt (
                                 ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                                 ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 
@@ -146,7 +146,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::selectWithinDistance (
   {
     // Calculate the distance from the point to the sphere as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    double distance = fabsf (sqrtf (
+    double distance = fabsf (sqrt (
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 
@@ -180,7 +180,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::countWithinDistance (
   {
     // Calculate the distance from the point to the sphere as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    double distance = fabsf (sqrtf (
+    double distance = fabsf (sqrt (
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) *
                                   ( input_->points[(*indices_)[i]].x - model_coefficients[0] ) +
 
@@ -261,7 +261,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::projectPoints (
     {
       double dx = input_->points[inliers[i]].x - model_coefficients[0];
       double dy = input_->points[inliers[i]].y - model_coefficients[1];
-      double a = sqrtf ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
+      double a = sqrt ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
 
       projected_points.points[inliers[i]].x = a * dx + model_coefficients[0];
       projected_points.points[inliers[i]].y = a * dy + model_coefficients[1];
@@ -285,7 +285,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::projectPoints (
     {
       double dx = input_->points[inliers[i]].x - model_coefficients[0];
       double dy = input_->points[inliers[i]].y - model_coefficients[1];
-      double a = sqrtf ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
+      double a = sqrt ( (model_coefficients[2] * model_coefficients[2]) / (dx * dx + dy * dy) );
 
       projected_points.points[i].x = a * dx + model_coefficients[0];
       projected_points.points[i].y = a * dy + model_coefficients[1];
@@ -308,7 +308,7 @@ pcl::SampleConsensusModelCircle2D<PointT>::doSamplesVerifyModel (
   for (std::set<int>::const_iterator it = indices.begin (); it != indices.end (); ++it)
     // Calculate the distance from the point to the sphere as the difference between
     //dist(point,sphere_origin) and sphere_radius
-    if (fabsf (sqrtf (
+    if (fabsf (sqrt (
                      ( input_->points[*it].x - model_coefficients[0] ) *
                      ( input_->points[*it].x - model_coefficients[0] ) +
                      ( input_->points[*it].y - model_coefficients[1] ) *

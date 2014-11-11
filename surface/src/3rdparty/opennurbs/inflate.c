@@ -593,7 +593,7 @@ int flush;
             }
             NEEDBITS(16);
 #ifdef GUNZIP
-            if ((state->wrap & 2) && hold == 0x8b1f) {  /* gzip header */
+            if ((state->wrap & 2) && hold == 0x8b1) {  /* gzip header */
                 state->check = crc32(0L, Z_NULL, 0);
                 CRC2(state->check, hold);
                 INITBITS();
@@ -972,7 +972,7 @@ int flush;
             DROPBITS(this.bits);
             state->length = (unsigned)this.val;
             if ((int)(this.op) == 0) {
-                Tracevv((stderr, this.val >= 0x20 && this.val < 0x7f ?
+                Tracevv((stderr, this.val >= 0x20 && this.val < 0x7 ?
                         "inflate:         literal '%c'\n" :
                         "inflate:         literal 0x%02x\n", this.val));
                 state->mode = LIT;

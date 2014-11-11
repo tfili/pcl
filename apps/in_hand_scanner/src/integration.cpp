@@ -54,7 +54,7 @@
 pcl::ihs::Integration::Integration ()
   : kd_tree_              (new pcl::KdTreeFLANN <PointXYZ> ()),
     max_squared_distance_ (0.04f), // 0.2cm
-    max_angle_            (45.f),
+    max_angle_            (45.),
     min_weight_           (.3f),
     max_age_              (30),
     min_directions_       (5)
@@ -231,7 +231,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   cloud_data_transformed->resize (cloud_data->size ());
 
   // Sensor position in model coordinates
-  const Eigen::Vector4d& sensor_eye = T * Eigen::Vector4d (0.f, 0.f, 0.f, 1.f);
+  const Eigen::Vector4d& sensor_eye = T * Eigen::Vector4d (0., 0., 0., 1.);
 
   // Store which vertex is set at which position (initialized with invalid indices)
   VertexIndices vertex_indices (cloud_data->size (), VertexIndex ());
@@ -456,7 +456,7 @@ pcl::ihs::Integration::getMaxSquaredDistance () const
 void
 pcl::ihs::Integration::setMaxAngle (const double angle)
 {
-  max_angle_ = pcl::ihs::clamp (angle, 0.f, 180.f);
+  max_angle_ = pcl::ihs::clamp (angle, 0., 180.);
 }
 
 double
@@ -498,7 +498,7 @@ pcl::ihs::Integration::getMinDirections () const
 uint8_t
 pcl::ihs::Integration::trimRGB (const double val) const
 {
-  return (static_cast <uint8_t> (val > 255.f ? 255 : val));
+  return (static_cast <uint8_t> (val > 255. ? 255 : val));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

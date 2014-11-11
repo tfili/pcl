@@ -118,7 +118,7 @@ void run (const char* file_name, double voxel_size)
 
   // Now build the octree z-projection
   ORROctreeZProjection zproj;
-  zproj.build (octree, 0.15f*voxel_size, 0.15f*voxel_size);
+  zproj.build (octree, 0.15*voxel_size, 0.15*voxel_size);
 
   // The visualizer
   PCLVisualizer viz;

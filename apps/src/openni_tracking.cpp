@@ -166,12 +166,12 @@ public:
       tracker->setDelta (0.99);
       tracker->setEpsilon (0.2);
       ParticleT bin_size;
-      bin_size.x = 0.1f;
-      bin_size.y = 0.1f;
-      bin_size.z = 0.1f;
-      bin_size.roll = 0.1f;
-      bin_size.pitch = 0.1f;
-      bin_size.yaw = 0.1f;
+      bin_size.x = 0.1;
+      bin_size.y = 0.1;
+      bin_size.z = 0.1;
+      bin_size.roll = 0.1;
+      bin_size.pitch = 0.1;
+      bin_size.yaw = 0.1;
       tracker->setBinSize (bin_size);
       tracker_ = tracker;
     }
@@ -248,7 +248,7 @@ public:
     ParticleXYZRPY result = tracker_->getResult ();
     Eigen::Affine3d transformation = tracker_->toEigenMatrix (result);
     // move a little bit for better visualization
-    transformation.translation () += Eigen::Vector3d (0.0f, 0.0f, -0.005f);
+    transformation.translation () += Eigen::Vector3d (0.0, 0.0, -0.005);
     RefCloudPtr result_cloud (new RefCloud ());
 
     if (!visualize_non_downsample_)

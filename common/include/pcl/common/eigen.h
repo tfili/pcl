@@ -522,13 +522,13 @@ namespace pcl
                         Eigen::Matrix<Scalar, 4, 1> &plane_out,
                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
 
-  inline void
-  transformPlane (const Eigen::Matrix<float, 4, 1> &plane_in,
-                        Eigen::Matrix<float, 4, 1> &plane_out,
-                  const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
-  {
-    transformPlane<float> (plane_in, plane_out, transformation);
-  }
+  //inline void
+  //transformPlane (const Eigen::Matrix<float, 4, 1> &plane_in,
+  //                      Eigen::Matrix<float, 4, 1> &plane_out,
+  //                const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
+  //{
+  //  transformPlane<float> (plane_in, plane_out, transformation);
+  //}
 
   inline void
   transformPlane (const Eigen::Matrix<double, 4, 1> &plane_in,
@@ -553,13 +553,13 @@ namespace pcl
                         pcl::ModelCoefficients::Ptr plane_out,
                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
 
-  inline void
-  transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
-                        pcl::ModelCoefficients::Ptr plane_out,
-                  const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
-  {
-    transformPlane<float> (plane_in, plane_out, transformation);
-  }
+  //inline void
+  //transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
+  //                      pcl::ModelCoefficients::Ptr plane_out,
+  //                const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
+  //{
+  //  transformPlane<float> (plane_in, plane_out, transformation);
+  //}
 
   inline void
   transformPlane (const pcl::ModelCoefficients::Ptr plane_in,

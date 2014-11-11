@@ -55,7 +55,7 @@ pcl::gpu::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resolution_(resol
 
   volume_.create (volume_y * volume_z, volume_x);
   
-  const Vector3d default_volume_size = Vector3d::Constant (3.f); //meters
+  const Vector3d default_volume_size = Vector3d::Constant (3.); //meters
   const double    default_tranc_dist  = 0.03f; //meters
 
   setSize(default_volume_size);
@@ -82,7 +82,7 @@ pcl::gpu::TsdfVolume::setTsdfTruncDist (double distance)
   double cy = size_(1) / resolution_(1);
   double cz = size_(2) / resolution_(2);
 
-  tranc_dist_ = std::max (distance, 2.1f * std::max (cx, std::max (cy, cz)));  
+  tranc_dist_ = std::max (distance, 2.1 * std::max (cx, std::max (cy, cz)));  
 
   /*if (tranc_dist_ != distance)
 	  PCL_WARN ("Tsdf truncation distance can't be less than 2 * voxel_size. Passed value '%f', but setting minimal possible '%f'.\n", distance, tranc_dist_);*/
@@ -171,7 +171,7 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
         if (W == 0 || F == DIVISOR)
           continue;
 
-        Vector3d V = ((Array3i(x, y, z).cast<double>() + 0.5f) * cell_size).matrix ();
+        Vector3d V = ((Array3i(x, y, z).cast<double>() + 0.5) * cell_size).matrix ();
 
         if (connected26)
         {
@@ -188,7 +188,7 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
+                Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5) * cell_size).matrix ();
                 Vector3d point = (V * (double)abs (Fn) + Vn * (double)abs (F)) / (double)(abs (F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
@@ -212,7 +212,7 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
+                Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5) * cell_size).matrix ();
                 Vector3d point = (V * (double)abs(Fn) + Vn * (double)abs(F))/(double)(abs(F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
@@ -244,7 +244,7 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
 
             if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
             {
-              Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
+              Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5) * cell_size).matrix ();
               Vector3d point = (V * (double)abs (Fn) + Vn * (double)abs (F)) / (double)(abs (F) + abs (Fn));
 
               pcl::PointXYZ xyz;

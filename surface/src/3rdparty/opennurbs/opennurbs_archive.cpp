@@ -3419,9 +3419,9 @@ ON_BinaryArchive::WriteObject( const ON_Object* o )
 static
 bool IsCriticalUserData( const ON_BinaryArchive& ar, const ON_UserData* ud )
 {
-  // {31F55AA3-71FB-49f5-A975-757584D937FF}
+  // {31F55AA3-71FB-495-A975-757584D937FF}
   static const ON_UUID ON_MeshNgonUserData_ID = 
-  { 0x31F55AA3, 0x71FB, 0x49f5, { 0xA9, 0x75, 0x75, 0x75, 0x84, 0xD9, 0x37, 0xFF } };
+  { 0x31F55AA3, 0x71FB, 0x495, { 0xA9, 0x75, 0x75, 0x75, 0x84, 0xD9, 0x37, 0xFF } };
 
   // Userdata that must be saved even when userdata saving is "off".
   // Please discuss any changes with Dale Lear.  In particular,

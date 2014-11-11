@@ -324,9 +324,9 @@ pcl::PackedHSIComparison<PointT>::evaluate (const PointT &point) const
     b_ = static_cast <uint8_t> (rgb_val_);
 
     // definitions taken from http://en.wikipedia.org/wiki/HSL_and_HSI
-    double hx = (2.0f * r_ - g_ - b_) / 4.0f;  // hue x component -127 to 127
-    double hy = static_cast<double> (g_ - b_) * 111.0f / 255.0f; // hue y component -111 to 111
-    h_ = static_cast<int8_t> (atan2(hy, hx) * 128.0f / M_PI);
+    double hx = (2.0 * r_ - g_ - b_) / 4.0;  // hue x component -127 to 127
+    double hy = static_cast<double> (g_ - b_) * 111.0 / 255.0; // hue y component -111 to 111
+    h_ = static_cast<int8_t> (atan2(hy, hx) * 128.0 / M_PI);
 
     int32_t i = (r_+g_+b_)/3; // 0 to 255
     i_ = static_cast<uint8_t> (i);
@@ -511,7 +511,7 @@ pcl::TfQuadraticXYZComparison<PointT>::evaluate (const PointT &point) const
   Eigen::Vector4d pointAffine;
   pointAffine << point.x, point.y, point.z, 1; 
   
-  double myVal = static_cast<double>(2.0f * tf_comp_vect_.transpose () * pointAffine) + static_cast<double>(pointAffine.transpose () * tf_comp_matr_ * pointAffine) + comp_scalar_ - 3.0f;
+  double myVal = static_cast<double>(2.0 * tf_comp_vect_.transpose () * pointAffine) + static_cast<double>(pointAffine.transpose () * tf_comp_matr_ * pointAffine) + comp_scalar_ - 3.0;
   
   // now do the comparison
   switch (this->op_)

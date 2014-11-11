@@ -65,8 +65,8 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::initCompute ()
   descriptor_length_ = elevation_bins_ * azimuth_bins_ * radius_bins_;
 
   // Compute radial, elevation and azimuth divisions
-  double azimuth_interval = 360.0f / static_cast<double> (azimuth_bins_);
-  double elevation_interval = 180.0f / static_cast<double> (elevation_bins_);
+  double azimuth_interval = 360.0 / static_cast<double> (azimuth_bins_);
+  double elevation_interval = 180.0 / static_cast<double> (elevation_bins_);
 
   // Reallocate divisions and volume lut
   radii_interval_.clear ();
@@ -94,19 +94,19 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::initCompute ()
   // "integr_phi" has always the same value so we compute it only one time
   double integr_phi  = pcl::deg2rad (phi_divisions_[1]) - pcl::deg2rad (phi_divisions_[0]);
   // exponential to compute the cube root using pow
-  double e = 1.0f / 3.0f;
+  double e = 1.0 / 3.0;
   // Resize volume look up table
   volume_lut_.resize (radius_bins_ * elevation_bins_ * azimuth_bins_);
   // Fill volumes look up table
   for (size_t j = 0; j < radius_bins_; j++)
   {
     // "r" term of the volume integral
-    double integr_r = (radii_interval_[j+1] * radii_interval_[j+1] * radii_interval_[j+1] / 3.0f) - (radii_interval_[j] * radii_interval_[j] * radii_interval_[j] / 3.0f);
+    double integr_r = (radii_interval_[j+1] * radii_interval_[j+1] * radii_interval_[j+1] / 3.0) - (radii_interval_[j] * radii_interval_[j] * radii_interval_[j] / 3.0);
 
     for (size_t k = 0; k < elevation_bins_; k++)
     {
       // "theta" term of the volume integral
-      double integr_theta = cosf (pcl::deg2rad (theta_divisions_[k])) - cosf (pcl::deg2rad (theta_divisions_[k+1]));
+      double integr_theta = cos (pcl::deg2rad (theta_divisions_[k])) - cos (pcl::deg2rad (theta_divisions_[k+1]));
       // Volume
       double V = integr_phi * integr_theta * integr_r;
       // Compute cube root of the computed volume commented for performance but left
@@ -118,7 +118,7 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::initCompute ()
       {
         // Store in lut 1/cbrt
         //volume_lut_[ (l*elevation_bins_*radius_bins_) + k*radius_bins_ + j ] = cbrt;
-        volume_lut_[(l*elevation_bins_*radius_bins_) + k*radius_bins_ + j] = 1.0f / powf (V, e);
+        volume_lut_[(l*elevation_bins_*radius_bins_) + k*radius_bins_ + j] = 1.0 / pow (V, e);
       }
     }
   }
@@ -194,7 +194,7 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
 
     /// ----- Compute current neighbour polar coordinates -----
     /// Get distance between the neighbour and the origin
-    double r = sqrtf (nn_dists[ne]);
+    double r = sqrt (nn_dists[ne]);
 
     /// Project point into the tangent plane
     Eigen::Vector3d proj;
@@ -207,7 +207,7 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
     /// Compute the angle between the projection and the x axis in the interval [0,360]
     Eigen::Vector3d cross = x_axis.cross (proj);
     double phi = pcl::rad2deg (std::atan2 (cross.norm (), x_axis.dot (proj)));
-    phi = cross.dot (normal) < 0.f ? (360.0f - phi) : phi;
+    phi = cross.dot (normal) < 0. ? (360.0 - phi) : phi;
     /// Compute the angle between the neighbour and the z axis (normal) in the interval [0, 180]
     Eigen::Vector3d no = neighbour - origin;
     no.normalize ();
@@ -255,7 +255,7 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
     if (point_density == 0)
       continue;
 
-    double w = (1.0f / static_cast<double> (point_density)) *
+    double w = (1.0 / static_cast<double> (point_density)) *
               volume_lut_[(l*elevation_bins_*radius_bins_) +  (k*radius_bins_) + j];
 
     assert (w >= 0.0);

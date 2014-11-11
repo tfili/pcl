@@ -69,7 +69,7 @@ namespace pcl
       {
         max_distance_ = std::numeric_limits<double>::max ();
 
-        focalLength_ = 1.0f;
+        focalLength_ = 1.0;
       }
 
       /** \brief Empty deconstructor. */

@@ -122,7 +122,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
   mls.setUpsamplingRadius (0.025);
   mls.setUpsamplingStepSize (0.015);
   mls.setDilationIterations (2);
-  mls.setDilationVoxelSize (0.01f);
+  mls.setDilationVoxelSize (0.01);
 
   search::KdTree<PointXYZ>::Ptr tree (new search::KdTree<PointXYZ> ());
   mls.setSearchMethod (tree);

@@ -61,7 +61,7 @@ pcl::CovarianceSampling<PointT, PointNT>::initCompute ()
 
   // Prepare the point cloud by centering at the origin and then scaling the points such that the average distance from
   // the origin is 1.0 => rotations and translations will have the same magnitude
-  Eigen::Vector3d centroid (0.f, 0.f, 0.f);
+  Eigen::Vector3d centroid (0., 0., 0.);
   for (size_t p_i = 0; p_i < indices_->size (); ++p_i)
     centroid += (*input_)[(*indices_)[p_i]].getVector3dMap ();
   centroid /= double (indices_->size ());
@@ -210,7 +210,7 @@ pcl::CovarianceSampling<PointT, PointNT>::applyFilter (std::vector<int> &sampled
   for (size_t i = 0; i < 6; ++i)
   {
     for (size_t p_i = 0; p_i < candidate_indices.size (); ++p_i)
-      L[i].push_back (std::make_pair (p_i, fabs (v[p_i].dot (x.block<6, 1> (0, i)))));
+      L[i].push_back (std::make_pair ((int)p_i, fabs (v[p_i].dot (x.block<6, 1> (0, i)))));
 
     // Sort in decreasing order
     L[i].sort (sort_dot_list_function);

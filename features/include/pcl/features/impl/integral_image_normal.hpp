@@ -267,7 +267,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
 
     Eigen::Vector3d normal_vector = gradient_y.cross (gradient_x);
     double normal_length = normal_vector.squaredNorm ();
-    if (normal_length == 0.0f)
+    if (normal_length == 0.0)
     {
       normal.getNormalVector3dMap ().setConstant (bad_point);
       normal.curvature = bad_point;
@@ -329,7 +329,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
 
     const double normal_length = (normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
 
-    if (normal_length == 0.0f)
+    if (normal_length == 0.0)
     {
       normal.getNormalVector3dMap ().setConstant (bad_point);
       normal.curvature = bad_point;
@@ -338,7 +338,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
 
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, normal_x, normal_y, normal_z);
     
-    const double scale = 1.0f / sqrtf (normal_length);
+    const double scale = 1.0 / sqrt (normal_length);
 
     normal.normal_x = normal_x * scale;
     normal.normal_y = normal_y * scale;
@@ -360,7 +360,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormal (
                                  integral_image_XYZ_.getFirstOrderSum (pos_x - rect_width_2_, pos_y - rect_height_2_, rect_width_, 1);
     Eigen::Vector3d normal_vector = gradient_y.cross (gradient_x);
     double normal_length = normal_vector.squaredNorm ();
-    if (normal_length == 0.0f)
+    if (normal_length == 0.0)
     {
       normal.getNormalVector3dMap ().setConstant (bad_point);
       normal.curvature = bad_point;
@@ -567,7 +567,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
 
     Eigen::Vector3d normal_vector = gradient_y.cross (gradient_x);
     double normal_length = normal_vector.squaredNorm ();
-    if (normal_length == 0.0f)
+    if (normal_length == 0.0)
     {
       normal.getNormalVector3dMap ().setConstant (bad_point);
       normal.curvature = bad_point;
@@ -688,7 +688,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
 
     const double normal_length = (normal_x * normal_x + normal_y * normal_y + normal_z * normal_z);
 
-    if (normal_length == 0.0f)
+    if (normal_length == 0.0)
     {
       normal.getNormalVector3dMap ().setConstant (bad_point);
       normal.curvature = bad_point;
@@ -697,7 +697,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computePointNormalMirro
 
     flipNormalTowardsViewpoint (input_->points[point_index], vpx_, vpy_, vpz_, normal_x, normal_y, normal_z);
     
-    const double scale = 1.0f / sqrtf (normal_length);
+    const double scale = 1.0 / sqrt (normal_length);
 
     normal.normal_x = normal_x * scale;
     normal.normal_y = normal_y * scale;
@@ -741,8 +741,8 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
       const double depthR = input_->points [index + 1].z;
       const double depthD = input_->points [index + input_->width].z;
 
-      //const double depthDependendDepthChange = (max_depth_change_factor_ * (fabs(depth)+1.0f))/(500.0f*0.001f);
-      const double depthDependendDepthChange = (max_depth_change_factor_ * (fabsf (depth) + 1.0f) * 2.0f);
+      //const double depthDependendDepthChange = (max_depth_change_factor_ * (fabs(depth)+1.0))/(500.0*0.001);
+      const double depthDependendDepthChange = (max_depth_change_factor_ * (fabsf (depth) + 1.0) * 2.0);
 
       if (fabs (depth - depthR) > depthDependendDepthChange
         || !pcl_isfinite (depth) || !pcl_isfinite (depthR))
@@ -767,7 +767,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
   for (size_t index = 0; index < input_->points.size (); ++index)
   {
     if (depthChangeMap[index] == 0)
-      distanceMap[index] = 0.0f;
+      distanceMap[index] = 0.0;
     else
       distanceMap[index] = static_cast<double> (input_->width + input_->height);
   }
@@ -780,9 +780,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
     for (size_t ci = 1; ci < input_->width; ++ci)
     {
       const double upLeft  = previous_row [ci - 1] + 1.4f; //distanceMap[(ri-1)*input_->width + ci-1] + 1.4f;
-      const double up      = previous_row [ci] + 1.0f;     //distanceMap[(ri-1)*input_->width + ci] + 1.0f;
+      const double up      = previous_row [ci] + 1.0;     //distanceMap[(ri-1)*input_->width + ci] + 1.0;
       const double upRight = previous_row [ci + 1] + 1.4f; //distanceMap[(ri-1)*input_->width + ci+1] + 1.4f;
-      const double left    = current_row  [ci - 1] + 1.0f;  //distanceMap[ri*input_->width + ci-1] + 1.0f;
+      const double left    = current_row  [ci - 1] + 1.0;  //distanceMap[ri*input_->width + ci-1] + 1.0;
       const double center  = current_row  [ci];             //distanceMap[ri*input_->width + ci];
 
       const double minValue = std::min (std::min (upLeft, up), std::min (left, upRight));
@@ -802,9 +802,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeature (PointCl
     for (int ci = input_->width-2; ci >= 0; --ci)
     {
       const double lowerLeft  = next_row [ci - 1] + 1.4f;    //distanceMap[(ri+1)*input_->width + ci-1] + 1.4f;
-      const double lower      = next_row [ci] + 1.0f;        //distanceMap[(ri+1)*input_->width + ci] + 1.0f;
+      const double lower      = next_row [ci] + 1.0;        //distanceMap[(ri+1)*input_->width + ci] + 1.0;
       const double lowerRight = next_row [ci + 1] + 1.4f;    //distanceMap[(ri+1)*input_->width + ci+1] + 1.4f;
-      const double right      = current_row [ci + 1] + 1.0f; //distanceMap[ri*input_->width + ci+1] + 1.0f;
+      const double right      = current_row [ci + 1] + 1.0; //distanceMap[ri*input_->width + ci+1] + 1.0;
       const double center     = current_row [ci];            //distanceMap[ri*input_->width + ci];
 
       const double minValue = std::min (std::min (lowerLeft, lower), std::min (right, lowerRight));
@@ -883,9 +883,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
             continue;
           }
 
-          double smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
+          double smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<double>(depth)/10.0);
 
-          if (smoothing > 2.0f)
+          if (smoothing > 2.0)
           {
             setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
             computePointNormal (ci, ri, index, output [index]);
@@ -919,7 +919,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
 
           double smoothing = (std::min)(distanceMap[index], smoothing_constant);
 
-          if (smoothing > 2.0f)
+          if (smoothing > 2.0)
           {
             setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
             computePointNormal (ci, ri, index, output [index]);
@@ -957,9 +957,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
             continue;
           }
 
-          double smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
+          double smoothing = (std::min)(distanceMap[index], normal_smoothing_size_ + static_cast<double>(depth)/10.0);
 
-          if (smoothing > 2.0f)
+          if (smoothing > 2.0)
           {
             setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
             computePointNormalMirror (ci, ri, index, output [index]);
@@ -995,7 +995,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeatureFull (con
 
           double smoothing = (std::min)(distanceMap[index], smoothing_constant);
 
-          if (smoothing > 2.0f)
+          if (smoothing > 2.0)
           {
             setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
             computePointNormalMirror (ci, ri, index, output [index]);
@@ -1053,8 +1053,8 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
           continue;
         }
 
-        double smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
-        if (smoothing > 2.0f)
+        double smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<double>(depth)/10.0);
+        if (smoothing > 2.0)
         {
           setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
           computePointNormal (u, v, pt_index, output [idx]);
@@ -1098,7 +1098,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
 
         double smoothing = (std::min)(distanceMap[pt_index], smoothing_constant);
 
-        if (smoothing > 2.0f)
+        if (smoothing > 2.0)
         {
           setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
           computePointNormal (u, v, pt_index, output [idx]);
@@ -1131,9 +1131,9 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
           continue;
         }
 
-        double smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<double>(depth)/10.0f);
+        double smoothing = (std::min)(distanceMap[pt_index], normal_smoothing_size_ + static_cast<double>(depth)/10.0);
 
-        if (smoothing > 2.0f)
+        if (smoothing > 2.0)
         {
           setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
           computePointNormalMirror (u, v, pt_index, output [idx]);
@@ -1163,7 +1163,7 @@ pcl::IntegralImageNormalEstimation<PointInT, PointOutT>::computeFeaturePart (con
 
         double smoothing = (std::min)(distanceMap[pt_index], smoothing_constant);
 
-        if (smoothing > 2.0f)
+        if (smoothing > 2.0)
         {
           setRectSize (static_cast<int> (smoothing), static_cast<int> (smoothing));
           computePointNormalMirror (u, v, pt_index, output [idx]);

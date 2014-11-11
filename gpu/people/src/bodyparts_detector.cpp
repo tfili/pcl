@@ -52,7 +52,7 @@
 using namespace std;
 
 const int MAX_CLUST_SIZE = 25000;
-const double CLUST_TOL = 0.05f;
+const double CLUST_TOL = 0.05;
 
 pcl::gpu::people::RDFBodyPartsDetector::RDFBodyPartsDetector( const vector<string>& tree_files, int rows, int cols)    
 : max_cluster_size_(MAX_CLUST_SIZE), cluster_tolerance_(CLUST_TOL)

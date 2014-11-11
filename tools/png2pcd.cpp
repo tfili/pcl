@@ -106,7 +106,7 @@ depth2xyz (double v_viewing_angle, double h_viewing_angle,
   double width, height;
   static const double PI = 3.1415927;
 
-  if (depth <= 0.0f)
+  if (depth <= 0.0)
   {
     x = y = z = std::numeric_limits<double>::quiet_NaN ();
   }
@@ -176,9 +176,9 @@ main (int argc, char** argv)
   vtkSmartPointer<vtkImageData> depth_image_data;
   vtkSmartPointer<vtkPNGReader> depth_reader;
   bool enable_depth = false;
-  double v_viewing_angle = 43.0f;
-  double h_viewing_angle = 57.0f;
-  double depth_unit_magic = 1000.0f;
+  double v_viewing_angle = 43.0;
+  double h_viewing_angle = 57.0;
+  double depth_unit_magic = 1000.0;
   if (png_file_indices.size () == 2)
   {
     depth_reader = vtkSmartPointer<vtkPNGReader>::New ();
@@ -208,11 +208,11 @@ main (int argc, char** argv)
     {
       if (depth_unit == "m")
       {
-        depth_unit_magic = 1.0f;
+        depth_unit_magic = 1.0;
       }
       else if (depth_unit == "mm")
       {
-        depth_unit_magic = 1000.0f;
+        depth_unit_magic = 1000.0;
       }
       else
       {
@@ -570,7 +570,7 @@ main (int argc, char** argv)
           color.g = 0;
           color.b = 0;
           color.a = 0;
-          color.rgb = 0.0f;
+          color.rgb = 0.0;
           color.rgba = 0;
 
           int rgb;

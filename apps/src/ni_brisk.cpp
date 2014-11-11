@@ -123,7 +123,7 @@ class BRISKDemo
       const PointT &p4 = (*cloud)(u+1, v+1);
       
       double fx = x - double (u), fy = y - double (v);
-      double fx1 = 1.0f - fx, fy1 = 1.0f - fy;
+      double fx1 = 1.0 - fx, fy1 = 1.0 - fy;
 
       double w1 = fx1 * fy1, w2 = fx * fy1, w3 = fx1 * fy, w4 = fx * fy;
       double weight = 0;
@@ -161,7 +161,7 @@ class BRISKDemo
         pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
       else
       {
-        weight = 1.0f / weight;
+        weight = 1.0 / weight;
         pt.x *= weight; pt.y *= weight; pt.z *= weight;
       }
  

@@ -169,7 +169,7 @@ pcl::StereoMatching::getVisualMap (pcl::PointCloud<pcl::RGB>::Ptr vMap)
   invalid_val.g = 255;
   invalid_val.b = 0;
 
-  double scale = 255.0f / (16.0f * static_cast<double> (max_disp_));
+  double scale = 255.0 / (16.0 * static_cast<double> (max_disp_));
 
   for (int y = 0; y<height_; y++)
   {
@@ -261,7 +261,7 @@ pcl::StereoMatching::getPointCloud (
 
   //all disparities are multiplied by a constant equal to 16; 
   //this must be taken into account when computing z values
-  double depth_scale = baseline * focal * 16.0f;
+  double depth_scale = baseline * focal * 16.0;
 
   for (int j = 0; j < height_; j++)
   {
@@ -273,7 +273,7 @@ pcl::StereoMatching::getPointCloud (
         temp_point.x = ((static_cast<double> (i) - u_c) * temp_point.z) / focal;
         temp_point.y = ((static_cast<double> (j) - v_c) * temp_point.z) / focal;
 
-        //temp_point.intensity = ( texture->at(j*width_+i).r +texture->at(j*width_+i).g + texture->at(j*width_+i).b) / 3.0f;
+        //temp_point.intensity = ( texture->at(j*width_+i).r +texture->at(j*width_+i).g + texture->at(j*width_+i).b) / 3.0;
         temp_point.r = texture->at (j * width_ + i).r;
         temp_point.g = texture->at (j * width_ + i).g; 
         temp_point.b = texture->at (j * width_ + i).b; 
@@ -338,7 +338,7 @@ pcl::StereoMatching::getPointCloud (
 
   //all disparities are multiplied by a constant equal to 16; 
   //this must be taken into account when computing z values
-  double depth_scale = baseline * focal * 16.0f;
+  double depth_scale = baseline * focal * 16.0;
 
   for ( int j=0; j<height_; j++)
   {
@@ -493,7 +493,7 @@ pcl::GrayStereoMatching::compute (pcl::PointCloud<pcl::RGB> &ref, pcl::PointClou
     trg_img_ = new unsigned char[ref.width * ref.height];  
   }
 
-  double divider = 1.0f / 3.0f;
+  double divider = 1.0 / 3.0;
   for (unsigned int j = 0; j < ref.height; j++)
   {
     for (unsigned int i = 0; i < ref.width; i++)

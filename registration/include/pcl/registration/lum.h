@@ -50,8 +50,8 @@
 
 namespace Eigen
 {
-  typedef Eigen::Matrix<double, 6, 1> Vector6f;
-  typedef Eigen::Matrix<double, 6, 6> Matrix6f;
+  typedef Eigen::Matrix<double, 6, 1> Vector6;
+  typedef Eigen::Matrix<double, 6, 6> Matrix6;
 }
 
 namespace pcl
@@ -120,14 +120,14 @@ namespace pcl
         struct VertexProperties
         {
           PointCloudPtr cloud_;
-          Eigen::Vector6f pose_;
+          Eigen::Vector6 pose_;
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
         struct EdgeProperties
         {
           pcl::CorrespondencesPtr corrs_;
-          Eigen::Matrix6f cinv_;
-          Eigen::Vector6f cinvd_;
+          Eigen::Matrix6 cinv_;
+          Eigen::Vector6 cinvd_;
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
 
@@ -211,7 +211,7 @@ namespace pcl
           * \return The vertex descriptor of the newly created vertex.
           */
         Vertex
-        addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6f &pose = Eigen::Vector6f::Zero ());
+        addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6 &pose = Eigen::Vector6::Zero ());
 
         /** \brief Change a point cloud on one of the SLAM graph's vertices.
           * \details This method will change the point cloud attached to an existing vertex and will not alter the SLAM graph structure.
@@ -240,14 +240,14 @@ namespace pcl
           * \param[in] pose The new pose estimate for that vertex.
           */
         inline void
-        setPose (const Vertex &vertex, const Eigen::Vector6f &pose);
+        setPose (const Vertex &vertex, const Eigen::Vector6 &pose);
 
         /** \brief Return a pose estimate from one of the SLAM graph's vertices.
           * \note Vertex descriptors are typecastable to int.
           * \param[in] vertex The vertex descriptor of which to return the pose estimate.
           * \return The current pose estimate of that vertex.
           */
-        inline Eigen::Vector6f
+        inline Eigen::Vector6
         getPose (const Vertex &vertex) const;
 
         /** \brief Return a pose estimate from one of the SLAM graph's vertices as an affine transformation matrix.
@@ -323,8 +323,8 @@ namespace pcl
         computeEdge (const Edge &e);
 
         /** \brief Returns a pose corrected 6DoF incidence matrix. */
-        inline Eigen::Matrix6f
-        incidenceCorrection (const Eigen::Vector6f &pose);
+        inline Eigen::Matrix6
+        incidenceCorrection (const Eigen::Vector6 &pose);
 
       private:
         /** \brief The internal SLAM graph structure. */

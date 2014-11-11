@@ -51,8 +51,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace std;
 
-const double PI = 3.14159265f;
-const double rho = sqrtf (2.0f) / 2.0f;  // cos(PI/4) == sin(PI/4)
+const double PI = 3.14159265;
+const double rho = sqrt (2.0) / 2.0;  // cos(PI/4) == sin(PI/4)
 
 PointCloud<PointXYZ> cloud;
 pcl::PCLPointCloud2 cloud_blob;
@@ -269,38 +269,38 @@ TEST (PCL, TransformCopyFields)
 //////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, Matrix4Affine3Transform)
 {
-  double rot_x = 2.8827f;
-  double rot_y = -0.31190f;
-  double rot_z = -0.93058f;
+  double rot_x = 2.8827;
+  double rot_y = -0.31190;
+  double rot_z = -0.93058;
   Eigen::Affine3d affine;
   pcl::getTransformation (0, 0, 0, rot_x, rot_y, rot_z, affine);
 
-  EXPECT_NEAR (affine (0, 0),  0.56854731f, 1e-4); EXPECT_NEAR (affine (0, 1), -0.82217032f, 1e-4); EXPECT_NEAR (affine (0, 2), -0.028107658f, 1e-4);
-  EXPECT_NEAR (affine (1, 0), -0.76327348f, 1e-4); EXPECT_NEAR (affine (1, 1), -0.51445758f, 1e-4); EXPECT_NEAR (affine (1, 2), -0.39082864f, 1e-4);
-  EXPECT_NEAR (affine (2, 0),  0.30686751f, 1e-4); EXPECT_NEAR (affine (2, 1),  0.24365838f, 1e-4); EXPECT_NEAR (affine (2, 2), -0.920034f, 1e-4);
+  EXPECT_NEAR (affine (0, 0),  0.56854731, 1e-4); EXPECT_NEAR (affine (0, 1), -0.82217032f, 1e-4); EXPECT_NEAR (affine (0, 2), -0.028107658, 1e-4);
+  EXPECT_NEAR (affine (1, 0), -0.76327348, 1e-4); EXPECT_NEAR (affine (1, 1), -0.51445758, 1e-4); EXPECT_NEAR (affine (1, 2), -0.39082864f, 1e-4);
+  EXPECT_NEAR (affine (2, 0),  0.30686751, 1e-4); EXPECT_NEAR (affine (2, 1),  0.24365838, 1e-4); EXPECT_NEAR (affine (2, 2), -0.920034f, 1e-4);
 
   // Approximative!!! Uses SVD internally! See http://eigen.tuxfamily.org/dox/Transform_8h_source.html
   Eigen::Matrix3d rotation = affine.rotation ();
 
-  EXPECT_NEAR (rotation (0, 0),  0.56854731f, 1e-4); EXPECT_NEAR (rotation (0, 1), -0.82217032f, 1e-4); EXPECT_NEAR (rotation (0, 2), -0.028107658f, 1e-4);
-  EXPECT_NEAR (rotation (1, 0), -0.76327348f, 1e-4); EXPECT_NEAR (rotation (1, 1), -0.51445758f, 1e-4); EXPECT_NEAR (rotation (1, 2), -0.39082864f, 1e-4);
-  EXPECT_NEAR (rotation (2, 0),  0.30686751f, 1e-4); EXPECT_NEAR (rotation (2, 1),  0.24365838f, 1e-4); EXPECT_NEAR (rotation (2, 2), -0.920034f, 1e-4);
+  EXPECT_NEAR (rotation (0, 0),  0.56854731, 1e-4); EXPECT_NEAR (rotation (0, 1), -0.82217032f, 1e-4); EXPECT_NEAR (rotation (0, 2), -0.028107658, 1e-4);
+  EXPECT_NEAR (rotation (1, 0), -0.76327348, 1e-4); EXPECT_NEAR (rotation (1, 1), -0.51445758, 1e-4); EXPECT_NEAR (rotation (1, 2), -0.39082864f, 1e-4);
+  EXPECT_NEAR (rotation (2, 0),  0.30686751, 1e-4); EXPECT_NEAR (rotation (2, 1),  0.24365838, 1e-4); EXPECT_NEAR (rotation (2, 2), -0.920034f, 1e-4);
 
   double trans_x, trans_y, trans_z;
-  pcl::getTransformation (0.1f, 0.2f, 0.3f, rot_x, rot_y, rot_z, affine);
+  pcl::getTransformation (0.1, 0.2f, 0.3f, rot_x, rot_y, rot_z, affine);
   pcl::getTranslationAndEulerAngles (affine, trans_x, trans_y, trans_z, rot_x, rot_y, rot_z);
-  EXPECT_FLOAT_EQ (trans_x, 0.1f);
+  EXPECT_FLOAT_EQ (trans_x, 0.1);
   EXPECT_FLOAT_EQ (trans_y, 0.2f);
   EXPECT_FLOAT_EQ (trans_z, 0.3f);
-  EXPECT_FLOAT_EQ (rot_x, 2.8827f);
-  EXPECT_FLOAT_EQ (rot_y, -0.31190f);
-  EXPECT_FLOAT_EQ (rot_z, -0.93058f);
+  EXPECT_FLOAT_EQ (rot_x, 2.8827);
+  EXPECT_FLOAT_EQ (rot_y, -0.31190);
+  EXPECT_FLOAT_EQ (rot_z, -0.93058);
 
   Eigen::Matrix4d transformation (Eigen::Matrix4d::Identity ());
   transformation.block<3, 3> (0, 0) = affine.rotation ();
   transformation.block<3, 1> (0, 3) = affine.translation ();
 
-  PointXYZ p (1.f, 2.f, 3.f);
+  PointXYZ p (1., 2., 3.);
   Eigen::Vector3d v3 = p.getVector3dMap ();
   Eigen::Vector4d v4 = p.getVector4dMap ();
 
@@ -315,7 +315,7 @@ TEST (PCL, Matrix4Affine3Transform)
 
   PointNormal pn;
   pn.getVector3dMap () = p.getVector3dMap ();
-  pn.getNormalVector3dMap () = Eigen::Vector3d (0.60f, 0.48f, 0.64f);
+  pn.getNormalVector3dMap () = Eigen::Vector3d (0.60, 0.48, 0.64);
   Eigen::Vector3d n3 = pn.getNormalVector3dMap ();
   Eigen::Vector4d n4 = pn.getNormalVector4dMap ();
 
@@ -365,16 +365,16 @@ TEST (PCL, commonTransform)
   Eigen::Affine3d trans = pcl::getTransFromUnitVectorsZY (zaxis, yaxis);
   Eigen::Vector3d xaxistrans=trans*xaxis, yaxistrans=trans*yaxis, zaxistrans=trans*zaxis;
   //std::cout << xaxistrans<<"\n"<<yaxistrans<<"\n"<<zaxistrans<<"\n";
-  EXPECT_NEAR ((xaxistrans-xaxis).norm(), 0.0f,  1e-6);
-  EXPECT_NEAR ((yaxistrans-yaxis).norm(), 0.0f,  1e-6);
-  EXPECT_NEAR ((zaxistrans-zaxis).norm(), 0.0f,  1e-6);
+  EXPECT_NEAR ((xaxistrans-xaxis).norm(), 0.0,  1e-6);
+  EXPECT_NEAR ((yaxistrans-yaxis).norm(), 0.0,  1e-6);
+  EXPECT_NEAR ((zaxistrans-zaxis).norm(), 0.0,  1e-6);
   
   trans = pcl::getTransFromUnitVectorsXY (xaxis, yaxis);
   xaxistrans=trans*xaxis, yaxistrans=trans*yaxis, zaxistrans=trans*zaxis;
   //std::cout << xaxistrans<<"\n"<<yaxistrans<<"\n"<<zaxistrans<<"\n";
-  EXPECT_NEAR ((xaxistrans-xaxis).norm(), 0.0f,  1e-6);
-  EXPECT_NEAR ((yaxistrans-yaxis).norm(), 0.0f,  1e-6);
-  EXPECT_NEAR ((zaxistrans-zaxis).norm(), 0.0f,  1e-6);
+  EXPECT_NEAR ((xaxistrans-xaxis).norm(), 0.0,  1e-6);
+  EXPECT_NEAR ((yaxistrans-yaxis).norm(), 0.0,  1e-6);
+  EXPECT_NEAR ((zaxistrans-zaxis).norm(), 0.0,  1e-6);
 }
 
 /* ---[ */

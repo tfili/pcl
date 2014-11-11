@@ -75,12 +75,12 @@ namespace pcl
         * \param[in] cx principal point x
         * \param[in] cy principal point y
         */
-      RayCaster(int rows = 480, int cols = 640, double fx = 525.f, double fy = 525.f, double cx = -1, double cy = -1);
+      RayCaster(int rows = 480, int cols = 640, double fx = 525., double fy = 525., double cx = -1, double cy = -1);
       ~RayCaster();
 
       /** \brief Sets camera intrinsics */ 
       void
-      setIntrinsics(double fx = 525.f, double fy = 525.f, double cx = -1, double cy = -1);
+      setIntrinsics(double fx = 525., double fy = 525., double cx = -1, double cy = -1);
       
       /** \brief Runs raycasting algorithm from given camera pose. It writes results to internal fiels.
         * \param[in] volume tsdf volume container

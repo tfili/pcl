@@ -329,7 +329,7 @@ testKNNSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<search:
       for (int sIdx = 1; sIdx < int (search_methods.size ()); ++sIdx)
       {
         passed [sIdx] = passed [sIdx] && compareResults (indices [0],    distances [0],    search_methods [0]->getName (),
-                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6f);
+                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6);
       }
     }
   }
@@ -380,7 +380,7 @@ testRadiusSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<sear
     search_methods [sIdx]->setInputCloud (point_cloud, input_indices_);
 
   // test radii 0.01, 0.02, 0.04, 0.08
-  for (double radius = 0.01f; radius < 0.1f; radius *= 2.0f)
+  for (double radius = 0.01; radius < 0.1; radius *= 2.0f)
   {
     //cout << radius << endl;
     // find nn for each point in the cloud
@@ -400,7 +400,7 @@ testRadiusSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<sear
       for (int sIdx = 1; sIdx < static_cast<int> (search_methods.size ()); ++sIdx)
       {
         passed [sIdx] = passed [sIdx] && compareResults (indices [0],    distances [0],    search_methods [0]->getName (),
-                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6f);
+                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6);
       }
     }
   }
@@ -605,9 +605,9 @@ main (int argc, char** argv)
     {
       for (unsigned zIdx = 0; zIdx < 10; ++zIdx)
       {
-        point.x = 0.1f * static_cast<double>(xIdx);
-        point.y = 0.1f * static_cast<double>(yIdx);
-        point.z = 0.1f * static_cast<double>(zIdx);
+        point.x = 0.1 * static_cast<double>(xIdx);
+        point.y = 0.1 * static_cast<double>(yIdx);
+        point.z = 0.1 * static_cast<double>(zIdx);
         unorganized_grid_cloud->push_back (point);
       }
     }

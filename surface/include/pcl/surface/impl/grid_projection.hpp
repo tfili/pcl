@@ -134,7 +134,7 @@ pcl::GridProjection<PointNT>::getVertexFromCellCenter (
 {
   assert (pts.size () == 8);
 
-  double sz = static_cast<double> (leaf_size_) / 2.0f;
+  double sz = static_cast<double> (leaf_size_) / 2.0;
 
   pts[0] = cell_center + Eigen::Vector4d (-sz,  sz, -sz, 0);
   pts[1] = cell_center + Eigen::Vector4d (-sz, -sz, -sz, 0);
@@ -294,13 +294,13 @@ pcl::GridProjection<PointNT>::getProjection (const Eigen::Vector4d &p,
         end_pt_vect[0][0] * static_cast<double> (projection_distance),
         end_pt_vect[0][1] * static_cast<double> (projection_distance),
         end_pt_vect[0][2] * static_cast<double> (projection_distance), 
-        0.0f);
+        0.0);
   else
     end_pt[1] = end_pt[0] - Eigen::Vector4d (
         end_pt_vect[0][0] * static_cast<double> (projection_distance),
         end_pt_vect[0][1] * static_cast<double> (projection_distance),
         end_pt_vect[0][2] * static_cast<double> (projection_distance), 
-        0.0f);
+        0.0);
   getVectorAtPoint (end_pt[1], pt_union_indices, end_pt_vect[1]);
   if (end_pt_vect[1].dot (end_pt_vect[0]) < 0)
   {
@@ -407,7 +407,7 @@ pcl::GridProjection<PointNT>::getVectorAtPointKNN (const Eigen::Vector4d &p,
   for (int i = 0; i < k_; i++)
   {
     //k_weight[i] = pow (M_E, -pow (k_squared_distances[i], 2.0) / gaussian_scale_);
-    k_weight[i] = std::pow (static_cast<double>(M_E), static_cast<double>(-pow (static_cast<double>(k_squared_distances[i]), 2.0f) / gaussian_scale_));
+    k_weight[i] = std::pow (static_cast<double>(M_E), static_cast<double>(-pow (static_cast<double>(k_squared_distances[i]), 2.0) / gaussian_scale_));
     sum += k_weight[i];
   }
   pcl::VectorAverage3f vector_average;
@@ -588,9 +588,9 @@ pcl::GridProjection<PointNT>::storeVectAndSurfacePoint (int index_1d,
 {
   // Get point on grid
   Eigen::Vector4d grid_pt (
-      cell_data.pt_on_surface.x () - static_cast<double> (leaf_size_) / 2.0f,
-      cell_data.pt_on_surface.y () + static_cast<double> (leaf_size_) / 2.0f,
-      cell_data.pt_on_surface.z () + static_cast<double> (leaf_size_) / 2.0f, 0.0f);
+      cell_data.pt_on_surface.x () - static_cast<double> (leaf_size_) / 2.0,
+      cell_data.pt_on_surface.y () + static_cast<double> (leaf_size_) / 2.0,
+      cell_data.pt_on_surface.z () + static_cast<double> (leaf_size_) / 2.0, 0.0);
 
   // Save the vector and the point on the surface
   getVectorAtPoint (grid_pt, pt_union_indices, cell_hash_map_[index_1d].vect_at_grid_pt);
@@ -604,9 +604,9 @@ pcl::GridProjection<PointNT>::storeVectAndSurfacePointKNN (int index_1d, const E
 {
   Eigen::Vector4d cell_center = cell_data.pt_on_surface;
   Eigen::Vector4d grid_pt (
-      cell_center.x () - static_cast<double> (leaf_size_) / 2.0f,
-      cell_center.y () + static_cast<double> (leaf_size_) / 2.0f,
-      cell_center.z () + static_cast<double> (leaf_size_) / 2.0f, 0.0f);
+      cell_center.x () - static_cast<double> (leaf_size_) / 2.0,
+      cell_center.y () + static_cast<double> (leaf_size_) / 2.0,
+      cell_center.z () + static_cast<double> (leaf_size_) / 2.0, 0.0);
 
   std::vector <int> k_indices;
   k_indices.resize (k_);

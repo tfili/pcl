@@ -60,7 +60,7 @@ class OpenNIPlanarSegmentation
     {
       grid_.setFilterFieldName ("z");
       grid_.setFilterLimits (0.0, 3.0);
-      grid_.setLeafSize (0.01f, 0.01f, 0.01f);
+      grid_.setLeafSize (0.01, 0.01, 0.01);
 
       seg_.setOptimizeCoefficients (true);
       seg_.setModelType (pcl::SACMODEL_PLANE);

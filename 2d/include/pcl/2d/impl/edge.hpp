@@ -78,10 +78,10 @@ pcl::Edge<PointInT, PointOutT>::detectEdgeSobel (
     output[i].magnitude_x = (*magnitude_x)[i].intensity;
     output[i].magnitude_y = (*magnitude_y)[i].intensity;
     output[i].magnitude = 
-      sqrtf ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
+      sqrt ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
              (*magnitude_y)[i].intensity * (*magnitude_y)[i].intensity);
     output[i].direction = 
-      atan2f ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
+      atan2 ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
   }
   //PCL_ERROR ("Rest: %g\n", tt.toc ());
 }
@@ -121,10 +121,10 @@ pcl::Edge<PointInT, PointOutT>::sobelMagnitudeDirection (
     output[i].magnitude_x = (*magnitude_x)[i].intensity;
     output[i].magnitude_y = (*magnitude_y)[i].intensity;
     output[i].magnitude = 
-      sqrtf ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
+      sqrt ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
              (*magnitude_y)[i].intensity * (*magnitude_y)[i].intensity);
     output[i].direction = 
-      atan2f ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
+      atan2 ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
   }
 }
 
@@ -160,10 +160,10 @@ pcl::Edge<PointInT, PointOutT>::detectEdgePrewitt (pcl::PointCloud<PointOutT> &o
     output[i].magnitude_x = (*magnitude_x)[i].intensity;
     output[i].magnitude_y = (*magnitude_y)[i].intensity;
     output[i].magnitude = 
-      sqrtf ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
+      sqrt ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
              (*magnitude_y)[i].intensity * (*magnitude_y)[i].intensity);
     output[i].direction = 
-      atan2f ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
+      atan2 ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
   }
 }
 
@@ -199,10 +199,10 @@ pcl::Edge<PointInT, PointOutT>::detectEdgeRoberts (pcl::PointCloud<PointOutT> &o
     output[i].magnitude_x = (*magnitude_x)[i].intensity;
     output[i].magnitude_y = (*magnitude_y)[i].intensity;
     output[i].magnitude = 
-      sqrtf ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
+      sqrt ((*magnitude_x)[i].intensity * (*magnitude_x)[i].intensity + 
              (*magnitude_y)[i].intensity * (*magnitude_y)[i].intensity);
     output[i].direction = 
-      atan2f ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
+      atan2 ((*magnitude_y)[i].intensity, (*magnitude_x)[i].intensity);
   }
 }
 
@@ -218,7 +218,7 @@ pcl::Edge<PointInT, PointOutT>::cannyTraceEdge (
 
   if (newRow > 0 && newRow < static_cast<int> (maxima.height) && newCol > 0 && newCol < static_cast<int> (maxima.width))
   {
-    if (pt.intensity == 0.0f || pt.intensity == std::numeric_limits<double>::max ())
+    if (pt.intensity == 0.0 || pt.intensity == std::numeric_limits<double>::max ())
       return;
 
     pt.intensity = std::numeric_limits<double>::max ();
@@ -274,7 +274,7 @@ pcl::Edge<PointInT, PointOutT>::suppressNonMaxima (
   maxima.resize (height * width);
 
   for (size_t i = 0; i < maxima.size (); ++i)
-    maxima[i].intensity = 0.0f;
+    maxima[i].intensity = 0.0;
 
   // tHigh and non-maximal supression
   for (int i = 1; i < height - 1; i++)

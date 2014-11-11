@@ -197,7 +197,7 @@ namespace pcl
           typename pcl::PointCloud<pcl::PointXYZI>::Ptr intensity_keypoints (new pcl::PointCloud<pcl::PointXYZI>);
           pcl::SIFTKeypoint<PointInT, pcl::PointXYZI> sift3D;
           sift3D.setScales (0.003f, 3, 2);
-          sift3D.setMinimumContrast (0.1f);
+          sift3D.setMinimumContrast (0.1);
           sift3D.setInputCloud (input_);
           sift3D.setSearchSurface (input_);
           sift3D.compute (*intensity_keypoints);
@@ -272,8 +272,8 @@ namespace pcl
         HarrisKeypointExtractor ()
         {
           m_ = pcl::HarrisKeypoint3D<PointInT, pcl::PointXYZI>::HARRIS;
-          non_max_radius_ = 0.01f;
-          threshold_ = 0.f;
+          non_max_radius_ = 0.01;
+          threshold_ = 0.;
         }
 
         bool
@@ -371,8 +371,8 @@ namespace pcl
           susan.setNonMaxSupression (true);
           susan.setInputCloud (input_);
           susan.setNormals (normals_);
-          susan.setRadius (0.01f);
-          susan.setRadiusSearch (0.01f);
+          susan.setRadius (0.01);
+          susan.setRadiusSearch (0.01);
           susan.compute (*intensity_keypoints);
 
           pcl::copyPointCloud (*intensity_keypoints, *keypoints);

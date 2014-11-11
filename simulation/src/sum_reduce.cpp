@@ -91,12 +91,12 @@ pcl::simulation::SumReduce::sum (GLuint input_array, double* output_array)
 
     glViewport (0, 0, width/2, height/2);
 
-    double step_x = 1.0f / double (width);
-    double step_y = 1.0f / double (height);
+    double step_x = 1.0 / double (width);
+    double step_y = 1.0 / double (height);
     sum_program_->setUniform ("step_x", step_x);
     sum_program_->setUniform ("step_y", step_y);
-    //double step_x = 1.0f / static_cast<double> (width);
-    //double step_y = 1.0f / static_cast<double> (height);
+    //double step_x = 1.0 / static_cast<double> (width);
+    //double step_y = 1.0 / static_cast<double> (height);
 
     quad_.render ();
 

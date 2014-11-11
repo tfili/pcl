@@ -197,7 +197,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::getVoxelCoord (const PointT &point, Eigen::Vec
 
   // point coordinates in world coordinate frame and voxel coordinates
   Eigen::Array3d point_coord (point.x, point.y, point.z);
-  Eigen::Array3d voxel_coord = (point_coord / voxel_size) - 0.5f; // 0.5f offset due to voxel center vs grid
+  Eigen::Array3d voxel_coord = (point_coord / voxel_size) - 0.5; // 0.5 offset due to voxel center vs grid
   coord(0) = round(voxel_coord(0));
   coord(1) = round(voxel_coord(1));
   coord(2) = round(voxel_coord(2));
@@ -213,7 +213,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::getVoxelCoordAndOffset (const PointT &point,
 
   // point coordinates in world coordinate frame and voxel coordinates
   Eigen::Array3d point_coord (point.x, point.y, point.z);
-  Eigen::Array3d voxel_coord = (point_coord / voxel_size) - 0.5f; // 0.5f offset due to voxel center vs grid
+  Eigen::Array3d voxel_coord = (point_coord / voxel_size) - 0.5; // 0.5 offset due to voxel center vs grid
   coord(0) = round(voxel_coord(0));
   coord(1) = round(voxel_coord(1));
   coord(2) = round(voxel_coord(2));
@@ -398,10 +398,10 @@ pcl::TSDFVolume<VoxelT, WeightT>::createFromCloud (const typename pcl::PointClou
   Eigen::Vector3d volume_size = volumeSize();
   Eigen::Vector3d voxel_size = voxelSize();
 
-  double tranc_dist = std::max (DEFAULT_TRANCATION_DISTANCE, 2.1f * voxel_size.maxCoeff());
+  double tranc_dist = std::max (DEFAULT_TRANCATION_DISTANCE, 2.1 * voxel_size.maxCoeff());
 
   Eigen::Matrix3d R_inv_init = Eigen::Matrix3d::Identity();
-  Eigen::Vector3d t_init =  volume_size * 0.5f - Eigen::Vector3d (0, 0, volume_size(2)/2.0f * 1.2f);
+  Eigen::Vector3d t_init =  volume_size * 0.5 - Eigen::Vector3d (0, 0, volume_size(2)/2.0 * 1.2f);
   // std::cout << "initial pose: R_inv = " << R_inv_init << ", t_init = " << t_init.transpose() << std::endl;
 
   std::cout << "  integrating values" << std::endl;
@@ -424,7 +424,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::scaleDepth (const Eigen::MatrixXd &depth, Eige
 
       double xl = (x - intr.cx) / intr.fx;
       double yl = (y - intr.cy) / intr.fy;
-      double lambda = sqrtf (xl * xl + yl * yl + 1);
+      double lambda = sqrt (xl * xl + yl * yl + 1);
 
       depth_scaled(y,x) = Dp * lambda;
 
@@ -448,7 +448,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXd &depth_
 {
   Eigen::Array3d voxel_size = voxelSize();
   Eigen::Array3i volume_res = gridResolution();
-  Eigen::Array3d intr_arr (intr.fx, intr.fy, 1.0f);
+  Eigen::Array3d intr_arr (intr.fx, intr.fy, 1.0);
   Eigen::Array3i voxel_coord (0,0,0);
 
   // loop over grid in X and Y dimension
@@ -467,7 +467,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXd &depth_
     {
       voxel_coord(2) = 0;
       // points at depth 0, shifted by t
-      Eigen::Vector3d v_g = (voxel_coord.cast<double>() + 0.5f) * voxel_size - t.array();
+      Eigen::Vector3d v_g = (voxel_coord.cast<double>() + 0.5) * voxel_size - t.array();
       double v_g_part_norm = v_g(0)*v_g(0) + v_g(1)*v_g(1);
 
       // rays in 3d
@@ -477,7 +477,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXd &depth_
 
       Eigen::Array3d R_inv_z_scaled = R_inv.col(2).array() * voxel_size(2) * intr_arr;
 
-      double tranc_dist_inv = 1.0f / tranc_dist;
+      double tranc_dist_inv = 1.0 / tranc_dist;
 
       // loop over depth values
       for (voxel_coord(2) = 0; voxel_coord(2) < volume_res(2); ++voxel_coord(2),
@@ -486,7 +486,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXd &depth_
            v(0) += R_inv_z_scaled(0),
            v(1) += R_inv_z_scaled(1))
       {
-        double inv_z = 1.0f / (v(2) + R_inv(2,2) * z_scaled);
+        double inv_z = 1.0 / (v(2) + R_inv(2,2) * z_scaled);
 
         // std::cout << "z = " << voxel_coord(2) << ", inv_z = " << inv_z << std::endl;
 
@@ -504,12 +504,12 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXd &depth_
           double Dp_scaled = depth_scaled(img_coord(1), img_coord(0));
 
           // signed distance function
-          double sdf = Dp_scaled - sqrtf (v_g(2) * v_g(2) + v_g_part_norm);
+          double sdf = Dp_scaled - sqrt (v_g(2) * v_g(2) + v_g_part_norm);
 
           if (Dp_scaled != 0 && sdf >= -tranc_dist)
           {
             // get truncated distance function value
-            double tsdf = fmin (1.0f, sdf * tranc_dist_inv);
+            double tsdf = fmin (1.0, sdf * tranc_dist_inv);
 
             // add values to volume
             int idx = getLinearVoxelIndex (voxel_coord);

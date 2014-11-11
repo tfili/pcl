@@ -47,11 +47,11 @@ namespace pcl
         __device__ __host__ __forceinline__ void AngleAxisd(double angle, const float3& r, float3& row1, float3& row2, float3& row3)
         {
             double cosA, sinA;
-            sincosf(angle, &sinA, &cosA);
+            sincos(angle, &sinA, &cosA);
 
-            row1.x = cosA;  row1.y =  0.f; row1.z =  0.f; 
-            row2.x =  0.f;  row2.y = cosA; row2.z =  0.f; 
-            row3.x =  0.f;  row3.y =  0.f; row3.z = cosA; 
+            row1.x = cosA;  row1.y =  0.; row1.z =  0.; 
+            row2.x =  0.;  row2.y = cosA; row2.z =  0.; 
+            row3.x =  0.;  row3.y =  0.; row3.z = cosA; 
 
             /*                 */  row1.y += -r.z * sinA; row1.z +=  r.y * sinA; 
             row2.x +=  r.z * sinA; /*                 */  row2.z += -r.x * sinA; 

@@ -51,7 +51,7 @@ pcl::IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformCloud (
     PointCloudSource &output, 
     const Matrix4 &transform)
 {
-  Eigen::Vector4d pt (0.0f, 0.0f, 0.0f, 1.0f), pt_t;
+  Eigen::Vector4d pt (0.0, 0.0, 0.0, 1.0), pt_t;
   Eigen::Matrix4d tr = transform.template cast<double> ();
 
   // XYZ is ALWAYS present due to the templatization, so we only have to check for normals
@@ -235,7 +235,7 @@ pcl::IterativeClosestPoint<PointSource, PointTarget, Scalar>::computeTransformat
   while (!converged_);
 
   // Transform the input cloud using the final transformation
-  PCL_DEBUG ("Transformation is:\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n", 
+  PCL_DEBUG ("Transformation is:\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n", 
       final_transformation_ (0, 0), final_transformation_ (0, 1), final_transformation_ (0, 2), final_transformation_ (0, 3),
       final_transformation_ (1, 0), final_transformation_ (1, 1), final_transformation_ (1, 2), final_transformation_ (1, 3),
       final_transformation_ (2, 0), final_transformation_ (2, 1), final_transformation_ (2, 2), final_transformation_ (2, 3),

@@ -68,7 +68,7 @@ pcl::filters::Pyramid<PointT>::initCompute ()
   if (large_)
   {
     Eigen::VectorXd k (5);
-    k << 1.f/16.f, 1.f/4.f, 3.f/8.f, 1.f/4.f, 1.f/16.f;
+    k << 1./16., 1./4., 3./8., 1./4., 1./16.;
     kernel_ = k * k.transpose ();
     if (threshold_ != std::numeric_limits<double>::infinity ())
       threshold_ *= 2 * threshold_;
@@ -77,7 +77,7 @@ pcl::filters::Pyramid<PointT>::initCompute ()
   else
   {
     Eigen::VectorXd k (3);
-    k << 1.f/4.f, 1.f/2.f, 1.f/4.f;
+    k << 1./4., 1./2., 1./4.;
     kernel_ = k * k.transpose ();
     if (threshold_ != std::numeric_limits<double>::infinity ())
       threshold_ *= threshold_;
@@ -180,7 +180,7 @@ pcl::filters::Pyramid<PointT>::compute (std::vector<PointCloudPtr>& output)
             nullify (next.at (j,i));
           else
           {
-            weight = 1.f/weight;
+            weight = 1./weight;
             next.at (j,i)*= weight;
           }
         }
@@ -303,7 +303,7 @@ namespace pcl
                 nullify (next.at (j,i));
               else
               {
-                weight = 1.f/weight;
+                weight = 1./weight;
                 r*= weight; g*= weight; b*= weight;
                 next.at (j,i).x*= weight; next.at (j,i).y*= weight; next.at (j,i).z*= weight;
                 next.at (j,i).b = static_cast<pcl::uint8_t> (b);
@@ -429,7 +429,7 @@ namespace pcl
                 nullify (next.at (j,i));
               else
               {
-                weight = 1.f/weight;
+                weight = 1./weight;
                 r*= weight; g*= weight; b*= weight; a*= weight;
                 next.at (j,i).x*= weight; next.at (j,i).y*= weight; next.at (j,i).z*= weight;
                 next.at (j,i).b = static_cast<pcl::uint8_t> (b);
@@ -550,7 +550,7 @@ namespace pcl
                 nullify (next.at (j,i));
               else
               {
-                weight = 1.f/weight;
+                weight = 1./weight;
                 r*= weight; g*= weight; b*= weight;
                 next.at (j,i).b = static_cast<pcl::uint8_t> (b);
                 next.at (j,i).g = static_cast<pcl::uint8_t> (g);

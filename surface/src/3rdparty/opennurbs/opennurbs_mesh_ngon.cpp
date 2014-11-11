@@ -185,7 +185,7 @@ public:
   int m_mesh_V_count;
 };
 
-ON_OBJECT_IMPLEMENT(ON_MeshNgonUserData,ON_UserData,"31F55AA3-71FB-49f5-A975-757584D937FF");
+ON_OBJECT_IMPLEMENT(ON_MeshNgonUserData,ON_UserData,"31F55AA3-71FB-495-A975-757584D937FF");
 
 ON_MeshNgonUserData::ON_MeshNgonUserData()
 {

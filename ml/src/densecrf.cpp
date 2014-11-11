@@ -44,9 +44,9 @@ pcl::DenseCrf::DenseCrf (int N, int m) :
   N_ (N), M_ (m),
   xyz_ (false), rgb_ (false), normal_ (false)
 {
-  current_.resize (N_ * M_, 0.0f);
-  next_.resize (N_ * M_, 0.0f);
-  tmp_.resize (2 * N_ * M_, 0.0f);
+  current_.resize (N_ * M_, 0.0);
+  next_.resize (N_ * M_, 0.0);
+  tmp_.resize (2 * N_ * M_, 0.0);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +269,7 @@ pcl::DenseCrf::expAndNormalize (std::vector<double> &out, const std::vector<doub
 				mx = scale * in[b_idx + j];
 		double tt = 0;
 		for( int  j = 0; j < M_; j++ ){
-			V[j] = expf( scale * in[b_idx + j] - mx );
+			V[j] = exp( scale * in[b_idx + j] - mx );
 			tt += V[j];
 		}
 		// Make it a probability

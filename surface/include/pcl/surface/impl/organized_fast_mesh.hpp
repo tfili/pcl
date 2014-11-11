@@ -61,7 +61,7 @@ pcl::OrganizedFastMesh<PointInT>::performReconstruction (pcl::PolygonMesh &outpu
   // avoid to do that here (only needed for ASCII mesh file output, e.g., in vtk files
   for (unsigned int i = 0; i < input_->points.size (); ++i)
     if (!isFinite (input_->points[i]))
-      resetPointData (i, output, 0.0f, x_idx, y_idx, z_idx);
+      resetPointData (i, output, 0.0, x_idx, y_idx, z_idx);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

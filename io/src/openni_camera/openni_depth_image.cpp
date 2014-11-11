@@ -135,7 +135,7 @@ namespace openni_wrapper
           *depth_buffer = bad_point;
         else
         {
-          *depth_buffer = static_cast<double> ((*depth_md_)[depthIdx]) * 0.001f;
+          *depth_buffer = static_cast<double> ((*depth_md_)[depthIdx]) * 0.001;
         }
       }
       // if we have padding
@@ -167,7 +167,7 @@ namespace openni_wrapper
     // Fill in the depth image data
     // iterate over all elements and fill disparity matrix: disp[x,y] = f * b / z_distance[x,y];
     // focal length is for the native image resolution -> focal_length = focal_length_ / xStep;
-    double constant = focal_length_ * baseline_ * 1000.0f / static_cast<double> (xStep);
+    double constant = focal_length_ * baseline_ * 1000.0 / static_cast<double> (xStep);
 
     for (unsigned yIdx = 0, depthIdx = 0; yIdx < height; ++yIdx, depthIdx += ySkip)
     {

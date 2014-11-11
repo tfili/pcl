@@ -203,7 +203,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vect
   if ((tmin > tymax) || (tymin > tmax))
   {
     PCL_ERROR ("no intersection with the bounding box \n");
-    tmin = -1.0f;
+    tmin = -1.0;
     return tmin;
   }
 
@@ -226,7 +226,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vect
   if ((tmin > tzmax) || (tzmin > tmax))
   {
     PCL_ERROR ("no intersection with the bounding box \n");
-    tmin = -1.0f;
+    tmin = -1.0;
     return tmin;       
   }
 
@@ -259,32 +259,32 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& 
 
   if (direction[0] >= 0)
   {
-    voxel_max[0] += leaf_size_[0] * 0.5f;
+    voxel_max[0] += leaf_size_[0] * 0.5;
     step_x = 1;
   }
   else
   {
-    voxel_max[0] -= leaf_size_[0] * 0.5f;
+    voxel_max[0] -= leaf_size_[0] * 0.5;
     step_x = -1;
   }
   if (direction[1] >= 0)
   {
-    voxel_max[1] += leaf_size_[1] * 0.5f;
+    voxel_max[1] += leaf_size_[1] * 0.5;
     step_y = 1;
   }
   else
   {
-    voxel_max[1] -= leaf_size_[1] * 0.5f;
+    voxel_max[1] -= leaf_size_[1] * 0.5;
     step_y = -1;
   }
   if (direction[2] >= 0)
   {
-    voxel_max[2] += leaf_size_[2] * 0.5f;
+    voxel_max[2] += leaf_size_[2] * 0.5;
     step_z = 1;
   }
   else
   {
-    voxel_max[2] -= leaf_size_[2] * 0.5f;
+    voxel_max[2] -= leaf_size_[2] * 0.5;
     step_z = -1;
   }
 
@@ -359,32 +359,32 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vec
 
   if (direction[0] >= 0)
   {
-    voxel_max[0] += leaf_size_[0] * 0.5f;
+    voxel_max[0] += leaf_size_[0] * 0.5;
     step_x = 1;
   }
   else
   {
-    voxel_max[0] -= leaf_size_[0] * 0.5f;
+    voxel_max[0] -= leaf_size_[0] * 0.5;
     step_x = -1;
   }
   if (direction[1] >= 0)
   {
-    voxel_max[1] += leaf_size_[1] * 0.5f;
+    voxel_max[1] += leaf_size_[1] * 0.5;
     step_y = 1;
   }
   else
   {
-    voxel_max[1] -= leaf_size_[1] * 0.5f;
+    voxel_max[1] -= leaf_size_[1] * 0.5;
     step_y = -1;
   }
   if (direction[2] >= 0)
   {
-    voxel_max[2] += leaf_size_[2] * 0.5f;
+    voxel_max[2] += leaf_size_[2] * 0.5;
     step_z = 1;
   }
   else
   {
-    voxel_max[2] -= leaf_size_[2] * 0.5f;
+    voxel_max[2] -= leaf_size_[2] * 0.5;
     step_z = -1;
   }
 

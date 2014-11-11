@@ -97,7 +97,7 @@ pcl::people::HeightMap2D<PointT>::compute (pcl::people::PersonCluster<PointT>& c
       std::cout << "Error: out of array - " << index << " of " << buckets_.size() << std::endl;
     else
     {
-      Eigen::Vector4d new_point(p->x, p->y, p->z, 1.0f);      // select point from cluster
+      Eigen::Vector4d new_point(p->x, p->y, p->z, 1.0);      // select point from cluster
       double heightp = std::fabs(new_point.dot(ground_coeffs_)); // compute point height from the groundplane
       heightp /= sqrt_ground_coeffs_;
       if ((heightp * 60) > buckets_[index])   // compare the height of the new point with the existing one
@@ -254,7 +254,7 @@ template <typename PointT>
 void pcl::people::HeightMap2D<PointT>::setGround(Eigen::VectorXd& ground_coeffs)
 {
   ground_coeffs_ = ground_coeffs;
-  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
+  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0, 0.0, 0.0, ground_coeffs(3))).norm();
 }
 
 template <typename PointT> void

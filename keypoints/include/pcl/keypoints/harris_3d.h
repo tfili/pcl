@@ -83,7 +83,7 @@ namespace pcl
         * \param[in] radius the radius for normal estimation as well as for non maxima suppression
         * \param[in] threshold the threshold to filter out weak corners
         */
-      HarrisKeypoint3D (ResponseMethod method = HARRIS, double radius = 0.01f, double threshold = 0.0f)
+      HarrisKeypoint3D (ResponseMethod method = HARRIS, double radius = 0.01, double threshold = 0.0)
       : threshold_ (threshold)
       , refine_ (true)
       , nonmax_ (true)

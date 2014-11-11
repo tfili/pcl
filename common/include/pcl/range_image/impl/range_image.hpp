@@ -51,8 +51,8 @@ RangeImage::asinLookUp (double value)
 {
   return (asin_lookup_table[
       static_cast<int> (
-        static_cast<double> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1) / 2.0f) * value)) + 
-        static_cast<double> (lookup_table_size-1) / 2.0f)]);
+        static_cast<double> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1) / 2.0) * value)) + 
+        static_cast<double> (lookup_table_size-1) / 2.0)]);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -66,15 +66,15 @@ RangeImage::atan2LookUp (double y, double x)
   {
     ret = atan_lookup_table[
       static_cast<int> (
-          static_cast<double> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1) / 2.0f) * (x / y))) + 
-          static_cast<double> (lookup_table_size-1) / 2.0f)];
+          static_cast<double> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1) / 2.0) * (x / y))) + 
+          static_cast<double> (lookup_table_size-1) / 2.0)];
     ret = static_cast<double> (x*y > 0 ? M_PI/2-ret : -M_PI/2-ret);
   }
   else
     ret = atan_lookup_table[
       static_cast<int> (
-          static_cast<double> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1) / 2.0f) * (y / x))) + 
-          static_cast<double> (lookup_table_size-1)/2.0f)];
+          static_cast<double> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1) / 2.0) * (y / x))) + 
+          static_cast<double> (lookup_table_size-1)/2.0)];
   if (x < 0)
     ret = static_cast<double> (y < 0 ? ret-M_PI : ret+M_PI);
   
@@ -85,7 +85,7 @@ RangeImage::atan2LookUp (double y, double x)
 inline double
 RangeImage::cosLookUp (double value)
 {
-  int cell_idx = static_cast<int> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1)) * fabsf (value) / (2.0f * static_cast<double> (M_PI))));
+  int cell_idx = static_cast<int> (pcl_lrintf ( (static_cast<double> (lookup_table_size-1)) * fabsf (value) / (2.0 * static_cast<double> (M_PI))));
   return (cos_lookup_table[cell_idx]);
 }
 
@@ -113,8 +113,8 @@ RangeImage::createFromPointCloud (const PointCloudType& point_cloud,
   width  = static_cast<uint32_t> (pcl_lrint (floor (max_angle_width*angular_resolution_x_reciprocal_)));
   height = static_cast<uint32_t> (pcl_lrint (floor (max_angle_height*angular_resolution_y_reciprocal_)));
   
-  int full_width  = static_cast<int> (pcl_lrint (floor (pcl::deg2rad (360.0f)*angular_resolution_x_reciprocal_))),
-      full_height = static_cast<int> (pcl_lrint (floor (pcl::deg2rad (180.0f)*angular_resolution_y_reciprocal_)));
+  int full_width  = static_cast<int> (pcl_lrint (floor (pcl::deg2rad (360.0)*angular_resolution_x_reciprocal_))),
+      full_height = static_cast<int> (pcl_lrint (floor (pcl::deg2rad (180.0)*angular_resolution_y_reciprocal_)));
   image_offset_x_ = (full_width -static_cast<int> (width) )/2;
   image_offset_y_ = (full_height-static_cast<int> (height))/2;
   is_dense = false;
@@ -163,7 +163,7 @@ RangeImage::createFromPointCloudWithKnownSize (const PointCloudType& point_cloud
   // If the sensor pose is inside of the sphere we have to calculate the image the normal way
   if ((point_cloud_center-sensor_pose.translation()).norm() <= point_cloud_radius) {
     createFromPointCloud (point_cloud, angular_resolution_x, angular_resolution_y,
-                          pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
+                          pcl::deg2rad (360.0), pcl::deg2rad (180.0),
                           sensor_pose, coordinate_frame, noise_level, min_range, border_size);
     return;
   }
@@ -175,8 +175,8 @@ RangeImage::createFromPointCloudWithKnownSize (const PointCloudType& point_cloud
   to_range_image_system_ = to_world_system_.inverse (Eigen::Isometry);
   
   double max_angle_size = getMaxAngleSize (sensor_pose, point_cloud_center, point_cloud_radius);
-  int pixel_radius_x = pcl_lrint (ceil (0.5f*max_angle_size*angular_resolution_x_reciprocal_)),
-      pixel_radius_y = pcl_lrint (ceil (0.5f*max_angle_size*angular_resolution_y_reciprocal_));
+  int pixel_radius_x = pcl_lrint (ceil (0.5*max_angle_size*angular_resolution_x_reciprocal_)),
+      pixel_radius_y = pcl_lrint (ceil (0.5*max_angle_size*angular_resolution_y_reciprocal_));
   width  = 2*pixel_radius_x;
   height = 2*pixel_radius_y;
   is_dense = false;
@@ -276,7 +276,7 @@ RangeImage::doZBuffer (const PointCloudType& point_cloud, double noise_level, do
         if (counters[neighbor_array_pos]==0)
         {
           double& neighbor_range = points[neighbor_array_pos].range;
-          neighbor_range = (pcl_isinf (neighbor_range) ? range_of_current_point : (std::min) (neighbor_range, range_of_current_point));
+          neighbor_range = (pcl_isin (neighbor_range) ? range_of_current_point : (std::min) (neighbor_range, range_of_current_point));
           top= (std::min) (top, n_y); right= (std::max) (right, n_x); bottom= (std::max) (bottom, n_y); left= (std::min) (left, n_x);
         }
       }
@@ -410,9 +410,9 @@ RangeImage::getRangeDifference (const Eigen::Vector3d& point) const
   if (!isInImage (image_x, image_y))
     return -std::numeric_limits<double>::infinity ();
   double image_point_range = getPoint (image_x, image_y).range;
-  if (pcl_isinf (image_point_range))
+  if (pcl_isin (image_point_range))
   {
-    if (image_point_range > 0.0f)
+    if (image_point_range > 0.0)
       return std::numeric_limits<double>::infinity ();
     else
       return -std::numeric_limits<double>::infinity ();
@@ -425,7 +425,7 @@ void
 RangeImage::getImagePointFromAngles (double angle_x, double angle_y, double& image_x, double& image_y) const
 {
   image_x = (angle_x*cosLookUp (angle_y) + static_cast<double> (M_PI))*angular_resolution_x_reciprocal_ - static_cast<double> (image_offset_x_);
-  image_y = (angle_y + 0.5f*static_cast<double> (M_PI))*angular_resolution_y_reciprocal_ - static_cast<double> (image_offset_y_);
+  image_y = (angle_y + 0.5*static_cast<double> (M_PI))*angular_resolution_y_reciprocal_ - static_cast<double> (image_offset_y_);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -461,7 +461,7 @@ RangeImage::isValid (int index) const
 bool 
 RangeImage::isObserved (int x, int y) const
 {
-  if (!isInImage (x,y) || (pcl_isinf (getPoint (x,y).range)&&getPoint (x,y).range<0.0f))
+  if (!isInImage (x,y) || (pcl_isin (getPoint (x,y).range)&&getPoint (x,y).range<0.0))
     return false;
   return true;
 }
@@ -471,7 +471,7 @@ bool
 RangeImage::isMaxRange (int x, int y) const
 {
   double range = getPoint (x,y).range;
-  return pcl_isinf (range) && range>0.0f;
+  return pcl_isin (range) && range>0.0;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -567,8 +567,8 @@ RangeImage::calculate3DPoint (double image_x, double image_y, double range, Eige
   //std::cout << image_x<<","<<image_y<<","<<range;
   getAnglesFromImagePoint (image_x, image_y, angle_x, angle_y);
   
-  double cosY = cosf (angle_y);
-  point = Eigen::Vector3d (range * sinf (angle_x) * cosY, range * sinf (angle_y), range * cosf (angle_x)*cosY);
+  double cosY = cos (angle_y);
+  point = Eigen::Vector3d (range * sin (angle_x) * cosY, range * sin (angle_y), range * cos (angle_x)*cosY);
   point = to_world_system_ * point;
 }
 
@@ -601,9 +601,9 @@ RangeImage::calculate3DPoint (double image_x, double image_y, PointWithRange& po
 void 
 RangeImage::getAnglesFromImagePoint (double image_x, double image_y, double& angle_x, double& angle_y) const 
 {
-  angle_y = (image_y+static_cast<double> (image_offset_y_))*angular_resolution_y_ - 0.5f*static_cast<double> (M_PI);
-  double cos_angle_y = cosf (angle_y);
-  angle_x = (cos_angle_y==0.0f ? 0.0f : ( (image_x+ static_cast<double> (image_offset_x_))*angular_resolution_x_ - static_cast<double> (M_PI))/cos_angle_y);
+  angle_y = (image_y+static_cast<double> (image_offset_y_))*angular_resolution_y_ - 0.5*static_cast<double> (M_PI);
+  double cos_angle_y = cos (angle_y);
+  angle_x = (cos_angle_y==0.0 ? 0.0 : ( (image_x+ static_cast<double> (image_offset_x_))*angular_resolution_x_ - static_cast<double> (M_PI))/cos_angle_y);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -618,27 +618,27 @@ RangeImage::getImpactAngle (int x1, int y1, int x2, int y2) const
 /////////////////////////////////////////////////////////////////////////
 double 
 RangeImage::getImpactAngle (const PointWithRange& point1, const PointWithRange& point2) const {
-  if ( (pcl_isinf (point1.range)&&point1.range<0) || (pcl_isinf (point2.range)&&point2.range<0))
+  if ( (pcl_isin (point1.range)&&point1.range<0) || (pcl_isin (point2.range)&&point2.range<0))
     return -std::numeric_limits<double>::infinity ();
   
   double r1 = (std::min) (point1.range, point2.range),
         r2 = (std::max) (point1.range, point2.range);
   double impact_angle = static_cast<double> (0.5 * M_PI);
   
-  if (pcl_isinf (r2)) 
+  if (pcl_isin (r2)) 
   {
-    if (r2 > 0.0 && !pcl_isinf (r1))
-      impact_angle = 0.0f;
+    if (r2 > 0.0 && !pcl_isin (r1))
+      impact_angle = 0.0;
   }
-  else if (!pcl_isinf (r1)) 
+  else if (!pcl_isin (r1)) 
   {
     double r1Sqr = r1*r1,
           r2Sqr = r2*r2,
           dSqr  = squaredEuclideanDistance (point1, point2),
-          d     = sqrtf (dSqr);
+          d     = sqrt (dSqr);
     double cos_impact_angle = (r2Sqr + dSqr - r1Sqr)/ (2.0*r2*d);
     cos_impact_angle = (std::max) (0.0, (std::min) (1.0, cos_impact_angle));
-    impact_angle = acosf (cos_impact_angle);  // Using the cosine rule
+    impact_angle = acos (cos_impact_angle);  // Using the cosine rule
   }
   
   if (point1.range > point2.range)
@@ -652,7 +652,7 @@ double
 RangeImage::getAcutenessValue (const PointWithRange& point1, const PointWithRange& point2) const
 {
   double impact_angle = getImpactAngle (point1, point2);
-  if (pcl_isinf (impact_angle))
+  if (pcl_isin (impact_angle))
     return -std::numeric_limits<double>::infinity ();
   double ret = 1.0 - double (fabs (impact_angle)/ (0.5*M_PI));
   if (impact_angle < 0.0)
@@ -693,64 +693,64 @@ RangeImage::getSurfaceAngleChange (int x, int y, int radius, double& angle_chang
   {
     Eigen::Vector3d transformed_left;
     if (isMaxRange (x-radius, y))
-      transformed_left = Eigen::Vector3d (0.0f, 0.0f, -1.0f);
+      transformed_left = Eigen::Vector3d (0.0, 0.0, -1.0);
     else
     {
       Eigen::Vector3d left;
       getPoint (x-radius, y, left);
       transformed_left = - (transformation * left);
       //std::cout << PVARN (transformed_left[1]);
-      transformed_left[1] = 0.0f;
+      transformed_left[1] = 0.0;
       transformed_left.normalize ();
     }
     
     Eigen::Vector3d transformed_right;
     if (isMaxRange (x+radius, y))
-      transformed_right = Eigen::Vector3d (0.0f, 0.0f, 1.0f);
+      transformed_right = Eigen::Vector3d (0.0, 0.0, 1.0);
     else
     {
       Eigen::Vector3d right;
       getPoint (x+radius, y, right);
       transformed_right = transformation * right;
       //std::cout << PVARN (transformed_right[1]);
-      transformed_right[1] = 0.0f;
+      transformed_right[1] = 0.0;
       transformed_right.normalize ();
     }
     angle_change_x = transformed_left.dot (transformed_right);
     angle_change_x = (std::max) (0.0, (std::min) (1.0, angle_change_x));
-    angle_change_x = acosf (angle_change_x);
+    angle_change_x = acos (angle_change_x);
   }
   
   if (isObserved (x, y-radius) && isObserved (x, y+radius))
   {
     Eigen::Vector3d transformed_top;
     if (isMaxRange (x, y-radius))
-      transformed_top = Eigen::Vector3d (0.0f, 0.0f, -1.0f);
+      transformed_top = Eigen::Vector3d (0.0, 0.0, -1.0);
     else
     {
       Eigen::Vector3d top;
       getPoint (x, y-radius, top);
       transformed_top = - (transformation * top);
       //std::cout << PVARN (transformed_top[0]);
-      transformed_top[0] = 0.0f;
+      transformed_top[0] = 0.0;
       transformed_top.normalize ();
     }
     
     Eigen::Vector3d transformed_bottom;
     if (isMaxRange (x, y+radius))
-      transformed_bottom = Eigen::Vector3d (0.0f, 0.0f, 1.0f);
+      transformed_bottom = Eigen::Vector3d (0.0, 0.0, 1.0);
     else
     {
       Eigen::Vector3d bottom;
       getPoint (x, y+radius, bottom);
       transformed_bottom = transformation * bottom;
       //std::cout << PVARN (transformed_bottom[0]);
-      transformed_bottom[0] = 0.0f;
+      transformed_bottom[0] = 0.0;
       transformed_bottom.normalize ();
     }
     angle_change_y = transformed_top.dot (transformed_bottom);
     angle_change_y = (std::max) (0.0, (std::min) (1.0, angle_change_y));
-    angle_change_y = acosf (angle_change_y);
+    angle_change_y = acos (angle_change_y);
   }
 }
 
@@ -759,23 +759,23 @@ RangeImage::getSurfaceAngleChange (int x, int y, int radius, double& angle_chang
 //{
   //if (!pcl_isfinite (point.range) || (!pcl_isfinite (neighbor1.range)&&neighbor1.range<0) || (!pcl_isfinite (neighbor2.range)&&neighbor2.range<0))
     //return -std::numeric_limits<double>::infinity ();
-  //if (pcl_isinf (neighbor1.range))
+  //if (pcl_isin (neighbor1.range))
   //{
-    //if (pcl_isinf (neighbor2.range))
-      //return 0.0f;
+    //if (pcl_isin (neighbor2.range))
+      //return 0.0;
     //else
-      //return acosf ( (Eigen::Vector3d (point.x, point.y, point.z)-getSensorPos ()).normalized ().dot ( (Eigen::Vector3d (neighbor2.x, neighbor2.y, neighbor2.z)-Eigen::Vector3d (point.x, point.y, point.z)).normalized ()));
+      //return acos ( (Eigen::Vector3d (point.x, point.y, point.z)-getSensorPos ()).normalized ().dot ( (Eigen::Vector3d (neighbor2.x, neighbor2.y, neighbor2.z)-Eigen::Vector3d (point.x, point.y, point.z)).normalized ()));
   //}
-  //if (pcl_isinf (neighbor2.range))
-    //return acosf ( (Eigen::Vector3d (point.x, point.y, point.z)-getSensorPos ()).normalized ().dot ( (Eigen::Vector3d (neighbor1.x, neighbor1.y, neighbor1.z)-Eigen::Vector3d (point.x, point.y, point.z)).normalized ()));
+  //if (pcl_isin (neighbor2.range))
+    //return acos ( (Eigen::Vector3d (point.x, point.y, point.z)-getSensorPos ()).normalized ().dot ( (Eigen::Vector3d (neighbor1.x, neighbor1.y, neighbor1.z)-Eigen::Vector3d (point.x, point.y, point.z)).normalized ()));
   
   //double d1_squared = squaredEuclideanDistance (point, neighbor1),
-        //d1 = sqrtf (d1_squared),
+        //d1 = sqrt (d1_squared),
         //d2_squared = squaredEuclideanDistance (point, neighbor2),
-        //d2 = sqrtf (d2_squared),
+        //d2 = sqrt (d2_squared),
         //d3_squared = squaredEuclideanDistance (neighbor1, neighbor2);
-  //double cos_surface_change = (d1_squared + d2_squared - d3_squared)/ (2.0f*d1*d2),
-        //surface_change = acosf (cos_surface_change);
+  //double cos_surface_change = (d1_squared + d2_squared - d3_squared)/ (2.0*d1*d2),
+        //surface_change = acos (cos_surface_change);
   //if (pcl_isnan (surface_change))
     //surface_change = static_cast<double> (M_PI);
   ////std::cout << PVARN (point)<<PVARN (neighbor1)<<PVARN (neighbor2)<<PVARN (cos_surface_change)<<PVARN (surface_change)<<PVARN (d1)<<PVARN (d2)<<PVARN (d1_squared)<<PVARN (d2_squared)<<PVARN (d3_squared);
@@ -787,7 +787,7 @@ RangeImage::getSurfaceAngleChange (int x, int y, int radius, double& angle_chang
 double 
 RangeImage::getMaxAngleSize (const Eigen::Affine3d& viewer_pose, const Eigen::Vector3d& center, double radius)
 {
-  return 2.0f * asinf (radius/ (viewer_pose.translation ()-center).norm ());
+  return 2.0 * asin (radius/ (viewer_pose.translation ()-center).norm ());
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -803,14 +803,14 @@ RangeImage::get1dPointAverage (int x, int y, int delta_x, int delta_y, int no_of
 {
   //std::cout << __PRETTY_FUNCTION__<<" called.\n";
   //MEASURE_FUNCTION_TIME;
-  double weight_sum = 1.0f;
+  double weight_sum = 1.0;
   average_point = getPoint (x,y);
-  if (pcl_isinf (average_point.range))
+  if (pcl_isin (average_point.range))
   {
-    if (average_point.range>0.0f)  // The first point is max range -> return a max range point
+    if (average_point.range>0.0)  // The first point is max range -> return a max range point
       return;
-    weight_sum = 0.0f;
-    average_point.x = average_point.y = average_point.z = average_point.range = 0.0f;
+    weight_sum = 0.0;
+    average_point.x = average_point.y = average_point.z = average_point.range = 0.0;
   }
   
   int x2=x, y2=y;
@@ -824,14 +824,14 @@ RangeImage::get1dPointAverage (int x, int y, int delta_x, int delta_y, int no_of
       continue;
     const PointWithRange& p = getPointNoCheck (x2, y2);
     average_point_eigen+=p.getVector4dMap (); average_point.range+=p.range;
-    weight_sum += 1.0f;
+    weight_sum += 1.0;
   }
-  if (weight_sum<= 0.0f)
+  if (weight_sum<= 0.0)
   {
     average_point = unobserved_point;
     return;
   }
-  double normalization_factor = 1.0f/weight_sum;
+  double normalization_factor = 1.0/weight_sum;
   average_point_eigen *= normalization_factor;
   average_point.range *= normalization_factor;
   //std::cout << PVARN (average_point);
@@ -845,9 +845,9 @@ RangeImage::getEuclideanDistanceSquared (int x1, int y1, int x2, int y2) const
     return -std::numeric_limits<double>::infinity ();
   const PointWithRange& point1 = getPoint (x1,y1),
                       & point2 = getPoint (x2,y2);
-  if (pcl_isinf (point1.range) && pcl_isinf (point2.range))
-    return 0.0f;
-  if (pcl_isinf (point1.range) || pcl_isinf (point2.range))
+  if (pcl_isin (point1.range) && pcl_isin (point2.range))
+    return 0.0;
+  if (pcl_isin (point1.range) || pcl_isin (point2.range))
     return std::numeric_limits<double>::infinity ();
   return squaredEuclideanDistance (point1, point2);
 }
@@ -856,8 +856,8 @@ RangeImage::getEuclideanDistanceSquared (int x1, int y1, int x2, int y2) const
 double 
 RangeImage::getAverageEuclideanDistance (int x, int y, int offset_x, int offset_y, int max_steps) const
 {
-  double average_pixel_distance = 0.0f;
-  double weight=0.0f;
+  double average_pixel_distance = 0.0;
+  double weight=0.0;
   for (int i=0; i<max_steps; ++i)
   {
     int x1=x+i*offset_x,     y1=y+i*offset_y;
@@ -871,9 +871,9 @@ RangeImage::getAverageEuclideanDistance (int x, int y, int offset_x, int offset_
       else
         break;
     }
-    //std::cout << x<<","<<y<<"->"<<x2<<","<<y2<<": "<<sqrtf (pixel_distance)<<"m\n";
-    weight += 1.0f;
-    average_pixel_distance += sqrtf (pixel_distance);
+    //std::cout << x<<","<<y<<"->"<<x2<<","<<y2<<": "<<sqrt (pixel_distance)<<"m\n";
+    weight += 1.0;
+    average_pixel_distance += sqrt (pixel_distance);
   }
   average_pixel_distance /= weight;
   //std::cout << x<<","<<y<<","<<offset_x<<","<<offset_y<<" => "<<average_pixel_distance<<"\n";
@@ -891,7 +891,7 @@ RangeImage::getImpactAngleBasedOnLocalNormal (int x, int y, int radius) const
   Eigen::Vector3d normal;
   if (!getNormalForClosestNeighbors (x, y, radius, point, no_of_nearest_neighbors, normal, 1))
     return -std::numeric_limits<double>::infinity ();
-  return deg2rad (90.0f) - acosf (normal.dot ( (getSensorPos ()-getEigenVector3d (point)).normalized ()));
+  return deg2rad (90.0) - acos (normal.dot ( (getSensorPos ()-getEigenVector3d (point)).normalized ()));
 }
 
 
@@ -916,8 +916,8 @@ RangeImage::getNormal (int x, int y, int radius, Eigen::Vector3d& normal, int st
     return false;
   Eigen::Vector3d eigen_values, eigen_vector2, eigen_vector3;
   vector_average.doPCA (eigen_values, normal, eigen_vector2, eigen_vector3);
-  if (normal.dot ( (getSensorPos ()-vector_average.getMean ()).normalized ()) < 0.0f)
-    normal *= -1.0f;
+  if (normal.dot ( (getSensorPos ()-vector_average.getMean ()).normalized ()) < 0.0)
+    normal *= -1.0;
   return true;
 }
 
@@ -926,9 +926,9 @@ double
 RangeImage::getNormalBasedAcutenessValue (int x, int y, int radius) const
 {
   double impact_angle = getImpactAngleBasedOnLocalNormal (x, y, radius);
-  if (pcl_isinf (impact_angle))
+  if (pcl_isin (impact_angle))
     return -std::numeric_limits<double>::infinity ();
-  double ret = 1.0f - static_cast<double> ( (impact_angle / (0.5f * M_PI)));
+  double ret = 1.0 - static_cast<double> ( (impact_angle / (0.5 * M_PI)));
   //std::cout << PVARAC (impact_angle)<<PVARN (ret);
   return ret;
 }
@@ -969,7 +969,7 @@ RangeImage::getSurfaceInformation (int x, int y, int radius, const Eigen::Vector
                                    Eigen::Vector3d* normal_all_neighbors, Eigen::Vector3d* mean_all_neighbors,
                                    Eigen::Vector3d* eigen_values_all_neighbors) const
 {
-  max_closest_neighbor_distance_squared=0.0f;
+  max_closest_neighbor_distance_squared=0.0;
   normal.setZero (); mean.setZero (); eigen_values.setZero ();
   if (normal_all_neighbors!=NULL)
     normal_all_neighbors->setZero ();
@@ -1005,7 +1005,7 @@ RangeImage::getSurfaceInformation (int x, int y, int radius, const Eigen::Vector
   
   max_closest_neighbor_distance_squared = ordered_neighbors[no_of_closest_neighbors-1].distance;
   //double max_distance_squared = max_closest_neighbor_distance_squared;
-  double max_distance_squared = max_closest_neighbor_distance_squared*4.0f;  // Double the allowed distance value
+  double max_distance_squared = max_closest_neighbor_distance_squared*4.0;  // Double the allowed distance value
   //max_closest_neighbor_distance_squared = max_distance_squared;
   
   VectorAverage3f vector_average;
@@ -1025,8 +1025,8 @@ RangeImage::getSurfaceInformation (int x, int y, int radius, const Eigen::Vector
   Eigen::Vector3d eigen_vector2, eigen_vector3;
   vector_average.doPCA (eigen_values, normal, eigen_vector2, eigen_vector3);
   Eigen::Vector3d viewing_direction = (getSensorPos ()-point).normalized ();
-  if (normal.dot (viewing_direction) < 0.0f)
-    normal *= -1.0f;
+  if (normal.dot (viewing_direction) < 0.0)
+    normal *= -1.0;
   mean = vector_average.getMean ();
   
   if (normal_all_neighbors==NULL)
@@ -1038,8 +1038,8 @@ RangeImage::getSurfaceInformation (int x, int y, int radius, const Eigen::Vector
   
   vector_average.doPCA (*eigen_values_all_neighbors, *normal_all_neighbors, eigen_vector2, eigen_vector3);
   //std::cout << PVARN (vector_average.getNoOfSamples ())<<".\n";
-  if (normal_all_neighbors->dot (viewing_direction) < 0.0f)
-    *normal_all_neighbors *= -1.0f;
+  if (normal_all_neighbors->dot (viewing_direction) < 0.0)
+    *normal_all_neighbors *= -1.0;
   *mean_all_neighbors = vector_average.getMean ();
   
   //std::cout << viewing_direction[0]<<","<<viewing_direction[1]<<","<<viewing_direction[2]<<"\n";
@@ -1172,7 +1172,7 @@ void
 RangeImage::getTransformationToViewerCoordinateFrame (const Eigen::Vector3d& point, Eigen::Affine3d& transformation) const
 {
   Eigen::Vector3d viewing_direction = (point-getSensorPos ()).normalized ();
-  getTransformationFromTwoUnitVectorsAndOrigin (Eigen::Vector3d (0.0f, -1.0f, 0.0f), viewing_direction, point, transformation);
+  getTransformationFromTwoUnitVectorsAndOrigin (Eigen::Vector3d (0.0, -1.0, 0.0), viewing_direction, point, transformation);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -1180,7 +1180,7 @@ void
 RangeImage::getRotationToViewerCoordinateFrame (const Eigen::Vector3d& point, Eigen::Affine3d& transformation) const
 {
   Eigen::Vector3d viewing_direction = (point-getSensorPos ()).normalized ();
-  getTransformationFromTwoUnitVectors (Eigen::Vector3d (0.0f, -1.0f, 0.0f), viewing_direction, transformation);
+  getTransformationFromTwoUnitVectors (Eigen::Vector3d (0.0, -1.0, 0.0), viewing_direction, transformation);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -1188,7 +1188,7 @@ inline void
 RangeImage::setAngularResolution (double angular_resolution)
 {
   angular_resolution_x_ = angular_resolution_y_ = angular_resolution;
-  angular_resolution_x_reciprocal_ = angular_resolution_y_reciprocal_ = 1.0f / angular_resolution;
+  angular_resolution_x_reciprocal_ = angular_resolution_y_reciprocal_ = 1.0 / angular_resolution;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -1196,9 +1196,9 @@ inline void
 RangeImage::setAngularResolution (double angular_resolution_x, double angular_resolution_y)
 {
   angular_resolution_x_ = angular_resolution_x;
-  angular_resolution_x_reciprocal_ = 1.0f / angular_resolution_x_;
+  angular_resolution_x_reciprocal_ = 1.0 / angular_resolution_x_;
   angular_resolution_y_ = angular_resolution_y;
-  angular_resolution_y_reciprocal_ = 1.0f / angular_resolution_y_;
+  angular_resolution_y_reciprocal_ = 1.0 / angular_resolution_y_;
 }
 
 /////////////////////////////////////////////////////////////////////////

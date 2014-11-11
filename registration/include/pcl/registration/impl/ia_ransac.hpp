@@ -120,7 +120,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::select
       PCL_WARN ("No valid sample found after %d iterations. Relaxing min_sample_distance_ to %f\n",
                 iterations_without_a_sample, 0.5*min_sample_distance);
 
-      min_sample_distance_ *= 0.5f;
+      min_sample_distance_ *= 0.5;
       min_sample_distance = min_sample_distance_;
       iterations_without_a_sample = 0;
     }
@@ -216,7 +216,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::comput
   final_transformation_ = guess;
   int i_iter = 0;
   converged_ = false;
-  if (!guess.isApprox (Eigen::Matrix4d::Identity (), 0.01f)) 
+  if (!guess.isApprox (Eigen::Matrix4d::Identity (), 0.01)) 
   {
     // If guess is not the Identity matrix we check it.
     transformPointCloud (*input_, input_transformed, final_transformation_);

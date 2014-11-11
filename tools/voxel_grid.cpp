@@ -47,7 +47,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-double       default_leaf_size = 0.01f;
+double       default_leaf_size = 0.01;
 std::string default_field ("z");
 double      default_filter_min = -std::numeric_limits<double>::max ();
 double      default_filter_max = std::numeric_limits<double>::max ();

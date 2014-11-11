@@ -77,9 +77,9 @@ pcl::recognition::SimpleOctree<NodeData, NodeDataCreator, Scalar>::Node::createC
   bounds[2] = bounds_[2]; bounds[3] = center_[1];
   bounds[4] = bounds_[4]; bounds[5] = center_[2];
   // Compute the center of the new child
-  center[0] = 0.5f*(bounds[0] + bounds[1]);
-  center[1] = 0.5f*(bounds[2] + bounds[3]);
-  center[2] = 0.5f*(bounds[4] + bounds[5]);
+  center[0] = 0.5*(bounds[0] + bounds[1]);
+  center[1] = 0.5*(bounds[2] + bounds[3]);
+  center[2] = 0.5*(bounds[4] + bounds[5]);
   // Save the results
   children_[0].setBounds(bounds);
   children_[0].setCenter(center);
@@ -244,7 +244,7 @@ pcl::recognition::SimpleOctree<NodeData, NodeDataCreator, Scalar>::build (const 
     tree_levels_ = 0;
 
   // Compute the number of octree levels and the bounds of the root
-  Scalar half_root_side = static_cast<Scalar> (0.5f*pow (2.0, tree_levels_)*voxel_size);
+  Scalar half_root_side = static_cast<Scalar> (0.5*pow (2.0, tree_levels_)*voxel_size);
 
   // Determine the bounding box of the octree
   bounds_[0] = center[0] - half_root_side;
@@ -310,7 +310,7 @@ template<typename NodeData, typename NodeDataCreator, typename Scalar> inline
 typename pcl::recognition::SimpleOctree<NodeData, NodeDataCreator, Scalar>::Node*
 pcl::recognition::SimpleOctree<NodeData, NodeDataCreator, Scalar>::getFullLeaf (int i, int j, int k)
 {
-  Scalar offset = 0.5f*voxel_size_;
+  Scalar offset = 0.5*voxel_size_;
   Scalar p[3] = {bounds_[0] + offset + static_cast<Scalar> (i)*voxel_size_,
                  bounds_[2] + offset + static_cast<Scalar> (j)*voxel_size_,
                  bounds_[4] + offset + static_cast<Scalar> (k)*voxel_size_};

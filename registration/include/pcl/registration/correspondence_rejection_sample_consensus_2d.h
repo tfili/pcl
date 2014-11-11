@@ -80,10 +80,10 @@ namespace pcl
         {
           rejection_name_ = "CorrespondenceRejectorSampleConsensus2D";
           // Put the projection matrix together
-          //projection_matrix_ (0, 0) = 525.f;
-          //projection_matrix_ (1, 1) = 525.f;
-          //projection_matrix_ (0, 2) = 320.f;
-          //projection_matrix_ (1, 2) = 240.f;
+          //projection_matrix_ (0, 0) = 525.;
+          //projection_matrix_ (1, 1) = 525.;
+          //projection_matrix_ (0, 2) = 320.;
+          //projection_matrix_ (1, 2) = 240.;
         }
 
         /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.

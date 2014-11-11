@@ -136,8 +136,8 @@ pcl::DecisionTreeTrainer<FeatureType, DataSet, LabelType, ExampleIndex, NodeType
 
   // find best feature for split
   int best_feature_index = -1;
-  double best_feature_threshold = 0.0f;
-  double best_feature_information_gain = 0.0f;
+  double best_feature_threshold = 0.0;
+  double best_feature_information_gain = 0.0;
 
   const size_t num_of_features = features.size ();
   for (size_t feature_index = 0; feature_index < num_of_features; ++feature_index)

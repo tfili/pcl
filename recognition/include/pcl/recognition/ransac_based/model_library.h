@@ -94,7 +94,7 @@ namespace pcl
 
               int num_octree_points = static_cast<int> (full_leaves.size ());
               // Finalize the center of mass computation
-              aux::mult3 (octree_center_of_mass_, 1.0f/static_cast<double> (num_octree_points));
+              aux::mult3 (octree_center_of_mass_, 1.0/static_cast<double> (num_octree_points));
 
               int num_points_for_registration = static_cast<int> (static_cast<double> (num_octree_points)*frac_of_points_for_registration);
               points_for_registration_.resize (static_cast<size_t> (num_points_for_registration));
@@ -178,7 +178,7 @@ namespace pcl
       public:
         /** \brief This class is used by 'ObjRecRANSAC' to maintain the object models to be recognized. Normally, you do not need to use
           * this class directly. */
-        ModelLibrary (double pair_width, double voxel_size, double max_coplanarity_angle = 3.0f*AUX_DEG_TO_RADIANS/*3 degrees*/);
+        ModelLibrary (double pair_width, double voxel_size, double max_coplanarity_angle = 3.0*AUX_DEG_TO_RADIANS/*3 degrees*/);
         virtual ~ModelLibrary ()
         {
           this->clear();

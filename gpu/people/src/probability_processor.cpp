@@ -96,15 +96,15 @@ pcl::gpu::people::ProbabilityProcessor::CreateGaussianKernel ( double sigma,
 {
   double* f;
   f = static_cast<double*> (malloc(kernelSize * sizeof(double)));
-  double sigma_sq = static_cast<double> (pow (sigma,2.f));
+  double sigma_sq = static_cast<double> (pow (sigma,2.));
   double mult = static_cast<double> (1/sqrt (2*M_PI*sigma_sq));
-  int mid = static_cast<int> (floor (static_cast<double> (kernelSize)/2.f));
+  int mid = static_cast<int> (floor (static_cast<double> (kernelSize)/2.));
 
   // Create a symmetric kernel, could also be solved in CUDA kernel but let's do it here :D
   double sum = 0;
   for(int i = 0; i < kernelSize; i++)
   {
-    f[i] = static_cast<double> (mult * exp (-(pow (i-mid,2.f)/2*sigma_sq)));
+    f[i] = static_cast<double> (mult * exp (-(pow (i-mid,2.)/2*sigma_sq)));
     sum += f[i];
   }
 

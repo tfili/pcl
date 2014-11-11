@@ -94,7 +94,7 @@ pcl::SampleConsensusModelCylinder<PointT, PointNT>::computeModelCoefficients (
   // Compute the line parameters of the two closest points
   if (denominator < 1e-8)          // The lines are almost parallel
   {
-    sc = 0.0f;
+    sc = 0.0;
     tc = (b > c ? d / b : e / c);  // Use the largest denominator
   }
   else
@@ -143,7 +143,7 @@ pcl::SampleConsensusModelCylinder<PointT, PointNT>::getDistancesToModel (
   Eigen::Vector4d line_pt  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
   Eigen::Vector4d line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double ptdotdir = line_pt.dot (line_dir);
-  double dirdotdir = 1.0f / line_dir.dot (line_dir);
+  double dirdotdir = 1.0 / line_dir.dot (line_dir);
   // Iterate through the 3d points and calculate the distances from them to the sphere
   for (size_t i = 0; i < indices_->size (); ++i)
   {
@@ -188,7 +188,7 @@ pcl::SampleConsensusModelCylinder<PointT, PointNT>::selectWithinDistance (
   Eigen::Vector4d line_pt  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
   Eigen::Vector4d line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double ptdotdir = line_pt.dot (line_dir);
-  double dirdotdir = 1.0f / line_dir.dot (line_dir);
+  double dirdotdir = 1.0 / line_dir.dot (line_dir);
   // Iterate through the 3d points and calculate the distances from them to the sphere
   for (size_t i = 0; i < indices_->size (); ++i)
   {
@@ -235,7 +235,7 @@ pcl::SampleConsensusModelCylinder<PointT, PointNT>::countWithinDistance (
   Eigen::Vector4d line_pt  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
   Eigen::Vector4d line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double ptdotdir = line_pt.dot (line_dir);
-  double dirdotdir = 1.0f / line_dir.dot (line_dir);
+  double dirdotdir = 1.0 / line_dir.dot (line_dir);
   // Iterate through the 3d points and calculate the distances from them to the sphere
   for (size_t i = 0; i < indices_->size (); ++i)
   {
@@ -318,7 +318,7 @@ pcl::SampleConsensusModelCylinder<PointT, PointNT>::projectPoints (
   Eigen::Vector4d line_pt  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
   Eigen::Vector4d line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double ptdotdir = line_pt.dot (line_dir);
-  double dirdotdir = 1.0f / line_dir.dot (line_dir);
+  double dirdotdir = 1.0 / line_dir.dot (line_dir);
 
   // Copy all the data fields from the input cloud to the projected one?
   if (copy_data_fields)

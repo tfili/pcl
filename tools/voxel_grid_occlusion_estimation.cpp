@@ -59,7 +59,7 @@ using namespace pcl::console;
 typedef PointXYZ PointT;
 typedef PointCloud<PointT> CloudT;
 
-double default_leaf_size = 0.01f;
+double default_leaf_size = 0.01;
 
 vtkDataSet*
 createDataSetFromVTKPoints (vtkPoints *points)

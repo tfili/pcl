@@ -489,7 +489,7 @@ pcl::io::OpenNI2Grabber::imageDepthImageCallback (const Image::Ptr &image,
 
   if (image_depth_image_signal_->num_slots () > 0)
   {
-    double reciprocalFocalLength = 1.0f / device_->getDepthFocalLength ();
+    double reciprocalFocalLength = 1.0 / device_->getDepthFocalLength ();
     image_depth_image_signal_->operator ()(image, depth_image, reciprocalFocalLength);
   }
 }
@@ -505,7 +505,7 @@ pcl::io::OpenNI2Grabber::irDepthImageCallback (const IRImage::Ptr &ir_image,
 
   if (ir_depth_image_signal_->num_slots () > 0)
   {
-    double reciprocalFocalLength = 1.0f / device_->getDepthFocalLength ();
+    double reciprocalFocalLength = 1.0 / device_->getDepthFocalLength ();
     ir_depth_image_signal_->operator ()(ir_image, depth_image, reciprocalFocalLength);
   }
 }
@@ -525,16 +525,16 @@ pcl::io::OpenNI2Grabber::convertToXYZPointCloud (const DepthImage::Ptr& depth_im
 
   cloud->points.resize (cloud->height * cloud->width);
 
-  double constant_x = 1.0f / device_->getDepthFocalLength ();
-  double constant_y = 1.0f / device_->getDepthFocalLength ();
-  double centerX = ((double)cloud->width - 1.f) / 2.f;
-  double centerY = ((double)cloud->height - 1.f) / 2.f;
+  double constant_x = 1.0 / device_->getDepthFocalLength ();
+  double constant_y = 1.0 / device_->getDepthFocalLength ();
+  double centerX = ((double)cloud->width - 1.) / 2.;
+  double centerY = ((double)cloud->height - 1.) / 2.;
 
   if (pcl_isfinite (depth_parameters_.focal_length_x))
-    constant_x =  1.0f / static_cast<double> (depth_parameters_.focal_length_x);
+    constant_x =  1.0 / static_cast<double> (depth_parameters_.focal_length_x);
 
   if (pcl_isfinite (depth_parameters_.focal_length_y))
-    constant_y =  1.0f / static_cast<double> (depth_parameters_.focal_length_y);
+    constant_y =  1.0 / static_cast<double> (depth_parameters_.focal_length_y);
 
   if (pcl_isfinite (depth_parameters_.principal_point_x))
     centerX =  static_cast<double> (depth_parameters_.principal_point_x);
@@ -575,16 +575,16 @@ pcl::io::OpenNI2Grabber::convertToXYZPointCloud (const DepthImage::Ptr& depth_im
         pt.x = pt.y = pt.z = bad_point;
         continue;
       }
-      pt.z = depth_map[depth_idx] * 0.001f;
+      pt.z = depth_map[depth_idx] * 0.001;
       pt.x = (static_cast<double> (u) - centerX) * pt.z * constant_x;
       pt.y = (static_cast<double> (v) - centerY) * pt.z * constant_y;
     }
   }
   cloud->sensor_origin_.setZero ();
-  cloud->sensor_orientation_.w () = 1.0f;
-  cloud->sensor_orientation_.x () = 0.0f;
-  cloud->sensor_orientation_.y () = 0.0f;
-  cloud->sensor_orientation_.z () = 0.0f;  
+  cloud->sensor_orientation_.w () = 1.0;
+  cloud->sensor_orientation_.x () = 0.0;
+  cloud->sensor_orientation_.y () = 0.0;
+  cloud->sensor_orientation_.z () = 0.0;  
   return (cloud);
 }
 
@@ -607,15 +607,15 @@ pcl::io::OpenNI2Grabber::convertToXYZRGBPointCloud (const Image::Ptr &image, con
   // Generate default camera parameters
   double fx = device_->getDepthFocalLength (); // Horizontal focal length
   double fy = device_->getDepthFocalLength (); // Vertcal focal length
-  double cx = ((double)depth_width_ - 1.f) / 2.f;  // Center x
-  double cy = ((double)depth_height_- 1.f) / 2.f; // Center y
+  double cx = ((double)depth_width_ - 1.) / 2.;  // Center x
+  double cy = ((double)depth_height_- 1.) / 2.; // Center y
 
   // Load pre-calibrated camera parameters if they exist
   if (pcl_isfinite (depth_parameters_.focal_length_x))
-    fx =  1.0f / static_cast<double> (depth_parameters_.focal_length_x);
+    fx =  1.0 / static_cast<double> (depth_parameters_.focal_length_x);
 
   if (pcl_isfinite (depth_parameters_.focal_length_y))
-    fy =  1.0f / static_cast<double> (depth_parameters_.focal_length_y);
+    fy =  1.0 / static_cast<double> (depth_parameters_.focal_length_y);
 
   if (pcl_isfinite (depth_parameters_.principal_point_x))
     cx =  static_cast<double> (depth_parameters_.principal_point_x);
@@ -624,8 +624,8 @@ pcl::io::OpenNI2Grabber::convertToXYZRGBPointCloud (const Image::Ptr &image, con
     cy =  static_cast<double> (depth_parameters_.principal_point_y);
 
   // Get inverse focal length for calculations below
-  double fx_inv = 1.0f / fx;
-  double fy_inv = 1.0f / fy;
+  double fx_inv = 1.0 / fx;
+  double fy_inv = 1.0 / fy;
 
   const uint16_t* depth_map = (const uint16_t*) depth_image->getData ();
   if (depth_image->getWidth () != depth_width_ || depth_image->getHeight () != depth_height_)
@@ -677,7 +677,7 @@ pcl::io::OpenNI2Grabber::convertToXYZRGBPointCloud (const Image::Ptr &image, con
         pixel != depth_image->getNoSampleValue () &&
         pixel != depth_image->getShadowValue () )
       {
-        pt.z = depth_map[value_idx] * 0.001f;  // millimeters to meters
+        pt.z = depth_map[value_idx] * 0.001;  // millimeters to meters
         pt.x = (static_cast<double> (u) - cx) * pt.z * fx_inv;
         pt.y = (static_cast<double> (v) - cy) * pt.z * fy_inv;
       }
@@ -734,8 +734,8 @@ pcl::io::OpenNI2Grabber::convertToXYZIPointCloud (const IRImage::Ptr &ir_image, 
 
   double fx = device_->getDepthFocalLength (); // Horizontal focal length
   double fy = device_->getDepthFocalLength (); // Vertcal focal length
-  double cx = ((double)cloud->width - 1.f) / 2.f;  // Center x
-  double cy = ((double)cloud->height - 1.f) / 2.f; // Center y
+  double cx = ((double)cloud->width - 1.) / 2.;  // Center x
+  double cy = ((double)cloud->height - 1.) / 2.; // Center y
 
   // Load pre-calibrated camera parameters if they exist
   if (pcl_isfinite (depth_parameters_.focal_length_x))
@@ -750,8 +750,8 @@ pcl::io::OpenNI2Grabber::convertToXYZIPointCloud (const IRImage::Ptr &ir_image, 
   if (pcl_isfinite (depth_parameters_.principal_point_y))
     cy =  static_cast<double> (depth_parameters_.principal_point_y);
 
-  double fx_inv = 1.0f / fx;
-  double fy_inv = 1.0f / fy;
+  double fx_inv = 1.0 / fx;
+  double fy_inv = 1.0 / fy;
 
 
   const uint16_t* depth_map = (const uint16_t*) depth_image->getData ();
@@ -791,7 +791,7 @@ pcl::io::OpenNI2Grabber::convertToXYZIPointCloud (const IRImage::Ptr &ir_image, 
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f; // millimeters to meters
+        pt.z = depth_map[depth_idx] * 0.001; // millimeters to meters
         pt.x = (static_cast<double> (u) - cx) * pt.z * fx_inv;
         pt.y = (static_cast<double> (v) - cy) * pt.z * fy_inv;
       }

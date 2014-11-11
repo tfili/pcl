@@ -176,7 +176,7 @@ protected:
     centerX = static_cast<int> (width_arg / 2);
     centerY = static_cast<int> (height_arg / 2);
 
-    const double fl_const = 1.0f / focalLength_arg;
+    const double fl_const = 1.0 / focalLength_arg;
     static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
     i = 0;
@@ -189,7 +189,7 @@ protected:
 
         if (pixel_depth)
         {
-          double depth = pixel_depth/1000.0f; // raw mm -> m
+          double depth = pixel_depth/1000.0; // raw mm -> m
 
           // Define point location
           newPoint.z = depth;
@@ -209,7 +209,7 @@ protected:
         {
           // Define bad point
           newPoint.x = newPoint.y = newPoint.z = bad_point;
-          newPoint.rgb = 0.0f;
+          newPoint.rgb = 0.0;
         }
 
         // Add point to cloud

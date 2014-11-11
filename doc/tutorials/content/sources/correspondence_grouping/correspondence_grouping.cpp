@@ -26,12 +26,12 @@ bool show_keypoints_ (false);
 bool show_correspondences_ (false);
 bool use_cloud_resolution_ (false);
 bool use_hough_ (true);
-double model_ss_ (0.01f);
+double model_ss_ (0.01);
 double scene_ss_ (0.03f);
-double rf_rad_ (0.015f);
+double rf_rad_ (0.015);
 double descr_rad_ (0.02f);
-double cg_size_ (0.01f);
-double cg_thresh_ (5.0f);
+double cg_size_ (0.01);
+double cg_thresh_ (5.0);
 
 void
 showHelp (char *filename)
@@ -190,7 +190,7 @@ main (int argc, char *argv[])
   if (use_cloud_resolution_)
   {
     double resolution = static_cast<double> (computeCloudResolution (model));
-    if (resolution != 0.0f)
+    if (resolution != 0.0)
     {
       model_ss_   *= resolution;
       scene_ss_   *= resolution;
@@ -271,7 +271,7 @@ main (int argc, char *argv[])
       continue;
     }
     int found_neighs = match_search.nearestKSearch (scene_descriptors->at (i), 1, neigh_indices, neigh_sqr_dists);
-    if(found_neighs == 1 && neigh_sqr_dists[0] < 0.25f) //  add match only if the squared descriptor distance is less than 0.25 (SHOT descriptor distances are between 0 and 1 by design)
+    if(found_neighs == 1 && neigh_sqr_dists[0] < 0.25) //  add match only if the squared descriptor distance is less than 0.25 (SHOT descriptor distances are between 0 and 1 by design)
     {
       pcl::Correspondence corr (neigh_indices[0], static_cast<int> (i), neigh_sqr_dists[0]);
       model_scene_corrs->push_back (corr);

@@ -40,7 +40,7 @@ class ON_CLASS ON_2fPoint
 public:
   double x, y;
 
-  static const ON_2fPoint Origin; // (0.0f,0.0f)
+  static const ON_2fPoint Origin; // (0.0,0.0)
 
   // use implicit destructor, copy constructor
   ON_2fPoint();                       // x,y not initialized
@@ -176,7 +176,7 @@ class ON_CLASS ON_3fPoint
 public:
   double x, y, z;
 
-  static const ON_3fPoint Origin; // (0.0f,0.0f,0.0f)
+  static const ON_3fPoint Origin; // (0.0,0.0,0.0)
 
   // use implicit destructor, copy constructor
   ON_3fPoint();                       // x,y,z not initialized
@@ -401,9 +401,9 @@ class ON_CLASS ON_2fVector
 public:
   double x, y;
 
-  static const ON_2fVector ZeroVector; // (0.0f,0.0f)
-  static const ON_2fVector XAxis;      // (1.0f,0.0f)
-  static const ON_2fVector YAxis;      // (0.0f,1.0f)
+  static const ON_2fVector ZeroVector; // (0.0,0.0)
+  static const ON_2fVector XAxis;      // (1.0,0.0)
+  static const ON_2fVector YAxis;      // (0.0,1.0)
 
   // Description:
   //   A index driven function to get unit axis vectors.
@@ -633,10 +633,10 @@ class ON_CLASS ON_3fVector
 public:
   double x, y, z;
 
-  static const ON_3fVector ZeroVector; // (0.0f,0.0f,0.0f)
-  static const ON_3fVector XAxis;      // (1.0f,0.0f,0.0f)
-  static const ON_3fVector YAxis;      // (0.0f,1.0f,0.0f)
-  static const ON_3fVector ZAxis;      // (0.0f,0.0f,1.0f)
+  static const ON_3fVector ZeroVector; // (0.0,0.0,0.0)
+  static const ON_3fVector XAxis;      // (1.0,0.0,0.0)
+  static const ON_3fVector YAxis;      // (0.0,1.0,0.0)
+  static const ON_3fVector ZAxis;      // (0.0,0.0,1.0)
 
   // Description:
   //   A index driven function to get unit axis vectors.

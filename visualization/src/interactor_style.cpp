@@ -218,11 +218,11 @@ pcl::visualization::PCLVisualizerInteractorStyle::setCameraParameters (const Eig
 
   // Rotate the view vector
   Eigen::Matrix3d rotation = extrinsics.block<3, 3> (0, 0);
-  Eigen::Vector3d y_axis (0.f, 1.f, 0.f);
+  Eigen::Vector3d y_axis (0., 1., 0.);
   Eigen::Vector3d up_vec (rotation * y_axis);
 
   // Compute the new focal point
-  Eigen::Vector3d z_axis (0.f, 0.f, 1.f);
+  Eigen::Vector3d z_axis (0., 0., 1.);
   Eigen::Vector3d focal_vec = pos_vec + rotation * z_axis;
 
   // Get the width and height of the image - assume the calibrated centers are at the center of the image
@@ -884,8 +884,8 @@ pcl::visualization::PCLVisualizerInteractorStyle::OnKeyDown ()
           {
             vtkSmartPointer<vtkActor> apart = reinterpret_cast <vtkActor*> (path->GetLastNode ()->GetViewProp ());
             double psize = apart->GetProperty ()->GetPointSize ();
-            if (psize < 63.0f)
-              apart->GetProperty ()->SetPointSize (psize + 1.0f);
+            if (psize < 63.0)
+              apart->GetProperty ()->SetPointSize (psize + 1.0);
           }
         }
       }
@@ -905,8 +905,8 @@ pcl::visualization::PCLVisualizerInteractorStyle::OnKeyDown ()
           {
             vtkSmartPointer<vtkActor> apart = static_cast<vtkActor*> (path->GetLastNode ()->GetViewProp ());
             double psize = apart->GetProperty ()->GetPointSize ();
-            if (psize > 1.0f)
-              apart->GetProperty ()->SetPointSize (psize - 1.0f);
+            if (psize > 1.0)
+              apart->GetProperty ()->SetPointSize (psize - 1.0);
           }
         }
       }

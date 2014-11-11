@@ -61,8 +61,8 @@ namespace pcl
 
       if (dot(n, p) + d < 0)
       {
-        n*=-1.f;
-        d*=-1.f;
+        n*=-1.;
+        d*=-1.;
       }
       return make_float4(n.x, n.y, n.z, d);
     }
@@ -79,7 +79,7 @@ namespace pcl
       }
     };
 
-    __device__ __host__ __forceinline__ double compue_inv_normal_norm(const float4& p) { return 1.f/sqrt(p.x*p.x + p.y*p.y + p.z*p.z); }
+    __device__ __host__ __forceinline__ double compue_inv_normal_norm(const float4& p) { return 1./sqrt(p.x*p.x + p.y*p.y + p.z*p.z); }
 
 
     __device__ __host__ __forceinline__ float4& operator*=(float4& p, double v) { p.x*=v; p.y*=v; p.z*=v; p.w*=v; return p; }    

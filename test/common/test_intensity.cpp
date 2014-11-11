@@ -50,13 +50,13 @@ TEST (PointOperators, PointXYZRGBtoIntensity)
 {
   using namespace pcl::common;
   IntensityFieldAccessor <PointXYZRGB> convert;
-  PointXYZRGB p0; p0.x = 0.1f; p0.y = 0.2f;  p0.z = 0.3f; p0.r = 0; p0.g = 127; p0.b = 127;
-  PointXYZRGB p1; p1.x = 0.05f; p1.y = 0.05f; p1.z = 0.05f; p1.r = 0; p1.g = 127; p1.b = 127;
+  PointXYZRGB p0; p0.x = 0.1; p0.y = 0.2f;  p0.z = 0.3f; p0.r = 0; p0.g = 127; p0.b = 127;
+  PointXYZRGB p1; p1.x = 0.05; p1.y = 0.05; p1.z = 0.05; p1.r = 0; p1.g = 127; p1.b = 127;
   double p2 = convert (p0 + p1);
   // Disabled. Doesn't make any sense
-  //EXPECT_EQ (p2, static_cast<double> (299*p0.r + 587*p0.g + 114*p0.b)/1000.0f + static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b)/1000.0f);
-  p2 = 0.1f * convert (p1);
-  EXPECT_NEAR (p2, 0.1 * static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b)/1000.0f, 1e-4);
+  //EXPECT_EQ (p2, static_cast<double> (299*p0.r + 587*p0.g + 114*p0.b)/1000.0 + static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b)/1000.0);
+  p2 = 0.1 * convert (p1);
+  EXPECT_NEAR (p2, 0.1 * static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b)/1000.0, 1e-4);
 }
 
 TEST (PointOperators, PointXYZRGBtoPointXYZI)
@@ -64,17 +64,17 @@ TEST (PointOperators, PointXYZRGBtoPointXYZI)
   using namespace pcl::common;
   IntensityFieldAccessor <PointXYZRGB> rgb_intensity;
   IntensityFieldAccessor <PointXYZI> intensity;
-  PointXYZRGB p0; p0.x = 0.1f; p0.y = 0.2f;  p0.z = 0.3f; p0.r = 0; p0.g = 127; p0.b = 127;
-  PointXYZRGB p1; p1.x = 0.05f; p1.y = 0.05f; p1.z = 0.05f; p1.r = 0; p1.g = 127; p1.b = 127;
+  PointXYZRGB p0; p0.x = 0.1; p0.y = 0.2f;  p0.z = 0.3f; p0.r = 0; p0.g = 127; p0.b = 127;
+  PointXYZRGB p1; p1.x = 0.05; p1.y = 0.05; p1.z = 0.05; p1.r = 0; p1.g = 127; p1.b = 127;
   double value = rgb_intensity (p0 + p1);
   PointXYZI p2;
   intensity.set (p2, value);
 
   // Disabled. Doesn't make any sense
-  //EXPECT_EQ (p2.intensity, static_cast<double> (299*p0.r + 587*p0.g + 114*p0.b)/1000.0f + static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b)/1000.0f);
+  //EXPECT_EQ (p2.intensity, static_cast<double> (299*p0.r + 587*p0.g + 114*p0.b)/1000.0 + static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b)/1000.0);
   value = rgb_intensity (p1);
-  intensity.set (p2, rgb_intensity (p1) * 0.1f);
-  EXPECT_NEAR (p2.intensity, static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b) / 1000.0f * 0.1, 1e-4);
+  intensity.set (p2, rgb_intensity (p1) * 0.1);
+  EXPECT_NEAR (p2.intensity, static_cast<double> (299*p1.r + 587*p1.g + 114*p1.b) / 1000.0 * 0.1, 1e-4);
 }
 
 int

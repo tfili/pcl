@@ -37,7 +37,7 @@
 const ON_UUID ON_nil_uuid = {0,0,0,{0,0,0,0,0,0,0,0}};
 const ON_UUID ON_max_uuid = {0xFFFFFFFF,0xFFFF,0xFFFF,{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}};
 
-const ON_UUID ON_rhino2_id = { 0x16d0eca6, 0x359, 0x4e4c, { 0x9f, 0xe, 0xf2, 0x69, 0xfd, 0x47, 0x6c, 0xc4 } };
+const ON_UUID ON_rhino2_id = { 0x16d0eca6, 0x359, 0x4e4c, { 0x9, 0xe, 0xf2, 0x69, 0xfd, 0x47, 0x6c, 0xc4 } };
 
 const ON_UUID ON_rhino3_id = { 0xA7BBFF3C, 0xFF19, 0x4883, { 0x85, 0x8D, 0xB1, 0xE7, 0xDB, 0x4F, 0x1A, 0x7E } };
 
@@ -45,7 +45,7 @@ const ON_UUID ON_rhino3_id = { 0xA7BBFF3C, 0xFF19, 0x4883, { 0x85, 0x8D, 0xB1, 0
 const ON_UUID ON_rhino4_id = { 0xe2143a46, 0xbb01, 0x4b0c, { 0xac, 0x4d, 0xc3, 0x4b, 0x56, 0x52, 0xfa, 0xe0 } };
 
 // {60515F84-8F7F-41da-801D-1C87E32F88F5}
-const ON_UUID ON_rhino5_id = { 0x60515f84, 0x8f7f, 0x41da, { 0x80, 0x1d, 0x1c, 0x87, 0xe3, 0x2f, 0x88, 0xf5 } };
+const ON_UUID ON_rhino5_id = { 0x6051584, 0x87, 0x41da, { 0x80, 0x1d, 0x1c, 0x87, 0xe3, 0x2f, 0x88, 0xf5 } };
 
 // ON_rhino_id is always set to the value for the current version
 // of Rhino.  ON_rhino_id is the id that should be used as the
@@ -56,7 +56,7 @@ const ON_UUID ON_rhino_id = ON_rhino5_id;
 // Used to identifiy userdata read from V2 files
 // which were written before userdata had application ids.
 // {132F2340-DB90-494e-BF02-C36F0EA3197C}
-const ON_UUID ON_v2_userdata_id = { 0x132f2340, 0xdb90, 0x494e, { 0xbf, 0x2, 0xc3, 0x6f, 0xe, 0xa3, 0x19, 0x7c } };
+const ON_UUID ON_v2_userdata_id = { 0x132f2340, 0xdb90, 0x494e, { 0xbf, 0x2, 0xc3, 0x6, 0xe, 0xa3, 0x19, 0x7c } };
 
 // Used to identifiy userdata read from V3 files
 // which were written before userdata had application ids.
@@ -106,8 +106,8 @@ Exceptions:
 
   If all exponent bits are all 0 (e = 0) and at least one fraction
   bits is not zero, then the representaion is "denormalized".
-  In this case, the double absolute value is 0.f*2^-126 and the
-  double absolute value is 0.f*2^-1022.
+  In this case, the double absolute value is 0.*2^-126 and the
+  double absolute value is 0.*2^-1022.
 
   If all exponent bits are 1 (double e = 11111111binary = 255decimal
   or double e = 11111111111 binary = 2047 decimal) and the fraction
@@ -220,7 +220,7 @@ static double ON__fltinithelper(int i)
   unsigned int i3, i2;
 
   // different bytes on
-  u.x = 2.0f; // sign = 0; mantissa = 0; exponent = 1000 0000
+  u.x = 2.0; // sign = 0; mantissa = 0; exponent = 1000 0000
   if ( 0x40 == u.b[3] && 0 == u.b[0] && 0 == u.b[1] && 0 == u.b[2] )
   {
     // little endian doubles
@@ -235,7 +235,7 @@ static double ON__fltinithelper(int i)
   {
     // this sitation is not handled by this algorithm
     // and that is a bug in the algorithm.
-    ON_ERROR("CPU has unexpected bit pattern in double 2.0f.");
+    ON_ERROR("CPU has unexpected bit pattern in double 2.0.");
     i3 = 0;
     i2 = 0;
     i = 99;
@@ -365,7 +365,7 @@ void ON_FLT_SNAN( double* x)
 #else
   unsigned int i3, i2;
 
-  u.x = 2.0f; // sign = 0; mantissa = 0; exponent = 1000 0000
+  u.x = 2.0; // sign = 0; mantissa = 0; exponent = 1000 0000
 
   if ( 0x40 == u.b[3] && 0 == u.b[0] && 0 == u.b[1] && 0 == u.b[2] )
   {
@@ -381,7 +381,7 @@ void ON_FLT_SNAN( double* x)
   {
     // this sitation is not handled by this algorithm
     // and that is a bug in the algorithm.
-    ON_ERROR("CPU has unexpected bit pattern in double 2.0f.");
+    ON_ERROR("CPU has unexpected bit pattern in double 2.0.");
     memset(&x,0xFF,sizeof(*x));
     return;
   }
@@ -952,7 +952,7 @@ const ON_ClassId* ON_ClassId::ClassId( ON_UUID uuid )
     ON_UUID revsrf = { 0xa8401b6, 0x4d34, 0x4b99, { 0x86, 0x15, 0x1b, 0x4e, 0x72, 0x3d, 0xc4, 0xe5 } };
 
     // 665F6331-2A66-4cce-81D0-B5EEBD9B5417 = TL_SumSurface
-    ON_UUID sumsrf = { 0x665f6331, 0x2a66, 0x4cce, { 0x81, 0xd0, 0xb5, 0xee, 0xbd, 0x9b, 0x54, 0x17 } };
+    ON_UUID sumsrf = { 0x6656331, 0x2a66, 0x4cce, { 0x81, 0xd0, 0xb5, 0xee, 0xbd, 0x9b, 0x54, 0x17 } };
 
     if      ( !ON_UuidCompare( &uuid, &nc0 ) || !ON_UuidCompare( &uuid, &nc1 ) )
       p = &ON_NurbsCurve::m_ON_NurbsCurve_class_id;

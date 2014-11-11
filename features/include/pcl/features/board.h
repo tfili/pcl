@@ -64,12 +64,12 @@ namespace pcl
 
       /** \brief Constructor. */
       BOARDLocalReferenceFrameEstimation () :
-        tangent_radius_ (0.0f),
+        tangent_radius_ (0.0),
         find_holes_ (false),
-        margin_thresh_ (0.85f),
+        margin_thresh_ (0.85),
         check_margin_array_size_ (24),
-        hole_size_prob_thresh_ (0.2f),
-        steep_thresh_ (0.1f),
+        hole_size_prob_thresh_ (0.2),
+        steep_thresh_ (0.1),
         check_margin_array_ (),
         margin_array_min_angle_ (),
         margin_array_max_angle_ (),
@@ -330,7 +330,7 @@ namespace pcl
         * \return true if val1 is equal to val2, false otherwise.
         */
       inline bool
-      areEquals (double val1, double val2, double zero_float_eps = 1E-8f) const
+      areEquals (double val1, double val2, double zero_float_eps = 1E-8) const
       {
         return (std::abs (val1 - val2) < zero_float_eps);
       }

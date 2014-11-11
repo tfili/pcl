@@ -49,7 +49,7 @@ pcl::PPFRGBEstimation<PointInT, PointNT, PointOutT>::PPFRGBEstimation ()
   feature_name_ = "PPFRGBEstimation";
   // Slight hack in order to pass the check for the presence of a search method in Feature::initCompute ()
   Feature<PointInT, PointOutT>::tree_.reset (new pcl::search::KdTree <PointInT> ());
-  Feature<PointInT, PointOutT>::search_radius_ = 1.0f;
+  Feature<PointInT, PointOutT>::search_radius_ = 1.0;
 }
 
 
@@ -80,26 +80,26 @@ pcl::PPFRGBEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudO
           Eigen::Vector3d model_reference_point = input_->points[i].getVector3dMap (),
               model_reference_normal = normals_->points[i].getNormalVector3dMap (),
               model_point = input_->points[j].getVector3dMap ();
-          Eigen::AngleAxisd rotation_mg (acosf (model_reference_normal.dot (Eigen::Vector3d::UnitX ())),
+          Eigen::AngleAxisd rotation_mg (acos (model_reference_normal.dot (Eigen::Vector3d::UnitX ())),
                                          model_reference_normal.cross (Eigen::Vector3d::UnitX ()).normalized ());
           Eigen::Affine3d transform_mg = Eigen::Translation3d ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
 
           Eigen::Vector3d model_point_transformed = transform_mg * model_point;
-          double angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
-          if (sin (angle) * model_point_transformed(2) < 0.0f)
+          double angle = atan2 ( -model_point_transformed(2), model_point_transformed(1));
+          if (sin (angle) * model_point_transformed(2) < 0.0)
             angle *= (-1);
           p.alpha_m = -angle;
         }
         else
         {
           PCL_ERROR ("[pcl::%s::computeFeature] Computing pair feature vector between points %lu and %lu went wrong.\n", getClassName ().c_str (), i, j);
-           p.f1 = p.f2 = p.f3 = p.f4 = p.alpha_m = p.r_ratio = p.g_ratio = p.b_ratio = 0.f;
+           p.f1 = p.f2 = p.f3 = p.f4 = p.alpha_m = p.r_ratio = p.g_ratio = p.b_ratio = 0.;
         }
       }
       // Do not calculate the feature for identity pairs (i, i) as they are not used
       // in the following computations
       else
-         p.f1 = p.f2 = p.f3 = p.f4 = p.alpha_m = p.r_ratio = p.g_ratio = p.b_ratio = 0.f;
+         p.f1 = p.f2 = p.f3 = p.f4 = p.alpha_m = p.r_ratio = p.g_ratio = p.b_ratio = 0.;
 
       output.points[index_i*input_->points.size () + j] = p;
     }
@@ -133,7 +133,7 @@ pcl::PPFRGBRegionEstimation<PointInT, PointNT, PointOutT>::computeFeature (Point
     PointOutT average_feature_nn;
     average_feature_nn.alpha_m = 0;
     average_feature_nn.f1 = average_feature_nn.f2 = average_feature_nn.f3 = average_feature_nn.f4 =
-        average_feature_nn.r_ratio = average_feature_nn.g_ratio = average_feature_nn.b_ratio = 0.0f;
+        average_feature_nn.r_ratio = average_feature_nn.g_ratio = average_feature_nn.b_ratio = 0.0;
 
     for (std::vector<int>::iterator nn_it = nn_indices.begin (); nn_it != nn_indices.end (); ++nn_it)
     {

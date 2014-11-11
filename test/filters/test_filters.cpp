@@ -257,7 +257,7 @@ TEST (PassThrough, Filters)
   EXPECT_EQ (output.height, cloud->height);
 
   pt.setFilterFieldName ("z");
-  pt.setFilterLimits (0.05f, 0.1f);
+  pt.setFilterLimits (0.05, 0.1);
   pt.filter (output);
 
   EXPECT_EQ (int (output.points.size ()), 42);
@@ -300,7 +300,7 @@ TEST (PassThrough, Filters)
   EXPECT_EQ (output.height, cloud->height);
 
   pt_.setFilterFieldName ("z");
-  pt_.setFilterLimits (0.05f, 0.1f);
+  pt_.setFilterLimits (0.05, 0.1);
   pt_.filter (output);
 
   EXPECT_EQ (int (output.points.size ()), 42);
@@ -668,7 +668,7 @@ TEST (VoxelGrid, Filters)
   //PCL_ERROR ("IGNORE PREVIOUS ERROR: testing it's functionality!\n");
 
   // input point 195 [0.04872199893, 0.07376000285, 0.01743399911]
-  int centroidIdx2 = grid2.getCentroidIndex (0.048722f, 0.073760f, 0.017434f);
+  int centroidIdx2 = grid2.getCentroidIndex (0.048722f, 0.073760, 0.017434f);
   EXPECT_NE (centroidIdx2, -1);
 
   // for arbitrary points, the centroid should be close
@@ -682,7 +682,7 @@ TEST (VoxelGrid, Filters)
 
   // neighboring centroid should be in the right position
   Eigen::MatrixXi directions2 = Eigen::Vector3i (0, 0, 1);
-  vector<int> neighbors2 = grid2.getNeighborCentroidIndices (0.048722f, 0.073760f, 0.017434f, directions2);
+  vector<int> neighbors2 = grid2.getNeighborCentroidIndices (0.048722f, 0.073760, 0.017434f, directions2);
   EXPECT_EQ (neighbors2.size (), size_t (directions2.cols ()));
   EXPECT_NE (neighbors2.at (0), -1);
   EXPECT_LE (fabs (output.points[neighbors2.at (0)].x - output.points[centroidIdx2].x), 0.02);
@@ -701,26 +701,26 @@ TEST (VoxelGrid_RGB, Filters)
   int col_r[] = {214, 193, 180, 164, 133, 119, 158, 179, 178, 212};
   int col_g[] = {10, 39, 219, 231, 142, 169, 84, 158, 139, 214};
   int col_b[] = {101, 26, 46, 189, 211, 154, 246, 16, 139, 153};
-  double ave_r = 0.0f;
-  double ave_b = 0.0f;
-  double ave_g = 0.0f;
+  double ave_r = 0.0;
+  double ave_b = 0.0;
+  double ave_g = 0.0;
   for (int i = 0; i < 10; ++i)
   {
     ave_r += static_cast<double> (col_r[i]);
     ave_g += static_cast<double> (col_g[i]);
     ave_b += static_cast<double> (col_b[i]);
   }
-  ave_r /= 10.0f;
-  ave_g /= 10.0f;
-  ave_b /= 10.0f;
+  ave_r /= 10.0;
+  ave_g /= 10.0;
+  ave_b /= 10.0;
 
   for (int i = 0; i < 10; ++i)
   {
     PointXYZRGB pt;
     int rgb = (col_r[i] << 16) | (col_g[i] << 8) | col_b[i];
-    pt.x = 0.0f;
-    pt.y = 0.0f;
-    pt.z = 0.0f;
+    pt.x = 0.0;
+    pt.y = 0.0;
+    pt.z = 0.0;
     pt.rgb = *reinterpret_cast<double*> (&rgb);
     cloud_rgb_.points.push_back (pt);
   }
@@ -820,7 +820,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
         point.normal_y = getRandomNumber (1.0, -1.0);
         point.normal_z = getRandomNumber (1.0, -1.0);
         
-        double norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
+        double norm = 1.0 / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
         point.normal_x *= norm;
         point.normal_y *= norm;
         point.normal_z *= norm;
@@ -878,7 +878,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
         }
         else if (pcl_isfinite (point.normal_x))
         {
-          double norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
+          double norm = 1.0 / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
           point.normal_x *= norm;
           point.normal_y *= norm;
           point.normal_z *= norm;
@@ -887,7 +887,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
           voxel.normal_y += point.normal_y;
           voxel.normal_z += point.normal_z;
           
-          norm = 1.0f / sqrt (voxel.normal_x * voxel.normal_x + voxel.normal_y * voxel.normal_y + voxel.normal_z * voxel.normal_z );
+          norm = 1.0 / sqrt (voxel.normal_x * voxel.normal_x + voxel.normal_y * voxel.normal_y + voxel.normal_z * voxel.normal_z );
           
           voxel.normal_x *= norm;
           voxel.normal_y *= norm;
@@ -904,7 +904,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
   }
     
   VoxelGrid<PointNormal> grid;
-  grid.setLeafSize (1.0f, 1.0f, 1.0f);
+  grid.setLeafSize (1.0, 1.0, 1.0);
   grid.setFilterLimits (0.0, 2.0);
   grid.setInputCloud (input);
   grid.filter (output);
@@ -939,8 +939,8 @@ TEST (VoxelGrid_XYZNormal, Filters)
   VoxelGrid<PCLPointCloud2> grid2;
   PCLPointCloud2 output_blob;
 
-  grid2.setLeafSize (1.0f, 1.0f, 1.0f);
-  grid2.setFilterLimits (0.0f, 2.0f);
+  grid2.setLeafSize (1.0, 1.0, 1.0);
+  grid2.setFilterLimits (0.0, 2.0);
   grid2.setInputCloud (cloud_blob_ptr_);
   grid2.filter (output_blob);
 
@@ -1171,21 +1171,21 @@ TEST (CropBox, Filters)
   // Create cloud with center point and corner points
   PointCloud<PointXYZ>::Ptr input (new PointCloud<PointXYZ> ());
 
-  input->push_back (PointXYZ (0.0f, 0.0f, 0.0f));
-  input->push_back (PointXYZ (0.9f, 0.9f, 0.9f));
-  input->push_back (PointXYZ (0.9f, 0.9f, -0.9f));
-  input->push_back (PointXYZ (0.9f, -0.9f, 0.9f));
-  input->push_back (PointXYZ (-0.9f, 0.9f, 0.9f));
-  input->push_back (PointXYZ (0.9f, -0.9f, -0.9f));
-  input->push_back (PointXYZ (-0.9f, -0.9f, 0.9f));
-  input->push_back (PointXYZ (-0.9f, 0.9f, -0.9f));
-  input->push_back (PointXYZ (-0.9f, -0.9f, -0.9f));
+  input->push_back (PointXYZ (0.0, 0.0, 0.0));
+  input->push_back (PointXYZ (0.9, 0.9, 0.9));
+  input->push_back (PointXYZ (0.9, 0.9, -0.9));
+  input->push_back (PointXYZ (0.9, -0.9, 0.9));
+  input->push_back (PointXYZ (-0.9, 0.9, 0.9));
+  input->push_back (PointXYZ (0.9, -0.9, -0.9));
+  input->push_back (PointXYZ (-0.9, -0.9, 0.9));
+  input->push_back (PointXYZ (-0.9, 0.9, -0.9));
+  input->push_back (PointXYZ (-0.9, -0.9, -0.9));
 
   // Test the PointCloud<PointT> method
   CropBox<PointXYZ> cropBoxFilter (true);
   cropBoxFilter.setInputCloud (input);
-  Eigen::Vector4d min_pt (-1.0f, -1.0f, -1.0f, 1.0f);
-  Eigen::Vector4d max_pt (1.0f, 1.0f, 1.0f, 1.0f);
+  Eigen::Vector4d min_pt (-1.0, -1.0, -1.0, 1.0);
+  Eigen::Vector4d max_pt (1.0, 1.0, 1.0, 1.0);
 
   // Cropbox slighlty bigger then bounding box of points
   cropBoxFilter.setMin (min_pt);
@@ -1244,7 +1244,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Rotate crop box up by 45
-  cropBoxFilter.setRotation (Eigen::Vector3d (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter.setRotation (Eigen::Vector3d (0.0, 45.0 * double (M_PI) / 180.0, 0.0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1268,7 +1268,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Rotate point cloud by -45
-  cropBoxFilter.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * double (M_PI) / 180.0f));
+  cropBoxFilter.setTransform (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1402,7 +1402,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Rotate crop box up by 45
-  cropBoxFilter2.setRotation (Eigen::Vector3d (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter2.setRotation (Eigen::Vector3d (0.0, 45.0 * double (M_PI) / 180.0, 0.0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1410,7 +1410,7 @@ TEST (CropBox, Filters)
   EXPECT_EQ (int (indices2.size ()), int (cloud_out2.width * cloud_out2.height));
 
   // Rotate point cloud by -45
-  cropBoxFilter2.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * double (M_PI) / 180.0f));
+  cropBoxFilter2.setTransform (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1432,7 +1432,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Translate point cloud down by -1
-  cropBoxFilter2.setTransform (getTransformation (0.0f, -1.0f, 0.0f, 0.0f, 0.0f, -45.0f * double (M_PI) / 180.0f));
+  cropBoxFilter2.setTransform (getTransformation (0.0, -1.0, 0.0, 0.0, 0.0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1811,9 +1811,9 @@ TEST (SamplingSurfaceNormal, Filters)
   PointCloud <PointNormal> outcloud;
 
   //Creating a point cloud on the XY plane
-  for (double i = 0.0f; i < 5.0f; i += 0.1f)
+  for (double i = 0.0; i < 5.0; i += 0.1)
   {
-    for (double j = 0.0f; j < 5.0f; j += 0.1f)
+    for (double j = 0.0; j < 5.0; j += 0.1)
     {
       PointNormal pt;
       pt.x = i;
@@ -1844,16 +1844,16 @@ TEST (ShadowPoints, Filters)
 {
   //Creating a point cloud on the XY plane
   PointCloud<PointXYZ>::Ptr input (new PointCloud<PointXYZ> ());
-  for (double i = 0.0f; i < 10.0f; i+=0.1f)
+  for (double i = 0.0; i < 10.0; i+=0.1)
   {
-    for (double j = 0.0f; j < 10.0f; j+=0.1f)
+    for (double j = 0.0; j < 10.0; j+=0.1)
     {
-      input->push_back (PointXYZ (i, j, 1.0f));
+      input->push_back (PointXYZ (i, j, 1.0));
     }
   }
 
   // Adding a shadow point
-  PointXYZ pt (.0f, .0f, .1f);
+  PointXYZ pt (.0, .0, .1);
   input->points.push_back (pt);
 
   input->width = 1;
@@ -1872,7 +1872,7 @@ TEST (ShadowPoints, Filters)
   PointCloud<PointXYZ> output;
   ShadowPoints <PointXYZ, PointNormal> spfilter (true); // Extract removed indices
   spfilter.setInputCloud (input);
-  spfilter.setThreshold (0.1f);
+  spfilter.setThreshold (0.1);
   spfilter.setNormals (input_normals);
 
   spfilter.filter (output);
@@ -2029,7 +2029,7 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
   EXPECT_EQ (input->points[9].z, output.points[9].z);
 
   // rotate cylinder comparison along z-axis by PI/2
-  cyl_comp->transformComparison (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, double (M_PI) / 2.0f).inverse ());
+  cyl_comp->transformComparison (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, double (M_PI) / 2.0).inverse ());
 
   condrem.filter (output);
 
@@ -2112,35 +2112,35 @@ TEST (MedianFilter, Filters)
   out_1_correct.width = 5;
   out_1_correct.is_dense = false;
   out_1_correct.resize (5 * 5);
-  out_1_correct (0, 0).z = 6.f;
-  out_1_correct (1, 0).z = 6.f;
-  out_1_correct (2, 0).z = 7.f;
-  out_1_correct (3, 0).z = 8.f;
-  out_1_correct (4, 0).z = 9.f;
+  out_1_correct (0, 0).z = 6.;
+  out_1_correct (1, 0).z = 6.;
+  out_1_correct (2, 0).z = 7.;
+  out_1_correct (3, 0).z = 8.;
+  out_1_correct (4, 0).z = 9.;
 
-  out_1_correct (0, 1).z = 7.f;
-  out_1_correct (1, 1).z = 7.f;
-  out_1_correct (2, 1).z = 7.f;
-  out_1_correct (3, 1).z = 7.f;
-  out_1_correct (4, 1).z = 7.f;
+  out_1_correct (0, 1).z = 7.;
+  out_1_correct (1, 1).z = 7.;
+  out_1_correct (2, 1).z = 7.;
+  out_1_correct (3, 1).z = 7.;
+  out_1_correct (4, 1).z = 7.;
 
-  out_1_correct (0, 2).z = 7.f;
-  out_1_correct (1, 2).z = 7.f;
-  out_1_correct (2, 2).z = 7.f;
-  out_1_correct (3, 2).z = 7.f;
-  out_1_correct (4, 2).z = 7.f;
+  out_1_correct (0, 2).z = 7.;
+  out_1_correct (1, 2).z = 7.;
+  out_1_correct (2, 2).z = 7.;
+  out_1_correct (3, 2).z = 7.;
+  out_1_correct (4, 2).z = 7.;
 
-  out_1_correct (0, 3).z = 10.f;
-  out_1_correct (1, 3).z = 9.f;
-  out_1_correct (2, 3).z = 8.f;
-  out_1_correct (3, 3).z = 7.f;
-  out_1_correct (4, 3).z = 7.f;
+  out_1_correct (0, 3).z = 10.;
+  out_1_correct (1, 3).z = 9.;
+  out_1_correct (2, 3).z = 8.;
+  out_1_correct (3, 3).z = 7.;
+  out_1_correct (4, 3).z = 7.;
 
-  out_1_correct (0, 4).z = 100.f;
-  out_1_correct (1, 4).z = 100.f;
-  out_1_correct (2, 4).z = 100.f;
-  out_1_correct (3, 4).z = 100.f;
-  out_1_correct (4, 4).z = 100.f;
+  out_1_correct (0, 4).z = 100.;
+  out_1_correct (1, 4).z = 100.;
+  out_1_correct (2, 4).z = 100.;
+  out_1_correct (3, 4).z = 100.;
+  out_1_correct (4, 4).z = 100.;
 
   for (size_t i = 0; i < 5 * 5; ++i)
     EXPECT_NEAR (out_1_correct[i].z, out_1[i].z, 1e-5);
@@ -2148,7 +2148,7 @@ TEST (MedianFilter, Filters)
 
   // Now limit the maximum value a dexel can change
   PointCloud<PointXYZ> out_2;
-  median_filter.setMaxAllowedMovement (50.f);
+  median_filter.setMaxAllowedMovement (50.);
   median_filter.filter (out_2);
 
   // The result should look like this
@@ -2160,7 +2160,7 @@ TEST (MedianFilter, Filters)
    */
   PointCloud<PointXYZ> out_2_correct;
   out_2_correct = out_1_correct;
-  out_2_correct (2, 4).z = 450.f;
+  out_2_correct (2, 4).z = 450.;
 
   for (size_t i = 0; i < 5 * 5; ++i)
     EXPECT_NEAR (out_2_correct[i].z, out_2[i].z, 1e-5);
@@ -2170,19 +2170,19 @@ TEST (MedianFilter, Filters)
   MedianFilter<PointXYZRGB> median_filter_xyzrgb;
   median_filter_xyzrgb.setInputCloud (cloud_organized);
   median_filter_xyzrgb.setWindowSize (7);
-  median_filter_xyzrgb.setMaxAllowedMovement (0.01f);
+  median_filter_xyzrgb.setMaxAllowedMovement (0.01);
   PointCloud<PointXYZRGB> out_3;
   median_filter_xyzrgb.filter (out_3);
 
   // Check some positions for their values
-  EXPECT_NEAR (1.300999999f, out_3(30, 100).z, 1e-5);
-  EXPECT_NEAR (1.300999999f, out_3(50, 100).z, 1e-5);
+  EXPECT_NEAR (1.300999999, out_3(30, 100).z, 1e-5);
+  EXPECT_NEAR (1.300999999, out_3(50, 100).z, 1e-5);
   EXPECT_NEAR (1.305999994f, out_3(90, 100).z, 1e-5);
-  EXPECT_NEAR (0.908000111f, out_3(50, 200).z, 1e-5);
+  EXPECT_NEAR (0.908000111, out_3(50, 200).z, 1e-5);
   EXPECT_NEAR (0.695000112f, out_3(100, 300).z, 1e-5);
-  EXPECT_NEAR (1.177000045f, out_3(128, 128).z, 1e-5);
+  EXPECT_NEAR (1.177000045, out_3(128, 128).z, 1e-5);
   EXPECT_NEAR (0.778999984f, out_3(256, 256).z, 1e-5);
-  EXPECT_NEAR (0.703000009f, out_3(428, 300).z, 1e-5);
+  EXPECT_NEAR (0.703000009, out_3(428, 300).z, 1e-5);
 }
 
 
@@ -2251,7 +2251,7 @@ TEST (NormalRefinement, Filters)
   pcl::NormalRefinement<pcl::PointXYZRGBNormal> nr (k_indices, k_sqr_distances);
   nr.setInputCloud (cloud_organized_normal.makeShared());
   nr.setMaxIterations (15);
-  nr.setConvergenceThreshold (0.00001f);
+  nr.setConvergenceThreshold (0.00001);
   nr.filter (cloud_organized_normal_refined);
   
   /*
@@ -2278,8 +2278,8 @@ TEST (NormalRefinement, Filters)
   
   // Find a point on the plane [0 0 z] => z = -d / c
   pcl::PointXYZ p_table;
-  p_table.x = 0.0f;
-  p_table.y = 0.0f;
+  p_table.x = 0.0;
+  p_table.y = 0.0;
   p_table.z = -d / c;
   
   // Use the point to orient the SAC normal correctly
@@ -2291,9 +2291,9 @@ TEST (NormalRefinement, Filters)
   
   // Errors for the two normal sets and their means
   std::vector<double> errs_est;
-  double err_est_mean = 0.0f;
+  double err_est_mean = 0.0;
   std::vector<double> errs_refined;
-  double err_refined_mean = 0.0f;
+  double err_refined_mean = 0.0;
   
   // Number of zero or NaN vectors produced by refinement
   int num_zeros = 0;
@@ -2306,9 +2306,9 @@ TEST (NormalRefinement, Filters)
     
     // Estimated (need to avoid zeros and NaNs)
     const pcl::PointXYZRGBNormal& calci = cloud_organized_normal[idx_table[i]];
-    if ((fabsf (calci.normal_x) + fabsf (calci.normal_y) + fabsf (calci.normal_z)) > 0.0f)
+    if ((fabsf (calci.normal_x) + fabsf (calci.normal_y) + fabsf (calci.normal_z)) > 0.0)
     {
-      tmp = 1.0f - (calci.normal_x * a + calci.normal_y * b + calci.normal_z * c);
+      tmp = 1.0 - (calci.normal_x * a + calci.normal_y * b + calci.normal_z * c);
       if (pcl_isfinite (tmp))
       {
         errs_est.push_back (tmp);
@@ -2318,9 +2318,9 @@ TEST (NormalRefinement, Filters)
     
     // Refined
     const pcl::PointXYZRGBNormal& refinedi = cloud_organized_normal_refined[idx_table[i]];
-    if ((fabsf (refinedi.normal_x) + fabsf (refinedi.normal_y) + fabsf (refinedi.normal_z)) > 0.0f)
+    if ((fabsf (refinedi.normal_x) + fabsf (refinedi.normal_y) + fabsf (refinedi.normal_z)) > 0.0)
     {
-      tmp = 1.0f - (refinedi.normal_x * a + refinedi.normal_y * b + refinedi.normal_z * c);
+      tmp = 1.0 - (refinedi.normal_x * a + refinedi.normal_y * b + refinedi.normal_z * c);
       if (pcl_isfinite(tmp))
       {
         errs_refined.push_back (tmp);
@@ -2343,13 +2343,13 @@ TEST (NormalRefinement, Filters)
   err_refined_mean /= static_cast<double> (errs_refined.size ());
   
   // Error variance of estimated
-  double err_est_var = 0.0f;
+  double err_est_var = 0.0;
   for (unsigned int i = 0; i < errs_est.size (); ++i)
     err_est_var = (errs_est[i] - err_est_mean) * (errs_est[i] - err_est_mean);
   err_est_var /= static_cast<double> (errs_est.size () - 1);
   
   // Error variance of refined
-  double err_refined_var = 0.0f;
+  double err_refined_var = 0.0;
   for (unsigned int i = 0; i < errs_refined.size (); ++i)
     err_refined_var = (errs_refined[i] - err_refined_mean) * (errs_refined[i] - err_refined_mean);
   err_refined_var /= static_cast<double> (errs_refined.size () - 1);

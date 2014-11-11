@@ -64,8 +64,8 @@ namespace pcl
       /** \brief Constructor */
       LinearLeastSquaresNormalEstimation () :
           use_depth_dependent_smoothing_(false),
-          max_depth_change_factor_(1.0f),
-          normal_smoothing_size_(9.0f)
+          max_depth_change_factor_(1.0),
+          normal_smoothing_size_(9.0)
       {
           feature_name_ = "LinearLeastSquaresNormalEstimation";
           tree_.reset ();

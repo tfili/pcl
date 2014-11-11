@@ -21,9 +21,9 @@ PCLViewer::PCLViewer (QWidget *parent) :
   // Fill the cloud with some points
   for (size_t i = 0; i < cloud->points.size (); ++i)
   {
-    cloud->points[i].x = 1024 * rand () / (RAND_MAX + 1.0f);
-    cloud->points[i].y = 1024 * rand () / (RAND_MAX + 1.0f);
-    cloud->points[i].z = 1024 * rand () / (RAND_MAX + 1.0f);
+    cloud->points[i].x = 1024 * rand () / (RAND_MAX + 1.0);
+    cloud->points[i].y = 1024 * rand () / (RAND_MAX + 1.0);
+    cloud->points[i].z = 1024 * rand () / (RAND_MAX + 1.0);
 
     cloud->points[i].r = red;
     cloud->points[i].g = green;
@@ -64,9 +64,9 @@ PCLViewer::randomButtonPressed ()
   // Set the new color
   for (size_t i = 0; i < cloud->size(); i++)
   {
-    cloud->points[i].r = 255 *(1024 * rand () / (RAND_MAX + 1.0f));
-    cloud->points[i].g = 255 *(1024 * rand () / (RAND_MAX + 1.0f));
-    cloud->points[i].b = 255 *(1024 * rand () / (RAND_MAX + 1.0f));
+    cloud->points[i].r = 255 *(1024 * rand () / (RAND_MAX + 1.0));
+    cloud->points[i].g = 255 *(1024 * rand () / (RAND_MAX + 1.0));
+    cloud->points[i].b = 255 *(1024 * rand () / (RAND_MAX + 1.0));
   }
 
   viewer->updatePointCloud (cloud, "cloud");

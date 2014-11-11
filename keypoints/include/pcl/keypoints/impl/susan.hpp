@@ -345,7 +345,7 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::detectKeypoints (P
         }
       }
 
-      double geometric_threshold = 0.5f * (static_cast<double> (nn_indices.size () - 1));
+      double geometric_threshold = 0.5 * (static_cast<double> (nn_indices.size () - 1));
       if ((area > 0) && (area < geometric_threshold))
       {
         // if no geometric validation required add the point to the response

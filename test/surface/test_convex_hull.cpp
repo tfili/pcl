@@ -161,9 +161,9 @@ TEST (PCL, ConvexHull_planar_bunny)
 
   ModelCoefficients::Ptr plane_coefficients (new ModelCoefficients ());
   plane_coefficients->values.resize (4);
-  plane_coefficients->values[0] = -0.010666f;
-  plane_coefficients->values[1] = -0.793771f;
-  plane_coefficients->values[2] = -0.607779f;
+  plane_coefficients->values[0] = -0.010666;
+  plane_coefficients->values[1] = -0.793771;
+  plane_coefficients->values[2] = -0.607779;
   plane_coefficients->values[3] = 0.993252f;
 
   /// Project segmented object points onto plane
@@ -194,9 +194,9 @@ TEST (PCL, ConvexHull_LTable)
   {
     for (size_t j = 0; j <= 2; j++)
     {
-      cloud_out_ltable.points[npoints].x = double (i) * 0.5f;
-      cloud_out_ltable.points[npoints].y = -double (j) * 0.5f;
-      cloud_out_ltable.points[npoints].z = 0.f;
+      cloud_out_ltable.points[npoints].x = double (i) * 0.5;
+      cloud_out_ltable.points[npoints].y = -double (j) * 0.5;
+      cloud_out_ltable.points[npoints].z = 0.;
       npoints++;
     }
   }
@@ -205,37 +205,37 @@ TEST (PCL, ConvexHull_LTable)
   {
     for (size_t j = 3; j < 8; j++)
     {
-      cloud_out_ltable.points[npoints].x = double (i) * 0.5f;
-      cloud_out_ltable.points[npoints].y = -double (j) * 0.5f;
-      cloud_out_ltable.points[npoints].z = 0.f;
+      cloud_out_ltable.points[npoints].x = double (i) * 0.5;
+      cloud_out_ltable.points[npoints].y = -double (j) * 0.5;
+      cloud_out_ltable.points[npoints].z = 0.;
       npoints++;
     }
   }
 
   // add the five points on the hull
-  cloud_out_ltable.points[npoints].x = -0.5f;
-  cloud_out_ltable.points[npoints].y = 0.5f;
-  cloud_out_ltable.points[npoints].z = 0.f;
+  cloud_out_ltable.points[npoints].x = -0.5;
+  cloud_out_ltable.points[npoints].y = 0.5;
+  cloud_out_ltable.points[npoints].z = 0.;
   npoints++;
 
-  cloud_out_ltable.points[npoints].x = 4.5f;
-  cloud_out_ltable.points[npoints].y = 0.5f;
-  cloud_out_ltable.points[npoints].z = 0.f;
+  cloud_out_ltable.points[npoints].x = 4.5;
+  cloud_out_ltable.points[npoints].y = 0.5;
+  cloud_out_ltable.points[npoints].z = 0.;
   npoints++;
 
-  cloud_out_ltable.points[npoints].x = 4.5f;
-  cloud_out_ltable.points[npoints].y = -1.0f;
-  cloud_out_ltable.points[npoints].z = 0.f;
+  cloud_out_ltable.points[npoints].x = 4.5;
+  cloud_out_ltable.points[npoints].y = -1.0;
+  cloud_out_ltable.points[npoints].z = 0.;
   npoints++;
 
-  cloud_out_ltable.points[npoints].x = 1.0f;
-  cloud_out_ltable.points[npoints].y = -4.5f;
-  cloud_out_ltable.points[npoints].z = 0.f;
+  cloud_out_ltable.points[npoints].x = 1.0;
+  cloud_out_ltable.points[npoints].y = -4.5;
+  cloud_out_ltable.points[npoints].z = 0.;
   npoints++;
 
-  cloud_out_ltable.points[npoints].x = -0.5f;
-  cloud_out_ltable.points[npoints].y = -4.5f;
-  cloud_out_ltable.points[npoints].z = 0.f;
+  cloud_out_ltable.points[npoints].x = -0.5;
+  cloud_out_ltable.points[npoints].y = -4.5;
+  cloud_out_ltable.points[npoints].z = 0.;
   npoints++;
 
   cloud_out_ltable.points.resize (npoints);
@@ -327,9 +327,9 @@ TEST (PCL, ConvexHull_2dsquare)
 
   for (size_t i = 0; i < input_cloud->points.size (); i++)
   {
-    input_cloud->points[i].x = (2.0f * double (rng ()))-1.0f;
-    input_cloud->points[i].y = (2.0f * double (rng ()))-1.0f;
-    input_cloud->points[i].z = 1.0f;
+    input_cloud->points[i].x = (2.0 * double (rng ()))-1.0;
+    input_cloud->points[i].y = (2.0 * double (rng ()))-1.0;
+    input_cloud->points[i].z = 1.0;
   }
 
   //Set up for creating a hull
@@ -387,9 +387,9 @@ TEST (PCL, ConvexHull_3dcube)
 
   for (size_t i = 0; i < input_cloud->points.size (); i++)
   {
-    input_cloud->points[i].x =  (2.0f * double (rng ()))-1.0f;
-    input_cloud->points[i].y =  (2.0f * double (rng ()))-1.0f;
-    input_cloud->points[i].z =  (2.0f * double (rng ()))-1.0f;
+    input_cloud->points[i].x =  (2.0 * double (rng ()))-1.0;
+    input_cloud->points[i].y =  (2.0 * double (rng ()))-1.0;
+    input_cloud->points[i].z =  (2.0 * double (rng ()))-1.0;
   }
 
   //Set up for creating a hull
@@ -404,12 +404,12 @@ TEST (PCL, ConvexHull_3dcube)
   
   //Make sure they're actually near some edge
   std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > facets;
-  facets.push_back (Eigen::Vector4d (-1.0f, 0.0f, 0.0f, 1.0f));
-  facets.push_back (Eigen::Vector4d (-1.0f, 0.0f, 0.0f, -1.0f));
-  facets.push_back (Eigen::Vector4d (0.0f, -1.0f, 0.0f, 1.0f));
-  facets.push_back (Eigen::Vector4d (0.0f, -1.0f, 0.0f, -1.0f));
-  facets.push_back (Eigen::Vector4d (0.0f, 0.0f, -1.0f, 1.0f));
-  facets.push_back (Eigen::Vector4d (0.0f, 0.0f, -1.0f, -1.0f));
+  facets.push_back (Eigen::Vector4d (-1.0, 0.0, 0.0, 1.0));
+  facets.push_back (Eigen::Vector4d (-1.0, 0.0, 0.0, -1.0));
+  facets.push_back (Eigen::Vector4d (0.0, -1.0, 0.0, 1.0));
+  facets.push_back (Eigen::Vector4d (0.0, -1.0, 0.0, -1.0));
+  facets.push_back (Eigen::Vector4d (0.0, 0.0, -1.0, 1.0));
+  facets.push_back (Eigen::Vector4d (0.0, 0.0, -1.0, -1.0));
 
   //Make sure they're near a facet
   for (size_t i = 0; i < hull.points.size (); i++)
@@ -430,22 +430,22 @@ TEST (PCL, ConvexHull_4points)
 {
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_4 (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PointXYZ p;
-  p.x = p.y = p.z = 0.f;
+  p.x = p.y = p.z = 0.;
   cloud_4->push_back (p);
 
-  p.x = 1.f;
-  p.y = 0.f;
-  p.z = 0.f;
+  p.x = 1.;
+  p.y = 0.;
+  p.z = 0.;
   cloud_4->push_back (p);
 
-  p.x = 0.f;
-  p.y = 1.f;
-  p.z = 0.f;
+  p.x = 0.;
+  p.y = 1.;
+  p.z = 0.;
   cloud_4->push_back (p);
 
-  p.x = 1.f;
-  p.y = 1.f;
-  p.z = 0.f;
+  p.x = 1.;
+  p.y = 1.;
+  p.z = 0.;
   cloud_4->push_back (p);
 
   cloud_4->height = 1;
@@ -465,23 +465,23 @@ TEST (PCL, ConvexHull_4points)
   PointCloud<PointXYZ> mesh_cloud;
   fromPCLPointCloud2 (mesh.cloud, mesh_cloud);
 
-  EXPECT_NEAR (mesh_cloud[0].x, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[0].y, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[0].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[0].x, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[0].y, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[0].z, 0., 1e-6);
 
-  EXPECT_NEAR (mesh_cloud[1].x, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[1].y, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[1].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[1].x, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[1].y, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[1].z, 0., 1e-6);
 
-  EXPECT_NEAR (mesh_cloud[2].x, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[2].y, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[2].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[2].x, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[2].y, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[2].z, 0., 1e-6);
 
-  EXPECT_NEAR (mesh_cloud[3].x, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[3].y, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[3].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[3].x, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[3].y, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[3].z, 0., 1e-6);
 
-  EXPECT_NEAR (convex_hull.getTotalArea (), 1.0f, 1e-6);
+  EXPECT_NEAR (convex_hull.getTotalArea (), 1.0, 1e-6);
 }
 
 /* ---[ */

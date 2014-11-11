@@ -61,21 +61,21 @@ TEST (Grid, Minimum)
   cloud_in[1].x = 0.5; cloud_in[1].y = 0.5; cloud_in[1].z = 1;
   cloud_in[2].x = 1.5; cloud_in[2].y = 1.5; cloud_in[2].z = 0.0;
 
-  GridMinimum<PointXYZ> gm (1.0f);
+  GridMinimum<PointXYZ> gm (1.0);
   gm.setInputCloud (cloud_in.makeShared ());
   gm.filter (cloud_out);
 
-  EXPECT_EQ (cloud_out[0].z, 0.25f);
-  EXPECT_EQ (cloud_out[1].z, 0.0f);
+  EXPECT_EQ (cloud_out[0].z, 0.25);
+  EXPECT_EQ (cloud_out[1].z, 0.0);
   EXPECT_EQ (cloud_out.size (), 2);
-  EXPECT_EQ (gm.getResolution (), 1.0f);
+  EXPECT_EQ (gm.getResolution (), 1.0);
 
-  gm.setResolution (2.0f);
+  gm.setResolution (2.0);
   gm.filter (cloud_out);
 
-  EXPECT_EQ (cloud_out[0].z, 0.0f);
+  EXPECT_EQ (cloud_out[0].z, 0.0);
   EXPECT_EQ (cloud_out.size (), 1);
-  EXPECT_EQ (gm.getResolution (), 2.0f);
+  EXPECT_EQ (gm.getResolution (), 2.0);
 }
 
 /* ---[ */

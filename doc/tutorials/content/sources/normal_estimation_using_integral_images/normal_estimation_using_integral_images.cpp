@@ -16,8 +16,8 @@ main ()
 
     pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
     ne.setNormalEstimationMethod (ne.AVERAGE_3D_GRADIENT);
-    ne.setMaxDepthChangeFactor(0.02f);
-    ne.setNormalSmoothingSize(10.0f);
+    ne.setMaxDepthChangeFactor(0.02);
+    ne.setNormalSmoothingSize(10.0);
     ne.setInputCloud(cloud);
     ne.compute(*normals);
 

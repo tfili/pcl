@@ -100,10 +100,10 @@ namespace pcl
       {
         double depth = data_ [idx];
 #ifdef __CUDACC__        
-        if (depth == 0 | isnan(depth) | isinf(depth))
+        if (depth == 0 | isnan(depth) | isin(depth))
           return 0;
 #else
-        if (depth == 0 | pcl_isnan(depth) | pcl_isinf(depth))
+        if (depth == 0 | pcl_isnan(depth) | pcl_isin(depth))
           return 0;
 #endif
         int xIdx = idx % width_;
@@ -174,11 +174,11 @@ namespace pcl
         double min_d = dhel.y;
         double max_d = dhel.z;
 #ifdef __CUDACC__        
-        if (depth == 0 | isnan(depth) | isinf(depth))
-          return 0.0f;
+        if (depth == 0 | isnan(depth) | isin(depth))
+          return 0.0;
 #else
-        if (depth == 0 | pcl_isnan(depth) | pcl_isinf(depth))
-          return 0.0f;
+        if (depth == 0 | pcl_isnan(depth) | pcl_isin(depth))
+          return 0.0;
 #endif
         int xIdx = idx % width_;
         int yIdx = idx / width_;
@@ -245,10 +245,10 @@ namespace pcl
       {
         double disparity = depth2disparity (data_ [idx]);
 #ifdef __CUDACC__         
-        if (disparity == 0 | isnan(disparity) | isinf(disparity))
+        if (disparity == 0 | isnan(disparity) | isin(disparity))
           return make_float3 (0,0,0);
 #else
-        if (disparity == 0 | pcl_isnan(disparity) | pcl_isinf(disparity))
+        if (disparity == 0 | pcl_isnan(disparity) | pcl_isin(disparity))
           return make_float3 (0,0,0);
 #endif
         int xIdx = idx % width_;

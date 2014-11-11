@@ -153,9 +153,9 @@ namespace pcl
         k = ((b_min_[2] < 0) ? (abs (min_b_[2]) + ijk[2]) : (ijk[2] - min_b_[2]));
 
         Eigen::Vector4d xyz;
-        xyz[0] = b_min_[0] + (leaf_size_[0] * 0.5f) + (static_cast<double> (i) * leaf_size_[0]);
-        xyz[1] = b_min_[1] + (leaf_size_[1] * 0.5f) + (static_cast<double> (j) * leaf_size_[1]);
-        xyz[2] = b_min_[2] + (leaf_size_[2] * 0.5f) + (static_cast<double> (k) * leaf_size_[2]);
+        xyz[0] = b_min_[0] + (leaf_size_[0] * 0.5) + (static_cast<double> (i) * leaf_size_[0]);
+        xyz[1] = b_min_[1] + (leaf_size_[1] * 0.5) + (static_cast<double> (j) * leaf_size_[1]);
+        xyz[2] = b_min_[2] + (leaf_size_[2] * 0.5) + (static_cast<double> (k) * leaf_size_[2]);
         xyz[3] = 0;
         return xyz;
       }
@@ -215,7 +215,7 @@ namespace pcl
       inline double
       round (double d)
       {
-        return static_cast<double> (floor (d + 0.5f));
+        return static_cast<double> (floor (d + 0.5));
       }
 
       // We use round here instead of floor due to some numerical issues.

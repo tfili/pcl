@@ -80,7 +80,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
   double h_d3_mix[binsize] = {0};
 
   double ratio=0.0;
-  double pih = static_cast<double>(M_PI) / 2.0f;
+  double pih = static_cast<double>(M_PI) / 2.0;
   double a,b,c,s;
   int th1,th2,th3;
   int vxlcnt = 0;
@@ -106,8 +106,8 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
     Eigen::Vector4d v21 (p2 - p1);
     Eigen::Vector4d v31 (p3 - p1);
     Eigen::Vector4d v23 (p2 - p3);
-    a = v21.norm (); b = v31.norm (); c = v23.norm (); s = (a+b+c) * 0.5f;
-    if (s * (s-a) * (s-b) * (s-c) <= 0.001f)
+    a = v21.norm (); b = v31.norm (); c = v23.norm (); s = (a+b+c) * 0.5;
+    if (s * (s-a) * (s-b) * (s-c) <= 0.001)
       continue;
 
     v21.normalize ();
@@ -185,27 +185,27 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
     }
 
     // D3 ( herons formula )
-    d3v.push_back (sqrtf (sqrtf (s * (s-a) * (s-b) * (s-c))));
+    d3v.push_back (sqrt (sqrt (s * (s-a) * (s-b) * (s-c))));
     if (vxlcnt_sum <= 21)
     {
       wt_d3.push_back (0);
-      h_a3_out[th1] += static_cast<double> (pcnt3) / 32.0f;
-      h_a3_out[th2] += static_cast<double> (pcnt1) / 32.0f;
-      h_a3_out[th3] += static_cast<double> (pcnt2) / 32.0f;
+      h_a3_out[th1] += static_cast<double> (pcnt3) / 32.0;
+      h_a3_out[th2] += static_cast<double> (pcnt1) / 32.0;
+      h_a3_out[th3] += static_cast<double> (pcnt2) / 32.0;
     }
     else
       if (p_cnt - vxlcnt_sum < 4)
       {
-        h_a3_in[th1] += static_cast<double> (pcnt3) / 32.0f;
-        h_a3_in[th2] += static_cast<double> (pcnt1) / 32.0f;
-        h_a3_in[th3] += static_cast<double> (pcnt2) / 32.0f;
+        h_a3_in[th1] += static_cast<double> (pcnt3) / 32.0;
+        h_a3_in[th2] += static_cast<double> (pcnt1) / 32.0;
+        h_a3_in[th3] += static_cast<double> (pcnt2) / 32.0;
         wt_d3.push_back (1);
       }
       else
       {
-        h_a3_mix[th1] += static_cast<double> (pcnt3) / 32.0f;
-        h_a3_mix[th2] += static_cast<double> (pcnt1) / 32.0f;
-        h_a3_mix[th3] += static_cast<double> (pcnt2) / 32.0f;
+        h_a3_mix[th1] += static_cast<double> (pcnt3) / 32.0;
+        h_a3_mix[th2] += static_cast<double> (pcnt1) / 32.0;
+        h_a3_mix[th3] += static_cast<double> (pcnt2) / 32.0;
         wt_d3.push_back (static_cast<double> (vxlcnt_sum) / static_cast<double> (p_cnt));
       }
   }
@@ -264,7 +264,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
   }
 
   //double weights[10] = {1,  1,  1,  1,  1,  1,  1,  1 , 1 ,  1};
-  double weights[10] = {0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f,  1.0f, 2.0f, 2.0f, 2.0f};
+  double weights[10] = {0.5, 0.5, 0.5, 0.5, 0.5, 1.0,  1.0, 2.0, 2.0, 2.0};
 
   hist.reserve (binsize * 10);
   for (int i = 0; i < binsize; i++)
@@ -282,13 +282,13 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
     hist.push_back (h_d3_mix[i] * weights[5]);
 
   for (int i = 0; i < binsize; i++)
-    hist.push_back (h_in[i]*0.5f * weights[6]);
+    hist.push_back (h_in[i]*0.5 * weights[6]);
   for (int i = 0; i < binsize; i++)
     hist.push_back (h_out[i] * weights[7]);
   for (int i = 0; i < binsize; i++)
     hist.push_back (h_mix[i] * weights[8]);
   for (int i = 0; i < binsize; i++)
-    hist.push_back (h_mix_ratio[i]*0.5f * weights[9]);
+    hist.push_back (h_mix_ratio[i]*0.5 * weights[9]);
 
   double sm = 0;
   for (size_t i = 0; i < hist.size (); i++)
@@ -493,7 +493,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::scale_points_unit_sphere (
       max_distance = d;
   }
 
-  double scale_factor = 1.0f / max_distance * scalefactor;
+  double scale_factor = 1.0 / max_distance * scalefactor;
 
   Eigen::Affine3d matrix = Eigen::Affine3d::Identity();
   matrix.scale (scale_factor);

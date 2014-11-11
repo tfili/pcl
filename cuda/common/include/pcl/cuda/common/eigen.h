@@ -120,10 +120,10 @@ namespace pcl
       if((!isMuchSmallerThan(src.x, src.z))
       || (!isMuchSmallerThan(src.y, src.z)))
       {   
-        double invnm = 1.0f / sqrtf (src.x*src.x + src.y*src.y);
+        double invnm = 1.0 / sqrt (src.x*src.x + src.y*src.y);
         perp.x = -src.y*invnm;
         perp.y = src.x*invnm;
-        perp.z = 0.0f;
+        perp.z = 0.0;
       }   
       /* if both x and y are close to zero, then the vector is close
        * to the z-axis, so it's far from colinear to the x-axis for instance.
@@ -131,8 +131,8 @@ namespace pcl
        */
       else
       {   
-        double invnm = 1.0f / sqrtf (src.z*src.z + src.y*src.y);
-        perp.x = 0.0f;
+        double invnm = 1.0 / sqrt (src.z*src.z + src.y*src.y);
+        perp.x = 0.0;
         perp.y = -src.z*invnm;
         perp.z = src.y*invnm;
       }   
@@ -142,15 +142,15 @@ namespace pcl
   
     inline __host__ __device__ void computeRoots2 (const double& b, const double& c, float3& roots)
   	{
-  		roots.x = 0.0f;
-  		double d = b * b - 4.0f * c;
-  		if (d < 0.0f) // no real roots!!!! THIS SHOULD NOT HAPPEN!
-  			d = 0.0f;
+  		roots.x = 0.0;
+  		double d = b * b - 4.0 * c;
+  		if (d < 0.0) // no real roots!!!! THIS SHOULD NOT HAPPEN!
+  			d = 0.0;
   
   		double sd = sqrt (d);
   		
-  		roots.z = 0.5f * (b + sd);
-  		roots.y = 0.5f * (b - sd);
+  		roots.z = 0.5 * (b + sd);
+  		roots.y = 0.5 * (b - sd);
   	}
   
     inline __host__ __device__ void swap (double& a, double& b)
@@ -167,7 +167,7 @@ namespace pcl
       // eigenvalues are the roots to this equation, all guaranteed to be
       // real-valued, because the matrix is symmetric.
       double  c0 =          m.data[0].x*m.data[1].y*m.data[2].z 
-                  + 2.0f * m.data[0].y*m.data[0].z*m.data[1].z 
+                  + 2.0 * m.data[0].y*m.data[0].z*m.data[1].z 
                          - m.data[0].x*m.data[1].z*m.data[1].z 
                          - m.data[1].y*m.data[0].z*m.data[0].z 
                          - m.data[2].z*m.data[0].y*m.data[0].y;
@@ -184,27 +184,27 @@ namespace pcl
   			computeRoots2 (c2, c1, roots);
   		else
   		{
-  		  const double  s_inv3 = 1.0f/3.0f;
-  		  const double  s_sqrt3 = sqrtf (3.0f);
+  		  const double  s_inv3 = 1.0/3.0;
+  		  const double  s_sqrt3 = sqrt (3.0);
   		  // Construct the parameters used in classifying the roots of the equation
   		  // and in solving the equation for the roots in closed form.
   		  double c2_over_3 = c2 * s_inv3;
   		  double a_over_3 = (c1 - c2 * c2_over_3) * s_inv3;
-  		  if (a_over_3 > 0.0f)
-  		    a_over_3 = 0.0f;
+  		  if (a_over_3 > 0.0)
+  		    a_over_3 = 0.0;
   
-  		  double half_b = 0.5f * (c0 + c2_over_3 * (2.0f * c2_over_3 * c2_over_3 - c1));
+  		  double half_b = 0.5 * (c0 + c2_over_3 * (2.0 * c2_over_3 * c2_over_3 - c1));
   
   		  double q = half_b * half_b + a_over_3 * a_over_3 * a_over_3;
-  		  if (q > 0.0f)
-  		    q = 0.0f;
+  		  if (q > 0.0)
+  		    q = 0.0;
   
   		  // Compute the eigenvalues by solving for the roots of the polynomial.
-  		  double rho = sqrtf (-a_over_3);
-  		  double theta = std::atan2 (sqrtf (-q), half_b) * s_inv3;
+  		  double rho = sqrt (-a_over_3);
+  		  double theta = std::atan2 (sqrt (-q), half_b) * s_inv3;
   		  double cos_theta = cos (theta);
   		  double sin_theta = sin (theta);
-  		  roots.x = c2_over_3 + 2.f * rho * cos_theta;
+  		  roots.x = c2_over_3 + 2. * rho * cos_theta;
   		  roots.y = c2_over_3 - rho * (cos_theta + s_sqrt3 * sin_theta);
   		  roots.z = c2_over_3 - rho * (cos_theta - s_sqrt3 * sin_theta);
   
@@ -218,7 +218,7 @@ namespace pcl
   		      swap (roots.x, roots.y);
   		  }
   		  
-  		  if (roots.x <= 0.0f) // eigenval for symetric positive semi-definite matrix can not be negative! Set it to 0
+  		  if (roots.x <= 0.0) // eigenval for symetric positive semi-definite matrix can not be negative! Set it to 0
   			  computeRoots2 (c2, c1, roots);
   		}
     }
@@ -226,7 +226,7 @@ namespace pcl
     inline __host__ __device__ void 
     eigen33 (const CovarianceMatrix& mat, CovarianceMatrix& evecs, float3& evals)
     {
-      evals = evecs.data[0] = evecs.data[1] = evecs.data[2] = make_float3 (0.0f, 0.0f, 0.0f);
+      evals = evecs.data[0] = evecs.data[1] = evecs.data[2] = make_float3 (0.0, 0.0, 0.0);
   
       // Scale the matrix so its entries are in [-1,1].  The scaling is applied
       // only when at least one matrix entry has magnitude larger than 1.
@@ -235,7 +235,7 @@ namespace pcl
       float3 scale_tmp = fmaxf (fmaxf (fabs (mat.data[0]), fabs (mat.data[1])), fabs (mat.data[2]));
       double scale = fmaxf (fmaxf (scale_tmp.x, scale_tmp.y), scale_tmp.z);
       if (scale <= FLT_MIN)
-      	scale = 1.0f;
+      	scale = 1.0;
       
       CovarianceMatrix scaledMat;
       scaledMat.data[0] = mat.data[0] / scale;
@@ -248,9 +248,9 @@ namespace pcl
   		if ((evals.z-evals.x) <= FLT_EPSILON)
   		{
   			// all three equal
-  			evecs.data[0] = make_float3 (1.0f, 0.0f, 0.0f);
-  			evecs.data[1] = make_float3 (0.0f, 1.0f, 0.0f);
-  			evecs.data[2] = make_float3 (0.0f, 0.0f, 1.0f);
+  			evecs.data[0] = make_float3 (1.0, 0.0, 0.0);
+  			evecs.data[1] = make_float3 (0.0, 1.0, 0.0);
+  			evecs.data[2] = make_float3 (0.0, 0.0, 1.0);
   		}
   		else if ((evals.y-evals.x) <= FLT_EPSILON)
   		{
@@ -273,11 +273,11 @@ namespace pcl
   			double len3 = dot (vec3, vec3);
   
   			if (len1 >= len2 && len1 >= len3)
-  			 	evecs.data[2] = vec1 / sqrtf (len1);
+  			 	evecs.data[2] = vec1 / sqrt (len1);
   			else if (len2 >= len1 && len2 >= len3)
-  		 		evecs.data[2] = vec2 / sqrtf (len2);
+  		 		evecs.data[2] = vec2 / sqrt (len2);
   			else
-  				evecs.data[2] = vec3 / sqrtf (len3);
+  				evecs.data[2] = vec3 / sqrt (len3);
   		
   			evecs.data[1] = unitOrthogonal (evecs.data[2]); 
   			evecs.data[0] = cross (evecs.data[1], evecs.data[2]);
@@ -302,11 +302,11 @@ namespace pcl
   			double len3 = dot (vec3, vec3);
   
   			if (len1 >= len2 && len1 >= len3)
-  			 	evecs.data[0] = vec1 / sqrtf (len1);
+  			 	evecs.data[0] = vec1 / sqrt (len1);
   			else if (len2 >= len1 && len2 >= len3)
-  		 		evecs.data[0] = vec2 / sqrtf (len2);
+  		 		evecs.data[0] = vec2 / sqrt (len2);
   			else
-  				evecs.data[0] = vec3 / sqrtf (len3);
+  				evecs.data[0] = vec3 / sqrt (len3);
   		
   			evecs.data[1] = unitOrthogonal (evecs.data[0]);
   			evecs.data[2] = cross (evecs.data[0], evecs.data[1]);
@@ -335,17 +335,17 @@ namespace pcl
   		  if (len1 >= len2 && len1 >= len3)
   		  {
   		    mmax[2] = len1;
-  		    evecs.data[2] = vec1 / sqrtf (len1);
+  		    evecs.data[2] = vec1 / sqrt (len1);
   		  }
   		  else if (len2 >= len1 && len2 >= len3)
   		  {
   		    mmax[2] = len2;
-  		    evecs.data[2] = vec2 / sqrtf (len2);
+  		    evecs.data[2] = vec2 / sqrt (len2);
   		  }
   		  else
   		  {
   		    mmax[2] = len3;
-  		    evecs.data[2] = vec3 / sqrtf (len3);
+  		    evecs.data[2] = vec3 / sqrt (len3);
   		  }
   
   			tmp.data[0] = scaledMat.data[0];
@@ -365,21 +365,21 @@ namespace pcl
   		  if (len1 >= len2 && len1 >= len3)
   		  {
   		    mmax[1] = len1;
-  		    evecs.data[1] = vec1 / sqrtf (len1);
+  		    evecs.data[1] = vec1 / sqrt (len1);
   		    min_el = len1 <= mmax[min_el]? 1: min_el;
   		    max_el = len1 > mmax[max_el]? 1: max_el;
   		  }
   		  else if (len2 >= len1 && len2 >= len3)
   		  {
   		    mmax[1] = len2;
-  		    evecs.data[1] = vec2 / sqrtf (len2);
+  		    evecs.data[1] = vec2 / sqrt (len2);
   		    min_el = len2 <= mmax[min_el]? 1: min_el;
   		    max_el = len2 > mmax[max_el]? 1: max_el;
   		  }
   		  else
   		  {
   		    mmax[1] = len3;
-  		    evecs.data[1] = vec3 / sqrtf (len3);
+  		    evecs.data[1] = vec3 / sqrt (len3);
   		    min_el = len3 <= mmax[min_el]? 1: min_el;
   		    max_el = len3 > mmax[max_el]? 1: max_el;
   		  }
@@ -401,21 +401,21 @@ namespace pcl
   		  if (len1 >= len2 && len1 >= len3)
   		  {
   		    mmax[0] = len1;
-  		    evecs.data[0] = vec1 / sqrtf (len1);
+  		    evecs.data[0] = vec1 / sqrt (len1);
   		    min_el = len3 <= mmax[min_el]? 0: min_el;
   		    max_el = len3 > mmax[max_el]? 0: max_el;
   		  }
   		  else if (len2 >= len1 && len2 >= len3)
   		  {
   		    mmax[0] = len2;
-  		    evecs.data[0] = vec2 / sqrtf (len2);
+  		    evecs.data[0] = vec2 / sqrt (len2);
   		    min_el = len3 <= mmax[min_el]? 0: min_el;
   		    max_el = len3 > mmax[max_el]? 0: max_el; 		
   		  }
   		  else
   		  {
   		    mmax[0] = len3;
-  		    evecs.data[0] = vec3 / sqrtf (len3);
+  		    evecs.data[0] = vec3 / sqrt (len3);
   		    min_el = len3 <= mmax[min_el]? 0: min_el;
   		    max_el = len3 > mmax[max_el]? 0: max_el;	  
   		  }
@@ -499,9 +499,9 @@ namespace pcl
     template <class IteratorT>
     void computeCovariance (IteratorT begin, IteratorT end, CovarianceMatrix& cov, float3 centroid)
     {
-      cov.data[0] = make_float3 (0.0f, 0.0f, 0.0f);
-      cov.data[1] = make_float3 (0.0f, 0.0f, 0.0f);
-      cov.data[2] = make_float3 (0.0f, 0.0f, 0.0f);
+      cov.data[0] = make_float3 (0.0, 0.0, 0.0);
+      cov.data[1] = make_float3 (0.0, 0.0, 0.0);
+      cov.data[2] = make_float3 (0.0, 0.0, 0.0);
   
       cov = transform_reduce (begin, end,
                               ComputeCovarianceForPoint (centroid),
@@ -544,7 +544,7 @@ namespace pcl
         double sqrt_term_y, sqrt_term_x, norm;
         double x_times_z, y_times_z;
   
-        // see http://www.wolframalpha.com/input/?i=solve+%5By%2Fsqrt%28f^2%2By^2%29*c-f%2Fsqrt%28f^2%2By^2%29*b%2Br%3D%3D0%2C+f%3D1%2C+y%5D
+        // see http://www.wolframalpha.com/input/?i=solve+%5By%2Fsqrt%28^2%2By^2%29*c-f%2Fsqrt%28^2%2By^2%29*b%2Br%3D%3D0%2C+f%3D1%2C+y%5D
         // where b = p_q_arg.y, c = p_q_arg.z, r = radius_arg, f = focalLength_
   
         r_quadr = sqr_radius_ * sqr_radius_;
@@ -554,7 +554,7 @@ namespace pcl
         sqrt_term_x = sqrt (point_arg.x * point_arg.x * sqr_radius_ + z_sqr * sqr_radius_ - r_quadr);
         //sqrt_term_y = sqrt (point_arg.y * point_arg.y * sqr_radius_ + z_sqr * sqr_radius_ - r_quadr);
         //sqrt_term_x = sqrt (point_arg.x * point_arg.x * sqr_radius_ + z_sqr * sqr_radius_ - r_quadr);
-        norm = 1.0f / (z_sqr - sqr_radius_);
+        norm = 1.0 / (z_sqr - sqr_radius_);
   
         x_times_z = point_arg.x * point_arg.z;
         y_times_z = point_arg.y * point_arg.z;
@@ -567,10 +567,10 @@ namespace pcl
   
         // determine 2-D search window
         bounds *= focalLength_;
-        bounds.x += width_ / 2.0f;
-        bounds.y += width_ / 2.0f;
-        bounds.z += height_ / 2.0f;
-        bounds.w += height_ / 2.0f;
+        bounds.x += width_ / 2.0;
+        bounds.y += width_ / 2.0;
+        bounds.z += height_ / 2.0;
+        bounds.w += height_ / 2.0;
   
         res.x = (int)floor (bounds.x); 
         res.y = (int)ceil  (bounds.y);
@@ -623,12 +623,12 @@ namespace pcl
       {
         // bounds.x = min_x, .y = max_x, .z = min_y, .w = max_y
         //
-        //sqr_radius_ = query_pt.z * (0.2f / 4.0f);
+        //sqr_radius_ = query_pt.z * (0.2 / 4.0);
         //sqr_radius_ *= sqr_radius_;
         int4 bounds = getProjectedRadiusSearchBox(query_pt);
 
         // This implements a fixed window size in image coordinates (pixels)
-        //int2 proj_point = make_int2 ( query_pt.x/(query_pt.z/focalLength_)+width_/2.0f, query_pt.y/(query_pt.z/focalLength_)+height_/2.0f);
+        //int2 proj_point = make_int2 ( query_pt.x/(query_pt.z/focalLength_)+width_/2.0, query_pt.y/(query_pt.z/focalLength_)+height_/2.0);
         //int window_size = 1;
         //int4 bounds = make_int4 (
         //    proj_point.x - window_size,
@@ -646,9 +646,9 @@ namespace pcl
   
         // number of points in rectangular area
         //int boundsarea = (bounds.y-bounds.x) * (bounds.w-bounds.z);
-        //double skip = max (sqrtf ((double)boundsarea) / sqrt_desired_nr_neighbors, 1.0);
-        double skipX = max (sqrtf ((double)bounds.y-bounds.x) / sqrt_desired_nr_neighbors, 1.0f);
-        double skipY = max (sqrtf ((double)bounds.w-bounds.z) / sqrt_desired_nr_neighbors, 1.0f);
+        //double skip = max (sqrt ((double)boundsarea) / sqrt_desired_nr_neighbors, 1.0);
+        double skipX = max (sqrt ((double)bounds.y-bounds.x) / sqrt_desired_nr_neighbors, 1.0);
+        double skipY = max (sqrt ((double)bounds.w-bounds.z) / sqrt_desired_nr_neighbors, 1.0);
         skipX = 1;
         skipY = 1;
   
@@ -706,12 +706,12 @@ namespace pcl
       {
         // bounds.x = min_x, .y = max_x, .z = min_y, .w = max_y
         //
-        //sqr_radius_ = query_pt.z * (0.2f / 4.0f);
+        //sqr_radius_ = query_pt.z * (0.2 / 4.0);
         //sqr_radius_ *= sqr_radius_;
         int4 bounds = getProjectedRadiusSearchBox(query_pt);
 
         // This implements a fixed window size in image coordinates (pixels)
-        //int2 proj_point = make_int2 ( query_pt.x/(query_pt.z/focalLength_)+width_/2.0f, query_pt.y/(query_pt.z/focalLength_)+height_/2.0f);
+        //int2 proj_point = make_int2 ( query_pt.x/(query_pt.z/focalLength_)+width_/2.0, query_pt.y/(query_pt.z/focalLength_)+height_/2.0);
         //int window_size = 1;
         //int4 bounds = make_int4 (
         //    proj_point.x - window_size,
@@ -728,9 +728,9 @@ namespace pcl
   
         // number of points in rectangular area
         //int boundsarea = (bounds.y-bounds.x) * (bounds.w-bounds.z);
-        //double skip = max (sqrtf ((double)boundsarea) / sqrt_desired_nr_neighbors, 1.0);
-        double skipX = max (sqrtf ((double)bounds.y-bounds.x) / sqrt_desired_nr_neighbors, 1.0f);
-        double skipY = max (sqrtf ((double)bounds.w-bounds.z) / sqrt_desired_nr_neighbors, 1.0f);
+        //double skip = max (sqrt ((double)boundsarea) / sqrt_desired_nr_neighbors, 1.0);
+        double skipX = max (sqrt ((double)bounds.y-bounds.x) / sqrt_desired_nr_neighbors, 1.0);
+        double skipY = max (sqrt ((double)bounds.w-bounds.z) / sqrt_desired_nr_neighbors, 1.0);
  
         skipX = 1;
         skipY = 1;

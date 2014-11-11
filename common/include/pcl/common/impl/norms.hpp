@@ -86,7 +86,7 @@ selectNorm (FloatVectorT a, FloatVectorT b, int dim, NormType norm_type)
 template <typename FloatVectorT> inline double
 L1_Norm (FloatVectorT a, FloatVectorT b, int dim)
 {
-  double norm = 0.0f;
+  double norm = 0.0;
   for (int i = 0; i < dim; ++i)
     norm += fabsf(a[i] - b[i]);
   return norm;
@@ -109,7 +109,7 @@ L2_Norm_SQR (FloatVectorT a, FloatVectorT b, int dim)
 template <typename FloatVectorT> inline double
 L2_Norm (FloatVectorT a, FloatVectorT b, int dim)
 {
-  return sqrtf(L2_Norm_SQR(a, b, dim));
+  return sqrt(L2_Norm_SQR(a, b, dim));
 }
 
 
@@ -131,7 +131,7 @@ JM_Norm (FloatVectorT a, FloatVectorT b, int dim)
   for (int i = 0; i < dim; ++i)
     norm += (sqrt (a[i]) - sqrt (b[i])) * (sqrt (a[i]) - sqrt (b[i]));
 
-  return sqrtf (norm);
+  return sqrt (norm);
 }
 
 
@@ -141,7 +141,7 @@ B_Norm (FloatVectorT a, FloatVectorT b, int dim)
   double norm = 0.0, result;
 
   for (int i = 0; i < dim; ++i)
-    norm += sqrtf (a[i] * b[i]);
+    norm += sqrt (a[i] * b[i]);
 
   if (norm > 0)
     result = -logf (norm);
@@ -158,7 +158,7 @@ Sublinear_Norm (FloatVectorT a, FloatVectorT b, int dim)
   double norm = 0.0;
 
   for (int i = 0; i < dim; ++i)
-    norm += sqrtf (fabsf (a[i] - b[i]));
+    norm += sqrt (fabsf (a[i] - b[i]));
 
   return norm;
 }
@@ -199,7 +199,7 @@ PF_Norm (FloatVectorT a, FloatVectorT b, int dim, double P1, double P2)
 
   for (int i = 0; i < dim; ++i)
     norm += (P1 * a[i] - P2 * b[i]) * (P1 * a[i] - P2 * b[i]);
-  return sqrtf (norm);
+  return sqrt (norm);
 }
 
 
@@ -231,7 +231,7 @@ KL_Norm (FloatVectorT a, FloatVectorT b, int dim)
 template <typename FloatVectorT> inline double
 HIK_Norm(FloatVectorT a, FloatVectorT b, int dim)
 {
-  double norm = 0.0f;
+  double norm = 0.0;
   for (int i = 0; i < dim; ++i)
     norm += (std::min)(a[i], b[i]);
   return norm;

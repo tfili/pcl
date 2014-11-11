@@ -46,7 +46,7 @@ typedef pcl::PointXYZ PointType;
 typedef pcl::PointCloud<PointType> Cloud;
 typedef Cloud::ConstPtr CloudConstPtr;
 
-double default_radius = 1.0f;
+double default_radius = 1.0;
 bool default_inside = true;
 bool default_keep_organized = true;
 

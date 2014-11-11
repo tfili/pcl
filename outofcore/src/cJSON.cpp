@@ -134,7 +134,7 @@ static char *print_number(cJSON *item)
 		str=static_cast<char*>(cJSON_malloc(64));	/* This is a nice tradeoff. */
 		if (str)
 		{
-			if (fabs(floor(d)-d)<=DBL_EPSILON)			sprintf(str,"%.0f",d);
+			if (fabs(floor(d)-d)<=DBL_EPSILON)			sprintf(str,"%.0",d);
 			else sprintf(str,"%.16g",d);
 		}
 	}

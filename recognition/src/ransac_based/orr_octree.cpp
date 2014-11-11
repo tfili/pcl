@@ -74,7 +74,7 @@ pcl::recognition::ORROctree::clear ()
 void
 pcl::recognition::ORROctree::build (const double* bounds, double voxel_size)
 {
-  if ( voxel_size <= 0.0f )
+  if ( voxel_size <= 0.0 )
     return;
 
   this->clear();
@@ -82,17 +82,17 @@ pcl::recognition::ORROctree::build (const double* bounds, double voxel_size)
   voxel_size_ = voxel_size;
 
   double extent = std::max (std::max (bounds[1]-bounds[0], bounds[3]-bounds[2]), bounds[5]-bounds[4]);
-  double center[3] = {0.5f*(bounds[0]+bounds[1]), 0.5f*(bounds[2]+bounds[3]), 0.5f*(bounds[4]+bounds[5])};
+  double center[3] = {0.5*(bounds[0]+bounds[1]), 0.5*(bounds[2]+bounds[3]), 0.5*(bounds[4]+bounds[5])};
   double arg = extent/voxel_size;
 
   // Compute the number of tree levels
-  if ( arg > 1.0f )
+  if ( arg > 1.0 )
     tree_levels_ = static_cast<int> (ceil (log (arg)/log (2.0)) + 0.5);
   else
     tree_levels_ = 0;
 
   // Compute the number of octree levels and the bounds of the root
-  double half_root_side = static_cast<double> (0.5f*pow (2.0, tree_levels_)*voxel_size);
+  double half_root_side = static_cast<double> (0.5*pow (2.0, tree_levels_)*voxel_size);
 
   // Determine the bounding box of the octree
   bounds_[0] = center[0] - half_root_side;
@@ -115,7 +115,7 @@ pcl::recognition::ORROctree::build (const double* bounds, double voxel_size)
 void
 pcl::recognition::ORROctree::build (const PointCloudIn& points, double voxel_size, const PointCloudN* normals, double enlarge_bounds)
 {
-  if ( voxel_size <= 0.0f )
+  if ( voxel_size <= 0.0 )
     return;
 
   // Get the bounds of the input point set
@@ -182,7 +182,7 @@ pcl::recognition::ORROctree::build (const PointCloudIn& points, double voxel_siz
       }
       else
       {
-        aux::mult3 ((*it)->getData ()->getNormal (), 1.0f/normal_length);
+        aux::mult3 ((*it)->getData ()->getNormal (), 1.0/normal_length);
         ++it;
       }
     }
@@ -207,7 +207,7 @@ pcl::recognition::ORROctree::Node::createChildren()
   if ( children_ )
     return (false);
 
-  double bounds[6], center[3], childside = 0.5f*(bounds_[1]-bounds_[0]);
+  double bounds[6], center[3], childside = 0.5*(bounds_[1]-bounds_[0]);
   children_ = new ORROctree::Node[8];
 
   // Compute bounds and center for child 0, i.e., for (0,0,0)
@@ -215,9 +215,9 @@ pcl::recognition::ORROctree::Node::createChildren()
   bounds[2] = bounds_[2]; bounds[3] = center_[1];
   bounds[4] = bounds_[4]; bounds[5] = center_[2];
   // Compute the center of the new child
-  center[0] = 0.5f*(bounds[0] + bounds[1]);
-  center[1] = 0.5f*(bounds[2] + bounds[3]);
-  center[2] = 0.5f*(bounds[4] + bounds[5]);
+  center[0] = 0.5*(bounds[0] + bounds[1]);
+  center[1] = 0.5*(bounds[2] + bounds[3]);
+  center[2] = 0.5*(bounds[4] + bounds[5]);
   // Save the results
   children_[0].setBounds(bounds);
   children_[0].setCenter(center);

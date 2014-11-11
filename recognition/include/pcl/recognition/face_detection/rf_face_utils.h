@@ -33,7 +33,7 @@ namespace pcl
           wsize_ = 80;
           max_patch_size_ = 40;
           num_channels_ = 1;
-          min_valid_small_patch_depth_ = 0.5f;
+          min_valid_small_patch_depth_ = 0.5;
         }
 
         /** \brief Sets the size of the window to extract features.
@@ -96,8 +96,8 @@ namespace pcl
         {
           srand (static_cast<unsigned int>(time (NULL)));
           int min_s = 20;
-          double range_d = 0.05f;
-          double incr_d = 0.01f;
+          double range_d = 0.05;
+          double incr_d = 0.01;
 
           std::vector < FT > windows_and_functions;
 
@@ -326,9 +326,9 @@ namespace pcl
           const size_t num_of_branches = getNumOfBranches ();
 
           // compute variance
-          std::vector < LabelDataType > sums (num_of_branches + 1, 0.f);
-          std::vector < LabelDataType > sqr_sums (num_of_branches + 1, 0.f);
-          std::vector < size_t > branch_element_count (num_of_branches + 1, 0.f);
+          std::vector < LabelDataType > sums (num_of_branches + 1, 0.);
+          std::vector < LabelDataType > sqr_sums (num_of_branches + 1, 0.);
+          std::vector < size_t > branch_element_count (num_of_branches + 1, 0.);
 
           for (size_t branch_index = 0; branch_index < num_of_branches; ++branch_index)
           {
@@ -350,18 +350,18 @@ namespace pcl
             sums[num_of_branches] += label;
           }
 
-          std::vector<double> hp (num_of_branches + 1, 0.f);
+          std::vector<double> hp (num_of_branches + 1, 0.);
           for (size_t branch_index = 0; branch_index < (num_of_branches + 1); ++branch_index)
           {
             double pf = sums[branch_index] / static_cast<double> (branch_element_count[branch_index]);
-            double pnf = (static_cast<LabelDataType>(branch_element_count[branch_index]) - sums[branch_index] + 1.f)
+            double pnf = (static_cast<LabelDataType>(branch_element_count[branch_index]) - sums[branch_index] + 1.)
                         / static_cast<LabelDataType> (branch_element_count[branch_index]);
             hp[branch_index] -= static_cast<double>(pf * log (pf) + pnf * log (pnf));
           }
 
           //use mean of the examples as purity
           double purity = sums[num_of_branches] / static_cast<LabelDataType>(branch_element_count[num_of_branches]);
-          double tp = 0.8f;
+          double tp = 0.8;
 
           if (purity >= tp)
           {
@@ -411,12 +411,12 @@ namespace pcl
             }
 
             //update information_gain
-            std::vector<double> hr (num_of_branches + 1, 0.f);
+            std::vector<double> hr (num_of_branches + 1, 0.);
             for (size_t branch_index = 0; branch_index < (num_of_branches + 1); ++branch_index)
             {
-              hr[branch_index] = static_cast<double>(0.5f * log (std::pow (2 * M_PI, 3)
+              hr[branch_index] = static_cast<double>(0.5 * log (std::pow (2 * M_PI, 3)
                                                     * offset_covariances[branch_index].determinant ())
-                                                    + 0.5f * log (std::pow (2 * M_PI, 3)
+                                                    + 0.5 * log (std::pow (2 * M_PI, 3)
                                                     * angle_covariances[branch_index].determinant ()));
             }
 
@@ -477,8 +477,8 @@ namespace pcl
         {
           const size_t num_of_examples = examples.size ();
 
-          LabelDataType sum = 0.0f;
-          LabelDataType sqr_sum = 0.0f;
+          LabelDataType sum = 0.0;
+          LabelDataType sqr_sum = 0.0;
           for (size_t example_index = 0; example_index < num_of_examples; ++example_index)
           {
             const LabelDataType label = label_data[example_index];

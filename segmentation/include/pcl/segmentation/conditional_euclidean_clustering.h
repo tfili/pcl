@@ -53,7 +53,7 @@ namespace pcl
     * bool
     * enforceIntensitySimilarity (const pcl::PointXYZI& point_a, const pcl::PointXYZI& point_b, double squared_distance)
     * {
-    *   if (fabs (point_a.intensity - point_b.intensity) < 0.1f)
+    *   if (fabs (point_a.intensity - point_b.intensity) < 0.1)
     *     return (true);
     *   else
     *     return (false);
@@ -65,7 +65,7 @@ namespace pcl
     * cec.setInputCloud (cloud_in);
     * cec.setConditionFunction (&enforceIntensitySimilarity);
     * // Points within this distance from one another are going to need to validate the enforceIntensitySimilarity function to be part of the same cluster:
-    * cec.setClusterTolerance (0.09f);
+    * cec.setClusterTolerance (0.09);
     * // Size constraints for the clusters:
     * cec.setMinClusterSize (5);
     * cec.setMaxClusterSize (30);
@@ -95,7 +95,7 @@ namespace pcl
       ConditionalEuclideanClustering (bool extract_removed_clusters = false) :
           searcher_ (),
           condition_function_ (),
-          cluster_tolerance_ (0.0f),
+          cluster_tolerance_ (0.0),
           min_cluster_size_ (1),
           max_cluster_size_ (std::numeric_limits<int>::max ()),
           extract_removed_clusters_ (extract_removed_clusters),

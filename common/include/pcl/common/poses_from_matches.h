@@ -61,7 +61,7 @@ namespace pcl
       //! Parameters used in this class
       struct PCL_EXPORTS Parameters
       {
-        Parameters() : max_correspondence_distance_error(0.2f) {}
+        Parameters() : max_correspondence_distance_error(0.2) {}
         double max_correspondence_distance_error;  // As a fraction
       };
 

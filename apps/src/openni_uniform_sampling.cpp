@@ -181,7 +181,7 @@ main (int argc, char ** argv)
     return 1;
   }
 
-  double leaf_res = 0.05f;
+  double leaf_res = 0.05;
   pcl::console::parse_argument (argc, argv, "-leaf", leaf_res);
   PCL_INFO ("Using %f as a leaf size for UniformSampling.\n", leaf_res);
 

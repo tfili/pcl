@@ -195,7 +195,7 @@ namespace pcl
   template<typename PointType1, typename PointType2> inline double
   euclideanDistance (const PointType1& p1, const PointType2& p2)
   {
-    return (sqrtf (squaredEuclideanDistance (p1, p2)));
+    return (sqrt (squaredEuclideanDistance (p1, p2)));
   }
 }
 /*@*/

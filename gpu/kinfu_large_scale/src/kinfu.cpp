@@ -76,7 +76,7 @@ namespace pcl
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pcl::gpu::kinfuLS::KinfuTracker::KinfuTracker (const Eigen::Vector3d &volume_size, const double shiftingDistance, int rows, int cols) : 
-  cyclical_( DISTANCE_THRESHOLD, VOLUME_SIZE, VOLUME_X), rows_(rows), cols_(cols), global_time_(0), max_icp_distance_(0), integration_metric_threshold_(0.f), perform_last_scan_ (false), finished_(false), lost_ (false), disable_icp_ (false)
+  cyclical_( DISTANCE_THRESHOLD, VOLUME_SIZE, VOLUME_X), rows_(rows), cols_(cols), global_time_(0), max_icp_distance_(0), integration_metric_threshold_(0.), perform_last_scan_ (false), finished_(false), lost_ (false), disable_icp_ (false)
 {
   //const Vector3d volume_size = Vector3d::Constant (VOLUME_SIZE);
   const Vector3i volume_resolution (VOLUME_X, VOLUME_Y, VOLUME_Z);
@@ -94,14 +94,14 @@ pcl::gpu::kinfuLS::KinfuTracker::KinfuTracker (const Eigen::Vector3d &volume_siz
 
   setDepthIntrinsics (FOCAL_LENGTH, FOCAL_LENGTH); // default values, can be overwritten
   
-  init_Rcam_ = Eigen::Matrix3d::Identity ();// * AngleAxisd(-30.f/180*3.1415926, Vector3d::UnitX());
-  init_tcam_ = volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
+  init_Rcam_ = Eigen::Matrix3d::Identity ();// * AngleAxisd(-30./180*3.1415926, Vector3d::UnitX());
+  init_tcam_ = volume_size * 0.5 - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
   const int iters[] = {10, 5, 4};
   std::copy (iters, iters + LEVELS, icp_iterations_);
 
-  const double default_distThres = 0.10f; //meters
-  const double default_angleThres = sin (20.f * 3.14159254f / 180.f);
+  const double default_distThres = 0.10; //meters
+  const double default_angleThres = sin (20. * 3.14159254f / 180.);
   const double default_tranc_dist = 0.03f; //meters
 
   setIcpCorespFilteringParams (default_distThres, default_angleThres);
@@ -118,7 +118,7 @@ pcl::gpu::kinfuLS::KinfuTracker::KinfuTracker (const Eigen::Vector3d &volume_siz
   cyclical_.initBuffer(tsdf_volume_);
   
   last_estimated_rotation_= Eigen::Matrix3d::Identity ();
-  last_estimated_translation_= volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
+  last_estimated_translation_= volume_size * 0.5 - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
 }
 
@@ -128,8 +128,8 @@ pcl::gpu::kinfuLS::KinfuTracker::setDepthIntrinsics (double fx, double fy, doubl
 {
   fx_ = fx;
   fy_ = fy;
-  cx_ = (cx == -1) ? cols_/2-0.5f : cx;
-  cy_ = (cy == -1) ? rows_/2-0.5f : cy;  
+  cx_ = (cx == -1) ? cols_/2-0.5 : cx;
+  cy_ = (cy == -1) ? rows_/2-0.5 : cy;  
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,7 +247,7 @@ pcl::gpu::kinfuLS::KinfuTracker::reset ()
   
   // reset estimated pose
   last_estimated_rotation_= Eigen::Matrix3d::Identity ();
-  last_estimated_translation_= Vector3d (volume_size_, volume_size_, volume_size_) * 0.5f - Vector3d (0, 0, volume_size_ / 2 * 1.2f);
+  last_estimated_translation_= Vector3d (volume_size_, volume_size_, volume_size_) * 0.5 - Vector3d (0, 0, volume_size_ / 2 * 1.2f);
   
   
   lost_=false;
@@ -548,8 +548,8 @@ pcl::gpu::kinfuLS::KinfuTracker::performPairWiseICP(const Intr cam_intrinsics, M
   // since raw depthmaps are quite noisy, we make sure the estimated transform is big enought to be taken into account
   double rnorm = rodrigues2(current_rotation).norm();
   double tnorm = (current_translation).norm();    
-  const double alpha = 1.f;
-  bool integrate = (rnorm + alpha * tnorm)/2 >= integration_metric_threshold_ * 2.0f;
+  const double alpha = 1.;
+  bool integrate = (rnorm + alpha * tnorm)/2 >= integration_metric_threshold_ * 2.0;
   
   if(integrate)
   {
@@ -671,7 +671,7 @@ pcl::gpu::kinfuLS::KinfuTracker::operator() (const DepthMap& depth_raw)
   {
     double rnorm = rodrigues2(current_global_rotation.inverse() * last_known_global_rotation).norm();
     double tnorm = (current_global_translation - last_known_global_translation).norm();    
-    const double alpha = 1.f;
+    const double alpha = 1.;
     bool integrate = (rnorm + alpha * tnorm)/2 >= integration_metric_threshold_;
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Volume integration  
@@ -777,7 +777,7 @@ pcl::gpu::kinfuLS::KinfuTracker::colorVolume()
 void
 pcl::gpu::kinfuLS::KinfuTracker::getImage (View& view) const
 {
-  //Eigen::Vector3d light_source_pose = tsdf_volume_->getSize() * (-3.f);
+  //Eigen::Vector3d light_source_pose = tsdf_volume_->getSize() * (-3.);
   Eigen::Vector3d light_source_pose = tvecs_[tvecs_.size () - 1];
 
   LightSource light;
@@ -847,7 +847,7 @@ namespace pcl
     namespace kinfuLS
     {
       PCL_EXPORTS void 
-      paint3DView(const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5f)
+      paint3DView(const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5)
       {
         pcl::device::kinfuLS::paint3DView(rgb24, view, colors_weight);
       }

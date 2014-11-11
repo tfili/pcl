@@ -493,7 +493,7 @@ void FAR *out_desc;
 
             /* process literal */
             if (this.op == 0) {
-                Tracevv((stderr, this.val >= 0x20 && this.val < 0x7f ?
+                Tracevv((stderr, this.val >= 0x20 && this.val < 0x7 ?
                         "inflate:         literal '%c'\n" :
                         "inflate:         literal 0x%02x\n", this.val));
                 ROOM();

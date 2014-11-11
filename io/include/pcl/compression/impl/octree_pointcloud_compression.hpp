@@ -155,15 +155,15 @@ namespace pcl
           else
             PCL_INFO ("Encoding Frame: Prediction frame\n");
           PCL_INFO ("Number of encoded points: %ld\n", point_count_);
-          PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0f * sizeof(double)) * 100.0f);
+          PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0 * sizeof(double)) * 100.0);
           PCL_INFO ("XYZ bytes per point: %f bytes\n", bytes_per_XYZ);
-          PCL_INFO ("Color compression percentage: %f%%\n", bytes_per_color / (sizeof (int)) * 100.0f);
+          PCL_INFO ("Color compression percentage: %f%%\n", bytes_per_color / (sizeof (int)) * 100.0);
           PCL_INFO ("Color bytes per point: %f bytes\n", bytes_per_color);
-          PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<double> (point_count_) * (sizeof (int) + 3.0f  * sizeof (double)) / 1024);
+          PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<double> (point_count_) * (sizeof (int) + 3.0  * sizeof (double)) / 1024);
           PCL_INFO ("Size of compressed point cloud: %d kBytes\n", (compressed_point_data_len_ + compressed_color_data_len_) / (1024));
           PCL_INFO ("Total bytes per point: %f\n", bytes_per_XYZ + bytes_per_color);
-          PCL_INFO ("Total compression percentage: %f\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0f * sizeof(double)) * 100.0f);
-          PCL_INFO ("Compression ratio: %f\n\n", static_cast<double> (sizeof (int) + 3.0f * sizeof (double)) / static_cast<double> (bytes_per_XYZ + bytes_per_color));
+          PCL_INFO ("Total compression percentage: %f\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0 * sizeof(double)) * 100.0);
+          PCL_INFO ("Compression ratio: %f\n\n", static_cast<double> (sizeof (int) + 3.0 * sizeof (double)) / static_cast<double> (bytes_per_XYZ + bytes_per_color));
         }
       } else {
         if (b_show_statistics_)
@@ -239,15 +239,15 @@ namespace pcl
         else
           PCL_INFO ("Encoding Frame: Prediction frame\n");
         PCL_INFO ("Number of encoded points: %ld\n", point_count_);
-        PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0f * sizeof (double)) * 100.0f);
+        PCL_INFO ("XYZ compression percentage: %f%%\n", bytes_per_XYZ / (3.0 * sizeof (double)) * 100.0);
         PCL_INFO ("XYZ bytes per point: %f bytes\n", bytes_per_XYZ);
-        PCL_INFO ("Color compression percentage: %f%%\n", bytes_per_color / (sizeof (int)) * 100.0f);
+        PCL_INFO ("Color compression percentage: %f%%\n", bytes_per_color / (sizeof (int)) * 100.0);
         PCL_INFO ("Color bytes per point: %f bytes\n", bytes_per_color);
-        PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<double> (point_count_) * (sizeof (int) + 3.0f * sizeof (double)) / 1024.0f);
-        PCL_INFO ("Size of compressed point cloud: %f kBytes\n", static_cast<double> (compressed_point_data_len_ + compressed_color_data_len_) / 1024.0f);
+        PCL_INFO ("Size of uncompressed point cloud: %f kBytes\n", static_cast<double> (point_count_) * (sizeof (int) + 3.0 * sizeof (double)) / 1024.0);
+        PCL_INFO ("Size of compressed point cloud: %f kBytes\n", static_cast<double> (compressed_point_data_len_ + compressed_color_data_len_) / 1024.0);
         PCL_INFO ("Total bytes per point: %d bytes\n", static_cast<int> (bytes_per_XYZ + bytes_per_color));
-        PCL_INFO ("Total compression percentage: %f%%\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0f * sizeof (double)) * 100.0f);
-        PCL_INFO ("Compression ratio: %f\n\n", static_cast<double> (sizeof (int) + 3.0f * sizeof (double)) / static_cast<double> (bytes_per_XYZ + bytes_per_color));
+        PCL_INFO ("Total compression percentage: %f%%\n", (bytes_per_XYZ + bytes_per_color) / (sizeof (int) + 3.0 * sizeof (double)) * 100.0);
+        PCL_INFO ("Compression ratio: %f\n\n", static_cast<double> (sizeof (int) + 3.0 * sizeof (double)) / static_cast<double> (bytes_per_XYZ + bytes_per_color));
       }
     }
 

@@ -505,7 +505,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         pcl::ScopeTime t ("Pose refinement");
 
         //Prepare scene and model clouds for the pose refinement step
-        double VOXEL_SIZE_ICP_ = 0.005f;
+        double VOXEL_SIZE_ICP_ = 0.005;
         PointInTPtr cloud_voxelized_icp (new pcl::PointCloud<PointInT> ());
 
         {
@@ -544,7 +544,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           reg.setInputCloud (model_aligned); //model
           reg.setInputTarget (cloud_voxelized_icp); //scene
           reg.setMaximumIterations (ICP_iterations_);
-          reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 3.f);
+          reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 3.);
           reg.setTransformationEpsilon (1e-6);
 
           typename pcl::PointCloud<PointInT>::Ptr output_ (new pcl::PointCloud<PointInT> ());
@@ -579,16 +579,16 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
             pcl::transformPointCloud (*model_cloud, *model_aligned_m, transforms_->at (i));
             pcl::VoxelGrid<PointInT> voxel_grid_icp;
             voxel_grid_icp.setInputCloud (model_aligned_m);
-            voxel_grid_icp.setLeafSize (0.005f, 0.005f, 0.005f);
+            voxel_grid_icp.setLeafSize (0.005, 0.005, 0.005);
             voxel_grid_icp.filter (*model_aligned);
           }
           else
           {
-            model_cloud = models_->at (i).getAssembled (0.005f);
+            model_cloud = models_->at (i).getAssembled (0.005);
             pcl::transformPointCloud (*model_cloud, *model_aligned, transforms_->at (i));
           }
 
-          //ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.005f);
+          //ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.005);
           //PointInTPtr model_aligned (new pcl::PointCloud<PointInT>);
           //pcl::transformPointCloud (*model_cloud, *model_aligned, transforms_->at (i));
           aligned_models[i] = model_aligned;

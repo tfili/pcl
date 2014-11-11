@@ -314,7 +314,7 @@ namespace pcl
   struct PCL_EXPORTS LINEMODDetection
   {
     /** \brief Constructor. */
-    LINEMODDetection () : x (0), y (0), template_id (0), score (0.0f), scale (1.0f) {}
+    LINEMODDetection () : x (0), y (0), template_id (0), score (0.0), scale (1.0) {}
 
     /** \brief x-position of the detection. */
     int x;

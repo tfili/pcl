@@ -120,21 +120,21 @@ namespace pcl
       inline double
       operator () (const pcl::PointXYZRGB &p) const
       {
-        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f);
+        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001);
       }
 
       inline void
       get (const pcl::PointXYZRGB &p, double& intensity) const
       {
-        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f;
+        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001;
       }
       
       inline void
       set (pcl::PointXYZRGB &p, double intensity) const
       {
-        p.r = static_cast<uint8_t> (intensity * 3.34448160535f); // 1000 / 299
-        p.g = static_cast<uint8_t> (intensity * 1.70357751278f); // 1000 / 587
-        p.b = static_cast<uint8_t> (intensity * 8.77192982456f); // 1000 / 114
+        p.r = static_cast<uint8_t> (intensity * 3.34448160535); // 1000 / 299
+        p.g = static_cast<uint8_t> (intensity * 1.70357751278); // 1000 / 587
+        p.b = static_cast<uint8_t> (intensity * 8.77192982456); // 1000 / 114
       }
       
       inline void
@@ -160,21 +160,21 @@ namespace pcl
       inline double
       operator () (const pcl::PointXYZRGBA &p) const
       {
-        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f);
+        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001);
       }
       
       inline void
       get (const pcl::PointXYZRGBA &p, double& intensity) const
       {
-        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f;
+        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001;
       }
 
       inline void
       set (pcl::PointXYZRGBA &p, double intensity) const
       {
-        p.r = static_cast<uint8_t> (intensity * 3.34448160535f); // 1000 / 299
-        p.g = static_cast<uint8_t> (intensity * 1.70357751278f); // 1000 / 587
-        p.b = static_cast<uint8_t> (intensity * 8.77192982456f); // 1000 / 114
+        p.r = static_cast<uint8_t> (intensity * 3.34448160535); // 1000 / 299
+        p.g = static_cast<uint8_t> (intensity * 1.70357751278); // 1000 / 587
+        p.b = static_cast<uint8_t> (intensity * 8.77192982456); // 1000 / 114
       }
       
       inline void
@@ -200,21 +200,21 @@ namespace pcl
       inline double
       operator () (const pcl::PointXYZRGBNormal &p) const
       {
-        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f);
+        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001);
       }
       
       inline void
       get (const pcl::PointXYZRGBNormal &p, double& intensity) const
       {
-        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f;
+        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001;
       }
 
       inline void
       set (pcl::PointXYZRGBNormal &p, double intensity) const
       {
-        p.r = static_cast<uint8_t> (intensity * 3.34448160535f); // 1000 / 299
-        p.g = static_cast<uint8_t> (intensity * 1.70357751278f); // 1000 / 587
-        p.b = static_cast<uint8_t> (intensity * 8.77192982456f); // 1000 / 114
+        p.r = static_cast<uint8_t> (intensity * 3.34448160535); // 1000 / 299
+        p.g = static_cast<uint8_t> (intensity * 1.70357751278); // 1000 / 587
+        p.b = static_cast<uint8_t> (intensity * 8.77192982456); // 1000 / 114
       }
       
       inline void
@@ -240,21 +240,21 @@ namespace pcl
       inline double
       operator () (const pcl::PointXYZRGBL &p) const
       {
-        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f);
+        return (static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001);
       }
 
       inline void
       get (const pcl::PointXYZRGBL &p, double& intensity) const
       {
-        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001f;
+        intensity = static_cast<double> (299*p.r + 587*p.g + 114*p.b) * 0.001;
       }
       
       inline void
       set (pcl::PointXYZRGBL &p, double intensity) const
       {
-        p.r = static_cast<uint8_t> (intensity * 3.34448160535f); // 1000 / 299
-        p.g = static_cast<uint8_t> (intensity * 1.70357751278f); // 1000 / 587
-        p.b = static_cast<uint8_t> (intensity * 8.77192982456f); // 1000 / 114
+        p.r = static_cast<uint8_t> (intensity * 3.34448160535); // 1000 / 299
+        p.g = static_cast<uint8_t> (intensity * 1.70357751278); // 1000 / 587
+        p.b = static_cast<uint8_t> (intensity * 8.77192982456); // 1000 / 114
       }
       
       inline void

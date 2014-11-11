@@ -128,12 +128,12 @@ namespace pcl
         /** \brief Simple color segmentation in the HSV color space. Points inside of H - S - V min / max are discarded. H must be in the range 0 and 360, S and V in the range 0 and 1.
           * \note If you set values outside of the allowed range the member variables are clamped to the next best value. E.g. H is set to 0 if you pass -1.
           */
-        inline void setHMin (const double h_min) {h_min_ = pcl::ihs::clamp (h_min, 0.f, 360.f);}
-        inline void setHMax (const double h_max) {h_max_ = pcl::ihs::clamp (h_max, 0.f, 360.f);}
-        inline void setSMin (const double s_min) {s_min_ = pcl::ihs::clamp (s_min, 0.f,   1.f);}
-        inline void setSMax (const double s_max) {s_max_ = pcl::ihs::clamp (s_max, 0.f,   1.f);}
-        inline void setVMin (const double v_min) {v_min_ = pcl::ihs::clamp (v_min, 0.f,   1.f);}
-        inline void setVMax (const double v_max) {v_max_ = pcl::ihs::clamp (v_max, 0.f,   1.f);}
+        inline void setHMin (const double h_min) {h_min_ = pcl::ihs::clamp (h_min, 0., 360.);}
+        inline void setHMax (const double h_max) {h_max_ = pcl::ihs::clamp (h_max, 0., 360.);}
+        inline void setSMin (const double s_min) {s_min_ = pcl::ihs::clamp (s_min, 0.,   1.);}
+        inline void setSMax (const double s_max) {s_max_ = pcl::ihs::clamp (s_max, 0.,   1.);}
+        inline void setVMin (const double v_min) {v_min_ = pcl::ihs::clamp (v_min, 0.,   1.);}
+        inline void setVMax (const double v_max) {v_max_ = pcl::ihs::clamp (v_max, 0.,   1.);}
 
         inline double getHMin () const {return (h_min_);}
         inline double getHMax () const {return (h_max_);}

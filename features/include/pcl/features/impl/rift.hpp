@@ -72,13 +72,13 @@ pcl::RIFTEstimation<PointInT, GradientT, PointOutT>::computeRIFT (
     Eigen::Map<const Eigen::Vector3d> gradient_vector (& (gradient.points[indices[idx]].gradient[0]));
 
     double gradient_magnitude = gradient_vector.norm ();
-    double gradient_angle_from_center = acosf (gradient_vector.dot ((point - p0).normalized ()) / gradient_magnitude);
+    double gradient_angle_from_center = acos (gradient_vector.dot ((point - p0).normalized ()) / gradient_magnitude);
     if (!pcl_isfinite (gradient_angle_from_center))
       gradient_angle_from_center = 0.0;
 
     // Normalize distance and angle values to: 0.0 <= d,g < nr_distances_bins,nr_gradient_bins
     const double eps = std::numeric_limits<double>::epsilon ();
-    double d = static_cast<double> (nr_distance_bins) * sqrtf (sqr_distances[idx]) / (radius + eps);
+    double d = static_cast<double> (nr_distance_bins) * sqrt (sqr_distances[idx]) / (radius + eps);
     double g = static_cast<double> (nr_gradient_bins) * gradient_angle_from_center / (static_cast<double> (M_PI) + eps);
 
     // Compute the bin indices that need to be updated
@@ -96,7 +96,7 @@ pcl::RIFTEstimation<PointInT, GradientT, PointOutT>::computeRIFT (
       for (int d_idx = d_idx_min; d_idx <= d_idx_max; ++d_idx)
       {
         // To avoid boundary effects, use linear interpolation when updating each bin 
-        double w = (1.0f - fabsf (d - static_cast<double> (d_idx))) * (1.0f - fabsf (g - static_cast<double> (g_idx)));
+        double w = (1.0 - fabsf (d - static_cast<double> (d_idx))) * (1.0 - fabsf (g - static_cast<double> (g_idx)));
 
         rift_descriptor (d_idx, g_idx_wrapped) += w * gradient_magnitude;
       }

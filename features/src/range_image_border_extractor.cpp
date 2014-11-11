@@ -177,7 +177,7 @@ RangeImageBorderExtractor::extractBorderScoreImages ()
       LocalSurface* local_surface_ptr = surface_structure_[index];
       if (local_surface_ptr==NULL)
       {
-        left=right=top=bottom = 0.0f;
+        left=right=top=bottom = 0.0;
         continue;
       }
       
@@ -302,7 +302,7 @@ RangeImageBorderExtractor::getAnglesImageForBorderDirections ()
       range_image_->getImagePoint(point.x+tmp_factor*border_direction[0], point.y+tmp_factor*border_direction[1], point.z+tmp_factor*border_direction[2],
                                 border_direction_in_image_x, border_direction_in_image_y);
       border_direction_in_image_x -= static_cast<double> (x);  border_direction_in_image_y -= static_cast<double> (y);
-      angle = atan2f (border_direction_in_image_y, border_direction_in_image_x);
+      angle = atan2 (border_direction_in_image_y, border_direction_in_image_x);
     }
   }
   return angles_image;
@@ -329,7 +329,7 @@ RangeImageBorderExtractor::getAnglesImageForSurfaceChangeDirections ()
       double& angle = angles_image[index];
       angle = -std::numeric_limits<double>::infinity ();
       double surface_change_score = surface_change_scores_[index];
-      if (surface_change_score <= 0.1f)
+      if (surface_change_score <= 0.1)
         continue;
       const Eigen::Vector3d& direction = surface_change_directions_[index];
       const PointWithRange& point = range_image_->getPoint(index);
@@ -339,10 +339,10 @@ RangeImageBorderExtractor::getAnglesImageForSurfaceChangeDirections ()
       range_image_->getImagePoint(point.x+tmp_factor*direction[0], point.y+tmp_factor*direction[1], point.z+tmp_factor*direction[2],
                                 border_direction_in_image_x, border_direction_in_image_y);
       border_direction_in_image_x -= static_cast<double> (x);  border_direction_in_image_y -= static_cast<double> (y);
-      angle = atan2f (border_direction_in_image_y, border_direction_in_image_x);
-      if (angle <= deg2rad (-90.0f))
+      angle = atan2 (border_direction_in_image_y, border_direction_in_image_x);
+      if (angle <= deg2rad (-90.0))
         angle += static_cast<double> (M_PI);
-      else if (angle > deg2rad (90.0f))
+      else if (angle > deg2rad (90.0))
         angle -= static_cast<double> (M_PI);
     }
   }
@@ -482,7 +482,7 @@ RangeImageBorderExtractor::calculateBorderDirections ()
   Eigen::Vector3d** average_border_directions = new Eigen::Vector3d*[size];
   int radius = parameters_.pixel_radius_border_direction;
   int minimum_weight = radius+1;
-  double min_cos_angle=cosf(deg2rad(120.0f));
+  double min_cos_angle=cos(deg2rad(120.0));
   for (int y=0; y<height; ++y)
   {
     for (int x=0; x<width; ++x)
@@ -494,7 +494,7 @@ RangeImageBorderExtractor::calculateBorderDirections ()
       if (border_direction==NULL)
         continue;
       average_border_direction = new Eigen::Vector3d(*border_direction);
-      double weight_sum = 1.0f;
+      double weight_sum = 1.0;
       for (int y2=(std::max)(0, y-radius); y2<=(std::min)(y+radius, height-1); ++y2)
       {
         for (int x2=(std::max)(0, x-radius); x2<=(std::min)(x+radius, width-1); ++x2)
@@ -508,7 +508,7 @@ RangeImageBorderExtractor::calculateBorderDirections ()
           double cos_angle = neighbor_border_direction->dot(*border_direction);
           if (cos_angle<min_cos_angle)
           {
-            //cout << "Reject. "<<PVARC(min_cos_angle)<<PVARC(cos_angle)<<PVARAN(acosf(cos_angle));
+            //cout << "Reject. "<<PVARC(min_cos_angle)<<PVARC(cos_angle)<<PVARAN(acos(cos_angle));
             continue;
           }
           //else
@@ -516,11 +516,11 @@ RangeImageBorderExtractor::calculateBorderDirections ()
           
           // Border in between?
           double border_between_points_score = getNeighborDistanceChangeScore(*surface_structure_[index], x, y, x2-x,  y2-y, 1);
-          if (fabsf(border_between_points_score) >= 0.95f*parameters_.minimum_border_probability)
+          if (fabsf(border_between_points_score) >= 0.95*parameters_.minimum_border_probability)
             continue;
           
           *average_border_direction += *neighbor_border_direction;
-          weight_sum += 1.0f;
+          weight_sum += 1.0;
         }
       }
       if (pcl_lrint (weight_sum) < minimum_weight)
@@ -562,7 +562,7 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
     {
       int index = y*width + x;
       double& surface_change_score = surface_change_scores_[index];
-      surface_change_score = 0.0f;
+      surface_change_score = 0.0;
       Eigen::Vector3d& surface_change_direction = surface_change_directions_[index];
       surface_change_direction.setZero();
       
@@ -571,7 +571,7 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
         continue;
       if (border_directions_[index]!=NULL)
       {
-        surface_change_score = 1.0f;
+        surface_change_score = 1.0;
         surface_change_direction = *border_directions_[index];
       }
       else
@@ -579,7 +579,7 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
         if (!calculateMainPrincipalCurvature(x, y, parameters_.pixel_radius_principal_curvature,
                                              surface_change_score, surface_change_direction))
         {
-          surface_change_score = 0.0f;
+          surface_change_score = 0.0;
           continue;
         }
       }
@@ -608,14 +608,14 @@ RangeImageBorderExtractor::blurSurfaceChanges ()
       Eigen::Vector3d& new_point = blurred_directions[index];
       new_point.setZero();
       double& new_score = blurred_scores[index];
-      new_score = 0.0f;
+      new_score = 0.0;
       if (!range_image.isValid(index))
         continue;
       const BorderTraits& border_traits = border_descriptions_->points[index].traits;
       if (border_traits[BORDER_TRAIT__VEIL_POINT] || border_traits[BORDER_TRAIT__SHADOW_BORDER])
         continue;
       const Eigen::Vector3d& point = surface_change_directions_[index];
-      double counter = 0.0f;
+      double counter = 0.0;
       for (int y2=y-blur_radius; y2<y+blur_radius; ++y2)
       {
         for (int x2=x-blur_radius; x2<x+blur_radius; ++x2)
@@ -624,24 +624,24 @@ RangeImageBorderExtractor::blurSurfaceChanges ()
             continue;
           int index2 = y2*range_image.width + x2;
           double score = surface_change_scores_[index2];
-          //if (score == 0.0f)
+          //if (score == 0.0)
             //continue;
             //
-          if (score > 0.0f)
+          if (score > 0.0)
           {
             Eigen::Vector3d& neighbor = surface_change_directions_[index2];
             //if (fabs(neighbor.norm()-1) > 1e-4)
               //cerr<<PVARN(neighbor)<<PVARN(score);
-            if (point.dot(neighbor)<0.0f)
-              neighbor *= -1.0f;
+            if (point.dot(neighbor)<0.0)
+              neighbor *= -1.0;
             new_point += score*neighbor;
           }
           new_score += score;
-          counter += 1.0f;
+          counter += 1.0;
         }
       }
       new_point.normalize();
-      if (counter > 0.0f)
+      if (counter > 0.0)
         new_score /= counter;
     }
   }

@@ -108,9 +108,9 @@ pcl::ihs::MeshProcessing::processBoundary (Mesh& mesh, const std::vector <HalfEd
         bc = (v_c - v_b).head <3> ();
         ac = (v_c - v_a).head <3> ();
 
-        const double angle = std::acos (pcl::ihs::clamp (-ab.dot (bc) / ab.norm () / bc.norm (), -1.f, 1.f));
+        const double angle = std::acos (pcl::ihs::clamp (-ab.dot (bc) / ab.norm () / bc.norm (), -1., 1.));
 
-        if (angle < 1.047197551196598f) // 60 * pi / 180
+        if (angle < 1.047197551196598) // 60 * pi / 180
         {
           // Third vertex belonging to the face of edge ab
           vi_d = mesh.getTerminatingVertexIndex (
@@ -123,7 +123,7 @@ pcl::ihs::MeshProcessing::processBoundary (Mesh& mesh, const std::vector <HalfEd
           n_adb   = (v_d - v_a).head <3> ().cross (ab)/*.normalized ()*/;
           n_plane = n_adb.cross (ab/*.nomalized ()*/);
 
-          if (n_plane.dot (ac) > 0.f)
+          if (n_plane.dot (ac) > 0.)
           {
             mesh.addFace (vi_a, vi_b, vi_c);
           }

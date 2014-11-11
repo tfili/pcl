@@ -69,7 +69,7 @@ template <typename PointT> void
 pcl::people::HeadBasedSubclustering<PointT>::setGround (Eigen::VectorXd& ground_coeffs)
 {
   ground_coeffs_ = ground_coeffs;
-  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
+  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0, 0.0, 0.0, ground_coeffs(3))).norm();
 }
 
 template <typename PointT> void

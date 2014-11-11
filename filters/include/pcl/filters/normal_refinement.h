@@ -62,7 +62,7 @@ namespace pcl
       PCL_ERROR("[pcl::assignNormalWeights] inequal size of neighbor indices and distances!\n");
     
     // TODO: For now we use uniform weights
-    return (std::vector<double> (k_indices.size (), 1.0f));
+    return (std::vector<double> (k_indices.size (), 1.0));
   }
   
   /** \brief Refine an indexed point based on its neighbors, this function only writes to the normal_* fields
@@ -85,9 +85,9 @@ namespace pcl
                 NormalT& point)
   {
     // Start by zeroing result
-    point.normal_x = 0.0f;
-    point.normal_y = 0.0f;
-    point.normal_z = 0.0f;
+    point.normal_x = 0.0;
+    point.normal_y = 0.0;
+    point.normal_z = 0.0;
     
     // Check inputs
     if (k_indices.size () != k_sqr_distances.size ())
@@ -100,9 +100,9 @@ namespace pcl
     const std::vector<double> weights = assignNormalWeights (cloud, index, k_indices, k_sqr_distances);
     
     // Loop over all neighbors and accumulate sum of normal components
-    double nx = 0.0f;
-    double ny = 0.0f;
-    double nz = 0.0f;
+    double nx = 0.0;
+    double ny = 0.0;
+    double nz = 0.0;
     for (unsigned int i = 0; i < k_indices.size (); ++i) {
       // Neighbor
       const NormalT& pointi = cloud[k_indices[i]];
@@ -118,7 +118,7 @@ namespace pcl
     }
     
     // Normalize if norm valid and non-zero
-    const double norm = sqrtf (nx * nx + ny * ny + nz * nz);
+    const double norm = sqrt (nx * nx + ny * ny + nz * nz);
     if (pcl_isfinite (norm) && norm > std::numeric_limits<double>::epsilon ())
     {
       point.normal_x = nx / norm;
@@ -203,7 +203,7 @@ namespace pcl
       {
         filter_name_ = "NormalRefinement";
         setMaxIterations (15);
-        setConvergenceThreshold (0.00001f);
+        setConvergenceThreshold (0.00001);
       }
       
       /** \brief Constructor for setting correspondences, sets default convergence parameters
@@ -216,7 +216,7 @@ namespace pcl
         filter_name_ = "NormalRefinement";
         setCorrespondences (k_indices, k_sqr_distances);
         setMaxIterations (15);
-        setConvergenceThreshold (0.00001f);
+        setConvergenceThreshold (0.00001);
       }
       
       /** \brief Set correspondences calculated from nearest neighbor search

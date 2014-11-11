@@ -47,12 +47,12 @@ namespace pcl
         __device__ __host__ __forceinline__ 
         bool computePairFeatures (const float3& p1, const float3& n1, const float3& p2, const float3& n2, double &f1, double &f2, double &f3, double &f4)
         {
-            f1 = f2 = f3 = f4 = 0.0f;
+            f1 = f2 = f3 = f4 = 0.0;
 
             float3 dp2p1 = p2 - p1;            
             f4 = norm(dp2p1);
 
-            if (f4 == 0.f)
+            if (f4 == 0.)
                 return false;           
 
             float3 n1_copy = n1, n2_copy = n2;
@@ -75,18 +75,18 @@ namespace pcl
             // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
             float3 v = cross(dp2p1, n1_copy);            
             double v_norm = norm(v);
-            if (v_norm == 0.0f)
+            if (v_norm == 0.0)
                 return false;
             
             // Normalize v
-            v *= 1.f/v_norm;            
+            v *= 1./v_norm;            
                         
             // Do not have to normalize w - it is a unit vector by construction            
             f2 = dot(v, n2_copy);
             
             float3 w = cross(n1_copy, v);
             // Compute f1 = arctan (w * n2, u * n2) i.e. angle of n2 in the x=u, y=w coordinate system            
-            f1 = atan2f (dot(w, n2_copy), dot(n1_copy, n2_copy)); // @todo optimize this
+            f1 = atan2 (dot(w, n2_copy), dot(n1_copy, n2_copy)); // @todo optimize this
 
             return true;
         }
@@ -98,9 +98,9 @@ namespace pcl
             float3 dp2p1 = p2 - p1;            
             f4 = norm(dp2p1);
 
-            if (f4 == 0.0f)
+            if (f4 == 0.0)
             {
-                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0f;
+                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0;
                 return false;
             }
 
@@ -113,13 +113,13 @@ namespace pcl
             // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
             float3 v = cross(dp2p1, n1_copy);            
             double v_norm = norm(v);
-            if (v_norm == 0.0f)
+            if (v_norm == 0.0)
             {
-                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0f;
+                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0;
                 return false;
             }
             // Normalize v
-            v *= 1.f/v_norm;
+            v *= 1./v_norm;
 
             float3 w = cross(n1_copy, v);
             // Do not have to normalize w - it is a unit vector by construction
@@ -127,7 +127,7 @@ namespace pcl
             f2 = dot(v, n2_copy);
 
             // Compute f1 = arctan (w * n2, u * n2) i.e. angle of n2 in the x=u, y=w coordinate system
-            f1 = atan2f (dot(w, n2_copy), dot (n1_copy, n2_copy)); 
+            f1 = atan2 (dot(w, n2_copy), dot (n1_copy, n2_copy)); 
 
             // everything before was standard 4D-Darboux frame feature pair
             // now, for the experimental color stuff            
@@ -137,9 +137,9 @@ namespace pcl
             f7 = ((double) ((colors1 >> 16) & 0xFF)) / ((colors2 >> 16) & 0xFF);
 
             // make sure the ratios are in the [-1, 1] interval
-            if (f5 > 1.f) f5 = - 1.f / f5;
-            if (f6 > 1.f) f6 = - 1.f / f6;
-            if (f7 > 1.f) f7 = - 1.f / f7;
+            if (f5 > 1.) f5 = - 1. / f5;
+            if (f6 > 1.) f6 = - 1. / f6;
+            if (f7 > 1.) f7 = - 1. / f7;
 
             return true;
         }
@@ -152,9 +152,9 @@ namespace pcl
             f7 = ((double) ((colors1 >> 16) & 0xFF)) / ((colors2 >> 16) & 0xFF);
 
             // make sure the ratios are in the [-1, 1] interval
-            if (f5 > 1.f) f5 = - 1.f / f5;
-            if (f6 > 1.f) f6 = - 1.f / f6;
-            if (f7 > 1.f) f7 = - 1.f / f7;
+            if (f5 > 1.) f5 = - 1. / f5;
+            if (f6 > 1.) f6 = - 1. / f6;
+            if (f7 > 1.) f7 = - 1. / f7;
         }
 
          __device__ __host__ __forceinline__ bool computePPFPairFeature(const float3& p1, const float3& n1, const float3& p2, const float3& n2,
@@ -202,10 +202,10 @@ namespace pcl
             model_point_transformed.z = traslation.z + row3.x * model_point.x + row3.y * model_point.y + row3.z * model_point.z;
 
 
-            double angle = atan2f ( -model_point_transformed.z, model_point_transformed.y);
+            double angle = atan2 ( -model_point_transformed.z, model_point_transformed.y);
 
-            if (sinf(angle) * model_point_transformed.z < 0.0f)
-                //if (angle * model_point_transformed.z < 0.ff)
+            if (sin(angle) * model_point_transformed.z < 0.0)
+                //if (angle * model_point_transformed.z < 0.f)
                 angle *= -1;
             alpha_m = -angle;
         }     

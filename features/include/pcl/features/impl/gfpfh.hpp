@@ -98,7 +98,7 @@ pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOu
     {
       typename pcl::PointCloud<PointInT>::VectorType intersected_cells;
       Eigen::Vector3d end = occupied_cells[j].getVector3dMap ();
-      octree.getApproxIntersectedVoxelCentersBySegment (origin, end, intersected_cells, 0.5f);
+      octree.getApproxIntersectedVoxelCentersBySegment (origin, end, intersected_cells, 0.5);
 
       // Intersected cells are ordered from closest to furthest w.r.t. the origin.
       std::vector<int> histogram;
@@ -240,7 +240,7 @@ pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeHIKDistance (const st
 {
   assert (histogram.size () == mean_histogram.size ());
 
-  double norm = 0.f;
+  double norm = 0.;
   for (size_t i = 0; i < histogram.size (); ++i)
     norm += std::min (static_cast<double> (histogram[i]), mean_histogram[i]);
 

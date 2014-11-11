@@ -83,7 +83,7 @@ namespace pcl
             * \param width
             */
           void
-          setCameraIntrinsics (double focal = 575.816f, double height = 480.0f, double width = 640.0f);
+          setCameraIntrinsics (double focal = 575.816, double height = 480.0, double width = 640.0);
 
           /**Save Screenshot*/
           void

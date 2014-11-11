@@ -35,7 +35,7 @@ class GrabCutHelper : public pcl::GrabCut<pcl::PointXYZRGB>
   typedef boost::shared_ptr<GrabCutHelper > Ptr;
   typedef boost::shared_ptr<const GrabCutHelper > ConstPtr;
 
-  GrabCutHelper (uint32_t K = 5, double lambda = 50.f)
+  GrabCutHelper (uint32_t K = 5, double lambda = 50.)
     : pcl::GrabCut<pcl::PointXYZRGB> (K, lambda)
   {}
 
@@ -210,7 +210,7 @@ GrabCutHelper::buildImages ()
       // GMM cloud and Alpha cloud
       if (hard_segmentation_[index] == SegmentationForeground)
       {
-        //assert (static_cast<double>(GMM_component_[index]+1)/static_cast<double> (K_) < 1.f);
+        //assert (static_cast<double>(GMM_component_[index]+1)/static_cast<double> (K_) < 1.);
         gmm_point.r = static_cast<double>(GMM_component_[index]+1)/static_cast<double> (K_);
         alpha_point = 0;
       }

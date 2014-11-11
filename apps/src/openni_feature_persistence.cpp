@@ -66,11 +66,11 @@ do \
     } \
 }while(false)
 
-const double default_subsampling_leaf_size = 0.02f;
-const double default_normal_search_radius = 0.041f;
+const double default_subsampling_leaf_size = 0.02;
+const double default_normal_search_radius = 0.041;
 const double aux [] = {0.21, 0.32};
 const std::vector<double> default_scales_vector (aux, aux + 2);
-const double default_alpha = 1.2f;
+const double default_alpha = 1.2;
 
 template <typename PointType>
 class OpenNIFeaturePersistence

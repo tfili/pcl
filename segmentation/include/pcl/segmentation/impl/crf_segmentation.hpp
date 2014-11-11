@@ -57,7 +57,7 @@ pcl::CrfSegmentation<PointT>::CrfSegmentation () :
   filtered_cloud_ (new pcl::PointCloud<PointT>),
   filtered_anno_ (new pcl::PointCloud<pcl::PointXYZRGBL>),
   filtered_normal_ (new pcl::PointCloud<pcl::PointNormal>),
-  voxel_grid_leaf_size_ (Eigen::Vector4d (0.001f, 0.001f, 0.001f, 0.0f))
+  voxel_grid_leaf_size_ (Eigen::Vector4d (0.001, 0.001, 0.001, 0.0))
 {
 }
 
@@ -293,9 +293,9 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
     if (color_data)
     {    
       uint32_t rgb = *reinterpret_cast<int*>(&filtered_cloud_->points[i].rgba);
-      uint8_t r = (rgb >> 16) & 0x0000ff;
-      uint8_t g = (rgb >> 8)  & 0x0000ff;
-      uint8_t b = (rgb)       & 0x0000ff;
+      uint8_t r = (rgb >> 16) & 0x0000f;
+      uint8_t g = (rgb >> 8)  & 0x0000f;
+      uint8_t b = (rgb)       & 0x0000f;
       color_[i] = Eigen::Vector3i (r, g, b);
     }
 
@@ -333,9 +333,9 @@ pcl::CrfSegmentation<PointT>::createUnaryPotentials (std::vector<double> &unary,
   //srand ( time (NULL) );
 
   // Certainty that the groundtruth is correct
-  const double GT_PROB = 0.9f;
-  const double u_energy = -logf ( 1.0f / static_cast<double> (n_labels) );
-  const double n_energy = -logf ( (1.0f - GT_PROB) / static_cast<double>(n_labels - 1) );
+  const double GT_PROB = 0.9;
+  const double u_energy = -logf ( 1.0 / static_cast<double> (n_labels) );
+  const double n_energy = -logf ( (1.0 - GT_PROB) / static_cast<double>(n_labels - 1) );
   const double p_energy = -logf ( GT_PROB );
 
   for (size_t k = 0; k < filtered_anno_->points.size (); k++)
@@ -393,7 +393,7 @@ pcl::CrfSegmentation<PointT>::createUnaryPotentials (std::vector<double> &unary,
       if (label == 1)
       {
         const double PROB = 0.2f;
-        const double n_energy2 = -logf ( (1.0f - PROB) / static_cast<double>(n_labels - 1) );
+        const double n_energy2 = -logf ( (1.0 - PROB) / static_cast<double>(n_labels - 1) );
         const double p_energy2 = -logf ( PROB );
 
         for (size_t i = 0; i < n_labels; i++)

@@ -44,7 +44,7 @@ namespace pcl {
 ////////// STATIC //////////
 double RangeImageBorderExtractor::getObstacleBorderAngle(const BorderTraits& border_traits)
 {
-  double x=0.0f, y=0.0f;
+  double x=0.0, y=0.0;
   if (border_traits[BORDER_TRAIT__OBSTACLE_BORDER_RIGHT])
     ++x;
   if (border_traits[BORDER_TRAIT__OBSTACLE_BORDER_LEFT])
@@ -54,7 +54,7 @@ double RangeImageBorderExtractor::getObstacleBorderAngle(const BorderTraits& bor
   if (border_traits[BORDER_TRAIT__OBSTACLE_BORDER_BOTTOM])
     ++y;
   
-  return atan2f(y, x);
+  return atan2(y, x);
 }
 
 inline std::ostream& operator << (std::ostream& os, const RangeImageBorderExtractor::Parameters& p)
@@ -74,21 +74,21 @@ double RangeImageBorderExtractor::getNeighborDistanceChangeScore(
   const PointWithRange& point = range_image_->getPoint(x, y);
   PointWithRange neighbor;
   range_image_->get1dPointAverage(x+offset_x, y+offset_y, offset_x, offset_y, pixel_radius, neighbor);
-  if (pcl_isinf(neighbor.range))
+  if (pcl_isin(neighbor.range))
   {
-    if (neighbor.range < 0.0f)
-      return 0.0f;
+    if (neighbor.range < 0.0)
+      return 0.0;
     else
     {
       //cout << "INF edge -> Setting to 1.0\n";
-      return 1.0f;  // TODO: Something more intelligent
+      return 1.0;  // TODO: Something more intelligent
     }
   }
   
   double neighbor_distance_squared = squaredEuclideanDistance(neighbor, point);
   if (neighbor_distance_squared <= local_surface.max_neighbor_distance_squared)
-    return 0.0f;
-  double ret = 1.0f - sqrtf(local_surface.max_neighbor_distance_squared / neighbor_distance_squared);
+    return 0.0;
+  double ret = 1.0 - sqrt(local_surface.max_neighbor_distance_squared / neighbor_distance_squared);
   if (neighbor.range < point.range)
     ret = -ret;
   return ret;
@@ -99,21 +99,21 @@ double RangeImageBorderExtractor::getNeighborDistanceChangeScore(
 //{
   //PointWithRange neighbor;
   //range_image_->get1dPointAverage(x+offset_x, y+offset_y, offset_x, offset_y, parameters_.pixel_radius_borders, neighbor);
-  //if (pcl_isinf(neighbor.range))
+  //if (pcl_isin(neighbor.range))
   //{
-    //if (neighbor.range < 0.0f)
-      //return 0.0f;
+    //if (neighbor.range < 0.0)
+      //return 0.0;
     //else
-      //return 1.0f;  // TODO: Something more intelligent (Compare normal with viewing direction)
+      //return 1.0;  // TODO: Something more intelligent (Compare normal with viewing direction)
   //}
   
   //double normal_distance_to_plane_squared = local_surface.smallest_eigenvalue_no_jumps;
   //double distance_to_plane = local_surface.normal_no_jumps.dot(local_surface.neighborhood_mean_no_jumps-neighbor.getVector3dMap());
-  //bool shadow_side = distance_to_plane < 0.0f;
+  //bool shadow_side = distance_to_plane < 0.0;
   //double distance_to_plane_squared = pow(distance_to_plane, 2);
   //if (distance_to_plane_squared <= normal_distance_to_plane_squared)
-    //return 0.0f;
-  //double ret = 1.0f - (normal_distance_to_plane_squared/distance_to_plane_squared);
+    //return 0.0;
+  //double ret = 1.0 - (normal_distance_to_plane_squared/distance_to_plane_squared);
   //if (shadow_side)
     //ret = -ret;
   ////cout << PVARC(normal_distance_to_plane_squared)<<PVAR(distance_to_plane_squared)<<" => "<<ret<<"\n";
@@ -171,7 +171,7 @@ void RangeImageBorderExtractor::calculateBorderDirection(int x, int y)
   const BorderTraits& border_traits = border_description.traits;
   if (!border_traits[BORDER_TRAIT__OBSTACLE_BORDER])
     return;
-  border_direction = new Eigen::Vector3d(0.0f, 0.0f, 0.0f);
+  border_direction = new Eigen::Vector3d(0.0, 0.0, 0.0);
   if (!get3dDirection(border_description, *border_direction, surface_structure_[index]))
   {
     delete border_direction;
@@ -189,7 +189,7 @@ bool RangeImageBorderExtractor::changeScoreAccordingToShadowBorderValue(int x, i
   if (border_score<parameters_.minimum_border_probability)
     return false;
   
-  if (border_score == 1.0f) 
+  if (border_score == 1.0) 
   {  // INF neighbor?
     if (range_image_->isMaxRange(x+offset_x, y+offset_y))
     {
@@ -198,7 +198,7 @@ bool RangeImageBorderExtractor::changeScoreAccordingToShadowBorderValue(int x, i
     }
   }
   
-  double best_shadow_border_score = 0.0f;
+  double best_shadow_border_score = 0.0;
   
   for (int neighbor_distance=1; neighbor_distance<=parameters_.pixel_radius_borders; ++neighbor_distance)
   {
@@ -216,27 +216,27 @@ bool RangeImageBorderExtractor::changeScoreAccordingToShadowBorderValue(int x, i
   if (shadow_border_idx >= 0)
   {
     //cout << PVARC(border_score)<<PVARN(best_shadow_border_score);
-    //border_score *= (std::max)(0.9f, powf(-best_shadow_border_score, 0.1f));  // TODO: Something better
-    border_score *= (std::max)(0.9f, 1-powf(1+best_shadow_border_score, 3));
+    //border_score *= (std::max)(0.9, pow(-best_shadow_border_score, 0.1));  // TODO: Something better
+    border_score *= (std::max)(0.9, 1-pow(1+best_shadow_border_score, 3));
     if (border_score>=parameters_.minimum_border_probability)
       return true;
   }
   shadow_border_idx = -1;
-  border_score = 0.0f;  // Since there was no shadow border found we set this value to zero, so that it does not influence the maximum search
+  border_score = 0.0;  // Since there was no shadow border found we set this value to zero, so that it does not influence the maximum search
   return false;
 }
 
 double RangeImageBorderExtractor::updatedScoreAccordingToNeighborValues(int x, int y, const double* border_scores) const
 {
-  double max_score_bonus = 0.5f;
+  double max_score_bonus = 0.5;
   
   double border_score = border_scores[y*range_image_->width+x];
   
   // Check if an update can bring the score to a value higher than the minimum
-  if (border_score + max_score_bonus*(1.0f-border_score) < parameters_.minimum_border_probability)
+  if (border_score + max_score_bonus*(1.0-border_score) < parameters_.minimum_border_probability)
     return border_score;
   
-  double average_neighbor_score=0.0f, weight_sum=0.0f;
+  double average_neighbor_score=0.0, weight_sum=0.0;
   for (int y2=y-1; y2<=y+1; ++y2)
   {
     for (int x2=x-1; x2<=x+1; ++x2)
@@ -244,15 +244,15 @@ double RangeImageBorderExtractor::updatedScoreAccordingToNeighborValues(int x, i
       if (!range_image_->isInImage(x2, y2) || (x2==x&&y2==y))
         continue;
       average_neighbor_score += border_scores[y2*range_image_->width+x2];
-      weight_sum += 1.0f;
+      weight_sum += 1.0;
     }
   }
   average_neighbor_score /=weight_sum;
   
-  if (average_neighbor_score*border_score < 0.0f)
+  if (average_neighbor_score*border_score < 0.0)
     return border_score;
   
-  double new_border_score = border_score + max_score_bonus * average_neighbor_score * (1.0f-fabsf(border_score));
+  double new_border_score = border_score + max_score_bonus * average_neighbor_score * (1.0-fabsf(border_score));
   
   //std::cout << PVARC(border_score)<<PVARN(new_border_score);
   return new_border_score;
@@ -266,7 +266,7 @@ bool RangeImageBorderExtractor::checkPotentialBorder(int x, int y, int offset_x,
     return false;
   
   shadow_border_idx = -1;
-  double best_shadow_border_score = -0.5f*parameters_.minimum_border_probability;
+  double best_shadow_border_score = -0.5*parameters_.minimum_border_probability;
   
   for (int neighbor_distance=1; neighbor_distance<=parameters_.pixel_radius_borders; ++neighbor_distance)
   {
@@ -285,7 +285,7 @@ bool RangeImageBorderExtractor::checkPotentialBorder(int x, int y, int offset_x,
   {
     return true;
   }
-  border_score = 0.0f;  // Since there was no shadow border found we set this value to zero, so that it does not influence the maximum search
+  border_score = 0.0;  // Since there was no shadow border found we set this value to zero, so that it does not influence the maximum search
   return false;
 }
 
@@ -315,7 +315,7 @@ bool RangeImageBorderExtractor::checkIfMaximum(int x, int y, int offset_x, int o
 bool RangeImageBorderExtractor::calculateMainPrincipalCurvature(int x, int y, int radius, double& magnitude,
                                                                 Eigen::Vector3d& main_direction) const
 {
-  magnitude = 0.0f;
+  magnitude = 0.0;
   int index = y*range_image_->width+x;
   LocalSurface* local_surface = surface_structure_[index];
   if (local_surface==NULL)
@@ -376,23 +376,23 @@ bool RangeImageBorderExtractor::calculateMainPrincipalCurvature(int x, int y, in
   
   Eigen::Vector3d eigen_values, eigen_vector1, eigen_vector2;
   vector_average.doPCA(eigen_values, eigen_vector1, eigen_vector2, main_direction);
-  magnitude = sqrtf(eigen_values[2]);
+  magnitude = sqrt(eigen_values[2]);
   //magnitude = eigen_values[2];
-  //magnitude = 1.0f - powf(1.0f-magnitude, 5);
-  //magnitude = 1.0f - powf(1.0f-magnitude, 10);
-  //magnitude += magnitude - powf(magnitude,2);
-  //magnitude += magnitude - powf(magnitude,2);
+  //magnitude = 1.0 - pow(1.0-magnitude, 5);
+  //magnitude = 1.0 - pow(1.0-magnitude, 10);
+  //magnitude += magnitude - pow(magnitude,2);
+  //magnitude += magnitude - pow(magnitude,2);
   
-  //magnitude = sqrtf(local_surface->eigen_values[0]/local_surface->eigen_values.sum());
-  //magnitude = sqrtf(local_surface->eigen_values_no_jumps[0]/local_surface->eigen_values_no_jumps.sum());
+  //magnitude = sqrt(local_surface->eigen_values[0]/local_surface->eigen_values.sum());
+  //magnitude = sqrt(local_surface->eigen_values_no_jumps[0]/local_surface->eigen_values_no_jumps.sum());
 
   //if (surface_structure_[y*range_image_->width+x+1]==NULL||surface_structure_[y*range_image_->width+x-1]==NULL)
   //{
     //magnitude = -std::numeric_limits<double>::infinity ();
     //return false;
   //}
-  //double angle2 = acosf(surface_structure_[y*range_image_->width+x+1]->normal.dot(local_surface->normal)),
-        //angle1 = acosf(surface_structure_[y*range_image_->width+x-1]->normal.dot(local_surface->normal));
+  //double angle2 = acos(surface_structure_[y*range_image_->width+x+1]->normal.dot(local_surface->normal)),
+        //angle1 = acos(surface_structure_[y*range_image_->width+x-1]->normal.dot(local_surface->normal));
   //magnitude = angle2-angle1;
 
   if (!pcl_isfinite(magnitude))

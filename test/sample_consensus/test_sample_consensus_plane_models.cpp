@@ -62,14 +62,14 @@ typedef SampleConsensusModelNormalParallelPlane<PointXYZ, Normal>::Ptr SampleCon
 PointCloud<PointXYZ>::Ptr cloud_ (new PointCloud<PointXYZ> ());
 PointCloud<Normal>::Ptr normals_ (new PointCloud<Normal> ());
 std::vector<int> indices_;
-double plane_coeffs_[] = {-0.8964f, -0.5868f, -1.208f};
+double plane_coeffs_[] = {-0.8964f, -0.5868, -1.208};
 
 template <typename ModelType, typename SacType>
 void verifyPlaneSac (ModelType& model,
                      SacType& sac,
                      unsigned int inlier_number = 2000,
-                     double tol = 1e-1f,
-                     double refined_tol = 1e-1f,
+                     double tol = 1e-1,
+                     double refined_tol = 1e-1,
                      double proj_tol = 1e-3f)
 {
   // Algorithm tests
@@ -189,7 +189,7 @@ TEST (SampleConsensusModelPlane, RRANSAC)
   sac.setFractionNrPretest (10.0);
   ASSERT_EQ (10.0, sac.getFractionNrPretest ());
 
-  verifyPlaneSac (model, sac, 600, 1.0f, 1.0f, 0.01f);
+  verifyPlaneSac (model, sac, 600, 1.0, 1.0, 0.01);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -203,7 +203,7 @@ TEST (SampleConsensusModelPlane, MLESAC)
   // Create the MSAC object
   MaximumLikelihoodSampleConsensus<PointXYZ> sac (model, 0.03);
 
-  verifyPlaneSac (model, sac, 1000, 0.3f, 0.2f, 0.01f);
+  verifyPlaneSac (model, sac, 1000, 0.3f, 0.2f, 0.01);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +220,7 @@ TEST (SampleConsensusModelPlane, RMSAC)
   sac.setFractionNrPretest (10.0);
   ASSERT_EQ (10.0, sac.getFractionNrPretest ());
 
-  verifyPlaneSac (model, sac, 600, 1.0f, 1.0f, 0.01f);
+  verifyPlaneSac (model, sac, 600, 1.0, 1.0, 0.01);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -254,19 +254,19 @@ TEST (SampleConsensusModelNormalParallelPlane, RANSAC)
   {
     cloud.points[idx].x = static_cast<double> ((rand () % 200) - 100);
     cloud.points[idx].y = static_cast<double> ((rand () % 200) - 100);
-    cloud.points[idx].z = 0.0f;
+    cloud.points[idx].z = 0.0;
 
-    normals.points[idx].normal_x = 0.0f;
-    normals.points[idx].normal_y = 0.0f;
-    normals.points[idx].normal_z = 1.0f;
+    normals.points[idx].normal_x = 0.0;
+    normals.points[idx].normal_y = 0.0;
+    normals.points[idx].normal_z = 1.0;
   }
 
   // Create a shared plane model pointer directly
   SampleConsensusModelNormalParallelPlanePtr model (new SampleConsensusModelNormalParallelPlane<PointXYZ, Normal> (cloud.makeShared ()));
   model->setInputNormals (normals.makeShared ());
 
-  const double max_angle_rad = 0.01f;
-  const double angle_eps = 0.001f;
+  const double max_angle_rad = 0.01;
+  const double angle_eps = 0.001;
   model->setEpsAngle (max_angle_rad);
 
   // Test true axis

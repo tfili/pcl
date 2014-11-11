@@ -78,7 +78,7 @@ pcl::RobotEyeGrabber::getName () const
 double
 pcl::RobotEyeGrabber::getFramesPerSecond () const
 {
-  return (0.0f);
+  return (0.0);
 }
 
 /////////////////////////////////////////////////////////////////////////////

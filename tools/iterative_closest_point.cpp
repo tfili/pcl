@@ -149,7 +149,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &source,
   print_value ("%d", icp.hasConverged ()); print_info (" with score: %f\n",  icp.getFitnessScore ());
   Eigen::Matrix4d transformation = icp.getFinalTransformation ();
   //Eigen::Matrix4d transformation = icp.getFinalTransformation ();
-  PCL_DEBUG ("Transformation is:\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n", 
+  PCL_DEBUG ("Transformation is:\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n", 
       transformation (0, 0), transformation (0, 1), transformation (0, 2), transformation (0, 3),
       transformation (1, 0), transformation (1, 1), transformation (1, 2), transformation (1, 3),
       transformation (2, 0), transformation (2, 1), transformation (2, 2), transformation (2, 3),

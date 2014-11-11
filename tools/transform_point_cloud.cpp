@@ -57,7 +57,7 @@ printHelp (int, char **argv)
   print_error ("Syntax is: %s input.pcd output.pcd <options>\n", argv[0]);
   print_info ("  where options are:\n");
   print_info ("           -trans dx,dy,dz           = the translation (default: "); 
-  print_value ("%0.1f, %0.1f, %0.1f", 0, 0, 0); print_info (")\n");
+  print_value ("%0.1, %0.1, %0.1", 0, 0, 0); print_info (")\n");
   print_info ("           -quat w,x,y,z             = rotation as quaternion\n"); 
   print_info ("           -axisangle ax,ay,az,theta = rotation in axis-angle form\n"); 
   print_info ("           -scale x,y,z              = scale each dimension with these values\n"); 

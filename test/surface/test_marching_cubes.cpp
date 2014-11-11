@@ -87,7 +87,7 @@ TEST (PCL, MarchingCubesTest)
   MarchingCubesRBF<PointNormal> rbf;
   rbf.setIsoLevel (0);
   rbf.setGridResolution (20, 20, 20);
-  rbf.setPercentageExtendGrid (0.1f);
+  rbf.setPercentageExtendGrid (0.1);
   rbf.setInputCloud (cloud_with_normals);
   rbf.setOffSurfaceDisplacement (0.02f);
   rbf.reconstruct (points, vertices);

@@ -125,12 +125,12 @@ void display_depth_image (const double* depth_buffer, int width, int height)
 
   for (int i = 0; i < npixels; ++i)
   {
-    double zn = 0.7f;
-    double zf = 20.0f;
+    double zn = 0.7;
+    double zf = 20.0;
     double d = depth_buffer[i];
     double z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
-    double b = 0.075f;
-    double f = 580.0f;
+    double b = 0.075;
+    double f = 580.0;
     int kd = static_cast<int>(1090 - b*f/z*8);
     if (kd < 0) kd = 0;
     else if (kd > 2047) kd = 2047;
@@ -403,7 +403,7 @@ main (int argc, char** argv)
   for (int i = 0; i < 2048; ++i)
   {
     double v = static_cast<double> (i / 2048.0);
-    v = powf(v, 3)* 6;
+    v = pow(v, 3)* 6;
     t_gamma[i] = static_cast<uint16_t> (v*6*256);
   }  
 
@@ -440,13 +440,13 @@ main (int argc, char** argv)
 
   // Actually corresponds to default parameters:
   range_likelihood_visualization_->setCameraIntrinsicsParameters (
-      640, 480, 576.09757860f, 576.09757860f, 321.06398107f, 242.97676897f);
+      640, 480, 576.09757860, 576.09757860, 321.06398107, 242.97676897);
   range_likelihood_visualization_->setComputeOnCPU (false);
   range_likelihood_visualization_->setSumOnCPU (false);
   range_likelihood_visualization_->setUseColor (true);
 
   range_likelihood_->setCameraIntrinsicsParameters (
-      640, 480, 576.09757860f, 576.09757860f, 321.06398107f, 242.97676897f);
+      640, 480, 576.09757860, 576.09757860, 321.06398107, 242.97676897);
   range_likelihood_->setComputeOnCPU (false);
   range_likelihood_->setSumOnCPU (false);
   range_likelihood_->setUseColor (false);

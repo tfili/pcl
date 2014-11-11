@@ -15,7 +15,7 @@ using namespace std;
 std::string device_id = "#1";
 
 double angular_resolution = 0.5;
-double support_size = 0.2f;
+double support_size = 0.2;
 bool set_unseen_to_max_range = true;
 int max_no_of_threads = 1;
 double min_interest_value = 0.5;
@@ -87,7 +87,7 @@ int main (int argc, char** argv)
   pcl::visualization::RangeImageVisualizer range_image_widget ("Range Image");
   
   pcl::visualization::PCLVisualizer viewer ("3D Viewer");
-  viewer.addCoordinateSystem (1.0f, "global");
+  viewer.addCoordinateSystem (1.0, "global");
   viewer.setBackgroundColor (1, 1, 1);
   
   viewer.initCameraParameters ();
@@ -155,7 +155,7 @@ int main (int argc, char** argv)
       int width = depth_image_ptr->getWidth (), height = depth_image_ptr->getHeight ();
       double center_x = width/2, center_y = height/2;
       double focal_length_x = depth_image_ptr->getFocalLength (), focal_length_y = focal_length_x;
-      double original_angular_resolution = asinf (0.5f*double (width)/double (focal_length_x)) / (0.5f*double (width));
+      double original_angular_resolution = asin (0.5*double (width)/double (focal_length_x)) / (0.5*double (width));
       double desired_angular_resolution = angular_resolution;
       range_image_planar.setDepthImage (depth_map, width, height, center_x, center_y,
                                         focal_length_x, focal_length_y, desired_angular_resolution);
@@ -182,7 +182,7 @@ int main (int argc, char** argv)
     // ----------------------------------------------
     // -----Show keypoints in range image widget-----
     // ----------------------------------------------
-    range_image_widget.showRangeImage (range_image_planar, 0.5f, 10.0f);
+    range_image_widget.showRangeImage (range_image_planar, 0.5, 10.0);
     //for (size_t i=0; i<keypoint_indices.points.size (); ++i)
       //range_image_widget.markPoint (keypoint_indices.points[i]%range_image_planar.width,
                                     //keypoint_indices.points[i]/range_image_planar.width,

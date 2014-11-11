@@ -112,7 +112,7 @@ namespace pcl
           // 2 * tan (85 degree) ~ 22.86
           double min_f = 0.043744332f * static_cast<double>(input_->width);
           //std::cout << "isValid: " << determinant3x3Matrix<Eigen::Matrix3d> (KR_ / sqrt (KR_KRT_.coeff (8))) << " >= " << (min_f * min_f) << std::endl;
-          return (determinant3x3Matrix<Eigen::Matrix3d> (KR_ / sqrtf (KR_KRT_.coeff (8))) >= (min_f * min_f));
+          return (determinant3x3Matrix<Eigen::Matrix3d> (KR_ / sqrt (KR_KRT_.coeff (8))) >= (min_f * min_f));
         }
         
         /** \brief Compute the camera matrix

@@ -53,9 +53,9 @@ int main (int argc, char** argv)
   pcl::PointXYZ x_axis (major_vector (0) + mass_center (0), major_vector (1) + mass_center (1), major_vector (2) + mass_center (2));
   pcl::PointXYZ y_axis (middle_vector (0) + mass_center (0), middle_vector (1) + mass_center (1), middle_vector (2) + mass_center (2));
   pcl::PointXYZ z_axis (minor_vector (0) + mass_center (0), minor_vector (1) + mass_center (1), minor_vector (2) + mass_center (2));
-  viewer->addLine (center, x_axis, 1.0f, 0.0f, 0.0f, "major eigen vector");
-  viewer->addLine (center, y_axis, 0.0f, 1.0f, 0.0f, "middle eigen vector");
-  viewer->addLine (center, z_axis, 0.0f, 0.0f, 1.0f, "minor eigen vector");
+  viewer->addLine (center, x_axis, 1.0, 0.0, 0.0, "major eigen vector");
+  viewer->addLine (center, y_axis, 0.0, 1.0, 0.0, "middle eigen vector");
+  viewer->addLine (center, z_axis, 0.0, 0.0, 1.0, "minor eigen vector");
 
   //Eigen::Vector3d p1 (min_point_OBB.x, min_point_OBB.y, min_point_OBB.z);
   //Eigen::Vector3d p2 (min_point_OBB.x, min_point_OBB.y, max_point_OBB.z);

@@ -73,7 +73,7 @@
 CloudEditorWidget::CloudEditorWidget (QWidget *parent)
   : QGLWidget(QGLFormat(QGL::DoubleBuffer | QGL::DepthBuffer |
                         QGL::Rgba | QGL::StencilBuffer), parent),
-    point_size_(2.0f), selected_point_size_(4.0f),
+    point_size_(2.0), selected_point_size_(4.0),
     cam_fov_(60.0), cam_aspect_(1.0), cam_near_(0.0001), cam_far_(100.0),
     color_scheme_(COLOR_BY_PURE), is_colored_(false)
 {
@@ -625,20 +625,20 @@ CloudEditorWidget::initTexture ()
 {
   static GLfloat colorWheel[14][3] =
   {
-    {      0.0f,    0.0f,  1.0000f},
-    {      0.0f, 0.2500f,  1.0000f},
-    {      0.0f, 0.5000f,  1.0000f},
-    {      0.0f, 0.7500f,  1.0000f},
-    {      0.0f, 1.0000f,  1.0000f},
-    {   0.2500f, 1.0000f,  1.0000f},
-    {   0.5000f, 1.0000f,  0.7500f},
-    {   0.7500f, 1.0000f,  0.5000f},
-    {   1.0000f, 1.0000f,  0.2500f},
-    {   1.0000f, 1.0000f,     0.0f},
-    {   1.0000f, 0.7500f,     0.0f},
-    {   1.0000f, 0.5000f,     0.0f},
-    {   1.0000f, 0.2500f,     0.0f},
-    {   1.0000f,    0.0f,     0.0f},
+    {      0.0,    0.0,  1.0000},
+    {      0.0, 0.2500,  1.0000},
+    {      0.0, 0.5000,  1.0000},
+    {      0.0, 0.7500,  1.0000},
+    {      0.0, 1.0000,  1.0000},
+    {   0.2500, 1.0000,  1.0000},
+    {   0.5000, 1.0000,  0.7500},
+    {   0.7500, 1.0000,  0.5000},
+    {   1.0000, 1.0000,  0.2500},
+    {   1.0000, 1.0000,     0.0},
+    {   1.0000, 0.7500,     0.0},
+    {   1.0000, 0.5000,     0.0},
+    {   1.0000, 0.2500,     0.0},
+    {   1.0000,    0.0,     0.0},
   };
   GLuint textures;
   glGenTextures(1,&textures);

@@ -274,7 +274,7 @@ namespace pcl
       {
         {
 
-          double add_to_unexplained = 0.f;
+          double add_to_unexplained = 0.;
 
           for (size_t i = 0; i < unexplained_.size (); i++)
           {
@@ -323,7 +323,7 @@ namespace pcl
       void updateExplainedVector(std::vector<int> & vec, std::vector<double> & vec_float, std::vector<int> & explained_,
           std::vector<double> & explained_by_RM_distance_weighted, double sign)
       {
-        double add_to_explained = 0.f;
+        double add_to_explained = 0.;
         int add_to_duplicity_ = 0;
 
         for (size_t i = 0; i < vec.size (); i++)
@@ -403,7 +403,7 @@ namespace pcl
 
       double getUnexplainedInformationInNeighborhood(std::vector<double> & unexplained, std::vector<int> & explained)
       {
-        double unexplained_sum = 0.f;
+        double unexplained_sum = 0.;
         for (size_t i = 0; i < unexplained.size (); i++)
         {
           if (unexplained[i] > 0 && explained[i] == 0)
@@ -433,16 +433,16 @@ namespace pcl
     public:
       GlobalHypothesesVerification() : HypothesisVerification<ModelT, SceneT>()
       {
-        resolution_ = 0.005f;
+        resolution_ = 0.005;
         max_iterations_ = 5000;
-        regularizer_ = 1.f;
-        radius_normals_ = 0.01f;
+        regularizer_ = 1.;
+        radius_normals_ = 0.01;
         initial_temp_ = 1000;
         detect_clutter_ = true;
         radius_neighborhood_GO_ = 0.03f;
-        clutter_regularizer_ = 5.f;
-        res_occupancy_grid_ = 0.01f;
-        w_occupied_multiple_cm_ = 4.f;
+        clutter_regularizer_ = 5.;
+        res_occupancy_grid_ = 0.01;
+        w_occupied_multiple_cm_ = 4.;
       }
 
       void

@@ -44,7 +44,7 @@ namespace pcl
 
             double avg_dist_neighbours = 0.0;
             for (size_t j = 1; j < nn_indices.size (); j++)
-              avg_dist_neighbours += sqrtf (nn_distances[j]);
+              avg_dist_neighbours += sqrt (nn_distances[j]);
 
             avg_dist_neighbours /= static_cast<double> (nn_indices.size ());
 
@@ -191,8 +191,8 @@ namespace pcl
             n3d.setInputCloud (out);
             n3d.setRadiusSearch (radius);
             n3d.setKSearch (0);
-            //n3d.setMaxDepthChangeFactor(0.02f);
-            //n3d.setNormalSmoothingSize(15.0f);
+            //n3d.setMaxDepthChangeFactor(0.02);
+            //n3d.setNormalSmoothingSize(15.0);
             {
               pcl::ScopeTime t ("compute normals...");
               n3d.compute (*normals);

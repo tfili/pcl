@@ -57,7 +57,7 @@ pcl::gpu::kinfuLS::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resoluti
 
   volume_.create (volume_y * volume_z, volume_x);
   
-  const Vector3d default_volume_size = Vector3d::Constant (3.f); //meters
+  const Vector3d default_volume_size = Vector3d::Constant (3.); //meters
   const double    default_tranc_dist  = 0.03f; //meters
 
   setSize(default_volume_size);
@@ -85,7 +85,7 @@ pcl::gpu::kinfuLS::TsdfVolume::setTsdfTruncDist (double distance)
   double cy = size_(1) / resolution_(1);
   double cz = size_(2) / resolution_(2);
 
-  tranc_dist_ = std::max (distance, 2.1f * std::max (cx, std::max (cy, cz)));  
+  tranc_dist_ = std::max (distance, 2.1 * std::max (cx, std::max (cy, cz)));  
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
         if (W == 0 || F == DIVISOR)
           continue;
 
-        Vector3d V = ((Array3d(x, y, z) + 0.5f) * cell_size).matrix ();
+        Vector3d V = ((Array3d(x, y, z) + 0.5) * cell_size).matrix ();
 
         if (connected26)
         {
@@ -199,7 +199,7 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
+                Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5) * cell_size).matrix ();
                 Vector3d point = (V * abs (Fn) + Vn * abs (F)) / (abs (F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
@@ -223,7 +223,7 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
+                Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5) * cell_size).matrix ();
                 Vector3d point = (V * abs(Fn) + Vn * abs(F))/(abs(F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
@@ -255,7 +255,7 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
 
             if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
             {
-              Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
+              Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5) * cell_size).matrix ();
               Vector3d point = (V * abs (Fn) + Vn * abs (F)) / (abs (F) + abs (Fn));
 
               pcl::PointXYZ xyz;

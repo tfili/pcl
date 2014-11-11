@@ -56,13 +56,13 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
   std::vector < std::vector<int> > yaw_pitch_bins;
   std::vector < std::vector<std::vector<std::string> > > image_files_per_bin;
 
-  double res_yaw = 15.f;
+  double res_yaw = 15.;
   double res_pitch = res_yaw;
   int min_yaw = -75;
   int min_pitch = -60;
 
-  int num_yaw = static_cast<int>((std::abs (min_yaw) * 2) / static_cast<int>(res_yaw + 1.f));
-  int num_pitch = static_cast<int>((std::abs (min_pitch) * 2) / static_cast<int>(res_pitch + 1.f));
+  int num_yaw = static_cast<int>((std::abs (min_yaw) * 2) / static_cast<int>(res_yaw + 1.));
+  int num_pitch = static_cast<int>((std::abs (min_pitch) * 2) / static_cast<int>(res_pitch + 1.));
 
   yaw_pitch_bins.resize (num_yaw);
   image_files_per_bin.resize (num_yaw);
@@ -96,7 +96,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     if (result)
     {
       Eigen::Vector3d ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
-      ea *= 57.2957795f; //transform it to degrees to do the binning
+      ea *= 57.2957795; //transform it to degrees to do the binning
       int y = static_cast<int>(pcl_round ((ea[0] + static_cast<double>(std::abs (min_yaw))) / res_yaw));
       int p = static_cast<int>(pcl_round ((ea[1] + static_cast<double>(std::abs (min_pitch))) / res_pitch));
 
@@ -336,14 +336,14 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     for (int jjj = 0; jjj < static_cast<int>(cloud->points.size()); jjj++)
     {
       cloud_intensity->points[jjj].getVector4dMap() = cloud->points[jjj].getVector4dMap();
-      cloud_intensity->points[jjj].intensity = 0.f;
+      cloud_intensity->points[jjj].intensity = 0.;
       int row, col;
       col = jjj % cloud->width;
       row = jjj / cloud->width;
       //std::cout << row << " " << col << std::endl;
       if (check_inside(col, row, min_col, max_col, min_row, max_row))
       {
-        cloud_intensity->points[jjj].intensity = 1.f;
+        cloud_intensity->points[jjj].intensity = 1.;
       }
     }
 
@@ -387,7 +387,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
             continue;
 
           //reject patches with more than percent invalid values
-          double percent = 0.5f;
+          double percent = 0.5;
           if (static_cast<double>(integral_image_depth->getFiniteElementsCount (col, row, w_size_, w_size_)) < (percent * static_cast<double>(w_size_ * w_size_)))
             continue;
 
@@ -431,9 +431,9 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
         te.wsize_ = w_size_;
 
         te.trans_ = center_point.getVector3dMap () - patch_center_point.getVector3dMap ();
-        te.trans_ *= 1000.f; //transform it to milimiters
+        te.trans_ *= 1000.; //transform it to milimiters
         te.rot_ = ea;
-        te.rot_ *= 57.2957795f; //transform it to degrees
+        te.rot_ *= 57.2957795; //transform it to degrees
 
         labels.push_back (1);
         pos_extracted++;
@@ -446,7 +446,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
         {
           for (int iii = row; iii < (row + w_size_); iii++)
           {
-            cloud_intensity2->at(jjj, iii).intensity = 2.f;
+            cloud_intensity2->at(jjj, iii).intensity = 2.;
           }
         }
 
@@ -495,7 +495,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
         {
           for (int iii = row; iii < (row + w_size_); iii++)
           {
-            cloud_intensity2->at(jjj, iii).intensity = 2.f;
+            cloud_intensity2->at(jjj, iii).intensity = 2.;
           }
         }
 

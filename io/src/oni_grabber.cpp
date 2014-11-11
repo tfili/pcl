@@ -314,7 +314,7 @@ ONIGrabber::imageDepthImageCallback(const boost::shared_ptr<openni_wrapper::Imag
 
   if (image_depth_image_signal_->num_slots() > 0)
   {
-    double constant = 1.0f / device_->getDepthFocalLength(depth_width_);
+    double constant = 1.0 / device_->getDepthFocalLength(depth_width_);
     image_depth_image_signal_->operator()(image, depth_image, constant);
   }
 }
@@ -329,7 +329,7 @@ ONIGrabber::irDepthImageCallback(const boost::shared_ptr<openni_wrapper::IRImage
 
   if (ir_depth_image_signal_->num_slots() > 0)
   {
-    double constant = 1.0f / device_->getDepthFocalLength(depth_width_);
+    double constant = 1.0 / device_->getDepthFocalLength(depth_width_);
     ir_depth_image_signal_->operator()(ir_image, depth_image, constant);
   }
 }
@@ -347,7 +347,7 @@ ONIGrabber::convertToXYZPointCloud(const boost::shared_ptr<openni_wrapper::Depth
 
   cloud->points.resize (cloud->height * cloud->width);
 
-  register double constant = 1.0f / device_->getDepthFocalLength (depth_width_);
+  register double constant = 1.0 / device_->getDepthFocalLength (depth_width_);
 
   if (device_->isDepthRegistered ())
     cloud->header.frame_id = rgb_frame_id_;
@@ -390,7 +390,7 @@ ONIGrabber::convertToXYZPointCloud(const boost::shared_ptr<openni_wrapper::Depth
         pt.x = pt.y = pt.z = bad_point;
         continue;
       }
-      pt.z = depth_map[depth_idx] * 0.001f;
+      pt.z = depth_map[depth_idx] * 0.001;
       pt.x = static_cast<double> (u) * pt.z * constant;
       pt.y = static_cast<double> (v) * pt.z * constant;
     }
@@ -416,7 +416,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr ONIGrabber::convertToXYZRGBPointCloud (
 
   cloud->points.resize(cloud->height * cloud->width);
 
-  double constant = 1.0f / device_->getImageFocalLength(cloud->width);
+  double constant = 1.0 / device_->getImageFocalLength(cloud->width);
   register int centerX = (cloud->width >> 1);
   int centerY = (cloud->height >> 1);
 
@@ -467,7 +467,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr ONIGrabber::convertToXYZRGBPointCloud (
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f;
+        pt.z = depth_map[depth_idx] * 0.001;
         pt.x = static_cast<double> (u) * pt.z * constant;
         pt.y = static_cast<double> (v) * pt.z * constant;
       }
@@ -500,7 +500,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr ONIGrabber::convertToXYZRGBAPointCloud (
 
   cloud->points.resize(cloud->height * cloud->width);
 
-  double constant = 1.0f / device_->getImageFocalLength(cloud->width);
+  double constant = 1.0 / device_->getImageFocalLength(cloud->width);
   register int centerX = (cloud->width >> 1);
   int centerY = (cloud->height >> 1);
 
@@ -551,7 +551,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr ONIGrabber::convertToXYZRGBAPointCloud (
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f;
+        pt.z = depth_map[depth_idx] * 0.001;
         pt.x = static_cast<double> (u) * pt.z * constant;
         pt.y = static_cast<double> (v) * pt.z * constant;
       }
@@ -579,7 +579,7 @@ pcl::PointCloud<pcl::PointXYZI>::Ptr ONIGrabber::convertToXYZIPointCloud(const b
 
   cloud->points.resize(cloud->height * cloud->width);
 
-  double constant = 1.0f / device_->getImageFocalLength(cloud->width);
+  double constant = 1.0 / device_->getImageFocalLength(cloud->width);
   register int centerX = (cloud->width >> 1);
   int centerY = (cloud->height >> 1);
 
@@ -624,7 +624,7 @@ pcl::PointCloud<pcl::PointXYZI>::Ptr ONIGrabber::convertToXYZIPointCloud(const b
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f;
+        pt.z = depth_map[depth_idx] * 0.001;
         pt.x = static_cast<double> (u) * pt.z * constant;
         pt.y = static_cast<double> (v) * pt.z * constant;
       }

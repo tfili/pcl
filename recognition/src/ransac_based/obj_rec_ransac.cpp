@@ -46,15 +46,15 @@ using namespace pcl::common;
 pcl::recognition::ObjRecRANSAC::ObjRecRANSAC (double pair_width, double voxel_size)
 : pair_width_ (pair_width),
   voxel_size_ (voxel_size),
-  position_discretization_ (5.0f*voxel_size_),
-  rotation_discretization_ (5.0f*AUX_DEG_TO_RADIANS),
-  abs_zdist_thresh_ (1.5f*voxel_size_),
-  relative_obj_size_ (0.05f),
+  position_discretization_ (5.0*voxel_size_),
+  rotation_discretization_ (5.0*AUX_DEG_TO_RADIANS),
+  abs_zdist_thresh_ (1.5*voxel_size_),
+  relative_obj_size_ (0.05),
   visibility_ (0.2f),
   relative_num_of_illegal_pts_ (0.02f),
   intersection_fraction_ (0.03f),
-  max_coplanarity_angle_ (3.0f*AUX_DEG_TO_RADIANS),
-  scene_bounds_enlargement_factor_ (0.25f), // 25% enlargement
+  max_coplanarity_angle_ (3.0*AUX_DEG_TO_RADIANS),
+  scene_bounds_enlargement_factor_ (0.25), // 25% enlargement
   ignore_coplanar_opps_ (true),
   frac_of_points_for_icp_refinement_ (0.3f),
   do_icp_hypotheses_refinement_ (true),
@@ -85,7 +85,7 @@ pcl::recognition::ObjRecRANSAC::recognize (const PointCloudIn& scene, const Poin
   {
     // Build the ICP instance with the scene points as the target
     trimmed_icp_.init (scene_octree_points_);
-    trimmed_icp_.setNewToOldEnergyRatio (0.99f);
+    trimmed_icp_.setNewToOldEnergyRatio (0.99);
   }
 
   if ( success_probability >= 1.0 )
@@ -336,7 +336,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
 #ifdef OBJ_REC_RANSAC_VERBOSE
   printf("ObjRecRANSAC::%s(): done\n  testing the cluster representatives ...\n", __func__); fflush (stdout);
   // These are some variables needed when printing the recognition progress
-  double progress_factor = 100.0f/static_cast<double> (transform_space.getNumberOfOccupiedRotationSpaces ());
+  double progress_factor = 100.0/static_cast<double> (transform_space.getNumberOfOccupiedRotationSpaces ());
   int num_done = 0;
 #endif
 
@@ -345,7 +345,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
   {
     const map<string, ModelLibrary::Model*>& models = model_library_.getModels ();
     Hypothesis best_hypothesis;
-    best_hypothesis.match_confidence_ = 0.0f;
+    best_hypothesis.match_confidence_ = 0.0;
 
     // For each model in the library
     for ( map<string, ModelLibrary::Model*>::const_iterator model = models.begin () ; model != models.end () ; ++model )
@@ -363,7 +363,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
       // For better code readability
       double num_full_leaves = static_cast<double> (hypothesis.obj_model_->getOctree ().getFullLeaves ().size ());
       double match_thresh = num_full_leaves*visibility_;
-      int penalty_thresh = static_cast<int> (num_full_leaves*relative_num_of_illegal_pts_ + 0.5f);
+      int penalty_thresh = static_cast<int> (num_full_leaves*relative_num_of_illegal_pts_ + 0.5);
 
       // Check if this hypothesis is OK
       if ( int_match >= match_thresh && penalty <= penalty_thresh )
@@ -388,7 +388,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
       }
     }
 
-    if ( best_hypothesis.match_confidence_ > 0.0f )
+    if ( best_hypothesis.match_confidence_ > 0.0 )
     {
       const double *c = (*rs_it)->getCenter ();
       HypothesisOctree::Node* node = grouped_hypotheses.createLeaf (c[0], c[1], c[2]);
@@ -399,7 +399,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
 
 #ifdef OBJ_REC_RANSAC_VERBOSE
     // Update the progress
-    printf ("\r  %.1f%% ", (static_cast<double> (++num_done))*progress_factor); fflush (stdout);
+    printf ("\r  %.1%% ", (static_cast<double> (++num_done))*progress_factor); fflush (stdout);
 #endif
   }
 
@@ -655,7 +655,7 @@ pcl::recognition::ObjRecRANSAC::testHypothesis (Hypothesis* hypothesis, int& mat
 inline void
 pcl::recognition::ObjRecRANSAC::testHypothesisNormalBased (Hypothesis* hypothesis, double& match) const
 {
-  match = 0.0f;
+  match = 0.0;
 
   // For better code readability
   const std::vector<ORROctree::Node*>& full_model_leaves = hypothesis->obj_model_->getOctree ().getFullLeaves ();

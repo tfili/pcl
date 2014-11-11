@@ -149,12 +149,12 @@ void display_depth_image (const double* depth_buffer, int width, int height)
 
   for (int i = 0; i < npixels; ++i)
   {
-    double zn = 0.7f;
-    double zf = 20.0f;
+    double zn = 0.7;
+    double zf = 20.0;
     double d = depth_buffer[i];
     double z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
-    double b = 0.075f;
-    double f = 580.0f;
+    double b = 0.075;
+    double f = 580.0;
     uint16_t kd = static_cast<uint16_t>(1090 - b*f/z*8);
     if (kd < 0) kd = 0;
     else if (kd > 2047) kd = 2047;
@@ -598,7 +598,7 @@ main (int argc, char** argv)
   for (i=0; i<2048; i++)
   {
     double v = i/2048.0;
-    v = powf(v, 3)* 6;
+    v = pow(v, 3)* 6;
     t_gamma[i] = v*6*256;
   }  
 

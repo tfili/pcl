@@ -343,9 +343,9 @@ private:
       Eigen::Vector3d voxel_min, voxel_max;
       octree.getVoxelBounds(tree_it, voxel_min, voxel_max);
 
-      pt.x = (voxel_min.x() + voxel_max.x()) / 2.0f;
-      pt.y = (voxel_min.y() + voxel_max.y()) / 2.0f;
-      pt.z = (voxel_min.z() + voxel_max.z()) / 2.0f;
+      pt.x = (voxel_min.x() + voxel_max.x()) / 2.0;
+      pt.y = (voxel_min.y() + voxel_max.y()) / 2.0;
+      pt.z = (voxel_min.z() + voxel_max.z()) / 2.0;
       displayCloud->points.push_back(pt);
     }
 

@@ -116,7 +116,7 @@ namespace pcl
             * \param[in] max_icp_distance Maximal distance, higher values are reset to zero (means no measurement). 
             */
           void
-          setDepthTruncationForICP (double max_icp_distance = 0.f);
+          setDepthTruncationForICP (double max_icp_distance = 0.);
 
           /** \brief Sets ICP filtering parameters.
             * \param[in] distThreshold distance.
@@ -126,11 +126,11 @@ namespace pcl
           setIcpCorespFilteringParams (double distThreshold, double sineOfAngle);
           
           /** \brief Sets integration threshold. TSDF volume is integrated iff a camera movement metric exceedes the threshold value. 
-            * The metric represents the following: M = (rodrigues(Rotation).norm() + alpha*translation.norm())/2, where alpha = 1.f (hardcoded constant)
+            * The metric represents the following: M = (rodrigues(Rotation).norm() + alpha*translation.norm())/2, where alpha = 1. (hardcoded constant)
             * \param[in] threshold a value to compare with the metric. Suitable values are ~0.001          
             */
           void
-          setCameraMovementThreshold(double threshold = 0.001f);
+          setCameraMovementThreshold(double threshold = 0.001);
 
           /** \brief Performs initialization for color integration. Must be called before calling color integration. 
             * \param[in] max_weight max weighe for color integration. -1 means default weight.

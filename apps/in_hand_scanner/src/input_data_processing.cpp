@@ -49,19 +49,19 @@
 pcl::ihs::InputDataProcessing::InputDataProcessing ()
   : normal_estimation_ (new NormalEstimation ()),
 
-    x_min_ (-15.f),
-    x_max_ ( 15.f),
-    y_min_ (-15.f),
-    y_max_ ( 15.f),
-    z_min_ ( 48.f),
-    z_max_ ( 70.f),
+    x_min_ (-15.),
+    x_max_ ( 15.),
+    y_min_ (-15.),
+    y_max_ ( 15.),
+    z_min_ ( 48.),
+    z_max_ ( 70.),
 
-    h_min_ (210.f),
-    h_max_ (270.f),
-    s_min_ (  0.2f),
-    s_max_ (  1.f),
-    v_min_ (  0.2f),
-    v_max_ (  1.f),
+    h_min_ (210.),
+    h_max_ (270.),
+    s_min_ (  0.2),
+    s_max_ (  1.),
+    v_min_ (  0.2),
+    v_max_ (  1.),
 
     hsv_inverted_ (false),
     hsv_enabled_ (true),
@@ -71,8 +71,8 @@ pcl::ihs::InputDataProcessing::InputDataProcessing ()
 {
   // Normal estimation
   normal_estimation_->setNormalEstimationMethod (NormalEstimation::AVERAGE_3D_GRADIENT);
-  normal_estimation_->setMaxDepthChangeFactor (0.02f); // in meters
-  normal_estimation_->setNormalSmoothingSize (10.0f);
+  normal_estimation_->setMaxDepthChangeFactor (0.02); // in meters
+  normal_estimation_->setNormalSmoothingSize (10.0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,12 +109,12 @@ pcl::ihs::InputDataProcessing::segment (const CloudXYZRGBAConstPtr& cloud_in,
   MatrixXb hsv_mask (height, width);
 
   // cm -> m for the comparison
-  const double x_min = .01f * x_min_;
-  const double x_max = .01f * x_max_;
-  const double y_min = .01f * y_min_;
-  const double y_max = .01f * y_max_;
-  const double z_min = .01f * z_min_;
-  const double z_max = .01f * z_max_;
+  const double x_min = .01 * x_min_;
+  const double x_max = .01 * x_max_;
+  const double y_min = .01 * y_min_;
+  const double y_max = .01 * y_max_;
+  const double z_min = .01 * z_min_;
+  const double z_max = .01 * z_max_;
 
   double h, s, v;
   for (MatrixXb::Index r=0; r<xyz_mask.rows (); ++r)
@@ -172,7 +172,7 @@ pcl::ihs::InputDataProcessing::segment (const CloudXYZRGBAConstPtr& cloud_in,
         normal = (*cloud_normals) [r*width + c];
 
         // m -> cm
-        xyzrgb.getVector3dMap () = 100.f * xyzrgb.getVector3dMap ();
+        xyzrgb.getVector3dMap () = 100. * xyzrgb.getVector3dMap ();
 
         if (hsv_mask (r, c))
         {
@@ -241,16 +241,16 @@ pcl::ihs::InputDataProcessing::calculateNormals (const CloudXYZRGBAConstPtr& clo
   PointXYZRGBNormal invalid_pt;
   invalid_pt.x        = invalid_pt.y        = invalid_pt.z        = std::numeric_limits <double>::quiet_NaN ();
   invalid_pt.normal_x = invalid_pt.normal_y = invalid_pt.normal_z = std::numeric_limits <double>::quiet_NaN ();
-  invalid_pt.data   [3] = 1.f;
-  invalid_pt.data_n [3] = 0.f;
+  invalid_pt.data   [3] = 1.;
+  invalid_pt.data_n [3] = 0.;
 
   for (; it_in!=cloud_in->end (); ++it_in, ++it_n, ++it_out)
   {
     if (!boost::math::isnan (it_n->getNormalVector4dMap ()))
     {
       // m -> cm
-      it_out->getVector4dMap ()       = 100.f * it_in->getVector4dMap ();
-      it_out->data [3]                = 1.f;
+      it_out->getVector4dMap ()       = 100. * it_in->getVector4dMap ();
+      it_out->data [3]                = 1.;
       it_out->rgba                    = it_in->rgba;
       it_out->getNormalVector4dMap () = it_n->getNormalVector4dMap ();
     }
@@ -331,12 +331,12 @@ pcl::ihs::InputDataProcessing::RGBToHSV (const unsigned char r,
   const unsigned char max = std::max (r, std::max (g, b));
   const unsigned char min = std::min (r, std::min (g, b));
 
-  v = static_cast <double> (max) / 255.f;
+  v = static_cast <double> (max) / 255.;
 
   if (max == 0) // division by zero
   {
-    s = 0.f;
-    h = 0.f; // h = -1.f;
+    s = 0.;
+    h = 0.; // h = -1.;
     return;
   }
 
@@ -349,11 +349,11 @@ pcl::ihs::InputDataProcessing::RGBToHSV (const unsigned char r,
     return;
   }
 
-  if      (max == r) h = 60.f * (      static_cast <double> (g - b) / diff);
-  else if (max == g) h = 60.f * (2.f + static_cast <double> (b - r) / diff);
-  else               h = 60.f * (4.f + static_cast <double> (r - g) / diff); // max == b
+  if      (max == r) h = 60. * (      static_cast <double> (g - b) / diff);
+  else if (max == g) h = 60. * (2. + static_cast <double> (b - r) / diff);
+  else               h = 60. * (4. + static_cast <double> (r - g) / diff); // max == b
 
-  if (h < 0.f) h += 360.f;
+  if (h < 0.) h += 360.;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

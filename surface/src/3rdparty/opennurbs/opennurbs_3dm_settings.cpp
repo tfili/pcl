@@ -752,8 +752,8 @@ void ON_3dmAnnotationSettings::Default()
 
   m_facename.Destroy(); // [LF_FACESIZE] // windows font name
 
-  m_world_view_text_scale = 1.0f;
-  m_world_view_hatch_scale = 1.0f;
+  m_world_view_text_scale = 1.0;
+  m_world_view_hatch_scale = 1.0;
   m_bEnableAnnotationScaling = 1;
   m_bEnableHatchScaling = 1;
 }

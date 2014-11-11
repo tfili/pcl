@@ -212,7 +212,7 @@ namespace pcl
 
         /** \brief Growing algorithm (TODO: under construction) */
         ON_NurbsSurface
-        grow (double max_dist = 1.0f, double max_angle = M_PI_4, unsigned min_length = 0, unsigned max_length = 10);
+        grow (double max_dist = 1.0, double max_angle = M_PI_4, unsigned min_length = 0, unsigned max_length = 10);
 
         /** \brief Convert point-cloud */
         static unsigned

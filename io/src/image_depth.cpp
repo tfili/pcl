@@ -245,7 +245,7 @@ pcl::io::DepthImage::fillDepthImage (unsigned width, unsigned height, double* de
         *depth_buffer = bad_point;
       else
       {
-        *depth_buffer = static_cast<unsigned short>( pixel ) * 0.001f;  // millimeters to meters
+        *depth_buffer = static_cast<unsigned short>( pixel ) * 0.001;  // millimeters to meters
       }
     }
     // if we have padding
@@ -277,7 +277,7 @@ pcl::io::DepthImage::fillDisparityImage (unsigned width, unsigned height, double
   // Fill in the depth image data
   // iterate over all elements and fill disparity matrix: disp[x,y] = f * b / z_distance[x,y];
   // focal length is for the native image resolution -> focal_length = focal_length_ / xStep;
-  double constant = focal_length_ * baseline_ * 1000.0f / static_cast<double> (xStep);
+  double constant = focal_length_ * baseline_ * 1000.0 / static_cast<double> (xStep);
 
   const unsigned short* inputBuffer = static_cast<const unsigned short*> (wrapper_->getData ());
 

@@ -56,7 +56,7 @@ typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
 std::string default_method = "open";
-double default_resolution = 1.0f;
+double default_resolution = 1.0;
 
 void
 printHelp (int, char **argv)

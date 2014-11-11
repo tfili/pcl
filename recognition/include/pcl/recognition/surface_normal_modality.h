@@ -190,29 +190,29 @@ namespace pcl
       const int nr_normals = 8;
 	    pcl::PointCloud<PointXYZ>::VectorType ref_normals (nr_normals);
       
-      const double normal0_angle = 40.0f * 3.14f / 180.0f;
-      ref_normals[0].x = cosf (normal0_angle);
-      ref_normals[0].y = 0.0f;
-      ref_normals[0].z = -sinf (normal0_angle);
+      const double normal0_angle = 40.0 * 3.14f / 180.0;
+      ref_normals[0].x = cos (normal0_angle);
+      ref_normals[0].y = 0.0;
+      ref_normals[0].z = -sin (normal0_angle);
 
-      const double inv_nr_normals = 1.0f / static_cast<double> (nr_normals);
+      const double inv_nr_normals = 1.0 / static_cast<double> (nr_normals);
       for (int normal_index = 1; normal_index < nr_normals; ++normal_index)
       {
-        const double angle = 2.0f * static_cast<double> (M_PI * normal_index * inv_nr_normals);
+        const double angle = 2.0 * static_cast<double> (M_PI * normal_index * inv_nr_normals);
 
-        ref_normals[normal_index].x = cosf (angle) * ref_normals[0].x - sinf (angle) * ref_normals[0].y;
-        ref_normals[normal_index].y = sinf (angle) * ref_normals[0].x + cosf (angle) * ref_normals[0].y;
+        ref_normals[normal_index].x = cos (angle) * ref_normals[0].x - sin (angle) * ref_normals[0].y;
+        ref_normals[normal_index].y = sin (angle) * ref_normals[0].x + cos (angle) * ref_normals[0].y;
         ref_normals[normal_index].z = ref_normals[0].z;
       }
 
       // normalize normals
       for (int normal_index = 0; normal_index < nr_normals; ++normal_index)
       {
-        const double length = sqrtf (ref_normals[normal_index].x * ref_normals[normal_index].x +
+        const double length = sqrt (ref_normals[normal_index].x * ref_normals[normal_index].x +
                                     ref_normals[normal_index].y * ref_normals[normal_index].y +
                                     ref_normals[normal_index].z * ref_normals[normal_index].z);
 
-        const double inv_length = 1.0f / length;
+        const double inv_length = 1.0 / length;
 
         ref_normals[normal_index].x *= inv_length;
         ref_normals[normal_index].y *= inv_length;
@@ -229,14 +229,14 @@ namespace pcl
             PointXYZ normal (static_cast<double> (x_index - range_x/2), 
                              static_cast<double> (y_index - range_y/2), 
                              static_cast<double> (z_index - range_z));
-            const double length = sqrtf (normal.x*normal.x + normal.y*normal.y + normal.z*normal.z);
-            const double inv_length = 1.0f / (length + 0.00001f);
+            const double length = sqrt (normal.x*normal.x + normal.y*normal.y + normal.z*normal.z);
+            const double inv_length = 1.0 / (length + 0.00001);
 
             normal.x *= inv_length;
             normal.y *= inv_length;
             normal.z *= inv_length;
 
-            double max_response = -1.0f;
+            double max_response = -1.0;
             int max_index = -1;
 
             for (int normal_index = 0; normal_index < nr_normals; ++normal_index)
@@ -300,7 +300,7 @@ namespace pcl
       struct Candidate
       {
         /** \brief Constructor. */
-        Candidate () : normal (), distance (0.0f), bin_index (0), x (0), y (0) {}
+        Candidate () : normal (), distance (0.0), bin_index (0), x (0), y (0) {}
 
         /** \brief Normal. */
         Normal normal;
@@ -491,8 +491,8 @@ template <typename PointInT>
 pcl::SurfaceNormalModality<PointInT>::
 SurfaceNormalModality ()
   : variable_feature_nr_ (false)
-  , feature_distance_threshold_ (2.0f)
-  , min_distance_to_border_ (2.0f)
+  , feature_distance_threshold_ (2.0)
+  , min_distance_to_border_ (2.0)
   , normal_lookup_ ()
   , spreading_size_ (8)
   , surface_normals_ ()
@@ -546,8 +546,8 @@ pcl::SurfaceNormalModality<PointInT>::computeSurfaceNormals ()
 {
   // compute surface normals
   pcl::LinearLeastSquaresNormalEstimation<PointInT, pcl::Normal> ne;
-  ne.setMaxDepthChangeFactor(0.05f);
-  ne.setNormalSmoothingSize(5.0f);
+  ne.setMaxDepthChangeFactor(0.05);
+  ne.setNormalSmoothingSize(5.0);
   ne.setDepthDependentSmoothing(false);
   ne.setInputCloud (input_);
   ne.compute (surface_normals_);
@@ -559,8 +559,8 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals ()
 {
   // compute surface normals
   //pcl::LinearLeastSquaresNormalEstimation<PointInT, pcl::Normal> ne;
-  //ne.setMaxDepthChangeFactor(0.05f);
-  //ne.setNormalSmoothingSize(5.0f);
+  //ne.setMaxDepthChangeFactor(0.05);
+  //ne.setNormalSmoothingSize(5.0);
   //ne.setDepthDependentSmoothing(false);
   //ne.setInputCloud (input_);
   //ne.compute (surface_normals_);
@@ -600,7 +600,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals ()
       const double py = input_->points[index].y;
       const double pz = input_->points[index].z;
 
-      if (pcl_isnan(px) || pz > 2.0f) 
+      if (pcl_isnan(px) || pz > 2.0) 
       {
         surface_normals_.points[index].normal_x = bad_point;
         surface_normals_.points[index].normal_y = bad_point;
@@ -614,12 +614,12 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals ()
 
       const int smoothingSizeInt = 5;
 
-      double matA0 = 0.0f;
-      double matA1 = 0.0f;
-      double matA3 = 0.0f;
+      double matA0 = 0.0;
+      double matA1 = 0.0;
+      double matA3 = 0.0;
 
-      double vecb0 = 0.0f;
-      double vecb1 = 0.0f;
+      double vecb0 = 0.0;
+      double vecb1 = 0.0;
 
       for (int v = y - smoothingSizeInt; v <= y + smoothingSizeInt; v += smoothingSizeInt)
       {
@@ -639,7 +639,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals ()
           const double i = qx - px;
           const double j = qy - py;
 
-          const double f = fabs(delta) < 0.05f ? 1.0f : 0.0f;
+          const double f = fabs(delta) < 0.05 ? 1.0 : 0.0;
 
           matA0 += f * i * i;
           matA1 += f * i * j;
@@ -659,7 +659,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals ()
 
       const double length = nx * nx + ny * ny + nz * nz;
 
-      if (length <= 0.0f)
+      if (length <= 0.0)
       {
         surface_normals_.points[index].normal_x = bad_point;
         surface_normals_.points[index].normal_y = bad_point;
@@ -670,7 +670,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals ()
       }
       else
       {
-        const double normInv = 1.0f / sqrtf (length);
+        const double normInv = 1.0 / sqrt (length);
 
         const double normal_x = nx * normInv;
         const double normal_y = ny * normInv;
@@ -681,12 +681,12 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals ()
         surface_normals_.points[index].normal_z = normal_z;
         surface_normals_.points[index].curvature = bad_point;
 
-        double angle = 11.25f + atan2 (normal_y, normal_x)*180.0f/3.14f;
+        double angle = 11.25 + atan2 (normal_y, normal_x)*180.0/3.14f;
 
-        if (angle < 0.0f) angle += 360.0f;
-        if (angle >= 360.0f) angle -= 360.0f;
+        if (angle < 0.0) angle += 360.0;
+        if (angle >= 360.0) angle -= 360.0;
 
-        int bin_index = static_cast<int> (angle*8.0f/360.0f) & 7;
+        int bin_index = static_cast<int> (angle*8.0/360.0) & 7;
 
         quantized_surface_normals_ (x, y) = static_cast<unsigned char> (bin_index);
       }
@@ -730,7 +730,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals2 ()
   unsigned char * lp_normals = new unsigned char[width*height];
   memset (lp_normals, 0, width*height);
 
-  surface_normal_orientations_.resize (width, height, 0.0f);
+  surface_normal_orientations_.resize (width, height, 0.0);
 
   for (int row_index = 0; row_index < height; ++row_index)
   {
@@ -739,7 +739,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals2 ()
       const double value = input_->points[row_index*width + col_index].z;
       if (pcl_isfinite (value))
       {
-        lp_depth[row_index*width + col_index] = static_cast<unsigned short> (value * 1000.0f);
+        lp_depth[row_index*width + col_index] = static_cast<unsigned short> (value * 1000.0);
       }
       else
       {
@@ -835,7 +835,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals2 ()
         //  //b[1] += fj * delta;
 
 
-        //  const double delta = 1000.0f * (input_->points[(l_y * l_W + l_r) + l_x + offsets[index]].z - l_d);
+        //  const double delta = 1000.0 * (input_->points[(l_y * l_W + l_r) + l_x + offsets[index]].z - l_d);
         //  const double i = offsets_i[index];
         //  const double j = offsets_j[index];
         //  //const double i = input_->points[(l_y * l_W + l_r) + l_x + offsets[index]].x - px;//offsets_i[index];
@@ -844,7 +844,7 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals2 ()
         //  double * b = l_b;
         //  const double threshold = difference_threshold;
 
-        //  const double f = std::fabs(delta) < threshold ? 1.0f : 0.0f;
+        //  const double f = std::fabs(delta) < threshold ? 1.0 : 0.0;
 
         //  const double fi = f * i;
         //  const double fj = f * j;
@@ -886,27 +886,27 @@ pcl::SurfaceNormalModality<PointInT>::computeAndQuantizeSurfaceNormals2 ()
 
         ///// @todo Magic number 1150 is focal length? This is something like
         ///// f in SXGA mode, but in VGA is more like 530.
-        //const double dummy_focal_length = 1150.0f;
+        //const double dummy_focal_length = 1150.0;
         //double l_nx = l_ddx * dummy_focal_length;
         //double l_ny = l_ddy * dummy_focal_length;
         //double l_nz = -l_det * l_d;
 
-        double l_sqrt = sqrtf (l_nx * l_nx + l_ny * l_ny + l_nz * l_nz);
+        double l_sqrt = sqrt (l_nx * l_nx + l_ny * l_ny + l_nz * l_nz);
 
         if (l_sqrt > 0)
         {
-          double l_norminv = 1.0f / (l_sqrt);
+          double l_norminv = 1.0 / (l_sqrt);
 
           l_nx *= l_norminv;
           l_ny *= l_norminv;
           l_nz *= l_norminv;
 
-          double angle = 22.5f + atan2f (l_ny, l_nx) * 180.0f / 3.14f;
+          double angle = 22.5 + atan2 (l_ny, l_nx) * 180.0 / 3.14f;
 
-          if (angle < 0.0f) angle += 360.0f;
-          if (angle >= 360.0f) angle -= 360.0f;
+          if (angle < 0.0) angle += 360.0;
+          if (angle >= 360.0) angle -= 360.0;
 
-          int bin_index = static_cast<int> (angle*8.0f/360.0f) & 7;
+          int bin_index = static_cast<int> (angle*8.0/360.0) & 7;
 
           surface_normal_orientations_ (l_x, l_y) = angle;
 
@@ -1072,7 +1072,7 @@ pcl::SurfaceNormalModality<PointInT>::extractFeatures (const MaskMap & mask,
   }
 
   for (typename std::list<Candidate>::iterator iter = list1.begin (); iter != list1.end (); ++iter)
-    iter->distance *= 1.0f / weights[iter->bin_index];
+    iter->distance *= 1.0 / weights[iter->bin_index];
 
   list1.sort ();
 
@@ -1343,7 +1343,7 @@ pcl::SurfaceNormalModality<PointInT>::extractAllFeatures (
   }
 
   for (typename std::list<Candidate>::iterator iter = list1.begin (); iter != list1.end (); ++iter)
-    iter->distance *= 1.0f / weights[iter->bin_index];
+    iter->distance *= 1.0 / weights[iter->bin_index];
 
   list1.sort ();
 
@@ -1387,12 +1387,12 @@ pcl::SurfaceNormalModality<PointInT>::quantizeSurfaceNormals ()
       //quantized_surface_normals_.data[row_index*width+col_index] =
       //  normal_lookup_(normal_x, normal_y, normal_z);
 
-      double angle = 11.25f + atan2f (normal_y, normal_x)*180.0f/3.14f;
+      double angle = 11.25 + atan2 (normal_y, normal_x)*180.0/3.14f;
 
-      if (angle < 0.0f) angle += 360.0f;
-      if (angle >= 360.0f) angle -= 360.0f;
+      if (angle < 0.0) angle += 360.0;
+      if (angle >= 360.0) angle -= 360.0;
 
-      int bin_index = static_cast<int> (angle*8.0f/360.0f);
+      int bin_index = static_cast<int> (angle*8.0/360.0);
 
       //quantized_surface_normals_.data[row_index*width+col_index] = 0x1 << bin_index;
       quantized_surface_normals_ (col_index, row_index) = static_cast<unsigned char> (bin_index);
@@ -1590,7 +1590,7 @@ pcl::SurfaceNormalModality<PointInT>::computeDistanceMap (const MaskMap & input,
   for (size_t index = 0; index < width*height; ++index)
   {
     if (mask_map[index] == 0)
-      distance_map[index] = 0.0f;
+      distance_map[index] = 0.0;
     else
       distance_map[index] = static_cast<double> (width + height);
   }
@@ -1603,9 +1603,9 @@ pcl::SurfaceNormalModality<PointInT>::computeDistanceMap (const MaskMap & input,
     for (size_t ci = 1; ci < width; ++ci)
     {
       const double up_left  = previous_row [ci - 1] + 1.4f; //distance_map[(ri-1)*input_->width + ci-1] + 1.4f;
-      const double up       = previous_row [ci]     + 1.0f; //distance_map[(ri-1)*input_->width + ci] + 1.0f;
+      const double up       = previous_row [ci]     + 1.0; //distance_map[(ri-1)*input_->width + ci] + 1.0;
       const double up_right = previous_row [ci + 1] + 1.4f; //distance_map[(ri-1)*input_->width + ci+1] + 1.4f;
-      const double left     = current_row  [ci - 1] + 1.0f; //distance_map[ri*input_->width + ci-1] + 1.0f;
+      const double left     = current_row  [ci - 1] + 1.0; //distance_map[ri*input_->width + ci-1] + 1.0;
       const double center   = current_row  [ci];            //distance_map[ri*input_->width + ci];
 
       const double min_value = std::min (std::min (up_left, up), std::min (left, up_right));
@@ -1625,9 +1625,9 @@ pcl::SurfaceNormalModality<PointInT>::computeDistanceMap (const MaskMap & input,
     for (int ci = static_cast<int> (width)-2; ci >= 0; --ci)
     {
       const double lower_left  = next_row    [ci - 1] + 1.4f; //distance_map[(ri+1)*input_->width + ci-1] + 1.4f;
-      const double lower       = next_row    [ci]     + 1.0f; //distance_map[(ri+1)*input_->width + ci] + 1.0f;
+      const double lower       = next_row    [ci]     + 1.0; //distance_map[(ri+1)*input_->width + ci] + 1.0;
       const double lower_right = next_row    [ci + 1] + 1.4f; //distance_map[(ri+1)*input_->width + ci+1] + 1.4f;
-      const double right       = current_row [ci + 1] + 1.0f; //distance_map[ri*input_->width + ci+1] + 1.0f;
+      const double right       = current_row [ci + 1] + 1.0; //distance_map[ri*input_->width + ci+1] + 1.0;
       const double center      = current_row [ci];            //distance_map[ri*input_->width + ci];
 
       const double min_value = std::min (std::min (lower_left, lower), std::min (right, lower_right));

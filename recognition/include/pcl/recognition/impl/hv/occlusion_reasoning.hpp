@@ -78,8 +78,8 @@ pcl::occlusion_reasoning::ZBuffering<ModelT, SceneT>::filter (typename pcl::Poin
 {
 
   double cx, cy;
-  cx = static_cast<double> (cx_) / 2.f - 0.5f;
-  cy = static_cast<double> (cy_) / 2.f - 0.5f;
+  cx = static_cast<double> (cx_) / 2. - 0.5;
+  cy = static_cast<double> (cy_) / 2. - 0.5;
 
   indices_to_keep.resize (model->points.size ());
   int keep = 0;
@@ -111,8 +111,8 @@ pcl::occlusion_reasoning::ZBuffering<ModelT, SceneT>::computeDepthMap (typename 
                                                                        bool smooth, int wsize)
 {
   double cx, cy;
-  cx = static_cast<double> (cx_) / 2.f - 0.5f;
-  cy = static_cast<double> (cy_) / 2.f - 0.5f;
+  cx = static_cast<double> (cx_) / 2. - 0.5;
+  cy = static_cast<double> (cy_) / 2. - 0.5;
 
   //compute the focal length
   if (compute_focal)
@@ -164,7 +164,7 @@ pcl::occlusion_reasoning::ZBuffering<ModelT, SceneT>::computeDepthMap (typename 
   {
     //Dilate and smooth the depth map
     int ws = wsize;
-    int ws2 = int (std::floor (static_cast<double> (ws) / 2.f));
+    int ws2 = int (std::floor (static_cast<double> (ws) / 2.));
     double * depth_smooth = new double[cx_ * cy_];
     for (int i = 0; i < (cx_ * cy_); i++)
       depth_smooth[i] = std::numeric_limits<double>::quiet_NaN ();

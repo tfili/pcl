@@ -17,8 +17,8 @@ typedef pcl::PointXYZ PointType;
 // --------------------
 // -----Parameters-----
 // --------------------
-double angular_resolution = 0.5f;
-double support_size = 0.2f;
+double angular_resolution = 0.5;
+double support_size = 0.2;
 pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 bool setUnseenToMaxRange = false;
 bool rotation_invariant = true;
@@ -116,11 +116,11 @@ main (int argc, char** argv)
   {
     setUnseenToMaxRange = true;
     cout << "\nNo *.pcd file given => Genarating example point cloud.\n\n";
-    for (double x=-0.5f; x<=0.5f; x+=0.01f)
+    for (double x=-0.5; x<=0.5; x+=0.01)
     {
-      for (double y=-0.5f; y<=0.5f; y+=0.01f)
+      for (double y=-0.5; y<=0.5; y+=0.01)
       {
-        PointType point;  point.x = x;  point.y = y;  point.z = 2.0f - y;
+        PointType point;  point.x = x;  point.y = y;  point.z = 2.0 - y;
         point_cloud.points.push_back (point);
       }
     }
@@ -131,11 +131,11 @@ main (int argc, char** argv)
   // -----Create RangeImage from the PointCloud-----
   // -----------------------------------------------
   double noise_level = 0.0;
-  double min_range = 0.0f;
+  double min_range = 0.0;
   int border_size = 1;
   boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
   pcl::RangeImage& range_image = *range_image_ptr;   
-  range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
+  range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0), pcl::deg2rad (180.0),
                                    scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
   range_image.integrateFarRanges (far_ranges);
   if (setUnseenToMaxRange)
@@ -149,7 +149,7 @@ main (int argc, char** argv)
   pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 0, 0, 0);
   viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
   viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "range image");
-  //viewer.addCoordinateSystem (1.0f, "global");
+  //viewer.addCoordinateSystem (1.0, "global");
   //PointCloudColorHandlerCustom<PointType> point_cloud_color_handler (point_cloud_ptr, 150, 150, 150);
   //viewer.addPointCloud (point_cloud_ptr, point_cloud_color_handler, "original point cloud");
   viewer.initCameraParameters ();

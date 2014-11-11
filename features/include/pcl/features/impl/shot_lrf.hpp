@@ -161,7 +161,7 @@ pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const i
   rf.row (2).matrix () = v3.head<3> ().cast<double> ();
   rf.row (1).matrix () = rf.row (2).cross (rf.row (0));
 
-  return (0.0f);
+  return (0.0);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

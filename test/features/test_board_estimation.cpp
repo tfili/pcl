@@ -77,7 +77,7 @@ TEST (PCL, BOARDLocalReferenceFrameEstimation)
   // Compute BOARD LRF
   BOARDLocalReferenceFrameEstimation<PointXYZ, Normal, ReferenceFrame> lrf_estimator;
 
-  double meshRes = 0.001f;
+  double meshRes = 0.001;
 
   lrf_estimator.setFindHoles (true);
   lrf_estimator.setRadiusSearch (15 * meshRes);
@@ -99,24 +99,24 @@ TEST (PCL, BOARDLocalReferenceFrameEstimation)
 
   // Expected Results
   //double point_15_conf = -9.06301;
-  Eigen::Vector3d point_15_x (-0.784923f, 0.208529f, 0.583448f);
-  Eigen::Vector3d point_15_y (0.334206f, -0.650436f, 0.682085f);
-  Eigen::Vector3d point_15_z (0.52173f, 0.730376f, 0.440851f);
+  Eigen::Vector3d point_15_x (-0.784923f, 0.208529, 0.583448);
+  Eigen::Vector3d point_15_y (0.334206, -0.650436, 0.682085);
+  Eigen::Vector3d point_15_z (0.52173f, 0.730376, 0.440851);
 
   //double point_45_conf = -9.55398;
-  Eigen::Vector3d point_45_x (0.909111f, 0.30943f, 0.278874f);
-  Eigen::Vector3d point_45_y (-0.362239f, 0.917811f, 0.162501f);
-  Eigen::Vector3d point_45_z (-0.205671f, -0.248751f, 0.946479f);
+  Eigen::Vector3d point_45_x (0.909111, 0.30943f, 0.278874f);
+  Eigen::Vector3d point_45_y (-0.362239, 0.917811, 0.162501);
+  Eigen::Vector3d point_45_z (-0.205671, -0.248751, 0.946479);
 
   //double point_163_conf = -9.04891;
-  Eigen::Vector3d point_163_x (-0.443962f, -0.890073f, -0.103285f);
-  Eigen::Vector3d point_163_y (0.746929f, -0.30394f, -0.591369f);
-  Eigen::Vector3d point_163_z (0.494969f, -0.339693f, 0.799759f);
+  Eigen::Vector3d point_163_x (-0.443962f, -0.890073f, -0.103285);
+  Eigen::Vector3d point_163_y (0.746929, -0.30394f, -0.591369);
+  Eigen::Vector3d point_163_z (0.494969, -0.339693f, 0.799759);
 
   //double point_253_conf = -9.09443;
-  Eigen::Vector3d point_253_x (-0.616855f, 0.757286f, -0.214495f);
-  Eigen::Vector3d point_253_y (-0.661937f, -0.646584f, -0.379168f);
-  Eigen::Vector3d point_253_z (-0.425827f, -0.0919098f, 0.900124f);
+  Eigen::Vector3d point_253_x (-0.616855, 0.757286, -0.214495);
+  Eigen::Vector3d point_253_y (-0.661937, -0.646584f, -0.379168);
+  Eigen::Vector3d point_253_z (-0.425827, -0.0919098, 0.900124f);
 
   //Test Results
   //EXPECT_NEAR (point_15_conf,bunny_LRF.at (15).confidence, 1E-3);

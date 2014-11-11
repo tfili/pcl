@@ -59,7 +59,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::directedO
   directed_ortho_axis.normalize ();
 
   // check if the computed x axis is orthogonal to the normal
-  //assert(areEquals((double)(directed_ortho_axis.dot(axis)), 0.0f, 1E-3f));
+  //assert(areEquals((double)(directed_ortho_axis.dot(axis)), 0.0, 1E-3f));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::getAngleB
 {
   Eigen::Vector3d angle_orientation;
   angle_orientation = v1.cross (v2);
-  double angle_radians = acosf (std::max (-1.0, std::min (1.0, v1.dot (v2))));
+  double angle_radians = acos (std::max (-1.0, std::min (1.0, v1.dot (v2))));
 
   angle_radians = angle_orientation.dot (axis) < 0. ? (2 * static_cast<double> (M_PI) - angle_radians) : angle_radians;
 
@@ -101,29 +101,29 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::randomOrt
                                                                                              Eigen::Vector3d const &axis,
                                                                                              Eigen::Vector3d &rand_ortho_axis)
 {
-  if (!areEquals (axis.z (), 0.0f))
+  if (!areEquals (axis.z (), 0.0))
   {
-    rand_ortho_axis.x () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0f - 1.0f;
-    rand_ortho_axis.y () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0f - 1.0f;
+    rand_ortho_axis.x () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
+    rand_ortho_axis.y () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
     rand_ortho_axis.z () = -(axis.x () * rand_ortho_axis.x () + axis.y () * rand_ortho_axis.y ()) / axis.z ();
   }
-  else if (!areEquals (axis.y (), 0.0f))
+  else if (!areEquals (axis.y (), 0.0))
   {
-    rand_ortho_axis.x () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0f - 1.0f;
-    rand_ortho_axis.z () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0f - 1.0f;
+    rand_ortho_axis.x () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
+    rand_ortho_axis.z () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
     rand_ortho_axis.y () = -(axis.x () * rand_ortho_axis.x () + axis.z () * rand_ortho_axis.z ()) / axis.y ();
   }
-  else if (!areEquals (axis.x (), 0.0f))
+  else if (!areEquals (axis.x (), 0.0))
   {
-    rand_ortho_axis.y () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0f - 1.0f;
-    rand_ortho_axis.z () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0f - 1.0f;
+    rand_ortho_axis.y () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
+    rand_ortho_axis.z () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
     rand_ortho_axis.x () = -(axis.y () * rand_ortho_axis.y () + axis.z () * rand_ortho_axis.z ()) / axis.x ();
   }
 
   rand_ortho_axis.normalize ();
 
   // check if the computed x axis is orthogonal to the normal
-  //assert(areEquals(rand_ortho_axis.dot(axis), 0.0f, 1E-6f));
+  //assert(areEquals(rand_ortho_axis.dot(axis), 0.0, 1E-6));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,7 +240,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
   //find X axis
 
   //extract support points for Rx radius
-  if (tangent_radius_ != 0.0f && search_parameter_ != tangent_radius_)
+  if (tangent_radius_ != 0.0 && search_parameter_ != tangent_radius_)
   {
     n_neighbours = this->searchForNeighbors (index, tangent_radius_, neighbours_indices, neighbours_distances);
   }
@@ -494,13 +494,13 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
         double normal_end = margin_array_min_angle_normal_[following_hole];
         normal_begin -= min_normal_cos;
         normal_end -= min_normal_cos;
-        normal_begin = normal_begin / (1.0f - min_normal_cos);
-        normal_end = normal_end / (1.0f - min_normal_cos);
-        normal_begin = 1.0f - normal_begin;
-        normal_end = 1.0f - normal_end;
+        normal_begin = normal_begin / (1.0 - min_normal_cos);
+        normal_end = normal_end / (1.0 - min_normal_cos);
+        normal_begin = 1.0 - normal_begin;
+        normal_end = 1.0 - normal_end;
 
         //evaluate P(Hole);
-        double hole_width = 0.0f;
+        double hole_width = 0.0;
         if (following_hole < previous_hole)
         {
           hole_width = margin_array_min_angle_[following_hole] + 2 * static_cast<double> (M_PI)
@@ -513,7 +513,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
         double hole_prob = hole_width / (2 * static_cast<double> (M_PI));
 
         //evaluate P(zmin|Hole)
-        double steep_prob = (normal_end + normal_begin) / 2.0f;
+        double steep_prob = (normal_end + normal_begin) / 2.0;
 
         //check hole prob and after that, check steepThresh
 
@@ -525,7 +525,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
             {
               max_hole_prob = hole_prob;
 
-              double angle_weight = ((normal_end - normal_begin) + 1.0f) / 2.0f;
+              double angle_weight = ((normal_end - normal_begin) + 1.0) / 2.0;
               if (following_hole < previous_hole)
               {
                 angle = margin_array_max_angle_[previous_hole] + (margin_array_min_angle_[following_hole] + 2
@@ -558,7 +558,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     Eigen::AngleAxisd rotation = Eigen::AngleAxisd (angle, fitted_normal);
     x_axis = rotation * x_axis;
 
-    min_normal_cos -= 10.0f;
+    min_normal_cos -= 10.0;
   }
   else
   {

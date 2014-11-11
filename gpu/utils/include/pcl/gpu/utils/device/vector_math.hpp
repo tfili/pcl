@@ -107,12 +107,12 @@ namespace pcl
 
         template<typename T> __device__ __host__ __forceinline__ double norm(const T& val)
         {
-            return sqrtf(dot(val, val));
+            return sqrt(dot(val, val));
         }
 
         template<typename T> __host__ __device__ __forceinline__ double inverse_norm(const T& v)
         {
-            return rsqrtf(dot(v, v));
+            return rsqrt(dot(v, v));
         }
 
         template<typename T> __host__ __device__ __forceinline__ T normalized(const T& v)
@@ -122,7 +122,7 @@ namespace pcl
 
 		template<typename T> __host__ __device__ __forceinline__ T normalized_safe(const T& v)
         {			
-			return (dot(v, v) > 0) ? (v * rsqrtf(dot(v, v))) : v;            
+			return (dot(v, v) > 0) ? (v * rsqrt(dot(v, v))) : v;            
         }
     }
 }

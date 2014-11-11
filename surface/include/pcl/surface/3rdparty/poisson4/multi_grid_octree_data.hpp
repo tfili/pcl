@@ -842,7 +842,7 @@ namespace pcl
         if( !useConfidence ) normal /= l;
 
         l = Real(1.);
-        Real pointWeight = Real(1.f);
+        Real pointWeight = Real(1.);
         if( samplesPerNode>0 && splatDepth )
         {
           pointWeight = NonLinearSplatOrientedPoint( position , normal , splatDepth , samplesPerNode , _minDepth , maxDepth );

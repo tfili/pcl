@@ -12,7 +12,7 @@ using namespace std;
 
 std::string device_id = "#1";
 
-double angular_resolution = -1.0f;
+double angular_resolution = -1.0;
 
 boost::mutex depth_image_mutex;
 boost::shared_ptr<openni_wrapper::DepthImage> depth_image_ptr;
@@ -63,7 +63,7 @@ int main (int argc, char** argv)
   pcl::visualization::RangeImageVisualizer range_image_widget ("Range Image");
   
   pcl::visualization::PCLVisualizer viewer ("3D Viewer");
-  viewer.addCoordinateSystem (1.0f, "global");
+  viewer.addCoordinateSystem (1.0, "global");
   viewer.setBackgroundColor (1, 1, 1);
   
   // Set the viewing pose so that the openni cloud is visible
@@ -120,7 +120,7 @@ int main (int argc, char** argv)
       int width = depth_image_ptr->getWidth (), height = depth_image_ptr->getHeight ();
       double center_x = width/2, center_y = height/2;
       double focal_length_x = depth_image_ptr->getFocalLength (), focal_length_y = focal_length_x;
-      double original_angular_resolution = asinf (0.5f*double (width)/double (focal_length_x)) / (0.5f*double (width));
+      double original_angular_resolution = asin (0.5*double (width)/double (focal_length_x)) / (0.5*double (width));
       double desired_angular_resolution = angular_resolution;
       range_image_planar.setDepthImage (depth_map, width, height, center_x, center_y,
                                         focal_length_x, focal_length_y, desired_angular_resolution);
@@ -132,7 +132,7 @@ int main (int argc, char** argv)
       continue;
     
     // Show range image in the image widget
-    range_image_widget.showRangeImage (range_image_planar, 0.5f, 10.0f);
+    range_image_widget.showRangeImage (range_image_planar, 0.5, 10.0);
     
     // Show range image in the 3D viewer
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> color_handler_cloud

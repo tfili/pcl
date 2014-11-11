@@ -61,7 +61,7 @@ main (int, char**)
   cloud->push_back(p_nan);
 
   CloudType::PointType p_valid;
-  p_valid.x = 1.0f;
+  p_valid.x = 1.0;
   cloud->push_back(p_valid);
 
   std::cout << "size: " << cloud->points.size () << std::endl;

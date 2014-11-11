@@ -78,7 +78,7 @@ TEST (ISM, TrainRecognize)
   ism.setTrainingClouds (clouds);
   ism.setTrainingClasses (classes);
   ism.setTrainingNormals (normals);
-  ism.setSamplingSize (2.0f);
+  ism.setSamplingSize (2.0);
   ism.trainISM (model);
 
   int _class = 0;
@@ -100,7 +100,7 @@ TEST (ISM, TrainWithWrongParameters)
 
   double prev_sampling_size = ism.getSamplingSize ();
   EXPECT_NE (prev_sampling_size, 0.0);
-  ism.setSamplingSize (0.0f);
+  ism.setSamplingSize (0.0);
   double curr_sampling_size = ism.getSamplingSize ();
   EXPECT_EQ (curr_sampling_size, prev_sampling_size);
 

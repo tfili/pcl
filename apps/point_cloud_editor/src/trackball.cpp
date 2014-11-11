@@ -43,7 +43,7 @@
 #include <pcl/apps/point_cloud_editor/common.h>
 #include <pcl/apps/point_cloud_editor/trackball.h>
 
-TrackBall::TrackBall() : quat_(1.0f), origin_x_(0), origin_y_(0), origin_z_(0)
+TrackBall::TrackBall() : quat_(1.0), origin_x_(0), origin_y_(0), origin_z_(0)
 {
   radius_sqr_ = (TRACKBALL_RADIUS_SCALE * static_cast<double>(WINDOW_WIDTH)) *
                 (TRACKBALL_RADIUS_SCALE * static_cast<double>(WINDOW_WIDTH));
@@ -81,7 +81,7 @@ TrackBall::start(int s_x, int s_y)
 void
 normalize(double x, double y, double z, double &nx, double &ny, double &nz)
 {
-    double inv_len = 1.0f / std::sqrt(x * x + y * y + z * z);
+    double inv_len = 1.0 / std::sqrt(x * x + y * y + z * z);
     nx = x * inv_len;
     ny = y * inv_len;
     nz = z * inv_len;
@@ -94,7 +94,7 @@ normalizeQuaternion(const boost::math::quaternion<double> &q)
     double x = q.R_component_2();
     double y = q.R_component_3();
     double z = q.R_component_4();
-    double inv_len = 1.0f / std::sqrt(w * w + x * x + y * y + z * z);
+    double inv_len = 1.0 / std::sqrt(w * w + x * x + y * y + z * z);
     return boost::math::quaternion<double>(w * inv_len, x * inv_len, y * inv_len,
                                           z * inv_len);
 }
@@ -102,8 +102,8 @@ normalizeQuaternion(const boost::math::quaternion<double> &q)
 boost::math::quaternion<double>
 quaternionFromAngleAxis(double angle, double x, double y, double z)
 {
-  double s = std::sin(0.5f * angle);
-  double qw = std::cos(0.5f * angle);
+  double s = std::sin(0.5 * angle);
+  double qw = std::cos(0.5 * angle);
   double qx = x * s;
   double qy = y * s;
   double qz = z * s;
@@ -145,7 +145,7 @@ TrackBall::update(int s_x, int s_y)
   double dot = d_x * d_x + d_y * d_y + d_z * d_z;
   if (dot < std::numeric_limits<double>::epsilon())
   {
-    quat_ = boost::math::quaternion<double>(1.0f);
+    quat_ = boost::math::quaternion<double>(1.0);
     return;
   }
   double nc_x, nc_y, nc_z;
@@ -166,7 +166,7 @@ TrackBall::update(int s_x, int s_y)
 
   quat_ = quaternionFromAngleAxis(angle, nc_x, nc_y, nc_z);
   if (quat_.R_component_1() != quat_.R_component_1())
-    quat_ = boost::math::quaternion<double>(1.0f);
+    quat_ = boost::math::quaternion<double>(1.0);
 
   origin_x_ = cur_x;
   origin_y_ = cur_y;
@@ -216,7 +216,7 @@ TrackBall::getRotationMatrix(double (&rot)[MATRIX_SIZE])
 void
 TrackBall::reset()
 {
-  quat_ = boost::math::quaternion<double>(1.0f);
+  quat_ = boost::math::quaternion<double>(1.0);
 }
 
 void
@@ -225,13 +225,13 @@ TrackBall::getPointFromScreenPoint(int s_x, int s_y,
 {
   // See http://www.opengl.org/wiki/Trackball for more info
     
-  x = static_cast<double>(s_x) - (static_cast<double>(WINDOW_WIDTH) * 0.5f);
-  y = (static_cast<double>(WINDOW_HEIGHT) * 0.5f) - static_cast<double>(s_y);
+  x = static_cast<double>(s_x) - (static_cast<double>(WINDOW_WIDTH) * 0.5);
+  y = (static_cast<double>(WINDOW_HEIGHT) * 0.5) - static_cast<double>(s_y);
   double d = x * x + y * y;
-  if (d > 0.5f * radius_sqr_)
+  if (d > 0.5 * radius_sqr_)
   {
     // use hyperbolic sheet
-    z = (0.5f * radius_sqr_) / std::sqrt(d);
+    z = (0.5 * radius_sqr_) / std::sqrt(d);
     return;
   }
   // use sphere

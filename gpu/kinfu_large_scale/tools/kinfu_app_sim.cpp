@@ -145,7 +145,7 @@ namespace pcl
 {
   namespace gpu
   {
-    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5f);
+    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5);
     void mergePointNormal (const DeviceArray<PointXYZ>& cloud, const DeviceArray<Normal>& normals, DeviceArray<PointNormal>& output);
   }
 }
@@ -161,7 +161,7 @@ struct SampledScopeTime : public StopWatch
     time_ms_ += stopWatch_.getTime ();        
     if (i_ % EACH == 0 && i_)
     {
-      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000.f * EACH / time_ms_ << "fps )" << endl;
+      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000. * EACH / time_ms_ << "fps )" << endl;
       time_ms_ = 0;        
     }
   }
@@ -898,16 +898,16 @@ struct KinFuApp
     kinfu_.setDepthIntrinsics (f, f);
     kinfu_.volume().setSize (volume_size);
 
-    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.f), Vector3d::UnitX());
-    Eigen::Vector3d t = volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
+    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.), Vector3d::UnitX());
+    Eigen::Vector3d t = volume_size * 0.5 - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
     Eigen::Affine3d pose = Eigen::Translation3d (t) * Eigen::AngleAxisd (R);
 
     kinfu_.setInitalCameraPose (pose);
-    kinfu_.volume().setTsdfTruncDist (0.030f/*meters*/);    
-    kinfu_.setIcpCorespFilteringParams (0.1f/*meters*/, sin ( pcl::deg2rad(20.f) ));
-    //kinfu_.setDepthTruncationForICP(5.f/*meters*/);
-    kinfu_.setCameraMovementThreshold(0.001f);
+    kinfu_.volume().setTsdfTruncDist (0.030/*meters*/);    
+    kinfu_.setIcpCorespFilteringParams (0.1/*meters*/, sin ( pcl::deg2rad(20.) ));
+    //kinfu_.setDepthTruncationForICP(5./*meters*/);
+    kinfu_.setCameraMovementThreshold(0.001);
     
     //Init KinfuApp            
     tsdf_cloud_ptr_ = pcl::PointCloud<pcl::PointXYZI>::Ptr (new pcl::PointCloud<pcl::PointXYZI>);
@@ -989,7 +989,7 @@ struct KinFuApp
     for (int i=0; i<2048; i++)
     {
       double v = i/2048.0;
-      v = powf(v, 3)* 6;
+      v = pow(v, 3)* 6;
       t_gamma[i] = v*6*256;
     }  
 
@@ -1451,7 +1451,7 @@ main (int argc, char* argv[])
   pc::parse_argument (argc, argv, "-plyfile", plyfile);
   //SIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIM
   
-  double volume_size = 3.f;
+  double volume_size = 3.;
   pc::parse_argument (argc, argv, "-volume_size", volume_size);
           
   KinFuApp app (capture, volume_size);

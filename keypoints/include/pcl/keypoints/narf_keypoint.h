@@ -72,10 +72,10 @@ class PCL_EXPORTS NarfKeypoint : public Keypoint<PointWithRange, int>
     //! Parameters used in this class
     struct Parameters
     {
-      Parameters() : support_size(-1.0f), max_no_of_interest_points(-1), min_distance_between_interest_points(0.25f),
-                     optimal_distance_to_high_surface_change(0.25), min_interest_value(0.45f),
+      Parameters() : support_size(-1.0), max_no_of_interest_points(-1), min_distance_between_interest_points(0.25),
+                     optimal_distance_to_high_surface_change(0.25), min_interest_value(0.45),
                      min_surface_change_score(0.2f), optimal_range_image_patch_size(10),
-                     distance_for_additional_points(0.0f), add_points_on_straight_edges(false),
+                     distance_for_additional_points(0.0), add_points_on_straight_edges(false),
                      do_non_maximum_suppression(true), no_of_polynomial_approximations_per_point(0),
                      max_no_of_threads(1), use_recursive_scale_reduction(false),
                      calculate_sparse_interest_image(true) {}
@@ -116,7 +116,7 @@ class PCL_EXPORTS NarfKeypoint : public Keypoint<PointWithRange, int>
     };
     
     // =====CONSTRUCTOR & DESTRUCTOR=====
-    NarfKeypoint (RangeImageBorderExtractor* range_image_border_extractor=NULL, double support_size=-1.0f);
+    NarfKeypoint (RangeImageBorderExtractor* range_image_border_extractor=NULL, double support_size=-1.0);
     virtual ~NarfKeypoint ();
     
     // =====PUBLIC METHODS=====

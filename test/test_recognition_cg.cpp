@@ -225,7 +225,7 @@ main (int argc, char** argv)
       vector<int> neigh_indices (1);
       vector<double> neigh_sqr_dists (1);
       int found_neighs = match_search.nearestKSearch (scene_descriptors_->at (i), 1, neigh_indices, neigh_sqr_dists);
-      if(found_neighs == 1 && neigh_sqr_dists[0] < 0.25f)
+      if(found_neighs == 1 && neigh_sqr_dists[0] < 0.25)
       {
         Correspondence corr (neigh_indices[0], static_cast<int> (i), neigh_sqr_dists[0]);
         model_scene_corrs_->push_back (corr);

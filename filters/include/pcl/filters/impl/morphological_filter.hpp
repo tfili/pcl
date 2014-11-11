@@ -68,7 +68,7 @@ pcl::applyMorphologicalOperator (const typename pcl::PointCloud<PointT>::ConstPt
   tree.setInputCloud (cloud_in);
   tree.addPointsFromInputCloud ();
 
-  double half_res = resolution / 2.0f;
+  double half_res = resolution / 2.0;
 
   switch (morphological_operator)
   {

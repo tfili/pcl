@@ -101,7 +101,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     };
 
-  #define DEFAULT_TRANCATION_DISTANCE 30.0f
+  #define DEFAULT_TRANCATION_DISTANCE 30.0
 
     /** \brief Camera intrinsics structure
       */

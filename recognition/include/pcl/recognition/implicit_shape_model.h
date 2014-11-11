@@ -315,8 +315,8 @@ namespace pcl
           /** \brief Empty constructor with member variables initialization. */
           VisualWordStat () :
             class_ (-1),
-            learned_weight_ (0.0f),
-            dir_to_center_ (0.0f, 0.0f, 0.0f) {};
+            learned_weight_ (0.0),
+            dir_to_center_ (0.0, 0.0, 0.0) {};
 
           /** \brief Which class this vote belongs. */
           int class_;

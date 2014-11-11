@@ -23,7 +23,7 @@
 
 ON_OBJECT_IMPLEMENT(ON_Material,ON_Object,"60B5DBBC-E660-11d3-BFE4-0010830122F0");
 
-double ON_Material::m_max_shine = 255.0f;
+double ON_Material::m_max_shine = 255.0;
 
 double ON_Material::MaxShine()
 {
@@ -692,9 +692,9 @@ double ON_Material::Transparency( ) const
 void ON_Material::SetTransparency( double transparency )
 {
   if ( transparency < 0.0 )
-    m_transparency = 0.0f;
+    m_transparency = 0.0;
   else if ( transparency > 1.0)
-    m_transparency = 1.0f;
+    m_transparency = 1.0;
   else
     m_transparency = (double)transparency;
 }
@@ -2626,7 +2626,7 @@ bool ON_TextureMapping::GetTextureCoordinates(
       {
         d->x = f->x;
         d->y = f->y;
-        d->z = 0.0f;
+        d->z = 0.0;
       }
       return true;
     }
@@ -3184,7 +3184,7 @@ double PoleFix( double t0,  double t1 )
 {
   double t = ( ON_UNSET_FLOAT == t0 )
           ? t1
-          : ((ON_UNSET_FLOAT == t1 ) ? t0 : (0.5f*(t0+t1)));
+          : ((ON_UNSET_FLOAT == t1 ) ? t0 : (0.5*(t0+t1)));
   return t;
 }
 
@@ -3484,12 +3484,12 @@ public:
 static
 double TcDistanceHelper(const ON_2fPoint& tc)
 {
-  double dx = (tc.x > 0.5f) ? (1.0f-tc.x) : tc.x;
-  if ( dx < 0.0f) 
-    return 0.0f;
-  double dy = (tc.y > 0.5f) ? (1.0f-tc.y) : tc.y;
-  if ( dy < 0.0f) 
-    return 0.0f;
+  double dx = (tc.x > 0.5) ? (1.0-tc.x) : tc.x;
+  if ( dx < 0.0) 
+    return 0.0;
+  double dy = (tc.y > 0.5) ? (1.0-tc.y) : tc.y;
+  if ( dy < 0.0) 
+    return 0.0;
   return (dx < dy) ? dx : dy;
 }
 
@@ -3550,7 +3550,7 @@ void AdjustSingleBoxTextureCoordinatesHelper(
     // Jussi, 5th September 2011:
     // This 'continue' only works for faces having one or more of its tc's in (0,1)x(0,1).
     // I have commented it out as a fix to RR 90329.
-    //if ( d <= 0.0f )
+    //if ( d <= 0.0 )
     //  continue;
 
     for ( j = 0; j < fvicnt; j++ )
@@ -3668,13 +3668,13 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
     else if ( bSphereCheck )
     {
       t = mesh_T[ti+1]; // t = "v" texture coordinate
-      if ( t < 0.001f )
+      if ( t < 0.001 )
       {
         quad[vi] = 8; q |= 8; // south pole point
         ftc_count++;
         continue;
       }
-      if ( t > 0.999f )
+      if ( t > 0.999 )
       {
         quad[vi] = 8; q |= 8; // north pole point
         ftc_count++;
@@ -3800,10 +3800,10 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
       // The face has corners on both sides of the seam
       if ( two_pi_tc == 1.0 )
       {
-        if ( 1 == ftc.quad[0] ) {ftc.Tx[0] += 1.0f; ftc.fi = fi;}
-        if ( 1 == ftc.quad[1] ) {ftc.Tx[1] += 1.0f; ftc.fi = fi;}
-        if ( 1 == ftc.quad[2] ) {ftc.Tx[2] += 1.0f; ftc.fi = fi;}
-        if ( 1 == ftc.quad[3] ) {ftc.Tx[3] += 1.0f; ftc.fi = fi;}
+        if ( 1 == ftc.quad[0] ) {ftc.Tx[0] += 1.0; ftc.fi = fi;}
+        if ( 1 == ftc.quad[1] ) {ftc.Tx[1] += 1.0; ftc.fi = fi;}
+        if ( 1 == ftc.quad[2] ) {ftc.Tx[2] += 1.0; ftc.fi = fi;}
+        if ( 1 == ftc.quad[3] ) {ftc.Tx[3] += 1.0; ftc.fi = fi;}
       }
       else
       {
@@ -3814,7 +3814,7 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
         // map and clamp the tcs that hang over.  If the mesh
         // has edges near the texture seam, the picture will
         // still look ok.
-        double f0=0.0f, f1=0.0f, twopitc = (double)two_pi_tc;;
+        double f0=0.0, f1=0.0, twopitc = (double)two_pi_tc;;
         //int f0cnt=0, f1cnt=0;
         if ( 1 == ftc.quad[0] ) f0 += ftc.Tx[0]; else if ( 4 == ftc.quad[0] ) f1 += twopitc-ftc.Tx[0];
         if ( 1 == ftc.quad[1] ) f0 += ftc.Tx[1]; else if ( 4 == ftc.quad[1] ) f1 += twopitc-ftc.Tx[1];
@@ -3827,10 +3827,10 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
         {
           // "most" of the face is on the left side of the texture 
           // If a vertex is on the right side, clamp its tc to 0.
-          if ( 4 == ftc.quad[0] ) {ftc.Tx[0] = 0.0f; ftc.fi = fi;}
-          if ( 4 == ftc.quad[1] ) {ftc.Tx[1] = 0.0f; ftc.fi = fi;}
-          if ( 4 == ftc.quad[2] ) {ftc.Tx[2] = 0.0f; ftc.fi = fi;}
-          if ( 4 == ftc.quad[3] ) {ftc.Tx[3] = 0.0f; ftc.fi = fi;}
+          if ( 4 == ftc.quad[0] ) {ftc.Tx[0] = 0.0; ftc.fi = fi;}
+          if ( 4 == ftc.quad[1] ) {ftc.Tx[1] = 0.0; ftc.fi = fi;}
+          if ( 4 == ftc.quad[2] ) {ftc.Tx[2] = 0.0; ftc.fi = fi;}
+          if ( 4 == ftc.quad[3] ) {ftc.Tx[3] = 0.0; ftc.fi = fi;}
         }
         else
         {

@@ -23,8 +23,8 @@ class FeatureCloud
 
     FeatureCloud () :
       search_method_xyz_ (new SearchMethod),
-      normal_radius_ (0.02f),
-      feature_radius_ (0.02f)
+      normal_radius_ (0.02),
+      feature_radius_ (0.02)
     {}
 
     ~FeatureCloud () {}
@@ -128,8 +128,8 @@ class TemplateAlignment
     };
 
     TemplateAlignment () :
-      min_sample_distance_ (0.05f),
-      max_correspondence_distance_ (0.01f*0.01f),
+      min_sample_distance_ (0.05),
+      max_correspondence_distance_ (0.01*0.01),
       nr_iterations_ (500)
     {
       // Intialize the parameters in the Sample Consensus Intial Alignment (SAC-IA) algorithm
@@ -260,7 +260,7 @@ main (int argc, char **argv)
   pass.filter (*cloud);
 
   // ... and downsampling the point cloud
-  const double voxel_grid_size = 0.005f;
+  const double voxel_grid_size = 0.005;
   pcl::VoxelGrid<pcl::PointXYZ> vox_grid;
   vox_grid.setInputCloud (cloud);
   vox_grid.setLeafSize (voxel_grid_size, voxel_grid_size, voxel_grid_size);

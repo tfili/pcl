@@ -275,7 +275,7 @@ namespace pcl
 
       double scale;
       if (INVERT_SCALE)
-        scale = 1.0f / static_cast<double> (data_set (example.data_set_id, center_col_index, center_row_index)[SCALE_CHANNEL]);
+        scale = 1.0 / static_cast<double> (data_set (example.data_set_id, center_col_index, center_row_index)[SCALE_CHANNEL]);
       else
         scale = static_cast<double> (data_set (example.data_set_id, center_col_index, center_row_index)[SCALE_CHANNEL]);
 
@@ -351,7 +351,7 @@ namespace pcl
   {
     if (NUM_OF_CHANNELS == 1 && SCALE_CHANNEL == 0 && INVERT_SCALE)
     {
-      stream << "const double scale  = 1.0f / static_cast<double> (*data_ptr);" << std::endl;
+      stream << "const double scale  = 1.0 / static_cast<double> (*data_ptr);" << std::endl;
       stream << "" << std::endl;
       stream << "struct LocalFeatureHandler" << std::endl;
       stream << "{" << std::endl;

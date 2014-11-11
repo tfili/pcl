@@ -89,7 +89,7 @@ namespace pcl
                   num_points_ (0),
                   user_data_ (user_data)
                 {
-                  n_[0] = n_[1] = n_[2] = p_[0] = p_[1] = p_[2] = 0.0f;
+                  n_[0] = n_[1] = n_[2] = p_[0] = p_[1] = p_[2] = 0.0;
                 }
 
                 virtual~ Data (){}
@@ -107,7 +107,7 @@ namespace pcl
                   if ( num_points_ < 2 )
                     return;
 
-                  aux::mult3 (p_, 1.0f/static_cast<double> (num_points_));
+                  aux::mult3 (p_, 1.0/static_cast<double> (num_points_));
                   num_points_ = 1;
                 }
 
@@ -193,7 +193,7 @@ namespace pcl
             inline void
             computeRadius()
             {
-              double v[3] = {0.5f*(bounds_[1]-bounds_[0]), 0.5f*(bounds_[3]-bounds_[2]), 0.5f*(bounds_[5]-bounds_[4])};
+              double v[3] = {0.5*(bounds_[1]-bounds_[0]), 0.5*(bounds_[3]-bounds_[2]), 0.5*(bounds_[5]-bounds_[4])};
               radius_ = static_cast<double> (aux::length3 (v));
             }
 
@@ -289,7 +289,7 @@ namespace pcl
           * by enlarging the bounds by that factor. For example, enlarge_bounds = 1 means that the
           * bounds will be enlarged by 100%. The default value is fine. */
         void
-        build (const PointCloudIn& points, double voxel_size, const PointCloudN* normals = NULL, double enlarge_bounds = 0.00001f);
+        build (const PointCloudIn& points, double voxel_size, const PointCloudN* normals = NULL, double enlarge_bounds = 0.00001);
 
         /** \brief Creates an empty octree with bounds at least as large as the ones provided as input and with leaf
           * size equal to 'voxel_size'. */
@@ -364,7 +364,7 @@ namespace pcl
         ORROctree::Node*
         getLeaf (int i, int j, int k)
         {
-          double offset = 0.5f*voxel_size_;
+          double offset = 0.5*voxel_size_;
           double p[3] = {bounds_[0] + offset + static_cast<double> (i)*voxel_size_,
                         bounds_[2] + offset + static_cast<double> (j)*voxel_size_,
                         bounds_[4] + offset + static_cast<double> (k)*voxel_size_};
@@ -446,7 +446,7 @@ namespace pcl
         insertNeighbors (Node* node)
         {
           const double* c = node->getCenter ();
-          double s = 0.5f*voxel_size_;
+          double s = 0.5*voxel_size_;
           Node *neigh;
 
           neigh = this->getLeaf (c[0]+s, c[1]+s, c[2]+s); if ( neigh ) node->makeNeighbors (neigh);

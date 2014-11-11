@@ -114,7 +114,7 @@ main (int argc, char** argv)
   {
     if (values.size () == 7)
     {
-      translation = Eigen::Vector4d (values[0], values[1], values[2], 0.0f);
+      translation = Eigen::Vector4d (values[0], values[1], values[2], 0.0);
       orientation = Eigen::Quaterniond (values[3], values[4], values[5], values[6]);
     }
     else

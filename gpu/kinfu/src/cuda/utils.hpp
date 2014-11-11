@@ -55,14 +55,14 @@ namespace pcl
     template<> struct numeric_limits<double>
     {
       __device__ __forceinline__ static double 
-      quiet_NaN() { return __int_as_float(0x7fffffff); /*CUDART_NAN_F*/ };
+      quiet_NaN() { return __int_as_float(0x7ffffff); /*CUDART_NAN_F*/ };
       __device__ __forceinline__ static double 
-      epsilon() { return 1.192092896e-07f/*FLT_EPSILON*/; };
+      epsilon() { return 1.192092896e-07/*FLT_EPSILON*/; };
 
       __device__ __forceinline__ static double 
-      min() { return 1.175494351e-38f/*FLT_MIN*/; };
+      min() { return 1.175494351e-38/*FLT_MIN*/; };
       __device__ __forceinline__ static double 
-      max() { return 3.402823466e+38f/*FLT_MAX*/; };
+      max() { return 3.402823466e+38/*FLT_MAX*/; };
     };
 
     template<> struct numeric_limits<short>
@@ -127,15 +127,15 @@ namespace pcl
 
     __device__ __forceinline__ void computeRoots2(const double& b, const double& c, float3& roots)
      {
-       roots.x = 0.f;
-       double d = b * b - 4.f * c;
-       if (d < 0.f) // no real roots!!!! THIS SHOULD NOT HAPPEN!
-         d = 0.f;
+       roots.x = 0.;
+       double d = b * b - 4. * c;
+       if (d < 0.) // no real roots!!!! THIS SHOULD NOT HAPPEN!
+         d = 0.;
 
-       double sd = sqrtf(d);
+       double sd = sqrt(d);
 
-       roots.z = 0.5f * (b + sd);
-       roots.y = 0.5f * (b - sd);
+       roots.z = 0.5 * (b + sd);
+       roots.y = 0.5 * (b - sd);
      }
 
      __device__ __forceinline__ void 
@@ -147,26 +147,26 @@ namespace pcl
        }
        else
        {
-         const double s_inv3 = 1.f/3.f;
-         const double s_sqrt3 = sqrtf(3.f);
+         const double s_inv3 = 1./3.;
+         const double s_sqrt3 = sqrt(3.);
          // Construct the parameters used in classifying the roots of the equation
          // and in solving the equation for the roots in closed form.
          double c2_over_3 = c2 * s_inv3;
          double a_over_3 = (c1 - c2*c2_over_3)*s_inv3;
-         if (a_over_3 > 0.f)
-           a_over_3 = 0.f;
+         if (a_over_3 > 0.)
+           a_over_3 = 0.;
 
-         double half_b = 0.5f * (c0 + c2_over_3 * (2.f * c2_over_3 * c2_over_3 - c1));
+         double half_b = 0.5 * (c0 + c2_over_3 * (2. * c2_over_3 * c2_over_3 - c1));
 
          double q = half_b * half_b + a_over_3 * a_over_3 * a_over_3;
-         if (q > 0.f)
-           q = 0.f;
+         if (q > 0.)
+           q = 0.;
 
          // Compute the eigenvalues by solving for the roots of the polynomial.
-         double rho = sqrtf(-a_over_3);
-         double theta = atan2f (sqrtf (-q), half_b)*s_inv3;
-         double cos_theta = __cosf (theta);
-         double sin_theta = __sinf (theta);
+         double rho = sqrt(-a_over_3);
+         double theta = atan2 (sqrt (-q), half_b)*s_inv3;
+         double cos_theta = __cos (theta);
+         double sin_theta = __sin (theta);
          roots.x = c2_over_3 + 2.f * rho * cos_theta;
          roots.y = c2_over_3 - rho * (cos_theta + s_sqrt3 * sin_theta);
          roots.z = c2_over_3 - rho * (cos_theta - s_sqrt3 * sin_theta);
@@ -214,10 +214,10 @@ namespace pcl
          */
          if(!isMuchSmallerThan(src.x, src.z) || !isMuchSmallerThan(src.y, src.z))
          {   
-           double invnm = rsqrtf(src.x*src.x + src.y*src.y);
+           double invnm = rsqrt(src.x*src.x + src.y*src.y);
            perp.x = -src.y * invnm;
            perp.y =  src.x * invnm;
-           perp.z = 0.0f;
+           perp.z = 0.0;
          }   
          /* if both x and y are close to zero, then the vector is close
          * to the z-axis, so it's far from colinear to the x-axis for instance.
@@ -225,8 +225,8 @@ namespace pcl
          */
          else
          {   
-           double invnm = rsqrtf(src.z * src.z + src.y * src.y);
-           perp.x = 0.0f;
+           double invnm = rsqrt(src.z * src.z + src.y * src.y);
+           perp.x = 0.0;
            perp.y = -src.z * invnm;
            perp.z =  src.y * invnm;
          }   
@@ -249,7 +249,7 @@ namespace pcl
          double scale = fmaxf( max45, m0123);
 
          if (scale <= numeric_limits<double>::min())
-           scale = 1.f;
+           scale = 1.;
 
          mat_pkg[0] /= scale;
          mat_pkg[1] /= scale;
@@ -278,9 +278,9 @@ namespace pcl
 
          if(evals.z - evals.x <= numeric_limits<double>::epsilon())
          {                                   
-           evecs[0] = make_float3(1.f, 0.f, 0.f);
-           evecs[1] = make_float3(0.f, 1.f, 0.f);
-           evecs[2] = make_float3(0.f, 0.f, 1.f);
+           evecs[0] = make_float3(1., 0., 0.);
+           evecs[1] = make_float3(0., 1., 0.);
+           evecs[2] = make_float3(0., 0., 1.);
          }
          else if (evals.y - evals.x <= numeric_limits<double>::epsilon() )
          {
@@ -298,15 +298,15 @@ namespace pcl
 
            if (len1 >= len2 && len1 >= len3)
            {
-             evecs[2] = vec_tmp[0] * rsqrtf (len1);
+             evecs[2] = vec_tmp[0] * rsqrt (len1);
            }
            else if (len2 >= len1 && len2 >= len3)
            {
-             evecs[2] = vec_tmp[1] * rsqrtf (len2);
+             evecs[2] = vec_tmp[1] * rsqrt (len2);
            }
            else
            {
-             evecs[2] = vec_tmp[2] * rsqrtf (len3);
+             evecs[2] = vec_tmp[2] * rsqrt (len3);
            }
 
            evecs[1] = unitOrthogonal(evecs[2]);
@@ -328,15 +328,15 @@ namespace pcl
 
            if (len1 >= len2 && len1 >= len3)
            {
-             evecs[0] = vec_tmp[0] * rsqrtf(len1);
+             evecs[0] = vec_tmp[0] * rsqrt(len1);
            }
            else if (len2 >= len1 && len2 >= len3)
            {
-             evecs[0] = vec_tmp[1] * rsqrtf(len2);
+             evecs[0] = vec_tmp[1] * rsqrt(len2);
            }
            else
            {
-             evecs[0] = vec_tmp[2] * rsqrtf(len3);
+             evecs[0] = vec_tmp[2] * rsqrt(len3);
            }
 
            evecs[1] = unitOrthogonal( evecs[0] );
@@ -363,17 +363,17 @@ namespace pcl
            if (len1 >= len2 && len1 >= len3)
            {
              mmax[2] = len1;
-             evecs[2] = vec_tmp[0] * rsqrtf (len1);
+             evecs[2] = vec_tmp[0] * rsqrt (len1);
            }
            else if (len2 >= len1 && len2 >= len3)
            {
              mmax[2] = len2;
-             evecs[2] = vec_tmp[1] * rsqrtf (len2);
+             evecs[2] = vec_tmp[1] * rsqrt (len2);
            }
            else
            {
              mmax[2] = len3;
-             evecs[2] = vec_tmp[2] * rsqrtf (len3);
+             evecs[2] = vec_tmp[2] * rsqrt (len3);
            }
 
            tmp[0] = row0();  tmp[1] = row1();  tmp[2] = row2();
@@ -390,21 +390,21 @@ namespace pcl
            if (len1 >= len2 && len1 >= len3)
            {
              mmax[1] = len1;
-             evecs[1] = vec_tmp[0] * rsqrtf (len1);
+             evecs[1] = vec_tmp[0] * rsqrt (len1);
              min_el = len1 <= mmax[min_el] ? 1 : min_el;
              max_el = len1  > mmax[max_el] ? 1 : max_el;
            }
            else if (len2 >= len1 && len2 >= len3)
            {
              mmax[1] = len2;
-             evecs[1] = vec_tmp[1] * rsqrtf (len2);
+             evecs[1] = vec_tmp[1] * rsqrt (len2);
              min_el = len2 <= mmax[min_el] ? 1 : min_el;
              max_el = len2  > mmax[max_el] ? 1 : max_el;
            }
            else
            {
              mmax[1] = len3;
-             evecs[1] = vec_tmp[2] * rsqrtf (len3);
+             evecs[1] = vec_tmp[2] * rsqrt (len3);
              min_el = len3 <= mmax[min_el] ? 1 : min_el;
              max_el = len3 >  mmax[max_el] ? 1 : max_el;
            }
@@ -424,21 +424,21 @@ namespace pcl
            if (len1 >= len2 && len1 >= len3)
            {
              mmax[0] = len1;
-             evecs[0] = vec_tmp[0] * rsqrtf (len1);
+             evecs[0] = vec_tmp[0] * rsqrt (len1);
              min_el = len3 <= mmax[min_el] ? 0 : min_el;
              max_el = len3  > mmax[max_el] ? 0 : max_el;
            }
            else if (len2 >= len1 && len2 >= len3)
            {
              mmax[0] = len2;
-             evecs[0] = vec_tmp[1] * rsqrtf (len2);
+             evecs[0] = vec_tmp[1] * rsqrt (len2);
              min_el = len3 <= mmax[min_el] ? 0 : min_el;
              max_el = len3  > mmax[max_el] ? 0 : max_el; 		
            }
            else
            {
              mmax[0] = len3;
-             evecs[0] = vec_tmp[2] * rsqrtf (len3);
+             evecs[0] = vec_tmp[2] * rsqrt (len3);
              min_el = len3 <= mmax[min_el] ? 0 : min_el;
              max_el = len3  > mmax[max_el] ? 0 : max_el;	  
            }

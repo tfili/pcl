@@ -92,10 +92,10 @@ pcl::IFSReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
   //Read IFS version
   double version;
   fs.read ((char*)&version, sizeof (double));
-  if (version == 1.0f)
+  if (version == 1.0)
     ifs_version = IFS_V1_0;
   else
-    if (version == 1.1f)
+    if (version == 1.1)
       ifs_version = IFS_V1_1;
     else
     {
@@ -334,7 +334,7 @@ pcl::IFSWriter::write (const std::string &file_name, const pcl::PCLPointCloud2 &
   }
 
   const std::string magic = "IFS";
-  const double version = 1.0f;
+  const double version = 1.0;
   const std::string vertices = "VERTICES";
   std::vector<char> header (sizeof (uint32_t) + magic.size () + 1 +
                             sizeof (double) +

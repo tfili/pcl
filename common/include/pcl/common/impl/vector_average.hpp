@@ -60,7 +60,7 @@ namespace pcl
 
   template <typename real, int dimension>
   inline void VectorAverage<real, dimension>::add(const Eigen::Matrix<real, dimension, 1>& sample, real weight) {
-    if (weight == 0.0f)
+    if (weight == 0.0)
       return;
 
     ++noOfSamples_;
@@ -68,7 +68,7 @@ namespace pcl
     real alpha = weight/accumulatedWeight_;
 
     Eigen::Matrix<real, dimension, 1> diff = sample - mean_;
-    covariance_ = (covariance_ + (diff * diff.transpose())*alpha)*(1.0f-alpha);
+    covariance_ = (covariance_ + (diff * diff.transpose())*alpha)*(1.0-alpha);
 
     mean_ += (diff)*alpha;
 

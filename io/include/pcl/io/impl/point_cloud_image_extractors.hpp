@@ -126,9 +126,9 @@ pcl::io::PointCloudImageExtractorFromRGBField<PointT>::extractImpl (const PointC
   {
     uint32_t val;
     pcl::getFieldValue<PointT, uint32_t> (cloud.points[i], offset, val);
-    img.data[i * 3 + 0] = (val >> 16) & 0x0000ff;
-    img.data[i * 3 + 1] = (val >> 8) & 0x0000ff;
-    img.data[i * 3 + 2] = (val) & 0x0000ff;
+    img.data[i * 3 + 0] = (val >> 16) & 0x0000f;
+    img.data[i * 3 + 1] = (val >> 8) & 0x0000f;
+    img.data[i * 3 + 2] = (val) & 0x0000f;
   }
 
   return (true);
@@ -257,7 +257,7 @@ pcl::io::PointCloudImageExtractorWithScaling<PointT>::extractImpl (const PointCl
   unsigned short* data = reinterpret_cast<unsigned short*>(&img.data[0]);
 
   double scaling_factor = scaling_factor_;
-  double data_min = 0.0f;
+  double data_min = 0.0;
   if (scaling_method_ == SCALING_FULL_RANGE)
   {
     double min = std::numeric_limits<double>::infinity();

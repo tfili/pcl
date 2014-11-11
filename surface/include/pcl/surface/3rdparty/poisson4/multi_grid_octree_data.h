@@ -345,7 +345,7 @@ namespace pcl
         void finalize( void );
         void RefineBoundary( int subdivisionDepth );
         Real* GetWeightGrid( int& res , int depth=-1 );
-        Real* GetSolutionGrid( int& res , double isoValue=0.f , int depth=-1 );
+        Real* GetSolutionGrid( int& res , double isoValue=0. , int depth=-1 );
 
         template<typename PointNT> int
         setTree( boost::shared_ptr<const pcl::PointCloud<PointNT> > input_ , int maxDepth , int minDepth ,

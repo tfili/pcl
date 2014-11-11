@@ -44,25 +44,25 @@ main (int argc, char ** argv)
 
   bool use_transform = ! pcl::console::find_switch (argc, argv, "--NT");
 
-  double voxel_resolution = 0.008f;
+  double voxel_resolution = 0.008;
   bool voxel_res_specified = pcl::console::find_switch (argc, argv, "-v");
   if (voxel_res_specified)
     pcl::console::parse (argc, argv, "-v", voxel_resolution);
 
-  double seed_resolution = 0.1f;
+  double seed_resolution = 0.1;
   bool seed_res_specified = pcl::console::find_switch (argc, argv, "-s");
   if (seed_res_specified)
     pcl::console::parse (argc, argv, "-s", seed_resolution);
 
-  double color_importance = 0.2f;
+  double color_importance = 0.2;
   if (pcl::console::find_switch (argc, argv, "-c"))
     pcl::console::parse (argc, argv, "-c", color_importance);
 
-  double spatial_importance = 0.4f;
+  double spatial_importance = 0.4;
   if (pcl::console::find_switch (argc, argv, "-z"))
     pcl::console::parse (argc, argv, "-z", spatial_importance);
 
-  double normal_importance = 1.0f;
+  double normal_importance = 1.0;
   if (pcl::console::find_switch (argc, argv, "-n"))
     pcl::console::parse (argc, argv, "-n", normal_importance);
 
@@ -96,7 +96,7 @@ main (int argc, char ** argv)
 
   PointNCloudT::Ptr sv_normal_cloud = super.makeSupervoxelNormalCloud (supervoxel_clusters);
   //We have this disabled so graph is easy to see, uncomment to see supervoxel normals
-  //viewer->addPointCloudNormals<PointNormal> (sv_normal_cloud,1,0.05f, "supervoxel_normals");
+  //viewer->addPointCloudNormals<PointNormal> (sv_normal_cloud,1,0.05, "supervoxel_normals");
 
   pcl::console::print_highlight ("Getting supervoxel adjacency\n");
   std::multimap<uint32_t, uint32_t> supervoxel_adjacency;

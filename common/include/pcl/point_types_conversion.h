@@ -57,7 +57,7 @@ namespace pcl
                      PointXYZI&    out)
   {
     out.x = in.x; out.y = in.y; out.z = in.z;
-    out.intensity = 0.299f * static_cast <double> (in.r) + 0.587f * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b);
+    out.intensity = 0.299 * static_cast <double> (in.r) + 0.587 * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b);
   }
 
   /** \brief Convert a RGB point type to a I
@@ -68,7 +68,7 @@ namespace pcl
   PointRGBtoI (RGB&          in,
                Intensity&    out)
   {
-    out.intensity = 0.299f * static_cast <double> (in.r) + 0.587f * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b);
+    out.intensity = 0.299 * static_cast <double> (in.r) + 0.587 * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b);
   }
 
   /** \brief Convert a RGB point type to a I
@@ -79,8 +79,8 @@ namespace pcl
   PointRGBtoI (RGB&          in,
                Intensity8u&  out)
   {
-    out.intensity = static_cast<uint8_t>(std::numeric_limits<uint8_t>::max() * 0.299f * static_cast <double> (in.r)
-                      + 0.587f * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b));
+    out.intensity = static_cast<uint8_t>(std::numeric_limits<uint8_t>::max() * 0.299 * static_cast <double> (in.r)
+                      + 0.587 * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b));
   }
 
   /** \brief Convert a RGB point type to a I
@@ -91,8 +91,8 @@ namespace pcl
   PointRGBtoI (RGB&          in,
                Intensity32u& out)
   {
-    out.intensity = static_cast<uint32_t>(static_cast<double>(std::numeric_limits<uint32_t>::max()) * 0.299f * static_cast <double> (in.r)
-                      + 0.587f * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b));
+    out.intensity = static_cast<uint32_t>(static_cast<double>(std::numeric_limits<uint32_t>::max()) * 0.299 * static_cast <double> (in.r)
+                      + 0.587 * static_cast <double> (in.g) + 0.114f * static_cast <double> (in.b));
   }
 
   /** \brief Convert a XYZRGB point type to a XYZHSV
@@ -106,12 +106,12 @@ namespace pcl
     const unsigned char max = std::max (in.r, std::max (in.g, in.b));
     const unsigned char min = std::min (in.r, std::min (in.g, in.b));
 
-    out.v = static_cast <double> (max) / 255.f;
+    out.v = static_cast <double> (max) / 255.;
 
     if (max == 0) // division by zero
     {
-      out.s = 0.f;
-      out.h = 0.f; // h = -1.f;
+      out.s = 0.;
+      out.h = 0.; // h = -1.;
       return;
     }
 
@@ -124,11 +124,11 @@ namespace pcl
       return;
     }
 
-    if      (max == in.r) out.h = 60.f * (      static_cast <double> (in.g - in.b) / diff);
-    else if (max == in.g) out.h = 60.f * (2.f + static_cast <double> (in.b - in.r) / diff);
-    else                  out.h = 60.f * (4.f + static_cast <double> (in.r - in.g) / diff); // max == b
+    if      (max == in.r) out.h = 60. * (      static_cast <double> (in.g - in.b) / diff);
+    else if (max == in.g) out.h = 60. * (2. + static_cast <double> (in.b - in.r) / diff);
+    else                  out.h = 60. * (4. + static_cast <double> (in.r - in.g) / diff); // max == b
 
-    if (out.h < 0.f) out.h += 360.f;
+    if (out.h < 0.) out.h += 360.;
   }
 
   /** \brief Convert a XYZRGB point type to a XYZHSV
@@ -143,12 +143,12 @@ namespace pcl
     const unsigned char max = std::max (in.r, std::max (in.g, in.b));
     const unsigned char min = std::min (in.r, std::min (in.g, in.b));
 
-    out.v = static_cast <double> (max) / 255.f;
+    out.v = static_cast <double> (max) / 255.;
 
     if (max == 0) // division by zero
     {
-      out.s = 0.f;
-      out.h = 0.f; // h = -1.f;
+      out.s = 0.;
+      out.h = 0.; // h = -1.;
       return;
     }
 
@@ -161,11 +161,11 @@ namespace pcl
       return;
     }
 
-    if      (max == in.r) out.h = 60.f * (      static_cast <double> (in.g - in.b) / diff);
-    else if (max == in.g) out.h = 60.f * (2.f + static_cast <double> (in.b - in.r) / diff);
-    else                  out.h = 60.f * (4.f + static_cast <double> (in.r - in.g) / diff); // max == b
+    if      (max == in.r) out.h = 60. * (      static_cast <double> (in.g - in.b) / diff);
+    else if (max == in.g) out.h = 60. * (2. + static_cast <double> (in.b - in.r) / diff);
+    else                  out.h = 60. * (4. + static_cast <double> (in.r - in.g) / diff); // max == b
 
-    if (out.h < 0.f) out.h += 360.f;
+    if (out.h < 0.) out.h += 360.;
   }
 
   /* \brief Convert a XYZHSV point type to a XYZRGB
@@ -359,7 +359,7 @@ namespace pcl
     double bad_point = std::numeric_limits<double>::quiet_NaN();
     size_t width_ = depth.width;
     size_t height_ = depth.height;
-    double constant_ = 1.0f / focal;
+    double constant_ = 1.0 / focal;
 
     for (size_t v = 0; v < height_; v++)
     {
@@ -375,7 +375,7 @@ namespace pcl
         }
         else
         {
-          pt.z = depth_ * 0.001f;
+          pt.z = depth_ * 0.001;
           pt.x = static_cast<double> (u) * pt.z * constant_;
           pt.y = static_cast<double> (v) * pt.z * constant_;
         }

@@ -143,11 +143,11 @@ namespace pcl
         * \param border_size the border size (defaults to 0)
         */
       template <typename PointCloudType> void
-      createFromPointCloud (const PointCloudType& point_cloud, double angular_resolution=pcl::deg2rad (0.5f),
-          double max_angle_width=pcl::deg2rad (360.0f), double max_angle_height=pcl::deg2rad (180.0f),
+      createFromPointCloud (const PointCloudType& point_cloud, double angular_resolution=pcl::deg2rad (0.5),
+          double max_angle_width=pcl::deg2rad (360.0), double max_angle_height=pcl::deg2rad (180.0),
           const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
-          CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0f,
-          double min_range=0.0f, int border_size=0);
+          CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0,
+          double min_range=0.0, int border_size=0);
       
       /** \brief Create the depth image from a point cloud
         * \param point_cloud the input point cloud
@@ -168,11 +168,11 @@ namespace pcl
         */
       template <typename PointCloudType> void
       createFromPointCloud (const PointCloudType& point_cloud,
-          double angular_resolution_x=pcl::deg2rad (0.5f), double angular_resolution_y=pcl::deg2rad (0.5f),
-          double max_angle_width=pcl::deg2rad (360.0f), double max_angle_height=pcl::deg2rad (180.0f),
+          double angular_resolution_x=pcl::deg2rad (0.5), double angular_resolution_y=pcl::deg2rad (0.5),
+          double max_angle_width=pcl::deg2rad (360.0), double max_angle_height=pcl::deg2rad (180.0),
           const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
           CoordinateFrame coordinate_frame=CAMERA_FRAME,
-          double noise_level=0.0f, double min_range=0.0f, int border_size=0);
+          double noise_level=0.0, double min_range=0.0, int border_size=0);
       
       /** \brief Create the depth image from a point cloud, getting a hint about the size of the scene for 
         * faster calculation.
@@ -194,7 +194,7 @@ namespace pcl
                                          const Eigen::Vector3d& point_cloud_center, double point_cloud_radius,
                                          const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
                                          CoordinateFrame coordinate_frame=CAMERA_FRAME,
-                                         double noise_level=0.0f, double min_range=0.0f, int border_size=0);
+                                         double noise_level=0.0, double min_range=0.0, int border_size=0);
       
       /** \brief Create the depth image from a point cloud, getting a hint about the size of the scene for 
         * faster calculation.
@@ -220,7 +220,7 @@ namespace pcl
                                          const Eigen::Vector3d& point_cloud_center, double point_cloud_radius,
                                          const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
                                          CoordinateFrame coordinate_frame=CAMERA_FRAME,
-                                         double noise_level=0.0f, double min_range=0.0f, int border_size=0);
+                                         double noise_level=0.0, double min_range=0.0, int border_size=0);
       
       /** \brief Create the depth image from a point cloud, using the average viewpoint of the points 
         * (vp_x,vp_y,vp_z in the point type) in the point cloud as sensor pose (assuming a rotation of (0,0,0)).
@@ -240,8 +240,8 @@ namespace pcl
       template <typename PointCloudTypeWithViewpoints> void
       createFromPointCloudWithViewpoints (const PointCloudTypeWithViewpoints& point_cloud, double angular_resolution,
                                           double max_angle_width, double max_angle_height,
-                                          CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0f,
-                                          double min_range=0.0f, int border_size=0);
+                                          CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0,
+                                          double min_range=0.0, int border_size=0);
       
       /** \brief Create the depth image from a point cloud, using the average viewpoint of the points 
         * (vp_x,vp_y,vp_z in the point type) in the point cloud as sensor pose (assuming a rotation of (0,0,0)).
@@ -265,8 +265,8 @@ namespace pcl
       createFromPointCloudWithViewpoints (const PointCloudTypeWithViewpoints& point_cloud,
                                           double angular_resolution_x, double angular_resolution_y,
                                           double max_angle_width, double max_angle_height,
-                                          CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0f,
-                                          double min_range=0.0f, int border_size=0);
+                                          CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0,
+                                          double min_range=0.0, int border_size=0);
       
       /** \brief Create an empty depth image (filled with unobserved points)
         * \param[in] angular_resolution the angle (in radians) between each sample in the depth image
@@ -277,8 +277,8 @@ namespace pcl
         */
       void
       createEmpty (double angular_resolution, const Eigen::Affine3d& sensor_pose=Eigen::Affine3d::Identity (),
-                   RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, double angle_width=pcl::deg2rad (360.0f),
-                   double angle_height=pcl::deg2rad (180.0f));     
+                   RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, double angle_width=pcl::deg2rad (360.0),
+                   double angle_height=pcl::deg2rad (180.0));     
       
       /** \brief Create an empty depth image (filled with unobserved points)
         * \param angular_resolution_x the angular difference (in radians) between the
@@ -293,8 +293,8 @@ namespace pcl
       void
       createEmpty (double angular_resolution_x, double angular_resolution_y,
                    const Eigen::Affine3d& sensor_pose=Eigen::Affine3d::Identity (),
-                   RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, double angle_width=pcl::deg2rad (360.0f),
-                   double angle_height=pcl::deg2rad (180.0f));
+                   RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, double angle_width=pcl::deg2rad (360.0),
+                   double angle_height=pcl::deg2rad (180.0));
       
       /** \brief Integrate the given point cloud into the current range image using a z-buffer
         * \param point_cloud the input point cloud
@@ -573,13 +573,13 @@ namespace pcl
       PCL_EXPORTS double*
       getImpactAngleImageBasedOnLocalNormals (int radius) const;
 
-      /** Calculate a score [0,1] that tells how acute the impact angle is (1.0f - getImpactAngle/90deg)
+      /** Calculate a score [0,1] that tells how acute the impact angle is (1.0 - getImpactAngle/90deg)
        *  This uses getImpactAngleBasedOnLocalNormal
        *  Will return -INFINITY if no normal could be calculated */
       inline double
       getNormalBasedAcutenessValue (int x, int y, int radius) const;
       
-      /** Calculate a score [0,1] that tells how acute the impact angle is (1.0f - getImpactAngle/90deg)
+      /** Calculate a score [0,1] that tells how acute the impact angle is (1.0 - getImpactAngle/90deg)
        *  will return -INFINITY if one of the points is unobserved */
       inline double
       getAcutenessValue (const PointWithRange& point1, const PointWithRange& point2) const;
@@ -592,7 +592,7 @@ namespace pcl
       getAcutenessValueImages (int pixel_distance, double*& acuteness_value_image_x,
                                double*& acuteness_value_image_y) const;
       
-      /** Calculates, how much the surface changes at a point. Pi meaning a flat suface and 0.0f
+      /** Calculates, how much the surface changes at a point. Pi meaning a flat suface and 0.0
        *  would be a needle point */
       //inline double
       //  getSurfaceChange (const PointWithRange& point, const PointWithRange& neighbor1,
@@ -606,7 +606,7 @@ namespace pcl
       PCL_EXPORTS double*
       getSurfaceChangeImage (int radius) const;
       
-      /** Calculates, how much the surface changes at a point. Returns an angle [0.0f, PI] for x and y direction.
+      /** Calculates, how much the surface changes at a point. Returns an angle [0.0, PI] for x and y direction.
        *  A return value of -INFINITY means that a point was unobserved. */
       inline void
       getSurfaceAngleChange (int x, int y, int radius, double& angle_change_x, double& angle_change_y) const;

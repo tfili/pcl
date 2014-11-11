@@ -46,7 +46,7 @@ pcl::computePPFPairFeature (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1
                             double &f1, double &f2, double &f3, double &f4)
 {
   Eigen::Vector4d delta = p2 - p1;
-  delta[3] = 0.0f;
+  delta[3] = 0.0;
   // f4 = ||delta||
   f4 = delta.norm ();
 

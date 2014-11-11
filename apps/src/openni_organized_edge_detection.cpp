@@ -66,7 +66,7 @@ class OpenNIOrganizedEdgeDetection
       viewer->setSize (640, 480);
       viewer->addPointCloud<PointT> (cloud, "cloud");
       viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "cloud");
-      viewer->addCoordinateSystem (0.2f, "global");
+      viewer->addCoordinateSystem (0.2, "global");
       viewer->initCameraParameters ();
       viewer->registerKeyboardCallback (&OpenNIOrganizedEdgeDetection::keyboard_callback, *this);
       viewer->resetCameraViewpoint ("cloud");
@@ -74,23 +74,23 @@ class OpenNIOrganizedEdgeDetection
       const int point_size = 2;
       viewer->addPointCloud<PointT> (cloud, "nan boundary edges");
       viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, point_size, "nan boundary edges");
-      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 0.0f, 0.0f, 1.0f, "nan boundary edges");
+      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 0.0, 0.0, 1.0, "nan boundary edges");
 
       viewer->addPointCloud<PointT> (cloud, "occluding edges");
       viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, point_size, "occluding edges");
-      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 0.0f, 1.0f, 0.0f, "occluding edges");
+      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 0.0, 1.0, 0.0, "occluding edges");
 
       viewer->addPointCloud<PointT> (cloud, "occluded edges");
       viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, point_size, "occluded edges");
-      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 1.0f, 0.0f, 0.0f, "occluded edges");
+      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 1.0, 0.0, 0.0, "occluded edges");
 
       viewer->addPointCloud<PointT> (cloud, "high curvature edges");
       viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, point_size, "high curvature edges");
-      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 1.0f, 1.0f, 0.0f, "high curvature edges");
+      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 1.0, 1.0, 0.0, "high curvature edges");
 
       viewer->addPointCloud<PointT> (cloud, "rgb edges");
       viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, point_size, "rgb edges");
-      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 0.0f, 1.0f, 1.0f, "rgb edges");
+      viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_COLOR, 0.0, 1.0, 1.0, "rgb edges");
 
       return (viewer);
     }
@@ -154,7 +154,7 @@ class OpenNIOrganizedEdgeDetection
 
       pcl::IntegralImageNormalEstimation<PointT, pcl::Normal> ne;
       ne.setNormalEstimationMethod (ne.COVARIANCE_MATRIX);
-      ne.setNormalSmoothingSize (10.0f);
+      ne.setNormalSmoothingSize (10.0);
       ne.setBorderPolicy (ne.BORDER_POLICY_MIRROR);
 
       double th_dd = 0.04f;

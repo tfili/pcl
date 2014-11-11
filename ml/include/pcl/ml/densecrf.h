@@ -104,18 +104,18 @@ namespace pcl
       
 
       void
-      inference (int n_iterations, std::vector<double> &result, double relax = 1.0f);
+      inference (int n_iterations, std::vector<double> &result, double relax = 1.0);
  
       void
-      mapInference (int n_iterations, std::vector<int> &result, double relax = 1.0f);
+      mapInference (int n_iterations, std::vector<int> &result, double relax = 1.0);
       
       void
       expAndNormalize (std::vector<double> &out, const std::vector<double> &in,
-                       double scale, double relax = 1.0f);
+                       double scale, double relax = 1.0);
  
       void
-      expAndNormalizeORI ( double* out, const double* in, double scale=1.0f, double relax=1.0f );
-      void map ( int n_iterations, std::vector<int> result, double relax=1.0f );
+      expAndNormalizeORI ( double* out, const double* in, double scale=1.0, double relax=1.0 );
+      void map ( int n_iterations, std::vector<int> result, double relax=1.0 );
       std::vector<double> runInference( int n_iterations, double relax );
       void startInference();
       void stepInference( double relax );

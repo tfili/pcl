@@ -149,25 +149,25 @@ pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vecto
 
   // check cube size value
   double cubeSide = size;
-  if (cubeSide <= 0.0f)
+  if (cubeSide <= 0.0)
   {
 	PCL_ERROR ("Size of the cube must be positive and non null (%f given). Setting it to 3.0 meters.\n", cubeSide);
-	cubeSide = 512.0f;
+	cubeSide = 512.0;
   }
 
   std::cout << "cube size is set to " << cubeSide << std::endl;
 
   // check overlap value
-  double step_increment = 1.0f - overlap;
+  double step_increment = 1.0 - overlap;
   if (overlap < 0.0)
   {
 	PCL_ERROR ("Overlap ratio must be positive or null (%f given). Setting it to 0.0 procent.\n", overlap);
-	step_increment = 1.0f;
+	step_increment = 1.0;
   }
   if (overlap > 1.0)
   {
 	PCL_ERROR ("Overlap ratio must be less or equal to 1.0 (%f given). Setting it to 10 procent.\n", overlap);
-	step_increment = 0.1f;
+	step_increment = 0.1;
   }
 
   

@@ -160,7 +160,7 @@ vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, Poin
 void
 showHypothesisAsCoordinateFrame (Hypothesis& hypo, CallbackParameters* parameters, string frame_name)
 {
-  double rot_col[3], x_dir[3], y_dir[3], z_dir[3], origin[3], scale = 2.0f*parameters->objrec_.getPairWidth ();
+  double rot_col[3], x_dir[3], y_dir[3], z_dir[3], origin[3], scale = 2.0*parameters->objrec_.getPairWidth ();
   pcl::ModelCoefficients coeffs; coeffs.values.resize (6);
 
   // Get the origin of the coordinate frame
@@ -280,7 +280,7 @@ update (CallbackParameters* params)
 
   vtkSmartPointer<vtkHedgeHog> vtk_hh = vtkSmartPointer<vtkHedgeHog>::New ();
   vtk_hh->SetVectorModeToUseNormal ();
-  vtk_hh->SetScaleFactor (0.5f*params->objrec_.getPairWidth ());
+  vtk_hh->SetScaleFactor (0.5*params->objrec_.getPairWidth ());
   vtk_hh->SetInput (vtk_opps);
   vtk_hh->Update ();
 
@@ -457,7 +457,7 @@ run (double pair_width, double voxel_size, double max_coplanarity_angle, int num
 #if defined _SHOW_OCTREE_NORMALS_ && defined _SHOW_OCTREE_POINTS_
   PointCloud<Normal>::Ptr octree_normals (new PointCloud<Normal> ());
   objrec.getSceneOctree ().getNormalsOfFullLeaves (*octree_normals);
-  viz.addPointCloudNormals<PointXYZ,Normal> (octree_points, octree_normals, 1, 6.0f, "normals out");
+  viz.addPointCloudNormals<PointXYZ,Normal> (octree_points, octree_normals, 1, 6.0, "normals out");
 #endif
 
   // Enter the main loop
@@ -479,7 +479,7 @@ main (int argc, char** argv)
   printf ("\nUsage: ./obj_rec_ransac_accepted_hypotheses <pair_width> <voxel_size> <max_coplanarity_angle> <n_hypotheses_to_show> <show_hypotheses_as_coordinate_frames>\n\n");
 
   const int num_params = 4;
-  double parameters[num_params] = {40.0f/*pair width*/, 5.0f/*voxel size*/, 15.0f/*max co-planarity angle*/, 1/*n_hypotheses_to_show*/};
+  double parameters[num_params] = {40.0/*pair width*/, 5.0/*voxel size*/, 15.0/*max co-planarity angle*/, 1/*n_hypotheses_to_show*/};
   string parameter_names[num_params] = {"pair_width", "voxel_size", "max_coplanarity_angle", "n_hypotheses_to_show"};
 
   // Read the user input if any
@@ -491,7 +491,7 @@ main (int argc, char** argv)
     cout << "  " << parameter_names[i] << " = " << parameters[i] << endl;
   cout << endl;
 
-  run (parameters[0], parameters[1], parameters[2], static_cast<int> (parameters[3] + 0.5f));
+  run (parameters[0], parameters[1], parameters[2], static_cast<int> (parameters[3] + 0.5));
 
   return (0);
 }

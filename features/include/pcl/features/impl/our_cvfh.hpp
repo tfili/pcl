@@ -235,7 +235,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3d & c
 
   Eigen::Matrix3d scatter;
   scatter.setZero ();
-  double sum_w = 0.f;
+  double sum_w = 0.;
 
   //for (int k = 0; k < static_cast<intgrid->points[k].getVector3dMap ();> (grid->points.size ()); k++)
   for (int k = 0; k < static_cast<int> (indices.indices.size ()); k++)
@@ -260,7 +260,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3d & c
   Eigen::Vector3d evzminus = evz * -1;
 
   double s_xplus, s_xminus, s_yplus, s_yminus;
-  s_xplus = s_xminus = s_yplus = s_yminus = 0.f;
+  s_xplus = s_xminus = s_yplus = s_yminus = 0.;
 
   //disambiguate rf using all points
   for (int k = 0; k < static_cast<int> (grid->points.size ()); k++)
@@ -388,7 +388,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeRFAndShapeDistribut
     sgurf (centroids_dominant_orientations_[i], dominant_normals_[i], processed, transformations, grid, cluster_indices[i]);
 
     // Make a note of how many transformations correspond to each cluster
-    cluster_axes_[i] = transformations.size ();
+    cluster_axes_[i] = (short)transformations.size ();
     
     for (size_t t = 0; t < transformations.size (); t++)
     {
@@ -412,88 +412,88 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeRFAndShapeDistribut
 
       double hist_incr;
       if (normalize_bins_)
-        hist_incr = 100.0f / static_cast<double> (grid->points.size () - 1);
+        hist_incr = 100.0 / static_cast<double> (grid->points.size () - 1);
       else
-        hist_incr = 1.0f;
+        hist_incr = 1.0;
 
       double * weights = new double[num_hists];
-      double sigma = 0.01f; //1cm
+      double sigma = 0.01; //1cm
       double sigma_sq = sigma * sigma;
 
       for (int k = 0; k < static_cast<int> (grid->points.size ()); k++)
       {
         Eigen::Vector4d p = grid->points[k].getVector4dMap ();
-        p[3] = 0.f;
+        p[3] = 0.;
         double d = p.norm ();
 
         //compute weight for all octants
-        double wx = 1.f - std::exp (-((p[0] * p[0]) / (2.f * sigma_sq))); //how is the weight distributed among two semi-cubes
-        double wy = 1.f - std::exp (-((p[1] * p[1]) / (2.f * sigma_sq)));
-        double wz = 1.f - std::exp (-((p[2] * p[2]) / (2.f * sigma_sq)));
+        double wx = 1. - std::exp (-((p[0] * p[0]) / (2. * sigma_sq))); //how is the weight distributed among two semi-cubes
+        double wy = 1. - std::exp (-((p[1] * p[1]) / (2. * sigma_sq)));
+        double wz = 1. - std::exp (-((p[2] * p[2]) / (2. * sigma_sq)));
 
         //distribute the weights using the x-coordinate
         if (p[0] >= 0)
         {
           for (size_t ii = 0; ii <= 3; ii++)
-            weights[ii] = 0.5f - wx * 0.5f;
+            weights[ii] = 0.5 - wx * 0.5;
 
           for (size_t ii = 4; ii <= 7; ii++)
-            weights[ii] = 0.5f + wx * 0.5f;
+            weights[ii] = 0.5 + wx * 0.5;
         }
         else
         {
           for (size_t ii = 0; ii <= 3; ii++)
-            weights[ii] = 0.5f + wx * 0.5f;
+            weights[ii] = 0.5 + wx * 0.5;
 
           for (size_t ii = 4; ii <= 7; ii++)
-            weights[ii] = 0.5f - wx * 0.5f;
+            weights[ii] = 0.5 - wx * 0.5;
         }
 
         //distribute the weights using the y-coordinate
         if (p[1] >= 0)
         {
           for (size_t ii = 0; ii <= 1; ii++)
-            weights[ii] *= 0.5f - wy * 0.5f;
+            weights[ii] *= 0.5 - wy * 0.5;
           for (size_t ii = 4; ii <= 5; ii++)
-            weights[ii] *= 0.5f - wy * 0.5f;
+            weights[ii] *= 0.5 - wy * 0.5;
 
           for (size_t ii = 2; ii <= 3; ii++)
-            weights[ii] *= 0.5f + wy * 0.5f;
+            weights[ii] *= 0.5 + wy * 0.5;
 
           for (size_t ii = 6; ii <= 7; ii++)
-            weights[ii] *= 0.5f + wy * 0.5f;
+            weights[ii] *= 0.5 + wy * 0.5;
         }
         else
         {
           for (size_t ii = 0; ii <= 1; ii++)
-            weights[ii] *= 0.5f + wy * 0.5f;
+            weights[ii] *= 0.5 + wy * 0.5;
           for (size_t ii = 4; ii <= 5; ii++)
-            weights[ii] *= 0.5f + wy * 0.5f;
+            weights[ii] *= 0.5 + wy * 0.5;
 
           for (size_t ii = 2; ii <= 3; ii++)
-            weights[ii] *= 0.5f - wy * 0.5f;
+            weights[ii] *= 0.5 - wy * 0.5;
 
           for (size_t ii = 6; ii <= 7; ii++)
-            weights[ii] *= 0.5f - wy * 0.5f;
+            weights[ii] *= 0.5 - wy * 0.5;
         }
 
         //distribute the weights using the z-coordinate
         if (p[2] >= 0)
         {
           for (size_t ii = 0; ii <= 7; ii += 2)
-            weights[ii] *= 0.5f - wz * 0.5f;
+            weights[ii] *= 0.5 - wz * 0.5;
 
           for (size_t ii = 1; ii <= 7; ii += 2)
-            weights[ii] *= 0.5f + wz * 0.5f;
+            weights[ii] *= 0.5 + wz * 0.5;
 
         }
         else
         {
           for (size_t ii = 0; ii <= 7; ii += 2)
-            weights[ii] *= 0.5f + wz * 0.5f;
+            weights[ii] *= 0.5 + wz * 0.5;
 
           for (size_t ii = 1; ii <= 7; ii += 2)
-            weights[ii] *= 0.5f - wz * 0.5f;
+            weights[ii] *= 0.5 - wz * 0.5;
         }
 
         int h_index = (d <= 0) ? 0 : std::ceil (size_hists * (d / distance_normalization_factor)) - 1;
@@ -535,8 +535,8 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeRFAndShapeDistribut
 template<typename PointInT, typename PointNT, typename PointOutT> void
 pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut &output)
 {
-  if (refine_clusters_ <= 0.f)
-    refine_clusters_ = 1.f;
+  if (refine_clusters_ <= 0.)
+    refine_clusters_ = 1.;
 
   // Check if input was set
   if (!normals_)

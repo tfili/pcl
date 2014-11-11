@@ -203,7 +203,7 @@ pcl::filters::Convolution<PointIn, PointOut>::convolveOneRowNonDense (int i, int
     result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
   else
   {
-    weight = 1.f/weight;
+    weight = 1./weight;
     result*= weight;
   }
   return (result);
@@ -229,7 +229,7 @@ pcl::filters::Convolution<PointIn, PointOut>::convolveOneColNonDense (int i, int
     result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
   else
   {
-    weight = 1.f/weight;
+    weight = 1./weight;
     result*= weight;
   }
   return (result);
@@ -303,7 +303,7 @@ namespace pcl
         result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
       else
       {
-        weight = 1.f/weight;
+        weight = 1./weight;
         r*= weight; g*= weight; b*= weight;
         result.x*= weight; result.y*= weight; result.z*= weight;
         result.r = static_cast<pcl::uint8_t> (r);
@@ -336,7 +336,7 @@ namespace pcl
         result.x = result.y = result.z = std::numeric_limits<double>::quiet_NaN ();
       else
       {
-        weight = 1.f/weight;
+        weight = 1./weight;
         r*= weight; g*= weight; b*= weight;
         result.x*= weight; result.y*= weight; result.z*= weight;
         result.r = static_cast<pcl::uint8_t> (r);

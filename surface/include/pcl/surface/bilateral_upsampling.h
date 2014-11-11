@@ -81,17 +81,17 @@ namespace pcl
         : KinectVGAProjectionMatrix ()
         , KinectSXGAProjectionMatrix ()
         , window_size_ (5)
-        , sigma_color_ (15.0f)
-        , sigma_depth_ (0.5f)
+        , sigma_color_ (15.0)
+        , sigma_depth_ (0.5)
         , projection_matrix_ ()
         , unprojection_matrix_ ()
       {
-        KinectVGAProjectionMatrix << 525.0f, 0.0f, 320.0f,
-                                     0.0f, 525.0f, 240.0f,
-                                     0.0f, 0.0f, 1.0f;
-        KinectSXGAProjectionMatrix << 1050.0f, 0.0f, 640.0f,
-                                      0.0f, 1050.0f, 480.0f,
-                                      0.0f, 0.0f, 1.0f;
+        KinectVGAProjectionMatrix << 525.0, 0.0, 320.0,
+                                     0.0, 525.0, 240.0,
+                                     0.0, 0.0, 1.0;
+        KinectSXGAProjectionMatrix << 1050.0, 0.0, 640.0,
+                                      0.0, 1050.0, 480.0,
+                                      0.0, 0.0, 1.0;
       };
 
       /** \brief Method that sets the window size for the filter

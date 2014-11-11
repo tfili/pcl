@@ -145,8 +145,8 @@ TEST(PCL, IntegralImage1D)
   {
     for (unsigned xIdx = 0; xIdx < width; ++xIdx)
     {
-      data[row_stride * yIdx + element_stride * xIdx] = 1.0f;
-      data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0f;
+      data[row_stride * yIdx + element_stride * xIdx] = 1.0;
+      data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0;
       data[row_stride * yIdx + element_stride * xIdx + 2] = static_cast<double> (xIdx);
     }
   }
@@ -234,8 +234,8 @@ TEST(PCL, IntegralImage1D)
       }
       else
       {
-        data[row_stride * yIdx + element_stride * xIdx] = 3.0f;
-        data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0f;
+        data[row_stride * yIdx + element_stride * xIdx] = 3.0;
+        data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0;
         data[row_stride * yIdx + element_stride * xIdx + 2] = static_cast<double> (xIdx);
       }
     }
@@ -284,7 +284,7 @@ TEST(PCL, IntegralImage3D)
       data[row_stride * yIdx + xIdx * element_stride] = static_cast<double> (xIdx);
       data[row_stride * yIdx + xIdx * element_stride + 1] = static_cast<double> (yIdx);
       data[row_stride * yIdx + xIdx * element_stride + 2] = static_cast<double> (xIdx + yIdx);
-      data[row_stride * yIdx + xIdx * element_stride + 3] = -1000.0f;
+      data[row_stride * yIdx + xIdx * element_stride + 3] = -1000.0;
     }
   }
   integral_image3.setInput (data, width, height, element_stride, row_stride);
@@ -520,7 +520,7 @@ main (int argc, char** argv)
     {
       cloud (u, v).x = static_cast<double> (u);
       cloud (u, v).y = static_cast<double> (v);
-      cloud (u, v).z = 10.0f;
+      cloud (u, v).z = 10.0;
     }
   }
 

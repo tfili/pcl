@@ -102,7 +102,7 @@ namespace pcl
   {
     namespace kinfuLS
     {
-      void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5f);
+      void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5);
       void mergePointNormal (const DeviceArray<PointXYZ>& cloud, const DeviceArray<Normal>& normals, DeviceArray<PointNormal>& output);
     }
   }
@@ -152,8 +152,8 @@ struct SampledScopeTime : public StopWatch
     if (i_ % EACH == 0 && i_)
     {
       boost::posix_time::ptime endtime_ = boost::posix_time::microsec_clock::local_time();
-      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000.f * EACH / time_ms_ << "fps )"
-           << "( real: " << 1000.f * EACH / (endtime_-starttime_).total_milliseconds() << "fps )"  << endl;
+      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000. * EACH / time_ms_ << "fps )"
+           << "( real: " << 1000. * EACH / (endtime_-starttime_).total_milliseconds() << "fps )"  << endl;
       time_ms_ = 0;
       starttime_ = endtime_;
     }
@@ -695,7 +695,7 @@ struct KinFuLSApp
   enum { PCD_BIN = 1, PCD_ASCII = 2, PLY = 3, MESH_PLY = 7, MESH_VTK = 8 };
 
   KinFuLSApp(pcl::Grabber& source, double vsz, double shiftDistance, int snapshotRate) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
-          registration_ (false), integrate_colors_ (false), pcd_source_ (false), focal_length_(-1.f), capture_ (source), was_lost_(false), time_ms_ (0)
+          registration_ (false), integrate_colors_ (false), pcd_source_ (false), focal_length_(-1.), capture_ (source), was_lost_(false), time_ms_ (0)
   {    
     //Init Kinfu Tracker
     Eigen::Vector3d volume_size = Vector3d::Constant (vsz/*meters*/);    
@@ -712,16 +712,16 @@ struct KinFuLSApp
 
     kinfu_ = new pcl::gpu::kinfuLS::KinfuTracker(volume_size, shiftDistance);
 
-    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.f), Vector3d::UnitX());
-    Eigen::Vector3d t = volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
+    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.), Vector3d::UnitX());
+    Eigen::Vector3d t = volume_size * 0.5 - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
     Eigen::Affine3d pose = Eigen::Translation3d (t) * Eigen::AngleAxisd (R);
 
     kinfu_->setInitialCameraPose (pose);
-    kinfu_->volume().setTsdfTruncDist (0.030f/*meters*/);
-    kinfu_->setIcpCorespFilteringParams (0.1f/*meters*/, sin ( pcl::deg2rad(20.f) ));
-    //kinfu_->setDepthTruncationForICP(3.f/*meters*/);
-    kinfu_->setCameraMovementThreshold(0.001f);
+    kinfu_->volume().setTsdfTruncDist (0.030/*meters*/);
+    kinfu_->setIcpCorespFilteringParams (0.1/*meters*/, sin ( pcl::deg2rad(20.) ));
+    //kinfu_->setDepthTruncationForICP(3./*meters*/);
+    kinfu_->setCameraMovementThreshold(0.001);
 
     //Init KinFuLSApp            
     tsdf_cloud_ptr_ = pcl::PointCloud<pcl::PointXYZI>::Ptr (new pcl::PointCloud<pcl::PointXYZI>);
@@ -739,13 +739,13 @@ struct KinFuLSApp
     //~ boost::shared_ptr<openni_wrapper::OpenNIDevice> d = ((pcl::OpenNIGrabber)source).getDevice ();
     //~ kinfu_->getDepthIntrinsics (fx, fy, cx, cy);
 
-    double height = 480.0f;
-    double width = 640.0f;
+    double height = 480.0;
+    double width = 640.0;
     screenshot_manager_.setCameraIntrinsics (pcl::device::kinfuLS::FOCAL_LENGTH, height, width);
     snapshot_rate_ = snapshotRate;
     
-    Eigen::Matrix3d Rid = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.f), Vector3d::UnitX());
-    Eigen::Vector3d T = Vector3d (0, 0, -volume_size(0)*1.5f);
+    Eigen::Matrix3d Rid = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.), Vector3d::UnitX());
+    Eigen::Vector3d T = Vector3d (0, 0, -volume_size(0)*1.5);
     delta_lost_pose_ = Eigen::Translation3d (T) * Eigen::AngleAxisd (Rid); 
     
   }
@@ -1279,7 +1279,7 @@ main (int argc, char* argv[])
     }
     else if (pc::parse_argument (argc, argv, "-pcd", pcd_dir) > 0)
     {
-      double fps_pcd = 15.0f;
+      double fps_pcd = 15.0;
       pc::parse_argument (argc, argv, "-pcd_fps", fps_pcd);
 
       vector<string> pcd_files = getPcdFilesInDir(pcd_dir);    

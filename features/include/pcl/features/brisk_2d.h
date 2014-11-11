@@ -145,7 +145,7 @@ namespace pcl
       void
       generateKernel (std::vector<double> &radius_list,
                       std::vector<int> &number_list, 
-                      double d_max = 5.85f, double d_min = 8.2f,
+                      double d_max = 5.85, double d_min = 8.2,
                       std::vector<int> index_change = std::vector<int> ());
 
       /** \brief Compute the smoothed intensity for a given x/y position in the image. */

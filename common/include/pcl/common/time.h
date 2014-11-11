@@ -85,7 +85,7 @@ namespace pcl
       inline double
       getTimeSeconds ()
       {
-        return (getTime () * 0.001f);
+        return (getTime () * 0.001);
       }
 
       /** \brief Reset the stopwatch to 0. */

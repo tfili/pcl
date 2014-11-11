@@ -43,10 +43,10 @@
 #include <pcl/apps/point_cloud_editor/cloudTransformTool.h>
 #include <pcl/apps/point_cloud_editor/cloud.h>
 
-const double DEG_2_RADS = M_PI / 180.0f;
+const double DEG_2_RADS = M_PI / 180.0;
 
 const double CloudTransformTool::DEFAULT_SCALE_FACTOR_ = 1.14;
-const double CloudTransformTool::DEFAULT_TRANSLATE_FACTOR_ = 0.001f;
+const double CloudTransformTool::DEFAULT_TRANSLATE_FACTOR_ = 0.001;
 
 
 CloudTransformTool::CloudTransformTool (CloudPtr cloud_ptr)
@@ -103,7 +103,7 @@ void
 CloudTransformTool::getTranslateMatrix (int dx, int dy, double* matrix)
 {
   setIdentity(matrix);
-  double scale = 1.0f / cloud_ptr_-> getScalingFactor();
+  double scale = 1.0 / cloud_ptr_-> getScalingFactor();
   matrix[12] = double(dx) * translate_factor_ * scale;
   matrix[13] = double(-dy) * translate_factor_ * scale;
 }

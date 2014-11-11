@@ -292,10 +292,10 @@ TEST (PCL, compute3DCentroidCloudIterator)
   
   EXPECT_EQ (compute3DCentroid (it, centroid_f), 4);
 
-  EXPECT_EQ (centroid_f[0], 0.0f);
-  EXPECT_EQ (centroid_f[1], 1.0f);
-  EXPECT_EQ (centroid_f[2], 0.0f);
-  EXPECT_EQ (centroid_f[3], 1.0f);
+  EXPECT_EQ (centroid_f[0], 0.0);
+  EXPECT_EQ (centroid_f[1], 1.0);
+  EXPECT_EQ (centroid_f[2], 0.0);
+  EXPECT_EQ (centroid_f[3], 1.0);
   
   Eigen::Vector4d centroid_d;
   it.reset ();

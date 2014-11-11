@@ -67,7 +67,7 @@ pcl::ProgressiveSampleConsensus<PointT>::computeModel (int debug_verbosity_level
   double T_n = static_cast<double> (T_N);
   for (unsigned int i = 0; i < m; ++i)
     T_n *= static_cast<double> (m - i) / static_cast<double> (N - i);
-  double T_prime_n = 1.0f;
+  double T_prime_n = 1.0;
   size_t I_N_best = 0;
   double n = static_cast<double> (m);
 
@@ -108,7 +108,7 @@ pcl::ProgressiveSampleConsensus<PointT>::computeModel (int debug_verbosity_level
       index_pool.push_back (sac_model_->indices_->at(static_cast<unsigned int> (n - 1)));
       // Update other variables
       double T_n_minus_1 = T_n;
-      T_n *= (static_cast<double>(n) + 1.0f) / (static_cast<double>(n) + 1.0f - static_cast<double>(m));
+      T_n *= (static_cast<double>(n) + 1.0) / (static_cast<double>(n) + 1.0 - static_cast<double>(m));
       T_prime_n += ceilf (T_n - T_n_minus_1);
     }
 
@@ -181,7 +181,7 @@ pcl::ProgressiveSampleConsensus<PointT>::computeModel (int debug_verbosity_level
         {
           // Typo in Equation 7, not (n-m choose i-m) but (n choose i-m)
           size_t I_possible_n_star_min = m
-                           + static_cast<size_t> (ceil (boost::math::quantile (boost::math::complement (boost::math::binomial_distribution<double>(static_cast<double> (possible_n_star), 0.1f), 0.05))));
+                           + static_cast<size_t> (ceil (boost::math::quantile (boost::math::complement (boost::math::binomial_distribution<double>(static_cast<double> (possible_n_star), 0.1), 0.05))));
           // If Equation 9 is not verified, exit
           if (I_possible_n_star < I_possible_n_star_min)
             break;

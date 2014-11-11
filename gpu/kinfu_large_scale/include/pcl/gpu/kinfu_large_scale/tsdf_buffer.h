@@ -73,9 +73,9 @@ namespace pcl
             {
               tsdf_memory_start = 0;  tsdf_memory_end = 0; tsdf_rolling_buff_origin = 0; 
               origin_GRID.x = 0; origin_GRID.y = 0; origin_GRID.z = 0;
-              origin_GRID_global.x = 0.f; origin_GRID_global.y = 0.f; origin_GRID_global.z = 0.f;
-              origin_metric.x = 0.f; origin_metric.y = 0.f; origin_metric.z = 0.f;
-              volume_size.x = 3.f; volume_size.y = 3.f; volume_size.z = 3.f;
+              origin_GRID_global.x = 0.; origin_GRID_global.y = 0.; origin_GRID_global.z = 0.;
+              origin_metric.x = 0.; origin_metric.y = 0.; origin_metric.z = 0.;
+              volume_size.x = 3.; volume_size.y = 3.; volume_size.z = 3.;
               voxels_size.x = 512; voxels_size.y = 512; voxels_size.z = 512;
             }          
 

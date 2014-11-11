@@ -92,8 +92,8 @@ pcl::PPFRegistration<PointSource, PointTarget>::computeTransformation (PointClou
     Eigen::Vector3d scene_reference_point = target_->points[scene_reference_index].getVector3dMap (),
         scene_reference_normal = target_->points[scene_reference_index].getNormalVector3dMap ();
 
-    double rotation_angle_sg = acosf (scene_reference_normal.dot (Eigen::Vector3d::UnitX ()));
-    bool parallel_to_x_sg = (scene_reference_normal.y() == 0.0f && scene_reference_normal.z() == 0.0f);
+    double rotation_angle_sg = acos (scene_reference_normal.dot (Eigen::Vector3d::UnitX ()));
+    bool parallel_to_x_sg = (scene_reference_normal.y() == 0.0 && scene_reference_normal.z() == 0.0);
     Eigen::Vector3d rotation_axis_sg = (parallel_to_x_sg)?(Eigen::Vector3d::UnitY ()):(scene_reference_normal.cross (Eigen::Vector3d::UnitX ()). normalized());
     Eigen::AngleAxisd rotation_sg (rotation_angle_sg, rotation_axis_sg);
     Eigen::Affine3d transform_sg (Eigen::Translation3d ( rotation_sg * ((-1) * scene_reference_point)) * rotation_sg);
@@ -125,8 +125,8 @@ pcl::PPFRegistration<PointSource, PointTarget>::computeTransformation (PointClou
           Eigen::Vector3d scene_point = target_->points[scene_point_index].getVector3dMap ();
 
           Eigen::Vector3d scene_point_transformed = transform_sg * scene_point;
-          double alpha_s = atan2f ( -scene_point_transformed(2), scene_point_transformed(1));
-          if (sin (alpha_s) * scene_point_transformed(2) < 0.0f)
+          double alpha_s = atan2 ( -scene_point_transformed(2), scene_point_transformed(1));
+          if (sin (alpha_s) * scene_point_transformed(2) < 0.0)
             alpha_s *= (-1);
           alpha_s *= (-1);
 
@@ -163,8 +163,8 @@ pcl::PPFRegistration<PointSource, PointTarget>::computeTransformation (PointClou
 
     Eigen::Vector3d model_reference_point = input_->points[max_votes_i].getVector3dMap (),
         model_reference_normal = input_->points[max_votes_i].getNormalVector3dMap ();
-    double rotation_angle_mg = acosf (model_reference_normal.dot (Eigen::Vector3d::UnitX ()));
-    bool parallel_to_x_mg = (model_reference_normal.y() == 0.0f && model_reference_normal.z() == 0.0f);
+    double rotation_angle_mg = acos (model_reference_normal.dot (Eigen::Vector3d::UnitX ()));
+    bool parallel_to_x_mg = (model_reference_normal.y() == 0.0 && model_reference_normal.z() == 0.0);
     Eigen::Vector3d rotation_axis_mg = (parallel_to_x_mg)?(Eigen::Vector3d::UnitY ()):(model_reference_normal.cross (Eigen::Vector3d::UnitX ()). normalized());
     Eigen::AngleAxisd rotation_mg (rotation_angle_mg, rotation_axis_mg);
     Eigen::Affine3d transform_mg (Eigen::Translation3d ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg);

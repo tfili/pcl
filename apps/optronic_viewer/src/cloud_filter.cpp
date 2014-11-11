@@ -214,7 +214,7 @@ pcl::apps::optronic_viewer::
 RadiusOutlierCF::
 RadiusOutlierCF ()
 : filter_selection_page_ (new QWizardPage ())
-, search_radius_ (0.05f)
+, search_radius_ (0.05)
 , min_neighbors_in_radius_ (500)
 {
   search_radius_label_ = new QLabel (QObject::tr ("Search Radius:"));
@@ -279,7 +279,7 @@ pcl::apps::optronic_viewer::
 FastBilateralCF::
 FastBilateralCF ()
 : filter_selection_page_ (new QWizardPage ())
-, sigma_s_ (5.0f)
+, sigma_s_ (5.0)
 , sigma_r_ (0.03f)
 {
   sigma_s_label_ = new QLabel (QObject::tr ("Half Size (sigma s) (Minimum: 1.0):"));
@@ -327,10 +327,10 @@ filter (
   //std::cerr << "sigma_s: " << sigma_s_ << std::endl;
   //std::cerr << "sigma_r: " << sigma_r_ << std::endl;
 
-  if (sigma_s_ <= 1.0f)
-    sigma_s_ = 1.0f;
-  if (sigma_r_ <= 0.0001f)
-    sigma_r_ = 0.0001f;
+  if (sigma_s_ <= 1.0)
+    sigma_s_ = 1.0;
+  if (sigma_r_ <= 0.0001)
+    sigma_r_ = 0.0001;
 
   pcl::FastBilateralFilter<pcl::PointXYZRGBA> fbf;
   fbf.setInputCloud (cloud_in);
@@ -351,7 +351,7 @@ pcl::apps::optronic_viewer::
 MedianCF::
 MedianCF ()
 : filter_selection_page_ (new QWizardPage ())
-, max_allowed_movement_ (1.0f)
+, max_allowed_movement_ (1.0)
 , window_size_ (1)
 {
   max_allowed_movement_label_ = new QLabel (QObject::tr ("Maximum Allowed Movement (Minimum: 0.0):"));
@@ -397,8 +397,8 @@ filter (
   max_allowed_movement_ = max_allowed_movement_line_edit_->text ().toFloat ();
   window_size_ = window_size_line_edit_->text ().toInt ();
 
-  if (max_allowed_movement_ <= 0.0f)
-    max_allowed_movement_ = 0.0f;
+  if (max_allowed_movement_ <= 0.0)
+    max_allowed_movement_ = 0.0;
   if (window_size_ < 1)
     window_size_ = 1;
 
@@ -488,7 +488,7 @@ pcl::apps::optronic_viewer::
 PlaneCF::
 PlaneCF ()
 : filter_selection_page_ (new QWizardPage ())
-, threshold_ (0.05f)
+, threshold_ (0.05)
 , max_iterations_ (1000)
 , refinement_sigma_ (2)
 , max_refinement_iterations_ (50)

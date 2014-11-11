@@ -103,7 +103,7 @@ namespace pcl
         nr_subdiv_ (5), 
         pfh_histogram_ (),
         pfh_tuple_ (),
-        d_pi_ (1.0f / (2.0f * static_cast<double> (M_PI))), 
+        d_pi_ (1.0 / (2.0 * static_cast<double> (M_PI))), 
         feature_map_ (),
         key_list_ (),
         // Default 1GB memory size. Need to set it to something more conservative.

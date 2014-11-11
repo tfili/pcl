@@ -138,9 +138,9 @@ pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::calculateMeanFeatu
 {
   // Reset mean feature
   for (int i = 0; i < feature_representation_->getNumberOfDimensions (); ++i)
-    mean_feature_[i] = 0.0f;
+    mean_feature_[i] = 0.0;
 
-  double normalization_factor = 0.0f;
+  double normalization_factor = 0.0;
   for (std::vector<std::vector<std::vector<double> > >::iterator scale_it = features_at_scale_vectorized_.begin (); scale_it != features_at_scale_vectorized_.end(); ++scale_it) {
     normalization_factor += static_cast<double> (scale_it->size ());
     for (std::vector<std::vector<double> >::iterator feature_it = scale_it->begin (); feature_it != scale_it->end (); ++feature_it)
@@ -170,7 +170,7 @@ pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::extractUniqueFeatu
       standard_dev += diff * diff;
       diff_vector[point_i] = diff;
     }
-    standard_dev = sqrtf (standard_dev / static_cast<double> (features_at_scale_vectorized_[scale_i].size ()));
+    standard_dev = sqrt (standard_dev / static_cast<double> (features_at_scale_vectorized_[scale_i].size ()));
     PCL_DEBUG ("[pcl::MultiscaleFeaturePersistence::extractUniqueFeatures] Standard deviation for scale %f is %f\n", scale_values_[scale_i], standard_dev);
 
     // Select only points outside (mean +/- alpha * standard_dev)

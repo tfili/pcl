@@ -154,7 +154,7 @@ namespace pcl
         PointCloudImageExtractorWithScaling (const std::string& field_name, const ScalingMethod scaling_method)
           : field_name_ (field_name)
           , scaling_method_ (scaling_method)
-          , scaling_factor_ (1.0f)
+          , scaling_factor_ (1.0)
         {
         }
 

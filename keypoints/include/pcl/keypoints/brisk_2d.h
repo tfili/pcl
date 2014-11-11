@@ -169,7 +169,7 @@ namespace pcl
         const PointInT &p4 = (*cloud)(u+1, v+1);
         
         double fx = x - double (u), fy = y - double (v);
-        double fx1 = 1.0f - fx, fy1 = 1.0f - fy;
+        double fx1 = 1.0 - fx, fy1 = 1.0 - fy;
 
         double w1 = fx1 * fy1, w2 = fx * fy1, w3 = fx1 * fy, w4 = fx * fy;
         double weight = 0;
@@ -207,7 +207,7 @@ namespace pcl
           pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
         else
         {
-          weight = 1.0f / weight;
+          weight = 1.0 / weight;
           pt.x *= weight; pt.y *= weight; pt.z *= weight;
         }
       }
@@ -263,7 +263,7 @@ namespace pcl
             */
           Layer (const std::vector<unsigned char>& img, 
                  int width, int height, 
-                 double scale = 1.0f, double offset = 0.0f);
+                 double scale = 1.0, double offset = 0.0);
         
           /** \brief Copy constructor for deriving a layer.
             * \param[in] layer layer to derive from
@@ -300,7 +300,7 @@ namespace pcl
             * \param[in] scale the scale
             */
           uint8_t 
-          getAgastScore (double xf, double yf, uint8_t threshold, double scale = 1.0f);
+          getAgastScore (double xf, double yf, uint8_t threshold, double scale = 1.0);
 
           /** \brief Access gray values (smoothed/interpolated) 
             * \param[in] mat the image

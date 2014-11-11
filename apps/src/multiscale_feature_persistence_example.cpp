@@ -46,8 +46,8 @@
 
 using namespace pcl;
 
-const Eigen::Vector4d subsampling_leaf_size (0.01f, 0.01f, 0.01f, 0.0f);
-const double normal_estimation_search_radius = 0.05f;
+const Eigen::Vector4d subsampling_leaf_size (0.01, 0.01, 0.01, 0.0);
+const double normal_estimation_search_radius = 0.05;
 
 
 void
@@ -95,8 +95,8 @@ main (int argc, char **argv)
 
   MultiscaleFeaturePersistence<PointXYZ, FPFHSignature33> feature_persistence;
   std::vector<double> scale_values;
-  for (double x = 2.0f; x < 3.6f; x += 0.35f)
-    scale_values.push_back (x / 100.0f);
+  for (double x = 2.0; x < 3.6; x += 0.35)
+    scale_values.push_back (x / 100.0);
   feature_persistence.setScalesVector (scale_values);
   feature_persistence.setAlpha (1.3f);
   FPFHEstimation<PointXYZ, Normal, FPFHSignature33>::Ptr fpfh_estimation (new FPFHEstimation<PointXYZ, Normal, FPFHSignature33> ());

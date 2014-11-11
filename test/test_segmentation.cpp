@@ -180,7 +180,7 @@ TEST (RegionGrowingTest, SegmentWithWrongThresholdParameters)
   EXPECT_EQ (0, num_of_segments);
 
   rg.setCurvatureTestFlag (true);
-  rg.setCurvatureThreshold (-10.0f);
+  rg.setCurvatureThreshold (-10.0);
 
   rg.extract (clusters);
   num_of_segments = static_cast<int> (clusters.size ());
@@ -214,9 +214,9 @@ TEST (MinCutSegmentationTest, Segment)
   double source_weight = 0.0;
   unsigned int neighbor_number = 0;
 
-  object_center.x = -36.01f;
+  object_center.x = -36.01;
   object_center.y = -64.73f;
-  object_center.z = -6.18f;
+  object_center.z = -6.18;
   radius = 3.8003856;
   sigma = 0.25;
   source_weight = 0.8;
@@ -281,9 +281,9 @@ TEST (MinCutSegmentationTest, SegmentWithWrongParameters)
   pcl::MinCutSegmentation<pcl::PointXYZ> mcSeg;
   mcSeg.setInputCloud (another_cloud_);
   pcl::PointXYZ object_center;
-  object_center.x = -36.01f;
+  object_center.x = -36.01;
   object_center.y = -64.73f;
-  object_center.z = -6.18f;
+  object_center.z = -6.18;
   pcl::PointCloud<pcl::PointXYZ>::Ptr foreground_points(new pcl::PointCloud<pcl::PointXYZ> ());
   foreground_points->points.push_back (object_center);
   mcSeg.setForegroundPoints (foreground_points);
@@ -375,7 +375,7 @@ TEST (ExtractPolygonalPrism, Segmentation)
   for (size_t i = 0; i < hull->points.size (); ++i)
   {
     hull->points[i].x = hull->points[i].y = static_cast<double> (i);
-    hull->points[i].z = 0.0f;
+    hull->points[i].z = 0.0;
   }
 
   ExtractPolygonalPrismData<PointXYZ> ex;
@@ -424,7 +424,7 @@ main (int argc, char** argv)
   // Tranpose the cloud
   cloud_t = cloud;
   for (size_t i = 0; i < cloud.points.size (); ++i)
-    cloud_t.points[i].x += 0.01f;
+    cloud_t.points[i].x += 0.01;
 
   cloud_   = cloud.makeShared ();
   cloud_t_ = cloud_t.makeShared ();

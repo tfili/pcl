@@ -112,8 +112,8 @@ TEST (PCL, ComplexPCDFileASCII)
   memcpy (&x, &blob.data[0 * blob.point_step + blob.fields[x_idx + 0].offset], sizeof (double));
   memcpy (&y, &blob.data[0 * blob.point_step + blob.fields[x_idx + 1].offset], sizeof (double));
   memcpy (&z, &blob.data[0 * blob.point_step + blob.fields[x_idx + 2].offset], sizeof (double));
-  EXPECT_FLOAT_EQ (x, -69.234001f);
-  EXPECT_FLOAT_EQ (y, -65.460999f);
+  EXPECT_FLOAT_EQ (x, -69.234001);
+  EXPECT_FLOAT_EQ (y, -65.460999);
   EXPECT_FLOAT_EQ (z, 19.173f);
 
   int fpfh_idx = pcl::getFieldIndex (blob, "fpfh");
@@ -249,11 +249,11 @@ TEST (PCL, AllTypesPCDFile)
   memcpy (&b6, &blob.data[blob.fields[5].offset + sizeof (uint32_t)], sizeof (uint32_t));
   EXPECT_FLOAT_EQ (double (b6), double (250001));
   memcpy (&b7, &blob.data[blob.fields[6].offset], sizeof (double));
-  EXPECT_FLOAT_EQ (b7, 250.05f);
+  EXPECT_FLOAT_EQ (b7, 250.05);
   memcpy (&b8, &blob.data[blob.fields[7].offset], sizeof (double));
-  EXPECT_FLOAT_EQ (double (b8), -250.05f);
+  EXPECT_FLOAT_EQ (double (b8), -250.05);
   memcpy (&b8, &blob.data[blob.fields[7].offset + sizeof (double)], sizeof (double));
-  EXPECT_FLOAT_EQ (double (b8), -251.05f);
+  EXPECT_FLOAT_EQ (double (b8), -251.05);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -375,7 +375,7 @@ TEST (PCL, IO)
   EXPECT_FLOAT_EQ (first.x, cloud (0, 0).x);
   EXPECT_FLOAT_EQ (first.y, cloud (0, 0).y);
   EXPECT_FLOAT_EQ (first.z, cloud (0, 0).z);
-  EXPECT_FLOAT_EQ (first.intensity, 0.0f);
+  EXPECT_FLOAT_EQ (first.intensity, 0.0);
   EXPECT_FLOAT_EQ (last.x, cloud (cloud.width-1, cloud.height-1).x);
   EXPECT_FLOAT_EQ (last.y, cloud (cloud.width-1, cloud.height-1).y);
   EXPECT_FLOAT_EQ (last.z, cloud (cloud.width-1, cloud.height-1).z);
@@ -732,7 +732,7 @@ TEST (PCL, PCDReaderWriterASCIIColorPrecision)
         p.r = static_cast<unsigned char> (r_i);
         p.g = static_cast<unsigned char> (g_i);
         p.b = static_cast<unsigned char> (b_i);
-        p.x = p.y = p.z = 0.f;
+        p.x = p.y = p.z = 0.;
 
         cloud.push_back (p);
       }
@@ -896,7 +896,7 @@ TEST (PCL, ExtendedIO)
   for (int i = 0; i < 33; ++i)
   {
     cloud.points[0].histogram[i] = static_cast<double> (i);
-    cloud.points[1].histogram[i] = 33.0f - static_cast<double> (i);
+    cloud.points[1].histogram[i] = 33.0 - static_cast<double> (i);
   }
 
   savePCDFile ("v.pcd", cloud);

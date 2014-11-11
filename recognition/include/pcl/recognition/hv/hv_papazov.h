@@ -93,8 +93,8 @@ namespace pcl
 
     public:
       PapazovHV() : HypothesisVerification<ModelT,SceneT>() {
-        support_threshold_ = 0.1f;
-        penalty_threshold_ = 0.1f;
+        support_threshold_ = 0.1;
+        penalty_threshold_ = 0.1;
         conflict_threshold_size_ = 0.02f;
       }
 

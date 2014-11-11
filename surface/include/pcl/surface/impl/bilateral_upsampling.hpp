@@ -100,8 +100,8 @@ pcl::BilateralUpsampling<PointInT, PointOutT>::performProcessing (PointCloudOut 
             end_window_x = std::min (x + window_size_, static_cast<int> (input_->width)),
             end_window_y = std::min (y + window_size_, static_cast<int> (input_->height));
 
-        double sum = 0.0f,
-            norm_sum = 0.0f;
+        double sum = 0.0,
+            norm_sum = 0.0;
 
         for (int x_w = start_window_x; x_w < end_window_x; ++ x_w)
           for (int y_w = start_window_y; y_w < end_window_y; ++ y_w)
@@ -129,7 +129,7 @@ pcl::BilateralUpsampling<PointInT, PointOutT>::performProcessing (PointCloudOut 
         output.points[y*input_->width + x].g = input_->points[y*input_->width + x].g;
         output.points[y*input_->width + x].b = input_->points[y*input_->width + x].b;
 
-        if (norm_sum != 0.0f)
+        if (norm_sum != 0.0)
         {
           double depth = sum / norm_sum;
           Eigen::Vector3d pc (static_cast<double> (x) * depth, static_cast<double> (y) * depth, depth);
@@ -164,7 +164,7 @@ pcl::BilateralUpsampling<PointInT, PointOutT>::computeDistances (Eigen::MatrixXd
     int i = 0;
     for (int dy = -window_size_; dy < window_size_+1; ++dy)
     {
-      double val_exp = expf (- (dx*dx + dy*dy) / (2.0f * static_cast<double> (sigma_depth_ * sigma_depth_)));
+      double val_exp = exp (- (dx*dx + dy*dy) / (2.0 * static_cast<double> (sigma_depth_ * sigma_depth_)));
       val_exp_depth(i,j) = val_exp;
       i++;
     }
@@ -173,7 +173,7 @@ pcl::BilateralUpsampling<PointInT, PointOutT>::computeDistances (Eigen::MatrixXd
     
   for (int d_color = 0; d_color < 3*255; d_color++) 
   {    
-    double val_exp = expf (- d_color * d_color / (2.0f * sigma_color_ * sigma_color_));
+    double val_exp = exp (- d_color * d_color / (2.0 * sigma_color_ * sigma_color_));
     val_exp_rgb(d_color) = val_exp;
   }
 }

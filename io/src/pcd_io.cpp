@@ -312,7 +312,7 @@ pcl::PCDReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
 
         double x, y, z, w;
         sstream >> x >> y >> z ;
-        origin      = Eigen::Vector4d (x, y, z, 0.0f);
+        origin      = Eigen::Vector4d (x, y, z, 0.0);
         sstream >> w >> x >> y >> z;
         orientation = Eigen::Quaterniond (w, x, y, z);
         continue;
@@ -1602,12 +1602,12 @@ pcl::PCDWriter::writeBinaryCompressed (const std::string &file_name, const pcl::
     }
   }
 
-  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<double> (data_size) * 1.5f + 8.0f)));
+  char* temp_buf = static_cast<char*> (malloc (static_cast<size_t> (static_cast<double> (data_size) * 1.5 + 8.0)));
   // Compress the valid data
   unsigned int compressed_size = pcl::lzfCompress (only_valid_data, 
                                                    static_cast<unsigned int> (data_size), 
                                                    &temp_buf[8], 
-                                                   static_cast<unsigned int> (static_cast<double> (data_size) * 1.5f));
+                                                   static_cast<unsigned int> (static_cast<double> (data_size) * 1.5));
   unsigned int compressed_final_size = 0;
   // Was the compression successful?
   if (compressed_size)

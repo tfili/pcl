@@ -107,10 +107,10 @@ pcl::ihs::MainWindow::MainWindow (QWidget* parent)
 
   ui_->spinBox_h_min->setValue (static_cast <int> (idp.getHMin ()));
   ui_->spinBox_h_max->setValue (static_cast <int> (idp.getHMax ()));
-  ui_->spinBox_s_min->setValue (static_cast <int> (idp.getSMin () * 100.f));
-  ui_->spinBox_s_max->setValue (static_cast <int> (idp.getSMax () * 100.f));
-  ui_->spinBox_v_min->setValue (static_cast <int> (idp.getVMin () * 100.f));
-  ui_->spinBox_v_max->setValue (static_cast <int> (idp.getVMax () * 100.f));
+  ui_->spinBox_s_min->setValue (static_cast <int> (idp.getSMin () * 100.));
+  ui_->spinBox_s_max->setValue (static_cast <int> (idp.getSMax () * 100.));
+  ui_->spinBox_v_min->setValue (static_cast <int> (idp.getVMin () * 100.));
+  ui_->spinBox_v_max->setValue (static_cast <int> (idp.getVMax () * 100.));
 
   ui_->checkBox_color_segmentation_inverted->setChecked (idp.getColorSegmentationInverted ());
   ui_->checkBox_color_segmentation_enabled->setChecked (idp.getColorSegmentationEnabled ());
@@ -124,7 +124,7 @@ pcl::ihs::MainWindow::MainWindow (QWidget* parent)
 
   ui_->lineEdit_epsilon->setText (QString ().setNum (ihs_->getICP ().getEpsilon ()));
   ui_->spinBox_max_iterations->setValue (static_cast <int> (ihs_->getICP ().getMaxIterations ()));
-  ui_->spinBox_min_overlap->setValue (static_cast <int> (100.f * ihs_->getICP ().getMinOverlap ()));
+  ui_->spinBox_min_overlap->setValue (static_cast <int> (100. * ihs_->getICP ().getMinOverlap ()));
   ui_->lineEdit_max_fitness->setText (QString ().setNum (ihs_->getICP ().getMaxFitness ()));
 
   ui_->doubleSpinBox_correspondence_rejection_factor->setValue (ihs_->getICP ().getCorrespondenceRejectionFactor ());
@@ -258,29 +258,29 @@ pcl::ihs::MainWindow::setHMax (const int h_max)
 void
 pcl::ihs::MainWindow::setSMin (const int s_min)
 {
-  ihs_->getInputDataProcessing ().setSMin (.01f * static_cast <double> (s_min));
-  ui_->spinBox_s_min->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getSMin () + 0.5f));
+  ihs_->getInputDataProcessing ().setSMin (.01 * static_cast <double> (s_min));
+  ui_->spinBox_s_min->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getSMin () + 0.5));
 }
 
 void
 pcl::ihs::MainWindow::setSMax (const int s_max)
 {
-  ihs_->getInputDataProcessing ().setSMax (.01f * static_cast <double> (s_max));
-  ui_->spinBox_s_max->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getSMax () + 0.5f));
+  ihs_->getInputDataProcessing ().setSMax (.01 * static_cast <double> (s_max));
+  ui_->spinBox_s_max->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getSMax () + 0.5));
 }
 
 void
 pcl::ihs::MainWindow::setVMin (const int v_min)
 {
-  ihs_->getInputDataProcessing ().setVMin (.01f * static_cast <double> (v_min));
-  ui_->spinBox_v_min->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getVMin () + 0.5f));
+  ihs_->getInputDataProcessing ().setVMin (.01 * static_cast <double> (v_min));
+  ui_->spinBox_v_min->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getVMin () + 0.5));
 }
 
 void
 pcl::ihs::MainWindow::setVMax (const int v_max)
 {
-  ihs_->getInputDataProcessing ().setVMax (.01f * static_cast <double> (v_max));
-  ui_->spinBox_v_max->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getVMax () + 0.5f));
+  ihs_->getInputDataProcessing ().setVMax (.01 * static_cast <double> (v_max));
+  ui_->spinBox_v_max->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getVMax () + 0.5));
 }
 
 void
@@ -330,8 +330,8 @@ pcl::ihs::MainWindow::setMaxIterations (const int iterations)
 void
 pcl::ihs::MainWindow::setMinOverlap (const int overlap)
 {
-  ihs_->getICP ().setMinOverlap (.01f * static_cast <double> (overlap));
-  ui_->spinBox_min_overlap->setValue (static_cast <int> (100.f * ihs_->getICP ().getMinOverlap () + 0.5f));
+  ihs_->getICP ().setMinOverlap (.01 * static_cast <double> (overlap));
+  ui_->spinBox_min_overlap->setValue (static_cast <int> (100. * ihs_->getICP ().getMinOverlap () + 0.5));
 }
 
 void
