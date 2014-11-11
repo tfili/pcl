@@ -122,14 +122,14 @@ namespace pcl
             x_dim_ = width;
             y_dim_ = height;
             z_dim_ = depth;
-            v_ = std::vector<Eigen::Vector2f> (width*height*depth, Eigen::Vector2f (0.0f, 0.0f));
+            v_ = std::vector<Eigen::Vector2d> (width*height*depth, Eigen::Vector2d (0.0f, 0.0f));
           }
 
-          inline Eigen::Vector2f&
+          inline Eigen::Vector2d&
           operator () (const size_t x, const size_t y, const size_t z)
           { return v_[(x * y_dim_ + y) * z_dim_ + z]; }
 
-          inline const Eigen::Vector2f&
+          inline const Eigen::Vector2d&
           operator () (const size_t x, const size_t y, const size_t z) const
           { return v_[(x * y_dim_ + y) * z_dim_ + z]; }
 
@@ -142,7 +142,7 @@ namespace pcl
             v_.resize (x_dim_ * y_dim_ * z_dim_);
           }
 
-          Eigen::Vector2f
+          Eigen::Vector2d
           trilinear_interpolation (const double x,
                                    const double y,
                                    const double z);
@@ -164,24 +164,24 @@ namespace pcl
           z_size () const
           { return z_dim_; }
 
-          inline std::vector<Eigen::Vector2f >::iterator
+          inline std::vector<Eigen::Vector2d >::iterator
           begin ()
           { return v_.begin (); }
 
-          inline std::vector<Eigen::Vector2f >::iterator
+          inline std::vector<Eigen::Vector2d >::iterator
           end ()
           { return v_.end (); }
 
-          inline std::vector<Eigen::Vector2f >::const_iterator
+          inline std::vector<Eigen::Vector2d >::const_iterator
           begin () const
           { return v_.begin (); }
 
-          inline std::vector<Eigen::Vector2f >::const_iterator
+          inline std::vector<Eigen::Vector2d >::const_iterator
           end () const
           { return v_.end (); }
 
         private:
-          std::vector<Eigen::Vector2f > v_;
+          std::vector<Eigen::Vector2d > v_;
           size_t x_dim_, y_dim_, z_dim_;
       };
 

@@ -122,7 +122,7 @@ namespace pcl
 
     private:
       virtual void 
-      publish (const pcl::PCLPointCloud2& blob, const Eigen::Vector4f& origin, const Eigen::Quaternionf& orientation) const = 0;
+      publish (const pcl::PCLPointCloud2& blob, const Eigen::Vector4d& origin, const Eigen::Quaterniond& orientation) const = 0;
 
       // to separate and hide the implementation from interface: PIMPL
       struct StereoGrabberImpl;
@@ -138,7 +138,7 @@ namespace pcl
       StereoGrabber (const std::vector<std::pair<std::string, std::string> >& files, double frames_per_second = 0, bool repeat = false);
     protected:
       virtual void 
-      publish (const pcl::PCLPointCloud2& blob, const Eigen::Vector4f& origin, const Eigen::Quaternionf& orientation) const;
+      publish (const pcl::PCLPointCloud2& blob, const Eigen::Vector4d& origin, const Eigen::Quaterniond& orientation) const;
       
       boost::signals2::signal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>* signal_;
   };
@@ -161,7 +161,7 @@ namespace pcl
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   template<typename PointT> void 
-  StereoGrabber<PointT>::publish (const pcl::PCLPointCloud2& blob, const Eigen::Vector4f& origin, const Eigen::Quaternionf& orientation) const
+  StereoGrabber<PointT>::publish (const pcl::PCLPointCloud2& blob, const Eigen::Vector4d& origin, const Eigen::Quaterniond& orientation) const
   {
     typename pcl::PointCloud<PointT>::Ptr cloud (new pcl::PointCloud<PointT> ());
     pcl::fromPCLPointCloud2 (blob, *cloud);

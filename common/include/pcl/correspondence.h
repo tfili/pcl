@@ -119,8 +119,8 @@ namespace pcl
     */
   struct PointCorrespondence3D : public Correspondence
   {
-    Eigen::Vector3f point1;  //!< The 3D position of the point in the first coordinate frame
-    Eigen::Vector3f point2;  //!< The 3D position of the point in the second coordinate frame
+    Eigen::Vector3d point1;  //!< The 3D position of the point in the first coordinate frame
+    Eigen::Vector3d point2;  //!< The 3D position of the point in the second coordinate frame
 
     /** \brief Empty constructor. */
     PointCorrespondence3D () : point1 (), point2 () {}
@@ -139,7 +139,7 @@ namespace pcl
     */
   struct PointCorrespondence6D : public PointCorrespondence3D
   {
-    Eigen::Affine3f transformation;  //!< The transformation to go from the coordinate system
+    Eigen::Affine3d transformation;  //!< The transformation to go from the coordinate system
                                         //!< of point2 to the coordinate system of point1
     /** \brief Empty destructor. */
     virtual ~PointCorrespondence6D () {}

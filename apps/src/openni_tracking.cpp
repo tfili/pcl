@@ -176,7 +176,7 @@ public:
       tracker_ = tracker;
     }
     
-    tracker_->setTrans (Eigen::Affine3f::Identity ());
+    tracker_->setTrans (Eigen::Affine3d::Identity ());
     tracker_->setStepNoiseCovariance (default_step_covariance);
     tracker_->setInitialNoiseCovariance (initial_noise_covariance);
     tracker_->setInitialNoiseMean (default_initial_mean);
@@ -246,9 +246,9 @@ public:
   drawResult (pcl::visualization::PCLVisualizer& viz)
   {
     ParticleXYZRPY result = tracker_->getResult ();
-    Eigen::Affine3f transformation = tracker_->toEigenMatrix (result);
+    Eigen::Affine3d transformation = tracker_->toEigenMatrix (result);
     // move a little bit for better visualization
-    transformation.translation () += Eigen::Vector3f (0.0f, 0.0f, -0.005f);
+    transformation.translation () += Eigen::Vector3d (0.0f, 0.0f, -0.005f);
     RefCloudPtr result_cloud (new RefCloud ());
 
     if (!visualize_non_downsample_)
@@ -580,7 +580,7 @@ public:
           // select the cluster to track
           CloudPtr temp_cloud (new Cloud);
           extractSegmentCluster (target_cloud, cluster_indices, 0, *temp_cloud);
-          Eigen::Vector4f c;
+          Eigen::Vector4d c;
           pcl::compute3DCentroid<RefPointType> (*temp_cloud, c);
           int segment_index = 0;
           double segment_distance = c[0] * c[0] + c[1] * c[1];
@@ -611,8 +611,8 @@ public:
           
           RefCloudPtr transed_ref (new RefCloud);
           pcl::compute3DCentroid<RefPointType> (*nonzero_ref, c);
-          Eigen::Affine3f trans = Eigen::Affine3f::Identity ();
-          trans.translation ().matrix () = Eigen::Vector3f (c[0], c[1], c[2]);
+          Eigen::Affine3d trans = Eigen::Affine3d::Identity ();
+          trans.translation ().matrix () = Eigen::Vector3d (c[0], c[1], c[2]);
           //pcl::transformPointCloudWithNormals<RefPointType> (*ref_cloud, *transed_ref, trans.inverse());
           pcl::transformPointCloud<RefPointType> (*nonzero_ref, *transed_ref, trans.inverse());
           CloudPtr transed_ref_downsampled (new Cloud);

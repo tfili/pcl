@@ -57,7 +57,7 @@ pcl::gpu::kinfuLS::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resoluti
 
   volume_.create (volume_y * volume_z, volume_x);
   
-  const Vector3f default_volume_size = Vector3f::Constant (3.f); //meters
+  const Vector3d default_volume_size = Vector3d::Constant (3.f); //meters
   const double    default_tranc_dist  = 0.03f; //meters
 
   setSize(default_volume_size);
@@ -70,7 +70,7 @@ pcl::gpu::kinfuLS::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resoluti
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::gpu::kinfuLS::TsdfVolume::setSize(const Vector3f& size)
+pcl::gpu::kinfuLS::TsdfVolume::setSize(const Vector3d& size)
 {  
   size_ = size;
   setTsdfTruncDist(tranc_dist_);
@@ -98,7 +98,7 @@ pcl::gpu::kinfuLS::TsdfVolume::data() const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const Eigen::Vector3f&
+const Eigen::Vector3d&
 pcl::gpu::kinfuLS::TsdfVolume::getSize() const
 {
     return size_;
@@ -114,7 +114,7 @@ pcl::gpu::kinfuLS::TsdfVolume::getResolution() const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const Eigen::Vector3f
+const Eigen::Vector3d
 pcl::gpu::kinfuLS::TsdfVolume::getVoxelSize() const
 {    
   return size_.array () / resolution_.array().cast<double>();
@@ -167,7 +167,7 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
 
 #define FETCH(x, y, z) volume_host[(x) + (y) * volume_x + (z) * volume_y * volume_x]
 
-  Array3f cell_size = getVoxelSize();
+  Array3d cell_size = getVoxelSize();
 
   for (int x = 1; x < volume_x-1; ++x)
   {
@@ -182,7 +182,7 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
         if (W == 0 || F == DIVISOR)
           continue;
 
-        Vector3f V = ((Array3f(x, y, z) + 0.5f) * cell_size).matrix ();
+        Vector3d V = ((Array3d(x, y, z) + 0.5f) * cell_size).matrix ();
 
         if (connected26)
         {
@@ -199,8 +199,8 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3f Vn = ((Array3f (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
-                Vector3f point = (V * abs (Fn) + Vn * abs (F)) / (abs (F) + abs (Fn));
+                Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
+                Vector3d point = (V * abs (Fn) + Vn * abs (F)) / (abs (F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
                 xyz.x = point (0);
@@ -223,8 +223,8 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3f Vn = ((Array3f (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
-                Vector3f point = (V * abs(Fn) + Vn * abs(F))/(abs(F) + abs (Fn));
+                Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
+                Vector3d point = (V * abs(Fn) + Vn * abs(F))/(abs(F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
                 xyz.x = point (0);
@@ -255,8 +255,8 @@ pcl::gpu::kinfuLS::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, boo
 
             if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
             {
-              Vector3f Vn = ((Array3f (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
-              Vector3f point = (V * abs (Fn) + Vn * abs (F)) / (abs (F) + abs (Fn));
+              Vector3d Vn = ((Array3d (x+dx, y+dy, z+dz) + 0.5f) * cell_size).matrix ();
+              Vector3d point = (V * abs (Fn) + Vn * abs (F)) / (abs (F) + abs (Fn));
 
               pcl::PointXYZ xyz;
               xyz.x = point (0);
@@ -452,7 +452,7 @@ pcl::gpu::kinfuLS::TsdfVolume::save (const std::string &filename, bool binary) c
       // write resolution and size of volume
       file.write ((char*) &header_, sizeof (Header));
       /* file.write ((char*) &header_.resolution, sizeof(Eigen::Vector3i));
-      file.write ((char*) &header_.volume_size, sizeof(Eigen::Vector3f));
+      file.write ((char*) &header_.volume_size, sizeof(Eigen::Vector3d));
       // write  element size
       int volume_element_size = sizeof(VolumeT);
       file.write ((char*) &volume_element_size, sizeof(int));
@@ -505,7 +505,7 @@ pcl::gpu::kinfuLS::TsdfVolume::load (const std::string &filename, bool binary)
       // read HEADER
       file.read ((char*) &header_, sizeof (Header));
       /* file.read (&header_.resolution, sizeof(Eigen::Array3i));
-      file.read (&header_.volume_size, sizeof(Eigen::Vector3f));
+      file.read (&header_.volume_size, sizeof(Eigen::Vector3d));
       file.read (&header_.volume_element_size, sizeof(int));
       file.read (&header_.weights_element_size, sizeof(int)); */
 

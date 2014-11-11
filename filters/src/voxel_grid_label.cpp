@@ -58,7 +58,7 @@ pcl::VoxelGridLabel::applyFilter (PointCloud &output)
   output.height       = 1;                    // downsampling breaks the organized structure
   output.is_dense     = true;                 // we filter out invalid points
 
-  Eigen::Vector4f min_p, max_p;
+  Eigen::Vector4d min_p, max_p;
   // Get the minimum and maximum dimensions
   if (!filter_field_name_.empty ()) // If we don't want to process the entire cloud...
     getMinMax3D<pcl::PointXYZRGBL>(input_, filter_field_name_, static_cast<double> (filter_limit_min_), static_cast<double> (filter_limit_max_), min_p, max_p, filter_limit_negative_);
@@ -234,8 +234,8 @@ pcl::VoxelGridLabel::applyFilter (PointCloud &output)
   }
   
   index = 0;
-  Eigen::VectorXf centroid = Eigen::VectorXf::Zero (centroid_size);
-  Eigen::VectorXf temporary = Eigen::VectorXf::Zero (centroid_size);
+  Eigen::VectorXd centroid = Eigen::VectorXd::Zero (centroid_size);
+  Eigen::VectorXd temporary = Eigen::VectorXd::Zero (centroid_size);
 
   for (unsigned int cp = 0; cp < index_vector.size ();)
   {

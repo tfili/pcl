@@ -139,7 +139,7 @@ TEST (PCL, Common)
   double radius = getCircumcircleRadius (p1, p2, p3);
   EXPECT_NEAR (radius, 0.816497, 1e-4);
 
-  Eigen::Vector4f pt (1,0,0,0), line_pt (0,0,0,0), line_dir (1,1,0,0);
+  Eigen::Vector4d pt (1,0,0,0), line_pt (0,0,0,0), line_dir (1,1,0,0);
   double point2line_disance = sqrt (sqrPointToLineDistance (pt, line_pt, line_dir));
   EXPECT_NEAR (point2line_disance, sqrt(2.0)/2, 1e-4);
 }
@@ -147,9 +147,9 @@ TEST (PCL, Common)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, Eigen)
 {
-  Eigen::Matrix3f mat, vec;
+  Eigen::Matrix3d mat, vec;
   mat << 0.000536227f, -1.56178e-05f, -9.47391e-05f, -1.56178e-05f, 0.000297322f, -0.000148785f, -9.47391e-05f, -0.000148785f, 9.7827e-05f;
-  Eigen::Vector3f val;
+  Eigen::Vector3d val;
 
   eigen33 (mat, vec, val);
 
@@ -159,7 +159,7 @@ TEST (PCL, Eigen)
 
   EXPECT_NEAR (val (0), 2.86806e-06, 1e-4); EXPECT_NEAR (val (1), 0.00037165, 1e-4); EXPECT_NEAR (val (2), 0.000556858, 1e-4);
 
-  Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> eig (mat);
+  Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eig (mat);
 
   EXPECT_NEAR (eig.eigenvectors () (0, 0), -0.168841, 1e-4); EXPECT_NEAR (eig.eigenvectors () (0, 1),  0.161623, 1e-4); EXPECT_NEAR (eig.eigenvectors () (0, 2),  0.972302, 1e-4);
   EXPECT_NEAR (eig.eigenvectors () (1, 0), -0.451632, 1e-4); EXPECT_NEAR (eig.eigenvectors () (1, 1), -0.889498, 1e-4); EXPECT_NEAR (eig.eigenvectors () (1, 2),  0.0694328, 1e-4);
@@ -167,7 +167,7 @@ TEST (PCL, Eigen)
 
   EXPECT_NEAR (eig.eigenvalues () (0), 2.86806e-06, 1e-4); EXPECT_NEAR (eig.eigenvalues () (1), 0.00037165, 1e-4); EXPECT_NEAR (eig.eigenvalues () (2), 0.000556858, 1e-4);
 
-  Eigen::Vector3f eivals = mat.selfadjointView<Eigen::Lower>().eigenvalues ();
+  Eigen::Vector3d eivals = mat.selfadjointView<Eigen::Lower>().eigenvalues ();
 
   EXPECT_NEAR (eivals (0), 2.86806e-06, 1e-4); EXPECT_NEAR (eivals (1), 0.00037165, 1e-4); EXPECT_NEAR (eivals (2), 0.000556858, 1e-4);
 
@@ -192,10 +192,10 @@ TEST (PCL, PointCloud)
     cloud.points.push_back (PointXYZ (3.0f * j + 0.0f, 3.0f * j + 1.0f, 3.0f * j + 2.0f));
   }
 
-  Eigen::MatrixXf mat_xyz1 = cloud.getMatrixXfMap ();
-  Eigen::MatrixXf mat_xyz = cloud.getMatrixXfMap (3, 4, 0);
+  Eigen::MatrixXd mat_xyz1 = cloud.getMatrixXdMap ();
+  Eigen::MatrixXd mat_xyz = cloud.getMatrixXdMap (3, 4, 0);
 
-  if (Eigen::MatrixXf::Flags & Eigen::RowMajorBit)
+  if (Eigen::MatrixXd::Flags & Eigen::RowMajorBit)
   {
     EXPECT_EQ (mat_xyz1.cols (), 4);
     EXPECT_EQ (mat_xyz1.rows (), cloud.width);
@@ -221,9 +221,9 @@ TEST (PCL, PointCloud)
   }
   
 #ifdef NDEBUG
-  if (Eigen::MatrixXf::Flags & Eigen::RowMajorBit)
+  if (Eigen::MatrixXd::Flags & Eigen::RowMajorBit)
   {
-    Eigen::MatrixXf mat_yz = cloud.getMatrixXfMap (2, 4, 1);
+    Eigen::MatrixXd mat_yz = cloud.getMatrixXdMap (2, 4, 1);
     EXPECT_EQ (mat_yz.cols (), 2);
     EXPECT_EQ (mat_yz.rows (), cloud.width);
     EXPECT_EQ (mat_yz (0, 0), 1);
@@ -231,7 +231,7 @@ TEST (PCL, PointCloud)
     uint32_t j = 1;
     for (uint32_t i = 1; i < cloud.width*cloud.height; i+=4, j+=3)
     {
-      Eigen::MatrixXf mat_yz = cloud.getMatrixXfMap (2, 4, i);
+      Eigen::MatrixXd mat_yz = cloud.getMatrixXdMap (2, 4, i);
       EXPECT_EQ (mat_yz.cols (), 2);
       EXPECT_EQ (mat_yz.rows (), cloud.width);
       EXPECT_EQ (mat_yz (0, 0), j);
@@ -239,7 +239,7 @@ TEST (PCL, PointCloud)
   }
   else
   {
-    Eigen::MatrixXf mat_yz = cloud.getMatrixXfMap (2, 4, 1);
+    Eigen::MatrixXd mat_yz = cloud.getMatrixXdMap (2, 4, 1);
     EXPECT_EQ (mat_yz.cols (), cloud.width);
     EXPECT_EQ (mat_yz.rows (), 2);
     EXPECT_EQ (mat_yz (0, 0), 1);
@@ -247,7 +247,7 @@ TEST (PCL, PointCloud)
     uint32_t j = 1;
     for (uint32_t i = 1; i < cloud.width*cloud.height; i+=4, j+=3)
     {
-      Eigen::MatrixXf mat_yz = cloud.getMatrixXfMap (2, 4, i);
+      Eigen::MatrixXd mat_yz = cloud.getMatrixXdMap (2, 4, i);
       EXPECT_EQ (mat_yz.cols (), cloud.width);
       EXPECT_EQ (mat_yz.rows (), 2);
       EXPECT_EQ (mat_yz (0, 0), j);
@@ -302,34 +302,34 @@ TEST (PCL, PointTypes)
 template <typename T> class XYZPointTypesTest : public ::testing::Test { };
 typedef ::testing::Types<BOOST_PP_SEQ_ENUM(PCL_XYZ_POINT_TYPES)> XYZPointTypes;
 TYPED_TEST_CASE(XYZPointTypesTest, XYZPointTypes);
-TYPED_TEST(XYZPointTypesTest, GetVectorXfMap)
+TYPED_TEST(XYZPointTypesTest, GetVectorXdMap)
 {
   TypeParam pt;
   for (size_t i = 0; i < 3; ++i)
-    EXPECT_EQ (&pt.data[i], &pt.getVector3fMap () (i));
+    EXPECT_EQ (&pt.data[i], &pt.getVector3dMap () (i));
   for (size_t i = 0; i < 4; ++i)
-    EXPECT_EQ (&pt.data[i], &pt.getVector4fMap () (i));
+    EXPECT_EQ (&pt.data[i], &pt.getVector4dMap () (i));
 }
 
 TYPED_TEST(XYZPointTypesTest, GetArrayXfMap)
 {
   TypeParam pt;
   for (size_t i = 0; i < 3; ++i)
-    EXPECT_EQ (&pt.data[i], &pt.getArray3fMap () (i));
+    EXPECT_EQ (&pt.data[i], &pt.getArray3dMap () (i));
   for (size_t i = 0; i < 4; ++i)
-    EXPECT_EQ (&pt.data[i], &pt.getArray4fMap () (i));
+    EXPECT_EQ (&pt.data[i], &pt.getArray4dMap () (i));
 }
 
 template <typename T> class NormalPointTypesTest : public ::testing::Test { };
 typedef ::testing::Types<BOOST_PP_SEQ_ENUM(PCL_NORMAL_POINT_TYPES)> NormalPointTypes;
 TYPED_TEST_CASE(NormalPointTypesTest, NormalPointTypes);
-TYPED_TEST(NormalPointTypesTest, GetNormalVectorXfMap)
+TYPED_TEST(NormalPointTypesTest, GetNormalVectorXdMap)
 {
   TypeParam pt;
   for (size_t i = 0; i < 3; ++i)
-    EXPECT_EQ (&pt.data_n[i], &pt.getNormalVector3fMap () (i));
+    EXPECT_EQ (&pt.data_n[i], &pt.getNormalVector3dMap () (i));
   for (size_t i = 0; i < 4; ++i)
-    EXPECT_EQ (&pt.data_n[i], &pt.getNormalVector4fMap () (i));
+    EXPECT_EQ (&pt.data_n[i], &pt.getNormalVector4dMap () (i));
 }
 
 template <typename T> class RGBPointTypesTest : public ::testing::Test { };
@@ -366,11 +366,11 @@ TYPED_TEST(RGBPointTypesTest, GetBGRVectorXcMap)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, Intersections)
 {
-  Eigen::VectorXf zline (6), yline (6);
+  Eigen::VectorXd zline (6), yline (6);
   zline[0] = 0.543892f; zline[1] = -0.515623f; zline[2] = 1.321f;   zline[3] = 0.0266191f; zline[4] = 0.600215f;  zline[5] = -0.0387667f;
   yline[0] = 0.493479f; yline[1] = 0.169246f;  yline[2] = 1.22677f; yline[3] = 0.5992f;    yline[4] = 0.0505085f; yline[5] = 0.405749f;
 
-  Eigen::Vector4f pt;
+  Eigen::Vector4d pt;
   EXPECT_EQ ((pcl::lineWithLineIntersection (zline, yline, pt)), true);
   EXPECT_NEAR (pt[0], 0.574544, 1e-3);
   EXPECT_NEAR (pt[1], 0.175526, 1e-3);

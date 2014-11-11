@@ -46,7 +46,7 @@ template <typename PointT> double
 pcl::search::BruteForce<PointT>::getDistSqr (
     const PointT& point1, const PointT& point2) const
 {
-  return (point1.getVector3fMap () - point2.getVector3fMap ()).squaredNorm ();
+  return (point1.getVector3dMap () - point2.getVector3dMap ()).squaredNorm ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

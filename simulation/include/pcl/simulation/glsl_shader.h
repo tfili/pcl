@@ -71,12 +71,12 @@ namespace pcl
           void use ();
 
           // Set uniforms
-          void setUniform (const std::string& name, const Eigen::Vector2f& v);
-          void setUniform (const std::string& name, const Eigen::Vector3f& v);
-          void setUniform (const std::string& name, const Eigen::Vector4f& v);
+          void setUniform (const std::string& name, const Eigen::Vector2d& v);
+          void setUniform (const std::string& name, const Eigen::Vector3d& v);
+          void setUniform (const std::string& name, const Eigen::Vector4d& v);
           void setUniform (const std::string& name, const Eigen::Matrix2f& v);
-          void setUniform (const std::string& name, const Eigen::Matrix3f& v);
-          void setUniform (const std::string& name, const Eigen::Matrix4f& v);
+          void setUniform (const std::string& name, const Eigen::Matrix3d& v);
+          void setUniform (const std::string& name, const Eigen::Matrix4d& v);
           void setUniform (const std::string& name, double v);
           void setUniform (const std::string& name, int v);
           void setUniform (const std::string& name, bool v);

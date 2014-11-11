@@ -142,7 +142,7 @@ pcl::SHOTEstimationOMP<PointInT, PointNT, PointOutT, PointRFT>::computeFeature (
   for (int idx = 0; idx < data_size; ++idx)
   {
 
-    Eigen::VectorXf shot;
+    Eigen::VectorXd shot;
     shot.setZero (descLength_);
 
     bool lrf_is_nan = false;
@@ -215,7 +215,7 @@ pcl::SHOTColorEstimationOMP<PointInT, PointNT, PointOutT, PointRFT>::computeFeat
 #endif
   for (int idx = 0; idx < data_size; ++idx)
   {
-    Eigen::VectorXf shot;
+    Eigen::VectorXd shot;
     shot.setZero (descLength_);
 
     // Allocate enough space to hold the results

@@ -97,14 +97,14 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 
 template <typename PointT> void
 transformPointCloudHelper (PointCloud<PointT> & input, PointCloud<PointT> & output,
-                           Eigen::Matrix4f &tform)
+                           Eigen::Matrix4d &tform)
 {
   transformPointCloud (input, output, tform);
 }
 
 template <> void
 transformPointCloudHelper (PointCloud<PointNormal> & input, PointCloud<PointNormal> & output, 
-                           Eigen::Matrix4f &tform)
+                           Eigen::Matrix4d &tform)
 {
   transformPointCloudWithNormals (input, output, tform);
 }
@@ -112,7 +112,7 @@ transformPointCloudHelper (PointCloud<PointNormal> & input, PointCloud<PointNorm
 template <> void
 transformPointCloudHelper<PointXYZRGBNormal> (PointCloud<PointXYZRGBNormal> & input, 
                                               PointCloud<PointXYZRGBNormal> & output, 
-                                              Eigen::Matrix4f &tform)
+                                              Eigen::Matrix4d &tform)
 {
   transformPointCloudWithNormals (input, output, tform);
 }
@@ -120,7 +120,7 @@ transformPointCloudHelper<PointXYZRGBNormal> (PointCloud<PointXYZRGBNormal> & in
 
 template <typename PointT> void
 transformPointCloud2AsType (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud2 &output,
-                            Eigen::Matrix4f &tform)
+                            Eigen::Matrix4d &tform)
 {
   PointCloud<PointT> cloud;
   fromPCLPointCloud2 (input, cloud);
@@ -130,7 +130,7 @@ transformPointCloud2AsType (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud
 
 void
 transformPointCloud2 (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud2 &output,
-                      Eigen::Matrix4f &tform)
+                      Eigen::Matrix4d &tform)
 {
   // Check for 'rgb' and 'normals' fields
   bool has_rgb = false;
@@ -156,7 +156,7 @@ transformPointCloud2 (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud2 &out
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         Eigen::Matrix4f &tform)
+         Eigen::Matrix4d &tform)
 {
   TicToc tt;
   tt.tic ();
@@ -261,7 +261,7 @@ main (int argc, char** argv)
   }
 
   // Initialize the transformation matrix
-  Eigen::Matrix4f tform; 
+  Eigen::Matrix4d tform; 
   tform.setIdentity ();
 
   // Command line parsing
@@ -283,7 +283,7 @@ main (int argc, char** argv)
       const double& y = values[1];
       const double& z = values[2];
       const double& w = values[3];
-      tform.topLeftCorner (3, 3) = Eigen::Matrix3f (Eigen::Quaternionf (w, x, y, z));
+      tform.topLeftCorner (3, 3) = Eigen::Matrix3d (Eigen::Quaterniond (w, x, y, z));
     }
     else
     {
@@ -300,7 +300,7 @@ main (int argc, char** argv)
       const double& ay = values[1];
       const double& az = values[2];
       const double& theta = values[3];
-      tform.topLeftCorner (3, 3) = Eigen::Matrix3f (Eigen::AngleAxisf (theta, Eigen::Vector3f (ax, ay, az)));
+      tform.topLeftCorner (3, 3) = Eigen::Matrix3d (Eigen::AngleAxisd (theta, Eigen::Vector3d (ax, ay, az)));
     }
     else
     {

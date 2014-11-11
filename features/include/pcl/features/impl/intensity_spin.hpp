@@ -50,7 +50,7 @@ pcl::IntensitySpinEstimation<PointInT, PointOutT>::computeIntensitySpinImage (
       int k,
       const std::vector<int> &indices, 
       const std::vector<double> &squared_distances, 
-      Eigen::MatrixXf &intensity_spin_image)
+      Eigen::MatrixXd &intensity_spin_image)
 {
   // Determine the number of bins to use based on the size of intensity_spin_image
   int nr_distance_bins = static_cast<int> (intensity_spin_image.cols ());
@@ -137,7 +137,7 @@ pcl::IntensitySpinEstimation<PointInT, PointOutT>::computeFeature (PointCloudOut
     return;
   }
 
-  Eigen::MatrixXf intensity_spin_image (nr_intensity_bins_, nr_distance_bins_);
+  Eigen::MatrixXd intensity_spin_image (nr_intensity_bins_, nr_distance_bins_);
   // Allocate enough space to hold the radiusSearch results
   std::vector<int> nn_indices (surface_->points.size ());
   std::vector<double> nn_dist_sqr (surface_->points.size ());

@@ -94,7 +94,7 @@ namespace pcl
             * \param[in] rows height of depth image
             * \param[in] cols width of depth image
             */
-          KinfuTracker (const Eigen::Vector3f &volumeSize, const double shiftingDistance, int rows = 480, int cols = 640);
+          KinfuTracker (const Eigen::Vector3d &volumeSize, const double shiftingDistance, int rows = 480, int cols = 640);
 
           /** \brief Sets Depth camera intrinsics
             * \param[in] fx focal length x 
@@ -109,7 +109,7 @@ namespace pcl
             * \param[in] pose Initial camera pose
             */
           void
-          setInitialCameraPose (const Eigen::Affine3f& pose);
+          setInitialCameraPose (const Eigen::Affine3d& pose);
                           
           /** \brief Sets truncation threshold for depth image for ICP step only! This helps 
             *  to filter measurements that are outside tsdf volume. Pass zero to disable the truncation.
@@ -163,10 +163,10 @@ namespace pcl
             * \param[in] time Index of frame for which camera pose is returned.
             * \return camera pose
             */
-          Eigen::Affine3f
+          Eigen::Affine3d
           getCameraPose (int time = -1) const;
           
-          Eigen::Affine3f
+          Eigen::Affine3d
           getLastEstimatedPose () const;
 
           /** \brief Returns number of poses including initial */
@@ -260,8 +260,8 @@ namespace pcl
           /** \brief Vertex or Normal Map type */
           typedef DeviceArray2D<double> MapArr;
           
-          typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> Matrix3frm;
-          typedef Eigen::Vector3f Vector3f;
+          typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> Matrix3drm;
+          typedef Eigen::Vector3d Vector3d;
           
           /** \brief helper function that converts transforms from host to device types
             * \param[in] transformIn1 first transform to convert
@@ -274,7 +274,7 @@ namespace pcl
             * \param[out] translationOut2 result of second translation conversion
             */
           inline void 
-          convertTransforms (Matrix3frm& transform_in_1, Matrix3frm& transform_in_2, Eigen::Vector3f& translation_in_1, Eigen::Vector3f& translation_in_2,
+          convertTransforms (Matrix3drm& transform_in_1, Matrix3drm& transform_in_2, Eigen::Vector3d& translation_in_1, Eigen::Vector3d& translation_in_2,
                                          pcl::device::kinfuLS::Mat33& transform_out_1, pcl::device::kinfuLS::Mat33& transform_out_2, float3& translation_out_1, float3& translation_out_2);
           
           /** \brief helper function that converts transforms from host to device types
@@ -286,7 +286,7 @@ namespace pcl
             * \param[out] translationOut result of translation conversion
             */
           inline void 
-          convertTransforms (Matrix3frm& transform_in_1, Matrix3frm& transform_in_2, Eigen::Vector3f& translation_in,
+          convertTransforms (Matrix3drm& transform_in_1, Matrix3drm& transform_in_2, Eigen::Vector3d& translation_in,
                                          pcl::device::kinfuLS::Mat33& transform_out_1, pcl::device::kinfuLS::Mat33& transform_out_2, float3& translation_out);
           
           /** \brief helper function that converts transforms from host to device types
@@ -296,7 +296,7 @@ namespace pcl
             * \param[out] translationOut result of translation conversion
             */
           inline void 
-          convertTransforms (Matrix3frm& transform_in, Eigen::Vector3f& translation_in,
+          convertTransforms (Matrix3drm& transform_in, Eigen::Vector3d& translation_in,
                                          pcl::device::kinfuLS::Mat33& transform_out, float3& translation_out);
           
           /** \brief helper function that pre-process a raw detph map the kinect fusion algorithm.
@@ -319,7 +319,7 @@ namespace pcl
             * \return true if ICP has converged.
             */
           inline bool 
-          performICP(const pcl::device::kinfuLS::Intr& cam_intrinsics, Matrix3frm& previous_global_rotation, Vector3f& previous_global_translation, Matrix3frm& current_global_rotation, Vector3f& current_global_translation);
+          performICP(const pcl::device::kinfuLS::Intr& cam_intrinsics, Matrix3drm& previous_global_rotation, Vector3d& previous_global_translation, Matrix3drm& current_global_rotation, Vector3d& current_global_translation);
           
           
           /** \brief helper function that performs GPU-based ICP, using the current and the previous depth-maps (i.e. not using the synthetic depth map generated from the tsdf-volume)
@@ -331,7 +331,7 @@ namespace pcl
             * \return true if ICP has converged.
             */
           inline bool 
-          performPairWiseICP(const pcl::device::kinfuLS::Intr cam_intrinsics, Matrix3frm& resulting_rotation, Vector3f& resulting_translation);
+          performPairWiseICP(const pcl::device::kinfuLS::Intr cam_intrinsics, Matrix3drm& resulting_rotation, Vector3d& resulting_translation);
           
           /** \brief Helper function that copies v_maps_curr and n_maps_curr to v_maps_prev_ and n_maps_prev_ */
           inline void 
@@ -362,10 +362,10 @@ namespace pcl
           ColorVolume::Ptr color_volume_;
                   
           /** \brief Initial camera rotation in volume coo space. */
-          Matrix3frm init_Rcam_;
+          Matrix3drm init_Rcam_;
 
           /** \brief Initial camera position in volume coo space. */
-          Vector3f   init_tcam_;
+          Vector3d   init_tcam_;
 
           /** \brief array with IPC iteration numbers for each pyramid level */
           int icp_iterations_[LEVELS];
@@ -416,10 +416,10 @@ namespace pcl
           DeviceArray<double> sumbuf_;
 
           /** \brief Array of camera rotation matrices for each moment of time. */
-          std::vector<Matrix3frm> rmats_;
+          std::vector<Matrix3drm> rmats_;
           
           /** \brief Array of camera translations for each moment of time. */
-          std::vector<Vector3f> tvecs_;
+          std::vector<Vector3d> tvecs_;
 
           /** \brief Camera movement threshold. TSDF is integrated iff a camera movement metric exceedes some value. */
           double integration_metric_threshold_;          
@@ -440,10 +440,10 @@ namespace pcl
           bool lost_;
           
           /** \brief Last estimated rotation (estimation is done via pairwise alignment when ICP is failing) */
-          Matrix3frm last_estimated_rotation_;
+          Matrix3drm last_estimated_rotation_;
           
           /** \brief Last estimated translation (estimation is done via pairwise alignment when ICP is failing) */
-          Vector3f last_estimated_translation_;
+          Vector3d last_estimated_translation_;
                
           
           bool disable_icp_;

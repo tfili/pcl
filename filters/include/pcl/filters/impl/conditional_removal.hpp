@@ -441,10 +441,10 @@ pcl::TfQuadraticXYZComparison<PointT>::TfQuadraticXYZComparison () :
 //////////////////////////////////////////////////////////////////////////
 template<typename PointT>
 pcl::TfQuadraticXYZComparison<PointT>::TfQuadraticXYZComparison (const pcl::ComparisonOps::CompareOp op,
-                                                                 const Eigen::Matrix3f &comparison_matrix,
-                                                                 const Eigen::Vector3f &comparison_vector,
+                                                                 const Eigen::Matrix3d &comparison_matrix,
+                                                                 const Eigen::Vector3d &comparison_vector,
                                                                  const double &comparison_scalar,
-                                                                 const Eigen::Affine3f &comparison_transform) :
+                                                                 const Eigen::Affine3d &comparison_transform) :
   comp_matr_ (), comp_vect_ (), comp_scalar_ (comparison_scalar)
 {
   // get all the fields
@@ -508,7 +508,7 @@ template<typename PointT>
 bool
 pcl::TfQuadraticXYZComparison<PointT>::evaluate (const PointT &point) const
 {
-  Eigen::Vector4f pointAffine;
+  Eigen::Vector4d pointAffine;
   pointAffine << point.x, point.y, point.z, 1; 
   
   double myVal = static_cast<double>(2.0f * tf_comp_vect_.transpose () * pointAffine) + static_cast<double>(pointAffine.transpose () * tf_comp_matr_ * pointAffine) + comp_scalar_ - 3.0f;
@@ -764,7 +764,7 @@ pcl::ConditionalRemoval<PointT>::applyFilter (PointCloud &output)
 
         if (!condition_->evaluate (input_->points[cp]))
         {
-          output.points[cp].getVector4fMap ().setConstant (user_filter_value_);
+          output.points[cp].getVector4dMap ().setConstant (user_filter_value_);
           removed_p = true;
 
           if (extract_removed_indices_)
@@ -776,7 +776,7 @@ pcl::ConditionalRemoval<PointT>::applyFilter (PointCloud &output)
       }
       else
       {
-        output.points[cp].getVector4fMap ().setConstant (user_filter_value_);
+        output.points[cp].getVector4dMap ().setConstant (user_filter_value_);
         removed_p = true;
         //as for !keep_organized_: removed points due to setIndices are not considered as removed_indices_
       }

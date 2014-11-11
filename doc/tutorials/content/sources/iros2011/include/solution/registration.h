@@ -25,7 +25,7 @@
  *     The number of RANSAC iterations to perform
  * Return: A transformation matrix that will roughly align the points in source to the points in target
  */
-Eigen::Matrix4f
+Eigen::Matrix4d
 computeInitialAlignment (const PointCloudPtr & source_points, const LocalDescriptorsPtr & source_descriptors,
                          const PointCloudPtr & target_points, const LocalDescriptorsPtr & target_descriptors,
                          double min_sample_distance, double max_correspondence_distance, int nr_iterations)
@@ -67,9 +67,9 @@ computeInitialAlignment (const PointCloudPtr & source_points, const LocalDescrip
  *     The maximum number of ICP iterations to perform
  * Return: A transformation matrix that will precisely align the points in source to the points in target
  */
-Eigen::Matrix4f
+Eigen::Matrix4d
 refineAlignment (const PointCloudPtr & source_points, const PointCloudPtr & target_points, 
-                 const Eigen::Matrix4f & initial_alignment, double max_correspondence_distance,
+                 const Eigen::Matrix4d & initial_alignment, double max_correspondence_distance,
                  double outlier_rejection_threshold, double transformation_epsilon, double max_iterations)
 {
 

@@ -249,7 +249,7 @@ namespace pcl
         * \param guess The computed transforamtion
         */
       virtual void 
-      computeTransformation (PointCloudSource &output, const Eigen::Matrix4f& guess);
+      computeTransformation (PointCloudSource &output, const Eigen::Matrix4d& guess);
 
       /** \brief The source point cloud's feature descriptors. */
       FeatureCloudConstPtr input_features_;

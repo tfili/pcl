@@ -139,13 +139,13 @@ You will see something similar to this::
 
   ./matrix_transform cube.ply 
   [pcl::PLYReader] /home/victor/cube.ply:12: property 'list uint8 uint32 vertex_indices' of element 'face' is not handled
-  Method #1: using a Matrix4f
+  Method #1: using a Matrix4d
    0.707107 -0.707107         0       2.5
    0.707107  0.707107         0         0
           0         0         1         0
           0         0         0         1
   
-  Method #2: using an Affine3f
+  Method #2: using an Affine3d
    0.707107 -0.707107         0       2.5
    0.707107  0.707107         0         0
           0         0         1         0

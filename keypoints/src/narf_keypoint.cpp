@@ -131,20 +131,20 @@ namespace
   nkdGetScores (double distance_factor, double surface_change_score, double pixelDistance,
                 double optimal_distance, double& negative_score, double& positive_score)
   {
-    negative_score = 1.0f - 0.5f * surface_change_score * (std::max) (1.0f - distance_factor/optimal_distance, 0.0f);
+    negative_score = 1.0 - 0.5 * surface_change_score * (std::max) (1.0 - distance_factor/optimal_distance, 0.0);
     negative_score = powf (negative_score, 2);
     
     if (pixelDistance < 2.0)
       positive_score = surface_change_score;
     else
-      positive_score = surface_change_score * (1.0f-distance_factor);
+      positive_score = surface_change_score * (1.0-distance_factor);
   }
   
   inline double 
-  nkdGetDirectionAngle (const Eigen::Vector3f& direction, const Eigen::Affine3f& rotation)
+  nkdGetDirectionAngle (const Eigen::Vector3d& direction, const Eigen::Affine3d& rotation)
   {
-    Eigen::Vector3f rotated_direction = rotation*direction;
-    Eigen::Vector2f direction_vector (rotated_direction[0], rotated_direction[1]);
+    Eigen::Vector3d rotated_direction = rotation*direction;
+    Eigen::Vector2d direction_vector (rotated_direction[0], rotated_direction[1]);
     direction_vector.normalize ();
     double angle = 0.5f*normAngle (2.0f*acosf (direction_vector[0]));
     return (angle);
@@ -259,7 +259,7 @@ NarfKeypoint::calculateCompleteInterestImage ()
     border_extractor.getParameters ().max_no_of_threads = parameters_.max_no_of_threads;
     const ::pcl::PointCloud<BorderDescription>& border_descriptions = border_extractor.getBorderDescriptions ();
     const double* surface_change_scores = border_extractor.getSurfaceChangeScores ();
-    const Eigen::Vector3f* surface_change_directions = border_extractor.getSurfaceChangeDirections ();
+    const Eigen::Vector3d* surface_change_directions = border_extractor.getSurfaceChangeDirections ();
     double start_usage_range = start_usage_ranges[scale_idx];
     
     int width  = range_image.width,
@@ -306,8 +306,8 @@ NarfKeypoint::calculateCompleteInterestImage ()
         continue;
       }
       
-      Eigen::Affine3f rotation_to_viewer_coordinate_system;
-      range_image.getRotationToViewerCoordinateFrame (point.getVector3fMap (),
+      Eigen::Affine3d rotation_to_viewer_coordinate_system;
+      range_image.getRotationToViewerCoordinateFrame (point.getVector3dMap (),
                                                       rotation_to_viewer_coordinate_system);
       double negative_score = 1.0f;
       
@@ -354,7 +354,7 @@ NarfKeypoint::calculateCompleteInterestImage ()
         double surface_change_score = surface_change_scores[index2];
         if (surface_change_score < parameters_.min_surface_change_score)  // Pixel not 'interesting' enough to consider?
           continue;
-        const Eigen::Vector3f& surface_change_direction = surface_change_directions[index2];
+        const Eigen::Vector3d& surface_change_direction = surface_change_directions[index2];
         
         double distance = sqrtf (distance_squared);
         double distance_factor = radius_reciprocal*distance;
@@ -442,7 +442,7 @@ NarfKeypoint::calculateSparseInterestImage ()
   border_extractor.getParameters ().max_no_of_threads = parameters_.max_no_of_threads;
   const ::pcl::PointCloud<BorderDescription>& border_descriptions = border_extractor.getBorderDescriptions ();
   const double* surface_change_scores = border_extractor.getSurfaceChangeScores ();
-  const Eigen::Vector3f* surface_change_directions = border_extractor.getSurfaceChangeDirections ();
+  const Eigen::Vector3d* surface_change_directions = border_extractor.getSurfaceChangeDirections ();
   
   int width  = range_image.width,
       height = range_image.height,
@@ -485,8 +485,8 @@ NarfKeypoint::calculateSparseInterestImage ()
     
     const PointWithRange& point = range_image.getPoint (index);
     
-    Eigen::Affine3f rotation_to_viewer_coordinate_system;
-    range_image.getRotationToViewerCoordinateFrame (point.getVector3fMap (),
+    Eigen::Affine3d rotation_to_viewer_coordinate_system;
+    range_image.getRotationToViewerCoordinateFrame (point.getVector3dMap (),
                                                     rotation_to_viewer_coordinate_system);
     
     // -----Start region growing to cover all connected points within the support size-----
@@ -541,7 +541,7 @@ NarfKeypoint::calculateSparseInterestImage ()
       double surface_change_score = surface_change_scores[index2];
       if (surface_change_score < parameters_.min_surface_change_score)  // Pixel not 'interesting' enough to consider?
         continue;
-      const Eigen::Vector3f& surface_change_direction = surface_change_directions[index2];
+      const Eigen::Vector3d& surface_change_direction = surface_change_directions[index2];
       
       double angle = nkdGetDirectionAngle (surface_change_direction, rotation_to_viewer_coordinate_system);
       int histogram_cell = (std::min) (angle_histogram_size-1,
@@ -612,7 +612,7 @@ NarfKeypoint::calculateSparseInterestImage ()
               if (!relevant_point_still_valid[rpi_idx2])
                 continue;
               const PointWithRange& relevant_point2 = range_image.getPoint (relevent_point_indices[rpi_idx2].first);
-              double distance_squared = (relevant_point1.getVector3fMap ()-relevant_point2.getVector3fMap ()).norm ();
+              double distance_squared = (relevant_point1.getVector3dMap ()-relevant_point2.getVector3dMap ()).norm ();
               if (distance_squared > min_distance_between_relevant_points_squared)
                 continue;
               relevant_point_still_valid[rpi_idx2] = false;
@@ -653,7 +653,7 @@ NarfKeypoint::calculateSparseInterestImage ()
             double surface_change_score = relevent_point_indices[rpi_idx].second;
             
             double pixelDistance = static_cast<double> (std::max (abs (x3-x2), abs (y3-y2)));
-            double distance = (point3.getVector3fMap ()-point2.getVector3fMap ()).norm ();
+            double distance = (point3.getVector3dMap ()-point2.getVector3dMap ()).norm ();
             double distance_factor = radius_reciprocal*distance;
             double positive_score, current_negative_score;
             nkdGetScores (distance_factor, surface_change_score, pixelDistance,
@@ -827,7 +827,7 @@ NarfKeypoint::calculateInterestPoints ()
       }
       
       InterestPoint interest_point;
-      interest_point.getVector3fMap () = keypoint_3d.getVector3fMap ();
+      interest_point.getVector3dMap () = keypoint_3d.getVector3dMap ();
       interest_point.strength = interest_value;
       tmp_interest_points.push_back (interest_point);
     }
@@ -846,7 +846,7 @@ NarfKeypoint::calculateInterestPoints ()
     for (size_t int_point_idx2=0; int_point_idx2<interest_points_->points.size (); ++int_point_idx2)
     {
       const InterestPoint& interest_point2 = interest_points_->points[int_point_idx2];
-      double distance_squared = (interest_point.getVector3fMap ()-interest_point2.getVector3fMap ()).squaredNorm ();
+      double distance_squared = (interest_point.getVector3dMap ()-interest_point2.getVector3dMap ()).squaredNorm ();
       if (distance_squared < min_distance_squared)
       {
         better_point_too_close = true;
@@ -858,7 +858,7 @@ NarfKeypoint::calculateInterestPoints ()
     interest_points_->points.push_back (interest_point);
     int image_x, image_y;
     //std::cout << interest_point.x<<","<<interest_point.y<<","<<interest_point.z<<", "<<std::flush;
-    range_image.getImagePoint (interest_point.getVector3fMap (), image_x, image_y);
+    range_image.getImagePoint (interest_point.getVector3dMap (), image_x, image_y);
     if (range_image.isValid (image_x, image_y))
       is_interest_point_image_[image_y*width + image_x] = true;
   }

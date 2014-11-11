@@ -60,7 +60,7 @@ namespace pcl
       * Other valid expressions:
       * - add_edge (m,g)          add a new edge according to the given measurement. Return type: std::pair<edge_descriptor, bool>
       * - add_vertex (e,g)        add a new vertex according to the given estimate. Return type: vertex_descriptor
-      * - get_pose (v,g)          retrieve the pose estimate for v, if any. Return type: Eigen::Matrix4f
+      * - get_pose (v,g)          retrieve the pose estimate for v, if any. Return type: Eigen::Matrix4d
       * - get_cloud (v,g)         retrieve the cloud pointer associated to v, if any. Return type: pcl::PointCloud<PointT>::ConstPtr
       * - set_estimate (v,e,g)    set the estimate for an existing vertex. Return type: void.
       * - set_measurement (d,m,g) set the measurement for an existing edge. Return type: void.
@@ -133,7 +133,7 @@ namespace pcl
           * \return a reference to the new vertex
           */
         template <class PointT> inline Vertex
-        addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr& cloud, const Eigen::Matrix4f& pose)
+        addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr& cloud, const Eigen::Matrix4d& pose)
         {
           return add_vertex (PoseEstimate<PointT> (cloud, pose), *graph_impl_);
         }
@@ -157,7 +157,7 @@ namespace pcl
           */
         template <class InformationT> inline Edge
         addPoseConstraint ( const Vertex& v_start, const Vertex& v_end,
-                            const Eigen::Matrix4f& relative_transformation,
+                            const Eigen::Matrix4d& relative_transformation,
                             const InformationT& information_matrix)
         {
           return add_edge ( PoseMeasurement<Vertex, InformationT> (v_start, v_end, relative_transformation, information_matrix),

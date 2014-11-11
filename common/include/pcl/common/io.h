@@ -458,20 +458,20 @@ namespace pcl
 
   /** \brief Copy the XYZ dimensions of a pcl::PCLPointCloud2 into Eigen format
     * \param[in] in the point cloud message
-    * \param[out] out the resultant Eigen MatrixXf format containing XYZ0 / point
+    * \param[out] out the resultant Eigen MatrixXd format containing XYZ0 / point
     * \ingroup common
     */
   PCL_EXPORTS bool 
-  getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out);
+  getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXd &out);
 
-  /** \brief Copy the XYZ dimensions from an Eigen MatrixXf into a pcl::PCLPointCloud2 message
-    * \param[in] in the Eigen MatrixXf format containing XYZ0 / point
+  /** \brief Copy the XYZ dimensions from an Eigen MatrixXd into a pcl::PCLPointCloud2 message
+    * \param[in] in the Eigen MatrixXd format containing XYZ0 / point
     * \param[out] out the resultant point cloud message
     * \note the method assumes that the PCLPointCloud2 message already has the fields set up properly !
     * \ingroup common
     */
   PCL_EXPORTS bool 
-  getEigenAsPointCloud (Eigen::MatrixXf &in, pcl::PCLPointCloud2 &out);
+  getEigenAsPointCloud (Eigen::MatrixXd &in, pcl::PCLPointCloud2 &out);
   
   namespace io 
   {

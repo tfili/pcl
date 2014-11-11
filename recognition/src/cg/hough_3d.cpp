@@ -111,8 +111,8 @@ pcl::recognition::HoughSpace3D::voteInt (const Eigen::Vector3d &single_vote_coor
   const int n_neigh = 27; // total number of neighbours = 3^nDim = 27
 
   Eigen::Vector3i central_bin_coord;
-  Eigen::Vector3f bin_centroid;
-  Eigen::Vector3f central_bin_weight;
+  Eigen::Vector3d bin_centroid;
+  Eigen::Vector3d central_bin_weight;
   Eigen::Vector3i interp_bin;
   std::vector<double> interp_weight (n_neigh);
 

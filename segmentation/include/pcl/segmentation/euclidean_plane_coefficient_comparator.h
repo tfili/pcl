@@ -93,7 +93,7 @@ namespace pcl
         double dist = sqrtf (dx*dx + dy*dy + dz*dz);
         
         return ( (dist < distance_threshold_)
-                 && (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ ) );
+                 && (normals_->points[idx1].getNormalVector3dMap ().dot (normals_->points[idx2].getNormalVector3dMap () ) > angular_threshold_ ) );
       }
   };
 }

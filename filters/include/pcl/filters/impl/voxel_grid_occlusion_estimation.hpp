@@ -77,8 +77,8 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimation (int& out_state,
   }
 
   // estimate direction to target voxel
-  Eigen::Vector4f p = getCentroidCoordinate (in_target_voxel);
-  Eigen::Vector4f direction = p - sensor_origin_;
+  Eigen::Vector4d p = getCentroidCoordinate (in_target_voxel);
+  Eigen::Vector4d direction = p - sensor_origin_;
   direction.normalize ();
 
   // estimate entry point into the voxel grid
@@ -109,8 +109,8 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimation (int& out_state,
   }
 
   // estimate direction to target voxel
-  Eigen::Vector4f p = getCentroidCoordinate (in_target_voxel);
-  Eigen::Vector4f direction = p - sensor_origin_;
+  Eigen::Vector4d p = getCentroidCoordinate (in_target_voxel);
+  Eigen::Vector4d direction = p - sensor_origin_;
   direction.normalize ();
 
   // estimate entry point into the voxel grid
@@ -153,8 +153,8 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimationAll (std::vector<E
         if (index == -1)
         {
           // estimate direction to target voxel
-          Eigen::Vector4f p = getCentroidCoordinate (ijk);
-          Eigen::Vector4f direction = p - sensor_origin_;
+          Eigen::Vector4d p = getCentroidCoordinate (ijk);
+          Eigen::Vector4d direction = p - sensor_origin_;
           direction.normalize ();
           
           // estimate entry point into the voxel grid
@@ -173,8 +173,8 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimationAll (std::vector<E
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> double
-pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vector4f& origin, 
-                                                               const Eigen::Vector4f& direction)
+pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vector4d& origin, 
+                                                               const Eigen::Vector4d& direction)
 {
   double tmin, tmax, tymin, tymax, tzmin, tzmax;
 
@@ -241,12 +241,12 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vect
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> int
 pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& target_voxel,
-                                                         const Eigen::Vector4f& origin, 
-                                                         const Eigen::Vector4f& direction,
+                                                         const Eigen::Vector4d& origin, 
+                                                         const Eigen::Vector4d& direction,
                                                          const double t_min)
 {
   // coordinate of the boundary of the voxel grid
-  Eigen::Vector4f start = origin + t_min * direction;
+  Eigen::Vector4d start = origin + t_min * direction;
 
   // i,j,k coordinate of the voxel were the ray enters the voxel grid
   Eigen::Vector3i ijk = getGridCoordinatesRound (start[0], start[1], start[2]);
@@ -255,7 +255,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& 
   int step_x, step_y, step_z;
 
   // centroid coordinate of the entry voxel
-  Eigen::Vector4f voxel_max = getCentroidCoordinate (ijk);
+  Eigen::Vector4d voxel_max = getCentroidCoordinate (ijk);
 
   if (direction[0] >= 0)
   {
@@ -336,8 +336,8 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& 
 template <typename PointT> int
 pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vector3i>& out_ray,
                                                          const Eigen::Vector3i& target_voxel,
-                                                         const Eigen::Vector4f& origin, 
-                                                         const Eigen::Vector4f& direction,
+                                                         const Eigen::Vector4d& origin, 
+                                                         const Eigen::Vector4d& direction,
                                                          const double t_min)
 {
   // reserve space for the ray vector
@@ -345,7 +345,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vec
   out_ray.reserve (reserve_size);
 
   // coordinate of the boundary of the voxel grid
-  Eigen::Vector4f start = origin + t_min * direction;
+  Eigen::Vector4d start = origin + t_min * direction;
 
   // i,j,k coordinate of the voxel were the ray enters the voxel grid
   Eigen::Vector3i ijk = getGridCoordinatesRound (start[0], start[1], start[2]);
@@ -355,7 +355,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vec
   int step_x, step_y, step_z;
 
   // centroid coordinate of the entry voxel
-  Eigen::Vector4f voxel_max = getCentroidCoordinate (ijk);
+  Eigen::Vector4d voxel_max = getCentroidCoordinate (ijk);
 
   if (direction[0] >= 0)
   {

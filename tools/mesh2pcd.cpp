@@ -130,7 +130,7 @@ main (int argc, char **argv)
   vis.setRepresentationToSurfaceForAllActors ();
 
   PointCloud<PointXYZ>::CloudVectorType views_xyz;
-  std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > poses;
+  std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > poses;
   std::vector<double> enthropies;
   vis.renderViewTesselatedSphere (resolution, resolution, views_xyz, poses, enthropies, tesselated_sphere_level);
 
@@ -140,7 +140,7 @@ main (int argc, char **argv)
   for (size_t i = 0; i < views_xyz.size (); i++)
   {
     PointCloud<PointXYZ>::Ptr cloud (new PointCloud<PointXYZ> ());
-    Eigen::Matrix4f pose_inverse;
+    Eigen::Matrix4d pose_inverse;
     pose_inverse = poses[i].inverse ();
     transformPointCloud (views_xyz[i], *cloud, pose_inverse);
     aligned_clouds.push_back (cloud);

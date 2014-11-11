@@ -74,7 +74,7 @@ namespace pcl
         , angular_threshold_ (pcl::deg2rad (2.0f))
         , distance_threshold_ (0.02f)
         , depth_dependent_ (true)
-        , z_axis_ (Eigen::Vector3f (0.0, 0.0, 1.0) )
+        , z_axis_ (Eigen::Vector3d (0.0, 0.0, 1.0) )
       {
       }
 
@@ -87,7 +87,7 @@ namespace pcl
         , angular_threshold_ (pcl::deg2rad (2.0f))
         , distance_threshold_ (0.02f)
         , depth_dependent_ (true)
-        , z_axis_ (Eigen::Vector3f (0.0f, 0.0f, 1.0f) )
+        , z_axis_ (Eigen::Vector3d (0.0f, 0.0f, 1.0f) )
       {
       }
       
@@ -190,13 +190,13 @@ namespace pcl
         double threshold = distance_threshold_;
         if (depth_dependent_)
         {
-          Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();
+          Eigen::Vector3d vec = input_->points[idx1].getVector3dMap ();
           
           double z = vec.dot (z_axis_);
           threshold *= z * z;
         }
         return ( (fabs ((*plane_coeff_d_)[idx1] - (*plane_coeff_d_)[idx2]) < threshold)
-                 && (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ ) );
+                 && (normals_->points[idx1].getNormalVector3dMap ().dot (normals_->points[idx2].getNormalVector3dMap () ) > angular_threshold_ ) );
       }
       
     protected:
@@ -205,7 +205,7 @@ namespace pcl
       double angular_threshold_;
       double distance_threshold_;
       bool depth_dependent_;
-      Eigen::Vector3f z_axis_;
+      Eigen::Vector3d z_axis_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

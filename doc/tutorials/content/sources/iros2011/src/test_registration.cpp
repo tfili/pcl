@@ -26,7 +26,7 @@ main (int argc, char ** argv)
   // Load the points
   PointCloudPtr src_points = loadPoints (argv[1]);
   PointCloudPtr tgt_points = loadPoints (argv[2]);
-  Eigen::Matrix4f tform = Eigen::Matrix4f::Identity ();
+  Eigen::Matrix4d tform = Eigen::Matrix4d::Identity ();
 
   // Compute the intial alignment
   double min_sample_dist, max_correspondence_dist, nr_iters;

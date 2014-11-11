@@ -69,12 +69,12 @@ namespace pcl
       struct PoseEstimate
       {
         PoseEstimate () : 
-          transformation (Eigen::Affine3f::Identity ()),
+          transformation (Eigen::Affine3d::Identity ()),
           score (0),
           correspondence_indices (0) 
         {}
 
-        Eigen::Affine3f transformation;   //!< The estimated transformation between the two coordinate systems
+        Eigen::Affine3d transformation;   //!< The estimated transformation between the two coordinate systems
         double score;                         //!< An estimate in [0,1], how good the estimated pose is 
         std::vector<int> correspondence_indices;  //!< The indices of the used correspondences
 

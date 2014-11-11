@@ -83,9 +83,9 @@ pcl::ApproximateVoxelGrid<PointT>::applyFilter (PointCloud &output)
   for (size_t i = 0; i < histsize_; i++) 
   {
     history_[i].count = 0;
-    history_[i].centroid = Eigen::VectorXf::Zero (centroid_size);
+    history_[i].centroid = Eigen::VectorXd::Zero (centroid_size);
   }
-  Eigen::VectorXf scratch = Eigen::VectorXf::Zero (centroid_size);
+  Eigen::VectorXd scratch = Eigen::VectorXd::Zero (centroid_size);
 
   output.points.resize (input_->points.size ());   // size output for worst case
   size_t op = 0;    // output pointer
@@ -100,7 +100,7 @@ pcl::ApproximateVoxelGrid<PointT>::applyFilter (PointCloud &output)
     {
       flush (output, op++, hhe, rgba_index, centroid_size);
       hhe->count = 0;
-      hhe->centroid.setZero ();// = Eigen::VectorXf::Zero (centroid_size);
+      hhe->centroid.setZero ();// = Eigen::VectorXd::Zero (centroid_size);
     }
     hhe->ix = ix;
     hhe->iy = iy;

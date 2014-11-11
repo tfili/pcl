@@ -68,7 +68,7 @@ CovarianceMatrix
 ^^^^^^^^^^^^^^^^
 .. code-block:: c++
 
-   typedef Eigen::Matrix4f CovarianceMatrix;
+   typedef Eigen::Matrix4d CovarianceMatrix;
 
 Measurement
 ^^^^^^^^^^^

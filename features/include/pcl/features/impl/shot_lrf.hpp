@@ -46,9 +46,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Compute a local Reference Frame for a 3D feature; the output is stored in the "rf" matrix
 template<typename PointInT, typename PointOutT> double
-pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const int& current_point_idx, Eigen::Matrix3f &rf)
+pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const int& current_point_idx, Eigen::Matrix3d &rf)
 {
-  const Eigen::Vector4f& central_point = (*input_)[current_point_idx].getVector4fMap ();
+  const Eigen::Vector4d& central_point = (*input_)[current_point_idx].getVector4dMap ();
   std::vector<int> n_indices;
   std::vector<double> n_sqr_distances;
 
@@ -65,7 +65,7 @@ pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF (const i
 
   for (size_t i_idx = 0; i_idx < n_indices.size (); ++i_idx)
   {
-    Eigen::Vector4f pt = surface_->points[n_indices[i_idx]].getVector4fMap ();
+    Eigen::Vector4d pt = surface_->points[n_indices[i_idx]].getVector4dMap ();
     if (pt.head<3> () == central_point.head<3> ())
 		  continue;
 
@@ -181,7 +181,7 @@ pcl::SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::computeFeature (Poi
   for (size_t i = 0; i < indices_->size (); ++i)
   {
     // point result
-    Eigen::Matrix3f rf;
+    Eigen::Matrix3d rf;
     PointOutT& output_rf = output[i];
 
     //output_rf.confidence = getLocalRF ((*indices_)[i], rf);

@@ -235,7 +235,7 @@ pcl::SupervoxelClustering<PointT>::computeVoxelData ()
         //Get the voxel data object
         VoxelData& voxel_data = leaf->getData ();
         //Add this normal in (we will normalize at the end)
-        voxel_data.normal_ += normal_itr->getNormalVector4fMap ();
+        voxel_data.normal_ += normal_itr->getNormalVector4dMap ();
         voxel_data.curvature_ += normal_itr->curvature;
     }
     //Now iterate through the leaves and normalize 
@@ -870,9 +870,9 @@ pcl::SupervoxelClustering<PointT>::SupervoxelHelper::refineNormals ()
 template <typename PointT> void
 pcl::SupervoxelClustering<PointT>::SupervoxelHelper::updateCentroid ()
 {
-  centroid_.normal_ = Eigen::Vector4f::Zero ();
-  centroid_.xyz_ = Eigen::Vector3f::Zero ();
-  centroid_.rgb_ = Eigen::Vector3f::Zero ();
+  centroid_.normal_ = Eigen::Vector4d::Zero ();
+  centroid_.xyz_ = Eigen::Vector3d::Zero ();
+  centroid_.rgb_ = Eigen::Vector3d::Zero ();
   typename SupervoxelHelper::iterator leaf_itr = leaves_.begin ();
   for ( ; leaf_itr!= leaves_.end (); ++leaf_itr)
   {

@@ -100,15 +100,15 @@ namespace pcl
 
     class PCL_EXPORTS MarchingCubes
     {
-        static void SetVertex(int e,const double values[Cube::CORNERS],double iso);
-        static int GetFaceIndex(const double values[Cube::CORNERS],double iso,int faceIndex);
+        static void SetVertex(int e,const float values[Cube::CORNERS],float iso);
+        static int GetFaceIndex(const float values[Cube::CORNERS],float iso,int faceIndex);
 
         static void SetVertex(int e,const double values[Cube::CORNERS],double iso);
         static int GetFaceIndex(const double values[Cube::CORNERS],double iso,int faceIndex);
 
         static int GetFaceIndex(int mcIndex,int faceIndex);
       public:
-        static double Interpolate(double v1,double v2);
+        static double Interpolate(float v1,float v2);
         static double Interpolate(double v1,double v2);
         enum { MAX_TRIANGLES=5 };
         static const int* edgeMask();
@@ -118,12 +118,12 @@ namespace pcl
 
         static int AddTriangleIndices(int mcIndex,int* triangles);
 
-        static int GetIndex(const double values[Cube::CORNERS],double iso);
-        static int IsAmbiguous(const double v[Cube::CORNERS],double isoValue,int faceIndex);
-        static int HasRoots(const double v[Cube::CORNERS],double isoValue);
-        static int HasRoots(const double v[Cube::CORNERS],double isoValue,int faceIndex);
-        static int AddTriangles(const double v[Cube::CORNERS],double isoValue,Triangle* triangles);
-        static int AddTriangleIndices(const double v[Cube::CORNERS],double isoValue,int* triangles);
+        static int GetIndex(const float values[Cube::CORNERS], float iso);
+        static int IsAmbiguous(const float v[Cube::CORNERS], float isoValue, int faceIndex);
+        static int HasRoots(const float v[Cube::CORNERS], float isoValue);
+        static int HasRoots(const float v[Cube::CORNERS], float isoValue, int faceIndex);
+        static int AddTriangles(const float v[Cube::CORNERS], float isoValue, Triangle* triangles);
+        static int AddTriangleIndices(const float v[Cube::CORNERS], float isoValue, int* triangles);
 
         static int GetIndex(const double values[Cube::CORNERS],double iso);
         static int IsAmbiguous(const double v[Cube::CORNERS],double isoValue,int faceIndex);

@@ -164,8 +164,8 @@ namespace pcl
       bool
       setExtrinsicCalibration (const std::string target = "Hand",
                               const double euler_angle = 0.0,
-                              const Eigen::Vector3f rotation_axis = Eigen::Vector3f (0.0, 0.0, 0.0),
-                              const Eigen::Vector3f translation = Eigen::Vector3f (0.0, 0.0, 0.0));
+                              const Eigen::Vector3d rotation_axis = Eigen::Vector3d (0.0, 0.0, 0.0),
+                              const Eigen::Vector3d translation = Eigen::Vector3d (0.0, 0.0, 0.0));
 
       /** @brief Obtain the number of frames per second (FPS) */
       double

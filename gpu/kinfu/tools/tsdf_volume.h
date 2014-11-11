@@ -63,13 +63,13 @@ namespace pcl
     typedef boost::shared_ptr<const TSDFVolume<VoxelT, WeightT> > ConstPtr;
 
     // typedef Eigen::Matrix<VoxelT, Eigen::Dynamic, 1> VoxelTVec;
-    typedef Eigen::VectorXf VoxelTVec;
+    typedef Eigen::VectorXd VoxelTVec;
 
     /** \brief Structure storing voxel grid resolution, volume size (in mm) and element_size of stored data */
     struct Header
     {
       Eigen::Vector3i resolution;
-      Eigen::Vector3f volume_size;
+      Eigen::Vector3d volume_size;
       int volume_element_size, weights_element_size;
 
       Header ()
@@ -79,7 +79,7 @@ namespace pcl
           weights_element_size (sizeof(WeightT))
       {};
 
-      Header (const Eigen::Vector3i &res, const Eigen::Vector3f &size)
+      Header (const Eigen::Vector3i &res, const Eigen::Vector3d &size)
         : resolution (res),
           volume_size (size),
           volume_element_size (sizeof(VoxelT)),
@@ -150,7 +150,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     /** \brief Set the header directly. Useful if directly writing into volume and weights */
     inline void
-    setHeader (const Eigen::Vector3i &resolution, const Eigen::Vector3f &volume_size) {
+    setHeader (const Eigen::Vector3i &resolution, const Eigen::Vector3d &volume_size) {
       header_ = Header (resolution, volume_size);
       if (volume_->size() != this->size())
         pcl::console::print_warn ("[TSDFVolume::setHeader] Header volume size (%d) doesn't fit underlying data size (%d)", volume_->size(), size());
@@ -158,7 +158,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     /** \brief Resizes the internal storage and updates the header accordingly */
     inline void
-    resize (Eigen::Vector3i &grid_resolution, const Eigen::Vector3f& volume_size = Eigen::Vector3f (DEFAULT_VOLUME_SIZE_X, DEFAULT_VOLUME_SIZE_Y, DEFAULT_VOLUME_SIZE_Z)) {
+    resize (Eigen::Vector3i &grid_resolution, const Eigen::Vector3d& volume_size = Eigen::Vector3d (DEFAULT_VOLUME_SIZE_X, DEFAULT_VOLUME_SIZE_Y, DEFAULT_VOLUME_SIZE_Z)) {
       int lin_size = grid_resolution[0] * grid_resolution[1] * grid_resolution[2];
       volume_->resize (lin_size);
       weights_->resize (lin_size);
@@ -169,7 +169,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     inline void
     resizeDefaultSize () {
       resize (Eigen::Vector3i (DEFAULT_GRID_RES_X, DEFAULT_GRID_RES_Y, DEFAULT_GRID_RES_Z),
-              Eigen::Vector3f (DEFAULT_VOLUME_SIZE_X, DEFAULT_VOLUME_SIZE_Y, DEFAULT_VOLUME_SIZE_Z));
+              Eigen::Vector3d (DEFAULT_VOLUME_SIZE_X, DEFAULT_VOLUME_SIZE_Y, DEFAULT_VOLUME_SIZE_Z));
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -188,13 +188,13 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     size () const { return header_.getVolumeSize(); };
 
     /** \brief Returns the volume size in mm */
-    inline const Eigen::Vector3f &
+    inline const Eigen::Vector3d &
     volumeSize () const { return header_.volume_size; };
 
     /** \brief Returns the size of one voxel in mm */
-    inline Eigen::Vector3f
+    inline Eigen::Vector3d
     voxelSize () const {
-      Eigen::Array3f res = header_.resolution.array().template cast<double>();
+      Eigen::Array3d res = header_.resolution.array().template cast<double>();
       return header_.volume_size.array() / res;
     };
 
@@ -243,7 +243,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     /** \brief Retunrs the 3D voxel coordinate and point offset wrt. to the voxel center (in mm) */
     template <typename PointT> void
-    getVoxelCoordAndOffset (const PointT &point, Eigen::Vector3i &voxel_coord, Eigen::Vector3f &offset) const;
+    getVoxelCoordAndOffset (const PointT &point, Eigen::Vector3i &voxel_coord, Eigen::Vector3d &offset) const;
 
     /** extracts voxels in neighborhood of given voxel */
     bool
@@ -275,10 +275,10 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     // Private functions and members
 
   //  void
-  //  scaleDepth (const Eigen::MatrixXf &depth, Eigen::MatrixXf &depth_scaled, const Intr &intr) const;
+  //  scaleDepth (const Eigen::MatrixXd &depth, Eigen::MatrixXd &depth_scaled, const Intr &intr) const;
 
   //  void
-  //  integrateVolume (const Eigen::MatrixXf &depth_scaled, double tranc_dist, const Eigen::Matrix3f &R_inv, const Eigen::Vector3f &t, const Intr &intr);
+  //  integrateVolume (const Eigen::MatrixXd &depth_scaled, double tranc_dist, const Eigen::Matrix3d &R_inv, const Eigen::Vector3d &t, const Intr &intr);
 
     typedef boost::shared_ptr<std::vector<VoxelT> > VolumePtr;
     typedef boost::shared_ptr<std::vector<WeightT> > WeightsPtr;

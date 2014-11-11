@@ -51,14 +51,14 @@ pcl::IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformCloud (
     PointCloudSource &output, 
     const Matrix4 &transform)
 {
-  Eigen::Vector4f pt (0.0f, 0.0f, 0.0f, 1.0f), pt_t;
-  Eigen::Matrix4f tr = transform.template cast<double> ();
+  Eigen::Vector4d pt (0.0f, 0.0f, 0.0f, 1.0f), pt_t;
+  Eigen::Matrix4d tr = transform.template cast<double> ();
 
   // XYZ is ALWAYS present due to the templatization, so we only have to check for normals
   if (source_has_normals_)
   {
-    Eigen::Vector3f nt, nt_t;
-    Eigen::Matrix3f rot = tr.block<3, 3> (0, 0);
+    Eigen::Vector3d nt, nt_t;
+    Eigen::Matrix3d rot = tr.block<3, 3> (0, 0);
 
     for (size_t i = 0; i < input.size (); ++i)
     {

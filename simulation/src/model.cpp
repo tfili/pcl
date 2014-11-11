@@ -20,16 +20,16 @@ pcl::simulation::TriangleMeshModel::TriangleMeshModel (pcl::PolygonMesh::Ptr plg
     PCL_DEBUG("Mesh polygons: %ld", plg->polygons.size ());
     PCL_DEBUG("Mesh points: %ld", newcloud.points.size ());
 
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i=0; i< plg->polygons.size (); ++i)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
       for(size_t j = 0; j < apoly_in.vertices.size (); ++j)
       { // each point
         uint32_t pt = apoly_in.vertices[j];
-        tmp = newcloud.points[pt].getVector4fMap();
-        vertices.push_back (Vertex (Eigen::Vector3f (tmp (0), tmp (1), tmp (2)),
-                                    Eigen::Vector3f (newcloud.points[pt].r/255.0f,
+        tmp = newcloud.points[pt].getVector4dMap();
+        vertices.push_back (Vertex (Eigen::Vector3d (tmp (0), tmp (1), tmp (2)),
+                                    Eigen::Vector3d (newcloud.points[pt].r/255.0f,
                                                      newcloud.points[pt].g/255.0f,
                                                      newcloud.points[pt].b/255.0f)));
         indices.push_back (indices.size ());
@@ -40,16 +40,16 @@ pcl::simulation::TriangleMeshModel::TriangleMeshModel (pcl::PolygonMesh::Ptr plg
   {
     pcl::PointCloud<pcl::PointXYZ> newcloud;
     pcl::fromPCLPointCloud2 (plg->cloud, newcloud);
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i=0; i< plg->polygons.size (); i++)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
         uint32_t pt = apoly_in.vertices[j];
-        tmp = newcloud.points[pt].getVector4fMap();
-        vertices.push_back (Vertex (Eigen::Vector3f (tmp (0), tmp (1), tmp (2)),
-                                    Eigen::Vector3f (1.0, 1.0, 1.0)));
+        tmp = newcloud.points[pt].getVector4dMap();
+        vertices.push_back (Vertex (Eigen::Vector3d (tmp (0), tmp (1), tmp (2)),
+                                    Eigen::Vector3d (1.0, 1.0, 1.0)));
         indices.push_back (indices.size ());
       }
     }
@@ -123,7 +123,7 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
   {
     pcl::PointCloud<pcl::PointXYZRGB> newcloud;  
     pcl::fromPCLPointCloud2 (plg->cloud, newcloud);
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i = 0; i< plg->polygons.size (); i++)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
@@ -135,7 +135,7 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
 	uint32_t pt = apoly_in.vertices[j];
-	tmp = newcloud.points[pt].getVector4fMap ();
+	tmp = newcloud.points[pt].getVector4dMap ();
 	// x,y,z
 	apoly.vertices_[3*j + 0] = tmp (0);
 	apoly.vertices_[3*j + 1] = tmp (1);
@@ -153,7 +153,7 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
   {
     pcl::PointCloud<pcl::PointXYZ> newcloud;  
     pcl::fromPCLPointCloud2 (plg->cloud, newcloud);
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i=0; i< plg->polygons.size (); i++)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
@@ -165,7 +165,7 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
 	uint32_t pt = apoly_in.vertices[j];
-	tmp = newcloud.points[pt].getVector4fMap ();
+	tmp = newcloud.points[pt].getVector4dMap ();
 	// x,y,z
 	apoly.vertices_[3*j + 0] = tmp (0);
 	apoly.vertices_[3*j + 1] = tmp (1);

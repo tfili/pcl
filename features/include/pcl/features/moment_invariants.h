@@ -107,10 +107,10 @@ namespace pcl
 
     private:
       /** \brief 16-bytes aligned placeholder for the XYZ centroid of a surface patch. */
-      Eigen::Vector4f xyz_centroid_;
+      Eigen::Vector4d xyz_centroid_;
 
       /** \brief Internal data vector. */
-      Eigen::Vector4f temp_pt_;
+      Eigen::Vector4d temp_pt_;
   };
 }
 

@@ -39,7 +39,7 @@
 
 void 
 pcl::GaussianKernel::compute (double sigma, 
-                              Eigen::VectorXf &kernel, 
+                              Eigen::VectorXd &kernel, 
                               unsigned kernel_width) const
 {
   assert (kernel_width %2 == 1);
@@ -74,8 +74,8 @@ pcl::GaussianKernel::compute (double sigma,
 
 void 
 pcl::GaussianKernel::compute (double sigma, 
-                              Eigen::VectorXf &kernel, 
-                              Eigen::VectorXf &derivative,
+                              Eigen::VectorXd &kernel, 
+                              Eigen::VectorXd &derivative,
                               unsigned kernel_width) const
 {
   assert (kernel_width %2 == 1);
@@ -132,7 +132,7 @@ pcl::GaussianKernel::compute (double sigma,
 
 void 
 pcl::GaussianKernel::convolveRows (const pcl::PointCloud<double>& input,
-                                   const Eigen::VectorXf& kernel,
+                                   const Eigen::VectorXd& kernel,
                                    pcl::PointCloud<double>& output) const
 {
   assert (kernel.size () % 2 == 1);
@@ -177,7 +177,7 @@ pcl::GaussianKernel::convolveRows (const pcl::PointCloud<double>& input,
 
 void 
 pcl::GaussianKernel::convolveCols (const pcl::PointCloud<double>& input,
-                                   const Eigen::VectorXf& kernel,
+                                   const Eigen::VectorXd& kernel,
                                    pcl::PointCloud<double>& output) const
 {
   assert (kernel.size () % 2 == 1);

@@ -49,7 +49,7 @@ template <typename PointInT, typename PointNT, typename PointOutT> bool
 pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::isBoundaryPoint (
       const pcl::PointCloud<PointInT> &cloud, int q_idx, 
       const std::vector<int> &indices, 
-      const Eigen::Vector4f &u, const Eigen::Vector4f &v, 
+      const Eigen::Vector4d &u, const Eigen::Vector4d &v, 
       const double angle_threshold)
 {
   return (isBoundaryPoint (cloud, cloud.points[q_idx], indices, u, v, angle_threshold));
@@ -60,7 +60,7 @@ template <typename PointInT, typename PointNT, typename PointOutT> bool
 pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::isBoundaryPoint (
       const pcl::PointCloud<PointInT> &cloud, const PointInT &q_point, 
       const std::vector<int> &indices, 
-      const Eigen::Vector4f &u, const Eigen::Vector4f &v, 
+      const Eigen::Vector4d &u, const Eigen::Vector4d &v, 
       const double angle_threshold)
 {
   if (indices.size () < 3)
@@ -81,8 +81,8 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::isBoundaryPoint (
         !pcl_isfinite (cloud.points[indices[i]].z))
       continue;
 
-    Eigen::Vector4f delta = cloud.points[indices[i]].getVector4fMap () - q_point.getVector4fMap ();
-    if (delta == Eigen::Vector4f::Zero())
+    Eigen::Vector4d delta = cloud.points[indices[i]].getVector4dMap () - q_point.getVector4dMap ();
+    if (delta == Eigen::Vector4d::Zero())
       continue;
 
     angles[cp++] = atan2f (v.dot (delta), u.dot (delta)); // the angles are fine between -PI and PI too
@@ -121,7 +121,7 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointClou
   std::vector<int> nn_indices (k_);
   std::vector<double> nn_dists (k_);
 
-  Eigen::Vector4f u = Eigen::Vector4f::Zero (), v = Eigen::Vector4f::Zero ();
+  Eigen::Vector4d u = Eigen::Vector4d::Zero (), v = Eigen::Vector4d::Zero ();
 
   output.is_dense = true;
   // Save a few cycles by not checking every point for NaN/Inf values if the cloud is set to dense
@@ -138,8 +138,8 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointClou
       }
 
       // Obtain a coordinate system on the least-squares plane
-      //v = normals_->points[(*indices_)[idx]].getNormalVector4fMap ().unitOrthogonal ();
-      //u = normals_->points[(*indices_)[idx]].getNormalVector4fMap ().cross3 (v);
+      //v = normals_->points[(*indices_)[idx]].getNormalVector4dMap ().unitOrthogonal ();
+      //u = normals_->points[(*indices_)[idx]].getNormalVector4dMap ().cross3 (v);
       getCoordinateSystemOnPlane (normals_->points[(*indices_)[idx]], u, v);
 
       // Estimate whether the point is lying on a boundary surface or not
@@ -160,8 +160,8 @@ pcl::BoundaryEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointClou
       }
 
       // Obtain a coordinate system on the least-squares plane
-      //v = normals_->points[(*indices_)[idx]].getNormalVector4fMap ().unitOrthogonal ();
-      //u = normals_->points[(*indices_)[idx]].getNormalVector4fMap ().cross3 (v);
+      //v = normals_->points[(*indices_)[idx]].getNormalVector4dMap ().unitOrthogonal ();
+      //u = normals_->points[(*indices_)[idx]].getNormalVector4dMap ().cross3 (v);
       getCoordinateSystemOnPlane (normals_->points[(*indices_)[idx]], u, v);
 
       // Estimate whether the point is lying on a boundary surface or not

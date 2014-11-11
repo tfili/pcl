@@ -192,8 +192,8 @@ pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::r
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename LeafContainerT, typename BranchContainerT> int
-pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::boxSearch (const Eigen::Vector3f &min_pt,
-                                                                        const Eigen::Vector3f &max_pt,
+pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::boxSearch (const Eigen::Vector3d &min_pt,
+                                                                        const Eigen::Vector3d &max_pt,
                                                                         std::vector<int> &k_indices) const
 {
 
@@ -503,13 +503,13 @@ template<typename PointT, typename LeafContainerT, typename BranchContainerT> do
 pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::pointSquaredDist (const PointT & point_a,
                                                                                const PointT & point_b) const
 {
-  return (point_a.getVector3fMap () - point_b.getVector3fMap ()).squaredNorm ();
+  return (point_a.getVector3dMap () - point_b.getVector3dMap ()).squaredNorm ();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename LeafContainerT, typename BranchContainerT> void
-pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::boxSearchRecursive (const Eigen::Vector3f &min_pt,
-                                                                                 const Eigen::Vector3f &max_pt,
+pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::boxSearchRecursive (const Eigen::Vector3d &min_pt,
+                                                                                 const Eigen::Vector3d &max_pt,
                                                                                  const BranchNode* node,
                                                                                  const OctreeKey& key,
                                                                                  unsigned int tree_depth,
@@ -535,8 +535,8 @@ pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::b
     new_key.z = (key.z << 1) + (!!(child_idx & (1 << 0)));
 
     // voxel corners
-    Eigen::Vector3f lower_voxel_corner;
-    Eigen::Vector3f upper_voxel_corner;
+    Eigen::Vector3d lower_voxel_corner;
+    Eigen::Vector3d upper_voxel_corner;
     // get voxel coordinates
     this->genVoxelBoundsFromOctreeKey (new_key, tree_depth, lower_voxel_corner, upper_voxel_corner);
 
@@ -586,7 +586,7 @@ pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::b
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename LeafContainerT, typename BranchContainerT> int
 pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::getIntersectedVoxelCenters (
-    Eigen::Vector3f origin, Eigen::Vector3f direction, AlignedPointTVector &voxel_center_list,
+    Eigen::Vector3d origin, Eigen::Vector3d direction, AlignedPointTVector &voxel_center_list,
     int max_voxel_count) const
 {
   OctreeKey key;
@@ -611,7 +611,7 @@ pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::g
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename LeafContainerT, typename BranchContainerT> int
 pcl::octree::OctreePointCloudSearch<PointT, LeafContainerT, BranchContainerT>::getIntersectedVoxelIndices (
-    Eigen::Vector3f origin, Eigen::Vector3f direction, std::vector<int> &k_indices,
+    Eigen::Vector3d origin, Eigen::Vector3d direction, std::vector<int> &k_indices,
     int max_voxel_count) const
 {
   OctreeKey key;

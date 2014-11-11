@@ -167,8 +167,8 @@ class OpenNIOrganizedMultiPlaneSegmentation
           //Draw Visualization
           for (size_t i = 0; i < regions.size (); i++)
           {
-            Eigen::Vector3f centroid = regions[i].getCentroid ();
-            Eigen::Vector4f model = regions[i].getCoefficients ();
+            Eigen::Vector3d centroid = regions[i].getCentroid ();
+            Eigen::Vector4d model = regions[i].getCoefficients ();
             pcl::PointXYZ pt1 = pcl::PointXYZ (centroid[0], centroid[1], centroid[2]);
             pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5f * model[0]),
                                                centroid[1] + (0.5f * model[1]),

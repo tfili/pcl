@@ -382,14 +382,14 @@ bool ON_Plane::Transform( const ON_Xform& xform )
 
   // use care tranforming vectors to get
   // maximum precision and the right answer
-  bool bUseVectorXform = (    0.0 == xform.m_xform[3][0] 
+  bool bUseVectorXdorm = (    0.0 == xform.m_xform[3][0] 
                            && 0.0 == xform.m_xform[3][1]
                            && 0.0 == xform.m_xform[3][2] 
                            && 1.0 == xform.m_xform[3][3]
                          );
 
-  ON_3dVector xaxis_vec = bUseVectorXform ? (xform*xaxis) : ((xform*(origin+xaxis)) - origin_pt);
-  ON_3dVector yaxis_vec = bUseVectorXform ? (xform*yaxis) : ((xform*(origin+yaxis)) - origin_pt);
+  ON_3dVector xaxis_vec = bUseVectorXdorm ? (xform*xaxis) : ((xform*(origin+xaxis)) - origin_pt);
+  ON_3dVector yaxis_vec = bUseVectorXdorm ? (xform*yaxis) : ((xform*(origin+yaxis)) - origin_pt);
 
   return CreateFromFrame( origin_pt, xaxis_vec, yaxis_vec );
 }

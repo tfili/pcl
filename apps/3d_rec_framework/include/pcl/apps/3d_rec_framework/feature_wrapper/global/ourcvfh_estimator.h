@@ -33,7 +33,7 @@ namespace pcl
         double refine_factor_;
 
         std::vector<bool> valid_roll_transforms_;
-        std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transforms_;
+        std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transforms_;
         std::vector<pcl::PointIndices> cluster_indices_;
 
       public:
@@ -74,14 +74,14 @@ namespace pcl
         }
 
         void
-        getTransformsVec (std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & trans)
+        getTransformsVec (std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & trans)
         {
           trans = transforms_;
         }
 
         virtual void
         estimate (PointInTPtr & in, PointInTPtr & processed, typename pcl::PointCloud<FeatureT>::CloudVectorType & signatures,
-                  std::vector<Eigen::Vector3f> & centroids)
+                  std::vector<Eigen::Vector3d> & centroids)
         {
 
           valid_roll_transforms_.clear ();
@@ -97,7 +97,7 @@ namespace pcl
           if (adaptative_MLS_)
           {
             typename search::KdTree<PointInT>::Ptr tree;
-            Eigen::Vector4f centroid_cluster;
+            Eigen::Vector4d centroid_cluster;
             pcl::compute3DCentroid (*in, centroid_cluster);
             double dist_to_sensor = centroid_cluster.norm ();
             double sigma = dist_to_sensor * 0.01f;

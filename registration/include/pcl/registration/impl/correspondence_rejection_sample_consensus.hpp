@@ -167,7 +167,7 @@ pcl::registration::CorrespondenceRejectorSampleConsensus<PointT>::getRemainingCo
        }
 
        // get best transformation
-       Eigen::VectorXf model_coefficients;
+       Eigen::VectorXd model_coefficients;
        sac.getModelCoefficients (model_coefficients);
        best_transformation_.row (0) = model_coefficients.segment<4>(0);
        best_transformation_.row (1) = model_coefficients.segment<4>(4);

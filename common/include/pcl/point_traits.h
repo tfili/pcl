@@ -77,7 +77,7 @@ namespace pcl
     template<> struct asEnum<uint16_t> { static const uint8_t value = pcl::PCLPointField::UINT16;  };
     template<> struct asEnum<int32_t>  { static const uint8_t value = pcl::PCLPointField::INT32;   };
     template<> struct asEnum<uint32_t> { static const uint8_t value = pcl::PCLPointField::UINT32;  };
-    template<> struct asEnum<double>    { static const uint8_t value = pcl::PCLPointField::FLOAT32; };
+    template<> struct asEnum<float>    { static const uint8_t value = pcl::PCLPointField::FLOAT32; };
     template<> struct asEnum<double>   { static const uint8_t value = pcl::PCLPointField::FLOAT64; };
 
     // Metafunction to return type of enum value
@@ -88,7 +88,7 @@ namespace pcl
     template<> struct asType<pcl::PCLPointField::UINT16>  { typedef uint16_t type; };
     template<> struct asType<pcl::PCLPointField::INT32>   { typedef int32_t  type; };
     template<> struct asType<pcl::PCLPointField::UINT32>  { typedef uint32_t type; };
-    template<> struct asType<pcl::PCLPointField::FLOAT32> { typedef double    type; };
+    template<> struct asType<pcl::PCLPointField::FLOAT32> { typedef float    type; };
     template<> struct asType<pcl::PCLPointField::FLOAT64> { typedef double   type; };
 
     // Metafunction to decompose a type (possibly of array of any number of dimensions) into

@@ -26,8 +26,8 @@ loadHist (const boost::filesystem::path &path, vfh_model &vfh)
   {
     pcl::PCLPointCloud2 cloud;
     int version;
-    Eigen::Vector4f origin;
-    Eigen::Quaternionf orientation;
+    Eigen::Vector4d origin;
+    Eigen::Quaterniond orientation;
     pcl::PCDReader r;
     int type; unsigned int idx;
     r.readHeader (path.string (), cloud, origin, orientation, version, type, idx);
@@ -235,7 +235,7 @@ main (int argc, char** argv)
     pcl::console::print_value ("%s\n", pcl::getFieldsList (cloud).c_str ());
 
     // Demean the cloud
-    Eigen::Vector4f centroid;
+    Eigen::Vector4d centroid;
     pcl::compute3DCentroid (cloud_xyz, centroid);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_xyz_demean (new pcl::PointCloud<pcl::PointXYZ>);
     pcl::demeanPointCloud<pcl::PointXYZ> (cloud_xyz, centroid, *cloud_xyz_demean);

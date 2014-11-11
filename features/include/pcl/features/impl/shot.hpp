@@ -54,7 +54,7 @@
 #define PST_RAD_PI_7_8 2.7488935718910690836548129603691
 
 const double zeroDoubleEps15 = 1E-15;
-const double zeroFloatEps8 = 1E-8f;
+const float zeroFloatEps8 = 1E-8f;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 /** \brief Check if val1 and val2 are equals.
@@ -79,7 +79,7 @@ areEquals (double val1, double val2, double zeroDoubleEps = zeroDoubleEps15)
   * \return true if val1 is equal to val2, false otherwise.
   */
 inline bool
-areEquals (double val1, double val2, double zeroFloatEps = zeroFloatEps8)
+areEquals (float val1, float val2, float zeroFloatEps = zeroFloatEps8)
 {
   return (fabs (val1 - val2)<zeroFloatEps);
 }
@@ -202,13 +202,13 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::createBinDistan
   //if (!pcl_isfinite (current_frame.rf[0]) || !pcl_isfinite (current_frame.rf[4]) || !pcl_isfinite (current_frame.rf[11]))
     //return;
 
-  Eigen::Vector4f current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
+  Eigen::Vector4d current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
 
   unsigned nan_counter = 0;
   for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
   {
     // check NaN normal
-    const Eigen::Vector4f& normal_vec = normals_->points[indices[i_idx]].getNormalVector4fMap ();
+    const Eigen::Vector4d& normal_vec = normals_->points[indices[i_idx]].getNormalVector4dMap ();
     if (!pcl_isfinite (normal_vec[0]) ||
         !pcl_isfinite (normal_vec[1]) ||
         !pcl_isfinite (normal_vec[2]))
@@ -236,7 +236,7 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::createBinDistan
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::normalizeHistogram (
-    Eigen::VectorXf &shot, int desc_length)
+    Eigen::VectorXd &shot, int desc_length)
 {
 	// Normalization is performed by considering the L2 norm
 	// and not the sum of bins, as reported in the ECCV paper.
@@ -258,21 +258,21 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
     const int index,
     std::vector<double> &binDistance,
     const int nr_bins,
-    Eigen::VectorXf &shot)
+    Eigen::VectorXd &shot)
 {
-  const Eigen::Vector4f& central_point = (*input_)[(*indices_)[index]].getVector4fMap ();
+  const Eigen::Vector4d& central_point = (*input_)[(*indices_)[index]].getVector4dMap ();
   const PointRFT& current_frame = (*frames_)[index];
 
-  Eigen::Vector4f current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
-  Eigen::Vector4f current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
-  Eigen::Vector4f current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
+  Eigen::Vector4d current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
+  Eigen::Vector4d current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
+  Eigen::Vector4d current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
 
   for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
   {
     if (!pcl_isfinite(binDistance[i_idx]))
       continue;
 
-    Eigen::Vector4f delta = surface_->points[indices[i_idx]].getVector4fMap () - central_point;
+    Eigen::Vector4d delta = surface_->points[indices[i_idx]].getVector4dMap () - central_point;
     delta[3] = 0;
 
     // Compute the Euclidean norm
@@ -435,23 +435,23 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
   std::vector<double> &binDistanceColor,
   const int nr_bins_shape,
   const int nr_bins_color,
-  Eigen::VectorXf &shot)
+  Eigen::VectorXd &shot)
 {
-  const Eigen::Vector4f &central_point = (*input_)[(*indices_)[index]].getVector4fMap ();
+  const Eigen::Vector4d &central_point = (*input_)[(*indices_)[index]].getVector4dMap ();
   const PointRFT& current_frame = (*frames_)[index];
 
   int shapeToColorStride = nr_grid_sector_*(nr_bins_shape+1);
 
-  Eigen::Vector4f current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
-  Eigen::Vector4f current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
-  Eigen::Vector4f current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
+  Eigen::Vector4d current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
+  Eigen::Vector4d current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
+  Eigen::Vector4d current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
 
   for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
   {
     if (!pcl_isfinite(binDistanceShape[i_idx]))
       continue;
 
-    Eigen::Vector4f delta = surface_->points[indices[i_idx]].getVector4fMap () - central_point;
+    Eigen::Vector4d delta = surface_->points[indices[i_idx]].getVector4dMap () - central_point;
     delta[3] = 0;
 
     // Compute the Euclidean norm
@@ -644,7 +644,7 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSHOT (
-  const int index, const std::vector<int> &indices, const std::vector<double> &sqr_dists, Eigen::VectorXf &shot)
+  const int index, const std::vector<int> &indices, const std::vector<double> &sqr_dists, Eigen::VectorXd &shot)
 {
   // Clear the resultant shot
   shot.setZero ();
@@ -732,7 +732,7 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSH
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSHOT (
-  const int index, const std::vector<int> &indices, const std::vector<double> &sqr_dists, Eigen::VectorXf &shot)
+  const int index, const std::vector<int> &indices, const std::vector<double> &sqr_dists, Eigen::VectorXd &shot)
 {
   //Skip the current feature if the number of its neighbors is not sufficient for its description
   if (indices.size () < 5)

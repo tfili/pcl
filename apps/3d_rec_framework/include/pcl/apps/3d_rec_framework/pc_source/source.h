@@ -35,7 +35,7 @@ namespace pcl
 
       public:
         boost::shared_ptr<std::vector<PointTPtr> > views_;
-        boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > poses_;
+        boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > poses_;
         boost::shared_ptr<std::vector<double> > self_occlusions_;
         std::string id_;
         std::string class_;

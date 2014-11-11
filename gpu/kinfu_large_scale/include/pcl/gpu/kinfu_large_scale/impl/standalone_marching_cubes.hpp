@@ -50,7 +50,7 @@ pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::StandaloneMarchingCubes (int
   volume_size_ = new_volume_size;  
   
   ///Creating GPU TSDF Volume instance
-  const Eigen::Vector3f volume_size = Eigen::Vector3f::Constant (volume_size_);
+  const Eigen::Vector3d volume_size = Eigen::Vector3d::Constant (volume_size_);
   // std::cout << "VOLUME SIZE IS " << volume_size_ << std::endl;
   const Eigen::Vector3i volume_resolution (voxels_x_, voxels_y_, voxels_z_);
   tsdf_volume_gpu_ = TsdfVolume::Ptr ( new TsdfVolume (volume_resolution) );
@@ -70,7 +70,7 @@ pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::getMeshFromTSDFCloud (const 
 {
 
   //Clearing TSDF GPU and cPU
-  const Eigen::Vector3f volume_size = Eigen::Vector3f::Constant (volume_size_);
+  const Eigen::Vector3d volume_size = Eigen::Vector3d::Constant (volume_size_);
     std::cout << "VOLUME SIZE IS " << volume_size_ << std::endl;
   const Eigen::Vector3i volume_resolution (voxels_x_, voxels_y_, voxels_z_);
 
@@ -92,7 +92,7 @@ pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::getMeshFromTSDFCloud (const 
 
 //template <typename PointT> std::vector< typename pcl::gpu::StandaloneMarchingCubes<PointT>::MeshPtr >
 template <typename PointT> void
-pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::getMeshesFromTSDFVector (const std::vector<PointCloudPtr> &tsdf_clouds, const std::vector<Eigen::Vector3f> &tsdf_offsets)
+pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::getMeshesFromTSDFVector (const std::vector<PointCloudPtr> &tsdf_clouds, const std::vector<Eigen::Vector3d> &tsdf_offsets)
 {
   std::vector< MeshPtr > meshes_vector;
   
@@ -107,7 +107,7 @@ pcl::gpu::kinfuLS::StandaloneMarchingCubes<PointT>::getMeshesFromTSDFVector (con
     PCL_INFO ("Processing cube number %d\n", i);
     
     //Making cloud local
-    Eigen::Affine3f cloud_transform; 
+    Eigen::Affine3d cloud_transform; 
     
     double originX = (tsdf_offsets[i]).x();
     double originY = (tsdf_offsets[i]).y();

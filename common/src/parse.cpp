@@ -89,7 +89,7 @@ pcl::console::parse_argument (int argc, char** argv, const char* str, bool &val)
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_argument (int argc, char** argv, const char* str, double &val)
+pcl::console::parse_argument (int argc, char** argv, const char* str, float &val)
 {
   int index = find_argument (argc, argv, str) + 1;
 
@@ -179,7 +179,7 @@ pcl::console::parse_file_extension_argument (int argc, char** argv, const std::s
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_2x_arguments (int argc, char** argv, const char* str, double &f, double &s, bool debug)
+pcl::console::parse_2x_arguments (int argc, char** argv, const char* str, float &f, float &s, bool debug)
 {
   for (int i = 1; i < argc; ++i)
   {
@@ -194,8 +194,8 @@ pcl::console::parse_2x_arguments (int argc, char** argv, const char* str, double
         print_error ("[parse_2x_arguments] Number of values for %s (%lu) different than 2!\n", str, values.size ());
         return (-2);
       }
-      f = static_cast<double> (atof (values.at (0).c_str ()));
-      s = static_cast<double> (atof (values.at (1).c_str ()));
+      f = static_cast<float> (atof (values.at (0).c_str ()));
+      s = static_cast<float> (atof (values.at (1).c_str ()));
       return (i - 1);
     }
   }
@@ -254,7 +254,7 @@ pcl::console::parse_2x_arguments (int argc, char** argv, const char* str, int &f
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_3x_arguments (int argc, char** argv, const char* str, double &f, double &s, double &t, bool debug)
+pcl::console::parse_3x_arguments (int argc, char** argv, const char* str, float &f, float &s, float &t, bool debug)
 {
   for (int i = 1; i < argc; ++i)
   {
@@ -269,9 +269,9 @@ pcl::console::parse_3x_arguments (int argc, char** argv, const char* str, double
         print_error ("[parse_3x_arguments] Number of values for %s (%lu) different than 3!\n", str, values.size ());
         return (-2);
       }
-      f = static_cast<double> (atof (values.at (0).c_str ()));
-      s = static_cast<double> (atof (values.at (1).c_str ()));
-      t = static_cast<double> (atof (values.at (2).c_str ()));
+      f = static_cast<float> (atof (values.at (0).c_str ()));
+      s = static_cast<float> (atof (values.at (1).c_str ()));
+      t = static_cast<float> (atof (values.at (2).c_str ()));
       return (i - 1);
     }
   }
@@ -332,7 +332,7 @@ pcl::console::parse_3x_arguments (int argc, char** argv, const char* str, int &f
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::vector<double>& v)
+pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::vector<float>& v)
 {
   for (int i = 1; i < argc; ++i)
   {
@@ -420,7 +420,7 @@ pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, 
 
 ////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<double> &values)
+pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<float> &values)
 {
   for (int i = 1; i < argc; ++i)
   {

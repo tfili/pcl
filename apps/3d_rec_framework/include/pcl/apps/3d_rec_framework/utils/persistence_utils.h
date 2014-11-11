@@ -11,7 +11,7 @@ namespace pcl
     {
 
       inline bool
-      writeCentroidToFile (std::string file, Eigen::Vector3f & centroid)
+      writeCentroidToFile (std::string file, Eigen::Vector3d & centroid)
       {
         std::ofstream out (file.c_str ());
         if (!out)
@@ -27,7 +27,7 @@ namespace pcl
       }
 
       inline bool
-      getCentroidFromFile (std::string file, Eigen::Vector3f & centroid)
+      getCentroidFromFile (std::string file, Eigen::Vector3d & centroid)
       {
         std::ifstream in;
         in.open (file.c_str (), std::ifstream::in);
@@ -45,7 +45,7 @@ namespace pcl
       }
 
       inline bool
-      writeMatrixToFile (std::string file, Eigen::Matrix4f & matrix)
+      writeMatrixToFile (std::string file, Eigen::Matrix4d & matrix)
       {
         std::ofstream out (file.c_str ());
         if (!out)
@@ -140,7 +140,7 @@ namespace pcl
       }
 
       inline bool
-      readMatrixFromFile (std::string dir, std::string file, Eigen::Matrix4f & matrix)
+      readMatrixFromFile (std::string dir, std::string file, Eigen::Matrix4d & matrix)
       {
 
         //get the descriptor name from dir
@@ -191,7 +191,7 @@ namespace pcl
       }
 
       inline bool
-      readMatrixFromFile (std::string file, Eigen::Matrix4f & matrix)
+      readMatrixFromFile (std::string file, Eigen::Matrix4d & matrix)
       {
 
         std::ifstream in;
@@ -212,7 +212,7 @@ namespace pcl
       }
 
       inline bool
-      readMatrixFromFile2 (std::string file, Eigen::Matrix4f & matrix)
+      readMatrixFromFile2 (std::string file, Eigen::Matrix4d & matrix)
       {
 
         std::ifstream in;

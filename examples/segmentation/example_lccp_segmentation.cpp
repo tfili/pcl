@@ -347,7 +347,7 @@ LCCPSegmentation Parameters: \n\
         pcl::PCLPointCloud2 output_label_cloud2, output_concat_cloud2;
         pcl::toPCLPointCloud2 (*lccp_labeled_cloud, output_label_cloud2);
         pcl::concatenateFields (input_pointcloud2, output_label_cloud2, output_concat_cloud2);
-        pcl::io::savePCDFile (outputname + "_out.pcd", output_concat_cloud2, Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), save_binary_pcd);
+        pcl::io::savePCDFile (outputname + "_out.pcd", output_concat_cloud2, Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), save_binary_pcd);
       }
       else
         pcl::io::savePCDFile (outputname + "_out.pcd", *lccp_labeled_cloud, save_binary_pcd);

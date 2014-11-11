@@ -180,7 +180,7 @@ namespace pcl
         double euclidean_dist_threshold = euclidean_distance_threshold_;
         if (depth_dependent_)
         {
-          Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();
+          Eigen::Vector3d vec = input_->points[idx1].getVector3dMap ();
           double z = vec.dot (z_axis_);
           dist_threshold *= z * z;
           euclidean_dist_threshold *= z * z;
@@ -191,7 +191,7 @@ namespace pcl
         double dz = input_->points[idx1].z - input_->points[idx2].z;
         double dist = sqrtf (dx*dx + dy*dy + dz*dz);
 
-        bool normal_ok = (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ );
+        bool normal_ok = (normals_->points[idx1].getNormalVector3dMap ().dot (normals_->points[idx2].getNormalVector3dMap () ) > angular_threshold_ );
         bool dist_ok = (dist < euclidean_dist_threshold);
 
         bool curvature_ok = normals_->points[idx1].curvature < curvature_threshold_;

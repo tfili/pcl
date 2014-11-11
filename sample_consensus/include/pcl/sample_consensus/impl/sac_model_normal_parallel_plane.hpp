@@ -45,7 +45,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> bool
-pcl::SampleConsensusModelNormalParallelPlane<PointT, PointNT>::isModelValid (const Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelNormalParallelPlane<PointT, PointNT>::isModelValid (const Eigen::VectorXd &model_coefficients)
 {
   // Needs a valid model coefficients
   if (model_coefficients.size () != 4)
@@ -58,7 +58,7 @@ pcl::SampleConsensusModelNormalParallelPlane<PointT, PointNT>::isModelValid (con
   if (eps_angle_ > 0.0)
   {
     // Obtain the plane normal
-    Eigen::Vector4f coeff = model_coefficients;
+    Eigen::Vector4d coeff = model_coefficients;
     coeff[3] = 0;
     coeff.normalize ();
 

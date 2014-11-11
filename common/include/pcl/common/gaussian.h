@@ -70,7 +70,7 @@ namespace pcl
         */
       void
       compute (double sigma, 
-               Eigen::VectorXf &kernel,
+               Eigen::VectorXd &kernel,
                unsigned kernel_width = MAX_KERNEL_WIDTH) const;
 
       /** Computes the gaussian kernel and dervative assiociated to sigma.
@@ -83,8 +83,8 @@ namespace pcl
         */
       void
       compute (double sigma, 
-               Eigen::VectorXf &kernel, 
-               Eigen::VectorXf &derivative, 
+               Eigen::VectorXd &kernel, 
+               Eigen::VectorXd &derivative, 
                unsigned kernel_width = MAX_KERNEL_WIDTH) const;
 
       /** Convolve a double image rows by a given kernel.
@@ -96,7 +96,7 @@ namespace pcl
         */
       void
       convolveRows (const pcl::PointCloud<double> &input,
-                    const Eigen::VectorXf &kernel,
+                    const Eigen::VectorXd &kernel,
                     pcl::PointCloud<double> &output) const;
 
       /** Convolve a double image rows by a given kernel.
@@ -110,7 +110,7 @@ namespace pcl
      template <typename PointT> void
      convolveRows (const pcl::PointCloud<PointT> &input,
                    boost::function <double (const PointT& p)> field_accessor,
-                   const Eigen::VectorXf &kernel,
+                   const Eigen::VectorXd &kernel,
                    pcl::PointCloud<double> &output) const;
 
       /** Convolve a double image columns by a given kernel.
@@ -122,7 +122,7 @@ namespace pcl
         */
       void
       convolveCols (const pcl::PointCloud<double> &input,
-                    const Eigen::VectorXf &kernel,
+                    const Eigen::VectorXd &kernel,
                     pcl::PointCloud<double> &output) const;
 
       /** Convolve a double image columns by a given kernel.
@@ -136,7 +136,7 @@ namespace pcl
       template <typename PointT> void
       convolveCols (const pcl::PointCloud<PointT> &input,
                     boost::function <double (const PointT& p)> field_accessor,
-                    const Eigen::VectorXf &kernel,
+                    const Eigen::VectorXd &kernel,
                     pcl::PointCloud<double> &output) const;
 
       /** Convolve a double image in the 2 directions
@@ -149,8 +149,8 @@ namespace pcl
         */
       inline void
       convolve (const pcl::PointCloud<double> &input,
-                const Eigen::VectorXf &horiz_kernel,
-                const Eigen::VectorXf &vert_kernel,
+                const Eigen::VectorXd &horiz_kernel,
+                const Eigen::VectorXd &vert_kernel,
                 pcl::PointCloud<double> &output) const
       {
         std::cout << ">>> convolve cpp" << std::endl;
@@ -172,8 +172,8 @@ namespace pcl
       template <typename PointT> inline void
       convolve (const pcl::PointCloud<PointT> &input,
                 boost::function <double (const PointT& p)> field_accessor,
-                const Eigen::VectorXf &horiz_kernel,
-                const Eigen::VectorXf &vert_kernel,
+                const Eigen::VectorXd &horiz_kernel,
+                const Eigen::VectorXd &vert_kernel,
                 pcl::PointCloud<double> &output) const
       {
         std::cout << ">>> convolve hpp" << std::endl;
@@ -195,8 +195,8 @@ namespace pcl
         */
       inline void
       computeGradients (const pcl::PointCloud<double> &input,
-                        const Eigen::VectorXf &gaussian_kernel,
-                        const Eigen::VectorXf &gaussian_kernel_derivative,
+                        const Eigen::VectorXd &gaussian_kernel,
+                        const Eigen::VectorXd &gaussian_kernel_derivative,
                         pcl::PointCloud<double> &grad_x,
                         pcl::PointCloud<double> &grad_y) const
       {
@@ -218,8 +218,8 @@ namespace pcl
       template <typename PointT> inline void
       computeGradients (const pcl::PointCloud<PointT> &input,
                         boost::function <double (const PointT& p)> field_accessor,
-                        const Eigen::VectorXf &gaussian_kernel,
-                        const Eigen::VectorXf &gaussian_kernel_derivative,
+                        const Eigen::VectorXd &gaussian_kernel,
+                        const Eigen::VectorXd &gaussian_kernel_derivative,
                         pcl::PointCloud<double> &grad_x,
                         pcl::PointCloud<double> &grad_y) const
       {
@@ -236,7 +236,7 @@ namespace pcl
         */
       inline void
       smooth (const pcl::PointCloud<double> &input,
-              const Eigen::VectorXf &gaussian_kernel,
+              const Eigen::VectorXd &gaussian_kernel,
               pcl::PointCloud<double> &output) const
       {
         convolve (input, gaussian_kernel, gaussian_kernel, output);
@@ -253,7 +253,7 @@ namespace pcl
       template <typename PointT> inline void
       smooth (const pcl::PointCloud<PointT> &input,
               boost::function <double (const PointT& p)> field_accessor,
-              const Eigen::VectorXf &gaussian_kernel,
+              const Eigen::VectorXd &gaussian_kernel,
               pcl::PointCloud<double> &output) const
       {
         convolve<PointT> (input, field_accessor, gaussian_kernel, gaussian_kernel, output);

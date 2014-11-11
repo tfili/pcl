@@ -56,7 +56,7 @@ KdTreePtr tree;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, computePointNormal)
 {
-  Eigen::Vector4f plane_parameters;
+  Eigen::Vector4d plane_parameters;
   double curvature;
 
   PointCloud<PointXYZ> c;
@@ -93,7 +93,7 @@ TEST (PCL, computePointNormal)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, NormalEstimation)
 {
-  Eigen::Vector4f plane_parameters;
+  Eigen::Vector4d plane_parameters;
   double curvature;
 
   NormalEstimation<PointXYZ, Normal> n;

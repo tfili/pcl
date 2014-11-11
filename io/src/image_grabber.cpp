@@ -84,15 +84,15 @@ struct pcl::ImageGrabberBase::ImageGrabberImpl
   
   //! Get cloud at a particular location
   bool
-  getCloudAt (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+  getCloudAt (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
               double &fx, double &fy, double &cx, double &cy) const;
   
   //! Get cloud at a particular location
   bool
-  getCloudVTK (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4f &origin, Eigen::Quaternionf &orientation) const;
+  getCloudVTK (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4d &origin, Eigen::Quaterniond &orientation) const;
   //! Get cloud at a particular location
   bool
-  getCloudPCLZF (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+  getCloudPCLZF (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                  double &fx, double &fy, double &cx, double &cy) const;
 
   //! Scrapes a directory for image files which contain "rgb" or "depth" and
@@ -151,8 +151,8 @@ struct pcl::ImageGrabberBase::ImageGrabberImpl
   //! Two cases, for depth only and depth+color
   pcl::PointCloud<pcl::PointXYZ> next_cloud_depth_;
   pcl::PointCloud<pcl::PointXYZRGBA> next_cloud_color_;
-  Eigen::Vector4f origin_;
-  Eigen::Quaternionf orientation_;
+  Eigen::Vector4d origin_;
+  Eigen::Quaterniond orientation_;
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   bool valid_;
   //! Flag to say if a user set the focal length by hand
@@ -182,7 +182,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
   , running_ (false)
   , depth_image_files_ ()
   , rgb_image_files_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&ImageGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&ImageGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -219,7 +219,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
   , running_ (false)
   , depth_image_files_ ()
   , rgb_image_files_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&ImageGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&ImageGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -248,7 +248,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
   , running_ (false)
   , depth_image_files_ ()
   , rgb_image_files_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&ImageGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&ImageGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -518,8 +518,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getTimestampFromFilepath (
 bool
 pcl::ImageGrabberBase::ImageGrabberImpl::getCloudAt (size_t idx, 
                                                      pcl::PCLPointCloud2 &blob,
-                                                     Eigen::Vector4f &origin, 
-                                                     Eigen::Quaternionf &orientation, 
+                                                     Eigen::Vector4d &origin, 
+                                                     Eigen::Quaterniond &orientation, 
                                                      double &fx, 
                                                      double &fy, 
                                                      double &cx, 
@@ -545,8 +545,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudAt (size_t idx,
 bool
 pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx, 
                                                       pcl::PCLPointCloud2 &blob,
-                                                      Eigen::Vector4f &origin, 
-                                                      Eigen::Quaternionf &orientation) const
+                                                      Eigen::Vector4d &origin, 
+                                                      Eigen::Quaterniond &orientation) const
 {
 #ifdef PCL_BUILT_WITH_VTK
   if (idx > depth_image_files_.size ())
@@ -666,8 +666,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
     pcl::toPCLPointCloud2 (cloud, blob);
   }
   // Origin 0, orientation is forward
-  origin = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  origin = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
 
   return (true);
 #else
@@ -680,8 +680,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
 bool
 pcl::ImageGrabberBase::ImageGrabberImpl::getCloudPCLZF (size_t idx, 
                                                         pcl::PCLPointCloud2 &blob,
-                                                        Eigen::Vector4f &origin, 
-                                                        Eigen::Quaternionf &orientation, 
+                                                        Eigen::Vector4d &origin, 
+                                                        Eigen::Quaterniond &orientation, 
                                                         double &fx, 
                                                         double &fy, 
                                                         double &cx, 
@@ -798,8 +798,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudPCLZF (size_t idx,
   }
 
   // Origin 0, orientation is forward
-  origin = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  origin = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
   return (true);
 }     
    
@@ -1025,8 +1025,8 @@ pcl::ImageGrabberBase::numFrames () const
 bool
 pcl::ImageGrabberBase::getCloudAt (size_t idx,
                                    pcl::PCLPointCloud2 &blob,
-                                   Eigen::Vector4f &origin, 
-                                   Eigen::Quaternionf &orientation) const
+                                   Eigen::Vector4d &origin, 
+                                   Eigen::Quaterniond &orientation) const
 {
   double fx, fy, cx, cy;
   return (impl_->getCloudAt (idx, blob, origin, orientation, fx, fy, cx, cy));

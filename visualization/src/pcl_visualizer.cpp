@@ -560,7 +560,7 @@ pcl::visualization::PCLVisualizer::addCoordinateSystem (double scale, double x, 
 }
 
 void
-pcl::visualization::PCLVisualizer::addCoordinateSystem (double scale, const Eigen::Affine3f& t, int viewport)
+pcl::visualization::PCLVisualizer::addCoordinateSystem (double scale, const Eigen::Affine3d& t, int viewport)
 {
   addCoordinateSystem (scale, t, "reference", viewport);
 }
@@ -676,7 +676,7 @@ feq (double a, double b) {
 }
 
 void
-quat_to_angle_axis (const Eigen::Quaternionf &qx, double &theta, double axis[3])
+quat_to_angle_axis (const Eigen::Quaterniond &qx, double &theta, double axis[3])
 {
 double q[4];
   q[0] = qx.w();
@@ -702,7 +702,7 @@ double q[4];
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::PCLVisualizer::addCoordinateSystem (double scale, const Eigen::Affine3f& t, const std::string& id, int viewport)
+pcl::visualization::PCLVisualizer::addCoordinateSystem (double scale, const Eigen::Affine3d& t, const std::string& id, int viewport)
 {
   if (scale <= 0.0)
     scale = 1.0;
@@ -745,10 +745,10 @@ pcl::visualization::PCLVisualizer::addCoordinateSystem (double scale, const Eige
 
   axes_actor->SetPosition (t (0, 3), t(1, 3), t(2, 3));
 
-  Eigen::Matrix3f m;
+  Eigen::Matrix3d m;
   m =t.rotation();
-  Eigen::Quaternionf rf;
-  rf = Eigen::Quaternionf(m);
+  Eigen::Quaterniond rf;
+  rf = Eigen::Quaterniond(m);
   double r_angle;
   double r_axis[3];
   quat_to_angle_axis(rf,r_angle,r_axis);
@@ -1678,7 +1678,7 @@ pcl::visualization::PCLVisualizer::updateCamera ()
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::visualization::PCLVisualizer::updateShapePose (const std::string &id, const Eigen::Affine3f& pose)
+pcl::visualization::PCLVisualizer::updateShapePose (const std::string &id, const Eigen::Affine3d& pose)
 {
   ShapeActorMap::iterator am_it = shape_actor_map_->find (id);
 
@@ -1701,7 +1701,7 @@ pcl::visualization::PCLVisualizer::updateShapePose (const std::string &id, const
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::visualization::PCLVisualizer::updateCoordinateSystemPose (const std::string &id, const Eigen::Affine3f& pose)
+pcl::visualization::PCLVisualizer::updateCoordinateSystemPose (const std::string &id, const Eigen::Affine3d& pose)
 {
   ShapeActorMap::iterator am_it = coordinate_actor_map_->find (id);
 
@@ -1724,7 +1724,7 @@ pcl::visualization::PCLVisualizer::updateCoordinateSystemPose (const std::string
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::visualization::PCLVisualizer::updatePointCloudPose (const std::string &id, const Eigen::Affine3f& pose)
+pcl::visualization::PCLVisualizer::updatePointCloudPose (const std::string &id, const Eigen::Affine3d& pose)
 {
   // Check to see if this ID entry already exists (has it been already added to the visualizer?)
   CloudActorMap::iterator am_it = cloud_actor_map_->find (id);
@@ -1771,10 +1771,10 @@ pcl::visualization::PCLVisualizer::getCameras (std::vector<pcl::visualization::C
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-Eigen::Affine3f
+Eigen::Affine3d
 pcl::visualization::PCLVisualizer::getViewerPose (int viewport)
 {
-  Eigen::Affine3f ret (Eigen::Affine3f::Identity ());
+  Eigen::Affine3d ret (Eigen::Affine3d::Identity ());
 
   rens_->InitTraversal ();
   vtkRenderer* renderer = NULL;
@@ -1882,8 +1882,8 @@ pcl::visualization::PCLVisualizer::setCameraPosition (
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::PCLVisualizer::setCameraParameters (const Eigen::Matrix3f &intrinsics,
-                                                        const Eigen::Matrix4f &extrinsics,
+pcl::visualization::PCLVisualizer::setCameraParameters (const Eigen::Matrix3d &intrinsics,
+                                                        const Eigen::Matrix4d &extrinsics,
                                                         int viewport)
 {
   style_->setCameraParameters (intrinsics, extrinsics, viewport);
@@ -2065,7 +2065,7 @@ pcl::visualization::PCLVisualizer::addCube (const pcl::ModelCoefficients &coeffi
 ////////////////////////////////////////////////////////////////////////////////////////////
 bool
 pcl::visualization::PCLVisualizer::addCube (
-  const Eigen::Vector3f &translation, const Eigen::Quaternionf &rotation,
+  const Eigen::Vector3d &translation, const Eigen::Quaterniond &rotation,
   double width, double height, double depth,
   const std::string &id, int viewport)
 {
@@ -3190,7 +3190,7 @@ pcl::visualization::PCLVisualizer::addTextureMesh (const pcl::TextureMesh &mesh,
     coordinates->SetNumberOfTuples (mesh.tex_coordinates[0].size ());
     for (std::size_t tc = 0; tc < mesh.tex_coordinates[0].size (); ++tc)
     {
-      const Eigen::Vector2f &uv = mesh.tex_coordinates[0][tc];
+      const Eigen::Vector2d &uv = mesh.tex_coordinates[0][tc];
       coordinates->SetTuple2 (tc, uv[0], uv[1]);
     }
     coordinates->SetName ("TCoords");
@@ -3284,8 +3284,8 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
                                                                int xres,
                                                                int yres,
                                                                pcl::PointCloud<pcl::PointXYZ>::CloudVectorType &clouds,
-                                                               std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<
-                                                               Eigen::Matrix4f> > & poses,
+                                                               std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<
+                                                               Eigen::Matrix4d> > & poses,
                                                                std::vector<double> & enthropies, int tesselation_level,
                                                                double view_angle, double radius_sphere, bool use_vertices)
 {
@@ -3400,7 +3400,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
   // Get camera positions
   vtkPolyData *sphere = subdivide->GetOutput ();
 
-  std::vector<Eigen::Vector3f> cam_positions;
+  std::vector<Eigen::Vector3d> cam_positions;
   if (!use_vertices)
   {
     vtkSmartPointer<vtkCellArray> cells_sphere = sphere->GetPolys ();
@@ -3413,7 +3413,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
       sphere->GetPoint (ptIds_com[1], p2_com);
       sphere->GetPoint (ptIds_com[2], p3_com);
       vtkTriangle::TriangleCenter (p1_com, p2_com, p3_com, center);
-      cam_positions[i] = Eigen::Vector3f (double (center[0]), double (center[1]), double (center[2]));
+      cam_positions[i] = Eigen::Vector3d (double (center[0]), double (center[1]), double (center[2]));
       i++;
     }
 
@@ -3425,7 +3425,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
     {
       double cam_pos[3];
       sphere->GetPoint (i, cam_pos);
-      cam_positions[i] = Eigen::Vector3f (double (cam_pos[0]), double (cam_pos[1]), double (cam_pos[2]));
+      cam_positions[i] = Eigen::Vector3d (double (cam_pos[0]), double (cam_pos[1]), double (cam_pos[2]));
     }
   }
 
@@ -3450,8 +3450,8 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
   vtkSmartPointer<vtkCamera> cam = vtkSmartPointer<vtkCamera>::New ();
   cam->SetFocalPoint (0, 0, 0);
 
-  Eigen::Vector3f cam_pos_3f = cam_positions[0];
-  Eigen::Vector3f perp = cam_pos_3f.cross (Eigen::Vector3f::UnitY ());
+  Eigen::Vector3d cam_pos_3f = cam_positions[0];
+  Eigen::Vector3d perp = cam_pos_3f.cross (Eigen::Vector3d::UnitY ());
   cam->SetViewUp (perp[0], perp[1], perp[2]);
 
   cam->SetPosition (first_cam_pos);
@@ -3469,9 +3469,9 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
     vtkSmartPointer<vtkCamera> cam_tmp = vtkSmartPointer<vtkCamera>::New ();
     cam_tmp->SetViewAngle (view_angle);
 
-    Eigen::Vector3f cam_pos_3f (static_cast<double> (cam_pos[0]), static_cast<double> (cam_pos[1]), static_cast<double> (cam_pos[2]));
+    Eigen::Vector3d cam_pos_3f (static_cast<double> (cam_pos[0]), static_cast<double> (cam_pos[1]), static_cast<double> (cam_pos[2]));
     cam_pos_3f = cam_pos_3f.normalized ();
-    Eigen::Vector3f test = Eigen::Vector3f::UnitY ();
+    Eigen::Vector3d test = Eigen::Vector3d::UnitY ();
 
     //If the view up is parallel to ray cam_pos - focalPoint then the transformation
     //is singular and no points are rendered...
@@ -3479,7 +3479,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
     if (fabs (cam_pos_3f.dot (test)) == 1)
     {
       //parallel, create
-      test = cam_pos_3f.cross (Eigen::Vector3f::UnitX ());
+      test = cam_pos_3f.cross (Eigen::Vector3d::UnitX ());
     }
 
     cam_tmp->SetViewUp (test[0], test[1], test[2]);
@@ -3543,7 +3543,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
     backToRealScale->Concatenate (matrixTranslation);
     backToRealScale->Modified ();
 
-    Eigen::Matrix4f backToRealScale_eigen;
+    Eigen::Matrix4d backToRealScale_eigen;
     backToRealScale_eigen.setIdentity ();
 
     for (int x = 0; x < 4; x++)
@@ -3576,8 +3576,8 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
         cloud->points[count_valid_depth_pixels].x = static_cast<double> (coords[0]);
         cloud->points[count_valid_depth_pixels].y = static_cast<double> (coords[1]);
         cloud->points[count_valid_depth_pixels].z = static_cast<double> (coords[2]);
-        cloud->points[count_valid_depth_pixels].getVector4fMap () = backToRealScale_eigen
-            * cloud->points[count_valid_depth_pixels].getVector4fMap ();
+        cloud->points[count_valid_depth_pixels].getVector4dMap () = backToRealScale_eigen
+            * cloud->points[count_valid_depth_pixels].getVector4dMap ();
         count_valid_depth_pixels++;
       }
     }
@@ -3684,7 +3684,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
 
     //transform cloud to give camera coordinates instead of world coordinates!
     vtkSmartPointer<vtkMatrix4x4> view_transform = cam_tmp->GetViewTransformMatrix ();
-    Eigen::Matrix4f trans_view;
+    Eigen::Matrix4d trans_view;
     trans_view.setIdentity ();
 
     for (int x = 0; x < 4; x++)
@@ -3695,7 +3695,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
     //thus, the fliping in y and z
     for (size_t i = 0; i < cloud->points.size (); i++)
     {
-      cloud->points[i].getVector4fMap () = trans_view * cloud->points[i].getVector4fMap ();
+      cloud->points[i].getVector4dMap () = trans_view * cloud->points[i].getVector4dMap ();
       cloud->points[i].y *= -1.0f;
       cloud->points[i].z *= -1.0f;
     }
@@ -3724,7 +3724,7 @@ pcl::visualization::PCLVisualizer::renderViewTesselatedSphere (
     transOCtoCC->Concatenate (cameraSTD);
     transOCtoCC->Modified ();
 
-    Eigen::Matrix4f pose_view;
+    Eigen::Matrix4d pose_view;
     pose_view.setIdentity ();
 
     for (int x = 0; x < 4; x++)
@@ -3765,7 +3765,7 @@ pcl::visualization::PCLVisualizer::renderView (int xres, int yres, pcl::PointClo
   vtkSmartPointer<vtkMatrix4x4> composite_projection_transform = camera->GetCompositeProjectionTransformMatrix (ren->GetTiledAspectRatio (), 0, 1);
   vtkSmartPointer<vtkMatrix4x4> view_transform = camera->GetViewTransformMatrix ();
 
-  Eigen::Matrix4f mat1, mat2;
+  Eigen::Matrix4d mat1, mat2;
   for (int i = 0; i < 4; ++i)
     for (int j = 0; j < 4; ++j)
     {
@@ -3788,7 +3788,7 @@ pcl::visualization::PCLVisualizer::renderView (int xres, int yres, pcl::PointClo
         continue;
       }
 
-      Eigen::Vector4f world_coords (dwidth  * double (x) - 1.0f,
+      Eigen::Vector4d world_coords (dwidth  * double (x) - 1.0f,
                                     dheight * double (y) - 1.0f,
                                     depth[ptr],
                                     1.0f);
@@ -3817,7 +3817,7 @@ pcl::visualization::PCLVisualizer::fromHandlersToScreen (
     const ColorHandlerConstPtr &color_handler,
     const std::string &id,
     int viewport,
-    const Eigen::Vector4f& sensor_origin,
+    const Eigen::Vector4d& sensor_origin,
     const Eigen::Quaternion<double>& sensor_orientation)
 {
   if (!geometry_handler->isCapable ())
@@ -3944,9 +3944,9 @@ pcl::visualization::PCLVisualizer::allocVtkUnstructuredGrid (vtkSmartPointer<vtk
 //////////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::PCLVisualizer::getTransformationMatrix (
-    const Eigen::Vector4f &origin,
+    const Eigen::Vector4d &origin,
     const Eigen::Quaternion<double> &orientation,
-    Eigen::Matrix4f &transformation)
+    Eigen::Matrix4d &transformation)
 {
   transformation.setIdentity ();
   transformation.block<3,3>(0,0) = orientation.toRotationMatrix ();
@@ -3956,12 +3956,12 @@ pcl::visualization::PCLVisualizer::getTransformationMatrix (
 //////////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::PCLVisualizer::convertToVtkMatrix (
-    const Eigen::Vector4f &origin,
+    const Eigen::Vector4d &origin,
     const Eigen::Quaternion<double> &orientation,
     vtkSmartPointer<vtkMatrix4x4> &vtk_matrix)
 {
   // set rotation
-  Eigen::Matrix3f rot = orientation.toRotationMatrix ();
+  Eigen::Matrix3d rot = orientation.toRotationMatrix ();
   for (int i = 0; i < 3; i++)
     for (int k = 0; k < 3; k++)
       vtk_matrix->SetElement (i, k, rot (i, k));
@@ -3976,7 +3976,7 @@ pcl::visualization::PCLVisualizer::convertToVtkMatrix (
 //////////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::PCLVisualizer::convertToVtkMatrix (
-    const Eigen::Matrix4f &m,
+    const Eigen::Matrix4d &m,
     vtkSmartPointer<vtkMatrix4x4> &vtk_matrix)
 {
   for (int i = 0; i < 4; i++)
@@ -3988,7 +3988,7 @@ pcl::visualization::PCLVisualizer::convertToVtkMatrix (
 void
 pcl::visualization::PCLVisualizer::convertToEigenMatrix (
     const vtkSmartPointer<vtkMatrix4x4> &vtk_matrix,
-    Eigen::Matrix4f &m)
+    Eigen::Matrix4d &m)
 {
   for (int i = 0; i < 4; i++)
     for (int k = 0; k < 4; k++)
@@ -4001,7 +4001,7 @@ pcl::visualization::PCLVisualizer::addPointCloud (
     const pcl::PCLPointCloud2::ConstPtr &,
     const GeometryHandlerConstPtr &geometry_handler,
     const ColorHandlerConstPtr &color_handler,
-    const Eigen::Vector4f& sensor_origin,
+    const Eigen::Vector4d& sensor_origin,
     const Eigen::Quaternion<double>& sensor_orientation,
     const std::string &id, int viewport)
 {
@@ -4023,7 +4023,7 @@ bool
 pcl::visualization::PCLVisualizer::addPointCloud (
     const pcl::PCLPointCloud2::ConstPtr &cloud,
     const GeometryHandlerConstPtr &geometry_handler,
-    const Eigen::Vector4f& sensor_origin,
+    const Eigen::Vector4d& sensor_origin,
     const Eigen::Quaternion<double>& sensor_orientation,
     const std::string &id, int viewport)
 {
@@ -4047,7 +4047,7 @@ bool
 pcl::visualization::PCLVisualizer::addPointCloud (
     const pcl::PCLPointCloud2::ConstPtr &cloud,
     const ColorHandlerConstPtr &color_handler,
-    const Eigen::Vector4f& sensor_origin,
+    const Eigen::Vector4d& sensor_origin,
     const Eigen::Quaternion<double>& sensor_orientation,
     const std::string &id, int viewport)
 {

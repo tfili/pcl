@@ -80,7 +80,7 @@ namespace pcl
         */
       virtual int
       readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                  Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                   int &file_version, int &data_type, unsigned int &data_idx, const int offset = 0) ;
 
 
@@ -98,7 +98,7 @@ namespace pcl
         */
       virtual int
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &file_version,
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &file_version,
             const int offset = 0);
 
       /** \brief Set the ascii file point fields using a list of fields.

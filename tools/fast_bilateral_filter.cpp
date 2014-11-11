@@ -66,7 +66,7 @@ printHelp (int, char **argv)
 
 bool
 loadCloud (const string &filename, pcl::PCLPointCloud2 &cloud,
-           Eigen::Vector4f &translation, Eigen::Quaternionf &orientation)
+           Eigen::Vector4d &translation, Eigen::Quaterniond &orientation)
 {
   if (loadPCDFile (filename, cloud, translation, orientation) < 0)
     return (false);
@@ -103,7 +103,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
 
 void
 saveCloud (const string &filename, const pcl::PCLPointCloud2 &output,
-           const Eigen::Vector4f &translation, const Eigen::Quaternionf &orientation)
+           const Eigen::Vector4d &translation, const Eigen::Quaterniond &orientation)
 {
   PCDWriter w;
   w.writeBinaryCompressed (filename, output, translation, orientation);
@@ -118,8 +118,8 @@ batchProcess (const vector<string> &pcd_files, string &output_dir, double sigma_
   for (int i = 0; i < int (pcd_files.size ()); ++i)
   {
     // Load the first file
-    Eigen::Vector4f translation;
-    Eigen::Quaternionf rotation;
+    Eigen::Vector4d translation;
+    Eigen::Quaterniond rotation;
     pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
     if (!loadCloud (pcd_files[i], *cloud, translation, rotation)) 
       continue;
@@ -190,8 +190,8 @@ main (int argc, char** argv)
     print_value ("%f / %f\n", sigma_s, sigma_r);
 
     // Load the first file
-    Eigen::Vector4f translation;
-    Eigen::Quaternionf rotation;
+    Eigen::Vector4d translation;
+    Eigen::Quaterniond rotation;
     pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
     if (!loadCloud (argv[p_file_indices[0]], *cloud, translation, rotation)) 
       return (-1);

@@ -122,7 +122,7 @@ During each iteration, we keep track of and accumulate the transformations retur
 
    .. code-block:: cpp
    
-		 Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
+		 Eigen::Matrix4d Ti = Eigen::Matrix4d::Identity (), prev, targetToSource;
 		 [...]
 		 for (int i = 0; i < 30; ++i)
 		 {

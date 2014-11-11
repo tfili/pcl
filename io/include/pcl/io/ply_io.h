@@ -86,8 +86,8 @@ namespace pcl
       PLYReader ()
         : FileReader ()
         , parser_ ()
-        , origin_ (Eigen::Vector4f::Zero ())
-        , orientation_ (Eigen::Matrix3f::Zero ())
+        , origin_ (Eigen::Vector4d::Zero ())
+        , orientation_ (Eigen::Matrix3d::Zero ())
         , cloud_ ()
         , vertex_count_ (0)
         , vertex_offset_before_ (0)
@@ -100,8 +100,8 @@ namespace pcl
       PLYReader (const PLYReader &p)
         : FileReader ()
         , parser_ ()
-        , origin_ (Eigen::Vector4f::Zero ())
-        , orientation_ (Eigen::Matrix3f::Zero ())
+        , origin_ (Eigen::Vector4d::Zero ())
+        , orientation_ (Eigen::Matrix3d::Zero ())
         , cloud_ ()
         , vertex_count_ (0)
         , vertex_offset_before_ (0)
@@ -148,7 +148,7 @@ namespace pcl
         */
       int 
       readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                  Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                   int &ply_version, int &data_type, unsigned int &data_idx, const int offset = 0);
 
       /** \brief Read a point cloud data from a PLY file and store it into a pcl/PCLPointCloud2.
@@ -165,7 +165,7 @@ namespace pcl
         */
       int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int& ply_version, const int offset = 0);
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int& ply_version, const int offset = 0);
 
       /** \brief Read a point cloud data from a PLY file and store it into a pcl/PCLPointCloud2.
         * \note This function is provided for backwards compatibility only
@@ -180,8 +180,8 @@ namespace pcl
       inline int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset = 0)
       {
-        Eigen::Vector4f origin;
-        Eigen::Quaternionf orientation;
+        Eigen::Vector4d origin;
+        Eigen::Quaterniond orientation;
         int ply_version;
         return read (file_name, cloud, origin, orientation, ply_version, offset);
       }
@@ -225,7 +225,7 @@ namespace pcl
         */
       int
       read (const std::string &file_name, pcl::PolygonMesh &mesh,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
             int& ply_version, const int offset = 0);
 
       /** \brief Read a point cloud data from a PLY file and store it into a pcl/PolygonMesh.
@@ -512,10 +512,10 @@ namespace pcl
       faceEndCallback ();
 
       /// origin
-      Eigen::Vector4f origin_;
+      Eigen::Vector4d origin_;
 
       /// orientation
-      Eigen::Matrix3f orientation_;
+      Eigen::Matrix3d orientation_;
 
       //vertex element artifacts
       pcl::PCLPointCloud2 *cloud_;
@@ -555,8 +555,8 @@ namespace pcl
         */
       inline std::string
       generateHeaderBinary (const pcl::PCLPointCloud2 &cloud,
-                            const Eigen::Vector4f &origin, 
-                            const Eigen::Quaternionf &orientation,
+                            const Eigen::Vector4d &origin, 
+                            const Eigen::Quaterniond &orientation,
                             int valid_points,
                             bool use_camera = true)
       {
@@ -574,8 +574,8 @@ namespace pcl
         */
       inline std::string
       generateHeaderASCII (const pcl::PCLPointCloud2 &cloud,
-                           const Eigen::Vector4f &origin, 
-                           const Eigen::Quaternionf &orientation,
+                           const Eigen::Vector4d &origin, 
+                           const Eigen::Quaterniond &orientation,
                            int valid_points,
                            bool use_camera = true)
       {
@@ -593,8 +593,8 @@ namespace pcl
         */
       int 
       writeASCII (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                  const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                  const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+                  const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                  const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
                   int precision = 8,
                   bool use_camera = true);
 
@@ -608,8 +608,8 @@ namespace pcl
         */
       int 
       writeBinary (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                   const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                   const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+                   const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                   const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
                    bool use_camera = true);
 
       /** \brief Save point cloud data to a PLY file containing n-D points
@@ -622,8 +622,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false)
       {
         if (binary)
@@ -644,8 +644,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              bool binary = false,
              bool use_camera = true)
       {
@@ -667,8 +667,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2::ConstPtr &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              bool binary = false,
              bool use_camera = true)
       {
@@ -689,8 +689,8 @@ namespace pcl
              bool binary = false,
              bool use_camera = true)
       {
-        Eigen::Vector4f origin = cloud.sensor_origin_;
-        Eigen::Quaternionf orientation = cloud.sensor_orientation_;
+        Eigen::Vector4d origin = cloud.sensor_origin_;
+        Eigen::Quaterniond orientation = cloud.sensor_orientation_;
 
         pcl::PCLPointCloud2 blob;
         pcl::toPCLPointCloud2 (cloud, blob);
@@ -706,8 +706,8 @@ namespace pcl
         */
       std::string
       generateHeader (const pcl::PCLPointCloud2 &cloud,
-                      const Eigen::Vector4f &origin, 
-                      const Eigen::Quaternionf &orientation,
+                      const Eigen::Vector4d &origin, 
+                      const Eigen::Quaterniond &orientation,
                       bool binary, 
                       bool use_camera,
                       int valid_points);
@@ -716,8 +716,8 @@ namespace pcl
       writeContentWithCameraASCII (int nr_points, 
                                    int point_size,
                                    const pcl::PCLPointCloud2 &cloud,
-                                   const Eigen::Vector4f &origin, 
-                                   const Eigen::Quaternionf &orientation,
+                                   const Eigen::Vector4d &origin, 
+                                   const Eigen::Quaterniond &orientation,
                                    std::ofstream& fs);
 
       void
@@ -756,7 +756,7 @@ namespace pcl
       */
     inline int
     loadPLYFile (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                 Eigen::Vector4f &origin, Eigen::Quaternionf &orientation)
+                 Eigen::Vector4d &origin, Eigen::Quaterniond &orientation)
     {
       pcl::PLYReader p;
       int ply_version;
@@ -802,8 +802,8 @@ namespace pcl
       */
     inline int 
     savePLYFile (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                 const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                 const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+                 const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                 const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
                  bool binary_mode = false, bool use_camera = true)
     {
       PLYWriter w;

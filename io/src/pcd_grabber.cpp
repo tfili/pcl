@@ -77,8 +77,8 @@ struct pcl::PCDGrabberBase::PCDGrabberImpl
   bool
   getCloudAt (size_t idx, 
               pcl::PCLPointCloud2 &blob,
-              Eigen::Vector4f &origin, 
-              Eigen::Quaternionf &orientation);
+              Eigen::Vector4d &origin, 
+              Eigen::Quaterniond &orientation);
 
   //! Returns the size
   size_t
@@ -93,8 +93,8 @@ struct pcl::PCDGrabberBase::PCDGrabberImpl
   TimeTrigger time_trigger_;
 
   pcl::PCLPointCloud2 next_cloud_;
-  Eigen::Vector4f origin_;
-  Eigen::Quaternionf orientation_;
+  Eigen::Vector4d origin_;
+  Eigen::Quaterniond orientation_;
   bool valid_;
 
   // TAR reading I/O
@@ -123,7 +123,7 @@ pcl::PCDGrabberBase::PCDGrabberImpl::PCDGrabberImpl (pcl::PCDGrabberBase& grabbe
   , running_ (false)
   , pcd_files_ ()
   , pcd_iterator_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&PCDGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&PCDGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -147,7 +147,7 @@ pcl::PCDGrabberBase::PCDGrabberImpl::PCDGrabberImpl (pcl::PCDGrabberBase& grabbe
   , running_ (false)
   , pcd_files_ ()
   , pcd_iterator_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&PCDGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&PCDGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -350,8 +350,8 @@ pcl::PCDGrabberBase::PCDGrabberImpl::scrapeForClouds (bool force)
 bool 
 pcl::PCDGrabberBase::PCDGrabberImpl::getCloudAt (size_t idx, 
                                                  pcl::PCLPointCloud2 &blob,
-                                                 Eigen::Vector4f &origin, 
-                                                 Eigen::Quaternionf &orientation)
+                                                 Eigen::Vector4d &origin, 
+                                                 Eigen::Quaterniond &orientation)
 {
   scrapeForClouds (); // Make sure we've scraped
   if (idx >= numFrames ())
@@ -467,8 +467,8 @@ pcl::PCDGrabberBase::isRepeatOn () const
 bool
 pcl::PCDGrabberBase::getCloudAt (size_t idx, 
                                  pcl::PCLPointCloud2 &blob,
-                                 Eigen::Vector4f &origin, 
-                                 Eigen::Quaternionf &orientation) const
+                                 Eigen::Vector4d &origin, 
+                                 Eigen::Quaterniond &orientation) const
 {
   return (impl_->getCloudAt (idx, blob, origin, orientation));
 }

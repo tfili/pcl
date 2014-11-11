@@ -56,27 +56,27 @@ TEST (PointCloud, size)
 TEST (PointCloud, sq_brackets_wrapper)
 {
   for (uint32_t i = 0; i < size; ++i)
-    EXPECT_EQ_VECTORS (cloud.points[i].getVector3fMap (),
-                       cloud[i].getVector3fMap ());
+    EXPECT_EQ_VECTORS (cloud.points[i].getVector3dMap (),
+                       cloud[i].getVector3dMap ());
 }
 
 TEST (PointCloud, at)
 {
   for (uint32_t i = 0; i < size; ++i)
-    EXPECT_EQ_VECTORS (cloud.points.at (i).getVector3fMap (),
-                       cloud.at (i).getVector3fMap ());
+    EXPECT_EQ_VECTORS (cloud.points.at (i).getVector3dMap (),
+                       cloud.at (i).getVector3dMap ());
 }
 
 TEST (PointCloud, front)
 {
-  EXPECT_EQ_VECTORS (cloud.points.front ().getVector3fMap (),
-                     cloud.front ().getVector3fMap ());
+  EXPECT_EQ_VECTORS (cloud.points.front ().getVector3dMap (),
+                     cloud.front ().getVector3dMap ());
 }
 
 TEST (PointCloud, back)
 {
-  EXPECT_EQ_VECTORS (cloud.points.back ().getVector3fMap (),
-                     cloud.back ().getVector3fMap ());
+  EXPECT_EQ_VECTORS (cloud.points.back ().getVector3dMap (),
+                     cloud.back ().getVector3dMap ());
 }
 
 TEST (PointCloud, constructor_with_allocation)
@@ -107,14 +107,14 @@ TEST (PointCloud, constructor_with_allocation_valued)
 
 TEST (PointCloud, iterators)
 {
-  EXPECT_EQ_VECTORS (cloud.begin ()->getVector3fMap (), 
-                     cloud.points.begin ()->getVector3fMap ());
-  EXPECT_EQ_VECTORS (cloud.end ()->getVector3fMap (), 
-                     cloud.points.end ()->getVector3fMap ());
+  EXPECT_EQ_VECTORS (cloud.begin ()->getVector3dMap (), 
+                     cloud.points.begin ()->getVector3dMap ());
+  EXPECT_EQ_VECTORS (cloud.end ()->getVector3dMap (), 
+                     cloud.points.end ()->getVector3dMap ());
   PointCloud<PointXYZ>::const_iterator pit = cloud.begin ();
   PointCloud<PointXYZ>::VectorType::const_iterator pit2 = cloud.points.begin ();
   for (; pit < cloud.end (); ++pit2, ++pit)
-    EXPECT_EQ_VECTORS (pit->getVector3fMap (), pit2->getVector3fMap ());
+    EXPECT_EQ_VECTORS (pit->getVector3dMap (), pit2->getVector3dMap ());
 }
 
 TEST (PointCloud, insert_range)
@@ -131,7 +131,7 @@ TEST (PointCloud, insert_range)
   PointCloud<PointXYZ>::const_iterator pit = cloud.begin ();
   PointCloud<PointXYZ>::const_iterator pit2 = cloud2.begin ();
   for (; pit2 < cloud2.end (); ++pit2, ++pit)
-    EXPECT_EQ_VECTORS (pit->getVector3fMap (), pit2->getVector3fMap ());
+    EXPECT_EQ_VECTORS (pit->getVector3dMap (), pit2->getVector3dMap ());
 }
 
 int

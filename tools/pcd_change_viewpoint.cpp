@@ -59,8 +59,8 @@ printHelp (int, char **argv)
 bool
 loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 {
-  Eigen::Vector4f    translation;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d    translation;
+  Eigen::Quaterniond orientation;
 
   TicToc tt;
   print_highlight ("Loading "); print_value ("%s ", filename.c_str ());
@@ -79,8 +79,8 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 
 void
 saveCloud (const std::string &filename, 
-           const Eigen::Vector4f    &translation,
-           const Eigen::Quaternionf &orientation,
+           const Eigen::Vector4d    &translation,
+           const Eigen::Quaterniond &orientation,
            const pcl::PCLPointCloud2 &output)
 {
   TicToc tt;
@@ -106,16 +106,16 @@ main (int argc, char** argv)
     return (-1);
   }
 
-  Eigen::Vector4f    translation = Eigen::Vector4f::Zero ();
-  Eigen::Quaternionf orientation = Eigen::Quaternionf::Identity ();
+  Eigen::Vector4d    translation = Eigen::Vector4d::Zero ();
+  Eigen::Quaterniond orientation = Eigen::Quaterniond::Identity ();
 
   std::vector<double> values;
   if (parse_x_arguments (argc, argv, "-viewpoint", values) > -1)
   {
     if (values.size () == 7)
     {
-      translation = Eigen::Vector4f (values[0], values[1], values[2], 0.0f);
-      orientation = Eigen::Quaternionf (values[3], values[4], values[5], values[6]);
+      translation = Eigen::Vector4d (values[0], values[1], values[2], 0.0f);
+      orientation = Eigen::Quaterniond (values[3], values[4], values[5], values[6]);
     }
     else
     {

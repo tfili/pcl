@@ -151,7 +151,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeFeature (PointCloudOut &output
     std::vector <int> local_points;
     getLocalSurface (input_->points[(*indices_)[i_point]], local_triangles, local_points);
 
-    Eigen::Matrix3f lrf_matrix;
+    Eigen::Matrix3d lrf_matrix;
     computeLRF (input_->points[(*indices_)[i_point]], local_triangles, lrf_matrix);
 
     PointCloudIn transformed_cloud;
@@ -169,13 +169,13 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeFeature (PointCloudOut &output
       {
         //rotate local surface and get bounding box
         PointCloudIn rotated_cloud;
-        Eigen::Vector3f min, max;
+        Eigen::Vector3d min, max;
         rotateCloud (axis[i_axis], theta, transformed_cloud, rotated_cloud, min, max);
 
         //for each projection (XY, XZ and YZ) compute distribution matrix and central moments
         for (unsigned int i_proj = 0; i_proj < 3; i_proj++)
         {
-          Eigen::MatrixXf distribution_matrix;
+          Eigen::MatrixXd distribution_matrix;
           distribution_matrix.resize (number_of_bins_, number_of_bins_);
           getDistributionMatrix (i_proj, min, max, rotated_cloud, distribution_matrix);
 
@@ -233,11 +233,11 @@ pcl::ROPSEstimation <PointInT, PointOutT>::getLocalSurface (const PointInT& poin
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, const std::set <unsigned int>& local_triangles, Eigen::Matrix3f& lrf_matrix) const
+pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, const std::set <unsigned int>& local_triangles, Eigen::Matrix3d& lrf_matrix) const
 {
   const unsigned int number_of_triangles = static_cast <unsigned int> (local_triangles.size ());
 
-  std::vector <Eigen::Matrix3f> scatter_matrices (number_of_triangles);
+  std::vector <Eigen::Matrix3d> scatter_matrices (number_of_triangles);
   std::vector <double> triangle_area (number_of_triangles);
   std::vector <double> distance_weight (number_of_triangles);
 
@@ -245,13 +245,13 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
   const double coeff = 1.0f / 12.0f;
   const double coeff_1_div_3 = 1.0f / 3.0f;
 
-  Eigen::Vector3f feature_point (point.x, point.y, point.z);
+  Eigen::Vector3d feature_point (point.x, point.y, point.z);
 
   std::set <unsigned int>::const_iterator it;
   unsigned int i_triangle = 0;
   for (it = local_triangles.begin (), i_triangle = 0; it != local_triangles.end (); it++, i_triangle++)
   {
-    Eigen::Vector3f pt[3];
+    Eigen::Vector3d pt[3];
     for (unsigned int i_vertex = 0; i_vertex < 3; i_vertex++)
     {
       const unsigned int index = triangles_[*it].vertices[i_vertex];
@@ -266,11 +266,11 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
 
     distance_weight[i_triangle] = pow (support_radius_ - (feature_point - (pt[0] + pt[1] + pt[2]) * coeff_1_div_3).norm (), 2.0f);
 
-    Eigen::Matrix3f curr_scatter_matrix;
+    Eigen::Matrix3d curr_scatter_matrix;
     curr_scatter_matrix.setZero ();
     for (unsigned int i_pt = 0; i_pt < 3; i_pt++)
     {
-      Eigen::Vector3f vec = pt[i_pt] - feature_point;
+      Eigen::Vector3d vec = pt[i_pt] - feature_point;
       curr_scatter_matrix += vec * (vec.transpose ());
       for (unsigned int j_pt = 0; j_pt < 3; j_pt++)
         curr_scatter_matrix += vec * ((pt[j_pt] - feature_point).transpose ());
@@ -283,7 +283,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
   else
     total_area = 1.0f;
 
-  Eigen::Matrix3f overall_scatter_matrix;
+  Eigen::Matrix3d overall_scatter_matrix;
   overall_scatter_matrix.setZero ();
   std::vector<double> total_weight (number_of_triangles);
   const double denominator = 1.0f / 6.0f;
@@ -294,14 +294,14 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
     total_weight[i_triangle] = factor * denominator;
   }
 
-  Eigen::Vector3f v1, v2, v3;
+  Eigen::Vector3d v1, v2, v3;
   computeEigenVectors (overall_scatter_matrix, v1, v2, v3);
 
   double h1 = 0.0f;
   double h3 = 0.0f;
   for (it = local_triangles.begin (), i_triangle = 0; it != local_triangles.end (); it++, i_triangle++)
   {
-    Eigen::Vector3f pt[3];
+    Eigen::Vector3d pt[3];
     for (unsigned int i_vertex = 0; i_vertex < 3; i_vertex++)
     {
       const unsigned int index = triangles_[*it].vertices[i_vertex];
@@ -314,7 +314,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
     double factor3 = 0.0f;
     for (unsigned int i_pt = 0; i_pt < 3; i_pt++)
     {
-      Eigen::Vector3f vec = pt[i_pt] - feature_point;
+      Eigen::Vector3d vec = pt[i_pt] - feature_point;
       factor1 += vec.dot (v1);
       factor3 += vec.dot (v3);
     }
@@ -334,14 +334,14 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeLRF (const PointInT& point, co
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::computeEigenVectors (const Eigen::Matrix3f& matrix,
-  Eigen::Vector3f& major_axis, Eigen::Vector3f& middle_axis, Eigen::Vector3f& minor_axis) const
+pcl::ROPSEstimation <PointInT, PointOutT>::computeEigenVectors (const Eigen::Matrix3d& matrix,
+  Eigen::Vector3d& major_axis, Eigen::Vector3d& middle_axis, Eigen::Vector3d& minor_axis) const
 {
-  Eigen::EigenSolver <Eigen::Matrix3f> eigen_solver;
+  Eigen::EigenSolver <Eigen::Matrix3d> eigen_solver;
   eigen_solver.compute (matrix);
 
-  Eigen::EigenSolver <Eigen::Matrix3f>::EigenvectorsType eigen_vectors;
-  Eigen::EigenSolver <Eigen::Matrix3f>::EigenvalueType eigen_values;
+  Eigen::EigenSolver <Eigen::Matrix3d>::EigenvectorsType eigen_vectors;
+  Eigen::EigenSolver <Eigen::Matrix3d>::EigenvalueType eigen_values;
   eigen_vectors = eigen_solver.eigenvectors ();
   eigen_values = eigen_solver.eigenvalues ();
 
@@ -378,14 +378,14 @@ pcl::ROPSEstimation <PointInT, PointOutT>::computeEigenVectors (const Eigen::Mat
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::transformCloud (const PointInT& point, const Eigen::Matrix3f& matrix, const std::vector <int>& local_points, PointCloudIn& transformed_cloud) const
+pcl::ROPSEstimation <PointInT, PointOutT>::transformCloud (const PointInT& point, const Eigen::Matrix3d& matrix, const std::vector <int>& local_points, PointCloudIn& transformed_cloud) const
 {
   const unsigned int number_of_points = static_cast <unsigned int> (local_points.size ());
   transformed_cloud.points.resize (number_of_points, PointInT ());
 
   for (unsigned int i = 0; i < number_of_points; i++)
   {
-    Eigen::Vector3f transformed_point (
+    Eigen::Vector3d transformed_point (
       surface_->points[local_points[i]].x - point.x,
       surface_->points[local_points[i]].y - point.y,
       surface_->points[local_points[i]].z - point.z);
@@ -402,9 +402,9 @@ pcl::ROPSEstimation <PointInT, PointOutT>::transformCloud (const PointInT& point
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::rotateCloud (const PointInT& axis, const double angle, const PointCloudIn& cloud, PointCloudIn& rotated_cloud, Eigen::Vector3f& min, Eigen::Vector3f& max) const
+pcl::ROPSEstimation <PointInT, PointOutT>::rotateCloud (const PointInT& axis, const double angle, const PointCloudIn& cloud, PointCloudIn& rotated_cloud, Eigen::Vector3d& min, Eigen::Vector3d& max) const
 {
-  Eigen::Matrix3f rotation_matrix;
+  Eigen::Matrix3d rotation_matrix;
   const double x = axis.x;
   const double y = axis.y;
   const double z = axis.z;
@@ -431,7 +431,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::rotateCloud (const PointInT& axis, co
 
   for (unsigned int i_point = 0; i_point < number_of_points; i_point++)
   {
-    Eigen::Vector3f point (
+    Eigen::Vector3d point (
       cloud.points[i_point].x,
       cloud.points[i_point].y,
       cloud.points[i_point].z);
@@ -455,7 +455,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::rotateCloud (const PointInT& axis, co
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::getDistributionMatrix (const unsigned int projection, const Eigen::Vector3f& min, const Eigen::Vector3f& max, const PointCloudIn& cloud, Eigen::MatrixXf& matrix) const
+pcl::ROPSEstimation <PointInT, PointOutT>::getDistributionMatrix (const unsigned int projection, const Eigen::Vector3d& min, const Eigen::Vector3d& max, const PointCloudIn& cloud, Eigen::MatrixXd& matrix) const
 {
   matrix.setZero ();
 
@@ -471,7 +471,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::getDistributionMatrix (const unsigned
 
   for (unsigned int i_point = 0; i_point < number_of_points; i_point++)
   {
-    Eigen::Vector3f point (
+    Eigen::Vector3d point (
       cloud.points[i_point].x,
       cloud.points[i_point].y,
       cloud.points[i_point].z);
@@ -495,7 +495,7 @@ pcl::ROPSEstimation <PointInT, PointOutT>::getDistributionMatrix (const unsigned
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
-pcl::ROPSEstimation <PointInT, PointOutT>::computeCentralMoments (const Eigen::MatrixXf& matrix, std::vector <double>& moments) const
+pcl::ROPSEstimation <PointInT, PointOutT>::computeCentralMoments (const Eigen::MatrixXd& matrix, std::vector <double>& moments) const
 {
   double mean_i = 0.0f;
   double mean_j = 0.0f;

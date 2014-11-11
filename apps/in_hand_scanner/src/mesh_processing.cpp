@@ -58,7 +58,7 @@ pcl::ihs::MeshProcessing::processBoundary (Mesh& mesh, const std::vector <HalfEd
   typedef std::vector <Mesh::HalfEdgeIndices> BoundaryCollection;
 
   Mesh::VertexIndex vi_a, vi_b, vi_c, vi_d;
-  Eigen::Vector3f ab, bc, ac, n_adb, n_plane; // Edges and normals
+  Eigen::Vector3d ab, bc, ac, n_adb, n_plane; // Edges and normals
   Mesh::FaceIndex opposite_face;
 
   for (BoundaryCollection::const_iterator it_bc=boundary_collection.begin (); it_bc!=boundary_collection.end (); ++it_bc)
@@ -100,9 +100,9 @@ pcl::ihs::MeshProcessing::processBoundary (Mesh& mesh, const std::vector <HalfEd
         vi_b = mesh.getTerminatingVertexIndex (boundary [i]);
         vi_c = mesh.getTerminatingVertexIndex (boundary [(i+1) % boundary.size ()]);
 
-        const Eigen::Vector4f& v_a = mesh.getVertexDataCloud () [vi_a.get ()].getVector4fMap ();
-        const Eigen::Vector4f& v_b = mesh.getVertexDataCloud () [vi_b.get ()].getVector4fMap ();
-        const Eigen::Vector4f& v_c = mesh.getVertexDataCloud () [vi_c.get ()].getVector4fMap ();
+        const Eigen::Vector4d& v_a = mesh.getVertexDataCloud () [vi_a.get ()].getVector4dMap ();
+        const Eigen::Vector4d& v_b = mesh.getVertexDataCloud () [vi_b.get ()].getVector4dMap ();
+        const Eigen::Vector4d& v_c = mesh.getVertexDataCloud () [vi_c.get ()].getVector4dMap ();
 
         ab = (v_b - v_a).head <3> ();
         bc = (v_c - v_b).head <3> ();
@@ -116,7 +116,7 @@ pcl::ihs::MeshProcessing::processBoundary (Mesh& mesh, const std::vector <HalfEd
           vi_d = mesh.getTerminatingVertexIndex (
                    mesh.getNextHalfEdgeIndex (
                      mesh.getOppositeHalfEdgeIndex (boundary [i])));
-          const Eigen::Vector4f& v_d = mesh.getVertexDataCloud () [vi_d.get ()].getVector4fMap ();
+          const Eigen::Vector4d& v_d = mesh.getVertexDataCloud () [vi_d.get ()].getVector4dMap ();
 
           // n_adb is the normal of triangle a-d-b.
           // The plane goes through edge a-b and is perpendicular to the plane through a-d-b.

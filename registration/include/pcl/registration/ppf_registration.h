@@ -144,18 +144,18 @@ namespace pcl
   class PPFRegistration : public Registration<PointSource, PointTarget>
   {
     public:
-      /** \brief Structure for storing a pose (represented as an Eigen::Affine3f) and an integer for counting votes
-        * \note initially used std::pair<Eigen::Affine3f, unsigned int>, but it proved problematic
+      /** \brief Structure for storing a pose (represented as an Eigen::Affine3d) and an integer for counting votes
+        * \note initially used std::pair<Eigen::Affine3d, unsigned int>, but it proved problematic
         * because of the Eigen structures alignment problems - std::pair does not have a custom allocator
         */
       struct PoseWithVotes
       {
-        PoseWithVotes(Eigen::Affine3f &a_pose, unsigned int &a_votes)
+        PoseWithVotes(Eigen::Affine3d &a_pose, unsigned int &a_votes)
         : pose (a_pose),
           votes (a_votes)
         {}
 
-        Eigen::Affine3f pose;
+        Eigen::Affine3d pose;
         unsigned int votes;
       };
       typedef std::vector<PoseWithVotes, Eigen::aligned_allocator<PoseWithVotes> > PoseWithVotesList;
@@ -244,7 +244,7 @@ namespace pcl
     private:
       /** \brief Method that calculates the transformation between the input_ and target_ point clouds, based on the PPF features */
       void
-      computeTransformation (PointCloudSource &output, const Eigen::Matrix4f& guess);
+      computeTransformation (PointCloudSource &output, const Eigen::Matrix4d& guess);
 
 
       /** \brief the search method that is going to be used to find matching feature pairs */
@@ -281,8 +281,8 @@ namespace pcl
       /** \brief Method that checks whether two poses are close together - based on the clustering threshold parameters
        * of the class */
       bool
-      posesWithinErrorBounds (Eigen::Affine3f &pose1,
-                              Eigen::Affine3f &pose2);
+      posesWithinErrorBounds (Eigen::Affine3d &pose1,
+                              Eigen::Affine3d &pose2);
   };
 }
 

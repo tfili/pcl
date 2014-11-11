@@ -282,7 +282,7 @@ main (int argc, char *argv[])
   //
   //  Actual Clustering
   //
-  std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
+  std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > rototranslations;
   std::vector<pcl::Correspondences> clustered_corrs;
 
   //  Using Hough3D
@@ -348,8 +348,8 @@ main (int argc, char *argv[])
     std::cout << "        Correspondences belonging to this instance: " << clustered_corrs[i].size () << std::endl;
 
     // Print the rotation matrix and translation vector
-    Eigen::Matrix3f rotation = rototranslations[i].block<3,3>(0, 0);
-    Eigen::Vector3f translation = rototranslations[i].block<3,1>(0, 3);
+    Eigen::Matrix3d rotation = rototranslations[i].block<3,3>(0, 0);
+    Eigen::Vector3d translation = rototranslations[i].block<3,1>(0, 3);
 
     printf ("\n");
     printf ("            | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));
@@ -371,8 +371,8 @@ main (int argc, char *argv[])
   if (show_correspondences_ || show_keypoints_)
   {
     //  We are translating the model so that it doesn't end in the middle of the scene representation
-    pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-    pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+    pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3d (-1,0,0), Eigen::Quaterniond (1, 0, 0, 0));
+    pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3d (-1,0,0), Eigen::Quaterniond (1, 0, 0, 0));
 
     pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
     viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");

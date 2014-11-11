@@ -65,10 +65,10 @@ pcl::Permutohedral::init (const std::vector<double> &feature, const int feature_
   barycentric_.resize ((d_ + 1) * N_);
 
   // create vectors and matrices
-  Eigen::VectorXf scale_factor = Eigen::VectorXf::Zero (d_);
-  Eigen::VectorXf elevated = Eigen::VectorXf::Zero (d_ + 1);
-  Eigen::VectorXf rem0 = Eigen::VectorXf::Zero (d_+1);
-  Eigen::VectorXf barycentric = Eigen::VectorXf::Zero (d_+2);
+  Eigen::VectorXd scale_factor = Eigen::VectorXd::Zero (d_);
+  Eigen::VectorXd elevated = Eigen::VectorXd::Zero (d_ + 1);
+  Eigen::VectorXd rem0 = Eigen::VectorXd::Zero (d_+1);
+  Eigen::VectorXd barycentric = Eigen::VectorXd::Zero (d_+2);
   Eigen::VectorXi rank = Eigen::VectorXi::Zero (d_+1);
   Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic> canonical;
   canonical = Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic>::Zero (d_+1, d_+1);
@@ -121,7 +121,7 @@ pcl::Permutohedral::init (const std::vector<double> &feature, const int feature_
     // rank differential to find the permutation between this simplex and the canonical one.         
     // (See pg. 3-4 in paper.)    
     rank.setZero ();
-    Eigen::VectorXf tmp = elevated - rem0;
+    Eigen::VectorXd tmp = elevated - rem0;
     for (int i = 0; i < d_; i++){
       for (int j = i+1; j <= d_; j++)
         if (tmp (i) < tmp (j))
@@ -145,7 +145,7 @@ pcl::Permutohedral::init (const std::vector<double> &feature, const int feature_
 
     // Compute the barycentric coordinates (p.10 in [Adams etal 2010])
     barycentric.setZero ();
-    Eigen::VectorXf v = (elevated - rem0) * down_factor;
+    Eigen::VectorXd v = (elevated - rem0) * down_factor;
     for (int j = 0; j <= d_; j++){
       barycentric (d_ - rank (j)    ) += v (j);
       barycentric (d_ + 1 - rank (j)) -= v (j);

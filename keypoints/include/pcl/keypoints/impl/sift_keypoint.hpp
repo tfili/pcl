@@ -159,7 +159,7 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypointsForOctave (
   {
     scales[i_scale] = base_scale * powf (2.0f, (1.0f * static_cast<double> (i_scale) - 1.0f) / static_cast<double> (nr_scales_per_octave));
   }
-  Eigen::MatrixXf diff_of_gauss;
+  Eigen::MatrixXd diff_of_gauss;
   computeScaleSpace (input, tree, scales, diff_of_gauss);
 
   // Find extrema in the DoG scale space
@@ -206,7 +206,7 @@ pcl::SIFTKeypoint<PointInT, PointOutT>::detectKeypointsForOctave (
 template <typename PointInT, typename PointOutT> 
 void pcl::SIFTKeypoint<PointInT, PointOutT>::computeScaleSpace (
     const PointCloudIn &input, KdTree &tree, const std::vector<double> &scales, 
-    Eigen::MatrixXf &diff_of_gauss)
+    Eigen::MatrixXd &diff_of_gauss)
 {
   diff_of_gauss.resize (input.size (), scales.size () - 1);
 
@@ -256,7 +256,7 @@ void pcl::SIFTKeypoint<PointInT, PointOutT>::computeScaleSpace (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void 
 pcl::SIFTKeypoint<PointInT, PointOutT>::findScaleSpaceExtrema (
-    const PointCloudIn &input, KdTree &tree, const Eigen::MatrixXf &diff_of_gauss, 
+    const PointCloudIn &input, KdTree &tree, const Eigen::MatrixXd &diff_of_gauss, 
     std::vector<int> &extrema_indices, std::vector<int> &extrema_scales)
 {
   const int k = 25;

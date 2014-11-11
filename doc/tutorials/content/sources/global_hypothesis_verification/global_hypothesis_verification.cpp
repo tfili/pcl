@@ -323,7 +323,7 @@ main (int argc,
   /**
    *  Clustering
    */
-  std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
+  std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > rototranslations;
   std::vector < pcl::Correspondences > clustered_corrs;
 
   if (use_hough_)
@@ -475,9 +475,9 @@ main (int argc,
   pcl::PointCloud<PointType>::Ptr off_scene_model_keypoints (new pcl::PointCloud<PointType> ());
 
   pcl::PointCloud<PointType>::Ptr off_model_good_kp (new pcl::PointCloud<PointType> ());
-  pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
-  pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
-  pcl::transformPointCloud (*model_good_kp, *off_model_good_kp, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
+  pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3d (-1, 0, 0), Eigen::Quaterniond (1, 0, 0, 0));
+  pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3d (-1, 0, 0), Eigen::Quaterniond (1, 0, 0, 0));
+  pcl::transformPointCloud (*model_good_kp, *off_model_good_kp, Eigen::Vector3d (-1, 0, 0), Eigen::Quaterniond (1, 0, 0, 0));
 
   if (show_keypoints_)
   {

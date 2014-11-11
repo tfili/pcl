@@ -140,7 +140,7 @@ Alternatively to Hough3DGrouping, and by means of the appropriate command line s
    :lines: 327-339
 
 .. note::   
-	The ``recognize`` method returns a vector of ``Eigen::Matrix4f`` representing a transformation (rotation + translation) for each instance of the model found in the scene (obtained via Absolute Orientation) and a **vector** of :pcl:`Correspondences <pcl::Correspondences>` (a vector of vectors of :pcl:`Correspondence <pcl::Correspondences>`) representing the output of the clustering i.e. each element of this vector is in turn a set of correspondences, representing the correspondences associated to a specific model instance in the scene.
+	The ``recognize`` method returns a vector of ``Eigen::Matrix4d`` representing a transformation (rotation + translation) for each instance of the model found in the scene (obtained via Absolute Orientation) and a **vector** of :pcl:`Correspondences <pcl::Correspondences>` (a vector of vectors of :pcl:`Correspondence <pcl::Correspondences>`) representing the output of the clustering i.e. each element of this vector is in turn a set of correspondences, representing the correspondences associated to a specific model instance in the scene.
 	
 	If you **only** need the clustered correspondences because you are planning to use them in a different way, you can use the ``cluster`` method.
 	

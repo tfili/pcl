@@ -93,8 +93,8 @@ namespace pcl
           pnt_out.x = static_cast<double> (transform_matrix_ (0, 0) * pnt_in.x + transform_matrix_ (0, 1) * pnt_in.y + transform_matrix_ (0, 2) * pnt_in.z + transform_matrix_ (0, 3));
           pnt_out.y = static_cast<double> (transform_matrix_ (1, 0) * pnt_in.x + transform_matrix_ (1, 1) * pnt_in.y + transform_matrix_ (1, 2) * pnt_in.z + transform_matrix_ (1, 3));
           pnt_out.z = static_cast<double> (transform_matrix_ (2, 0) * pnt_in.x + transform_matrix_ (2, 1) * pnt_in.y + transform_matrix_ (2, 2) * pnt_in.z + transform_matrix_ (2, 3));
-          //pnt_out.getVector3fMap () = transform_matrix_.topLeftCorner (3, 3) * 
-          //                            pnt_in.getVector3fMap () + 
+          //pnt_out.getVector3dMap () = transform_matrix_.topLeftCorner (3, 3) * 
+          //                            pnt_in.getVector3dMap () + 
           //                            transform_matrix_.block (0, 3, 3, 1);
           //pnt_out.data[3] = pnt_in.data[3];
         }

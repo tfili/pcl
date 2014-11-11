@@ -149,7 +149,7 @@ namespace pcl
         * This is used to choose the 2D projection to use when cropping to a 2d
         * polygon.
         */
-      Eigen::Vector3f
+      Eigen::Vector3d
       getHullCloudRange ();
       
       /** \brief Apply the two-dimensional hull filter.
@@ -214,7 +214,7 @@ namespace pcl
         */
       inline static bool
       rayTriangleIntersect (const PointT& point,
-                            const Eigen::Vector3f& ray,
+                            const Eigen::Vector3d& ray,
                             const Vertices& verts,
                             const PointCloud& cloud);
 

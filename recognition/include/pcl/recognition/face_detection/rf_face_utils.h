@@ -422,7 +422,7 @@ namespace pcl
 
             for (size_t branch_index = 0; branch_index < (num_of_branches + 1); ++branch_index)
             {
-              hp[branch_index] += std::max (sums[branch_index] / static_cast<double> (branch_element_count[branch_index]) - tp, 0.f) * hr[branch_index];
+              hp[branch_index] += std::max (sums[branch_index] / static_cast<double> (branch_element_count[branch_index]) - tp, 0.) * hr[branch_index];
             }
           }
 

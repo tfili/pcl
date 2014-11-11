@@ -61,7 +61,7 @@ pcl::MaximumLikelihoodSampleConsensus<PointT>::computeModel (int debug_verbosity
 
   std::vector<int> best_model;
   std::vector<int> selection;
-  Eigen::VectorXf model_coefficients;
+  Eigen::VectorXd model_coefficients;
   std::vector<double> distances;
 
   // Compute sigma - remember to set threshold_ correctly !
@@ -70,7 +70,7 @@ pcl::MaximumLikelihoodSampleConsensus<PointT>::computeModel (int debug_verbosity
     PCL_DEBUG ("[pcl::MaximumLikelihoodSampleConsensus::computeModel] Estimated sigma value: %f.\n", sigma_);
 
   // Compute the bounding box diagonal: V = sqrt (sum (max(pointCloud) - min(pointCloud)^2))
-  Eigen::Vector4f min_pt, max_pt;
+  Eigen::Vector4d min_pt, max_pt;
   getMinMax (sac_model_->getInputCloud (), sac_model_->getIndices (), min_pt, max_pt);
   max_pt -= min_pt;
   double v = sqrt (max_pt.dot (max_pt));
@@ -211,14 +211,14 @@ pcl::MaximumLikelihoodSampleConsensus<PointT>::computeMedianAbsoluteDeviation (
 {
   std::vector<double> distances (indices->size ());
 
-  Eigen::Vector4f median;
+  Eigen::Vector4d median;
   // median (dist (x - median (x)))
   computeMedian (cloud, indices, median);
 
   for (size_t i = 0; i < indices->size (); ++i)
   {
-    pcl::Vector4fMapConst pt = cloud->points[(*indices)[i]].getVector4fMap ();
-    Eigen::Vector4f ptdiff = pt - median;
+    pcl::Vector4dMapConst pt = cloud->points[(*indices)[i]].getVector4dMap ();
+    Eigen::Vector4d ptdiff = pt - median;
     ptdiff[3] = 0;
     distances[i] = ptdiff.dot (ptdiff);
   }
@@ -240,8 +240,8 @@ template <typename PointT> void
 pcl::MaximumLikelihoodSampleConsensus<PointT>::getMinMax (
     const PointCloudConstPtr &cloud, 
     const boost::shared_ptr <std::vector<int> > &indices, 
-    Eigen::Vector4f &min_p, 
-    Eigen::Vector4f &max_p)
+    Eigen::Vector4d &min_p, 
+    Eigen::Vector4d &max_p)
 {
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
@@ -264,7 +264,7 @@ template <typename PointT> void
 pcl::MaximumLikelihoodSampleConsensus<PointT>::computeMedian (
     const PointCloudConstPtr &cloud, 
     const boost::shared_ptr <std::vector<int> > &indices, 
-    Eigen::Vector4f &median)
+    Eigen::Vector4d &median)
 {
   // Copy the values to vectors for faster sorting
   std::vector<double> x (indices->size ());

@@ -65,7 +65,7 @@ PointCloud is a C++ class which contains the following data fields:
     Specifies if all the data in **points** is finite (true), or whether the XYZ values of certain points might contain Inf/NaN values (false).
 
 
-  * :pcl:`sensor_origin_<pcl::PointCloud::sensor_origin_>` (Eigen::Vector4f)
+  * :pcl:`sensor_origin_<pcl::PointCloud::sensor_origin_>` (Eigen::Vector4d)
 
     Specifies the sensor acquisition pose (origin/translation). This member is usually optional, and not used by the majority of the algorithms in PCL.
 

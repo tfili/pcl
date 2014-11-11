@@ -119,8 +119,8 @@ saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output)
 
   print_highlight ("Saving "); print_value ("%s ", filename.c_str ());
 
-  pcl::io::savePCDFile (filename, output,  Eigen::Vector4f::Zero (),
-                        Eigen::Quaternionf::Identity (), true);
+  pcl::io::savePCDFile (filename, output,  Eigen::Vector4d::Zero (),
+                        Eigen::Quaterniond::Identity (), true);
 
   print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms : "); print_value ("%d", output.width * output.height); print_info (" points]\n");
 }

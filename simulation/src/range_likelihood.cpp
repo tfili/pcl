@@ -302,14 +302,14 @@ pcl::simulation::RangeLikelihood::RangeLikelihood (int rows, int cols, int row_h
 
   likelihood_program_->link ();
 
-  vertices_.push_back (Eigen::Vector3f (-1.0,  1.0, 0.0));
-  vertices_.push_back (Eigen::Vector3f ( 1.0,  1.0, 0.0));
-  vertices_.push_back (Eigen::Vector3f ( 1.0, -1.0, 0.0));
-  vertices_.push_back (Eigen::Vector3f (-1.0, -1.0, 0.0));
+  vertices_.push_back (Eigen::Vector3d (-1.0,  1.0, 0.0));
+  vertices_.push_back (Eigen::Vector3d ( 1.0,  1.0, 0.0));
+  vertices_.push_back (Eigen::Vector3d ( 1.0, -1.0, 0.0));
+  vertices_.push_back (Eigen::Vector3d (-1.0, -1.0, 0.0));
 
   glGenBuffers (1, &quad_vbo_);
   glBindBuffer (GL_ARRAY_BUFFER, quad_vbo_);
-  glBufferData (GL_ARRAY_BUFFER, sizeof (Eigen::Vector3f) * vertices_.size (), &(vertices_[0]), GL_STATIC_DRAW);
+  glBufferData (GL_ARRAY_BUFFER, sizeof (Eigen::Vector3d) * vertices_.size (), &(vertices_[0]), GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   gllib::getGLError ();
@@ -379,7 +379,7 @@ void
 pcl::simulation::RangeLikelihood::applyCameraTransform (const Eigen::Isometry3d & pose)
 {
   double T[16];
-  Eigen::Matrix4f m = (pose.matrix ().inverse ()).cast<double> ();
+  Eigen::Matrix4d m = (pose.matrix ().inverse ()).cast<double> ();
   T[0] = m(0,0); T[4] = m(0,1); T[8] = m(0,2); T[12] = m(0,3);
   T[1] = m(1,0); T[5] = m(1,1); T[9] = m(1,2); T[13] = m(1,3);
   T[2] = m(2,0); T[6] = m(2,1); T[10] = m(2,2); T[14] = m(2,3);
@@ -711,19 +711,19 @@ pcl::simulation::RangeLikelihood::getPointCloud (pcl::PointCloud<pcl::PointXYZRG
   if (make_global)
   {
     // Go from OpenGL to (Z-up, X-forward, Y-left)
-    Eigen::Matrix4f T;
+    Eigen::Matrix4d T;
     T <<  0, 0, -1, 0,
          -1, 0,  0, 0,
           0, 1,  0, 0,
           0, 0,  0, 1;
-    Eigen::Matrix4f m = pose.matrix ().cast<double> ();
+    Eigen::Matrix4d m = pose.matrix ().cast<double> ();
     m = m * T;
     pcl::transformPointCloud (*pc, *pc, m);
   }
   else
   {
     // Go from OpenGL to Camera (Z-forward, X-right, Y-down)
-    Eigen::Matrix4f T;
+    Eigen::Matrix4d T;
     T <<  1,  0,  0, 0,
           0, -1,  0, 0,
           0,  0, -1, 0,
@@ -731,12 +731,12 @@ pcl::simulation::RangeLikelihood::getPointCloud (pcl::PointCloud<pcl::PointXYZRG
     pcl::transformPointCloud (*pc, *pc, T);
 
     // Go from Camera to body (Z-up, X-forward, Y-left)
-    Eigen::Matrix4f cam_to_body;
+    Eigen::Matrix4d cam_to_body;
     cam_to_body <<  0,  0, 1, 0,
                    -1,  0, 0, 0,
                     0, -1, 0, 0,
                     0,  0, 0, 1;
-    Eigen::Matrix4f camera = pose.matrix ().cast<double> ();
+    Eigen::Matrix4d camera = pose.matrix ().cast<double> ();
     camera = camera * cam_to_body;
     pc->sensor_origin_ = camera.rightCols (1);
     Eigen::Quaternion<double> quat (camera.block<3,3> (0,0));

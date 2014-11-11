@@ -65,8 +65,8 @@ namespace pcl
             Entry ()
             : num_transforms_ (0)
             {
-              aux::set3 (axis_angle_, 0.0f);
-              aux::set3 (translation_, 0.0f);
+              aux::set3 (axis_angle_, 0.0);
+              aux::set3 (translation_, 0.0);
             }
 
             Entry (const Entry& src)

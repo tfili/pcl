@@ -49,8 +49,8 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 ////////////////////////////////////////////////////////////////////////////////
 /** \brief Parse command line arguments for file names. 

@@ -86,25 +86,25 @@ TEST (PCL, SHOTLocalReferenceFrameEstimation)
   // Expected Results
   // point 15: tanget disambiguation
   //double point_15_conf = 0;
-  Eigen::Vector3f point_15_x (-0.849213f, 0.528016f, 0.00593846f);
-  Eigen::Vector3f point_15_y (0.274564f, 0.451135f, -0.849171f);
-  Eigen::Vector3f point_15_z (-0.451055f, -0.719497f, -0.528084f);
+  Eigen::Vector3d point_15_x (-0.849213f, 0.528016f, 0.00593846f);
+  Eigen::Vector3d point_15_y (0.274564f, 0.451135f, -0.849171f);
+  Eigen::Vector3d point_15_z (-0.451055f, -0.719497f, -0.528084f);
 
   //double point_45_conf = 0;
-  Eigen::Vector3f point_45_x (0.950556f, 0.0673042f, 0.303171f);
-  Eigen::Vector3f point_45_y (0.156242f, -0.947328f, -0.279569f);
-  Eigen::Vector3f point_45_z (0.268386f, 0.313114f, -0.911004f);
+  Eigen::Vector3d point_45_x (0.950556f, 0.0673042f, 0.303171f);
+  Eigen::Vector3d point_45_y (0.156242f, -0.947328f, -0.279569f);
+  Eigen::Vector3d point_45_z (0.268386f, 0.313114f, -0.911004f);
 
   //double point_163_conf = 0;
-  Eigen::Vector3f point_163_x (0.816369f, 0.309943f, -0.487317f);
-  Eigen::Vector3f point_163_y (0.235273f, -0.949082f, -0.209498f);
-  Eigen::Vector3f point_163_z (-0.527436f, 0.0563754f, -0.847722f);
+  Eigen::Vector3d point_163_x (0.816369f, 0.309943f, -0.487317f);
+  Eigen::Vector3d point_163_y (0.235273f, -0.949082f, -0.209498f);
+  Eigen::Vector3d point_163_z (-0.527436f, 0.0563754f, -0.847722f);
 
   // point 311: normal disambiguation
   //double point_311_conf = 0;
-  Eigen::Vector3f point_311_x (0.77608663f, -0.60673451f, 0.17193851f);
-  Eigen::Vector3f point_311_y (0.49546647f, 0.75532055f, 0.42895663f);
-  Eigen::Vector3f point_311_z (-0.39013144f, -0.24771771f, 0.88681078f);
+  Eigen::Vector3d point_311_x (0.77608663f, -0.60673451f, 0.17193851f);
+  Eigen::Vector3d point_311_y (0.49546647f, 0.75532055f, 0.42895663f);
+  Eigen::Vector3d point_311_z (-0.39013144f, -0.24771771f, 0.88681078f);
 
   //Test Results
   //EXPECT_NEAR (point_15_conf,bunny_LRF.at (15).confidence, 1E-3);

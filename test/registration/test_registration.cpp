@@ -76,7 +76,7 @@ template <typename PointSource, typename PointTarget>
 class RegistrationWrapper : public Registration<PointSource, PointTarget>
 {
 public:
-  void computeTransformation (pcl::PointCloud<PointSource> &, const Eigen::Matrix4f&) { }
+  void computeTransformation (pcl::PointCloud<PointSource> &, const Eigen::Matrix4d&) { }
 
   bool hasValidFeaturesTest ()
   {
@@ -177,7 +177,7 @@ TEST (PCL, IterativeClosestPoint)
   reg.align (cloud_reg);
   EXPECT_EQ (int (cloud_reg.points.size ()), int (cloud_source.points.size ()));
 
-  //Eigen::Matrix4f transformation = reg.getFinalTransformation ();
+  //Eigen::Matrix4d transformation = reg.getFinalTransformation ();
 //  EXPECT_NEAR (transformation (0, 0), 0.8806,  1e-3);
 //  EXPECT_NEAR (transformation (0, 1), 0.036481287330389023, 1e-2);
 //  EXPECT_NEAR (transformation (0, 2), -0.4724, 1e-3);
@@ -201,16 +201,16 @@ TEST (PCL, IterativeClosestPoint)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-sampleRandomTransform (Eigen::Affine3f &trans, double max_angle, double max_trans)
+sampleRandomTransform (Eigen::Affine3d &trans, double max_angle, double max_trans)
 {
     // Sample random transform
-    Eigen::Vector3f axis((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
+    Eigen::Vector3d axis((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
     axis.normalize();
     double angle = (double)rand() / RAND_MAX * max_angle;
-    Eigen::Vector3f translation((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
+    Eigen::Vector3d translation((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
     translation *= max_trans;
-    Eigen::Affine3f rotation(Eigen::AngleAxis<double>(angle, axis));
-    trans = Eigen::Translation3f(translation) * rotation;
+    Eigen::Affine3d rotation(Eigen::AngleAxis<double>(angle, axis));
+    trans = Eigen::Translation3d(translation) * rotation;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,10 +232,10 @@ TEST (PCL, IterativeClosestPointWithRejectors)
   for (size_t t = 0; t < ntransforms; t++)
   {
     // Sample a fixed offset between cloud pairs
-    Eigen::Affine3f delta_transform;
+    Eigen::Affine3d delta_transform;
     sampleRandomTransform (delta_transform, 0., 0.05);
     // Sample random global transform for each pair, to make sure we aren't biased around the origin
-    Eigen::Affine3f net_transform;    
+    Eigen::Affine3d net_transform;    
     sampleRandomTransform (net_transform, 2*M_PI, 10.);
       
     PointCloud<PointXYZ>::ConstPtr source (cloud_source.makeShared ());
@@ -250,7 +250,7 @@ TEST (PCL, IterativeClosestPointWithRejectors)
     
     // Register
     reg.align (cloud_reg);
-    Eigen::Matrix4f trans_final = reg.getFinalTransformation ();
+    Eigen::Matrix4d trans_final = reg.getFinalTransformation ();
     // Translation should be within 1cm
     for (int y = 0; y < 4; y++)
       EXPECT_NEAR (trans_final (y, 3), delta_transform (y, 3), 1E-2);
@@ -283,7 +283,7 @@ TEST (PCL, JointIterativeClosestPoint)
   {
     
     // Sample a fixed offset between cloud pairs
-    Eigen::Affine3f delta_transform;
+    Eigen::Affine3d delta_transform;
     // No rotation, since at a random offset this could make it converge to a wrong (but still reasonable) result
     sampleRandomTransform (delta_transform, 0., 0.10);
     // Make a few transformed versions of the data, plus noise
@@ -292,7 +292,7 @@ TEST (PCL, JointIterativeClosestPoint)
     {
       PointCloud<PointXYZ>::ConstPtr source (cloud_source.makeShared ());
       // Sample random global transform for each pair
-      Eigen::Affine3f net_transform;
+      Eigen::Affine3d net_transform;
       sampleRandomTransform (net_transform, 2*M_PI, 10.);
       // And apply it to the source and target
       PointCloud<PointXYZ>::Ptr source_trans (new PointCloud<PointXYZ>);
@@ -307,7 +307,7 @@ TEST (PCL, JointIterativeClosestPoint)
 
     // Register
     reg.align (cloud_reg);
-    Eigen::Matrix4f trans_final = reg.getFinalTransformation ();
+    Eigen::Matrix4d trans_final = reg.getFinalTransformation ();
     for (int y = 0; y < 4; y++)
       for (int x = 0; x < 4; x++)
         EXPECT_NEAR (trans_final (y, x), delta_transform (y, x), 1E-2);
@@ -342,7 +342,7 @@ TEST (PCL, IterativeClosestPointNonLinear)
   // on the transformation matrix.  Instead, we're testing to make sure the algorithm converges to a sufficiently
   // low error by checking the fitness score.
   /*
-  Eigen::Matrix4f transformation = reg.getFinalTransformation ();
+  Eigen::Matrix4d transformation = reg.getFinalTransformation ();
 
   EXPECT_NEAR (transformation (0, 0),  0.941755, 1e-2);
   EXPECT_NEAR (transformation (0, 1),  0.147362, 1e-2);
@@ -455,7 +455,7 @@ TEST (PCL, IterativeClosestPoint_PointToPlane)
   // on the transformation matrix.  Instead, we're testing to make sure the algorithm converges to a sufficiently
   // low error by checking the fitness score.
   /*
-  Eigen::Matrix4f transformation = reg.getFinalTransformation ();
+  Eigen::Matrix4d transformation = reg.getFinalTransformation ();
 
   EXPECT_NEAR (transformation (0, 0),  0.9046, 1e-2);
   EXPECT_NEAR (transformation (0, 1),  0.0609, 1e-2);
@@ -528,7 +528,7 @@ TEST (PCL, GeneralizedIterativeClosestPoint)
 TEST (PCL, GeneralizedIterativeClosestPoint6D)
 {
   typedef PointXYZRGBA PointT;
-  Eigen::Affine3f delta_transform;
+  Eigen::Affine3d delta_transform;
   PointCloud<PointT>::Ptr src_full (new PointCloud<PointT>);
   copyPointCloud (cloud_with_color, *src_full);
   PointCloud<PointT>::Ptr tgt_full (new PointCloud<PointT>);
@@ -630,9 +630,9 @@ TEST (PCL, NormalDistributionsTransform)
 TEST (PCL, SampleConsensusInitialAlignment)
 {
   // Transform the source cloud by a large amount
-  Eigen::Vector3f initial_offset (100, 0, 0);
+  Eigen::Vector3d initial_offset (100, 0, 0);
   double angle = static_cast<double> (M_PI) / 2.0f;
-  Eigen::Quaternionf initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
+  Eigen::Quaterniond initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);
 
@@ -720,9 +720,9 @@ TEST (PCL, SampleConsensusPrerejective)
    */
   
   // Transform the source cloud by a large amount
-  Eigen::Vector3f initial_offset (100, 0, 0);
+  Eigen::Vector3d initial_offset (100, 0, 0);
   double angle = static_cast<double> (M_PI) / 2.0f;
-  Eigen::Quaternionf initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
+  Eigen::Quaterniond initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);
 
@@ -898,9 +898,9 @@ TEST (PCL, PyramidFeatureHistogram)
 TEST (PCL, PPFRegistration)
 {
   // Transform the source cloud by a large amount
-  Eigen::Vector3f initial_offset (100, 0, 0);
+  Eigen::Vector3d initial_offset (100, 0, 0);
   double angle = M_PI/6;
-  Eigen::Quaternionf initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
+  Eigen::Quaterniond initial_rotation (cos (angle / 2), 0, 0, sin (angle / 2));
   PointCloud<PointXYZ> cloud_source_transformed;
   transformPointCloud (cloud_source, cloud_source_transformed, initial_offset, initial_rotation);
 
@@ -951,7 +951,7 @@ TEST (PCL, PPFRegistration)
 
   PointCloud<PointNormal> cloud_output;
   ppf_registration.align (cloud_output);
-  Eigen::Matrix4f transformation = ppf_registration.getFinalTransformation ();
+  Eigen::Matrix4d transformation = ppf_registration.getFinalTransformation ();
 
   EXPECT_NEAR (transformation(0, 0), -0.153768, 1e-4);
   EXPECT_NEAR (transformation(0, 1), -0.628136, 1e-4);

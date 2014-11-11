@@ -84,7 +84,7 @@ pcl::ProgressiveSampleConsensus<PointT>::computeModel (int debug_verbosity_level
 
   std::vector<int> inliers;
   std::vector<int> selection;
-  Eigen::VectorXf model_coefficients;
+  Eigen::VectorXd model_coefficients;
 
   // We will increase the pool so the indices_ vector can only contain m elements at first
   std::vector<int> index_pool;

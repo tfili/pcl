@@ -61,10 +61,10 @@ namespace pcl
         part_t label;                   // labels which part this blob is, defined in common.
         int    lid;                     // label id, which number of this type of part is this
 
-        Eigen::Vector4f  mean;          // mean in xyz
-        Eigen::Matrix3f  cov;           // covariance in 3x3 matrix
-        Eigen::Vector3f  eigenval;      // eigenvalue of blob
-        Eigen::Matrix3f  eigenvect;     // eigenvector of blob
+        Eigen::Vector4d  mean;          // mean in xyz
+        Eigen::Matrix3d  cov;           // covariance in 3x3 matrix
+        Eigen::Vector3d  eigenval;      // eigenvalue of blob
+        Eigen::Matrix3d  eigenvect;     // eigenvector of blob
 
         //These variables are added in order to be able to build trees with them
         int    child_id[MAX_CHILD];     // id of the best found child
@@ -73,8 +73,8 @@ namespace pcl
         char   child_label[MAX_CHILD];  // makes displaying the tree easier
       
         pcl::PointIndices indices;      // The indices of the pointcloud
-        Eigen::Vector4f   min;          // The min of the bounding box
-        Eigen::Vector4f   max;          // The max of the bounding box
+        Eigen::Vector4d   min;          // The min of the bounding box
+        Eigen::Vector4d   max;          // The max of the bounding box
       };
 
       inline std::ostream& operator << (std::ostream& os, const Blob2& b)

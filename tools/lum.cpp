@@ -90,10 +90,10 @@ main (int argc, char **argv)
     for (size_t i = 1; i < clouds.size (); i++)
       for (size_t j = 0; j < i; j++)
       {
-        Eigen::Vector4f ci, cj;
+        Eigen::Vector4d ci, cj;
         pcl::compute3DCentroid (*(clouds[i].second), ci);
         pcl::compute3DCentroid (*(clouds[j].second), cj);
-        Eigen::Vector4f diff = ci - cj;
+        Eigen::Vector4d diff = ci - cj;
 
         //std::cout << i << " " << j << " " << diff.norm () << std::endl;
 

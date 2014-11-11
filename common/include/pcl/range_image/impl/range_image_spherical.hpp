@@ -41,21 +41,21 @@ namespace pcl
 
 /////////////////////////////////////////////////////////////////////////
 void
-RangeImageSpherical::calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3f& point) const
+RangeImageSpherical::calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3d& point) const
 {
   double angle_x, angle_y;
   getAnglesFromImagePoint (image_x, image_y, angle_x, angle_y);
 
   double cosY = cosf (angle_y);
-  point = Eigen::Vector3f (range * sinf (angle_x) * cosY, range * sinf (angle_y), range * cosf (angle_x)*cosY);
+  point = Eigen::Vector3d (range * sinf (angle_x) * cosY, range * sinf (angle_y), range * cosf (angle_x)*cosY);
   point = to_world_system_ * point;
 }
 
 /////////////////////////////////////////////////////////////////////////
 inline void 
-RangeImageSpherical::getImagePoint (const Eigen::Vector3f& point, double& image_x, double& image_y, double& range) const
+RangeImageSpherical::getImagePoint (const Eigen::Vector3d& point, double& image_x, double& image_y, double& range) const
 {
-  Eigen::Vector3f transformedPoint = to_range_image_system_ * point;
+  Eigen::Vector3d transformedPoint = to_range_image_system_ * point;
   range = transformedPoint.norm ();
   double angle_x = atan2LookUp (transformedPoint[0], transformedPoint[2]),
         angle_y = asinLookUp (transformedPoint[1]/range);

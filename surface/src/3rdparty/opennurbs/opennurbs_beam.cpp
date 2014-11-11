@@ -1734,7 +1734,7 @@ ON_BOOL32 ON_Extrusion::Transform( const ON_Xform& xform )
   if ( !UxT.IsUnitVector() && !UxT.Unitize() )
     return ON_Extrusion_TransformFailed();
 
-  const bool bUseVectorXform = (0.0 == xform[3][0] && 0.0 == xform[3][1] && 0.0 == xform[3][2]);
+  const bool bUseVectorXdorm = (0.0 == xform[3][0] && 0.0 == xform[3][1] && 0.0 == xform[3][2]);
 
   ON_3dPoint E[2], QE[2];
   E[0] = m_path.from;
@@ -1745,7 +1745,7 @@ ON_BOOL32 ON_Extrusion::Transform( const ON_Xform& xform )
     return ON_Extrusion_TransformFailed();
   if ( !QE[1].IsValid() )
     return ON_Extrusion_TransformFailed();
-  ON_3dVector QT0 = bUseVectorXform ? (xform*(E[1] - E[0])) : (QE[1]-QE[0]);
+  ON_3dVector QT0 = bUseVectorXdorm ? (xform*(E[1] - E[0])) : (QE[1]-QE[0]);
   if ( !QT0.Unitize() )
     return ON_Extrusion_TransformFailed();
   
@@ -1773,7 +1773,7 @@ ON_BOOL32 ON_Extrusion::Transform( const ON_Xform& xform )
 
   const ON_3dPoint X0 = xform*(B + UxT);
   const ON_3dPoint Y0 = xform*(B + m_up);
-  const ON_3dVector QDY = bUseVectorXform ? (xform*m_up) : (Y0-QB);
+  const ON_3dVector QDY = bUseVectorXdorm ? (xform*m_up) : (Y0-QB);
   ON_3dVector QY = QDY;
   if ( !QY.Unitize() )
     return ON_Extrusion_TransformFailed();
@@ -1813,7 +1813,7 @@ ON_BOOL32 ON_Extrusion::Transform( const ON_Xform& xform )
 
   // profile_xform will be the transformation 
   // applied to the 2d profile curve.
-  const ON_3dVector QDX = bUseVectorXform ? (xform*UxT) : (X0 - QB);
+  const ON_3dVector QDX = bUseVectorXdorm ? (xform*UxT) : (X0 - QB);
   ON_3dVector QX = QDX - (QDX*QY)*QY;
   if ( !QX.Unitize() )
     return ON_Extrusion_TransformFailed();
@@ -1910,7 +1910,7 @@ ON_BOOL32 ON_Extrusion::Transform( const ON_Xform& xform )
       {
         const ON_3dVector N3d = m_N[i].x*UxT + m_N[i].y*m_up + m_N[i].z*T;
         ON_3dPoint QTip = xform*(E[i] + N3d);
-        QN3d = bUseVectorXform ? (xform*N3d) : (QTip - QE[i]);
+        QN3d = bUseVectorXdorm ? (xform*N3d) : (QTip - QE[i]);
       }
       if ( !QN3d.Unitize() )
         continue;

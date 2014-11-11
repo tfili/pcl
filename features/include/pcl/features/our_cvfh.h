@@ -97,11 +97,11 @@ namespace pcl
        * \param[out] transformPC the resulting transformation
        * \param[in] center_mat 4x4 matrix concatenated to the resulting transformation
        */
-      inline Eigen::Matrix4f
-      createTransFromAxes (Eigen::Vector3f & evx, Eigen::Vector3f & evy, Eigen::Vector3f & evz, Eigen::Affine3f & transformPC,
-                           Eigen::Matrix4f & center_mat)
+      inline Eigen::Matrix4d
+      createTransFromAxes (Eigen::Vector3d & evx, Eigen::Vector3d & evy, Eigen::Vector3d & evz, Eigen::Affine3d & transformPC,
+                           Eigen::Matrix4d & center_mat)
       {
-        Eigen::Matrix4f trans;
+        Eigen::Matrix4d trans;
         trans.setIdentity (4, 4);
         trans (0, 0) = evx (0, 0);
         trans (1, 0) = evx (1, 0);
@@ -113,11 +113,11 @@ namespace pcl
         trans (1, 2) = evz (1, 0);
         trans (2, 2) = evz (2, 0);
 
-        Eigen::Matrix4f homMatrix = Eigen::Matrix4f ();
+        Eigen::Matrix4d homMatrix = Eigen::Matrix4d ();
         homMatrix.setIdentity (4, 4);
         homMatrix = transformPC.matrix ();
 
-        Eigen::Matrix4f trans_copy = trans.inverse ();
+        Eigen::Matrix4d trans_copy = trans.inverse ();
         trans = trans_copy * center_mat * homMatrix;
         return trans;
       }
@@ -139,7 +139,7 @@ namespace pcl
        * \param[in] indices the indices of the stable cluster
        */
       bool
-      sgurf (Eigen::Vector3f & centroid, Eigen::Vector3f & normal_centroid, PointInTPtr & processed, std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & transformations,
+      sgurf (Eigen::Vector3d & centroid, Eigen::Vector3d & normal_centroid, PointInTPtr & processed, std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & transformations,
              PointInTPtr & grid, pcl::PointIndices & indices);
 
       /** \brief Removes normals with high curvature caused by real edges or noisy data
@@ -192,7 +192,7 @@ namespace pcl
        * \param[out] centroids vector to hold the centroids
        */
       inline void
-      getCentroidClusters (std::vector<Eigen::Vector3f> & centroids)
+      getCentroidClusters (std::vector<Eigen::Vector3d> & centroids)
       {
         for (size_t i = 0; i < centroids_dominant_orientations_.size (); ++i)
           centroids.push_back (centroids_dominant_orientations_[i]);
@@ -202,7 +202,7 @@ namespace pcl
        * \param[out] centroids vector to hold the normal centroids
        */
       inline void
-      getCentroidNormalClusters (std::vector<Eigen::Vector3f> & centroids)
+      getCentroidNormalClusters (std::vector<Eigen::Vector3d> & centroids)
       {
         for (size_t i = 0; i < dominant_normals_.size (); ++i)
           centroids.push_back (dominant_normals_[i]);
@@ -285,7 +285,7 @@ namespace pcl
        * \param[out] trans vector of transformations
        */
       void
-      getTransforms (std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & trans)
+      getTransforms (std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & trans)
       {
         trans = transforms_;
       }
@@ -358,7 +358,7 @@ namespace pcl
       /** \brief Factor for the cluster refinement */
       double refine_clusters_;
 
-      std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transforms_;
+      std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transforms_;
       std::vector<bool> valid_transforms_;
 
       double axis_ratio_;
@@ -395,9 +395,9 @@ namespace pcl
 
     protected:
       /** \brief Centroids that were used to compute different OUR-CVFH descriptors */
-      std::vector<Eigen::Vector3f> centroids_dominant_orientations_;
+      std::vector<Eigen::Vector3d> centroids_dominant_orientations_;
       /** \brief Normal centroids that were used to compute different OUR-CVFH descriptors */
-      std::vector<Eigen::Vector3f> dominant_normals_;
+      std::vector<Eigen::Vector3d> dominant_normals_;
       /** \brief Indices to the points representing the stable clusters */
       std::vector<pcl::PointIndices> clusters_;
       /** \brief Mapping from clusters to OUR-CVFH descriptors */

@@ -438,7 +438,7 @@ namespace pcl
       int res_x_, res_y_, res_z_;
 
       /** \brief Min and max data points. */
-      Eigen::Vector4f min_p_, max_p_;
+      Eigen::Vector4d min_p_, max_p_;
 
       /** \brief Parameter that defines how much free space should be left inside the grid between
         * the bounding box of the point cloud and the grid limits, as a percentage of the bounding box.*/
@@ -459,7 +459,7 @@ namespace pcl
         * \param[out] output The interpolated point along the edge
         */
       void
-      interpolateEdge (Eigen::Vector3f &p1, Eigen::Vector3f &p2, double val_p1, double val_p2, Eigen::Vector3f &output);
+      interpolateEdge (Eigen::Vector3d &p1, Eigen::Vector3d &p2, double val_p1, double val_p2, Eigen::Vector3d &output);
 
 
       /** \brief Calculate out the corresponding polygons in the leaf node

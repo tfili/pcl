@@ -118,7 +118,7 @@ Linf_Norm (FloatVectorT a, FloatVectorT b, int dim)
 {
   double norm = 0.0;
   for (int i = 0; i < dim; ++i)
-    norm = (std::max)(fabsf(a[i] - b[i]), norm);
+    norm = (std::max)(fabs(a[i] - b[i]), norm);
   return norm;
 }
 
@@ -129,7 +129,7 @@ JM_Norm (FloatVectorT a, FloatVectorT b, int dim)
   double norm = 0.0;
 
   for (int i = 0; i < dim; ++i)
-    norm += (sqrtf (a[i]) - sqrtf (b[i])) * (sqrtf (a[i]) - sqrtf (b[i]));
+    norm += (sqrt (a[i]) - sqrt (b[i])) * (sqrt (a[i]) - sqrt (b[i]));
 
   return sqrtf (norm);
 }

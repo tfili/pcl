@@ -75,8 +75,8 @@ namespace pcl
         , road_angular_threshold_ ( cosf(pcl::deg2rad (10.0f)))
         , distance_threshold_ (0.1f)
         , depth_dependent_ (true)
-        , z_axis_ (Eigen::Vector3f (0.0, 0.0, 1.0) )
-        , desired_road_axis_ (Eigen::Vector3f(0.0, -1.0, 0.0))
+        , z_axis_ (Eigen::Vector3d (0.0, 0.0, 1.0) )
+        , desired_road_axis_ (Eigen::Vector3d(0.0, -1.0, 0.0))
       {
       }
 
@@ -89,9 +89,9 @@ namespace pcl
         , angular_threshold_ (cosf (pcl::deg2rad (3.0f)))
         , distance_threshold_ (0.1f)
         , depth_dependent_ (true)
-        , z_axis_ (Eigen::Vector3f (0.0f, 0.0f, 1.0f))
+        , z_axis_ (Eigen::Vector3d (0.0f, 0.0f, 1.0f))
         , road_angular_threshold_ ( cosf(pcl::deg2rad (40.0f)))
-        , desired_road_axis_ (Eigen::Vector3f(0.0, -1.0, 0.0))
+        , desired_road_axis_ (Eigen::Vector3d(0.0, -1.0, 0.0))
       {
       }
       
@@ -172,7 +172,7 @@ namespace pcl
         * \param[in] normal The normal direction of the expected ground plane.
         */
       void
-      setExpectedGroundNormal (Eigen::Vector3f normal)
+      setExpectedGroundNormal (Eigen::Vector3d normal)
       {
         desired_road_axis_ = normal;
       }
@@ -217,18 +217,18 @@ namespace pcl
         double threshold = distance_threshold_;
         if (depth_dependent_)
         {
-          Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();
+          Eigen::Vector3d vec = input_->points[idx1].getVector3dMap ();
           
           double z = vec.dot (z_axis_);
           threshold *= z * z;
         }
 
-        return ( (normals_->points[idx1].getNormalVector3fMap ().dot (desired_road_axis_) > road_angular_threshold_) &&
-                 (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ ));
+        return ( (normals_->points[idx1].getNormalVector3dMap ().dot (desired_road_axis_) > road_angular_threshold_) &&
+                 (normals_->points[idx1].getNormalVector3dMap ().dot (normals_->points[idx2].getNormalVector3dMap () ) > angular_threshold_ ));
         
         // Euclidean proximity of neighbors does not seem to be required -- pixel adjacency handles this well enough 
-        //return ( (normals_->points[idx1].getNormalVector3fMap ().dot (desired_road_axis_) > road_angular_threshold_) &&
-        //          (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ ) &&
+        //return ( (normals_->points[idx1].getNormalVector3dMap ().dot (desired_road_axis_) > road_angular_threshold_) &&
+        //          (normals_->points[idx1].getNormalVector3dMap ().dot (normals_->points[idx2].getNormalVector3dMap () ) > angular_threshold_ ) &&
         //         (pcl::euclideanDistance (input_->points[idx1], input_->points[idx2]) < distance_threshold_ ));
       }
       
@@ -239,8 +239,8 @@ namespace pcl
       double road_angular_threshold_;
       double distance_threshold_;
       bool depth_dependent_;
-      Eigen::Vector3f z_axis_;
-      Eigen::Vector3f desired_road_axis_;
+      Eigen::Vector3d z_axis_;
+      Eigen::Vector3d desired_road_axis_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

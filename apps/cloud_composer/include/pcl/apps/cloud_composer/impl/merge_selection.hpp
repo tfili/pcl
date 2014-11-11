@@ -88,8 +88,8 @@ pcl::cloud_composer::MergeSelection::performTemplatedAction (QList <const CloudC
       
       qDebug () << "Original minus indices is "<<original_minus_indices->width;
       
-      //Eigen::Vector4f source_origin = input_cloud_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4f> ();
-      //Eigen::Quaternionf source_orientation =  input_cloud_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaternionf> ();
+      //Eigen::Vector4d source_origin = input_cloud_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4d> ();
+      //Eigen::Quaterniond source_orientation =  input_cloud_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaterniond> ();
       //pcl::PCLPointCloud2::Ptr cloud_blob = boost::make_shared <pcl::PCLPointCloud2> ();;
       //toPCLPointCloud2 (*original_minus_indices, *cloud_blob);
       //CloudItem* new_cloud_item = new CloudItem (input_cloud_item->text ()

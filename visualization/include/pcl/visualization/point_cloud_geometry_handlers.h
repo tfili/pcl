@@ -330,7 +330,7 @@ namespace pcl
         typedef boost::shared_ptr<const PointCloudGeometryHandler<PointCloud> > ConstPtr;
 
         /** \brief Constructor. */
-        PointCloudGeometryHandler (const PointCloudConstPtr &cloud, const Eigen::Vector4f & = Eigen::Vector4f::Zero ())
+        PointCloudGeometryHandler (const PointCloudConstPtr &cloud, const Eigen::Vector4d & = Eigen::Vector4d::Zero ())
           : cloud_ (cloud)
           , capable_ (false)
           , field_x_idx_ (-1)

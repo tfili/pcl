@@ -57,7 +57,7 @@ TEST (ModelOutlierRemoval, Model_Outlier_Filter)
   std::vector<int> ransac_inliers;
   double thresh = 0.01;
   //run ransac
-  Eigen::VectorXf model_coefficients;
+  Eigen::VectorXd model_coefficients;
   pcl::SampleConsensusModelPlane<pcl::PointXYZ>::Ptr model_p (new pcl::SampleConsensusModelPlane<pcl::PointXYZ> (cloud_in));
   RandomSampleConsensus < pcl::PointXYZ > ransac (model_p);
   ransac.setDistanceThreshold (thresh);

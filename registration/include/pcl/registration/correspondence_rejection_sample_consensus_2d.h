@@ -76,7 +76,7 @@ namespace pcl
           * and the maximum number of iterations to 1000. 
           */
         CorrespondenceRejectorSampleConsensus2D ()
-          : projection_matrix_ (Eigen::Matrix3f::Identity ())
+          : projection_matrix_ (Eigen::Matrix3d::Identity ())
         {
           rejection_name_ = "CorrespondenceRejectorSampleConsensus2D";
           // Put the projection matrix together
@@ -151,7 +151,7 @@ namespace pcl
         }
 
         /** \brief Camera projection matrix. */
-        Eigen::Matrix3f projection_matrix_;
+        Eigen::Matrix3d projection_matrix_;
 
       public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW

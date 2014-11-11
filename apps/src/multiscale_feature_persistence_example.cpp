@@ -46,7 +46,7 @@
 
 using namespace pcl;
 
-const Eigen::Vector4f subsampling_leaf_size (0.01f, 0.01f, 0.01f, 0.0f);
+const Eigen::Vector4d subsampling_leaf_size (0.01f, 0.01f, 0.01f, 0.0f);
 const double normal_estimation_search_radius = 0.05f;
 
 

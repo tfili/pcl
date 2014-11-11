@@ -118,7 +118,7 @@ namespace pcl
       bool 
       isBoundaryPoint (const pcl::PointCloud<PointInT> &cloud, 
                        int q_idx, const std::vector<int> &indices, 
-                       const Eigen::Vector4f &u, const Eigen::Vector4f &v, const double angle_threshold);
+                       const Eigen::Vector4d &u, const Eigen::Vector4d &v, const double angle_threshold);
 
       /** \brief Check whether a point is a boundary point in a planar patch of projected points given by indices.
         * \note A coordinate system u-v-n must be computed a-priori using \a getCoordinateSystemOnPlane
@@ -133,7 +133,7 @@ namespace pcl
       isBoundaryPoint (const pcl::PointCloud<PointInT> &cloud, 
                        const PointInT &q_point, 
                        const std::vector<int> &indices, 
-                       const Eigen::Vector4f &u, const Eigen::Vector4f &v, const double angle_threshold);
+                       const Eigen::Vector4d &u, const Eigen::Vector4d &v, const double angle_threshold);
 
       /** \brief Set the decision boundary (angle threshold) that marks points as boundary or regular. 
         * (default \f$\pi / 2.0\f$) 
@@ -159,9 +159,9 @@ namespace pcl
         */
       inline void 
       getCoordinateSystemOnPlane (const PointNT &p_coeff, 
-                                  Eigen::Vector4f &u, Eigen::Vector4f &v)
+                                  Eigen::Vector4d &u, Eigen::Vector4d &v)
       {
-        pcl::Vector4fMapConst p_coeff_v = p_coeff.getNormalVector4fMap ();
+        pcl::Vector4dMapConst p_coeff_v = p_coeff.getNormalVector4dMap ();
         v = p_coeff_v.unitOrthogonal ();
         u = p_coeff_v.cross3 (v);
       }

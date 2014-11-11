@@ -172,7 +172,7 @@ namespace pcl
                                        const std::vector<int> &indices_src,
                                        const PointCloudTarget &cloud_tgt,
                                        const std::vector<int> &indices_tgt,
-                                       Eigen::Matrix4f &transformation_matrix);
+                                       Eigen::Matrix4d &transformation_matrix);
       
       /** \brief \return Mahalanobis distance matrix for the given point index */
       inline const Eigen::Matrix3d& mahalanobis(size_t index) const
@@ -250,7 +250,7 @@ namespace pcl
       double rotation_epsilon_;
 
       /** \brief base transformation */
-      Eigen::Matrix4f base_transformation_;
+      Eigen::Matrix4d base_transformation_;
 
       /** \brief Temporary pointer to the source dataset. */
       const PointCloudSource *tmp_src_;
@@ -309,7 +309,7 @@ namespace pcl
         * \param guess the initial guess of the transformation to compute
         */
       void 
-      computeTransformation (PointCloudSource &output, const Eigen::Matrix4f &guess);
+      computeTransformation (PointCloudSource &output, const Eigen::Matrix4d &guess);
 
       /** \brief Search for the closest nearest neighbor of a given point.
         * \param query the point to search a nearest neighbour for
@@ -326,7 +326,7 @@ namespace pcl
       }
 
       /// \brief compute transformation matrix from transformation matrix
-      void applyState(Eigen::Matrix4f &t, const Vector6d& x) const;
+      void applyState(Eigen::Matrix4d &t, const Vector6d& x) const;
       
       /// \brief optimization functor structure
       struct OptimizationFunctorWithIndices : public BFGSDummyFunctor<double,6>
@@ -344,7 +344,7 @@ namespace pcl
                            const std::vector<int> &src_indices,
                            const pcl::PointCloud<PointTarget> &cloud_tgt,
                            const std::vector<int> &tgt_indices,
-                           Eigen::Matrix4f &transformation_matrix)> rigid_transformation_estimation_;
+                           Eigen::Matrix4d &transformation_matrix)> rigid_transformation_estimation_;
   };
 }
 

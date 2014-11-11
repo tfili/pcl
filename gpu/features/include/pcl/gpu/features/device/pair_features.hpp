@@ -181,15 +181,15 @@ namespace pcl
         {
             double acos_value = acos (model_reference_normal.x);
 
-            //float3 cross_vector = cross(model_reference_normal, Eigen::Vector3f::UnitX);
+            //float3 cross_vector = cross(model_reference_normal, Eigen::Vector3d::UnitX);
             float3 cross_vector = make_float3(0, model_reference_normal.z, - model_reference_normal.y);
             float3 cross_vector_norm = normalized(cross_vector);
 
-            //Eigen::AngleAxisf rotation_mg (acos_value, cross_vector_norm);
-            //Eigen::Affine3f transform_mg = Eigen::Translation3f ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
+            //Eigen::AngleAxisd rotation_mg (acos_value, cross_vector_norm);
+            //Eigen::Affine3d transform_mg = Eigen::Translation3d ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
 
             float3 row1, row2, row3; // == rotation_mg
-            AngleAxisf(acos_value, cross_vector_norm, row1, row2, row3);
+            AngleAxisd(acos_value, cross_vector_norm, row1, row2, row3);
 
             float3 traslation;
             //traslation.x = row1.x * -model_reference_point.x + row1.y * -model_reference_point.y + row1.z * -model_reference_point.z;

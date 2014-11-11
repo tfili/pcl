@@ -37,11 +37,11 @@ printUsage (const char* progName)
 }
 
 void 
-setViewerPose (pcl::visualization::PCLVisualizer& viewer, const Eigen::Affine3f& viewer_pose)
+setViewerPose (pcl::visualization::PCLVisualizer& viewer, const Eigen::Affine3d& viewer_pose)
 {
-  Eigen::Vector3f pos_vector = viewer_pose * Eigen::Vector3f(0, 0, 0);
-  Eigen::Vector3f look_at_vector = viewer_pose.rotation () * Eigen::Vector3f(0, 0, 1) + pos_vector;
-  Eigen::Vector3f up_vector = viewer_pose.rotation () * Eigen::Vector3f(0, -1, 0);
+  Eigen::Vector3d pos_vector = viewer_pose * Eigen::Vector3d(0, 0, 0);
+  Eigen::Vector3d look_at_vector = viewer_pose.rotation () * Eigen::Vector3d(0, 0, 1) + pos_vector;
+  Eigen::Vector3d up_vector = viewer_pose.rotation () * Eigen::Vector3d(0, -1, 0);
   viewer.setCameraPosition (pos_vector[0], pos_vector[1], pos_vector[2],
                             look_at_vector[0], look_at_vector[1], look_at_vector[2],
                             up_vector[0], up_vector[1], up_vector[2]);
@@ -84,7 +84,7 @@ main (int argc, char** argv)
   // ------------------------------------------------------------------
   pcl::PointCloud<PointType>::Ptr point_cloud_ptr (new pcl::PointCloud<PointType>);
   pcl::PointCloud<PointType>& point_cloud = *point_cloud_ptr;
-  Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ());
+  Eigen::Affine3d scene_sensor_pose (Eigen::Affine3d::Identity ());
   std::vector<int> pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, "pcd");
   if (!pcd_filename_indices.empty ())
   {
@@ -95,10 +95,10 @@ main (int argc, char** argv)
       printUsage (argv[0]);
       return 0;
     }
-    scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
+    scene_sensor_pose = Eigen::Affine3d (Eigen::Translation3d (point_cloud.sensor_origin_[0],
                                                              point_cloud.sensor_origin_[1],
                                                              point_cloud.sensor_origin_[2])) *
-                        Eigen::Affine3f (point_cloud.sensor_orientation_);
+                        Eigen::Affine3d (point_cloud.sensor_orientation_);
   }
   else
   {

@@ -98,7 +98,7 @@ main (int argc, char **argv)
   {
     // Print results
     printf ("\n");
-    Eigen::Matrix4f transformation = align.getFinalTransformation ();
+    Eigen::Matrix4d transformation = align.getFinalTransformation ();
     pcl::console::print_info ("    | %6.3f %6.3f %6.3f | \n", transformation (0,0), transformation (0,1), transformation (0,2));
     pcl::console::print_info ("R = | %6.3f %6.3f %6.3f | \n", transformation (1,0), transformation (1,1), transformation (1,2));
     pcl::console::print_info ("    | %6.3f %6.3f %6.3f | \n", transformation (2,0), transformation (2,1), transformation (2,2));

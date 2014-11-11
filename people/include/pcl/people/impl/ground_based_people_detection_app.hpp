@@ -79,7 +79,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setInputCloud (PointCloudPtr
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setTransformation (const Eigen::Matrix3f& transformation)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setTransformation (const Eigen::Matrix3d& transformation)
 {
   if (!transformation.isUnitary())
   {
@@ -93,11 +93,11 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setTransformation (const Eig
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setGround (Eigen::VectorXf& ground_coeffs)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setGround (Eigen::VectorXd& ground_coeffs)
 {
   ground_coeffs_ = ground_coeffs;
   ground_coeffs_set_ = true;
-  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4f(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
+  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
   applyTransformationGround();
 }
 
@@ -115,7 +115,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setVoxelSize (double voxel_s
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setIntrinsics (Eigen::Matrix3f intrinsics_matrix)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setIntrinsics (Eigen::Matrix3d intrinsics_matrix)
 {
   intrinsics_matrix_ = intrinsics_matrix;
   intrinsics_matrix_set_ = true;
@@ -193,7 +193,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::getMinimumDistanceBetweenHea
   return (heads_minimum_distance_);
 }
 
-template <typename PointT> Eigen::VectorXf
+template <typename PointT> Eigen::VectorXd
 pcl::people::GroundBasedPeopleDetectionApp<PointT>::getGround ()
 {
   if (!ground_coeffs_set_)
@@ -400,11 +400,11 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::compute (std::vector<pcl::pe
   for(typename std::vector<pcl::people::PersonCluster<PointT> >::iterator it = clusters.begin(); it != clusters.end(); ++it)
   {
     //Evaluate confidence for the current PersonCluster:
-    Eigen::Vector3f centroid = intrinsics_matrix_transformed_ * (it->getTCenter());
+    Eigen::Vector3d centroid = intrinsics_matrix_transformed_ * (it->getTCenter());
     centroid /= centroid(2);
-    Eigen::Vector3f top = intrinsics_matrix_transformed_ * (it->getTTop());
+    Eigen::Vector3d top = intrinsics_matrix_transformed_ * (it->getTTop());
     top /= top(2);
-    Eigen::Vector3f bottom = intrinsics_matrix_transformed_ * (it->getTBottom());
+    Eigen::Vector3d bottom = intrinsics_matrix_transformed_ * (it->getTBottom());
     bottom /= bottom(2);
     it->setPersonConfidence(person_classifier_.evaluate(rgb_image_, bottom, top, centroid, vertical_));
   }

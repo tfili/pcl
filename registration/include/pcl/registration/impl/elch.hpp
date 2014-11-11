@@ -186,16 +186,16 @@ pcl::registration::ELCH<PointT>::initCompute ()
       *meta_end += *(*loop_graph_)[*si].cloud;
 
     //TODO use real pose instead of centroid
-    //Eigen::Vector4f pose_start;
+    //Eigen::Vector4d pose_start;
     //pcl::compute3DCentroid (*(*loop_graph_)[loop_start_].cloud, pose_start);
 
-    //Eigen::Vector4f pose_end;
+    //Eigen::Vector4d pose_end;
     //pcl::compute3DCentroid (*(*loop_graph_)[loop_end_].cloud, pose_end);
 
     PointCloudPtr tmp (new PointCloud);
-    //Eigen::Vector4f diff = pose_start - pose_end;
-    //Eigen::Translation3f translation (diff.head (3));
-    //Eigen::Affine3f trans = translation * Eigen::Quaternionf::Identity ();
+    //Eigen::Vector4d diff = pose_start - pose_end;
+    //Eigen::Translation3d translation (diff.head (3));
+    //Eigen::Affine3d trans = translation * Eigen::Quaterniond::Identity ();
     //pcl::transformPointCloud (*(*loop_graph_)[loop_end_].cloud, *tmp, trans);
 
     reg_->setInputTarget (meta_start);
@@ -239,30 +239,30 @@ pcl::registration::ELCH<PointT>::compute ()
   }
 
   //TODO use pose
-  //Eigen::Vector4f cend;
+  //Eigen::Vector4d cend;
   //pcl::compute3DCentroid (*((*loop_graph_)[loop_end_].cloud), cend);
-  //Eigen::Translation3f tend (cend.head (3));
-  //Eigen::Affine3f aend (tend);
-  //Eigen::Affine3f aendI = aend.inverse ();
+  //Eigen::Translation3d tend (cend.head (3));
+  //Eigen::Affine3d aend (tend);
+  //Eigen::Affine3d aendI = aend.inverse ();
 
   //TODO iterate ovr loop_graph_
   //typename boost::graph_traits<LoopGraph>::vertex_iterator vertex_it, vertex_it_end;
   //for (boost::tuples::tie (vertex_it, vertex_it_end) = vertices (*loop_graph_); vertex_it != vertex_it_end; vertex_it++)
   for (size_t i = 0; i < num_vertices (*loop_graph_); i++)
   {
-    Eigen::Vector3f t2;
+    Eigen::Vector3d t2;
     t2[0] = loop_transform_ (0, 3) * static_cast<double> (weights[0][i]);
     t2[1] = loop_transform_ (1, 3) * static_cast<double> (weights[1][i]);
     t2[2] = loop_transform_ (2, 3) * static_cast<double> (weights[2][i]);
 
-    Eigen::Affine3f bl (loop_transform_);
-    Eigen::Quaternionf q (bl.rotation ());
-    Eigen::Quaternionf q2;
-    q2 = Eigen::Quaternionf::Identity ().slerp (static_cast<double> (weights[3][i]), q);
+    Eigen::Affine3d bl (loop_transform_);
+    Eigen::Quaterniond q (bl.rotation ());
+    Eigen::Quaterniond q2;
+    q2 = Eigen::Quaterniond::Identity ().slerp (static_cast<double> (weights[3][i]), q);
 
     //TODO use rotation from branch start
-    Eigen::Translation3f t3 (t2);
-    Eigen::Affine3f a (t3 * q2);
+    Eigen::Translation3d t3 (t2);
+    Eigen::Affine3d a (t3 * q2);
     //a = aend * a * aendI;
 
     pcl::transformPointCloud (*(*loop_graph_)[i].cloud, *(*loop_graph_)[i].cloud, a);

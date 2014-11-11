@@ -174,9 +174,9 @@ namespace pcl
         * \return true if the point lies within [nucleus centroid]
         */
       bool
-      isWithinNucleusCentroid (const Eigen::Vector3f& nucleus,
-                               const Eigen::Vector3f& centroid,
-                               const Eigen::Vector3f& nc,
+      isWithinNucleusCentroid (const Eigen::Vector3d& nucleus,
+                               const Eigen::Vector3d& centroid,
+                               const Eigen::Vector3d& nc,
                                const PointInT& point) const;
     private:
       double distance_threshold_;

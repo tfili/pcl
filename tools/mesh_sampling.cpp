@@ -57,7 +57,7 @@ uniform_deviate (int seed)
 
 inline void
 randomPointTriangle (double a1, double a2, double a3, double b1, double b2, double b3, double c1, double c2, double c3,
-                     Eigen::Vector4f& p)
+                     Eigen::Vector4d& p)
 {
   double r1 = static_cast<double> (uniform_deviate (rand ()));
   double r2 = static_cast<double> (uniform_deviate (rand ()));
@@ -80,7 +80,7 @@ randomPointTriangle (double a1, double a2, double a3, double b1, double b2, doub
 }
 
 inline void
-randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4f& p)
+randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4d& p)
 {
   double r = static_cast<double> (uniform_deviate (rand ()) * totalArea);
 
@@ -124,7 +124,7 @@ uniform_sampling (vtkSmartPointer<vtkPolyData> polydata, size_t n_samples, pcl::
 
   for (i = 0; i < n_samples; i++)
   {
-    Eigen::Vector4f p;
+    Eigen::Vector4d p;
     randPSurface (polydata, &cumulativeAreas, totalArea, p);
     cloud_out.points[i].x = p[0];
     cloud_out.points[i].y = p[1];

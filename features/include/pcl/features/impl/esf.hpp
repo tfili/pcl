@@ -98,14 +98,14 @@ pcl::ESFEstimation<PointInT, PointOutT>::computeESF (
       continue;
     }
 
-    Eigen::Vector4f p1 = pc.points[index1].getVector4fMap ();
-    Eigen::Vector4f p2 = pc.points[index2].getVector4fMap ();
-    Eigen::Vector4f p3 = pc.points[index3].getVector4fMap ();
+    Eigen::Vector4d p1 = pc.points[index1].getVector4dMap ();
+    Eigen::Vector4d p2 = pc.points[index2].getVector4dMap ();
+    Eigen::Vector4d p3 = pc.points[index3].getVector4dMap ();
 
     // A3
-    Eigen::Vector4f v21 (p2 - p1);
-    Eigen::Vector4f v31 (p3 - p1);
-    Eigen::Vector4f v23 (p2 - p3);
+    Eigen::Vector4d v21 (p2 - p1);
+    Eigen::Vector4d v31 (p3 - p1);
+    Eigen::Vector4d v23 (p2 - p3);
     a = v21.norm (); b = v31.norm (); c = v23.norm (); s = (a+b+c) * 0.5f;
     if (s * (s-a) * (s-b) * (s-c) <= 0.001f)
       continue;
@@ -478,7 +478,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::cleanup9 (PointCloudIn &cluster)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT> void
 pcl::ESFEstimation<PointInT, PointOutT>::scale_points_unit_sphere (
-    const pcl::PointCloud<PointInT> &pc, double scalefactor, Eigen::Vector4f& centroid)
+    const pcl::PointCloud<PointInT> &pc, double scalefactor, Eigen::Vector4d& centroid)
 {
   pcl::compute3DCentroid (pc, centroid);
   pcl::demeanPointCloud (pc, centroid, local_cloud_);
@@ -495,7 +495,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::scale_points_unit_sphere (
 
   double scale_factor = 1.0f / max_distance * scalefactor;
 
-  Eigen::Affine3f matrix = Eigen::Affine3f::Identity();
+  Eigen::Affine3d matrix = Eigen::Affine3d::Identity();
   matrix.scale (scale_factor);
   pcl::transformPointCloud (local_cloud_, local_cloud_, matrix);
 }
@@ -532,7 +532,7 @@ pcl::ESFEstimation<PointInT, PointOutT>::compute (PointCloudOut &output)
 template <typename PointInT, typename PointOutT> void
 pcl::ESFEstimation<PointInT, PointOutT>::computeFeature (PointCloudOut &output)
 {
-  Eigen::Vector4f xyz_centroid;
+  Eigen::Vector4d xyz_centroid;
   std::vector<double> hist;
   scale_points_unit_sphere (*surface_, static_cast<double>(GRIDSIZE_H), xyz_centroid);
   this->voxelize9 (local_cloud_);

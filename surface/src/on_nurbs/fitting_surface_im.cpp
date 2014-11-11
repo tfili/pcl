@@ -116,7 +116,7 @@ FittingSurfaceIM::setCamera (const Eigen::Matrix3d &i)
 }
 
 void
-FittingSurfaceIM::setCamera (const Eigen::Matrix3f &i)
+FittingSurfaceIM::setCamera (const Eigen::Matrix3d &i)
 {
   printf("[FittingSurfaceIM::setCamera] Warning, this function is not tested!\n");
   m_intrinsic << i (0, 0), i (0, 1), i (0, 2), i (1, 0), i (1, 1), i (1, 2), i (2, 0), i (2, 1), i (2, 2);

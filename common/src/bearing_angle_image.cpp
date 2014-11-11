@@ -74,8 +74,8 @@ BearingAngleImage::getAngle (const PointXYZ &point1, const PointXYZ &point2)
 {
   double a, b, c;
   double theta;
-  const Eigen::Vector3f& p1 = point1.getVector3fMap ();
-  const Eigen::Vector3f& p2 = point2.getVector3fMap ();
+  const Eigen::Vector3d& p1 = point1.getVector3dMap ();
+  const Eigen::Vector3d& p2 = point2.getVector3dMap ();
   a = p1.squaredNorm ();
   b = (p1 - p2).squaredNorm ();
   c = p2.squaredNorm ();

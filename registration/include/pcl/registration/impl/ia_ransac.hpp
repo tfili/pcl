@@ -172,7 +172,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::comput
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointTarget, typename FeatureT> void 
-pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4f& guess)
+pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4d& guess)
 {
   // Some sanity checks first
   if (!input_features_)
@@ -216,7 +216,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::comput
   final_transformation_ = guess;
   int i_iter = 0;
   converged_ = false;
-  if (!guess.isApprox (Eigen::Matrix4f::Identity (), 0.01f)) 
+  if (!guess.isApprox (Eigen::Matrix4d::Identity (), 0.01f)) 
   {
     // If guess is not the Identity matrix we check it.
     transformPointCloud (*input_, input_transformed, final_transformation_);

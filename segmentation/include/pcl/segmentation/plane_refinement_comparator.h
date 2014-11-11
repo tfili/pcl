@@ -200,8 +200,8 @@ namespace pcl
         double threshold = distance_threshold_;
         if (depth_dependent_)
         {
-          //Eigen::Vector4f origin = input_->sensor_origin_;
-          Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();// - origin.head<3> ();
+          //Eigen::Vector4d origin = input_->sensor_origin_;
+          Eigen::Vector3d vec = input_->points[idx1].getVector3dMap ();// - origin.head<3> ();
           
           double z = vec.dot (z_axis_);
           threshold *= z * z;

@@ -72,12 +72,12 @@ namespace pcl
           normal (), neighborhood_mean (), eigen_values (), normal_no_jumps (), 
           neighborhood_mean_no_jumps (), eigen_values_no_jumps (), max_neighbor_distance_squared () {}
 
-        Eigen::Vector3f normal;
-        Eigen::Vector3f neighborhood_mean;
-        Eigen::Vector3f eigen_values;
-        Eigen::Vector3f normal_no_jumps;
-        Eigen::Vector3f neighborhood_mean_no_jumps;
-        Eigen::Vector3f eigen_values_no_jumps;
+        Eigen::Vector3d normal;
+        Eigen::Vector3d neighborhood_mean;
+        Eigen::Vector3d eigen_values;
+        Eigen::Vector3d normal_no_jumps;
+        Eigen::Vector3d neighborhood_mean_no_jumps;
+        Eigen::Vector3d eigen_values_no_jumps;
         double max_neighbor_distance_squared;
       };
       
@@ -172,13 +172,13 @@ namespace pcl
       ShadowBorderIndices**
       getShadowBorderInformations () { findAndEvaluateShadowBorders (); return shadow_border_informations_; }
 
-      Eigen::Vector3f**
+      Eigen::Vector3d**
       getBorderDirections () { calculateBorderDirections (); return border_directions_; }
 
       double*
       getSurfaceChangeScores () { calculateSurfaceChanges (); return surface_change_scores_; }
 
-      Eigen::Vector3f*
+      Eigen::Vector3d*
       getSurfaceChangeDirections () { calculateSurfaceChanges (); return surface_change_directions_; }
       
       
@@ -191,10 +191,10 @@ namespace pcl
       LocalSurface** surface_structure_;
       PointCloudOut* border_descriptions_;
       ShadowBorderIndices** shadow_border_informations_;
-      Eigen::Vector3f** border_directions_;
+      Eigen::Vector3d** border_directions_;
       
       double* surface_change_scores_;
-      Eigen::Vector3f* surface_change_directions_;
+      Eigen::Vector3d* surface_change_directions_;
       
       
       // =====PROTECTED METHODS=====
@@ -325,7 +325,7 @@ namespace pcl
         * \return a boolean value indicating whether or not a direction could be calculated
         */
       inline bool
-      get3dDirection (const BorderDescription& border_description, Eigen::Vector3f& direction,
+      get3dDirection (const BorderDescription& border_description, Eigen::Vector3d& direction,
                       const LocalSurface* local_surface=NULL);
       
       /** \brief Calculate the main principal curvature (the largest eigenvalue and corresponding eigenvector for the 
@@ -338,7 +338,7 @@ namespace pcl
         */
       inline bool
       calculateMainPrincipalCurvature (int x, int y, int radius, double& magnitude,
-                                       Eigen::Vector3f& main_direction) const;
+                                       Eigen::Vector3d& main_direction) const;
       
       /** \brief Uses either the border or principal curvature to define a score how much the surface changes in a point 
           (1 for a border) and what the main direction of that change is */

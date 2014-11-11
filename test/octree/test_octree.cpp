@@ -349,7 +349,7 @@ TEST (PCL, Octree_Dynamic_Depth_Test)
       std::vector<int> tmpVector;
       container.getPointIndices (tmpVector);
 
-      Eigen::Vector3f min_pt, max_pt;
+      Eigen::Vector3d min_pt, max_pt;
       octree.getVoxelBounds (it, min_pt, max_pt);
 
       for (i=0; i<tmpVector.size(); ++i)
@@ -795,7 +795,7 @@ TEST (PCL, Octree_Pointcloud_Test)
       unsigned int depth = b_it.getCurrentOctreeDepth ();
       ASSERT_LE(depth, octreeB.getTreeDepth());
 
-      Eigen::Vector3f voxel_min, voxel_max;
+      Eigen::Vector3d voxel_min, voxel_max;
       octreeB.getVoxelBounds (b_it, voxel_min, voxel_max);
 
       ASSERT_GE(voxel_min.x (), minx - 1e-4);
@@ -1332,10 +1332,10 @@ TEST (PCL, Octree_Pointcloud_Box_Search)
 
     // define a random search area
 
-    Eigen::Vector3f lowerBoxCorner (static_cast<double> (4.0 * rand () / RAND_MAX),
+    Eigen::Vector3d lowerBoxCorner (static_cast<double> (4.0 * rand () / RAND_MAX),
                                     static_cast<double> (4.0 * rand () / RAND_MAX),
                                     static_cast<double> (4.0 * rand () / RAND_MAX));
-    Eigen::Vector3f upperBoxCorner (static_cast<double> (5.0 + 4.0 * rand () / RAND_MAX),
+    Eigen::Vector3d upperBoxCorner (static_cast<double> (5.0 + 4.0 * rand () / RAND_MAX),
                                     static_cast<double> (5.0 + 4.0 * rand () / RAND_MAX),
                                     static_cast<double> (5.0 + 4.0 * rand () / RAND_MAX));
 
@@ -1564,25 +1564,25 @@ TEST (PCL, Octree_Pointcloud_Ray_Traversal)
     cloudIn->height = 1;
     cloudIn->points.resize (cloudIn->width * cloudIn->height);
 
-    Eigen::Vector3f p (static_cast<double> (10.0 * rand () / RAND_MAX), 
+    Eigen::Vector3d p (static_cast<double> (10.0 * rand () / RAND_MAX), 
                        static_cast<double> (10.0 * rand () / RAND_MAX),
                        static_cast<double> (10.0 * rand () / RAND_MAX));
 
     // origin
-    Eigen::Vector3f o (static_cast<double> (12.0 * rand () / RAND_MAX), 
+    Eigen::Vector3d o (static_cast<double> (12.0 * rand () / RAND_MAX), 
                        static_cast<double> (12.0 * rand () / RAND_MAX),
                        static_cast<double> (12.0 * rand () / RAND_MAX));
 
     cloudIn->points[0] = pcl::PointXYZ (p[0], p[1], p[2]);
 
     // direction vector
-    Eigen::Vector3f dir (p - o);
+    Eigen::Vector3d dir (p - o);
 
     double tmin = 1.0;
     for (unsigned int j = 1; j < 4; j++)
     {
       tmin = tmin - 0.25f;
-      Eigen::Vector3f n_p = o + (tmin * dir);
+      Eigen::Vector3d n_p = o + (tmin * dir);
       cloudIn->points[j] = pcl::PointXYZ (n_p[0], n_p[1], n_p[2]);
     }
 
@@ -1607,12 +1607,12 @@ TEST (PCL, Octree_Pointcloud_Ray_Traversal)
 
     // check if this point is the closest point to the origin
     pcl::PointXYZ pt = cloudIn->points[ indicesInRay2[0] ];
-    Eigen::Vector3f d = Eigen::Vector3f (pt.x, pt.y, pt.z) - o;
+    Eigen::Vector3d d = Eigen::Vector3d (pt.x, pt.y, pt.z) - o;
     double min_dist = d.norm ();
 
     for (unsigned int i = 0; i < cloudIn->width * cloudIn->height; i++) {
     	pt = cloudIn->points[i];
-    	d = Eigen::Vector3f (pt.x, pt.y, pt.z) - o;
+    	d = Eigen::Vector3d (pt.x, pt.y, pt.z) - o;
     	ASSERT_GE( d.norm (), min_dist );
     }
 
@@ -1673,7 +1673,7 @@ TEST (PCL, Octree_Pointcloud_Adjacency)
       PointXYZ not_neighbor_point (static_cast<double> (10.0 * rand () / RAND_MAX), 
                      static_cast<double> (10.0 * rand () / RAND_MAX),
                      static_cast<double> (10.0 * rand () / RAND_MAX));
-      if ( (point2.getVector3fMap () - not_neighbor_point.getVector3fMap ()).norm () > 3*resolution )
+      if ( (point2.getVector3dMap () - not_neighbor_point.getVector3dMap ()).norm () > 3*resolution )
       {
         cloudIn->push_back(not_neighbor_point);
       }

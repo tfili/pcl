@@ -106,7 +106,7 @@ main (int argc, char** argv)
 
   PointCloud<PointXYZ> cloud_xyz, cloud_xyz_demeaned;
   fromPCLPointCloud2 (cloud, cloud_xyz);
-  Eigen::Vector4f centroid;
+  Eigen::Vector4d centroid;
   compute3DCentroid (cloud_xyz, centroid);
   demeanPointCloud (cloud_xyz, centroid, cloud_xyz_demeaned);
 

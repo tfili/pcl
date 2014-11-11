@@ -100,9 +100,9 @@ namespace pcl
         }
 
         void
-        assembleModelFromViewsAndPoses(ModelT & model, std::vector<Eigen::Matrix4f> & poses) {
+        assembleModelFromViewsAndPoses(ModelT & model, std::vector<Eigen::Matrix4d> & poses) {
           for(size_t i=0; i < model.views_->size(); i++) {
-            Eigen::Matrix4f inv = poses[i];
+            Eigen::Matrix4d inv = poses[i];
             typename pcl::PointCloud<PointInT>::Ptr global_cloud(new pcl::PointCloud<PointInT>);
             pcl::transformPointCloud(*(model.views_->at(i)),*global_cloud, inv);
             *(model.assembled_) += *global_cloud;
@@ -117,7 +117,7 @@ namespace pcl
           bf::path trained_dir = pathmodel.str ();
 
           model.views_.reset (new std::vector<typename pcl::PointCloud<PointInT>::Ptr>);
-          model.poses_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
+          model.poses_.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
           model.self_occlusions_.reset (new std::vector<double>);
 
           if (bf::exists (trained_dir))
@@ -159,7 +159,7 @@ namespace pcl
               }
             }
 
-            std::vector<Eigen::Matrix4f> poses_to_assemble_;
+            std::vector<Eigen::Matrix4d> poses_to_assemble_;
 
             for (size_t i = 0; i < view_filenames.size (); i++)
             {
@@ -177,13 +177,13 @@ namespace pcl
               //read pose as well
               std::stringstream pose_file;
               pose_file << pathmodel.str () << "/" << file_replaced1;
-              Eigen::Matrix4f pose;
+              Eigen::Matrix4d pose;
               PersistenceUtils::readMatrixFromFile (pose_file.str (), pose);
 
               if(pose_files_order_ != 0) {
                 //std::cout << "Transpose..." << std::endl;
 
-                Eigen::Matrix4f pose_trans = pose.transpose();
+                Eigen::Matrix4d pose_trans = pose.transpose();
                 poses_to_assemble_.push_back(pose_trans);
                 //pose = pose_trans;
                 //std::cout << pose << std::endl;
@@ -193,7 +193,7 @@ namespace pcl
               std::cout << pose << std::endl;
 
               //the recognizer assumes transformation from M to CC
-              Eigen::Matrix4f inv = pose.inverse();
+              Eigen::Matrix4d inv = pose.inverse();
               model.poses_->push_back (inv);
 
               model.self_occlusions_->push_back (-1.f);
@@ -207,7 +207,7 @@ namespace pcl
             pcl::visualization::PointCloudColorHandlerCustom<PointInT> random_handler (model.assembled_, 255, 0, 0);
             vis.addPointCloud<PointInT> (model.assembled_, random_handler, "points");
 
-            Eigen::Matrix4f view_transformation = model.poses_->at(0).inverse();
+            Eigen::Matrix4d view_transformation = model.poses_->at(0).inverse();
             typename pcl::PointCloud<PointInT>::Ptr view_trans(new pcl::PointCloud<PointInT>);
             pcl::transformPointCloud(*(model.views_->at(0)), *view_trans, view_transformation);
 
@@ -249,14 +249,14 @@ namespace pcl
               boost::replace_all (file_replaced1, view_prefix_, "pose");
               boost::replace_all (file_replaced1, ".pcd", ".txt");
 
-              Eigen::Matrix4f pose;
+              Eigen::Matrix4d pose;
               PersistenceUtils::readMatrixFromFile (file_replaced1, pose);
 
               std::cout << pose << std::endl;
 
               if(pose_files_order_ == 0) {
                 std::cout << "Transpose..." << std::endl;
-                Eigen::Matrix4f pose_trans = pose.transpose();
+                Eigen::Matrix4d pose_trans = pose.transpose();
                 pose = pose_trans;
                 std::cout << pose << std::endl;
               }

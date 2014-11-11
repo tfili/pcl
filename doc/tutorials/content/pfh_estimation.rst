@@ -80,8 +80,8 @@ To estimate a PFH quadruplet for a pair of points, use:
 
 .. code-block:: cpp
 
-   computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
-                        const Eigen::Vector4f &p2, const Eigen::Vector4f &n2,
+   computePairFeatures (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1,
+                        const Eigen::Vector4d &p2, const Eigen::Vector4d &n2,
                         float &f1, float &f2, float &f3, float &f4);
 
 See the API documentation for additional details.

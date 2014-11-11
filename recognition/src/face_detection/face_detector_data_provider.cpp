@@ -85,7 +85,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     std::string pose_file (files[i]);
     boost::replace_all (pose_file, ".pcd", "_pose.txt");
 
-    Eigen::Matrix4f pose_mat;
+    Eigen::Matrix4d pose_mat;
     pose_mat.setIdentity (4, 4);
 
     std::stringstream filestream_pose;
@@ -95,7 +95,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     bool result = readMatrixFromFile (pose_file, pose_mat);
     if (result)
     {
-      Eigen::Vector3f ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
+      Eigen::Vector3d ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
       ea *= 57.2957795f; //transform it to degrees to do the binning
       int y = static_cast<int>(pcl_round ((ea[0] + static_cast<double>(std::abs (min_yaw))) / res_yaw));
       int p = static_cast<int>(pcl_round ((ea[1] + static_cast<double>(std::abs (min_pitch))) / res_pitch));
@@ -335,7 +335,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
 
     for (int jjj = 0; jjj < static_cast<int>(cloud->points.size()); jjj++)
     {
-      cloud_intensity->points[jjj].getVector4fMap() = cloud->points[jjj].getVector4fMap();
+      cloud_intensity->points[jjj].getVector4dMap() = cloud->points[jjj].getVector4dMap();
       cloud_intensity->points[jjj].intensity = 0.f;
       int row, col;
       col = jjj % cloud->width;
@@ -354,12 +354,12 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     std::string pose_file (files[j]);
     boost::replace_all (pose_file, ".pcd", "_pose.txt");
 
-    Eigen::Matrix4f pose_mat;
+    Eigen::Matrix4d pose_mat;
     pose_mat.setIdentity (4, 4);
     readMatrixFromFile (pose_file, pose_mat);
 
-    Eigen::Vector3f ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
-    Eigen::Vector3f trans_vector = Eigen::Vector3f (pose_mat (0, 3), pose_mat (1, 3), pose_mat (2, 3));
+    Eigen::Vector3d ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
+    Eigen::Vector3d trans_vector = Eigen::Vector3d (pose_mat (0, 3), pose_mat (1, 3), pose_mat (2, 3));
 
     pcl::PointXYZ center_point;
     center_point.x = trans_vector[0];
@@ -430,7 +430,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
         te.col_ = col;
         te.wsize_ = w_size_;
 
-        te.trans_ = center_point.getVector3fMap () - patch_center_point.getVector3fMap ();
+        te.trans_ = center_point.getVector3dMap () - patch_center_point.getVector3dMap ();
         te.trans_ *= 1000.f; //transform it to milimiters
         te.rot_ = ea;
         te.rot_ *= 57.2957795f; //transform it to degrees

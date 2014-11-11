@@ -519,7 +519,7 @@ double standardRad(double t) {
   return t;
 }
 
-void wRo_to_euler(const Eigen::Matrix3f& wRo, double& yaw, double& pitch, double& roll) {
+void wRo_to_euler(const Eigen::Matrix3d& wRo, double& yaw, double& pitch, double& roll) {
   yaw = standardRad(atan2(wRo(1,0), wRo(0,0)));
   double c = cos(yaw);
   double s = sin(yaw);
@@ -559,7 +559,7 @@ void simulate_callback (const pcl::visualization::KeyboardEvent &event,
 
 
 	      
-	      Eigen::Affine3f pose;
+	      Eigen::Affine3d pose;
 	      pose = viewer->getViewerPose() ;
 	      
 	      
@@ -567,7 +567,7 @@ void simulate_callback (const pcl::visualization::KeyboardEvent &event,
                << cam.pos[1] << " " 
                << cam.pos[2] << " p\n";	      
 	      
-	     Eigen::Matrix3f m;
+	     Eigen::Matrix3d m;
 	     m =pose.rotation();
 	     //All axies use right hand rule. x=red axis, y=green axis, z=blue axis z direction is point into the screen. z \ \ \ -----------> x | | | | | | y 
 	      
@@ -586,8 +586,8 @@ void simulate_callback (const pcl::visualization::KeyboardEvent &event,
  cout << m(1,0) << " " << m(1,1) << " " << m(1,2) << " "  << " x1\n";
   cout << m(2,0) << " " << m(2,1)  << " " << m(2,2) << " "<< "x2\n\n";
   
-  Eigen::Quaternionf rf;
-  rf = Eigen::Quaternionf(m);
+  Eigen::Quaterniond rf;
+  rf = Eigen::Quaterniond(m);
   
   
    Eigen::Quaterniond r(rf.w(),rf.x(),rf.y(),rf.z());
@@ -837,8 +837,8 @@ main (int argc, char** argv)
   for (size_t i = 0; i < p_file_indices.size (); ++i)
   {
     cloud.reset (new pcl::PCLPointCloud2);
-    Eigen::Vector4f origin;
-    Eigen::Quaternionf orientation;
+    Eigen::Vector4d origin;
+    Eigen::Quaterniond orientation;
     int version;
 
     print_highlight (stderr, "Loading "); print_value (stderr, "%s ", argv[p_file_indices.at (i)]);
@@ -870,7 +870,7 @@ main (int argc, char** argv)
     {
       p.reset (new pcl::visualization::PCLVisualizer (argc, argv, "PCD viewer"));
       p->registerPointPickingCallback (&pp_callback, (void*)&cloud);
-      Eigen::Matrix3f rotation;
+      Eigen::Matrix3d rotation;
       rotation = orientation;
       p->setCameraPosition (origin [0]                  , origin [1]                  , origin [2],
                         origin [0] + rotation (0, 2), origin [1] + rotation (1, 2), origin [2] + rotation (2, 2),

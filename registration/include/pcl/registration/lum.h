@@ -255,7 +255,7 @@ namespace pcl
           * \param[in] vertex The vertex descriptor of which to return the transformation matrix.
           * \return The current transformation matrix of that vertex.
           */
-        inline Eigen::Affine3f
+        inline Eigen::Affine3d
         getTransformation (const Vertex &vertex) const;
 
         /** \brief Add/change a set of correspondences for one of the SLAM graph's edges.

@@ -354,7 +354,7 @@ namespace pcl
           const PointT &src = input_->points[corr.index_query];
           const PointT &tgt = target_->points[corr.index_match];
 
-          return ((src.getVector4fMap () - tgt.getVector4fMap ()).squaredNorm ());
+          return ((src.getVector4dMap () - tgt.getVector4dMap ()).squaredNorm ());
         }
         
         /** \brief Get the correspondence score for a given pair of correspondent points based on 

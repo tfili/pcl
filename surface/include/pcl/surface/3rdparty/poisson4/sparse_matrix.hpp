@@ -26,7 +26,7 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF S
 DAMAGE.
 */
 
-#include <double.h>
+#include <float.h>
 #ifdef _WIN32
 # ifndef WIN32_LEAN_AND_MEAN
 #  define WIN32_LEAN_AND_MEAN
@@ -572,9 +572,9 @@ namespace pcl
 #if defined _WIN32 && !defined __MINGW32__
 #ifndef _AtomicIncrement_
 #define _AtomicIncrement_
-    inline void AtomicIncrement( volatile double* ptr , double addend )
+    inline void AtomicIncrement( volatile float* ptr , float addend )
     {
-      double newValue = *ptr;
+      float newValue = *ptr;
       LONG& _newValue = *( (LONG*)&newValue );
       LONG  _oldValue;
       for( ;; )
@@ -601,11 +601,11 @@ namespace pcl
     }
 #endif // _AtomicIncrement_
     template< class T >
-    void MultiplyAtomic( const SparseSymmetricMatrix< T >& A , const Vector< double >& In , Vector< double >& Out , int threads , const int* partition=NULL )
+    void MultiplyAtomic( const SparseSymmetricMatrix< T >& A , const Vector< float >& In , Vector< float >& Out , int threads , const int* partition=NULL )
     {
       Out.SetZero();
-      const double* in = &In[0];
-      double* out = &Out[0];
+      const float* in = &In[0];
+      float* out = &Out[0];
       if( partition )
 #pragma omp parallel for num_threads( threads )
         for( int t=0 ; t<threads ; t++ )
@@ -613,12 +613,12 @@ namespace pcl
           {
             const MatrixEntry< T >* temp = A[i];
             const MatrixEntry< T >* end = temp + A.rowSizes[i];
-            const double& in_i = in[i];
+            const float& in_i = in[i];
             double out_i = 0.;
             for( ; temp!=end ; temp++ )
             {
               int j = temp->N;
-              double v = temp->Value;
+              float v = temp->Value;
               out_i += v * in[j];
               AtomicIncrement( out+j , v * in_i );
             }
@@ -630,12 +630,12 @@ namespace pcl
         {
           const MatrixEntry< T >* temp = A[i];
           const MatrixEntry< T >* end = temp + A.rowSizes[i];
-          const double& in_i = in[i];
+          const float& in_i = in[i];
           double out_i = 0.f;
           for( ; temp!=end ; temp++ )
           {
             int j = temp->N;
-            double v = temp->Value;
+            float v = temp->Value;
             out_i += v * in[j];
             AtomicIncrement( out+j , v * in_i );
           }

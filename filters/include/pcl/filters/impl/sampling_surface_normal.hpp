@@ -175,7 +175,7 @@ pcl::SamplingSurfaceNormal<PointT>::samplePartition (
   cloud.width = 1;
   cloud.height = uint32_t (cloud.points.size ());
 
-  Eigen::Vector4f normal;
+  Eigen::Vector4d normal;
   double curvature = 0;
   //pcl::computePointNormal<PointT> (cloud, normal, curvature);
 
@@ -201,10 +201,10 @@ pcl::SamplingSurfaceNormal<PointT>::samplePartition (
 
 ///////////////////////////////////////////////////////////////////////////////
 template<typename PointT> void
-pcl::SamplingSurfaceNormal<PointT>::computeNormal (const PointCloud& cloud, Eigen::Vector4f &normal, double& curvature)
+pcl::SamplingSurfaceNormal<PointT>::computeNormal (const PointCloud& cloud, Eigen::Vector4d &normal, double& curvature)
 {
-  EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
-  Eigen::Vector4f xyz_centroid;
+  EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
+  Eigen::Vector4d xyz_centroid;
   double nx = 0.0;
   double ny = 0.0;
   double nz = 0.0;
@@ -229,8 +229,8 @@ pcl::SamplingSurfaceNormal<PointT>::computeNormal (const PointCloud& cloud, Eige
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> inline unsigned int
 pcl::SamplingSurfaceNormal<PointT>::computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-                                                                    Eigen::Matrix3f &covariance_matrix,
-                                                                    Eigen::Vector4f &centroid)
+                                                                    Eigen::Matrix3d &covariance_matrix,
+                                                                    Eigen::Vector4d &centroid)
 {
   // create the buffer on the stack which is much faster than using cloud.points[indices[i]] and centroid as a buffer
   Eigen::Matrix<double, 1, 9, Eigen::RowMajor> accu = Eigen::Matrix<double, 1, 9, Eigen::RowMajor>::Zero ();
@@ -272,12 +272,12 @@ pcl::SamplingSurfaceNormal<PointT>::computeMeanAndCovarianceMatrix (const pcl::P
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::SamplingSurfaceNormal<PointT>::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+pcl::SamplingSurfaceNormal<PointT>::solvePlaneParameters (const Eigen::Matrix3d &covariance_matrix,
                                                           double &nx, double &ny, double &nz, double &curvature)
 {
   // Extract the smallest eigenvalue and its eigenvector
-  EIGEN_ALIGN16 Eigen::Vector3f::Scalar eigen_value;
-  EIGEN_ALIGN16 Eigen::Vector3f eigen_vector;
+  EIGEN_ALIGN16 Eigen::Vector3d::Scalar eigen_value;
+  EIGEN_ALIGN16 Eigen::Vector3d eigen_vector;
   pcl::eigen33 (covariance_matrix, eigen_value, eigen_vector);
 
   nx = eigen_vector [0];

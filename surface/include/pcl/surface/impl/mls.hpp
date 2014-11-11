@@ -191,7 +191,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::computeMLSPointNormal (int index,
   model_coefficients[3] = -1 * model_coefficients.dot (xyz_centroid);
 
   // Projected query point
-  Eigen::Vector3d point = input_->points[index].getVector3fMap ().template cast<double> ();
+  Eigen::Vector3d point = input_->points[index].getVector3dMap ().template cast<double> ();
   double distance = point.dot (model_coefficients.head<3> ()) + model_coefficients[3];
   point -= distance * model_coefficients.head<3> ();
 
@@ -598,7 +598,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::performUpsampling (PointCloudOut &
         continue;
 
       // Get 3D position of point
-      //Eigen::Vector3f pos = distinct_cloud_->points[dp_i].getVector3fMap ();
+      //Eigen::Vector3d pos = distinct_cloud_->points[dp_i].getVector3dMap ();
       std::vector<int> nn_indices;
       std::vector<double> nn_dists;
       tree_->nearestKSearch (distinct_cloud_->points[dp_i], 1, nn_indices, nn_dists);
@@ -609,7 +609,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::performUpsampling (PointCloudOut &
       if (mls_results_[input_index].valid == false)
         continue;
 
-      Eigen::Vector3d add_point = distinct_cloud_->points[dp_i].getVector3fMap ().template cast<double> ();
+      Eigen::Vector3d add_point = distinct_cloud_->points[dp_i].getVector3dMap ().template cast<double> ();
 
       double u_disp = static_cast<double> ((add_point - mls_results_[input_index].mean).dot (mls_results_[input_index].u_axis)),
             v_disp = static_cast<double> ((add_point - mls_results_[input_index].mean).dot (mls_results_[input_index].v_axis));
@@ -648,7 +648,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::performUpsampling (PointCloudOut &
     for (typename MLSVoxelGrid::HashMap::iterator m_it = voxel_grid.voxel_grid_.begin (); m_it != voxel_grid.voxel_grid_.end (); ++m_it)
     {
       // Get 3D position of point
-      Eigen::Vector3f pos;
+      Eigen::Vector3d pos;
       voxel_grid.getPosition (m_it->first, pos);
 
       PointInT p;
@@ -666,7 +666,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::performUpsampling (PointCloudOut &
       if (mls_results_[input_index].valid == false)
         continue;
 
-      Eigen::Vector3d add_point = p.getVector3fMap ().template cast<double> ();
+      Eigen::Vector3d add_point = p.getVector3dMap ().template cast<double> ();
       double u_disp = static_cast<double> ((add_point - mls_results_[input_index].mean).dot (mls_results_[input_index].u_axis)),
             v_disp = static_cast<double> ((add_point - mls_results_[input_index].mean).dot (mls_results_[input_index].v_axis));
 
@@ -718,7 +718,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::MLSVoxelGrid::MLSVoxelGrid (PointC
 {
   pcl::getMinMax3D (*cloud, *indices, bounding_min_, bounding_max_);
 
-  Eigen::Vector4f bounding_box_size = bounding_max_ - bounding_min_;
+  Eigen::Vector4d bounding_box_size = bounding_max_ - bounding_min_;
   double max_size = (std::max) ((std::max)(bounding_box_size.x (), bounding_box_size.y ()), bounding_box_size.z ());
   // Put initial cloud in voxel grid
   data_size_ = static_cast<uint64_t> (1.5 * max_size / voxel_size_);
@@ -726,7 +726,7 @@ pcl::MovingLeastSquares<PointInT, PointOutT>::MLSVoxelGrid::MLSVoxelGrid (PointC
     if (pcl_isfinite (cloud->points[(*indices)[i]].x))
     {
       Eigen::Vector3i pos;
-      getCellIndex (cloud->points[(*indices)[i]].getVector3fMap (), pos);
+      getCellIndex (cloud->points[(*indices)[i]].getVector3dMap (), pos);
 
       uint64_t index_1d;
       getIndexIn1D (pos, index_1d);

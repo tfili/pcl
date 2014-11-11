@@ -141,7 +141,7 @@ template<template<class > class DistT, typename PointT, typename FeatureT>
 
         //visualize results
         boost::shared_ptr < std::vector<ModelT> > models = local.getModels ();
-        boost::shared_ptr < std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms = local.getTransforms ();
+        boost::shared_ptr < std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms = local.getTransforms ();
 
         for (size_t j = 0; j < models->size (); j++)
         {
@@ -224,7 +224,7 @@ template<template<class > class DistT, typename PointT, typename FeatureT>
 
         //visualize results
         boost::shared_ptr < std::vector<ModelT> > models = local.getModels ();
-        boost::shared_ptr < std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms = local.getTransforms ();
+        boost::shared_ptr < std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms = local.getTransforms ();
 
         for (size_t j = 0; j < models->size (); j++)
         {

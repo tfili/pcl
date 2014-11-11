@@ -113,7 +113,7 @@ pcl::kinfuLS::WorldModel<PointT>::getExistingData(const double previous_origin_x
   if(existing_slice.points.size () != 0)
   {
 	//transform the slice in new cube coordinates
-	Eigen::Affine3f transformation; 
+	Eigen::Affine3d transformation; 
 	transformation.translation ()[0] = newOriginX;
 	transformation.translation ()[1] = newOriginY;
 	transformation.translation ()[2] = newOriginZ;
@@ -128,7 +128,7 @@ pcl::kinfuLS::WorldModel<PointT>::getExistingData(const double previous_origin_x
 
 template <typename PointT>
 void
-pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vector<typename WorldModel<PointT>::PointCloudPtr> &cubes, std::vector<Eigen::Vector3f> &transforms, double overlap)
+pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vector<typename WorldModel<PointT>::PointCloudPtr> &cubes, std::vector<Eigen::Vector3d> &transforms, double overlap)
 {
   
   if(world_->points.size () == 0)
@@ -218,7 +218,7 @@ pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vecto
 		// also push transform along with points.
 		if(box->points.size() > 0)
 		{
-		  Eigen::Vector3f transform;
+		  Eigen::Vector3d transform;
 		  transform[0] = origin.x, transform[1] = origin.y, transform[2] = origin.z;
 		  transforms.push_back(transform);
 		  cubes.push_back(box);        

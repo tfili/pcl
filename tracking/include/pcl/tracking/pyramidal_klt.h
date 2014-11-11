@@ -60,10 +60,10 @@ namespace pcl
       * \author Nizar Sallem
       */
     template<typename PointInT, typename IntensityT = pcl::common::IntensityFieldAccessor<PointInT> >
-    class PyramidalKLTTracker : public Tracker<PointInT, Eigen::Affine3f>
+    class PyramidalKLTTracker : public Tracker<PointInT, Eigen::Affine3d>
     {
       public:
-        typedef pcl::tracking::Tracker<PointInT, Eigen::Affine3f> TrackerBase;
+        typedef pcl::tracking::Tracker<PointInT, Eigen::Affine3d> TrackerBase;
         typedef typename TrackerBase::PointCloudIn PointCloudIn;
         typedef typename PointCloudIn::Ptr PointCloudInPtr;
         typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
@@ -210,7 +210,7 @@ namespace pcl
         getPointsToTrackStatus () const { return (keypoints_status_); }
 
         /** \brief Return the computed transfromation from tracked points. */
-        Eigen::Affine3f
+        Eigen::Affine3d
         getResult () const { return (motion_); }
 
         /// \brief \return initialization state
@@ -286,18 +286,18 @@ namespace pcl
                          const FloatImage& grad_x,
                          const FloatImage& grad_y,
                          const Eigen::Array2i& location,
-                         const Eigen::Array4f& weights,
+                         const Eigen::Array4d& weights,
                          Eigen::ArrayXXf& win,
                          Eigen::ArrayXXf& grad_x_win,
                          Eigen::ArrayXXf& grad_y_win,
-                         Eigen::Array3f & covariance) const;
+                         Eigen::Array3d & covariance) const;
         void
         mismatchVector (const Eigen::ArrayXXf& prev,
                         const Eigen::ArrayXXf& prev_grad_x,
                         const Eigen::ArrayXXf& prev_grad_y,
                         const FloatImage& next,
                         const Eigen::Array2i& location,
-                        const Eigen::Array4f& weights,
+                        const Eigen::Array4d& weights,
                         Eigen::Array2f &b) const;
 
         /** \brief Compute the pyramidal representation of an image.
@@ -318,7 +318,7 @@ namespace pcl
                const pcl::PointCloud<pcl::PointUV>::ConstPtr& previous_keypoints,
                pcl::PointCloud<pcl::PointUV>::Ptr& current_keypoints,
                std::vector<int>& status,
-               Eigen::Affine3f& motion) const;
+               Eigen::Affine3d& motion) const;
 
         virtual void
         computeTracking ();
@@ -360,7 +360,7 @@ namespace pcl
         /// \brief compute transformation from successfully tracked points
         pcl::TransformationFromCorrespondences transformation_computer_;
         /// \brief computed transformation between tracked points
-        Eigen::Affine3f motion_;
+        Eigen::Affine3d motion_;
         /// \brief smoothing kernel
         Eigen::Array<double, 5, 1> kernel_;
         /// \brief smoothing kernel half size

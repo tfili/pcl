@@ -76,8 +76,8 @@ namespace pcl
       /** \brief Empty constructor. */
       UniformSampling () :
         leaves_ (),
-        leaf_size_ (Eigen::Vector4f::Zero ()),
-        inverse_leaf_size_ (Eigen::Vector4f::Zero ()),
+        leaf_size_ (Eigen::Vector4d::Zero ()),
+        inverse_leaf_size_ (Eigen::Vector4d::Zero ()),
         min_b_ (Eigen::Vector4i::Zero ()),
         max_b_ (Eigen::Vector4i::Zero ()),
         div_b_ (Eigen::Vector4i::Zero ()),
@@ -103,7 +103,7 @@ namespace pcl
         if (leaf_size_[3] == 0)
           leaf_size_[3] = 1;
         // Use multiplications instead of divisions
-        inverse_leaf_size_ = Eigen::Array4f::Ones () / leaf_size_.array ();
+        inverse_leaf_size_ = Eigen::Array4d::Ones () / leaf_size_.array ();
         search_radius_ = radius;
       }
 
@@ -119,10 +119,10 @@ namespace pcl
       boost::unordered_map<size_t, Leaf> leaves_;
 
       /** \brief The size of a leaf. */
-      Eigen::Vector4f leaf_size_;
+      Eigen::Vector4d leaf_size_;
 
       /** \brief Internal leaf sizes stored as 1/leaf_size_ for efficiency reasons. */ 
-      Eigen::Array4f inverse_leaf_size_;
+      Eigen::Array4d inverse_leaf_size_;
 
       /** \brief The minimum and maximum bin coordinates, the number of divisions, and the division multiplier. */
       Eigen::Vector4i min_b_, max_b_, div_b_, divb_mul_;

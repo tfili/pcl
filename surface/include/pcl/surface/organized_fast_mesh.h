@@ -259,9 +259,9 @@ namespace pcl
       inline bool
       isShadowed (const PointInT& point_a, const PointInT& point_b)
       {
-        Eigen::Vector3f viewpoint = Eigen::Vector3f::Zero (); // TODO: allow for passing viewpoint information
-        Eigen::Vector3f dir_a = viewpoint - point_a.getVector3fMap ();
-        Eigen::Vector3f dir_b = point_b.getVector3fMap () - point_a.getVector3fMap ();
+        Eigen::Vector3d viewpoint = Eigen::Vector3d::Zero (); // TODO: allow for passing viewpoint information
+        Eigen::Vector3d dir_a = viewpoint - point_a.getVector3dMap ();
+        Eigen::Vector3d dir_b = point_b.getVector3dMap () - point_a.getVector3dMap ();
         double distance_to_points = dir_a.norm ();
         double distance_between_points = dir_b.norm ();
         double cos_angle = dir_a.dot (dir_b) / (distance_to_points*distance_between_points);

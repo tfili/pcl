@@ -53,7 +53,7 @@ TEST(PCA, projection)
   {
     pca.project (cloud[i], projected);
     pca.reconstruct (projected, reconstructed);
-    EXPECT_NEAR_VECTORS (reconstructed.getVector3fMap (), cloud[i].getVector3fMap (), 2.5e-4);
+    EXPECT_NEAR_VECTORS (reconstructed.getVector3dMap (), cloud[i].getVector3dMap (), 2.5e-4);
   }
 }
 
@@ -63,8 +63,8 @@ TEST(PCA, copy_constructor)
   pcl::PCA<pcl::PointXYZ> pca_copy(pca);
   try
   {
-    Eigen::Matrix3f eigen_vectors_copy = pca_copy.getEigenVectors ();
-    Eigen::Matrix3f eigen_vectors = pca.getEigenVectors ();
+    Eigen::Matrix3d eigen_vectors_copy = pca_copy.getEigenVectors ();
+    Eigen::Matrix3d eigen_vectors = pca.getEigenVectors ();
     for(size_t i = 0; i < 3; ++i)
       for(size_t j = 0; j < 3; ++j)
         EXPECT_EQ (eigen_vectors (i,j), eigen_vectors_copy (i,j));
@@ -85,8 +85,8 @@ TEST(PCA, cloud_projection)
     pca.reconstruct (cloud_projected, cloud_reconstructed);
     EXPECT_EQ (cloud_reconstructed.size (), cloud_projected.size ());
     for(size_t i = 0; i < cloud.size(); i++)
-      EXPECT_NEAR_VECTORS (cloud[i].getVector3fMap (),
-                           cloud_reconstructed[i].getVector3fMap (),
+      EXPECT_NEAR_VECTORS (cloud[i].getVector3dMap (),
+                           cloud_reconstructed[i].getVector3dMap (),
                            2.5e-4);
   }
   catch (pcl::InitFailedException &/*e*/)

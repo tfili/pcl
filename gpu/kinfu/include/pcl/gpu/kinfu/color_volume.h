@@ -92,7 +92,7 @@ namespace pcl
       Eigen::Vector3i resolution_;
 
       /** \brief Volume size in meters */
-      Eigen::Vector3f volume_size_;
+      Eigen::Vector3d volume_size_;
 
       /** \brief Length of running average */
       int max_weight_;     

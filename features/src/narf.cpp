@@ -45,7 +45,7 @@ using std::cout;
 using std::cerr;
 using std::vector;
 
-using Eigen::Vector3f;
+using Eigen::Vector3d;
 
 #include <pcl/range_image/range_image.h>
 #include <pcl/common/vector_average.h>
@@ -202,7 +202,7 @@ Narf::extractDescriptor (int descriptor_size)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool 
-Narf::extractFromRangeImage (const RangeImage& range_image, const Eigen::Affine3f& pose, int descriptor_size,
+Narf::extractFromRangeImage (const RangeImage& range_image, const Eigen::Affine3d& pose, int descriptor_size,
                              double support_size, int surface_patch_pixel_size)
 {
   reset();
@@ -228,7 +228,7 @@ Narf::extractFromRangeImage (const RangeImage& range_image, double x, double y, 
 {
   if (!range_image.isValid (static_cast<int> (pcl_lrint (x)), static_cast<int> (pcl_lrint (y))))
     return (false);
-  Eigen::Vector3f feature_pos;
+  Eigen::Vector3d feature_pos;
   range_image.calculate3DPoint(x, y, feature_pos);
   
   return (extractFromRangeImage (range_image, feature_pos, descriptor_size, support_size));
@@ -238,12 +238,12 @@ Narf::extractFromRangeImage (const RangeImage& range_image, double x, double y, 
 bool 
 Narf::extractFromRangeImage (const RangeImage& range_image, const InterestPoint& interest_point, int descriptor_size, double support_size)
 {
-  return extractFromRangeImage(range_image, Eigen::Vector3f(interest_point.x, interest_point.y, interest_point.z), descriptor_size, support_size);
+  return extractFromRangeImage(range_image, Eigen::Vector3d(interest_point.x, interest_point.y, interest_point.z), descriptor_size, support_size);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool 
-Narf::extractFromRangeImage (const RangeImage& range_image, const Eigen::Vector3f& interest_point, int descriptor_size, double support_size)
+Narf::extractFromRangeImage (const RangeImage& range_image, const Eigen::Vector3d& interest_point, int descriptor_size, double support_size)
 {
   if (!range_image.getNormalBasedUprightTransformation(interest_point, 0.5f*support_size, transformation_))
     return false;
@@ -252,7 +252,7 @@ Narf::extractFromRangeImage (const RangeImage& range_image, const Eigen::Vector3
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool 
-Narf::extractFromRangeImageWithBestRotation (const RangeImage& range_image, const Eigen::Vector3f& interest_point,
+Narf::extractFromRangeImageWithBestRotation (const RangeImage& range_image, const Eigen::Vector3d& interest_point,
                                              int descriptor_size, double support_size)
 {
   extractFromRangeImage(range_image, interest_point, descriptor_size, support_size);
@@ -270,7 +270,7 @@ Narf::extractFromRangeImageWithBestRotation (const RangeImage& range_image, cons
     }
   }
   
-  transformation_ = Eigen::AngleAxisf(-best_rotation, Eigen::Vector3f(0.0f, 0.0f, 1.0f))*transformation_;
+  transformation_ = Eigen::AngleAxisd(-best_rotation, Eigen::Vector3d(0.0f, 0.0f, 1.0f))*transformation_;
   surface_patch_rotation_ = best_rotation;
   return extractDescriptor(descriptor_size_);
 }
@@ -339,7 +339,7 @@ Narf::getBlurredSurfacePatch (int new_pixel_size, int blur_radius) const
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-Narf::extractFromRangeImageAndAddToList (const RangeImage& range_image, const Eigen::Vector3f& interest_point, int descriptor_size,
+Narf::extractFromRangeImageAndAddToList (const RangeImage& range_image, const Eigen::Vector3d& interest_point, int descriptor_size,
                                          double support_size, bool rotation_invariant, std::vector<Narf*>& feature_list)
 {
   Narf* feature = new Narf;
@@ -366,7 +366,7 @@ Narf::extractFromRangeImageAndAddToList (const RangeImage& range_image, double i
 {
   if (!range_image.isValid (static_cast<int> (pcl_lrint (image_x)), static_cast<int> (pcl_lrint (image_y))))
     return;
-  Eigen::Vector3f feature_pos;
+  Eigen::Vector3d feature_pos;
   range_image.calculate3DPoint(image_x, image_y, feature_pos);
   extractFromRangeImageAndAddToList(range_image, feature_pos, descriptor_size, support_size, rotation_invariant, feature_list);
 }
@@ -380,7 +380,7 @@ Narf::extractForInterestPoints (const RangeImage& range_image, const PointCloud<
   //!!! nizar 20110408 : for OpenMP sake on MSVC this must be kept signed
   for (int interest_point_idx = 0; interest_point_idx < int (interest_points.points.size ()); ++interest_point_idx)
   {
-    Vector3fMapConst point = interest_points.points[interest_point_idx].getVector3fMap ();
+    Vector3dMapConst point = interest_points.points[interest_point_idx].getVector3dMap ();
     
     Narf* feature = new Narf;
     if (!feature->extractFromRangeImage(range_image, point, descriptor_size, support_size))
@@ -404,7 +404,7 @@ Narf::extractForInterestPoints (const RangeImage& range_image, const PointCloud<
           {
             double rotation = rotations[i];
             Narf* feature2 = new Narf(*feature);  // Call copy constructor
-            feature2->transformation_ = Eigen::AngleAxisf(-rotation, Eigen::Vector3f(0.0f, 0.0f, 1.0f))*feature2->transformation_;
+            feature2->transformation_ = Eigen::AngleAxisd(-rotation, Eigen::Vector3d(0.0f, 0.0f, 1.0f))*feature2->transformation_;
             feature2->surface_patch_rotation_ = rotation;
             if (!feature2->extractDescriptor(feature2->descriptor_size_))
             {
@@ -502,7 +502,7 @@ Narf::getRotatedVersions (const RangeImage&, const std::vector<double>& rotation
     double rotation = rotations[i];
     
     Narf* feature = new Narf(*this);  // Call copy constructor
-    feature->transformation_ = Eigen::AngleAxisf(-rotation, Eigen::Vector3f(0.0f, 0.0f, 1.0f))*feature->transformation_;
+    feature->transformation_ = Eigen::AngleAxisd(-rotation, Eigen::Vector3d(0.0f, 0.0f, 1.0f))*feature->transformation_;
     feature->surface_patch_rotation_ = rotation;
     if (!feature->extractDescriptor(feature->descriptor_size_))
     {

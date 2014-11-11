@@ -559,15 +559,15 @@ pcl::PLYReader::parse (const std::string& istream_filename)
 ////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PLYReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                             int &, int &, unsigned int &, const int)
 {
   // Silence compiler warnings
   cloud_ = &cloud;
   range_grid_ = new std::vector<std::vector<int> >;
   cloud_->width = cloud_->height = 0;
-  origin = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  origin = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
   if (!parse (file_name))
   {
     PCL_ERROR ("[pcl::PLYReader::read] problem parsing header!\n");
@@ -580,7 +580,7 @@ pcl::PLYReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
 ////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &ply_version, const int)
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &ply_version, const int)
 {
   // kept only for backward compatibility
   int data_type;
@@ -621,7 +621,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
     cloud_->data.swap (data);
   }
 
-  orientation_ = Eigen::Quaternionf (orientation);
+  orientation_ = Eigen::Quaterniond (orientation);
   origin_ = origin;
 
   for (size_t i = 0; i < cloud_->fields.size (); ++i)
@@ -639,7 +639,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
 ////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &ply_version, const int offset)
 {
   // kept only for backward compatibility
@@ -681,7 +681,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
     cloud_->data.swap (data);
   }
 
-  orientation_ = Eigen::Quaternionf (orientation);
+  orientation_ = Eigen::Quaterniond (orientation);
   origin_ = origin;
 
   for (size_t i = 0; i < cloud_->fields.size (); ++i)
@@ -700,8 +700,8 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
 int
 pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh, const int offset)
 {
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   int ply_version;
   return read (file_name, mesh, origin, orientation, ply_version, offset);
 }
@@ -709,8 +709,8 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh, cons
 ////////////////////////////////////////////////////////////////////////////////////////
 std::string
 pcl::PLYWriter::generateHeader (const pcl::PCLPointCloud2 &cloud,
-                                const Eigen::Vector4f &origin,
-                                const Eigen::Quaternionf &,
+                                const Eigen::Vector4d &origin,
+                                const Eigen::Quaterniond &,
                                 bool binary,
                                 bool use_camera,
                                 int valid_points)
@@ -843,8 +843,8 @@ pcl::PLYWriter::generateHeader (const pcl::PCLPointCloud2 &cloud,
 int
 pcl::PLYWriter::writeASCII (const std::string &file_name,
                             const pcl::PCLPointCloud2 &cloud,
-                            const Eigen::Vector4f &origin,
-                            const Eigen::Quaternionf &orientation,
+                            const Eigen::Vector4d &origin,
+                            const Eigen::Quaterniond &orientation,
                             int precision,
                             bool use_camera)
 {
@@ -891,8 +891,8 @@ void
 pcl::PLYWriter::writeContentWithCameraASCII (int nr_points,
                                              int point_size,
                                              const pcl::PCLPointCloud2 &cloud,
-                                             const Eigen::Vector4f &origin,
-                                             const Eigen::Quaternionf &orientation,
+                                             const Eigen::Vector4d &origin,
+                                             const Eigen::Quaterniond &orientation,
                                              std::ofstream& fs)
 {
   // Iterate through the points
@@ -1008,7 +1008,7 @@ pcl::PLYWriter::writeContentWithCameraASCII (int nr_points,
   else
     fs << origin[0] << " " << origin[1] << " " << origin[2] << " ";
 
-  Eigen::Matrix3f R = orientation.toRotationMatrix ();
+  Eigen::Matrix3d R = orientation.toRotationMatrix ();
   fs << R (0,0) << " " << R (0,1) << " " << R (0,2) << " ";
   fs << R (1,0) << " " << R (1,1) << " " << R (1,2) << " ";
   fs << R (2,0) << " " << R (2,1) << " " << R (2,2) << " ";
@@ -1177,8 +1177,8 @@ pcl::PLYWriter::writeContentWithRangeGridASCII (int nr_points,
 int
 pcl::PLYWriter::writeBinary (const std::string &file_name,
                              const pcl::PCLPointCloud2 &cloud,
-                             const Eigen::Vector4f &origin,
-                             const Eigen::Quaternionf &orientation,
+                             const Eigen::Vector4d &origin,
+                             const Eigen::Quaterniond &orientation,
                              bool use_camera)
 {
   if (cloud.data.empty ())
@@ -1385,7 +1385,7 @@ pcl::PLYWriter::writeBinary (const std::string &file_name,
         t = origin[i];
       fpout.write (reinterpret_cast<const char*> (&t), sizeof (double));
     }
-    Eigen::Matrix3f R = orientation.toRotationMatrix ();
+    Eigen::Matrix3d R = orientation.toRotationMatrix ();
     for (int i = 0; i < 3; ++i)
       for (int j = 0; j < 3; ++j)
     {

@@ -109,23 +109,23 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::tr
   model_votes_.resize (input_->size ());
 
   // compute model centroid
-  Eigen::Vector3f centroid (0, 0, 0);
+  Eigen::Vector3d centroid (0, 0, 0);
   for (size_t i = 0; i < input_->size (); ++i)
   {
-    centroid += input_->at (i).getVector3fMap ();
+    centroid += input_->at (i).getVector3dMap ();
   }
   centroid /= static_cast<double> (input_->size ());
 
   // compute model votes
   for (size_t i = 0; i < input_->size (); ++i)
   {
-    Eigen::Vector3f x_ax ((*input_rf_)[i].x_axis[0], (*input_rf_)[i].x_axis[1], (*input_rf_)[i].x_axis[2]);
-    Eigen::Vector3f y_ax ((*input_rf_)[i].y_axis[0], (*input_rf_)[i].y_axis[1], (*input_rf_)[i].y_axis[2]);
-    Eigen::Vector3f z_ax ((*input_rf_)[i].z_axis[0], (*input_rf_)[i].z_axis[1], (*input_rf_)[i].z_axis[2]);
+    Eigen::Vector3d x_ax ((*input_rf_)[i].x_axis[0], (*input_rf_)[i].x_axis[1], (*input_rf_)[i].x_axis[2]);
+    Eigen::Vector3d y_ax ((*input_rf_)[i].y_axis[0], (*input_rf_)[i].y_axis[1], (*input_rf_)[i].y_axis[2]);
+    Eigen::Vector3d z_ax ((*input_rf_)[i].z_axis[0], (*input_rf_)[i].z_axis[1], (*input_rf_)[i].z_axis[2]);
 
-    model_votes_[i].x () = x_ax.dot (centroid - input_->at (i).getVector3fMap ());
-    model_votes_[i].y () = y_ax.dot (centroid - input_->at (i).getVector3fMap ());
-    model_votes_[i].z () = z_ax.dot (centroid - input_->at (i).getVector3fMap ());
+    model_votes_[i].x () = x_ax.dot (centroid - input_->at (i).getVector3dMap ());
+    model_votes_[i].y () = y_ax.dot (centroid - input_->at (i).getVector3dMap ());
+    model_votes_[i].z () = z_ax.dot (centroid - input_->at (i).getVector3dMap ());
   }
 
   needs_training_ = false;
@@ -192,15 +192,15 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::ho
     int scene_index = model_scene_corrs_->at (i).index_match;
     int model_index = model_scene_corrs_->at (i).index_query;
 
-    const Eigen::Vector3f& scene_point = scene_->at (scene_index).getVector3fMap ();
+    const Eigen::Vector3d& scene_point = scene_->at (scene_index).getVector3dMap ();
     const PointSceneRfT&   scene_point_rf = scene_rf_->at (scene_index);
     
-    Eigen::Vector3f scene_point_rf_x (scene_point_rf.x_axis[0], scene_point_rf.x_axis[1], scene_point_rf.x_axis[2]);
-    Eigen::Vector3f scene_point_rf_y (scene_point_rf.y_axis[0], scene_point_rf.y_axis[1], scene_point_rf.y_axis[2]);
-    Eigen::Vector3f scene_point_rf_z (scene_point_rf.z_axis[0], scene_point_rf.z_axis[1], scene_point_rf.z_axis[2]);
+    Eigen::Vector3d scene_point_rf_x (scene_point_rf.x_axis[0], scene_point_rf.x_axis[1], scene_point_rf.x_axis[2]);
+    Eigen::Vector3d scene_point_rf_y (scene_point_rf.y_axis[0], scene_point_rf.y_axis[1], scene_point_rf.y_axis[2]);
+    Eigen::Vector3d scene_point_rf_z (scene_point_rf.z_axis[0], scene_point_rf.z_axis[1], scene_point_rf.z_axis[2]);
 
-    //const Eigen::Vector3f& model_point = input_->at (model_index).getVector3fMap ();
-    const Eigen::Vector3f& model_point_vote = model_votes_[model_index];
+    //const Eigen::Vector3d& model_point = input_->at (model_index).getVector3dMap ();
+    const Eigen::Vector3d& model_point_vote = model_votes_[model_index];
 
     scene_votes[i].x () = scene_point_rf_x[0] * model_point_vote.x () + scene_point_rf_y[0] * model_point_vote.y () + scene_point_rf_z[0] * model_point_vote.z () + scene_point.x ();
     scene_votes[i].y () = scene_point_rf_x[1] * model_point_vote.x () + scene_point_rf_y[1] * model_point_vote.y () + scene_point_rf_z[1] * model_point_vote.z () + scene_point.y ();
@@ -300,7 +300,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::cl
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //template<typename PointModelT, typename PointSceneT, typename PointModelRfT, typename PointSceneRfT> bool
-//pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::getTransformMatrix (const PointCloudConstPtr &scene_cloud, const Correspondences &corrs, Eigen::Matrix4f &transform)
+//pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::getTransformMatrix (const PointCloudConstPtr &scene_cloud, const Correspondences &corrs, Eigen::Matrix4d &transform)
 //{
 //  std::vector<int> model_indices;
 //  std::vector<int> scene_indices;
@@ -317,7 +317,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::cl
 //    return (false);
 //
 //  // Transform model coefficients from vectorXf to matrix4f
-//  Eigen::VectorXf coeffs;
+//  Eigen::VectorXd coeffs;
 //  ransac.getModelCoefficients (coeffs);
 //
 //  transform.row (0) = coeffs.segment<4> (0);
@@ -331,7 +331,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::cl
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointModelT, typename PointSceneT, typename PointModelRfT, typename PointSceneRfT> bool
 pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::recognize (
-    std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > &transformations)
+    std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > &transformations)
 {
   std::vector<pcl::Correspondences> model_instances;
   return (this->recognize (transformations, model_instances));
@@ -340,7 +340,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::re
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointModelT, typename PointSceneT, typename PointModelRfT, typename PointSceneRfT> bool
 pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::recognize (
-    std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > &transformations, std::vector<pcl::Correspondences> &clustered_corrs)
+    std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > &transformations, std::vector<pcl::Correspondences> &clustered_corrs)
 {
   transformations.clear ();
   if (!this->initCompute ())
@@ -359,7 +359,7 @@ pcl::Hough3DGrouping<PointModelT, PointSceneT, PointModelRfT, PointSceneRfT>::re
 
   //for (size_t i = 0; i < model_instances.size (); ++i)
   //{
-  //  Eigen::Matrix4f curr_transf;
+  //  Eigen::Matrix4d curr_transf;
   //  if (getTransformMatrix (temp_scene_cloud_ptr, model_instances[i], curr_transf))
   //    transformations.push_back (curr_transf);
   //}

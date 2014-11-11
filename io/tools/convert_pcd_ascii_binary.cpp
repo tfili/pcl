@@ -60,7 +60,7 @@ main (int argc, char** argv)
   }
 
   pcl::PCLPointCloud2 cloud;
-  Eigen::Vector4f origin; Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin; Eigen::Quaterniond orientation;
 
   if (pcl::io::loadPCDFile (string (argv[1]), cloud, origin, orientation) < 0)
   {

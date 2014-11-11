@@ -121,23 +121,23 @@ pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
 
     int n = static_cast<int> (vertices.size ());
     double area = 0.0f;
-    Eigen::Vector3f prev_p, cur_p;
-    Eigen::Vector3f total (0,0,0);
-    Eigen::Vector3f unit_normal;
+    Eigen::Vector3d prev_p, cur_p;
+    Eigen::Vector3d total (0,0,0);
+    Eigen::Vector3d unit_normal;
 
     if (n > 3)
     {
         for (int prev = n - 1, cur = 0; cur < n; prev = cur++)
         {
-            prev_p = points_->points[vertices[prev]].getVector3fMap();
-            cur_p = points_->points[vertices[cur]].getVector3fMap();
+            prev_p = points_->points[vertices[prev]].getVector3dMap();
+            cur_p = points_->points[vertices[cur]].getVector3dMap();
 
             total += prev_p.cross( cur_p );
         }
 
         //unit_normal is unit normal vector of plane defined by the first three points
-        prev_p = points_->points[vertices[1]].getVector3fMap() - points_->points[vertices[0]].getVector3fMap();
-        cur_p = points_->points[vertices[2]].getVector3fMap() - points_->points[vertices[0]].getVector3fMap();
+        prev_p = points_->points[vertices[1]].getVector3dMap() - points_->points[vertices[0]].getVector3dMap();
+        cur_p = points_->points[vertices[2]].getVector3dMap() - points_->points[vertices[0]].getVector3dMap();
         unit_normal = (prev_p.cross(cur_p)).normalized();
 
         area = total.dot( unit_normal );
@@ -151,13 +151,13 @@ pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
 bool
 pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& vertices)
 {
-  Eigen::Vector3f p_u, p_v, p_w;
-  p_u = points_->points[vertices[u]].getVector3fMap();
-  p_v = points_->points[vertices[v]].getVector3fMap();
-  p_w = points_->points[vertices[w]].getVector3fMap();
+  Eigen::Vector3d p_u, p_v, p_w;
+  p_u = points_->points[vertices[u]].getVector3dMap();
+  p_v = points_->points[vertices[v]].getVector3dMap();
+  p_w = points_->points[vertices[w]].getVector3dMap();
 
   const double eps = 1e-15f;
-  Eigen::Vector3f p_uv, p_uw;
+  Eigen::Vector3d p_uv, p_uw;
   p_uv = p_v - p_u;
   p_uw = p_w - p_u;
 
@@ -165,13 +165,13 @@ pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& verti
   if ((p_uv.cross(p_uw)).norm() < eps)
     return (false);
 
-  Eigen::Vector3f p;
+  Eigen::Vector3d p;
   // Check if any other vertex is inside the triangle.
   for (int k = 0; k < static_cast<int> (vertices.size ()); k++)
   {
     if ((k == u) || (k == v) || (k == w))
       continue;
-    p = points_->points[vertices[k]].getVector3fMap();
+    p = points_->points[vertices[k]].getVector3dMap();
 
     if (isInsideTriangle (p_u, p_v, p_w, p))
       return (false);
@@ -181,16 +181,16 @@ pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& verti
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::EarClipping::isInsideTriangle (const Eigen::Vector3f& u,
-                                    const Eigen::Vector3f& v,
-                                    const Eigen::Vector3f& w,
-                                    const Eigen::Vector3f& p)
+pcl::EarClipping::isInsideTriangle (const Eigen::Vector3d& u,
+                                    const Eigen::Vector3d& v,
+                                    const Eigen::Vector3d& w,
+                                    const Eigen::Vector3d& p)
 {
   // see http://www.blackpawn.com/texts/pointinpoly/default.html
   // Barycentric Coordinates
-  Eigen::Vector3f v0 = w - u;
-  Eigen::Vector3f v1 = v - u;
-  Eigen::Vector3f v2 = p - u;
+  Eigen::Vector3d v0 = w - u;
+  Eigen::Vector3d v1 = v - u;
+  Eigen::Vector3d v2 = p - u;
 
   // Compute dot products
   double dot00 = v0.dot(v0);

@@ -160,7 +160,7 @@ pcl::registration::LUM<PointT>::getPose (const Vertex &vertex) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointT> inline Eigen::Affine3f
+template<typename PointT> inline Eigen::Affine3d
 pcl::registration::LUM<PointT>::getTransformation (const Vertex &vertex) const
 {
   Eigen::Vector6f pose = getPose (vertex);
@@ -222,8 +222,8 @@ pcl::registration::LUM<PointT>::compute ()
       computeEdge (*e);
 
     // Declare matrices G and B
-    Eigen::MatrixXf G = Eigen::MatrixXf::Zero (6 * (n - 1), 6 * (n - 1));
-    Eigen::VectorXf B = Eigen::VectorXf::Zero (6 * (n - 1));
+    Eigen::MatrixXd G = Eigen::MatrixXd::Zero (6 * (n - 1), 6 * (n - 1));
+    Eigen::VectorXd B = Eigen::VectorXd::Zero (6 * (n - 1));
 
     // Start at 1 because 0 is the reference pose
     for (int vi = 1; vi != n; ++vi)
@@ -251,7 +251,7 @@ pcl::registration::LUM<PointT>::compute ()
 
     // Computation of the linear equation system: GX = B
     // TODO investigate accuracy vs. speed tradeoff and find the best solving method for our type of linear equation (sparse)
-    Eigen::VectorXf X = G.colPivHouseholderQr ().solve (B);
+    Eigen::VectorXd X = G.colPivHouseholderQr ().solve (B);
 
     // Update the poses
     double sum = 0.0;
@@ -304,14 +304,14 @@ pcl::registration::LUM<PointT>::computeEdge (const Edge &e)
   pcl::CorrespondencesPtr corrs = (*slam_graph_)[e].corrs_;
 
   // Build the average and difference vectors for all correspondences
-  std::vector <Eigen::Vector3f> corrs_aver (corrs->size ());
-  std::vector <Eigen::Vector3f> corrs_diff (corrs->size ());
+  std::vector <Eigen::Vector3d> corrs_aver (corrs->size ());
+  std::vector <Eigen::Vector3d> corrs_diff (corrs->size ());
   int oci = 0;  // oci = output correspondence iterator
   for (int ici = 0; ici != static_cast<int> (corrs->size ()); ++ici)  // ici = input correspondence iterator
   {
     // Compound the point pair onto the current pose
-    Eigen::Vector3f source_compounded = pcl::getTransformation (source_pose (0), source_pose (1), source_pose (2), source_pose (3), source_pose (4), source_pose (5)) * source_cloud->points[(*corrs)[ici].index_query].getVector3fMap ();
-    Eigen::Vector3f target_compounded = pcl::getTransformation (target_pose (0), target_pose (1), target_pose (2), target_pose (3), target_pose (4), target_pose (5)) * target_cloud->points[(*corrs)[ici].index_match].getVector3fMap ();
+    Eigen::Vector3d source_compounded = pcl::getTransformation (source_pose (0), source_pose (1), source_pose (2), source_pose (3), source_pose (4), source_pose (5)) * source_cloud->points[(*corrs)[ici].index_query].getVector3dMap ();
+    Eigen::Vector3d target_compounded = pcl::getTransformation (target_pose (0), target_pose (1), target_pose (2), target_pose (3), target_pose (4), target_pose (5)) * target_cloud->points[(*corrs)[ici].index_match].getVector3dMap ();
 
     // NaN points can not be passed to the remaining computational pipeline
     if (!pcl_isfinite (source_compounded (0)) || !pcl_isfinite (source_compounded (1)) || !pcl_isfinite (source_compounded (2)) || !pcl_isfinite (target_compounded (0)) || !pcl_isfinite (target_compounded (1)) || !pcl_isfinite (target_compounded (2)))

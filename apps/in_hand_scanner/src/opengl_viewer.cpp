@@ -795,20 +795,20 @@ pcl::ihs::OpenGLViewer::paintEvent (QPaintEvent* /*event*/)
   glLoadIdentity();
 
   // light 0 (directional)
-  glLightfv (GL_LIGHT0, GL_AMBIENT , Eigen::Vector4f (0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT0, GL_DIFFUSE , Eigen::Vector4f (0.6f, 0.6f, 0.6f, 1.0f).eval ().data () );
-  glLightfv (GL_LIGHT0, GL_SPECULAR, Eigen::Vector4f (0.2f, 0.2f, 0.2f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT0, GL_POSITION, Eigen::Vector4f (0.3f, 0.5f, 0.8f, 0.0f).normalized ().eval ().data ());
+  glLightfv (GL_LIGHT0, GL_AMBIENT , Eigen::Vector4d (0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
+  glLightfv (GL_LIGHT0, GL_DIFFUSE , Eigen::Vector4d (0.6f, 0.6f, 0.6f, 1.0f).eval ().data () );
+  glLightfv (GL_LIGHT0, GL_SPECULAR, Eigen::Vector4d (0.2f, 0.2f, 0.2f, 1.0f).eval ().data ());
+  glLightfv (GL_LIGHT0, GL_POSITION, Eigen::Vector4d (0.3f, 0.5f, 0.8f, 0.0f).normalized ().eval ().data ());
 
   // light 1 (directional)
-  glLightfv (GL_LIGHT1, GL_AMBIENT , Eigen::Vector4f ( 0.0f, 0.0f, 0.0f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT1, GL_DIFFUSE , Eigen::Vector4f ( 0.3f, 0.3f, 0.3f, 1.0f).eval ().data () );
-  glLightfv (GL_LIGHT1, GL_SPECULAR, Eigen::Vector4f ( 0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT1, GL_POSITION, Eigen::Vector4f (-0.3f, 0.5f, 0.8f, 0.0f).normalized ().eval ().data ());
+  glLightfv (GL_LIGHT1, GL_AMBIENT , Eigen::Vector4d ( 0.0f, 0.0f, 0.0f, 1.0f).eval ().data ());
+  glLightfv (GL_LIGHT1, GL_DIFFUSE , Eigen::Vector4d ( 0.3f, 0.3f, 0.3f, 1.0f).eval ().data () );
+  glLightfv (GL_LIGHT1, GL_SPECULAR, Eigen::Vector4d ( 0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
+  glLightfv (GL_LIGHT1, GL_POSITION, Eigen::Vector4d (-0.3f, 0.5f, 0.8f, 0.0f).normalized ().eval ().data ());
 
   // Material
   glColorMaterial (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-  glMaterialfv    (GL_FRONT, GL_SPECULAR , Eigen::Vector4f (0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
+  glMaterialfv    (GL_FRONT, GL_SPECULAR , Eigen::Vector4d (0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
   glMaterialf     (GL_FRONT, GL_SHININESS, 25.f);
 
   glEnable (GL_DEPTH_TEST);
@@ -870,7 +870,7 @@ pcl::ihs::OpenGLViewer::calcPivot ()
   boost::mutex::scoped_lock lock (mutex_vis_);
   if (this->getMeshIsAdded (cam_pivot_id_))
   {
-    Eigen::Vector4f pivot;
+    Eigen::Vector4d pivot;
     const FaceVertexMeshConstPtr mesh = drawn_meshes_ [cam_pivot_id_];
 
     if (pcl::compute3DCentroid (mesh->vertices, pivot))

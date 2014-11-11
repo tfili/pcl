@@ -14,7 +14,7 @@
 using namespace pcl;
 using namespace std;
 
-const Eigen::Vector4f subsampling_leaf_size (0.02f, 0.02f, 0.02f, 0.0f);
+const Eigen::Vector4d subsampling_leaf_size (0.02f, 0.02f, 0.02f, 0.0f);
 const double normal_estimation_search_radius = 0.05f;
 
 
@@ -143,8 +143,8 @@ main (int argc, char** argv)
       cloud_output_subsampled_xyz->points.push_back ( PointXYZ (cloud_output_subsampled.points[i].x, cloud_output_subsampled.points[i].y, cloud_output_subsampled.points[i].z));
 
 
-    Eigen::Matrix4f mat = ppf_registration.getFinalTransformation ();
-    Eigen::Affine3f final_transformation (mat);
+    Eigen::Matrix4d mat = ppf_registration.getFinalTransformation ();
+    Eigen::Affine3d final_transformation (mat);
 
 
     //  io::savePCDFileASCII ("output_subsampled_registered.pcd", cloud_output_subsampled);

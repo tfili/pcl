@@ -45,9 +45,9 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 inline void
-pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-                           const Eigen::Vector4f &point,
-                           Eigen::Vector4f &plane_parameters, double &curvature)
+pcl::solvePlaneParameters (const Eigen::Matrix3d &covariance_matrix,
+                           const Eigen::Vector4d &point,
+                           Eigen::Vector4d &plane_parameters, double &curvature)
 {
   solvePlaneParameters (covariance_matrix, plane_parameters [0], plane_parameters [1], plane_parameters [2], curvature);
 
@@ -58,7 +58,7 @@ pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 inline void
-pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+pcl::solvePlaneParameters (const Eigen::Matrix3d &covariance_matrix,
                            double &nx, double &ny, double &nz, double &curvature)
 {
   // Avoid getting hung on Eigen's optimizers
@@ -70,8 +70,8 @@ pcl::solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
 //      return;
 //    }
   // Extract the smallest eigenvalue and its eigenvector
-  EIGEN_ALIGN16 Eigen::Vector3f::Scalar eigen_value;
-  EIGEN_ALIGN16 Eigen::Vector3f eigen_vector;
+  EIGEN_ALIGN16 Eigen::Vector3d::Scalar eigen_value;
+  EIGEN_ALIGN16 Eigen::Vector3d eigen_vector;
   pcl::eigen33 (covariance_matrix, eigen_value, eigen_vector);
 
   nx = eigen_vector [0];

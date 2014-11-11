@@ -285,7 +285,7 @@ template <typename PointInT, typename StateT> void
 pcl::tracking::ParticleFilterTracker<PointInT, StateT>::computeTransformedPointCloudWithoutNormal
 (const StateT& hypothesis, PointCloudIn &cloud)
 {
-  const Eigen::Affine3f trans = toEigenMatrix (hypothesis);
+  const Eigen::Affine3d trans = toEigenMatrix (hypothesis);
   // destructively assigns to cloud
   pcl::transformPointCloud<PointInT> (*ref_, cloud, trans);
 }
@@ -300,7 +300,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::computeTransformedPointC
 #endif
 {
 #ifdef PCL_TRACKING_NORMAL_SUPPORTED
-  const Eigen::Affine3f trans = toEigenMatrix (hypothesis);
+  const Eigen::Affine3d trans = toEigenMatrix (hypothesis);
   // destructively assigns to cloud
   pcl::transformPointCloudWithNormals<PointInT> (*ref_, cloud, trans);
   for ( size_t i = 0; i < cloud.points.size (); i++ )
@@ -310,8 +310,8 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::computeTransformedPointC
     if (!pcl_isfinite(input_point.x) || !pcl_isfinite(input_point.y) || !pcl_isfinite(input_point.z))
       continue;
     // take occlusion into account
-    Eigen::Vector4f p = input_point.getVector4fMap ();
-    Eigen::Vector4f n = input_point.getNormalVector4fMap ();
+    Eigen::Vector4d p = input_point.getVector4dMap ();
+    Eigen::Vector4d n = input_point.getNormalVector4dMap ();
     double theta = pcl::getAngle3D (p, n);
     if ( theta > occlusion_angle_thr_ )
       indices.push_back (i);

@@ -94,7 +94,7 @@ namespace pcl
           * \param buffer
           */ 
         void 
-        run(const TsdfVolume& volume, const Eigen::Affine3f& camera_pose, tsdf_buffer* buffer);
+        run(const TsdfVolume& volume, const Eigen::Affine3d& camera_pose, tsdf_buffer* buffer);
 
         /** \brief Generates scene view using data raycasted by run method. So call it before.
           * \param[out] view output array for RGB image        
@@ -107,7 +107,7 @@ namespace pcl
           * \param[in] light_source_pose pose of light source
           */
         void
-        generateSceneView(View& view, const Eigen::Vector3f& light_source_pose) const;
+        generateSceneView(View& view, const Eigen::Vector3d& light_source_pose) const;
 
         /** \brief Generates depth image using data raycasted by run method. So call it before.
           * \param[out] depth output array for depth image        
@@ -143,10 +143,10 @@ namespace pcl
         MapArr normal_map_;
 
         /** \brief camera pose from which raycasting was done */
-        Eigen::Affine3f camera_pose_;
+        Eigen::Affine3d camera_pose_;
 
         /** \brief Last passed volume size */
-        Eigen::Vector3f volume_size_;
+        Eigen::Vector3d volume_size_;
 
 public:
 EIGEN_MAKE_ALIGNED_OPERATOR_NEW

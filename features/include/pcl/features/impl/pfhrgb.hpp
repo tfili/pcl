@@ -51,9 +51,9 @@ pcl::PFHRGBEstimation<PointInT, PointNT, PointOutT>::computeRGBPairFeatures (
 {
   Eigen::Vector4i colors1 (cloud.points[p_idx].r, cloud.points[p_idx].g, cloud.points[p_idx].b, 0),
       colors2 (cloud.points[q_idx].r, cloud.points[q_idx].g, cloud.points[q_idx].b, 0);
-  pcl::computeRGBPairFeatures (cloud.points[p_idx].getVector4fMap (), normals.points[p_idx].getNormalVector4fMap (),
+  pcl::computeRGBPairFeatures (cloud.points[p_idx].getVector4dMap (), normals.points[p_idx].getNormalVector4dMap (),
                                colors1,
-                               cloud.points[q_idx].getVector4fMap (), normals.points[q_idx].getNormalVector4fMap (),
+                               cloud.points[q_idx].getVector4dMap (), normals.points[q_idx].getNormalVector4dMap (),
                                colors2,
                                f1, f2, f3, f4, f5, f6, f7);
   return (true);
@@ -63,7 +63,7 @@ pcl::PFHRGBEstimation<PointInT, PointNT, PointOutT>::computeRGBPairFeatures (
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::PFHRGBEstimation<PointInT, PointNT, PointOutT>::computePointPFHRGBSignature (
     const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
-    const std::vector<int> &indices, int nr_split, Eigen::VectorXf &pfhrgb_histogram)
+    const std::vector<int> &indices, int nr_split, Eigen::VectorXd &pfhrgb_histogram)
 {
   int h_index, h_p;
 

@@ -75,7 +75,7 @@ We start by defining a structure to store the alignment results.  It contains a 
 
 .. note::
 
-   Because we are including an Eigen::Matrix4f in this struct, we need to include the EIGEN_MAKE_ALIGNED_OPERATOR_NEW macro, which will overload the struct's "operator new" so that it will generate 16-bytes-aligned pointers.  If you're curious, you can find more information about this issue `here <http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html>`_.
+   Because we are including an Eigen::Matrix4d in this struct, we need to include the EIGEN_MAKE_ALIGNED_OPERATOR_NEW macro, which will overload the struct's "operator new" so that it will generate 16-bytes-aligned pointers.  If you're curious, you can find more information about this issue `here <http://eigen.tuxfamily.org/dox/group__TopicStructHavingEigenMembers.html>`_.
 
 .. literalinclude:: sources/template_alignment/template_alignment.cpp
    :language: cpp

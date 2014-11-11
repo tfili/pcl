@@ -268,9 +268,9 @@ void Evaluation::saveAllPoses(const pcl::gpu::KinfuTracker& kinfu, int frame_num
   
   for(int i = 0; i < frame_number; ++i)
   {
-    Eigen::Affine3f pose = kinfu.getCameraPose(i);
-    Eigen::Quaternionf q(pose.rotation());
-    Eigen::Vector3f t = pose.translation();
+    Eigen::Affine3d pose = kinfu.getCameraPose(i);
+    Eigen::Quaterniond q(pose.rotation());
+    Eigen::Vector3d t = pose.translation();
 
     double stamp = accociations_.empty() ? depth_stamps_and_filenames_[i].first : accociations_[i].time1;
 

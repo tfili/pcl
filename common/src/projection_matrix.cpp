@@ -41,15 +41,15 @@
 void 
 pcl::getCameraMatrixFromProjectionMatrix (
     const Eigen::Matrix<double, 3, 4, Eigen::RowMajor>& projection_matrix, 
-    Eigen::Matrix3f& camera_matrix)
+    Eigen::Matrix3d& camera_matrix)
 {
-  Eigen::Matrix3f KR = projection_matrix.topLeftCorner <3, 3> ();
+  Eigen::Matrix3d KR = projection_matrix.topLeftCorner <3, 3> ();
 
-  Eigen::Matrix3f KR_KRT = KR * KR.transpose ();
+  Eigen::Matrix3d KR_KRT = KR * KR.transpose ();
   
-  Eigen::Matrix3f cam = KR_KRT / KR_KRT.coeff (8);
+  Eigen::Matrix3d cam = KR_KRT / KR_KRT.coeff (8);
 
-  memset (&(camera_matrix.coeffRef (0)), 0, sizeof (Eigen::Matrix3f::Scalar) * 9);
+  memset (&(camera_matrix.coeffRef (0)), 0, sizeof (Eigen::Matrix3d::Scalar) * 9);
   camera_matrix.coeffRef (8) = 1.0;
   
   if (camera_matrix.Flags & Eigen::RowMajorBit)

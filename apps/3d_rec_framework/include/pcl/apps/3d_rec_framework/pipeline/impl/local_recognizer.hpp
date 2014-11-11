@@ -51,7 +51,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
             std::stringstream dir_pose;
             dir_pose << path << "/pose_" << descr_model.view_id << ".txt";
 
-            Eigen::Matrix4f pose_matrix;
+            Eigen::Matrix4d pose_matrix;
             PersistenceUtils::readMatrixFromFile (dir_pose.str (), pose_matrix);
 
             std::pair<std::string, int> pair_model_view = std::make_pair (models->at (i).id_, descr_model.view_id);
@@ -201,7 +201,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
   {
 
     models_.reset (new std::vector<ModelT>);
-    transforms_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
+    transforms_.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
 
     PointInTPtr processed;
     typename pcl::PointCloud<FeatureT>::Ptr signatures (new pcl::PointCloud<FeatureT> ());
@@ -251,7 +251,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         nearestKSearch (flann_index_, histogram, 1, indices, distances);
 
         //read view pose and keypoint coordinates, transform keypoint coordinates to model coordinates
-        Eigen::Matrix4f homMatrixPose;
+        Eigen::Matrix4d homMatrixPose;
         getPose (flann_models_.at (indices[0][0]).model, flann_models_.at (indices[0][0]).view_id, homMatrixPose);
 
         typename pcl::PointCloud<PointInT>::Ptr keypoints (new pcl::PointCloud<PointInT> ());
@@ -259,7 +259,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
         PointInT view_keypoint = keypoints->points[flann_models_.at (indices[0][0]).keypoint_id];
         PointInT model_keypoint;
-        model_keypoint.getVector4fMap () = homMatrixPose.inverse () * view_keypoint.getVector4fMap ();
+        model_keypoint.getVector4dMap () = homMatrixPose.inverse () * view_keypoint.getVector4dMap ();
 
         typename std::map<std::string, ObjectHypothesis>::iterator it_map;
         if ((it_map = object_hypotheses.find (flann_models_.at (indices[0][0]).model.id_)) != object_hypotheses.end ())
@@ -345,7 +345,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
           //drawCorrespondences (processed, it_map->second, keypoints_pointcloud, corresp_clusters[i]);
 
-          Eigen::Matrix4f best_trans;
+          Eigen::Matrix4d best_trans;
           typename pcl::registration::TransformationEstimationSVD < PointInT, PointInT > t_est;
           t_est.estimateRigidTransformation (*(*it_map).second.correspondences_pointcloud, *keypoints_pointcloud, corresp_clusters[i], best_trans);
 
@@ -401,7 +401,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         typename pcl::PointCloud<PointInT>::Ptr output_ (new pcl::PointCloud<PointInT> ());
         reg.align (*output_);
 
-        Eigen::Matrix4f icp_trans = reg.getFinalTransformation ();
+        Eigen::Matrix4d icp_trans = reg.getFinalTransformation ();
         transforms_->at (i) = icp_trans * transforms_->at (i);
       }
     }
@@ -433,10 +433,10 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
       hv_algorithm_->getMask (mask_hv);
 
       boost::shared_ptr < std::vector<ModelT> > models_temp;
-      boost::shared_ptr < std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms_temp;
+      boost::shared_ptr < std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms_temp;
 
       models_temp.reset (new std::vector<ModelT>);
-      transforms_temp.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
+      transforms_temp.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
 
       for (size_t i = 0; i < models_->size (); i++)
       {
@@ -455,7 +455,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
 template<template<class > class Distance, typename PointInT, typename FeatureT>
   void
-  pcl::rec_3d_framework::LocalRecognitionPipeline<Distance, PointInT, FeatureT>::getPose (ModelT & model, int view_id, Eigen::Matrix4f & pose_matrix)
+  pcl::rec_3d_framework::LocalRecognitionPipeline<Distance, PointInT, FeatureT>::getPose (ModelT & model, int view_id, Eigen::Matrix4d & pose_matrix)
   {
 
     if (use_cache_)
@@ -463,7 +463,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
       typedef std::pair<std::string, int> mv_pair;
       mv_pair pair_model_view = std::make_pair (model.id_, view_id);
 
-      std::map<mv_pair, Eigen::Matrix4f, std::less<mv_pair>, Eigen::aligned_allocator<std::pair<mv_pair, Eigen::Matrix4f> > >::iterator it =
+      std::map<mv_pair, Eigen::Matrix4d, std::less<mv_pair>, Eigen::aligned_allocator<std::pair<mv_pair, Eigen::Matrix4d> > >::iterator it =
           poses_cache_.find (pair_model_view);
 
       if (it != poses_cache_.end ())

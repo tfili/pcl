@@ -58,10 +58,10 @@ using namespace std;
 using namespace pcl::device::kinfuLS;
 
 using pcl::device::kinfuLS::device_cast;
-using Eigen::AngleAxisf;
-using Eigen::Array3f;
+using Eigen::AngleAxisd;
+using Eigen::Array3d;
 using Eigen::Vector3i;
-using Eigen::Vector3f;
+using Eigen::Vector3d;
 
 namespace pcl
 {
@@ -69,16 +69,16 @@ namespace pcl
   {
     namespace kinfuLS
     {
-      Eigen::Vector3f rodrigues2(const Eigen::Matrix3f& matrix);                 
+      Eigen::Vector3d rodrigues2(const Eigen::Matrix3d& matrix);                 
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-pcl::gpu::kinfuLS::KinfuTracker::KinfuTracker (const Eigen::Vector3f &volume_size, const double shiftingDistance, int rows, int cols) : 
+pcl::gpu::kinfuLS::KinfuTracker::KinfuTracker (const Eigen::Vector3d &volume_size, const double shiftingDistance, int rows, int cols) : 
   cyclical_( DISTANCE_THRESHOLD, VOLUME_SIZE, VOLUME_X), rows_(rows), cols_(cols), global_time_(0), max_icp_distance_(0), integration_metric_threshold_(0.f), perform_last_scan_ (false), finished_(false), lost_ (false), disable_icp_ (false)
 {
-  //const Vector3f volume_size = Vector3f::Constant (VOLUME_SIZE);
+  //const Vector3d volume_size = Vector3d::Constant (VOLUME_SIZE);
   const Vector3i volume_resolution (VOLUME_X, VOLUME_Y, VOLUME_Z);
 
   volume_size_ = volume_size(0);
@@ -94,8 +94,8 @@ pcl::gpu::kinfuLS::KinfuTracker::KinfuTracker (const Eigen::Vector3f &volume_siz
 
   setDepthIntrinsics (FOCAL_LENGTH, FOCAL_LENGTH); // default values, can be overwritten
   
-  init_Rcam_ = Eigen::Matrix3f::Identity ();// * AngleAxisf(-30.f/180*3.1415926, Vector3f::UnitX());
-  init_tcam_ = volume_size * 0.5f - Vector3f (0, 0, volume_size (2) / 2 * 1.2f);
+  init_Rcam_ = Eigen::Matrix3d::Identity ();// * AngleAxisd(-30.f/180*3.1415926, Vector3d::UnitX());
+  init_tcam_ = volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
   const int iters[] = {10, 5, 4};
   std::copy (iters, iters + LEVELS, icp_iterations_);
@@ -117,8 +117,8 @@ pcl::gpu::kinfuLS::KinfuTracker::KinfuTracker (const Eigen::Vector3f &volume_siz
   // initialize cyclical buffer
   cyclical_.initBuffer(tsdf_volume_);
   
-  last_estimated_rotation_= Eigen::Matrix3f::Identity ();
-  last_estimated_translation_= volume_size * 0.5f - Vector3f (0, 0, volume_size (2) / 2 * 1.2f);
+  last_estimated_rotation_= Eigen::Matrix3d::Identity ();
+  last_estimated_translation_= volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
 }
 
@@ -134,7 +134,7 @@ pcl::gpu::kinfuLS::KinfuTracker::setDepthIntrinsics (double fx, double fy, doubl
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::kinfuLS::KinfuTracker::setInitialCameraPose (const Eigen::Affine3f& pose)
+pcl::gpu::kinfuLS::KinfuTracker::setInitialCameraPose (const Eigen::Affine3d& pose)
 {
   init_Rcam_ = pose.rotation ();
   init_tcam_ = pose.translation ();
@@ -246,8 +246,8 @@ pcl::gpu::kinfuLS::KinfuTracker::reset ()
     color_volume_->reset ();    
   
   // reset estimated pose
-  last_estimated_rotation_= Eigen::Matrix3f::Identity ();
-  last_estimated_translation_= Vector3f (volume_size_, volume_size_, volume_size_) * 0.5f - Vector3f (0, 0, volume_size_ / 2 * 1.2f);
+  last_estimated_rotation_= Eigen::Matrix3d::Identity ();
+  last_estimated_translation_= Vector3d (volume_size_, volume_size_, volume_size_) * 0.5f - Vector3d (0, 0, volume_size_ / 2 * 1.2f);
   
   
   lost_=false;
@@ -303,7 +303,7 @@ pcl::gpu::kinfuLS::KinfuTracker::allocateBufffers (int rows, int cols)
 }
 
 inline void 
-pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3frm& rotation_in_1, Matrix3frm& rotation_in_2, Vector3f& translation_in_1, Vector3f& translation_in_2, Mat33& rotation_out_1, Mat33& rotation_out_2, float3& translation_out_1, float3& translation_out_2)
+pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3drm& rotation_in_1, Matrix3drm& rotation_in_2, Vector3d& translation_in_1, Vector3d& translation_in_2, Mat33& rotation_out_1, Mat33& rotation_out_2, float3& translation_out_1, float3& translation_out_2)
 {
   rotation_out_1 = device_cast<Mat33> (rotation_in_1);
   rotation_out_2 = device_cast<Mat33> (rotation_in_2);
@@ -312,7 +312,7 @@ pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3frm& rotation_in_1, M
 }
 
 inline void 
-pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3frm& rotation_in_1, Matrix3frm& rotation_in_2, Vector3f& translation_in, Mat33& rotation_out_1, Mat33& rotation_out_2, float3& translation_out)
+pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3drm& rotation_in_1, Matrix3drm& rotation_in_2, Vector3d& translation_in, Mat33& rotation_out_1, Mat33& rotation_out_2, float3& translation_out)
 {
   rotation_out_1 = device_cast<Mat33> (rotation_in_1);
   rotation_out_2 = device_cast<Mat33> (rotation_in_2);
@@ -320,7 +320,7 @@ pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3frm& rotation_in_1, M
 }
 
 inline void 
-pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3frm& rotation_in, Vector3f& translation_in, Mat33& rotation_out, float3& translation_out)
+pcl::gpu::kinfuLS::KinfuTracker::convertTransforms (Matrix3drm& rotation_in, Vector3d& translation_in, Mat33& rotation_out, float3& translation_out)
 {
   rotation_out = device_cast<Mat33> (rotation_in);  
   translation_out = device_cast<float3>(translation_in);
@@ -352,7 +352,7 @@ pcl::gpu::kinfuLS::KinfuTracker::prepareMaps (const DepthMap& depth_raw, const I
 inline void
 pcl::gpu::kinfuLS::KinfuTracker::saveCurrentMaps()
 {
-  Matrix3frm rot_id = Eigen::Matrix3f::Identity ();
+  Matrix3drm rot_id = Eigen::Matrix3d::Identity ();
   Mat33 identity_rotation = device_cast<Mat33> (rot_id);
 
   // save vertex and normal maps for each level, keeping camera coordinates (i.e. no transform)
@@ -363,7 +363,7 @@ pcl::gpu::kinfuLS::KinfuTracker::saveCurrentMaps()
 }
 
 inline bool 
-pcl::gpu::kinfuLS::KinfuTracker::performICP(const Intr& cam_intrinsics, Matrix3frm& previous_global_rotation, Vector3f& previous_global_translation, Matrix3frm& current_global_rotation , Vector3f& current_global_translation)
+pcl::gpu::kinfuLS::KinfuTracker::performICP(const Intr& cam_intrinsics, Matrix3drm& previous_global_rotation, Vector3d& previous_global_translation, Matrix3drm& current_global_rotation , Vector3d& current_global_translation)
 {
   
   if(disable_icp_)
@@ -373,7 +373,7 @@ pcl::gpu::kinfuLS::KinfuTracker::performICP(const Intr& cam_intrinsics, Matrix3f
   }
   
   // Compute inverse rotation
-  Matrix3frm previous_global_rotation_inv = previous_global_rotation.inverse ();  // Rprev.t();  
+  Matrix3drm previous_global_rotation_inv = previous_global_rotation.inverse ();  // Rprev.t();  
  
  ///////////////////////////////////////////////
   // Convert pose to device type
@@ -383,8 +383,8 @@ pcl::gpu::kinfuLS::KinfuTracker::performICP(const Intr& cam_intrinsics, Matrix3f
   device_cam_trans_local_prev -= getCyclicalBufferStructure ()->origin_metric; ;
  
   // Use temporary pose, so that we modify the current global pose only if ICP converged
-  Matrix3frm resulting_rotation;
-  Vector3f resulting_translation;
+  Matrix3drm resulting_rotation;
+  Vector3d resulting_translation;
   
   // Initialize output pose to current pose
   current_global_rotation = previous_global_rotation;
@@ -450,8 +450,8 @@ pcl::gpu::kinfuLS::KinfuTracker::performICP(const Intr& cam_intrinsics, Matrix3f
         double gamma = result (2);
 
         // deduce incremental rotation and translation from ICP's results
-        Eigen::Matrix3f cam_rot_incremental = (Eigen::Matrix3f)AngleAxisf (gamma, Vector3f::UnitZ ()) * AngleAxisf (beta, Vector3f::UnitY ()) * AngleAxisf (alpha, Vector3f::UnitX ());
-        Vector3f cam_trans_incremental = result.tail<3> ();
+        Eigen::Matrix3d cam_rot_incremental = (Eigen::Matrix3d)AngleAxisd (gamma, Vector3d::UnitZ ()) * AngleAxisd (beta, Vector3d::UnitY ()) * AngleAxisd (alpha, Vector3d::UnitX ());
+        Vector3d cam_trans_incremental = result.tail<3> ();
 
         //compose global pose
         current_global_translation = cam_rot_incremental * current_global_translation + cam_trans_incremental;
@@ -465,13 +465,13 @@ pcl::gpu::kinfuLS::KinfuTracker::performICP(const Intr& cam_intrinsics, Matrix3f
 }
 
 inline bool 
-pcl::gpu::kinfuLS::KinfuTracker::performPairWiseICP(const Intr cam_intrinsics, Matrix3frm& resulting_rotation , Vector3f& resulting_translation)
+pcl::gpu::kinfuLS::KinfuTracker::performPairWiseICP(const Intr cam_intrinsics, Matrix3drm& resulting_rotation , Vector3d& resulting_translation)
 { 
   // we assume that both v and n maps are in the same coordinate space
   // initialize rotation and translation to respectively identity and zero
-  Matrix3frm previous_rotation = Eigen::Matrix3f::Identity ();
-  Matrix3frm previous_rotation_inv = previous_rotation.inverse ();
-  Vector3f previous_translation = Vector3f(0,0,0);
+  Matrix3drm previous_rotation = Eigen::Matrix3d::Identity ();
+  Matrix3drm previous_rotation_inv = previous_rotation.inverse ();
+  Vector3d previous_translation = Vector3d(0,0,0);
   
  ///////////////////////////////////////////////
   // Convert pose to device type
@@ -480,8 +480,8 @@ pcl::gpu::kinfuLS::KinfuTracker::performPairWiseICP(const Intr cam_intrinsics, M
   convertTransforms(previous_rotation_inv, previous_translation, device_cam_rot_prev_inv, device_cam_trans_prev);  
  
   // Initialize output pose to current pose (i.e. identity and zero translation)
-  Matrix3frm current_rotation = previous_rotation;
-  Vector3f current_translation = previous_translation;
+  Matrix3drm current_rotation = previous_rotation;
+  Vector3d current_translation = previous_translation;
    
   ///////////////////////////////////////////////
   // Run ICP
@@ -534,8 +534,8 @@ pcl::gpu::kinfuLS::KinfuTracker::performPairWiseICP(const Intr cam_intrinsics, M
         double gamma = result (2);
 
         // deduce incremental rotation and translation from ICP's results
-        Eigen::Matrix3f cam_rot_incremental = (Eigen::Matrix3f)AngleAxisf (gamma, Vector3f::UnitZ ()) * AngleAxisf (beta, Vector3f::UnitY ()) * AngleAxisf (alpha, Vector3f::UnitX ());
-        Vector3f cam_trans_incremental = result.tail<3> ();
+        Eigen::Matrix3d cam_rot_incremental = (Eigen::Matrix3d)AngleAxisd (gamma, Vector3d::UnitZ ()) * AngleAxisd (beta, Vector3d::UnitY ()) * AngleAxisd (alpha, Vector3d::UnitX ());
+        Vector3d cam_trans_incremental = result.tail<3> ();
 
         //compose global pose
         current_translation = cam_rot_incremental * current_translation + cam_trans_incremental;
@@ -558,8 +558,8 @@ pcl::gpu::kinfuLS::KinfuTracker::performPairWiseICP(const Intr cam_intrinsics, M
   }
   else
   {
-    resulting_rotation = Eigen::Matrix3f::Identity ();
-    resulting_translation = Vector3f(0,0,0);
+    resulting_rotation = Eigen::Matrix3d::Identity ();
+    resulting_translation = Vector3d(0,0,0);
   }
   // ICP has converged
   return (true);
@@ -585,10 +585,10 @@ pcl::gpu::kinfuLS::KinfuTracker::operator() (const DepthMap& depth_raw)
   if (global_time_ == 0) // this is the frist frame, the tsdf volume needs to be initialized
   {  
     // Initial rotation
-    Matrix3frm initial_cam_rot = rmats_[0]; //  [Ri|ti] - pos of camera
-    Matrix3frm initial_cam_rot_inv = initial_cam_rot.inverse ();
+    Matrix3drm initial_cam_rot = rmats_[0]; //  [Ri|ti] - pos of camera
+    Matrix3drm initial_cam_rot_inv = initial_cam_rot.inverse ();
     // Initial translation
-    Vector3f   initial_cam_trans = tvecs_[0]; //  transform from camera to global coo space for (i-1)th camera pose
+    Vector3d   initial_cam_trans = tvecs_[0]; //  transform from camera to global coo space for (i-1)th camera pose
     
     // Convert pose to device types
     Mat33 device_initial_cam_rot, device_initial_cam_rot_inv;
@@ -616,17 +616,17 @@ pcl::gpu::kinfuLS::KinfuTracker::operator() (const DepthMap& depth_raw)
   ///////////////////////////////////////////////////////////////////////////////////////////
   // Iterative Closest Point
   // Get the last-known pose
-  Matrix3frm last_known_global_rotation = rmats_[global_time_ - 1];            // [Ri|ti] - pos of camera, i.e.
-  Vector3f   last_known_global_translation = tvecs_[global_time_ - 1];          // transform from camera to global coo space for (i-1)th camera pose
+  Matrix3drm last_known_global_rotation = rmats_[global_time_ - 1];            // [Ri|ti] - pos of camera, i.e.
+  Vector3d   last_known_global_translation = tvecs_[global_time_ - 1];          // transform from camera to global coo space for (i-1)th camera pose
   // Declare variables to host ICP results 
-  Matrix3frm current_global_rotation;
-  Vector3f current_global_translation;
+  Matrix3drm current_global_rotation;
+  Vector3d current_global_translation;
   // Call ICP
   if(!performICP(intr, last_known_global_rotation, last_known_global_translation, current_global_rotation, current_global_translation))
   {
     // ICP based on synthetic maps failed -> try to estimate the current camera pose based on previous and current raw maps
-    Matrix3frm delta_rotation;
-    Vector3f delta_translation;    
+    Matrix3drm delta_rotation;
+    Vector3d delta_translation;    
     if(!performPairWiseICP(intr, delta_rotation, delta_translation))
     {
       // save current vertex and normal maps
@@ -662,7 +662,7 @@ pcl::gpu::kinfuLS::KinfuTracker::operator() (const DepthMap& depth_raw)
   // get the NEW local pose as device types
   Mat33  device_current_rotation_inv, device_current_rotation;   
   float3 device_current_translation_local;   
-  Matrix3frm cam_rot_local_curr_inv = current_global_rotation.inverse (); //rotation (local = global)
+  Matrix3drm cam_rot_local_curr_inv = current_global_rotation.inverse (); //rotation (local = global)
   convertTransforms(cam_rot_local_curr_inv, current_global_rotation, current_global_translation, device_current_rotation_inv, device_current_rotation, device_current_translation_local); 
   device_current_translation_local -= getCyclicalBufferStructure()->origin_metric;   // translation (local translation = global translation - origin of cube)
   
@@ -714,23 +714,23 @@ pcl::gpu::kinfuLS::KinfuTracker::operator() (const DepthMap& depth_raw)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Eigen::Affine3f
+Eigen::Affine3d
 pcl::gpu::kinfuLS::KinfuTracker::getCameraPose (int time) const
 {
   if (time > (int)rmats_.size () || time < 0)
     time = rmats_.size () - 1;
 
-  Eigen::Affine3f aff;
+  Eigen::Affine3d aff;
   aff.linear () = rmats_[time];
   aff.translation () = tvecs_[time];
   return (aff);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Eigen::Affine3f
+Eigen::Affine3d
 pcl::gpu::kinfuLS::KinfuTracker::getLastEstimatedPose () const
 {
-  Eigen::Affine3f aff;
+  Eigen::Affine3d aff;
   aff.linear () = last_estimated_rotation_;
   aff.translation () = last_estimated_translation_;
   return (aff);
@@ -777,8 +777,8 @@ pcl::gpu::kinfuLS::KinfuTracker::colorVolume()
 void
 pcl::gpu::kinfuLS::KinfuTracker::getImage (View& view) const
 {
-  //Eigen::Vector3f light_source_pose = tsdf_volume_->getSize() * (-3.f);
-  Eigen::Vector3f light_source_pose = tvecs_[tvecs_.size () - 1];
+  //Eigen::Vector3d light_source_pose = tsdf_volume_->getSize() * (-3.f);
+  Eigen::Vector3d light_source_pose = tvecs_[tvecs_.size () - 1];
 
   LightSource light;
   light.number = 1;
@@ -825,8 +825,8 @@ pcl::gpu::kinfuLS::KinfuTracker::operator() (const DepthMap& depth, const View& 
     const float3 device_volume_size = device_cast<const float3> (tsdf_volume_->getSize());
     Intr intr(fx_, fy_, cx_, cy_);
 
-    Matrix3frm R_inv = rmats_.back().inverse();
-    Vector3f   t     = tvecs_.back();
+    Matrix3drm R_inv = rmats_.back().inverse();
+    Vector3d   t     = tvecs_.back();
     
     Mat33&  device_Rcurr_inv = device_cast<Mat33> (R_inv);
     float3& device_tcurr = device_cast<float3> (t);
@@ -864,10 +864,10 @@ namespace pcl
         pcl::device::kinfuLS::mergePointNormal(c, n, o);           
       }
 
-      Eigen::Vector3f rodrigues2(const Eigen::Matrix3f& matrix)
+      Eigen::Vector3d rodrigues2(const Eigen::Matrix3d& matrix)
       {
-        Eigen::JacobiSVD<Eigen::Matrix3f> svd(matrix, Eigen::ComputeFullV | Eigen::ComputeFullU);    
-        Eigen::Matrix3f R = svd.matrixU() * svd.matrixV().transpose();
+        Eigen::JacobiSVD<Eigen::Matrix3d> svd(matrix, Eigen::ComputeFullV | Eigen::ComputeFullU);    
+        Eigen::Matrix3d R = svd.matrixU() * svd.matrixV().transpose();
 
         double rx = R(2, 1) - R(1, 2);
         double ry = R(0, 2) - R(2, 0);

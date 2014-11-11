@@ -71,7 +71,7 @@ pcl::NormalEstimationOMP<PointInT, PointOutT>::computeFeature (PointCloudOut &ou
         continue;
       }
 
-      Eigen::Vector4f n;
+      Eigen::Vector4d n;
       pcl::computePointNormal<PointInT> (*surface_, nn_indices,
                                          n,
                                          output.points[idx].curvature);
@@ -103,7 +103,7 @@ pcl::NormalEstimationOMP<PointInT, PointOutT>::computeFeature (PointCloudOut &ou
         continue;
       }
 
-      Eigen::Vector4f n;
+      Eigen::Vector4d n;
       pcl::computePointNormal<PointInT> (*surface_, nn_indices,
                                          n,
                                          output.points[idx].curvature);

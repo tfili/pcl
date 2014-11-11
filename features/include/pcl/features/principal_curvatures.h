@@ -78,11 +78,11 @@ namespace pcl
       /** \brief Empty constructor. */
       PrincipalCurvaturesEstimation () : 
         projected_normals_ (), 
-        xyz_centroid_ (Eigen::Vector3f::Zero ()), 
-        demean_ (Eigen::Vector3f::Zero ()),
-        covariance_matrix_ (Eigen::Matrix3f::Zero ()),
-        eigenvector_ (Eigen::Vector3f::Zero ()),
-        eigenvalues_ (Eigen::Vector3f::Zero ())
+        xyz_centroid_ (Eigen::Vector3d::Zero ()), 
+        demean_ (Eigen::Vector3d::Zero ()),
+        covariance_matrix_ (Eigen::Matrix3d::Zero ()),
+        eigenvector_ (Eigen::Vector3d::Zero ()),
+        eigenvalues_ (Eigen::Vector3d::Zero ())
       {
         feature_name_ = "PrincipalCurvaturesEstimation";
       };
@@ -116,21 +116,21 @@ namespace pcl
 
     private:
       /** \brief A pointer to the input dataset that contains the point normals of the XYZ dataset. */
-      std::vector<Eigen::Vector3f> projected_normals_;
+      std::vector<Eigen::Vector3d> projected_normals_;
 
       /** \brief SSE aligned placeholder for the XYZ centroid of a surface patch. */
-      Eigen::Vector3f xyz_centroid_;
+      Eigen::Vector3d xyz_centroid_;
 
       /** \brief Temporary point placeholder. */
-      Eigen::Vector3f demean_;
+      Eigen::Vector3d demean_;
 
       /** \brief Placeholder for the 3x3 covariance matrix at each surface patch. */
-      EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix_;
+      EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix_;
 
       /** \brief SSE aligned eigenvectors placeholder for a covariance matrix. */
-      Eigen::Vector3f eigenvector_;
+      Eigen::Vector3d eigenvector_;
       /** \brief eigenvalues placeholder for a covariance matrix. */
-      Eigen::Vector3f eigenvalues_;
+      Eigen::Vector3d eigenvalues_;
   };
 }
 

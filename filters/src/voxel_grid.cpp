@@ -47,7 +47,7 @@ typedef Eigen::Array<size_t, 4, 1> Array4size_t;
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx, int z_idx,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt)
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt)
 {
   // @todo fix this
   if (cloud->fields[x_idx].datatype != pcl::PCLPointField::FLOAT32 ||
@@ -58,13 +58,13 @@ pcl::getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx
     return;
   }
 
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
   size_t nr_points = cloud->width * cloud->height;
 
-  Eigen::Array4f pt = Eigen::Array4f::Zero ();
+  Eigen::Array4d pt = Eigen::Array4d::Zero ();
   Array4size_t xyz_offset (cloud->fields[x_idx].offset, cloud->fields[y_idx].offset, cloud->fields[z_idx].offset, 0);
 
   for (size_t cp = 0; cp < nr_points; ++cp)
@@ -93,7 +93,7 @@ pcl::getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx
 void
 pcl::getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx, int z_idx,
                   const std::string &distance_field_name, double min_distance, double max_distance,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative)
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt, bool limit_negative)
 {
   // @todo fix this
   if (cloud->fields[x_idx].datatype != pcl::PCLPointField::FLOAT32 ||
@@ -104,7 +104,7 @@ pcl::getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx
     return;
   }
 
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -120,7 +120,7 @@ pcl::getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx
 
   size_t nr_points = cloud->width * cloud->height;
 
-  Eigen::Array4f pt = Eigen::Array4f::Zero ();
+  Eigen::Array4d pt = Eigen::Array4d::Zero ();
   Array4size_t xyz_offset (cloud->fields[x_idx].offset,
                            cloud->fields[y_idx].offset,
                            cloud->fields[z_idx].offset,
@@ -212,7 +212,7 @@ pcl::VoxelGrid<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
   output.row_step     = input_->row_step;
   output.is_dense     = true;                 // we filter out invalid points
 
-  Eigen::Vector4f min_p, max_p;
+  Eigen::Vector4d min_p, max_p;
   // Get the minimum and maximum dimensions
   if (!filter_field_name_.empty ()) // If we don't want to process the entire cloud...
     getMinMax3D (input_, x_idx_, y_idx_, z_idx_, filter_field_name_, 
@@ -255,7 +255,7 @@ pcl::VoxelGrid<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
                            input_->fields[z_idx_].offset,
                            0);
   divb_mul_ = Eigen::Vector4i (1, div_b_[0], div_b_[0] * div_b_[1], 0);
-  Eigen::Vector4f pt  = Eigen::Vector4f::Zero ();
+  Eigen::Vector4d pt  = Eigen::Vector4d::Zero ();
 
   int centroid_size = 4;
   if (downsample_all_data_)
@@ -432,8 +432,8 @@ pcl::VoxelGrid<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     xyz_offset = Array4size_t (0, 4, 8, 12);
 
   index=0;
-  Eigen::VectorXf centroid = Eigen::VectorXf::Zero (centroid_size);
-  Eigen::VectorXf temporary = Eigen::VectorXf::Zero (centroid_size);
+  Eigen::VectorXd centroid = Eigen::VectorXd::Zero (centroid_size);
+  Eigen::VectorXd temporary = Eigen::VectorXd::Zero (centroid_size);
 
   for (size_t cp = 0; cp < index_vector.size ();)
   {

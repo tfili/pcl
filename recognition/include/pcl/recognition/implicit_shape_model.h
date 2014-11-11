@@ -126,8 +126,8 @@ namespace pcl
         void
         validateTree ();
 
-        Eigen::Vector3f
-        shiftMean (const Eigen::Vector3f& snapPt, const double in_dSigmaDist);
+        Eigen::Vector3d
+        shiftMean (const Eigen::Vector3d& snapPt, const double in_dSigmaDist);
 
       protected:
 
@@ -200,10 +200,10 @@ namespace pcl
       std::vector<double> sigmas_;
 
       /** \brief Stores the directions to objects center for each visual word. */
-      Eigen::MatrixXf directions_to_center_;
+      Eigen::MatrixXd directions_to_center_;
 
       /** \brief Stores the centers of the clusters that were obtained during the visual words clusterization. */
-      Eigen::MatrixXf clusters_centers_;
+      Eigen::MatrixXd clusters_centers_;
 
       /** \brief This is an array of clusters. Each cluster stores the indices of the visual words that it contains. */
       std::vector<std::vector<unsigned int> > clusters_;
@@ -458,7 +458,7 @@ namespace pcl
           * \param[out] clusters_centers stores the centers of clusters
           */
         bool
-        clusterDescriptors (std::vector< pcl::Histogram<FeatureSize> >& histograms, Eigen::MatrixXi& labels, Eigen::MatrixXf& clusters_centers);
+        clusterDescriptors (std::vector< pcl::Histogram<FeatureSize> >& histograms, Eigen::MatrixXi& labels, Eigen::MatrixXd& clusters_centers);
 
         /** \brief This method calculates the value of sigma used for calculating the learned weights for every single class.
           * \param[out] sigmas computed sigmas.
@@ -501,14 +501,14 @@ namespace pcl
           * \param[in] shift_point point relative to which the cloud will be shifted
           */
         void
-        shiftCloud (typename pcl::PointCloud<PointT>::Ptr in_cloud, Eigen::Vector3f shift_point);
+        shiftCloud (typename pcl::PointCloud<PointT>::Ptr in_cloud, Eigen::Vector3d shift_point);
 
         /** \brief This method simply computes the rotation matrix, so that the given normal
           * would match the Y axis after the transformation. This is done because the algorithm needs to be invariant
           * to the affine transformations.
           * \param[in] in_normal normal for which the rotation matrix need to be computed
           */
-        Eigen::Matrix3f
+        Eigen::Matrix3d
         alignYCoordWithNormal (const NormalT& in_normal);
 
         /** \brief This method applies transform set in in_transform to vector io_vector.
@@ -516,7 +516,7 @@ namespace pcl
           * \param[in] in_transform matrix that contains the transformation
           */
         void
-        applyTransform (Eigen::Vector3f& io_vec, const Eigen::Matrix3f& in_transform);
+        applyTransform (Eigen::Vector3d& io_vec, const Eigen::Matrix3d& in_transform);
 
         /** \brief This method estimates features for the given point cloud.
           * \param[in] sampled_point_cloud sampled point cloud for which the features must be computed
@@ -539,13 +539,13 @@ namespace pcl
           * \param[out] cluster_centers it will store the cluster centers
           */
         double
-        computeKMeansClustering (const Eigen::MatrixXf& points_to_cluster,
+        computeKMeansClustering (const Eigen::MatrixXd& points_to_cluster,
                                  int number_of_clusters,
                                  Eigen::MatrixXi& io_labels,
                                  TermCriteria criteria,
                                  int attempts,
                                  int flags,
-                                 Eigen::MatrixXf& cluster_centers);
+                                 Eigen::MatrixXd& cluster_centers);
 
         /** \brief Generates centers for clusters as described in 
           * Arthur, David and Sergei Vassilvitski (2007) k-means++: The Advantages of Careful Seeding.
@@ -555,8 +555,8 @@ namespace pcl
           * \param[in] trials number of trials to generate a center
           */
         void
-        generateCentersPP (const Eigen::MatrixXf& data,
-                           Eigen::MatrixXf& out_centers,
+        generateCentersPP (const Eigen::MatrixXd& data,
+                           Eigen::MatrixXd& out_centers,
                            int number_of_clusters,
                            int trials);
 
@@ -565,14 +565,14 @@ namespace pcl
           * \param[out] center it will the contain generated center
           */
         void
-        generateRandomCenter (const std::vector<Eigen::Vector2f>& boxes, Eigen::VectorXf& center);
+        generateRandomCenter (const std::vector<Eigen::Vector2d>& boxes, Eigen::VectorXd& center);
 
         /** \brief Computes the square distance beetween two vectors.
           * \param[in] vec_1 first vector
           * \param[in] vec_2 second vector
           */
         double
-        computeDistance (Eigen::VectorXf& vec_1, Eigen::VectorXf& vec_2);
+        computeDistance (Eigen::VectorXd& vec_1, Eigen::VectorXd& vec_2);
 
         /** \brief Forbids the assignment operator. */
         ImplicitShapeModelEstimation&

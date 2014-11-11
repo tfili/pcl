@@ -48,11 +48,11 @@ using namespace pcl::registration;
 TEST (PCL, WarpPointRigid6DFloat)
 {
   WarpPointRigid6D<PointXYZ, PointXYZ, double> warp;
-  Eigen::Quaternionf q (0.4455f, 0.9217f, 0.3382f, 0.3656f);
+  Eigen::Quaterniond q (0.4455f, 0.9217f, 0.3382f, 0.3656f);
   q.normalize ();
-  Eigen::Vector3f t (0.82550f, 0.11697f, 0.44864f);
+  Eigen::Vector3d t (0.82550f, 0.11697f, 0.44864f);
 
-  Eigen::VectorXf p (6);
+  Eigen::VectorXd p (6);
   p[0] = t.x (); p[1] = t.y (); p[2] = t.z (); p[3] = q.x (); p[4] = q.y (); p[5] = q.z ();
   warp.setParam (p);
 

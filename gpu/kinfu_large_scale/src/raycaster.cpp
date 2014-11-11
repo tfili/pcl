@@ -72,7 +72,7 @@ pcl::gpu::kinfuLS::RayCaster::setIntrinsics(double fx, double fy, double cx, dou
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& camera_pose, tsdf_buffer* buffer)
+pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3d& camera_pose, tsdf_buffer* buffer)
 {  
   camera_pose_.linear() = camera_pose.linear();
   camera_pose_.translation() = camera_pose.translation();
@@ -82,10 +82,10 @@ pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& came
   vertex_map_.create(rows * 3, cols);
   normal_map_.create(rows * 3, cols);
 
-  typedef Matrix<double, 3, 3, RowMajor> Matrix3f;
+  typedef Matrix<double, 3, 3, RowMajor> Matrix3d;
     
-  Matrix3f R = camera_pose_.linear();
-  Vector3f t = camera_pose_.translation();
+  Matrix3d R = camera_pose_.linear();
+  Vector3d t = camera_pose_.translation();
 
   const  pcl::device::kinfuLS::Mat33& device_R   = pcl::device::kinfuLS::device_cast<const pcl::device::kinfuLS::Mat33>(R);
   // const float3& device_t   = device_cast<const float3>(t);
@@ -109,7 +109,7 @@ pcl::gpu::kinfuLS::RayCaster::generateSceneView(View& view) const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::kinfuLS::RayCaster::generateSceneView(View& view, const Vector3f& light_source_pose) const
+pcl::gpu::kinfuLS::RayCaster::generateSceneView(View& view, const Vector3d& light_source_pose) const
 {
   pcl::device::kinfuLS::LightSource light;
   light.number = 1;  
@@ -128,7 +128,7 @@ pcl::gpu::kinfuLS::RayCaster::generateDepthImage(Depth& depth) const
   depth.create(rows, cols);    
   
   Matrix<double, 3, 3, RowMajor> R_inv = camera_pose_.linear().inverse();
-  Vector3f t = camera_pose_.translation();
+  Vector3d t = camera_pose_.translation();
   
   pcl::device::kinfuLS::generateDepth(pcl::device::kinfuLS::device_cast<pcl::device::kinfuLS::Mat33>(R_inv), pcl::device::kinfuLS::device_cast<const float3>(t), vertex_map_, depth);
 }

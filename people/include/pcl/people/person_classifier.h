@@ -158,7 +158,7 @@ namespace pcl
        * \return The person confidence.
        */
       double
-      evaluate (PointCloudPtr& image, Eigen::Vector3f& bottom, Eigen::Vector3f& top, Eigen::Vector3f& centroid,
+      evaluate (PointCloudPtr& image, Eigen::Vector3d& bottom, Eigen::Vector3d& top, Eigen::Vector3d& centroid,
          bool vertical);
     };
   } /* namespace people */

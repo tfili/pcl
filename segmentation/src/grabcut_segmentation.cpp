@@ -616,7 +616,7 @@ pcl::segmentation::grabcut::GaussianFitter::fit (Gaussian& g, std::size_t total_
     if (compute_eigens)
     {
       // Compute eigenvalues and vectors using SVD
-      Eigen::JacobiSVD<Eigen::Matrix3f> svd (g.covariance, Eigen::ComputeFullU);
+      Eigen::JacobiSVD<Eigen::Matrix3d> svd (g.covariance, Eigen::ComputeFullU);
       // Store highest eigenvalue
       g.eigenvalue = svd.singularValues ()[0];
       // Store corresponding eigenvector

@@ -88,19 +88,19 @@ namespace pcl
         * \param centre value to set
         */
       virtual void
-      setGridCentre (const Eigen::Vector2f& centre) { grid_centre_ = centre; }
+      setGridCentre (const Eigen::Vector2d& centre) { grid_centre_ = centre; }
 
       /** \brief Grid spacing (step) of the NDT grid
         * \param[in] step value to set
         */
       virtual void
-      setGridStep (const Eigen::Vector2f& step) { grid_step_ = step; }
+      setGridStep (const Eigen::Vector2d& step) { grid_step_ = step; }
 
       /** \brief NDT Grid extent (in either direction from the grid centre)
         * \param[in] extent value to set
         */
       virtual void
-      setGridExtent (const Eigen::Vector2f& extent) { grid_extent_ = extent; }
+      setGridExtent (const Eigen::Vector2d& extent) { grid_extent_ = extent; }
 
       /** \brief NDT Newton optimisation step size parameter
         * \param[in] lambda step size: 1 is simple newton optimisation, smaller values may improve convergence
@@ -127,7 +127,7 @@ namespace pcl
         * \param[in] guess the initial guess of the transformation to compute
         */
       virtual void 
-      computeTransformation (PointCloudSource &output, const Eigen::Matrix4f &guess);
+      computeTransformation (PointCloudSource &output, const Eigen::Matrix4d &guess);
 
       using Registration<PointSource, PointTarget>::reg_name_;
       using Registration<PointSource, PointTarget>::target_;
@@ -141,9 +141,9 @@ namespace pcl
       using Registration<PointSource, PointTarget>::update_visualizer_;
       using Registration<PointSource, PointTarget>::indices_;
 
-      Eigen::Vector2f grid_centre_;
-      Eigen::Vector2f grid_step_;
-      Eigen::Vector2f grid_extent_;
+      Eigen::Vector2d grid_centre_;
+      Eigen::Vector2d grid_step_;
+      Eigen::Vector2d grid_extent_;
       Eigen::Vector3d newton_lambda_;
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

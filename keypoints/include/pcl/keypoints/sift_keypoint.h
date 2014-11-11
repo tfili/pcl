@@ -163,7 +163,7 @@ namespace pcl
       void 
       computeScaleSpace (const PointCloudIn &input, KdTree &tree, 
                          const std::vector<double> &scales, 
-                         Eigen::MatrixXf &diff_of_gauss);
+                         Eigen::MatrixXd &diff_of_gauss);
 
       /** \brief Find the local minima and maxima in the provided difference-of-Gaussian (DoG) scale space
         * \param input the input point cloud 
@@ -174,7 +174,7 @@ namespace pcl
         */
       void 
       findScaleSpaceExtrema (const PointCloudIn &input, KdTree &tree, 
-                             const Eigen::MatrixXf &diff_of_gauss,
+                             const Eigen::MatrixXd &diff_of_gauss,
                              std::vector<int> &extrema_indices, std::vector<int> &extrema_scales);
 
 

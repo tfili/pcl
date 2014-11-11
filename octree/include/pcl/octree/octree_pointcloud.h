@@ -282,7 +282,7 @@ namespace pcl
          */
         int
         getApproxIntersectedVoxelCentersBySegment (
-            const Eigen::Vector3f& origin, const Eigen::Vector3f& end,
+            const Eigen::Vector3d& origin, const Eigen::Vector3d& end,
             AlignedPointTVector &voxel_center_list, double precision = 0.2);
 
         /** \brief Delete leaf node / voxel at given point
@@ -386,7 +386,7 @@ namespace pcl
          * \param[out] max_pt upper bound of voxel
          */
         inline void
-        getVoxelBounds (OctreeIteratorBase<OctreeT>& iterator, Eigen::Vector3f &min_pt, Eigen::Vector3f &max_pt)
+        getVoxelBounds (OctreeIteratorBase<OctreeT>& iterator, Eigen::Vector3d &min_pt, Eigen::Vector3d &max_pt)
         {
           this->genVoxelBoundsFromOctreeKey (iterator.getCurrentOctreeKey (),
               iterator.getCurrentOctreeDepth (), min_pt, max_pt);
@@ -522,8 +522,8 @@ namespace pcl
          */
         void
         genVoxelBoundsFromOctreeKey (const OctreeKey & key_arg,
-            unsigned int tree_depth_arg, Eigen::Vector3f &min_pt,
-            Eigen::Vector3f &max_pt) const;
+            unsigned int tree_depth_arg, Eigen::Vector3d &min_pt,
+            Eigen::Vector3d &max_pt) const;
 
         /** \brief Recursively search the tree for all leaf nodes and return a vector of voxel centers.
          * \param[in] node_arg current octree node to be explored

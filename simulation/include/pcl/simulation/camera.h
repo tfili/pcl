@@ -41,7 +41,7 @@ namespace pcl
                      double cx, double cy,
                      double z_near, double z_far);
 
-      Eigen::Matrix4f
+      Eigen::Matrix4d
       getProjectionMatrix () { return projection_matrix_; }
 
       double getX () const { return x_; }
@@ -114,7 +114,7 @@ namespace pcl
       double z_near_;
       double z_far_;
 
-      Eigen::Matrix4f projection_matrix_;
+      Eigen::Matrix4d projection_matrix_;
     };
   } // namespace - simulation
 } // namespace - pcl

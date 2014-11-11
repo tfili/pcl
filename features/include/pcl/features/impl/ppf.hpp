@@ -75,23 +75,23 @@ pcl::PPFEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
       if (i != j)
       {
         if (//pcl::computePPFPairFeature
-            pcl::computePairFeatures (input_->points[i].getVector4fMap (),
-                                      normals_->points[i].getNormalVector4fMap (),
-                                      input_->points[j].getVector4fMap (),
-                                      normals_->points[j].getNormalVector4fMap (),
+            pcl::computePairFeatures (input_->points[i].getVector4dMap (),
+                                      normals_->points[i].getNormalVector4dMap (),
+                                      input_->points[j].getVector4dMap (),
+                                      normals_->points[j].getNormalVector4dMap (),
                                       p.f1, p.f2, p.f3, p.f4))
         {
           // Calculate alpha_m angle
-          Eigen::Vector3f model_reference_point = input_->points[i].getVector3fMap (),
-                          model_reference_normal = normals_->points[i].getNormalVector3fMap (),
-                          model_point = input_->points[j].getVector3fMap ();
-          double rotation_angle = acosf (model_reference_normal.dot (Eigen::Vector3f::UnitX ()));
+          Eigen::Vector3d model_reference_point = input_->points[i].getVector3dMap (),
+                          model_reference_normal = normals_->points[i].getNormalVector3dMap (),
+                          model_point = input_->points[j].getVector3dMap ();
+          double rotation_angle = acosf (model_reference_normal.dot (Eigen::Vector3d::UnitX ()));
           bool parallel_to_x = (model_reference_normal.y() == 0.0f && model_reference_normal.z() == 0.0f);
-          Eigen::Vector3f rotation_axis = (parallel_to_x)?(Eigen::Vector3f::UnitY ()):(model_reference_normal.cross (Eigen::Vector3f::UnitX ()). normalized());
-          Eigen::AngleAxisf rotation_mg (rotation_angle, rotation_axis);
-          Eigen::Affine3f transform_mg (Eigen::Translation3f ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg);
+          Eigen::Vector3d rotation_axis = (parallel_to_x)?(Eigen::Vector3d::UnitY ()):(model_reference_normal.cross (Eigen::Vector3d::UnitX ()). normalized());
+          Eigen::AngleAxisd rotation_mg (rotation_angle, rotation_axis);
+          Eigen::Affine3d transform_mg (Eigen::Translation3d ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg);
 
-          Eigen::Vector3f model_point_transformed = transform_mg * model_point;
+          Eigen::Vector3d model_point_transformed = transform_mg * model_point;
           double angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
           if (sin (angle) * model_point_transformed(2) < 0.0f)
             angle *= (-1);

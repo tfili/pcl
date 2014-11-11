@@ -241,7 +241,7 @@ pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCl
       continue;
 
     PointOutT p;
-    p.getVector3fMap () = input_->points[idx].getVector3fMap ();
+    p.getVector3dMap () = input_->points[idx].getVector3dMap ();
     p.intensity = response_->points [idx];
 
 #ifdef _OPENMP

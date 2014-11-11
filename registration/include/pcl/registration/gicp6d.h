@@ -139,7 +139,7 @@ namespace pcl
        */
       void
       computeTransformation (PointCloudSource& output,
-          const Eigen::Matrix4f& guess);
+          const Eigen::Matrix4d& guess);
 
       /** \brief Search for the closest nearest neighbor of a given point.
        * \param query the point to search a nearest neighbour for

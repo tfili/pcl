@@ -24,8 +24,8 @@ displayPlanarRegions (std::vector<pcl::PlanarRegion<PointT>, Eigen::aligned_allo
 
   for (size_t i = 0; i < regions.size (); i++)
   {
-    Eigen::Vector3f centroid = regions[i].getCentroid ();
-    Eigen::Vector4f model = regions[i].getCoefficients ();
+    Eigen::Vector3d centroid = regions[i].getCentroid ();
+    Eigen::Vector4d model = regions[i].getCoefficients ();
     pcl::PointXYZ pt1 = pcl::PointXYZ (centroid[0], centroid[1], centroid[2]);
     pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5f * model[0]),
                                        centroid[1] + (0.5f * model[1]),
@@ -134,7 +134,7 @@ removePreviousDataFromScreen (size_t prev_models_size, size_t prev_clusters_size
 bool
 compareClusterToRegion (pcl::PlanarRegion<PointT>& region, pcl::PointCloud<PointT>& cluster)
 {
-  Eigen::Vector4f model = region.getCoefficients ();
+  Eigen::Vector4d model = region.getCoefficients ();
   pcl::PointCloud<PointT> poly;
   poly.points = region.getContour ();
   
@@ -166,12 +166,12 @@ comparePointToRegion (PointT& pt, pcl::ModelCoefficients& model, pcl::PointCloud
 //    dist_ok = true;
 
   //project the point onto the plane
-  Eigen::Vector3f mc (model.values[0], model.values[1], model.values[2]);
-  Eigen::Vector3f pt_vec;
+  Eigen::Vector3d mc (model.values[0], model.values[1], model.values[2]);
+  Eigen::Vector3d pt_vec;
   pt_vec[0] = pt.x;
   pt_vec[1] = pt.y;
   pt_vec[2] = pt.z;
-  Eigen::Vector3f projected (pt_vec - mc * double (ptp_dist));
+  Eigen::Vector3d projected (pt_vec - mc * double (ptp_dist));
   PointT projected_pt;
   projected_pt.x = projected[0];
   projected_pt.y = projected[1];

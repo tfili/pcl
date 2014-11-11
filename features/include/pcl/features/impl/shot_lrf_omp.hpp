@@ -65,7 +65,7 @@ pcl::SHOTLocalReferenceFrameEstimationOMP<PointInT, PointOutT>::computeFeature (
   for (int i = 0; i < data_size; ++i)
   {
     // point result
-    Eigen::Matrix3f rf;
+    Eigen::Matrix3d rf;
     PointOutT& output_rf = output[i];
 
     //output_rf.confidence = getLocalRF ((*indices_)[i], rf);

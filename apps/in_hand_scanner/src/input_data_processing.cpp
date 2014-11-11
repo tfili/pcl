@@ -172,19 +172,19 @@ pcl::ihs::InputDataProcessing::segment (const CloudXYZRGBAConstPtr& cloud_in,
         normal = (*cloud_normals) [r*width + c];
 
         // m -> cm
-        xyzrgb.getVector3fMap () = 100.f * xyzrgb.getVector3fMap ();
+        xyzrgb.getVector3dMap () = 100.f * xyzrgb.getVector3dMap ();
 
         if (hsv_mask (r, c))
         {
-          pt_discarded.getVector4fMap ()       = xyzrgb.getVector4fMap ();
-          pt_discarded.getNormalVector4fMap () = normal.getNormalVector4fMap ();
+          pt_discarded.getVector4dMap ()       = xyzrgb.getVector4dMap ();
+          pt_discarded.getNormalVector4dMap () = normal.getNormalVector4dMap ();
 
           pt_out.x = std::numeric_limits <double>::quiet_NaN ();
         }
         else
         {
-          pt_out.getVector4fMap ()       = xyzrgb.getVector4fMap ();
-          pt_out.getNormalVector4fMap () = normal.getNormalVector4fMap ();
+          pt_out.getVector4dMap ()       = xyzrgb.getVector4dMap ();
+          pt_out.getNormalVector4dMap () = normal.getNormalVector4dMap ();
           pt_out.rgba                    = xyzrgb.rgba;
 
           pt_discarded.x = std::numeric_limits <double>::quiet_NaN ();
@@ -246,13 +246,13 @@ pcl::ihs::InputDataProcessing::calculateNormals (const CloudXYZRGBAConstPtr& clo
 
   for (; it_in!=cloud_in->end (); ++it_in, ++it_n, ++it_out)
   {
-    if (!boost::math::isnan (it_n->getNormalVector4fMap ()))
+    if (!boost::math::isnan (it_n->getNormalVector4dMap ()))
     {
       // m -> cm
-      it_out->getVector4fMap ()       = 100.f * it_in->getVector4fMap ();
+      it_out->getVector4dMap ()       = 100.f * it_in->getVector4dMap ();
       it_out->data [3]                = 1.f;
       it_out->rgba                    = it_in->rgba;
-      it_out->getNormalVector4fMap () = it_n->getNormalVector4fMap ();
+      it_out->getNormalVector4dMap () = it_n->getNormalVector4dMap ();
     }
     else
     {

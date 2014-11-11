@@ -137,7 +137,7 @@ TEST (PCL, SIFTKeypoint_radiusSearch)
   {
     scales[i_scale] = base_scale * pow (2.0f, static_cast<double> (i_scale-1) / nr_scales_per_octave);
   }
-  Eigen::MatrixXf diff_of_gauss;
+  Eigen::MatrixXd diff_of_gauss;
 
   std::vector<int> nn_indices;
   std::vector<double> nn_dist;

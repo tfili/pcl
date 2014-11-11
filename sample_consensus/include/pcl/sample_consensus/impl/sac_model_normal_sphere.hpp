@@ -46,7 +46,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> void
 pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::selectWithinDistance (
-      const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers)
+      const Eigen::VectorXd &model_coefficients, const double threshold, std::vector<int> &inliers)
 {
   if (!normals_)
   {
@@ -63,7 +63,7 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::selectWithinDistance (
   }
 
   // Obtain the sphere center
-  Eigen::Vector4f center = model_coefficients;
+  Eigen::Vector4d center = model_coefficients;
   center[3] = 0;
 
   int nr_p = 0;
@@ -75,17 +75,17 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::selectWithinDistance (
   {
     // Calculate the distance from the point to the sphere center as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    Eigen::Vector4f p (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d p (input_->points[(*indices_)[i]].x, 
                        input_->points[(*indices_)[i]].y,
                        input_->points[(*indices_)[i]].z, 
                        0);
 
-    Eigen::Vector4f n (normals_->points[(*indices_)[i]].normal[0], 
+    Eigen::Vector4d n (normals_->points[(*indices_)[i]].normal[0], 
                        normals_->points[(*indices_)[i]].normal[1], 
                        normals_->points[(*indices_)[i]].normal[2], 
                        0);
 
-    Eigen::Vector4f n_dir = p - center;
+    Eigen::Vector4d n_dir = p - center;
     double d_euclid = fabs (n_dir.norm () - model_coefficients[3]);
 
     // Calculate the angular distance between the point normal and the plane normal
@@ -108,7 +108,7 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::selectWithinDistance (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> int
 pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::countWithinDistance (
-      const Eigen::VectorXf &model_coefficients,  const double threshold)
+      const Eigen::VectorXd &model_coefficients,  const double threshold)
 {
   if (!normals_)
   {
@@ -122,7 +122,7 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::countWithinDistance (
 
 
   // Obtain the shpere centroid
-  Eigen::Vector4f center = model_coefficients;
+  Eigen::Vector4d center = model_coefficients;
   center[3] = 0;
 
   int nr_p = 0;
@@ -132,17 +132,17 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::countWithinDistance (
   {
     // Calculate the distance from the point to the sphere centroid as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    Eigen::Vector4f p (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d p (input_->points[(*indices_)[i]].x, 
                        input_->points[(*indices_)[i]].y, 
                        input_->points[(*indices_)[i]].z, 
                        0);
 
-    Eigen::Vector4f n (normals_->points[(*indices_)[i]].normal[0], 
+    Eigen::Vector4d n (normals_->points[(*indices_)[i]].normal[0], 
                        normals_->points[(*indices_)[i]].normal[1], 
                        normals_->points[(*indices_)[i]].normal[2], 
                        0);
 
-    Eigen::Vector4f n_dir = (p-center);
+    Eigen::Vector4d n_dir = (p-center);
     double d_euclid = fabs (n_dir.norm () - model_coefficients[3]);
     //
     // Calculate the angular distance between the point normal and the plane normal
@@ -158,7 +158,7 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::countWithinDistance (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> void
 pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::getDistancesToModel (
-      const Eigen::VectorXf &model_coefficients, std::vector<double> &distances)
+      const Eigen::VectorXd &model_coefficients, std::vector<double> &distances)
 {
   if (!normals_)
   {
@@ -174,7 +174,7 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::getDistancesToModel (
   }
 
   // Obtain the sphere centroid
-  Eigen::Vector4f center = model_coefficients;
+  Eigen::Vector4d center = model_coefficients;
   center[3] = 0;
 
   distances.resize (indices_->size ());
@@ -184,17 +184,17 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::getDistancesToModel (
   {
     // Calculate the distance from the point to the sphere as the difference between
     // dist(point,sphere_origin) and sphere_radius
-    Eigen::Vector4f p (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d p (input_->points[(*indices_)[i]].x, 
                        input_->points[(*indices_)[i]].y, 
                        input_->points[(*indices_)[i]].z, 
                        0);
 
-    Eigen::Vector4f n (normals_->points[(*indices_)[i]].normal[0], 
+    Eigen::Vector4d n (normals_->points[(*indices_)[i]].normal[0], 
                        normals_->points[(*indices_)[i]].normal[1], 
                        normals_->points[(*indices_)[i]].normal[2], 
                        0);
 
-    Eigen::Vector4f n_dir = (p-center);
+    Eigen::Vector4d n_dir = (p-center);
     double d_euclid = fabs (n_dir.norm () - model_coefficients[3]);
     //
     // Calculate the angular distance between the point normal and the plane normal
@@ -207,7 +207,7 @@ pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::getDistancesToModel (
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> bool 
-pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::isModelValid (const Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelNormalSphere<PointT, PointNT>::isModelValid (const Eigen::VectorXd &model_coefficients)
 {
   // Needs a valid model coefficients
   if (model_coefficients.size () != 4)

@@ -226,7 +226,7 @@ namespace pcl
           * \return number of intersected voxels
          */
         int
-        getIntersectedVoxelCenters (Eigen::Vector3f origin, Eigen::Vector3f direction,
+        getIntersectedVoxelCenters (Eigen::Vector3d origin, Eigen::Vector3d direction,
                                     AlignedPointTVector &voxel_center_list, int max_voxel_count = 0) const;
 
         /** \brief Get indices of all voxels that are intersected by a ray (origin, direction).
@@ -237,7 +237,7 @@ namespace pcl
          * \return number of intersected voxels
          */
         int
-        getIntersectedVoxelIndices (Eigen::Vector3f origin, Eigen::Vector3f direction,
+        getIntersectedVoxelIndices (Eigen::Vector3d origin, Eigen::Vector3d direction,
                                     std::vector<int> &k_indices,
                                     int max_voxel_count = 0) const;
 
@@ -249,7 +249,7 @@ namespace pcl
          * \return number of points found within search area
          */
         int
-        boxSearch (const Eigen::Vector3f &min_pt, const Eigen::Vector3f &max_pt, std::vector<int> &k_indices) const;
+        boxSearch (const Eigen::Vector3d &min_pt, const Eigen::Vector3d &max_pt, std::vector<int> &k_indices) const;
 
       protected:
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -425,7 +425,7 @@ namespace pcl
          * \param[out] k_indices the resultant point indices
          */
         void
-        boxSearchRecursive (const Eigen::Vector3f &min_pt, const Eigen::Vector3f &max_pt, const BranchNode* node,
+        boxSearchRecursive (const Eigen::Vector3d &min_pt, const Eigen::Vector3d &max_pt, const BranchNode* node,
                             const OctreeKey& key, unsigned int tree_depth, std::vector<int>& k_indices) const;
 
         /** \brief Recursively search the tree for all intersected leaf nodes and return a vector of indices.
@@ -463,7 +463,7 @@ namespace pcl
           * \param a
           */
         inline void
-        initIntersectedVoxel (Eigen::Vector3f &origin, Eigen::Vector3f &direction,
+        initIntersectedVoxel (Eigen::Vector3d &origin, Eigen::Vector3d &direction,
                               double &min_x, double &min_y, double &min_z,
                               double &max_x, double &max_y, double &max_z,
                               unsigned char &a) const

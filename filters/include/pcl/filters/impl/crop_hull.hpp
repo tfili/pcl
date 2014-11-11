@@ -51,7 +51,7 @@ pcl::CropHull<PointT>::applyFilter (PointCloud &output)
     // conditioning of the problem: choose to squash the XYZ component of the
     // hull-points that has least variation - this will also give reasonable
     // results if the points don't lie exactly in the same plane
-    const Eigen::Vector3f range = getHullCloudRange ();
+    const Eigen::Vector3d range = getHullCloudRange ();
     if (range[0] <= range[1] && range[0] <= range[2])
       applyFilter2D<1,2> (output);
     else if (range[1] <= range[2] && range[1] <= range[0])
@@ -76,7 +76,7 @@ pcl::CropHull<PointT>::applyFilter (std::vector<int> &indices)
     // conditioning of the problem: choose to squash the XYZ component of the
     // hull-points that has least variation - this will also give reasonable
     // results if the points don't lie exactly in the same plane
-    const Eigen::Vector3f range = getHullCloudRange ();
+    const Eigen::Vector3d range = getHullCloudRange ();
     if (range[0] <= range[1] && range[0] <= range[2])
       applyFilter2D<1,2> (indices);
     else if (range[1] <= range[2] && range[1] <= range[0])
@@ -91,22 +91,22 @@ pcl::CropHull<PointT>::applyFilter (std::vector<int> &indices)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointT> Eigen::Vector3f
+template<typename PointT> Eigen::Vector3d
 pcl::CropHull<PointT>::getHullCloudRange ()
 {
-  Eigen::Vector3f cloud_min (
+  Eigen::Vector3d cloud_min (
     std::numeric_limits<double> ().max (),
     std::numeric_limits<double> ().max (),
     std::numeric_limits<double> ().max ()
   );
-  Eigen::Vector3f cloud_max (
+  Eigen::Vector3d cloud_max (
     -std::numeric_limits<double> ().max (),
     -std::numeric_limits<double> ().max (),
     -std::numeric_limits<double> ().max ()
   );
   for (size_t index = 0; index < indices_->size (); index++)
   {
-    Eigen::Vector3f pt = input_->points[(*indices_)[index]].getVector3fMap ();
+    Eigen::Vector3d pt = input_->points[(*indices_)[index]].getVector3dMap ();
     for (int i = 0; i < 3; i++)
     {
       if (pt[i] < cloud_min[i]) cloud_min[i] = pt[i];
@@ -187,11 +187,11 @@ pcl::CropHull<PointT>::applyFilter3D (PointCloud &output)
     // hit the edge between polygons than coordinate-axis aligned rays would
     // be.
     size_t crossings[3] = {0,0,0};
-    Eigen::Vector3f rays[3] = 
+    Eigen::Vector3d rays[3] = 
     {
-      Eigen::Vector3f (0.264882f,  0.688399f, 0.675237f),
-      Eigen::Vector3f (0.0145419f, 0.732901f, 0.68018f),
-      Eigen::Vector3f (0.856514f,  0.508771f, 0.0868081f)
+      Eigen::Vector3d (0.264882f,  0.688399f, 0.675237f),
+      Eigen::Vector3d (0.0145419f, 0.732901f, 0.68018f),
+      Eigen::Vector3d (0.856514f,  0.508771f, 0.0868081f)
     };
 
     for (size_t poly = 0; poly < hull_polygons_.size (); poly++)
@@ -214,11 +214,11 @@ pcl::CropHull<PointT>::applyFilter3D (std::vector<int> &indices)
   for (size_t index = 0; index < indices_->size (); index++)
   {
     size_t crossings[3] = {0,0,0};
-    Eigen::Vector3f rays[3] = 
+    Eigen::Vector3d rays[3] = 
     {
-      Eigen::Vector3f(0.264882f,  0.688399f, 0.675237f),
-      Eigen::Vector3f(0.0145419f, 0.732901f, 0.68018f),
-      Eigen::Vector3f(0.856514f,  0.508771f, 0.0868081f)
+      Eigen::Vector3d(0.264882f,  0.688399f, 0.675237f),
+      Eigen::Vector3d(0.0145419f, 0.732901f, 0.68018f),
+      Eigen::Vector3d(0.856514f,  0.508771f, 0.0868081f)
     };
 
     for (size_t poly = 0; poly < hull_polygons_.size (); poly++)
@@ -242,12 +242,12 @@ pcl::CropHull<PointT>::isPointIn2DPolyWithVertIndices (
   double x1, x2, y1, y2;
 
   const int nr_poly_points = static_cast<const int>(verts.vertices.size ());
-  double xold = cloud[verts.vertices[nr_poly_points - 1]].getVector3fMap ()[PlaneDim1];
-  double yold = cloud[verts.vertices[nr_poly_points - 1]].getVector3fMap ()[PlaneDim2];
+  double xold = cloud[verts.vertices[nr_poly_points - 1]].getVector3dMap ()[PlaneDim1];
+  double yold = cloud[verts.vertices[nr_poly_points - 1]].getVector3dMap ()[PlaneDim2];
   for (int i = 0; i < nr_poly_points; i++)
   {
-    const double xnew = cloud[verts.vertices[i]].getVector3fMap ()[PlaneDim1];
-    const double ynew = cloud[verts.vertices[i]].getVector3fMap ()[PlaneDim2];
+    const double xnew = cloud[verts.vertices[i]].getVector3dMap ()[PlaneDim1];
+    const double ynew = cloud[verts.vertices[i]].getVector3dMap ()[PlaneDim2];
     if (xnew > xold)
     {
       x1 = xold;
@@ -263,8 +263,8 @@ pcl::CropHull<PointT>::isPointIn2DPolyWithVertIndices (
       y2 = yold;
     }
 
-    if ((xnew < point.getVector3fMap ()[PlaneDim1]) == (point.getVector3fMap ()[PlaneDim1] <= xold) &&
-        (point.getVector3fMap ()[PlaneDim2] - y1) * (x2 - x1) < (y2 - y1) * (point.getVector3fMap ()[PlaneDim1] - x1))
+    if ((xnew < point.getVector3dMap ()[PlaneDim1]) == (point.getVector3dMap ()[PlaneDim1] <= xold) &&
+        (point.getVector3dMap ()[PlaneDim2] - y1) * (x2 - x1) < (y2 - y1) * (point.getVector3dMap ()[PlaneDim1] - x1))
     {
       in_poly = !in_poly;
     }
@@ -278,7 +278,7 @@ pcl::CropHull<PointT>::isPointIn2DPolyWithVertIndices (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> bool
 pcl::CropHull<PointT>::rayTriangleIntersect (const PointT& point,
-                                             const Eigen::Vector3f& ray,
+                                             const Eigen::Vector3d& ray,
                                              const Vertices& verts,
                                              const PointCloud& cloud)
 {
@@ -292,13 +292,13 @@ pcl::CropHull<PointT>::rayTriangleIntersect (const PointT& point,
   //
   assert (verts.vertices.size () == 3);
 
-  const Eigen::Vector3f p = point.getVector3fMap ();
-  const Eigen::Vector3f a = cloud[verts.vertices[0]].getVector3fMap ();
-  const Eigen::Vector3f b = cloud[verts.vertices[1]].getVector3fMap ();
-  const Eigen::Vector3f c = cloud[verts.vertices[2]].getVector3fMap ();
-  const Eigen::Vector3f u = b - a;
-  const Eigen::Vector3f v = c - a;
-  const Eigen::Vector3f n = u.cross (v);
+  const Eigen::Vector3d p = point.getVector3dMap ();
+  const Eigen::Vector3d a = cloud[verts.vertices[0]].getVector3dMap ();
+  const Eigen::Vector3d b = cloud[verts.vertices[1]].getVector3dMap ();
+  const Eigen::Vector3d c = cloud[verts.vertices[2]].getVector3dMap ();
+  const Eigen::Vector3d u = b - a;
+  const Eigen::Vector3d v = c - a;
+  const Eigen::Vector3d n = u.cross (v);
   const double n_dot_ray = n.dot (ray);
 
   if (std::fabs (n_dot_ray) < 1e-9)
@@ -309,7 +309,7 @@ pcl::CropHull<PointT>::rayTriangleIntersect (const PointT& point,
   if (r < 0)
     return (false);
 
-  const Eigen::Vector3f w = p + r * ray - a;
+  const Eigen::Vector3d w = p + r * ray - a;
   const double denominator = u.dot (v) * u.dot (v) - u.dot (u) * v.dot (v);
   const double s_numerator = u.dot (v) * w.dot (v) - v.dot (v) * w.dot (u);
   const double s = s_numerator / denominator;

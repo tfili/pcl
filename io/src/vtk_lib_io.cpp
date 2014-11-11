@@ -367,7 +367,7 @@ pcl::io::vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, pcl::TextureMe
 
   // Add dummy material
   mesh.tex_materials.push_back (pcl::TexMaterial ());
-  std::vector<Eigen::Vector2f> dummy;
+  std::vector<Eigen::Vector2d> dummy;
   mesh.tex_coordinates.push_back (dummy);
 
   vtkIdType nr_points = poly_data->GetNumberOfPoints ();
@@ -383,7 +383,7 @@ pcl::io::vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, pcl::TextureMe
     {
       double tex[2];
       texture_coords->GetTupleValue (i, tex);
-      mesh.tex_coordinates.front ().push_back (Eigen::Vector2f (tex[0], tex[1]));
+      mesh.tex_coordinates.front ().push_back (Eigen::Vector2d (tex[0], tex[1]));
     }
   }
   else
@@ -425,7 +425,7 @@ pcl::io::mesh2vtk (const pcl::PolygonMesh& mesh, vtkSmartPointer<vtkPolyData>& p
   vtk_mesh_points->SetNumberOfPoints (nr_points);
   if (nr_points > 0)
   {
-    Eigen::Vector4f pt = Eigen::Vector4f::Zero ();
+    Eigen::Vector4d pt = Eigen::Vector4d::Zero ();
     Eigen::Array4i xyz_offset (mesh.cloud.fields[idx_x].offset, mesh.cloud.fields[idx_y].offset, mesh.cloud.fields[idx_z].offset, 0);
     for (vtkIdType cp = 0; cp < static_cast<vtkIdType> (nr_points); ++cp, xyz_offset += mesh.cloud.point_step)
     {

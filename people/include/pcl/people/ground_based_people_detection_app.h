@@ -97,7 +97,7 @@ namespace pcl
        * \param[in] ground_coeffs Vector containing the four plane coefficients.
        */
       void
-      setGround (Eigen::VectorXf& ground_coeffs);
+      setGround (Eigen::VectorXd& ground_coeffs);
 
       /**
        * \brief Set the transformation matrix, which is used in order to transform the given point cloud, the ground plane and the intrinsics matrix to the internal coordinate frame.
@@ -105,7 +105,7 @@ namespace pcl
        * \param[in] cloud A pointer to the input cloud.
        */
       void
-      setTransformation (const Eigen::Matrix3f& transformation);
+      setTransformation (const Eigen::Matrix3d& transformation);
 
       /**
        * \brief Set sampling factor. 
@@ -129,7 +129,7 @@ namespace pcl
        * \param[in] intrinsics_matrix RGB camera intrinsic parameters matrix.
        */
       void
-      setIntrinsics (Eigen::Matrix3f intrinsics_matrix);
+      setIntrinsics (Eigen::Matrix3d intrinsics_matrix);
 
       /**
        * \brief Set SVM-based person classifier.
@@ -212,7 +212,7 @@ namespace pcl
       /**
        * \brief Get floor coefficients.
        */
-      Eigen::VectorXf
+      Eigen::VectorXd
       getGround ();
 
       /**
@@ -292,19 +292,19 @@ namespace pcl
       double voxel_size_;                  
       
       /** \brief ground plane coefficients */
-      Eigen::VectorXf ground_coeffs_;
+      Eigen::VectorXd ground_coeffs_;
 
       /** \brief flag stating whether the ground coefficients have been set or not */
       bool ground_coeffs_set_;
 
       /** \brief the transformed ground coefficients */
-      Eigen::VectorXf ground_coeffs_transformed_;
+      Eigen::VectorXd ground_coeffs_transformed_;
 
       /** \brief ground plane normalization factor */
       double sqrt_ground_coeffs_;
 
       /** \brief rotation matrix which transforms input point cloud to internal people tracker coordinate frame */
-      Eigen::Matrix3f transformation_;
+      Eigen::Matrix3d transformation_;
 
       /** \brief flag stating whether the transformation matrix has been set or not */
       bool transformation_set_;
@@ -356,13 +356,13 @@ namespace pcl
       double heads_minimum_distance_;            
       
       /** \brief intrinsic parameters matrix of the RGB camera */
-      Eigen::Matrix3f intrinsics_matrix_;
+      Eigen::Matrix3d intrinsics_matrix_;
 
       /** \brief flag stating whether the intrinsics matrix has been set or not */
       bool intrinsics_matrix_set_;
 
       /** \brief the transformed intrinsics matrix */
-      Eigen::Matrix3f intrinsics_matrix_transformed_;
+      Eigen::Matrix3d intrinsics_matrix_transformed_;
 
       /** \brief SVM-based person classifier */
       pcl::people::PersonClassifier<pcl::RGB> person_classifier_;  

@@ -276,7 +276,7 @@ namespace pcl
         * \param guess The computed transformation
         */
       void 
-      computeTransformation (PointCloudSource &output, const Eigen::Matrix4f& guess);
+      computeTransformation (PointCloudSource &output, const Eigen::Matrix4d& guess);
 
       /** \brief Obtain the fitness of a transformation
         * The following metrics are calculated, based on

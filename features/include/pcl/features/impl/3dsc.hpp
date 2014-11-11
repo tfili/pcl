@@ -131,9 +131,9 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
     size_t index, const pcl::PointCloud<PointNT> &normals, double rf[9], std::vector<double> &desc)
 {
   // The RF is formed as this x_axis | y_axis | normal
-  Eigen::Map<Eigen::Vector3f> x_axis (rf);
-  Eigen::Map<Eigen::Vector3f> y_axis (rf + 3);
-  Eigen::Map<Eigen::Vector3f> normal (rf + 6);
+  Eigen::Map<Eigen::Vector3d> x_axis (rf);
+  Eigen::Map<Eigen::Vector3d> y_axis (rf + 3);
+  Eigen::Map<Eigen::Vector3d> normal (rf + 6);
 
   // Find every point within specified search_radius_
   std::vector<int> nn_indices;
@@ -160,26 +160,26 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
   }
 
   // Get origin point
-  Vector3fMapConst origin = input_->points[(*indices_)[index]].getVector3fMap ();
+  Vector3dMapConst origin = input_->points[(*indices_)[index]].getVector3dMap ();
   // Get origin normal
   // Use pre-computed normals
-  normal = normals[minIndex].getNormalVector3fMap ();
+  normal = normals[minIndex].getNormalVector3dMap ();
 
   // Compute and store the RF direction
   x_axis[0] = static_cast<double> (rnd ());
   x_axis[1] = static_cast<double> (rnd ());
   x_axis[2] = static_cast<double> (rnd ());
-  if (!pcl::utils::equal (normal[2], 0.0f))
+  if (!pcl::utils::equal (normal[2], 0.0))
     x_axis[2] = - (normal[0]*x_axis[0] + normal[1]*x_axis[1]) / normal[2];
-  else if (!pcl::utils::equal (normal[1], 0.0f))
+  else if (!pcl::utils::equal (normal[1], 0.0))
     x_axis[1] = - (normal[0]*x_axis[0] + normal[2]*x_axis[2]) / normal[1];
-  else if (!pcl::utils::equal (normal[0], 0.0f))
+  else if (!pcl::utils::equal (normal[0], 0.0))
     x_axis[0] = - (normal[1]*x_axis[1] + normal[2]*x_axis[2]) / normal[0];
 
   x_axis.normalize ();
 
   // Check if the computed x axis is orthogonal to the normal
-  assert (pcl::utils::equal (x_axis[0]*normal[0] + x_axis[1]*normal[1] + x_axis[2]*normal[2], 0.0f, 1E-6f));
+  assert (pcl::utils::equal (x_axis[0]*normal[0] + x_axis[1]*normal[1] + x_axis[2]*normal[2], 0.0, 1E-6));
 
   // Store the 3rd frame vector
   y_axis.matrix () = normal.cross (x_axis);
@@ -187,17 +187,17 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
   // For each point within radius
   for (size_t ne = 0; ne < neighb_cnt; ne++)
   {
-    if (pcl::utils::equal (nn_dists[ne], 0.0f))
+    if (pcl::utils::equal (nn_dists[ne], 0.0))
 		  continue;
     // Get neighbours coordinates
-    Eigen::Vector3f neighbour = surface_->points[nn_indices[ne]].getVector3fMap ();
+    Eigen::Vector3d neighbour = surface_->points[nn_indices[ne]].getVector3dMap ();
 
     /// ----- Compute current neighbour polar coordinates -----
     /// Get distance between the neighbour and the origin
     double r = sqrtf (nn_dists[ne]);
 
     /// Project point into the tangent plane
-    Eigen::Vector3f proj;
+    Eigen::Vector3d proj;
     pcl::geometry::project (neighbour, origin, normal, proj);
     proj -= origin;
 
@@ -205,14 +205,14 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
     proj.normalize ();
 
     /// Compute the angle between the projection and the x axis in the interval [0,360]
-    Eigen::Vector3f cross = x_axis.cross (proj);
+    Eigen::Vector3d cross = x_axis.cross (proj);
     double phi = pcl::rad2deg (std::atan2 (cross.norm (), x_axis.dot (proj)));
     phi = cross.dot (normal) < 0.f ? (360.0f - phi) : phi;
     /// Compute the angle between the neighbour and the z axis (normal) in the interval [0, 180]
-    Eigen::Vector3f no = neighbour - origin;
+    Eigen::Vector3d no = neighbour - origin;
     no.normalize ();
     double theta = normal.dot (no);
-    theta = pcl::rad2deg (acosf (std::min (1.0f, std::max (-1.0f, theta))));
+    theta = pcl::rad2deg (acos (std::min (1.0, std::max (-1.0, theta))));
 
     // Bin (j, k, l)
     size_t j = 0;

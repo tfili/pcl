@@ -47,8 +47,8 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computePairFeatures (
       const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
       int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4)
 {
-  pcl::computePairFeatures (cloud.points[p_idx].getVector4fMap (), normals.points[p_idx].getNormalVector4fMap (),
-                            cloud.points[q_idx].getVector4fMap (), normals.points[q_idx].getNormalVector4fMap (),
+  pcl::computePairFeatures (cloud.points[p_idx].getVector4dMap (), normals.points[p_idx].getNormalVector4dMap (),
+                            cloud.points[q_idx].getVector4dMap (), normals.points[q_idx].getNormalVector4dMap (),
                             f1, f2, f3, f4);
   return (true);
 }
@@ -57,7 +57,7 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computePairFeatures (
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computePointPFHSignature (
       const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
-      const std::vector<int> &indices, int nr_split, Eigen::VectorXf &pfh_histogram)
+      const std::vector<int> &indices, int nr_split, Eigen::VectorXd &pfh_histogram)
 {
   int h_index, h_p;
 
@@ -94,7 +94,7 @@ pcl::PFHEstimation<PointInT, PointNT, PointOutT>::computePointPFHSignature (
         key = std::pair<int, int> (p1, p2);
 
         // Check to see if we already estimated this pair in the global hashmap
-        std::map<std::pair<int, int>, Eigen::Vector4f, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4f> >::iterator fm_it = feature_map_.find (key);
+        std::map<std::pair<int, int>, Eigen::Vector4d, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4d> >::iterator fm_it = feature_map_.find (key);
         if (fm_it != feature_map_.end ())
           pfh_tuple_ = fm_it->second;
         else

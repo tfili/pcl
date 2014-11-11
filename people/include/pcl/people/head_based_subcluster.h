@@ -114,7 +114,7 @@ namespace pcl
        * \param[in] ground_coeffs The ground plane coefficients.
        */
       void
-      setGround (Eigen::VectorXf& ground_coeffs);
+      setGround (Eigen::VectorXd& ground_coeffs);
 
       /**
        * \brief Set sensor orientation to landscape mode (false) or portrait mode (true).
@@ -192,7 +192,7 @@ namespace pcl
 
     protected:
       /** \brief ground plane coefficients */
-      Eigen::VectorXf ground_coeffs_;            
+      Eigen::VectorXd ground_coeffs_;            
       
       /** \brief ground plane normalization factor */
       double sqrt_ground_coeffs_;              

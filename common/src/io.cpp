@@ -325,7 +325,7 @@ pcl::concatenatePointCloud (const pcl::PCLPointCloud2 &cloud1,
 
 //////////////////////////////////////////////////////////////////////////
 bool
-pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out)
+pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXd &out)
 {
   // Get X-Y-Z indices
   int x_idx = getFieldIndex (in, "x");
@@ -347,7 +347,7 @@ pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out)
   }
 
   size_t npts = in.width * in.height;
-  out = Eigen::MatrixXf::Ones (4, npts);
+  out = Eigen::MatrixXd::Ones (4, npts);
 
   Eigen::Array4i xyz_offset (in.fields[x_idx].offset, in.fields[y_idx].offset, in.fields[z_idx].offset, 0);
 
@@ -367,7 +367,7 @@ pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out)
 
 //////////////////////////////////////////////////////////////////////////
 bool 
-pcl::getEigenAsPointCloud (Eigen::MatrixXf &in, pcl::PCLPointCloud2 &out)
+pcl::getEigenAsPointCloud (Eigen::MatrixXd &in, pcl::PCLPointCloud2 &out)
 {
   // Get X-Y-Z indices
   int x_idx = getFieldIndex (out, "x");

@@ -36,7 +36,7 @@ void pcl::RFFaceDetectorTrainer::trainWithDataProvider()
   pcl::face_detection::PoseClassRegressionVarianceStatsEstimator<double, NodeType, std::vector<face_detection::TrainingExample>, int> rse (btt);
 
   std::vector<double> thresholds_;
-  thresholds_.push_back (0.5f);
+  thresholds_.push_back (0.5);
 
   pcl::DecisionForestTrainer<face_detection::FeatureType, std::vector<face_detection::TrainingExample>, double, int, NodeType> dft;
   dft.setMaxTreeDepth (15);
@@ -82,12 +82,12 @@ void pcl::RFFaceDetectorTrainer::faceVotesClustering()
   double HEAD_DIAMETER_SQ = HEAD_ST_DIAMETER_ * HEAD_ST_DIAMETER_;
   double large_radius = HEAD_DIAMETER_SQ / (larger_radius_ratio_ * larger_radius_ratio_);
 
-  std::vector < Eigen::Vector3f > clusters_mean;
+  std::vector < Eigen::Vector3d > clusters_mean;
   std::vector < std::vector<int> > votes_indices;
 
   for (size_t i = 0; i < head_center_votes_.size (); i++)
   {
-    Eigen::Vector3f center_vote = head_center_votes_[i];
+    Eigen::Vector3d center_vote = head_center_votes_[i];
     std::vector<bool> valid_in_cluster (clusters_mean.size (), false);
     bool found = false;
     for (size_t j = 0; j < clusters_mean.size () /*&& !found*/; j++)
@@ -108,7 +108,7 @@ void pcl::RFFaceDetectorTrainer::faceVotesClustering()
       ind.push_back (static_cast<int>(i));
       votes_indices.push_back (ind);
 
-      std::vector < Eigen::Vector3f > votes_in_cluster;
+      std::vector < Eigen::Vector3d > votes_in_cluster;
       votes_in_cluster.push_back (center_vote);
       head_center_original_votes_clustered_.push_back (votes_in_cluster);
 
@@ -129,14 +129,14 @@ void pcl::RFFaceDetectorTrainer::faceVotesClustering()
     }
 
     clusters_mean[idx] = (clusters_mean[idx] * (static_cast<double> (votes_indices[idx].size ())) + center_vote)
-        / (static_cast<double> (votes_indices[idx].size ()) + 1.f);
+        / (static_cast<double> (votes_indices[idx].size ()) + 1.);
     votes_indices[idx].push_back (static_cast<int>(i));
     head_center_original_votes_clustered_[idx].push_back (center_vote);
   }
 
   //mean shift
   //double SMALL_HEAD_RADIUS = HEAD_ST_DIAMETER_ / 6.f;
-  double SMALL_HEAD_RADIUS_SQ = HEAD_ST_DIAMETER_ * HEAD_ST_DIAMETER_ / 36.f;
+  double SMALL_HEAD_RADIUS_SQ = HEAD_ST_DIAMETER_ * HEAD_ST_DIAMETER_ / 36.;
   int msi = 10;
   std::cout << "Number of clusters:" << clusters_mean.size () << " votes:" << head_center_votes_.size () << std::endl;
 
@@ -151,13 +151,13 @@ void pcl::RFFaceDetectorTrainer::faceVotesClustering()
 
     for (int it = 0; it < msi; it++)
     {
-      Eigen::Vector3f mean;
+      Eigen::Vector3d mean;
       mean.setZero ();
       int good_votes = 0;
       new_cluster.clear ();
       for (size_t j = 0; j < votes_indices[i].size (); j++)
       {
-        Eigen::Vector3f center_vote = head_center_votes_[votes_indices[i][j]];
+        Eigen::Vector3d center_vote = head_center_votes_[votes_indices[i][j]];
         double sq_norm = (clusters_mean[i] - center_vote).squaredNorm ();
         if (sq_norm < SMALL_HEAD_RADIUS_SQ)
         {
@@ -198,7 +198,7 @@ void pcl::RFFaceDetectorTrainer::faceVotesClustering()
 
       std::sort (uncertainty.begin (), uncertainty.end (), boost::bind (&std::pair<int, double>::second, _1) < boost::bind (&std::pair<int, double>::second, _2));
 
-      Eigen::Vector3f rot;
+      Eigen::Vector3d rot;
       rot.setZero ();
       int num = std::min (used_for_pose_, static_cast<int> (uncertainty.size ()));
       for (int j = 0; j < num; j++)
@@ -208,7 +208,7 @@ void pcl::RFFaceDetectorTrainer::faceVotesClustering()
 
       rot = rot / static_cast<double> (num);
 
-      Eigen::Vector3f pos;
+      Eigen::Vector3d pos;
       pos.setZero ();
       for (int j = 0; j < num; j++)
         pos += head_center_votes_[uncertainty[j].first];
@@ -243,12 +243,12 @@ void pcl::RFFaceDetectorTrainer::setModelPath(std::string & model)
     voxel_grid_icp.filter (*model_original_);
 
     pcl::PassThrough<pcl::PointXYZ> pass_;
-    pass_.setFilterLimits (-1.f, 0.03f);
+    pass_.setFilterLimits (-1., 0.03);
     pass_.setFilterFieldName ("z");
     pass_.setInputCloud (model_original_);
     pass_.filter (*model_original_);
 
-    pass_.setFilterLimits (-0.1f, 0.07f);
+    pass_.setFilterLimits (-0.1, 0.07);
     pass_.setFilterFieldName ("y");
     pass_.setInputCloud (model_original_);
     pass_.filter (*model_original_);
@@ -266,7 +266,7 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PassThrough<pcl::PointXYZ> pass_;
-  pass_.setFilterLimits (0.f, 1.25f);
+  pass_.setFilterLimits (0., 1.25);
   pass_.setFilterFieldName ("z");
   pass_.setInputCloud (input_);
   pass_.setKeepOrganized (true);
@@ -376,20 +376,20 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
               if ((leaves[l].covariance_trans_.trace () + leaves[l].covariance_rot_.trace ()) > trans_max_variance_)
                 continue;
 
-              Eigen::Vector3f head_center = Eigen::Vector3f (static_cast<double>(leaves[l].trans_mean_[0]),
+              Eigen::Vector3d head_center = Eigen::Vector3d (static_cast<double>(leaves[l].trans_mean_[0]),
                                                              static_cast<double>(leaves[l].trans_mean_[1]),
                                                              static_cast<double>(leaves[l].trans_mean_[2]));
-              head_center *= 0.001f;
+              head_center *= 0.001;
 
               pcl::PointXYZ patch_center_point;
               patch_center_point.x = cloud->at (col + w_size_2, row + w_size_2).x;
               patch_center_point.y = cloud->at (col + w_size_2, row + w_size_2).y;
               patch_center_point.z = cloud->at (col + w_size_2, row + w_size_2).z;
 
-              head_center = patch_center_point.getVector3fMap () + head_center;
+              head_center = patch_center_point.getVector3dMap () + head_center;
 
               pcl::PointXYZ ppp;
-              ppp.getVector3fMap () = head_center;
+              ppp.getVector3dMap () = head_center;
               if (!pcl::isFinite (ppp))
                 continue;
 
@@ -401,9 +401,9 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
               }
 
               head_center_votes_.push_back (head_center);
-              double mult_fact = 0.0174532925f;
+              double mult_fact = 0.0174532925;
               angle_votes_.push_back (
-                  Eigen::Vector3f (static_cast<double>(leaves[l].rot_mean_[0]) * mult_fact,
+                  Eigen::Vector3d (static_cast<double>(leaves[l].rot_mean_[0]) * mult_fact,
                                    static_cast<double>(leaves[l].rot_mean_[1]) * mult_fact,
                                    static_cast<double>(leaves[l].rot_mean_[2]) * mult_fact));
               uncertainties_.push_back (static_cast<double>(leaves[l].covariance_trans_.trace () + leaves[l].covariance_rot_.trace ()));
@@ -423,7 +423,7 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
 
       for (size_t i = 0; i < cloud->points.size (); i++)
       {
-        face_heat_map_->points[i].getVector4fMap () = cloud->points[i].getVector4fMap ();
+        face_heat_map_->points[i].getVector4dMap () = cloud->points[i].getVector4dMap ();
         face_heat_map_->points[i].intensity = weights[i];
       }
     }
@@ -433,7 +433,7 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
 
   if (pose_refinement_ && (head_clusters_centers_.size () > 0))
   {
-    Eigen::Matrix4f icp_trans;
+    Eigen::Matrix4d icp_trans;
     double max_distance = 0.015f;
     int iter = icp_iterations_;
 
@@ -479,13 +479,13 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
     pcl::IterativeClosestPoint<pcl::PointNormal, pcl::PointNormal> reg;
     for (size_t i = 0; i < head_clusters_centers_.size (); i++)
     {
-      Eigen::Matrix3f matrixxx;
+      Eigen::Matrix3d matrixxx;
 
-      matrixxx = Eigen::AngleAxisf (head_clusters_rotation_[i][0], Eigen::Vector3f::UnitX ())
-          * Eigen::AngleAxisf (head_clusters_rotation_[i][1], Eigen::Vector3f::UnitY ())
-          * Eigen::AngleAxisf (head_clusters_rotation_[i][2], Eigen::Vector3f::UnitZ ());
+      matrixxx = Eigen::AngleAxisd (head_clusters_rotation_[i][0], Eigen::Vector3d::UnitX ())
+          * Eigen::AngleAxisd (head_clusters_rotation_[i][1], Eigen::Vector3d::UnitY ())
+          * Eigen::AngleAxisd (head_clusters_rotation_[i][2], Eigen::Vector3d::UnitZ ());
 
-      Eigen::Matrix4f guess;
+      Eigen::Matrix4d guess;
       guess.setIdentity ();
       guess.block<3, 3> (0, 0) = matrixxx;
       guess (0, 3) = head_clusters_centers_[i][0];
@@ -508,7 +508,7 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
       rej->setInputSource (model_aligned_normals);
       rej->setInputTarget (cloud_voxelized_icp_normals);
       rej->setMaximumIterations (1000);
-      rej->setInlierThreshold (0.01f);
+      rej->setInlierThreshold (0.01);
 
       reg.addCorrespondenceRejector (rej);
       reg.setCorrespondenceEstimation (cens);
@@ -527,7 +527,7 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
       head_clusters_centers_[i][1] = icp_trans (1, 3);
       head_clusters_centers_[i][2] = icp_trans (2, 3);
 
-      Eigen::Vector3f ea = icp_trans.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
+      Eigen::Vector3d ea = icp_trans.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
       head_clusters_rotation_[i][0] = ea[0];
       head_clusters_rotation_[i][1] = ea[1];
       head_clusters_rotation_[i][2] = ea[2];
@@ -536,11 +536,11 @@ void pcl::RFFaceDetectorTrainer::detectFaces()
 
     //do HV
     /*pcl::PapazovHV<pcl::PointXYZ, pcl::PointXYZ> papazov;
-     papazov.setResolution (0.005f);
-     papazov.setInlierThreshold (0.01f);
-     papazov.setSupportThreshold (0.1f);
-     papazov.setPenaltyThreshold (0.2f);
-     papazov.setConflictThreshold (0.01f);
+     papazov.setResolution (0.005);
+     papazov.setInlierThreshold (0.01);
+     papazov.setSupportThreshold (0.1);
+     papazov.setPenaltyThreshold (0.2);
+     papazov.setConflictThreshold (0.01);
 
      std::vector<bool> mask_hv;
      papazov.setOcclusionCloud (input_);

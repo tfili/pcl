@@ -160,8 +160,8 @@ namespace pcl
         bool
         findTransformation (const MeshConstPtr&              mesh_model,
                             const CloudXYZRGBNormalConstPtr& cloud_data,
-                            const Eigen::Matrix4f&           T_init,
-                            Eigen::Matrix4f&                 T_final);
+                            const Eigen::Matrix4d&           T_init,
+                            Eigen::Matrix4d&                 T_final);
 
       private:
 
@@ -181,7 +181,7 @@ namespace pcl
           */
         CloudNormalConstPtr
         selectModelPoints (const MeshConstPtr&    mesh_model,
-                           const Eigen::Matrix4f& T_inv) const;
+                           const Eigen::Matrix4d& T_inv) const;
 
         /** \brief Selects the valid data points. The input cloud is organized -> contains nans which are removed
           * \param[in] cloud_data Input cloud.
@@ -199,7 +199,7 @@ namespace pcl
         bool
         minimizePointPlane (const CloudNormal& cloud_source,
                             const CloudNormal& cloud_target,
-                            Eigen::Matrix4f&   T) const;
+                            Eigen::Matrix4d&   T) const;
 
         ////////////////////////////////////////////////////////////////////////
         // Members

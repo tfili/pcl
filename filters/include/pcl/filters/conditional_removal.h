@@ -328,9 +328,9 @@ namespace pcl
        * \param comparison_scalar the scalar "c" of the comparison "p'Ap + 2v'p + c [OP] 0".
        * \param comparison_transform the transformation of the comparison.
        */
-      TfQuadraticXYZComparison (const pcl::ComparisonOps::CompareOp op, const Eigen::Matrix3f &comparison_matrix,
-                                const Eigen::Vector3f &comparison_vector, const double &comparison_scalar,
-                                const Eigen::Affine3f &comparison_transform = Eigen::Affine3f::Identity ());
+      TfQuadraticXYZComparison (const pcl::ComparisonOps::CompareOp op, const Eigen::Matrix3d &comparison_matrix,
+                                const Eigen::Vector3d &comparison_vector, const double &comparison_scalar,
+                                const Eigen::Affine3d &comparison_transform = Eigen::Affine3d::Identity ());
 
       /** \brief set the operator "[OP]" of the comparison "p'Ap + 2v'p + c [OP] 0".
        */
@@ -343,7 +343,7 @@ namespace pcl
       /** \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
        */
       inline void
-      setComparisonMatrix (const Eigen::Matrix3f &matrix)
+      setComparisonMatrix (const Eigen::Matrix3d &matrix)
       {
         //define comp_matr_ as an homogeneous matrix of the given matrix
         comp_matr_.block<3, 3> (0, 0) = matrix;
@@ -355,7 +355,7 @@ namespace pcl
       /** \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
        */
       inline void
-      setComparisonMatrix (const Eigen::Matrix4f &homogeneousMatrix)
+      setComparisonMatrix (const Eigen::Matrix4d &homogeneousMatrix)
       {
         comp_matr_ = homogeneousMatrix;
         tf_comp_matr_ = comp_matr_;
@@ -364,7 +364,7 @@ namespace pcl
       /** \brief set the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
        */
       inline void
-      setComparisonVector (const Eigen::Vector3f &vector)
+      setComparisonVector (const Eigen::Vector3d &vector)
       {
         comp_vect_ = vector.homogeneous ();
         tf_comp_vect_ = comp_vect_;
@@ -373,7 +373,7 @@ namespace pcl
       /** \brief set the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
        */
       inline void
-      setComparisonVector (const Eigen::Vector4f &homogeneousVector)
+      setComparisonVector (const Eigen::Vector4d &homogeneousVector)
       {
         comp_vect_ = homogeneousVector;
         tf_comp_vect_ = comp_vect_;
@@ -397,7 +397,7 @@ namespace pcl
        * @param transform the transformation (rotation and translation) as an affine matrix.
        */
       inline void
-      transformComparison (const Eigen::Matrix4f &transform)
+      transformComparison (const Eigen::Matrix4d &transform)
       {
         tf_comp_matr_ = transform.transpose () * comp_matr_ * transform;
         tf_comp_vect_ = comp_vect_.transpose () * transform;
@@ -413,7 +413,7 @@ namespace pcl
        * @param transform the transformation (rotation and translation) as an affine matrix.
        */
       inline void
-      transformComparison (const Eigen::Affine3f &transform)
+      transformComparison (const Eigen::Affine3d &transform)
       {
         transformComparison (transform.matrix ());
       }
@@ -429,14 +429,14 @@ namespace pcl
       using pcl::ComparisonBase<PointT>::capable_;
       using pcl::ComparisonBase<PointT>::op_;
 
-      Eigen::Matrix4f comp_matr_;
-      Eigen::Vector4f comp_vect_;
+      Eigen::Matrix4d comp_matr_;
+      Eigen::Vector4d comp_vect_;
 
       double comp_scalar_;
 
     private:
-      Eigen::Matrix4f tf_comp_matr_;
-      Eigen::Vector4f tf_comp_vect_;
+      Eigen::Matrix4d tf_comp_matr_;
+      Eigen::Vector4d tf_comp_vect_;
   };
   
   //////////////////////////////////////////////////////////////////////////////////////////

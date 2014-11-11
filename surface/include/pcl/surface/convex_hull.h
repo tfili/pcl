@@ -56,7 +56,7 @@ namespace pcl
     * \ingroup surface
     */
   inline bool
-  comparePoints2D (const std::pair<int, Eigen::Vector4f> & p1, const std::pair<int, Eigen::Vector4f> & p2)
+  comparePoints2D (const std::pair<int, Eigen::Vector4d> & p1, const std::pair<int, Eigen::Vector4d> & p2)
   {
     double angle1 = atan2 (p1.second[1], p1.second[0]) + M_PI;
     double angle2 = atan2 (p2.second[1], p2.second[0]) + M_PI;

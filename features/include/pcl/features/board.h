@@ -250,7 +250,7 @@ namespace pcl
         * \param[out] lrf the resultant local reference frame
         */
       double
-      computePointLRF (const int &index, Eigen::Matrix3f &lrf);
+      computePointLRF (const int &index, Eigen::Matrix3d &lrf);
 
       /** \brief Abstract feature estimation method.
         * \param[out] output the resultant features
@@ -268,8 +268,8 @@ namespace pcl
         * \param[out] directed_ortho_axis the directed orthogonal axis calculated
         */
       void
-      directedOrthogonalAxis (Eigen::Vector3f const &axis, Eigen::Vector3f const &axis_origin,
-                              Eigen::Vector3f const &point, Eigen::Vector3f &directed_ortho_axis);
+      directedOrthogonalAxis (Eigen::Vector3d const &axis, Eigen::Vector3d const &axis_origin,
+                              Eigen::Vector3d const &point, Eigen::Vector3d &directed_ortho_axis);
 
       /** \brief return the angle (in radians) that rotate v1 to v2 with respect to axis .
         *
@@ -279,7 +279,7 @@ namespace pcl
         * \return angle
         */
       double
-      getAngleBetweenUnitVectors (Eigen::Vector3f const &v1, Eigen::Vector3f const &v2, Eigen::Vector3f const &axis);
+      getAngleBetweenUnitVectors (Eigen::Vector3d const &v1, Eigen::Vector3d const &v2, Eigen::Vector3d const &axis);
 
       /** \brief Disambiguates a normal direction using adjacent normals
         * 
@@ -289,7 +289,7 @@ namespace pcl
         */
       void
       normalDisambiguation (pcl::PointCloud<PointNT> const &normals_cloud, std::vector<int> const &normal_indices,
-                            Eigen::Vector3f &normal);
+                            Eigen::Vector3d &normal);
 
       /** \brief Compute Least Square Plane Fitting in a set of 3D points
         *
@@ -298,8 +298,8 @@ namespace pcl
         * \param[out] norm normal to the fitted plane
         */
       void
-      planeFitting (Eigen::Matrix<double, Eigen::Dynamic, 3> const &points, Eigen::Vector3f &center,
-                    Eigen::Vector3f &norm);
+      planeFitting (Eigen::Matrix<double, Eigen::Dynamic, 3> const &points, Eigen::Vector3d &center,
+                    Eigen::Vector3d &norm);
 
       /** \brief Given a plane (origin and normal) and a point, return the projection of x on plane
         *
@@ -311,8 +311,8 @@ namespace pcl
         * \param[out] projected_point the projection of the point on the plane
         */
       void
-      projectPointOnPlane (Eigen::Vector3f const &point, Eigen::Vector3f const &origin_point,
-                           Eigen::Vector3f const &plane_normal, Eigen::Vector3f &projected_point);
+      projectPointOnPlane (Eigen::Vector3d const &point, Eigen::Vector3d const &origin_point,
+                           Eigen::Vector3d const &plane_normal, Eigen::Vector3d &projected_point);
 
       /** \brief Given an axis, return a random orthogonal axis
         *
@@ -320,7 +320,7 @@ namespace pcl
         * \param[out] rand_ortho_axis an axis orthogonal to the input axis and whose direction is random
         */
       void
-      randomOrthogonalAxis (Eigen::Vector3f const &axis, Eigen::Vector3f &rand_ortho_axis);
+      randomOrthogonalAxis (Eigen::Vector3d const &axis, Eigen::Vector3d &rand_ortho_axis);
 
       /** \brief Check if val1 and val2 are equals.
         *

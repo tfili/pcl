@@ -52,8 +52,8 @@ int    default_k = 0;
 double default_radius = 0.0;
 double default_angle  = M_PI/2.0;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)

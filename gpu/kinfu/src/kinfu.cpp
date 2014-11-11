@@ -57,23 +57,23 @@ using namespace std;
 using namespace pcl::device;
 using namespace pcl::gpu;
 
-using Eigen::AngleAxisf;
-using Eigen::Array3f;
+using Eigen::AngleAxisd;
+using Eigen::Array3d;
 using Eigen::Vector3i;
-using Eigen::Vector3f;
+using Eigen::Vector3d;
 
 namespace pcl
 {
   namespace gpu
   {
-    Eigen::Vector3f rodrigues2(const Eigen::Matrix3f& matrix);
+    Eigen::Vector3d rodrigues2(const Eigen::Matrix3d& matrix);
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 pcl::gpu::KinfuTracker::KinfuTracker (int rows, int cols) : rows_(rows), cols_(cols), global_time_(0), max_icp_distance_(0), integration_metric_threshold_(0.f), disable_icp_(false)
 {
-  const Vector3f volume_size = Vector3f::Constant (VOLUME_SIZE);
+  const Vector3d volume_size = Vector3d::Constant (VOLUME_SIZE);
   const Vector3i volume_resolution(VOLUME_X, VOLUME_Y, VOLUME_Z);
    
   tsdf_volume_ = TsdfVolume::Ptr( new TsdfVolume(volume_resolution) );
@@ -81,8 +81,8 @@ pcl::gpu::KinfuTracker::KinfuTracker (int rows, int cols) : rows_(rows), cols_(c
   
   setDepthIntrinsics (KINFU_DEFAULT_DEPTH_FOCAL_X, KINFU_DEFAULT_DEPTH_FOCAL_Y); // default values, can be overwritten
   
-  init_Rcam_ = Eigen::Matrix3f::Identity ();// * AngleAxisf(-30.f/180*3.1415926, Vector3f::UnitX());
-  init_tcam_ = volume_size * 0.5f - Vector3f (0, 0, volume_size (2) / 2 * 1.2f);
+  init_Rcam_ = Eigen::Matrix3d::Identity ();// * AngleAxisd(-30.f/180*3.1415926, Vector3d::UnitX());
+  init_tcam_ = volume_size * 0.5f - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
   const int iters[] = {10, 5, 4};
   std::copy (iters, iters + LEVELS, icp_iterations_);
@@ -124,7 +124,7 @@ pcl::gpu::KinfuTracker::getDepthIntrinsics (double& fx, double& fy, double& cx, 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::KinfuTracker::setInitalCameraPose (const Eigen::Affine3f& pose)
+pcl::gpu::KinfuTracker::setInitalCameraPose (const Eigen::Affine3d& pose)
 {
   init_Rcam_ = pose.rotation ();
   init_tcam_ = pose.translation ();
@@ -230,7 +230,7 @@ pcl::gpu::KinfuTracker::allocateBufffers (int rows, int cols)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool
 pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw, 
-    Eigen::Affine3f *hint)
+    Eigen::Affine3d *hint)
 {  
   device::Intr intr (fx_, fy_, cx_, cy_);
 
@@ -259,13 +259,13 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
       //can't perform more on first frame
       if (global_time_ == 0)
       {
-        Matrix3frm init_Rcam = rmats_[0]; //  [Ri|ti] - pos of camera, i.e.
-        Vector3f   init_tcam = tvecs_[0]; //  transform from camera to global coo space for (i-1)th camera pose
+        Matrix3drm init_Rcam = rmats_[0]; //  [Ri|ti] - pos of camera, i.e.
+        Vector3d   init_tcam = tvecs_[0]; //  transform from camera to global coo space for (i-1)th camera pose
 
         Mat33&  device_Rcam = device_cast<Mat33> (init_Rcam);
         float3& device_tcam = device_cast<float3>(init_tcam);
 
-        Matrix3frm init_Rcam_inv = init_Rcam.inverse ();
+        Matrix3drm init_Rcam_inv = init_Rcam.inverse ();
         Mat33&   device_Rcam_inv = device_cast<Mat33> (init_Rcam_inv);
         float3 device_volume_size = device_cast<const float3>(tsdf_volume_->getSize());
 
@@ -281,15 +281,15 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
 
       ///////////////////////////////////////////////////////////////////////////////////////////
       // Iterative Closest Point
-      Matrix3frm Rprev = rmats_[global_time_ - 1]; //  [Ri|ti] - pos of camera, i.e.
-      Vector3f   tprev = tvecs_[global_time_ - 1]; //  tranfrom from camera to global coo space for (i-1)th camera pose
-      Matrix3frm Rprev_inv = Rprev.inverse (); //Rprev.t();
+      Matrix3drm Rprev = rmats_[global_time_ - 1]; //  [Ri|ti] - pos of camera, i.e.
+      Vector3d   tprev = tvecs_[global_time_ - 1]; //  tranfrom from camera to global coo space for (i-1)th camera pose
+      Matrix3drm Rprev_inv = Rprev.inverse (); //Rprev.t();
 
       //Mat33&  device_Rprev     = device_cast<Mat33> (Rprev);
       Mat33&  device_Rprev_inv = device_cast<Mat33> (Rprev_inv);
       float3& device_tprev     = device_cast<float3> (tprev);
-      Matrix3frm Rcurr;
-      Vector3f tcurr;
+      Matrix3drm Rcurr;
+      Vector3d tcurr;
       if(hint)
       {
         Rcurr = hint->rotation().matrix();
@@ -356,8 +356,8 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
             double beta  = result (1);
             double gamma = result (2);
 
-            Eigen::Matrix3f Rinc = (Eigen::Matrix3f)AngleAxisf (gamma, Vector3f::UnitZ ()) * AngleAxisf (beta, Vector3f::UnitY ()) * AngleAxisf (alpha, Vector3f::UnitX ());
-            Vector3f tinc = result.tail<3> ();
+            Eigen::Matrix3d Rinc = (Eigen::Matrix3d)AngleAxisd (gamma, Vector3d::UnitZ ()) * AngleAxisd (beta, Vector3d::UnitY ()) * AngleAxisd (alpha, Vector3d::UnitX ());
+            Vector3d tinc = result.tail<3> ();
 
             //compose
             tcurr = Rinc * tcurr + tinc;
@@ -374,19 +374,19 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
       if (global_time_ == 0)
         ++global_time_;
 
-      Matrix3frm Rcurr = rmats_[global_time_ - 1];
-      Vector3f   tcurr = tvecs_[global_time_ - 1];
+      Matrix3drm Rcurr = rmats_[global_time_ - 1];
+      Vector3d   tcurr = tvecs_[global_time_ - 1];
 
       rmats_.push_back (Rcurr);
       tvecs_.push_back (tcurr);
 
   }
 
-  Matrix3frm Rprev = rmats_[global_time_ - 1];
-  Vector3f   tprev = tvecs_[global_time_ - 1];
+  Matrix3drm Rprev = rmats_[global_time_ - 1];
+  Vector3d   tprev = tvecs_[global_time_ - 1];
 
-  Matrix3frm Rcurr = rmats_.back();
-  Vector3f   tcurr = tvecs_.back();
+  Matrix3drm Rcurr = rmats_.back();
+  Vector3d   tcurr = tvecs_.back();
 
   ///////////////////////////////////////////////////////////////////////////////////////////
   // Integration check - We do not integrate volume if camera does not move.  
@@ -402,7 +402,7 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
   // Volume integration
   float3 device_volume_size = device_cast<const float3> (tsdf_volume_->getSize());
 
-  Matrix3frm Rcurr_inv = Rcurr.inverse ();
+  Matrix3drm Rcurr_inv = Rcurr.inverse ();
   Mat33&  device_Rcurr_inv = device_cast<Mat33> (Rcurr_inv);
   float3& device_tcurr = device_cast<float3> (tcurr);
   if (integrate)
@@ -431,13 +431,13 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth_raw,
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Eigen::Affine3f
+Eigen::Affine3d
 pcl::gpu::KinfuTracker::getCameraPose (int time) const
 {
   if (time > (int)rmats_.size () || time < 0)
     time = rmats_.size () - 1;
 
-  Eigen::Affine3f aff;
+  Eigen::Affine3d aff;
   aff.linear () = rmats_[time];
   aff.translation () = tvecs_[time];
   return (aff);
@@ -486,8 +486,8 @@ pcl::gpu::KinfuTracker::colorVolume()
 void
 pcl::gpu::KinfuTracker::getImage (View& view) const
 {
-  //Eigen::Vector3f light_source_pose = tsdf_volume_->getSize() * (-3.f);
-  Eigen::Vector3f light_source_pose = tvecs_[tvecs_.size () - 1];
+  //Eigen::Vector3d light_source_pose = tsdf_volume_->getSize() * (-3.f);
+  Eigen::Vector3d light_source_pose = tvecs_[tvecs_.size () - 1];
 
   device::LightSource light;
   light.number = 1;
@@ -539,8 +539,8 @@ pcl::gpu::KinfuTracker::operator() (const DepthMap& depth, const View& colors)
     const float3 device_volume_size = device_cast<const float3> (tsdf_volume_->getSize());
     device::Intr intr(fx_, fy_, cx_, cy_);
 
-    Matrix3frm R_inv = rmats_.back().inverse();
-    Vector3f   t     = tvecs_.back();
+    Matrix3drm R_inv = rmats_.back().inverse();
+    Vector3d   t     = tvecs_.back();
     
     Mat33&  device_Rcurr_inv = device_cast<Mat33> (R_inv);
     float3& device_tcurr = device_cast<float3> (t);
@@ -576,10 +576,10 @@ namespace pcl
       device::mergePointNormal(c, n, o);           
     }
 
-    Eigen::Vector3f rodrigues2(const Eigen::Matrix3f& matrix)
+    Eigen::Vector3d rodrigues2(const Eigen::Matrix3d& matrix)
     {
-      Eigen::JacobiSVD<Eigen::Matrix3f> svd(matrix, Eigen::ComputeFullV | Eigen::ComputeFullU);    
-      Eigen::Matrix3f R = svd.matrixU() * svd.matrixV().transpose();
+      Eigen::JacobiSVD<Eigen::Matrix3d> svd(matrix, Eigen::ComputeFullV | Eigen::ComputeFullU);    
+      Eigen::Matrix3d R = svd.matrixU() * svd.matrixV().transpose();
 
       double rx = R(2, 1) - R(1, 2);
       double ry = R(0, 2) - R(2, 0);

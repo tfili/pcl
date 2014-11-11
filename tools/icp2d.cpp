@@ -83,7 +83,7 @@ main (int argc, char **argv)
   pcl::io::savePCDFile (result_filename.c_str (), *model);
   std::cout << "saving first model to " << result_filename << std::endl;
 
-  Eigen::Matrix4f t (Eigen::Matrix4f::Identity ());
+  Eigen::Matrix4d t (Eigen::Matrix4d::Identity ());
 
   for (size_t i = 1; i < pcd_indices.size (); i++)
   {

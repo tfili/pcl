@@ -50,7 +50,7 @@ namespace pcl
           pcl::MovingLeastSquares<PointInT, PointInT> mls;
           if(adaptative_MLS_) {
             typename search::KdTree<PointInT>::Ptr tree;
-            Eigen::Vector4f centroid_cluster;
+            Eigen::Vector4d centroid_cluster;
             pcl::compute3DCentroid (*in, centroid_cluster);
             double dist_to_sensor = centroid_cluster.norm();
             double sigma = dist_to_sensor * 0.01f;

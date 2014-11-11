@@ -189,10 +189,10 @@ namespace pcl
         /** \brief Set the transformation from the world coordinates to the frame of the particles.
           * \param[in] trans Affine transformation from the worldcoordinates to the frame of the particles.
           */
-        inline void setTrans (const Eigen::Affine3f &trans) { trans_ = trans; }
+        inline void setTrans (const Eigen::Affine3d &trans) { trans_ = trans; }
         
         /** \brief Get the transformation from the world coordinates to the frame of the particles. */
-        inline Eigen::Affine3f getTrans () const { return trans_; }
+        inline Eigen::Affine3d getTrans () const { return trans_; }
         
 	      /** \brief Get an instance of the result of tracking.
 	        * This function returns the particle that represents the transform between the reference point cloud at the 
@@ -203,7 +203,7 @@ namespace pcl
         /** \brief Convert a state to affine transformation from the world coordinates frame.
           * \param[in] particle an instance of StateT.
           */
-        Eigen::Affine3f toEigenMatrix (const StateT& particle)
+        Eigen::Affine3d toEigenMatrix (const StateT& particle)
         {
           return particle.toEigenMatrix ();
         }
@@ -459,7 +459,7 @@ namespace pcl
         StateT representative_state_;
 
         /** \brief An affine transformation from the world coordinates frame to the origin of the particles. */
-        Eigen::Affine3f trans_;
+        Eigen::Affine3d trans_;
 
         /** \brief A flag to use normal or not. defaults to false. */
         bool use_normal_;

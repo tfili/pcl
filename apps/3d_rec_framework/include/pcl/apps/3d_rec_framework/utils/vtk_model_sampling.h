@@ -31,7 +31,7 @@ namespace pcl
     }
 
     inline void
-    randomPointTriangle (double a1, double a2, double a3, double b1, double b2, double b3, double c1, double c2, double c3, Eigen::Vector4f& p)
+    randomPointTriangle (double a1, double a2, double a3, double b1, double b2, double b3, double c1, double c2, double c3, Eigen::Vector4d& p)
     {
       double r1 = static_cast<double> (uniform_deviate (rand ()));
       double r2 = static_cast<double> (uniform_deviate (rand ()));
@@ -54,7 +54,7 @@ namespace pcl
     }
 
     inline void
-    randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4f& p)
+    randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4d& p)
     {
       double r = static_cast<double> (uniform_deviate (rand ()) * totalArea);
 
@@ -101,7 +101,7 @@ namespace pcl
 
         for (i = 0; i < n_samples; i++)
         {
-          Eigen::Vector4f p (0.f, 0.f, 0.f, 0.f);
+          Eigen::Vector4d p (0.f, 0.f, 0.f, 0.f);
           randPSurface (polydata, &cumulativeAreas, totalArea, p);
           cloud_out.points[i].x = static_cast<double> (p[0]);
           cloud_out.points[i].y = static_cast<double> (p[1]);

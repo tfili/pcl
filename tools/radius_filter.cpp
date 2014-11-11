@@ -88,8 +88,8 @@ compute (const Cloud::Ptr &input, Cloud::Ptr &output,
   pcl::console::print_highlight (stderr, "Computing ");
 
   pcl::ConditionOr<PointType>::Ptr cond (new pcl::ConditionOr<PointType> ());
-  cond->addComparison (pcl::TfQuadraticXYZComparison<PointType>::ConstPtr (new pcl::TfQuadraticXYZComparison<PointType> (inside ? pcl::ComparisonOps::LT : pcl::ComparisonOps::GT, Eigen::Matrix3f::Identity (),
-                                                                                                                  Eigen::Vector3f::Zero (), - radius * radius)));
+  cond->addComparison (pcl::TfQuadraticXYZComparison<PointType>::ConstPtr (new pcl::TfQuadraticXYZComparison<PointType> (inside ? pcl::ComparisonOps::LT : pcl::ComparisonOps::GT, Eigen::Matrix3d::Identity (),
+                                                                                                                  Eigen::Vector3d::Zero (), - radius * radius)));
 
   pcl::ConditionalRemoval<PointType> condrem;
   condrem.setCondition (cond);

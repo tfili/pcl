@@ -55,8 +55,8 @@ double default_support_angle = 0.5;
 int    default_min_neigh = 1;
 double default_radius = 0.0;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)

@@ -74,7 +74,7 @@ namespace pcl
 
       typedef pcl::PointCloud<PointOutT> PointCloudOut;
 
-      Eigen::Matrix3f KinectVGAProjectionMatrix, KinectSXGAProjectionMatrix;
+      Eigen::Matrix3d KinectVGAProjectionMatrix, KinectSXGAProjectionMatrix;
 
       /** \brief Constructor. */
       BilateralUpsampling () 
@@ -130,10 +130,10 @@ namespace pcl
         * are tuned to be the same as the ones in the OpenNiGrabber
         * \param[in] projection_matrix the new projection matrix to be set */
       inline void
-      setProjectionMatrix (const Eigen::Matrix3f &projection_matrix) { projection_matrix_ = projection_matrix; }
+      setProjectionMatrix (const Eigen::Matrix3d &projection_matrix) { projection_matrix_ = projection_matrix; }
 
       /** \brief Returns the current projection matrix */
-      inline Eigen::Matrix3f
+      inline Eigen::Matrix3d
       getProjectionMatrix () const { return (projection_matrix_); }
 
       /** \brief Method that does the actual processing on the input cloud.
@@ -149,12 +149,12 @@ namespace pcl
         * \param[out] val_exp_depth distance values for depth
         * \param[out] val_exp_rgb distance values for RGB */
       void
-      computeDistances (Eigen::MatrixXf &val_exp_depth, Eigen::VectorXf &val_exp_rgb);
+      computeDistances (Eigen::MatrixXd &val_exp_depth, Eigen::VectorXd &val_exp_rgb);
 
     private:
       int window_size_;
       double sigma_color_, sigma_depth_;
-      Eigen::Matrix3f projection_matrix_, unprojection_matrix_;
+      Eigen::Matrix3d projection_matrix_, unprojection_matrix_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

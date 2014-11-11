@@ -73,7 +73,7 @@ namespace pcl
         {
           Vertex () : cloud () {}
           PointCloudPtr cloud;
-          Eigen::Affine3f transform;
+          Eigen::Affine3d transform;
         };
 
         /** \brief graph structure to hold the SLAM graph */
@@ -181,7 +181,7 @@ namespace pcl
         }
 
         /** \brief Getter for the transformation between the first and the last scan. */
-        inline Eigen::Matrix4f
+        inline Eigen::Matrix4d
         getLoopTransform ()
         {
           return (loop_transform_);
@@ -191,7 +191,7 @@ namespace pcl
          * \param[in] loop_transform the transformation between the first and the last scan
          */
         inline void
-        setLoopTransform (const Eigen::Matrix4f &loop_transform)
+        setLoopTransform (const Eigen::Matrix4d &loop_transform)
         {
           loop_transform_ = loop_transform;
           compute_loop_ = false;
@@ -242,7 +242,7 @@ namespace pcl
         RegistrationPtr reg_;
 
         /** \brief The transformation between that start and end of the loop. */
-        Eigen::Matrix4f loop_transform_;
+        Eigen::Matrix4d loop_transform_;
         bool compute_loop_;
 
         /** \brief previously added node in the loop_graph_. */

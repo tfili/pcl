@@ -51,7 +51,7 @@ RangeImagePlanar::createFromPointCloudWithFixedSize (const PointCloudType& point
                                                      int di_width, int di_height,
                                                      double di_center_x, double di_center_y,
                                                      double di_focal_length_x, double di_focal_length_y,
-                                                     const Eigen::Affine3f& sensor_pose,
+                                                     const Eigen::Affine3d& sensor_pose,
                                                      CoordinateFrame coordinate_frame, double noise_level,
                                                      double min_range)
 {
@@ -89,7 +89,7 @@ RangeImagePlanar::createFromPointCloudWithFixedSize (const PointCloudType& point
 
 /////////////////////////////////////////////////////////////////////////
 void
-RangeImagePlanar::calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3f& point) const
+RangeImagePlanar::calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3d& point) const
 {
   //cout << __PRETTY_FUNCTION__ << " called.\n";
   double delta_x = (image_x+static_cast<double> (image_offset_x_)-center_x_)*focal_length_x_reciprocal_,
@@ -102,9 +102,9 @@ RangeImagePlanar::calculate3DPoint (double image_x, double image_y, double range
 
 /////////////////////////////////////////////////////////////////////////
 inline void 
-RangeImagePlanar::getImagePoint (const Eigen::Vector3f& point, double& image_x, double& image_y, double& range) const 
+RangeImagePlanar::getImagePoint (const Eigen::Vector3d& point, double& image_x, double& image_y, double& range) const 
 {
-  Eigen::Vector3f transformedPoint = to_range_image_system_ * point;
+  Eigen::Vector3d transformedPoint = to_range_image_system_ * point;
   if (transformedPoint[2]<=0)  // Behind the observer?
   {
     image_x = image_y = range = -1.0f;

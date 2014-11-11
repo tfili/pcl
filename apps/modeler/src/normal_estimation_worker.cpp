@@ -65,7 +65,7 @@ pcl::modeler::NormalEstimationWorker::~NormalEstimationWorker(void)
 void
 pcl::modeler::NormalEstimationWorker::initParameters(CloudMeshItem* cloud_mesh_item)
 {
-  Eigen::Vector4f min_pt, max_pt;
+  Eigen::Vector4d min_pt, max_pt;
   pcl::getMinMax3D(*(cloud_mesh_item->getCloudMesh()->getCloud()), min_pt, max_pt);
 
   x_min_ = std::min(double(min_pt.x()), x_min_);

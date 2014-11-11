@@ -131,7 +131,7 @@ RangeImageBorderExtractor::extractLocalSurfaceStructure ()
       if (!range_image_->isValid(index))
         continue;
       local_surface = new LocalSurface;
-      Eigen::Vector3f point;
+      Eigen::Vector3d point;
       range_image_->getPoint(x, y, point);
       //cout << PVARN(point);
       if (!range_image_->getSurfaceInformation(x, y, parameters_.pixel_radius_plane_extraction, point,
@@ -291,10 +291,10 @@ RangeImageBorderExtractor::getAnglesImageForBorderDirections ()
       int index = y*width + x;
       double& angle = angles_image[index];
       angle = -std::numeric_limits<double>::infinity ();
-      const Eigen::Vector3f* border_direction_ptr = border_directions_[index];
+      const Eigen::Vector3d* border_direction_ptr = border_directions_[index];
       if (border_direction_ptr == NULL)
         continue;
-      const Eigen::Vector3f& border_direction = *border_direction_ptr;
+      const Eigen::Vector3d& border_direction = *border_direction_ptr;
       const PointWithRange& point = range_image_->getPoint(index);
       
       double border_direction_in_image_x, border_direction_in_image_y;
@@ -331,7 +331,7 @@ RangeImageBorderExtractor::getAnglesImageForSurfaceChangeDirections ()
       double surface_change_score = surface_change_scores_[index];
       if (surface_change_score <= 0.1f)
         continue;
-      const Eigen::Vector3f& direction = surface_change_directions_[index];
+      const Eigen::Vector3d& direction = surface_change_directions_[index];
       const PointWithRange& point = range_image_->getPoint(index);
       
       double border_direction_in_image_x, border_direction_in_image_y;
@@ -470,7 +470,7 @@ RangeImageBorderExtractor::calculateBorderDirections ()
   int width  = range_image_->width,
       height = range_image_->height,
       size   = width*height;
-  border_directions_ = new Eigen::Vector3f*[size];
+  border_directions_ = new Eigen::Vector3d*[size];
   for (int y=0; y<height; ++y)
   {
     for (int x=0; x<width; ++x)
@@ -479,7 +479,7 @@ RangeImageBorderExtractor::calculateBorderDirections ()
     }
   }
   
-  Eigen::Vector3f** average_border_directions = new Eigen::Vector3f*[size];
+  Eigen::Vector3d** average_border_directions = new Eigen::Vector3d*[size];
   int radius = parameters_.pixel_radius_border_direction;
   int minimum_weight = radius+1;
   double min_cos_angle=cosf(deg2rad(120.0f));
@@ -488,19 +488,19 @@ RangeImageBorderExtractor::calculateBorderDirections ()
     for (int x=0; x<width; ++x)
     {
       int index = y*width + x;
-      Eigen::Vector3f*& average_border_direction = average_border_directions[index];
+      Eigen::Vector3d*& average_border_direction = average_border_directions[index];
       average_border_direction = NULL;
-      const Eigen::Vector3f* border_direction = border_directions_[index];
+      const Eigen::Vector3d* border_direction = border_directions_[index];
       if (border_direction==NULL)
         continue;
-      average_border_direction = new Eigen::Vector3f(*border_direction);
+      average_border_direction = new Eigen::Vector3d(*border_direction);
       double weight_sum = 1.0f;
       for (int y2=(std::max)(0, y-radius); y2<=(std::min)(y+radius, height-1); ++y2)
       {
         for (int x2=(std::max)(0, x-radius); x2<=(std::min)(x+radius, width-1); ++x2)
         {
           int index2 = y2*width + x2;
-          const Eigen::Vector3f* neighbor_border_direction = border_directions_[index2];
+          const Eigen::Vector3d* neighbor_border_direction = border_directions_[index2];
           if (neighbor_border_direction==NULL || index2==index)
             continue;
           
@@ -554,7 +554,7 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
       height = range_image_->height,
       size   = width*height;
   surface_change_scores_ = new double[size];
-  surface_change_directions_ = new Eigen::Vector3f[size];
+  surface_change_directions_ = new Eigen::Vector3d[size];
 # pragma omp parallel for num_threads(parameters_.max_no_of_threads) default(shared) schedule(dynamic, 10)
   for (int y=0; y<height; ++y)
   {
@@ -563,7 +563,7 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
       int index = y*width + x;
       double& surface_change_score = surface_change_scores_[index];
       surface_change_score = 0.0f;
-      Eigen::Vector3f& surface_change_direction = surface_change_directions_[index];
+      Eigen::Vector3d& surface_change_direction = surface_change_directions_[index];
       surface_change_direction.setZero();
       
       const BorderTraits& border_traits = border_descriptions_->points[index].traits;
@@ -598,14 +598,14 @@ RangeImageBorderExtractor::blurSurfaceChanges ()
   
   const RangeImage& range_image = *range_image_;
   
-  Eigen::Vector3f* blurred_directions = new Eigen::Vector3f[range_image.width*range_image.height];
+  Eigen::Vector3d* blurred_directions = new Eigen::Vector3d[range_image.width*range_image.height];
   double* blurred_scores = new double[range_image.width*range_image.height];
   for (int y=0; y<int(range_image.height); ++y)
   {
     for (int x=0; x<int(range_image.width); ++x)
     {
       int index = y*range_image.width + x;
-      Eigen::Vector3f& new_point = blurred_directions[index];
+      Eigen::Vector3d& new_point = blurred_directions[index];
       new_point.setZero();
       double& new_score = blurred_scores[index];
       new_score = 0.0f;
@@ -614,7 +614,7 @@ RangeImageBorderExtractor::blurSurfaceChanges ()
       const BorderTraits& border_traits = border_descriptions_->points[index].traits;
       if (border_traits[BORDER_TRAIT__VEIL_POINT] || border_traits[BORDER_TRAIT__SHADOW_BORDER])
         continue;
-      const Eigen::Vector3f& point = surface_change_directions_[index];
+      const Eigen::Vector3d& point = surface_change_directions_[index];
       double counter = 0.0f;
       for (int y2=y-blur_radius; y2<y+blur_radius; ++y2)
       {
@@ -629,7 +629,7 @@ RangeImageBorderExtractor::blurSurfaceChanges ()
             //
           if (score > 0.0f)
           {
-            Eigen::Vector3f& neighbor = surface_change_directions_[index2];
+            Eigen::Vector3d& neighbor = surface_change_directions_[index2];
             //if (fabs(neighbor.norm()-1) > 1e-4)
               //cerr<<PVARN(neighbor)<<PVARN(score);
             if (point.dot(neighbor)<0.0f)

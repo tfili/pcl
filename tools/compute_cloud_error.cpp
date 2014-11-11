@@ -178,9 +178,9 @@ compute (const pcl::PCLPointCloud2::ConstPtr &cloud_source, const pcl::PCLPointC
         continue;
       size_t point_nn_i = nn_indices.front();
 
-      Eigen::Vector3f normal_target = normals_target->points[point_nn_i].getNormalVector3fMap (),
-          point_source = xyz_source->points[point_i].getVector3fMap (),
-          point_target = xyz_target->points[point_nn_i].getVector3fMap ();
+      Eigen::Vector3d normal_target = normals_target->points[point_nn_i].getNormalVector3dMap (),
+          point_source = xyz_source->points[point_i].getVector3dMap (),
+          point_target = xyz_target->points[point_nn_i].getVector3dMap ();
 
       double dist = normal_target.dot (point_source - point_target);
       rmse += dist * dist;

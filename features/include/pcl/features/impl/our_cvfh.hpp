@@ -188,38 +188,38 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::filterNormalsWithHighCurva
 }
 
 template<typename PointInT, typename PointNT, typename PointOutT> bool
-pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3f & centroid, Eigen::Vector3f & normal_centroid,
-                                                               PointInTPtr & processed, std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & transformations,
+pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3d & centroid, Eigen::Vector3d & normal_centroid,
+                                                               PointInTPtr & processed, std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & transformations,
                                                                PointInTPtr & grid, pcl::PointIndices & indices)
 {
 
-  Eigen::Vector3f plane_normal;
+  Eigen::Vector3d plane_normal;
   plane_normal[0] = -centroid[0];
   plane_normal[1] = -centroid[1];
   plane_normal[2] = -centroid[2];
-  Eigen::Vector3f z_vector = Eigen::Vector3f::UnitZ ();
+  Eigen::Vector3d z_vector = Eigen::Vector3d::UnitZ ();
   plane_normal.normalize ();
-  Eigen::Vector3f axis = plane_normal.cross (z_vector);
+  Eigen::Vector3d axis = plane_normal.cross (z_vector);
   double rotation = -asin (axis.norm ());
   axis.normalize ();
 
-  Eigen::Affine3f transformPC (Eigen::AngleAxisf (static_cast<double> (rotation), axis));
+  Eigen::Affine3d transformPC (Eigen::AngleAxisd (static_cast<double> (rotation), axis));
 
   grid->points.resize (processed->points.size ());
   for (size_t k = 0; k < processed->points.size (); k++)
-    grid->points[k].getVector4fMap () = processed->points[k].getVector4fMap ();
+    grid->points[k].getVector4dMap () = processed->points[k].getVector4dMap ();
 
   pcl::transformPointCloud (*grid, *grid, transformPC);
 
-  Eigen::Vector4f centroid4f (centroid[0], centroid[1], centroid[2], 0);
-  Eigen::Vector4f normal_centroid4f (normal_centroid[0], normal_centroid[1], normal_centroid[2], 0);
+  Eigen::Vector4d centroid4f (centroid[0], centroid[1], centroid[2], 0);
+  Eigen::Vector4d normal_centroid4f (normal_centroid[0], normal_centroid[1], normal_centroid[2], 0);
 
   centroid4f = transformPC * centroid4f;
   normal_centroid4f = transformPC * normal_centroid4f;
 
-  Eigen::Vector3f centroid3f (centroid4f[0], centroid4f[1], centroid4f[2]);
+  Eigen::Vector3d centroid3f (centroid4f[0], centroid4f[1], centroid4f[2]);
 
-  Eigen::Vector4f farthest_away;
+  Eigen::Vector4d farthest_away;
   pcl::getMaxDistance (*grid, indices.indices, centroid4f, farthest_away);
   farthest_away[3] = 0;
 
@@ -227,37 +227,37 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3f & c
 
   pcl::demeanPointCloud (*grid, centroid4f, *grid);
 
-  Eigen::Matrix4f center_mat;
+  Eigen::Matrix4d center_mat;
   center_mat.setIdentity (4, 4);
   center_mat (0, 3) = -centroid4f[0];
   center_mat (1, 3) = -centroid4f[1];
   center_mat (2, 3) = -centroid4f[2];
 
-  Eigen::Matrix3f scatter;
+  Eigen::Matrix3d scatter;
   scatter.setZero ();
   double sum_w = 0.f;
 
-  //for (int k = 0; k < static_cast<intgrid->points[k].getVector3fMap ();> (grid->points.size ()); k++)
+  //for (int k = 0; k < static_cast<intgrid->points[k].getVector3dMap ();> (grid->points.size ()); k++)
   for (int k = 0; k < static_cast<int> (indices.indices.size ()); k++)
   {
-    Eigen::Vector3f pvector = grid->points[indices.indices[k]].getVector3fMap ();
+    Eigen::Vector3d pvector = grid->points[indices.indices[k]].getVector3dMap ();
     double d_k = (pvector).norm ();
     double w = (max_dist - d_k);
-    Eigen::Vector3f diff = (pvector);
-    Eigen::Matrix3f mat = diff * diff.transpose ();
+    Eigen::Vector3d diff = (pvector);
+    Eigen::Matrix3d mat = diff * diff.transpose ();
     scatter = scatter + mat * w;
     sum_w += w;
   }
 
   scatter /= sum_w;
 
-  Eigen::JacobiSVD <Eigen::MatrixXf> svd (scatter, Eigen::ComputeFullV);
-  Eigen::Vector3f evx = svd.matrixV ().col (0);
-  Eigen::Vector3f evy = svd.matrixV ().col (1);
-  Eigen::Vector3f evz = svd.matrixV ().col (2);
-  Eigen::Vector3f evxminus = evx * -1;
-  Eigen::Vector3f evyminus = evy * -1;
-  Eigen::Vector3f evzminus = evz * -1;
+  Eigen::JacobiSVD <Eigen::MatrixXd> svd (scatter, Eigen::ComputeFullV);
+  Eigen::Vector3d evx = svd.matrixV ().col (0);
+  Eigen::Vector3d evy = svd.matrixV ().col (1);
+  Eigen::Vector3d evz = svd.matrixV ().col (2);
+  Eigen::Vector3d evxminus = evx * -1;
+  Eigen::Vector3d evyminus = evy * -1;
+  Eigen::Vector3d evzminus = evz * -1;
 
   double s_xplus, s_xminus, s_yplus, s_yminus;
   s_xplus = s_xminus = s_yplus = s_yminus = 0.f;
@@ -265,7 +265,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3f & c
   //disambiguate rf using all points
   for (int k = 0; k < static_cast<int> (grid->points.size ()); k++)
   {
-    Eigen::Vector3f pvector = grid->points[k].getVector3fMap ();
+    Eigen::Vector3d pvector = grid->points[k].getVector3dMap ();
     double dist_x, dist_y;
     dist_x = std::abs (evx.dot (pvector));
     dist_y = std::abs (evy.dot (pvector));
@@ -298,7 +298,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3f & c
   fx = (min_x / max_x);
   fy = (min_y / max_y);
 
-  Eigen::Vector3f normal3f = Eigen::Vector3f (normal_centroid4f[0], normal_centroid4f[1], normal_centroid4f[2]);
+  Eigen::Vector3d normal3f = Eigen::Vector3d (normal_centroid4f[0], normal_centroid4f[1], normal_centroid4f[2]);
   if (normal3f.dot (evz) < 0)
     evz = evzminus;
 
@@ -312,15 +312,15 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3f & c
   {
     PCL_WARN ("Both axes are equally easy/difficult to disambiguate\n");
 
-    Eigen::Vector3f evy_copy = evy;
-    Eigen::Vector3f evxminus = evx * -1;
-    Eigen::Vector3f evyminus = evy * -1;
+    Eigen::Vector3d evy_copy = evy;
+    Eigen::Vector3d evxminus = evx * -1;
+    Eigen::Vector3d evyminus = evy * -1;
 
     if (min_axis > min_axis_value_)
     {
       //combination of all possibilities
       evy = evx.cross (evz);
-      Eigen::Matrix4f trans = createTransFromAxes (evx, evy, evz, transformPC, center_mat);
+      Eigen::Matrix4d trans = createTransFromAxes (evx, evy, evz, transformPC, center_mat);
       transformations.push_back (trans);
 
       evx = evxminus;
@@ -343,7 +343,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3f & c
     {
       //1-st case (evx selected)
       evy = evx.cross (evz);
-      Eigen::Matrix4f trans = createTransFromAxes (evx, evy, evz, transformPC, center_mat);
+      Eigen::Matrix4d trans = createTransFromAxes (evx, evy, evz, transformPC, center_mat);
       transformations.push_back (trans);
 
       //2-nd case (evy selected)
@@ -362,7 +362,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::sgurf (Eigen::Vector3f & c
     }
 
     evy = evx.cross (evz);
-    Eigen::Matrix4f trans = createTransFromAxes (evx, evy, evz, transformPC, center_mat);
+    Eigen::Matrix4d trans = createTransFromAxes (evx, evy, evz, transformPC, center_mat);
     transformations.push_back (trans);
 
   }
@@ -383,7 +383,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeRFAndShapeDistribut
   for (size_t i = 0; i < centroids_dominant_orientations_.size (); i++)
   {
 
-    std::vector < Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transformations;
+    std::vector < Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transformations;
     PointInTPtr grid (new pcl::PointCloud<PointInT>);
     sgurf (centroids_dominant_orientations_[i], dominant_normals_[i], processed, transformations, grid, cluster_indices[i]);
 
@@ -397,15 +397,15 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeRFAndShapeDistribut
       transforms_.push_back (transformations[t]);
       valid_transforms_.push_back (true);
 
-      std::vector < Eigen::VectorXf > quadrants (8);
+      std::vector < Eigen::VectorXd > quadrants (8);
       int size_hists = 13;
       int num_hists = 8;
       for (int k = 0; k < num_hists; k++)
         quadrants[k].setZero (size_hists);
 
-      Eigen::Vector4f centroid_p;
+      Eigen::Vector4d centroid_p;
       centroid_p.setZero ();
-      Eigen::Vector4f max_pt;
+      Eigen::Vector4d max_pt;
       pcl::getMaxDistance (*grid, centroid_p, max_pt);
       max_pt[3] = 0;
       double distance_normalization_factor = (centroid_p - max_pt).norm ();
@@ -422,7 +422,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeRFAndShapeDistribut
 
       for (int k = 0; k < static_cast<int> (grid->points.size ()); k++)
       {
-        Eigen::Vector4f p = grid->points[k].getVector4fMap ();
+        Eigen::Vector4d p = grid->points[k].getVector4dMap ();
         p[3] = 0.f;
         double d = p.norm ();
 
@@ -577,7 +577,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
     normals_filtered_cloud->points[i].x = surface_->points[indices_in[i]].x;
     normals_filtered_cloud->points[i].y = surface_->points[indices_in[i]].y;
     normals_filtered_cloud->points[i].z = surface_->points[indices_in[i]].z;
-    //normals_filtered_cloud->points[i].getNormalVector4fMap() = normals_->points[indices_in[i]].getNormalVector4fMap();
+    //normals_filtered_cloud->points[i].getNormalVector4dMap() = normals_->points[indices_in[i]].getNormalVector4dMap();
     indices_from_nfc_to_indices[i] = indices_in[i];
   }
 
@@ -614,26 +614,26 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
       clusters_.push_back (pi);
       clusters_filtered.push_back (pi_filtered);
 
-      Eigen::Vector4f avg_normal = Eigen::Vector4f::Zero ();
-      Eigen::Vector4f avg_centroid = Eigen::Vector4f::Zero ();
+      Eigen::Vector4d avg_normal = Eigen::Vector4d::Zero ();
+      Eigen::Vector4d avg_centroid = Eigen::Vector4d::Zero ();
 
       for (size_t j = 0; j < clusters[i].indices.size (); j++)
       {
-        avg_normal += normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4fMap ();
-        avg_centroid += normals_filtered_cloud->points[clusters[i].indices[j]].getVector4fMap ();
+        avg_normal += normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4dMap ();
+        avg_centroid += normals_filtered_cloud->points[clusters[i].indices[j]].getVector4dMap ();
       }
 
       avg_normal /= static_cast<double> (clusters[i].indices.size ());
       avg_centroid /= static_cast<double> (clusters[i].indices.size ());
       avg_normal.normalize ();
 
-      Eigen::Vector3f avg_norm (avg_normal[0], avg_normal[1], avg_normal[2]);
-      Eigen::Vector3f avg_dominant_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
+      Eigen::Vector3d avg_norm (avg_normal[0], avg_normal[1], avg_normal[2]);
+      Eigen::Vector3d avg_dominant_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
 
       for (size_t j = 0; j < clusters[i].indices.size (); j++)
       {
         //decide if normal should be added
-        double dot_p = avg_normal.dot (normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4fMap ());
+        double dot_p = avg_normal.dot (normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4dMap ());
         if (fabs (acos (dot_p)) < (eps_angle_threshold_ * refine_clusters_))
         {
           clusters_[cluster_filtered_idx].indices.push_back (indices_from_nfc_to_indices[clusters[i].indices[j]]);
@@ -672,21 +672,21 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
     for (size_t i = 0; i < clusters.size (); ++i) //for each cluster
 
     {
-      Eigen::Vector4f avg_normal = Eigen::Vector4f::Zero ();
-      Eigen::Vector4f avg_centroid = Eigen::Vector4f::Zero ();
+      Eigen::Vector4d avg_normal = Eigen::Vector4d::Zero ();
+      Eigen::Vector4d avg_centroid = Eigen::Vector4d::Zero ();
 
       for (size_t j = 0; j < clusters[i].indices.size (); j++)
       {
-        avg_normal += normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4fMap ();
-        avg_centroid += normals_filtered_cloud->points[clusters[i].indices[j]].getVector4fMap ();
+        avg_normal += normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4dMap ();
+        avg_centroid += normals_filtered_cloud->points[clusters[i].indices[j]].getVector4dMap ();
       }
 
       avg_normal /= static_cast<double> (clusters[i].indices.size ());
       avg_centroid /= static_cast<double> (clusters[i].indices.size ());
       avg_normal.normalize ();
 
-      Eigen::Vector3f avg_norm (avg_normal[0], avg_normal[1], avg_normal[2]);
-      Eigen::Vector3f avg_dominant_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
+      Eigen::Vector3d avg_norm (avg_normal[0], avg_normal[1], avg_normal[2]);
+      Eigen::Vector3d avg_dominant_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
 
       //append normal and centroid for the clusters
       dominant_normals_.push_back (avg_norm);
@@ -716,9 +716,9 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
   { // ---[ Step 1b.1 : If no, compute a VFH using all the object points
 
     PCL_WARN("No clusters were found in the surface... using VFH...\n");
-    Eigen::Vector4f avg_centroid;
+    Eigen::Vector4d avg_centroid;
     pcl::compute3DCentroid (*surface_, avg_centroid);
-    Eigen::Vector3f cloud_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
+    Eigen::Vector3d cloud_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
     centroids_dominant_orientations_.push_back (cloud_centroid);
 
     //configure VFH computation using all object points
@@ -732,7 +732,7 @@ pcl::OURCVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
     output.width = 1;
 
     output.points[0] = vfh_signature.points[0];
-    Eigen::Matrix4f id = Eigen::Matrix4f::Identity ();
+    Eigen::Matrix4d id = Eigen::Matrix4d::Identity ();
     transforms_.push_back (id);
     valid_transforms_.push_back (false);
   }

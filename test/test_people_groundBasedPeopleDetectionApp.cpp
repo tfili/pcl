@@ -65,8 +65,8 @@ double max_width;
 double min_height;
 double max_height;
 double voxel_size;
-Eigen::Matrix3f rgb_intrinsics_matrix;
-Eigen::VectorXf ground_coeffs;
+Eigen::Matrix3d rgb_intrinsics_matrix;
+Eigen::VectorXd ground_coeffs;
 
 TEST (PCL, PersonClassifier)
 {

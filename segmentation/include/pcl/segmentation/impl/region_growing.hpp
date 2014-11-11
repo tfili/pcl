@@ -501,13 +501,13 @@ pcl::RegionGrowing<PointT, NormalT>::validatePoint (int initial_seed, int point,
   data[1] = input_->points[point].data[1];
   data[2] = input_->points[point].data[2];
   data[3] = input_->points[point].data[3];
-  Eigen::Map<Eigen::Vector3f> initial_point (static_cast<double*> (data));
-  Eigen::Map<Eigen::Vector3f> initial_normal (static_cast<double*> (normals_->points[point].normal));
+  Eigen::Map<Eigen::Vector3d> initial_point (static_cast<double*> (data));
+  Eigen::Map<Eigen::Vector3d> initial_normal (static_cast<double*> (normals_->points[point].normal));
 
   //check the angle between normals
   if (smooth_mode_flag_ == true)
   {
-    Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
+    Eigen::Map<Eigen::Vector3d> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
     double dot_product = fabsf (nghbr_normal.dot (initial_normal));
     if (dot_product < cosine_threshold)
     {
@@ -516,8 +516,8 @@ pcl::RegionGrowing<PointT, NormalT>::validatePoint (int initial_seed, int point,
   }
   else
   {
-    Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
-    Eigen::Map<Eigen::Vector3f> initial_seed_normal (static_cast<double*> (normals_->points[initial_seed].normal));
+    Eigen::Map<Eigen::Vector3d> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
+    Eigen::Map<Eigen::Vector3d> initial_seed_normal (static_cast<double*> (normals_->points[initial_seed].normal));
     double dot_product = fabsf (nghbr_normal.dot (initial_seed_normal));
     if (dot_product < cosine_threshold)
       return (false);
@@ -534,7 +534,7 @@ pcl::RegionGrowing<PointT, NormalT>::validatePoint (int initial_seed, int point,
   data[1] = input_->points[nghbr].data[1];
   data[2] = input_->points[nghbr].data[2];
   data[3] = input_->points[nghbr].data[3];
-  Eigen::Map<Eigen::Vector3f> nghbr_point (static_cast<double*> (data));
+  Eigen::Map<Eigen::Vector3d> nghbr_point (static_cast<double*> (data));
   double residual = fabsf (initial_normal.dot (initial_point - nghbr_point));
   if (residual_flag_ && residual > residual_threshold_)
     is_a_seed = false;

@@ -69,10 +69,10 @@ main (int argc, char** argv)
     | 0 0 1 z |  /
     | 0 0 0 1 |    -> We do not use this line (and it has to stay 0,0,0,1)
 
-    METHOD #1: Using a Matrix4f
+    METHOD #1: Using a Matrix4d
     This is the "manual" method, perfect to understand but error prone !
   */
-  Eigen::Matrix4f transform_1 = Eigen::Matrix4f::Identity();
+  Eigen::Matrix4d transform_1 = Eigen::Matrix4d::Identity();
 
   // Define a rotation matrix (see https://en.wikipedia.org/wiki/Rotation_matrix)
   double theta = M_PI/4; // The angle of rotation in radians
@@ -86,22 +86,22 @@ main (int argc, char** argv)
   transform_1 (0,3) = 2.5;
 
   // Print the transformation
-  printf ("Method #1: using a Matrix4f\n");
+  printf ("Method #1: using a Matrix4d\n");
   std::cout << transform_1 << std::endl;
 
-  /*  METHOD #2: Using a Affine3f
+  /*  METHOD #2: Using a Affine3d
     This method is easier and less error prone
   */
-  Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
+  Eigen::Affine3d transform_2 = Eigen::Affine3d::Identity();
 
   // Define a translation of 2.5 meters on the x axis.
   transform_2.translation() << 2.5, 0.0, 0.0;
 
   // The same rotation matrix as before; tetha radians arround Z axis
-  transform_2.rotate (Eigen::AngleAxisf (theta, Eigen::Vector3f::UnitZ()));
+  transform_2.rotate (Eigen::AngleAxisd (theta, Eigen::Vector3d::UnitZ()));
 
   // Print the transformation
-  printf ("\nMethod #2: using an Affine3f\n");
+  printf ("\nMethod #2: using an Affine3d\n");
   std::cout << transform_2.matrix() << std::endl;
 
   // Executing the transformation

@@ -407,11 +407,11 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::spatialGradient (const
                                                                     const FloatImage& grad_x,
                                                                     const FloatImage& grad_y,
                                                                     const Eigen::Array2i& location,
-                                                                    const Eigen::Array4f& weight,
+                                                                    const Eigen::Array4d& weight,
                                                                     Eigen::ArrayXXf& win,
                                                                     Eigen::ArrayXXf& grad_x_win,
                                                                     Eigen::ArrayXXf& grad_y_win,
-                                                                    Eigen::Array3f &covariance) const
+                                                                    Eigen::Array3d &covariance) const
 {
   const int step = img.width;
   covariance.setZero ();
@@ -449,7 +449,7 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::mismatchVector (const 
                                                                    const Eigen::ArrayXXf& prev_grad_y,
                                                                    const FloatImage& next,
                                                                    const Eigen::Array2i& location,
-                                                                   const Eigen::Array4f& weight,
+                                                                   const Eigen::Array4d& weight,
                                                                    Eigen::Array2f &b) const
 {
   const int step = next.width;
@@ -480,7 +480,7 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::track (const PointClou
                                                                  const pcl::PointCloud<pcl::PointUV>::ConstPtr& prev_keypoints,
                                                                  pcl::PointCloud<pcl::PointUV>::Ptr& keypoints,
                                                                  std::vector<int>& status,
-                                                                 Eigen::Affine3f& motion) const
+                                                                 Eigen::Affine3d& motion) const
 {
   std::vector<Eigen::Array2f> next_pts (prev_keypoints->size ());
   Eigen::Array2f half_win ((track_width_-1)*0.5f, (track_height_-1)*0.5f);
@@ -524,13 +524,13 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::track (const PointClou
 
       double a = prev_pt[0] - iprev_point[0];
       double b = prev_pt[1] - iprev_point[1];
-      Eigen::Array4f weight;
+      Eigen::Array4d weight;
       weight[0] = (1.f - a)*(1.f - b);
       weight[1] = a*(1.f - b);
       weight[2] = (1.f - a)*b;
       weight[3] = 1 - weight[0] - weight[1] - weight[2];
 
-      Eigen::Array3f covar = Eigen::Array3f::Zero ();
+      Eigen::Array3d covar = Eigen::Array3d::Zero ();
       spatialGradient (prev, grad_x, grad_y, iprev_point, weight, prev_win, grad_x_win, grad_y_win, covar);
 
       double det = covar[0]*covar[2] - covar[1]*covar[1];
@@ -569,7 +569,7 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::track (const PointClou
         Eigen::Array2f beta = Eigen::Array2f::Zero ();
         mismatchVector (prev_win, grad_x_win, grad_y_win, next, inext_pt, weight, beta);
         // optical flow resolution
-        Eigen::Vector2f delta ((covar[1]*beta[1] - covar[2]*beta[0])*det, (covar[1]*beta[0] - covar[0]*beta[1])*det);
+        Eigen::Vector2d delta ((covar[1]*beta[1] - covar[2]*beta[0])*det, (covar[1]*beta[0] - covar[0]*beta[1])*det);
         // update position
         next_pt[0] += delta[0]; next_pt[1] += delta[1];
         next_pts[ptidx] = next_pt + half_win;
@@ -615,7 +615,7 @@ pcl::tracking::PyramidalKLTTracker<PointInT, IntensityT>::track (const PointClou
         iprev_point[1] = floor (prev_keypoints->points[ptidx].v);
         const PointInT& prev_pt = prev_input->points[iprev_point[1]*prev_input->width + iprev_point[0]];
         const PointInT& next_pt = input->points[inext_pt[1]*input->width + inext_pt[0]];
-        transformation_computer.add (prev_pt.getVector3fMap (), next_pt.getVector3fMap (), 1.0);
+        transformation_computer.add (prev_pt.getVector3dMap (), next_pt.getVector3dMap (), 1.0);
       }
     }
   }

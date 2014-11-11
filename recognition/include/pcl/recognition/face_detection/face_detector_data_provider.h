@@ -77,7 +77,7 @@ namespace pcl
           }
         }
 
-        inline bool readMatrixFromFile(std::string file, Eigen::Matrix4f & matrix)
+        inline bool readMatrixFromFile(std::string file, Eigen::Matrix4d & matrix)
         {
 
           std::ifstream in;

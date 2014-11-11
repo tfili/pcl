@@ -43,7 +43,7 @@
 
   inline void 
   RGBtoHSV (const Eigen::Vector4i &in, 
-			Eigen::Vector4f &out)
+			Eigen::Vector4d &out)
   {
     const unsigned char max = std::max (in[0], std::max (in[1], in[2]));
     const unsigned char min = std::min (in[0], std::min (in[1], in[2]));
@@ -74,11 +74,11 @@
   }
   
 bool
-pcl::computeCPPFPairFeature (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, const Eigen::Vector4i &c1,
-                            const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, const Eigen::Vector4i &c2,
+pcl::computeCPPFPairFeature (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1, const Eigen::Vector4i &c1,
+                            const Eigen::Vector4d &p2, const Eigen::Vector4d &n2, const Eigen::Vector4i &c2,
                             double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7, double &f8, double &f9, double &f10)
 {
-  Eigen::Vector4f delta = p2 - p1;
+  Eigen::Vector4d delta = p2 - p1;
   delta[3] = 0.0f;
   // f4 = ||delta||
   f4 = delta.norm ();
@@ -94,8 +94,8 @@ pcl::computeCPPFPairFeature (const Eigen::Vector4f &p1, const Eigen::Vector4f &n
 
   // f5-f7 is hsv component of p1
   // f8-f10 is hsv component of p2
-  Eigen::Vector4f hsv1;
-  Eigen::Vector4f hsv2;
+  Eigen::Vector4d hsv1;
+  Eigen::Vector4d hsv2;
   
   RGBtoHSV (c1,hsv1);
   RGBtoHSV (c2,hsv2);

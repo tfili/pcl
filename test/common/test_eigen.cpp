@@ -803,7 +803,7 @@ TEST (PCL, eigen33f)
 TEST (PCL, transformLine)
 {
   // This also tests transformPoint and transformVector
-  Eigen::VectorXf line;
+  Eigen::VectorXd line;
   Eigen::VectorXd lined, test;
   line.resize(6);
   lined.resize(6);
@@ -811,7 +811,7 @@ TEST (PCL, transformLine)
   double tolerance = 1e-7;
 
   // Simple translation
-  Eigen::Affine3f transformation = Eigen::Affine3f::Identity ();
+  Eigen::Affine3d transformation = Eigen::Affine3d::Identity ();
   Eigen::Affine3d transformationd = Eigen::Affine3d::Identity ();
   transformation.translation() << 1, -2, 0;
   transformationd.translation() << 1, -2, 0;
@@ -828,9 +828,9 @@ TEST (PCL, transformLine)
   }
 
   // Simple rotation
-  transformation = Eigen::Affine3f::Identity ();
+  transformation = Eigen::Affine3d::Identity ();
   transformationd = Eigen::Affine3d::Identity ();
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/2, Eigen::Vector3f::UnitZ());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
 
   line << 1, 2, 3, 0, 1, 0;
@@ -847,12 +847,12 @@ TEST (PCL, transformLine)
   }
 
   // Random transformation
-  transformation = Eigen::Affine3f::Identity ();
+  transformation = Eigen::Affine3d::Identity ();
   transformationd = Eigen::Affine3d::Identity ();
   transformation.translation() << 25.97, -2.45, 0.48941;
   transformationd.translation() << 25.97, -2.45, 0.48941;
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/5, Eigen::Vector3f::UnitX())
-  * Eigen::AngleAxisf(M_PI/3, Eigen::Vector3f::UnitY());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/5, Eigen::Vector3d::UnitX())
+  * Eigen::AngleAxisd(M_PI/3, Eigen::Vector3d::UnitY());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/5, Eigen::Vector3d::UnitX())
   * Eigen::AngleAxisd(M_PI/3, Eigen::Vector3d::UnitY());
 
@@ -882,7 +882,7 @@ TEST (PCL, transformPlane)
   plane->values[3] = -2.0;
 
   // Simple translation
-  Eigen::Affine3f transformation = Eigen::Affine3f::Identity ();
+  Eigen::Affine3d transformation = Eigen::Affine3d::Identity ();
   Eigen::Affine3d transformationd = Eigen::Affine3d::Identity ();
   transformation.translation() << 1, 0, 0;
   transformationd.translation() << 1, 0, 0;
@@ -903,7 +903,7 @@ TEST (PCL, transformPlane)
   // Simple rotation
   transformation.translation() << 0, 0, 0;
   transformationd.translation() << 0, 0, 0;
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/2, Eigen::Vector3f::UnitZ());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
   test << 0, 1, 0, -2;
   tolerance = 1e-6;
@@ -927,8 +927,8 @@ TEST (PCL, transformPlane)
   // Random transformation
   transformation.translation() << 12.5, -5.4, 0.1;
   transformationd.translation() << 12.5, -5.4, 0.1;
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/7, Eigen::Vector3f::UnitY())
-  * Eigen::AngleAxisf(M_PI/4, Eigen::Vector3f::UnitZ());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/7, Eigen::Vector3d::UnitY())
+  * Eigen::AngleAxisd(M_PI/4, Eigen::Vector3d::UnitZ());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/7, Eigen::Vector3d::UnitY())
   * Eigen::AngleAxisd(M_PI/4, Eigen::Vector3d::UnitZ());
   test << 5.35315, 2.89914, 0.196848, -49.2788;
@@ -1017,9 +1017,9 @@ TEST (PCL, checkCoordinateSystem)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, transformBetween2CoordinateSystems)
 {
-  Eigen::Affine3f transformation;
+  Eigen::Affine3d transformation;
   Eigen::Affine3d transformationd;
-  Eigen::VectorXf from_line_x, from_line_y, to_line_x, to_line_y;
+  Eigen::VectorXd from_line_x, from_line_y, to_line_x, to_line_y;
   Eigen::VectorXd from_line_xd, from_line_yd, to_line_xd, to_line_yd;
   from_line_x.resize(6); from_line_y.resize(6);
   to_line_x.resize(6); to_line_y.resize(6);

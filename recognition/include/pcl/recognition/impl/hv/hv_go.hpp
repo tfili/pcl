@@ -260,7 +260,7 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::initialize()
     for (size_t i = 0; i < scene_cloud_downsampled_->points.size (); i++)
     {
       pcl::PointXYZI p;
-      p.getVector3fMap () = scene_cloud_downsampled_->points[i].getVector3fMap ();
+      p.getVector3dMap () = scene_cloud_downsampled_->points[i].getVector3dMap ();
       p.intensity = 0.f;
       clusters_cloud_->points[i] = p;
     }
@@ -632,8 +632,8 @@ bool pcl::GlobalHypothesesVerification<ModelT, SceneT>::addModel(typename pcl::P
 
     //it->first is index to scene point
     //using normals to weight inliers
-    Eigen::Vector3f scene_p_normal = scene_normals_->points[it->first].getNormalVector3fMap ();
-    Eigen::Vector3f model_p_normal = recog_model->normals_->points[it->second->at (closest).first].getNormalVector3fMap ();
+    Eigen::Vector3d scene_p_normal = scene_normals_->points[it->first].getNormalVector3dMap ();
+    Eigen::Vector3d model_p_normal = recog_model->normals_->points[it->second->at (closest).first].getNormalVector3dMap ();
     double dotp = scene_p_normal.dot (model_p_normal) * 1.f; //[-1,1] from antiparallel trough perpendicular to parallel
 
     if (dotp < 0.f)
@@ -717,13 +717,13 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::computeClutterCue(boost:
           //neighborhood_indices[i].first gives the index to the scene point and second to the explained scene point by the model causing this...
           //calculate weight of this clutter point based on the distance of the scene point and the model point causing it
           double d = static_cast<double> (pow (
-              (scene_cloud_downsampled_->points[recog_model->explained_[neighborhood_indices[i].second]].getVector3fMap ()
-                  - scene_cloud_downsampled_->points[neighborhood_indices[i].first].getVector3fMap ()).norm (), 2));
+              (scene_cloud_downsampled_->points[recog_model->explained_[neighborhood_indices[i].second]].getVector3dMap ()
+                  - scene_cloud_downsampled_->points[neighborhood_indices[i].first].getVector3dMap ()).norm (), 2));
           double d_weight = -(d / rn_sqr) + 1; //points that are close have a strong weight*/
 
           //using normals to weight clutter points
-          Eigen::Vector3f scene_p_normal = scene_normals_->points[neighborhood_indices[i].first].getNormalVector3fMap ();
-          Eigen::Vector3f model_p_normal = scene_normals_->points[recog_model->explained_[neighborhood_indices[i].second]].getNormalVector3fMap ();
+          Eigen::Vector3d scene_p_normal = scene_normals_->points[neighborhood_indices[i].first].getNormalVector3dMap ();
+          Eigen::Vector3d model_p_normal = scene_normals_->points[recog_model->explained_[neighborhood_indices[i].second]].getNormalVector3dMap ();
           double dotp = scene_p_normal.dot (model_p_normal); //[-1,1] from antiparallel trough perpendicular to parallel
 
           if (dotp < 0)

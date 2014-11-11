@@ -87,7 +87,7 @@ namespace pcl
           * correspondences) and 1 (full overlap, all correspondences)
           */
         virtual inline void 
-        setOverlapRatio (double ratio) { overlap_ratio_ = std::min (1.0f, std::max (0.0f, ratio)); };
+        setOverlapRatio (double ratio) { overlap_ratio_ = std::min (1.0, std::max (0.0, ratio)); };
 
         /** \brief Get the maximum distance used for thresholding in correspondence rejection. */
         inline double 

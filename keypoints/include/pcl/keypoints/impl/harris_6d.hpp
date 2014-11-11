@@ -363,11 +363,11 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOu
   pcl::search::KdTree<PointInT> search;
   search.setInputCloud(surface_);
 
-  Eigen::Matrix3f nnT;
-  Eigen::Matrix3f NNT;
-  Eigen::Vector3f NNTp;
-  const Eigen::Vector3f* normal;
-  const Eigen::Vector3f* point;
+  Eigen::Matrix3d nnT;
+  Eigen::Matrix3d NNT;
+  Eigen::Vector3d NNTp;
+  const Eigen::Vector3d* normal;
+  const Eigen::Vector3d* point;
   double diff;
   const unsigned max_iterations = 10;
   for (typename PointCloudOut::iterator cornerIt = corners.begin(); cornerIt != corners.end(); ++cornerIt)
@@ -385,14 +385,14 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOu
       search.radiusSearch (corner, search_radius_, nn_indices, nn_dists);
       for (std::vector<int>::const_iterator iIt = nn_indices.begin(); iIt != nn_indices.end(); ++iIt)
       {
-        normal = reinterpret_cast<const Eigen::Vector3f*> (&(normals_->points[*iIt].normal_x));
-        point = reinterpret_cast<const Eigen::Vector3f*> (&(surface_->points[*iIt].x));
+        normal = reinterpret_cast<const Eigen::Vector3d*> (&(normals_->points[*iIt].normal_x));
+        point = reinterpret_cast<const Eigen::Vector3d*> (&(surface_->points[*iIt].x));
         nnT = (*normal) * (normal->transpose());
         NNT += nnT;
         NNTp += nnT * (*point);
       }
       if (NNT.determinant() != 0)
-        *(reinterpret_cast<Eigen::Vector3f*>(&(cornerIt->x))) = NNT.inverse () * NNTp;
+        *(reinterpret_cast<Eigen::Vector3d*>(&(cornerIt->x))) = NNT.inverse () * NNTp;
 
       diff = (cornerIt->x - corner.x) * (cornerIt->x - corner.x) +
              (cornerIt->y - corner.y) * (cornerIt->y - corner.y) +

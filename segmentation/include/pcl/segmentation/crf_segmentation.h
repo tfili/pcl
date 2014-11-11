@@ -161,7 +161,7 @@ namespace pcl
       //typename pcl::VoxelGrid::IndicesPtr cloud_indices_;      
 
       /** \brief Voxel grid leaf size */
-      Eigen::Vector4f voxel_grid_leaf_size_;
+      Eigen::Vector4d voxel_grid_leaf_size_;
 
       /** \brief Voxel grid dimensions */
       Eigen::Vector3i dim_;
@@ -173,7 +173,7 @@ namespace pcl
 
       std::vector<Eigen::Vector3i> color_;
 
-      std::vector<Eigen::Vector3f> normal_;
+      std::vector<Eigen::Vector3d> normal_;
 
       /** \brief smoothness kernel parameters 
        * [0] = standard deviation x

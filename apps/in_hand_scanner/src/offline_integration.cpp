@@ -125,7 +125,7 @@ pcl::ihs::OfflineIntegration::computationThread ()
   // First cloud is reference model
   std::cerr << "Processing file " << std::setw (5) << 1 << " / " << filenames.size () << std::endl;
   CloudXYZRGBNormalPtr cloud_model (new CloudXYZRGBNormal ());
-  Eigen::Matrix4f T = Eigen::Matrix4f::Identity ();
+  Eigen::Matrix4d T = Eigen::Matrix4d::Identity ();
   if (!this->load (filenames [0], cloud_model, T))
   {
     std::cerr << "ERROR in offline_integration.cpp: Could not load the model cloud.\n";
@@ -223,7 +223,7 @@ pcl::ihs::OfflineIntegration::getFilesFromDirectory (const std::string          
 
 bool
 pcl::ihs::OfflineIntegration::loadTransform (const std::string& filename,
-                                             Eigen::Matrix4f&   transform) const
+                                             Eigen::Matrix4d&   transform) const
 {
  Eigen::Matrix4d tr;
  std::ifstream file;
@@ -259,7 +259,7 @@ pcl::ihs::OfflineIntegration::loadTransform (const std::string& filename,
 bool
 pcl::ihs::OfflineIntegration::load (const std::string&    filename,
                                     CloudXYZRGBNormalPtr& cloud,
-                                    Eigen::Matrix4f&      T) const
+                                    Eigen::Matrix4d&      T) const
 {
   if (!cloud)
   {

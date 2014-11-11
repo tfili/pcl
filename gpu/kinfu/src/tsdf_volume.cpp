@@ -55,7 +55,7 @@ pcl::gpu::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resolution_(resol
 
   volume_.create (volume_y * volume_z, volume_x);
   
-  const Vector3f default_volume_size = Vector3f::Constant (3.f); //meters
+  const Vector3d default_volume_size = Vector3d::Constant (3.f); //meters
   const double    default_tranc_dist  = 0.03f; //meters
 
   setSize(default_volume_size);
@@ -67,7 +67,7 @@ pcl::gpu::TsdfVolume::TsdfVolume(const Vector3i& resolution) : resolution_(resol
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::gpu::TsdfVolume::setSize(const Vector3f& size)
+pcl::gpu::TsdfVolume::setSize(const Vector3d& size)
 {  
   size_ = size;
   setTsdfTruncDist(tranc_dist_);
@@ -98,7 +98,7 @@ pcl::gpu::TsdfVolume::data() const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const Eigen::Vector3f&
+const Eigen::Vector3d&
 pcl::gpu::TsdfVolume::getSize() const
 {
     return size_;
@@ -114,7 +114,7 @@ pcl::gpu::TsdfVolume::getResolution() const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const Eigen::Vector3f
+const Eigen::Vector3d
 pcl::gpu::TsdfVolume::getVoxelSize() const
 {    
   return size_.array () / resolution_.array().cast<double>();
@@ -156,7 +156,7 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
 
 #define FETCH(x, y, z) volume_host[(x) + (y) * volume_x + (z) * volume_y * volume_x]
 
-  Array3f cell_size = getVoxelSize();
+  Array3d cell_size = getVoxelSize();
 
   for (int x = 1; x < volume_x-1; ++x)
   {
@@ -171,7 +171,7 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
         if (W == 0 || F == DIVISOR)
           continue;
 
-        Vector3f V = ((Array3i(x, y, z).cast<double>() + 0.5f) * cell_size).matrix ();
+        Vector3d V = ((Array3i(x, y, z).cast<double>() + 0.5f) * cell_size).matrix ();
 
         if (connected26)
         {
@@ -188,8 +188,8 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3f Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
-                Vector3f point = (V * (double)abs (Fn) + Vn * (double)abs (F)) / (double)(abs (F) + abs (Fn));
+                Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
+                Vector3d point = (V * (double)abs (Fn) + Vn * (double)abs (F)) / (double)(abs (F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
                 xyz.x = point (0);
@@ -212,8 +212,8 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
 
               if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
               {
-                Vector3f Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
-                Vector3f point = (V * (double)abs(Fn) + Vn * (double)abs(F))/(double)(abs(F) + abs (Fn));
+                Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
+                Vector3d point = (V * (double)abs(Fn) + Vn * (double)abs(F))/(double)(abs(F) + abs (Fn));
 
                 pcl::PointXYZ xyz;
                 xyz.x = point (0);
@@ -244,8 +244,8 @@ pcl::gpu::TsdfVolume::fetchCloudHost (PointCloud<PointType>& cloud, bool connect
 
             if ((F > 0 && Fn < 0) || (F < 0 && Fn > 0))
             {
-              Vector3f Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
-              Vector3f point = (V * (double)abs (Fn) + Vn * (double)abs (F)) / (double)(abs (F) + abs (Fn));
+              Vector3d Vn = ((Array3i (x+dx, y+dy, z+dz).cast<double>() + 0.5f) * cell_size).matrix ();
+              Vector3d point = (V * (double)abs (Fn) + Vn * (double)abs (F)) / (double)(abs (F) + abs (Fn));
 
               pcl::PointXYZ xyz;
               xyz.x = point (0);

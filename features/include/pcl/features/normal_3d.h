@@ -58,12 +58,12 @@ namespace pcl
     */
   template <typename PointT> inline void
   computePointNormal (const pcl::PointCloud<PointT> &cloud,
-                      Eigen::Vector4f &plane_parameters, double &curvature)
+                      Eigen::Vector4d &plane_parameters, double &curvature)
   {
     // Placeholder for the 3x3 covariance matrix at each surface patch
-    EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
+    EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
     // 16-bytes aligned placeholder for the XYZ centroid of a surface patch
-    Eigen::Vector4f xyz_centroid;
+    Eigen::Vector4d xyz_centroid;
 
     if (cloud.size () < 3 ||
         computeMeanAndCovarianceMatrix (cloud, covariance_matrix, xyz_centroid) == 0)
@@ -90,12 +90,12 @@ namespace pcl
     */
   template <typename PointT> inline void
   computePointNormal (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices,
-                      Eigen::Vector4f &plane_parameters, double &curvature)
+                      Eigen::Vector4d &plane_parameters, double &curvature)
   {
     // Placeholder for the 3x3 covariance matrix at each surface patch
-    EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
+    EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
     // 16-bytes aligned placeholder for the XYZ centroid of a surface patch
-    Eigen::Vector4f xyz_centroid;
+    Eigen::Vector4d xyz_centroid;
     if (indices.size () < 3 ||
         computeMeanAndCovarianceMatrix (cloud, indices, covariance_matrix, xyz_centroid) == 0)
     {
@@ -130,7 +130,7 @@ namespace pcl
       normal *= -1;
       normal[3] = 0.0f;
       // Hessian form (D = nc . p_plane (centroid here) + p)
-      normal[3] = -1 * normal.dot (point.getVector4fMap ());
+      normal[3] = -1 * normal.dot (point.getVector4dMap ());
     }
   }
 
@@ -238,7 +238,7 @@ namespace pcl
         */
       inline void
       computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices,
-                          Eigen::Vector4f &plane_parameters, double &curvature)
+                          Eigen::Vector4d &plane_parameters, double &curvature)
       {
         if (indices.size () < 3 ||
             computeMeanAndCovarianceMatrix (cloud, indices, covariance_matrix_, xyz_centroid_) == 0)
@@ -360,10 +360,10 @@ namespace pcl
       double vpx_, vpy_, vpz_;
 
       /** \brief Placeholder for the 3x3 covariance matrix at each surface patch. */
-      EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix_;
+      EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix_;
 
       /** \brief 16-bytes aligned placeholder for the XYZ centroid of a surface patch. */
-      Eigen::Vector4f xyz_centroid_;
+      Eigen::Vector4d xyz_centroid_;
       
       /** whether the sensor origin of the input cloud or a user given viewpoint should be used.*/
       bool use_sensor_origin_;

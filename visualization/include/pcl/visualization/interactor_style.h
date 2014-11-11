@@ -211,7 +211,7 @@ namespace pcl
           * \param[in] viewport the viewport to modify camera of (0 modifies all cameras)
           */
         void
-        setCameraParameters (const Eigen::Matrix3f &intrinsics, const Eigen::Matrix4f &extrinsics, int viewport = 0); 
+        setCameraParameters (const Eigen::Matrix3d &intrinsics, const Eigen::Matrix4d &extrinsics, int viewport = 0); 
 
         /** \brief Set the camera parameters by given a full camera data structure.
           * \param[in] camera camera structure containing all the camera parameters.

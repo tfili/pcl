@@ -64,7 +64,7 @@ namespace pcl
     {
       Camera () : pose (), focal_length (), focal_length_w (-1), focal_length_h (-1),
         center_w (-1), center_h (-1), height (), width (), texture_file () {}
-      Eigen::Affine3f pose;
+      Eigen::Affine3d pose;
       double focal_length;
       double focal_length_w;  // optional
       double focal_length_h;  // optinoal
@@ -141,7 +141,7 @@ namespace pcl
       inline void
       setVectorField (double x, double y, double z)
       {
-        vector_field_ = Eigen::Vector3f (x, y, z);
+        vector_field_ = Eigen::Vector3d (x, y, z);
         // normalize vector field
         vector_field_ = vector_field_ / std::sqrt (vector_field_.dot (vector_field_));
       }
@@ -193,7 +193,7 @@ namespace pcl
         * \returns false if the point is not visible by the camera
         */
       inline bool
-      getPointUVCoordinates (const PointInT &pt, const Camera &cam, Eigen::Vector2f &UV_coordinates)
+      getPointUVCoordinates (const PointInT &pt, const Camera &cam, Eigen::Vector2d &UV_coordinates)
       {
         // if the point is in front of the camera
         if (pt.z > 0)
@@ -338,7 +338,7 @@ namespace pcl
       double f_;
 
       /** \brief vector field */
-      Eigen::Vector3f vector_field_;
+      Eigen::Vector3d vector_field_;
 
       /** \brief list of texture files */
       std::vector<std::string> tex_files_;
@@ -351,8 +351,8 @@ namespace pcl
         * \param[in] p2 the second point
         * \param[in] p3 the third point
         */
-      std::vector<Eigen::Vector2f>
-      mapTexture2Face (const Eigen::Vector3f &p1, const Eigen::Vector3f &p2, const Eigen::Vector3f &p3);
+      std::vector<Eigen::Vector2d>
+      mapTexture2Face (const Eigen::Vector3d &p1, const Eigen::Vector3d &p2, const Eigen::Vector3d &p3);
 
       /** \brief Returns the circumcenter of a triangle and the circle's radius.
         * \details see http://en.wikipedia.org/wiki/Circumcenter for formulas.

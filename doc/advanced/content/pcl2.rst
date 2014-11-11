@@ -30,7 +30,7 @@ The 1.x API includes the following data members:
  * **uint32_t** :pcl:`height <pcl::PointCloud::height>` - the height (for organized datasets) of the data. Set to 1 for unorganized data.
  * **bool** :pcl:`is_dense <pcl::PointCloud::is_dense>` - true if the data contains only valid numbers (e.g., no NaN or -/+Inf, etc). False otherwise.
 
- * **Eigen::Vector4f** :pcl:`sensor_origin_ <pcl::PointCloud::sensor_origin_>` - the origin (pose) of the acquisition sensor in the current data coordinate system.
+ * **Eigen::Vector4d** :pcl:`sensor_origin_ <pcl::PointCloud::sensor_origin_>` - the origin (pose) of the acquisition sensor in the current data coordinate system.
  * **Eigen::Quaternionf** :pcl:`sensor_orientation_ <pcl::PointCloud::sensor_orientation_>` - the origin (orientation) of hte acquisition sensor in the current data coordinate system.
 
 
@@ -73,7 +73,7 @@ Proposals for the 2.x API:
 1.2 PointTypes 
 ^^^^^^^^^^^^^^
 
-  #. Eigen::Vector4f or Eigen::Vector3f ??
+  #. Eigen::Vector4d or Eigen::Vector3d ??
   
   #. Large points cause significant perfomance penalty for GPU. Let's assume that point sizes up to 16 bytes are suitable. This is some compromise between SOA and AOS. Structures like pcl::Normal (size = 32) is not desirable. SOA is better in this case.
 

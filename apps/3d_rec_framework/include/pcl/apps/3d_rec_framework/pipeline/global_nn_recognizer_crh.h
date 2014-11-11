@@ -95,9 +95,9 @@ namespace pcl
 
 
       bool use_cache_;
-      std::map<std::pair<std::string, int>, Eigen::Matrix4f, std::less<std::pair<std::string, int> >, Eigen::aligned_allocator<std::pair<std::pair<
-          std::string, int>, Eigen::Matrix4f> > > poses_cache_;
-      std::map<std::pair<std::string, int>, Eigen::Vector3f > centroids_cache_;
+      std::map<std::pair<std::string, int>, Eigen::Matrix4d, std::less<std::pair<std::string, int> >, Eigen::aligned_allocator<std::pair<std::pair<
+          std::string, int>, Eigen::Matrix4d> > > poses_cache_;
+      std::map<std::pair<std::string, int>, Eigen::Vector3d > centroids_cache_;
 
       std::vector<int> indices_;
 
@@ -126,13 +126,13 @@ namespace pcl
       nearestKSearch (flann::Index<DistT> * index, const flann_model &model, int k, flann::Matrix<int> &indices, flann::Matrix<double> &distances);
 
       void
-      getPose (ModelT & model, int view_id, Eigen::Matrix4f & pose_matrix);
+      getPose (ModelT & model, int view_id, Eigen::Matrix4d & pose_matrix);
 
       void
       getCRH (ModelT & model, int view_id, int d_id, CRHPointCloud::Ptr & hist);
 
       void
-      getCentroid (ModelT & model, int view_id, int d_id, Eigen::Vector3f & centroid);
+      getCentroid (ModelT & model, int view_id, int d_id, Eigen::Vector3d & centroid);
 
       void
       getView (ModelT & model, int view_id, PointInTPtr & view);
@@ -140,7 +140,7 @@ namespace pcl
       int NN_;
 
       boost::shared_ptr<std::vector<ModelT> > models_;
-      boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms_;
+      boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms_;
 
     public:
 
@@ -251,7 +251,7 @@ namespace pcl
        return models_;
       }
 
-      boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > >
+      boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > >
       getTransforms ()
       {
        return transforms_;

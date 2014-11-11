@@ -115,7 +115,7 @@ namespace pcl
             * \param[in] force_shift if set to true, shifting is forced.
             * \return true is the cube needs to be or has been shifted.
             */
-          bool checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3f &cam_pose, const double distance_camera_target, const bool perform_shift = true, const bool last_shift = false, const bool force_shift = false);
+          bool checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3d &cam_pose, const double distance_camera_target, const bool perform_shift = true, const bool last_shift = false, const bool force_shift = false);
           
           /** \brief Perform shifting operations:
               Compute offsets.

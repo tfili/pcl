@@ -125,8 +125,8 @@ class ICCVTutorial
     std::vector<int> source2target_;
     std::vector<int> target2source_;
     pcl::CorrespondencesPtr correspondences_;
-    Eigen::Matrix4f initial_transformation_matrix_;
-    Eigen::Matrix4f transformation_matrix_;
+    Eigen::Matrix4d initial_transformation_matrix_;
+    Eigen::Matrix4d transformation_matrix_;
     bool show_source2target_;
     bool show_target2source_;
     bool show_correspondences;

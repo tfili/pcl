@@ -176,7 +176,7 @@ class ObjectRecognition
     alignModelPoints (const ObjectModel & source, const ObjectModel & target, 
                       const ObjectRecognitionParameters & params) const
     {
-      Eigen::Matrix4f tform; 
+      Eigen::Matrix4d tform; 
       tform = computeInitialAlignment (source.keypoints, source.local_descriptors,
                                        target.keypoints, target.local_descriptors,
                                        params.initial_alignment_min_sample_distance,

@@ -56,8 +56,8 @@ KdTreePtr tree;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, BoundaryEstimation)
 {
-  Eigen::Vector4f u = Eigen::Vector4f::Zero ();
-  Eigen::Vector4f v = Eigen::Vector4f::Zero ();
+  Eigen::Vector4d u = Eigen::Vector4d::Zero ();
+  Eigen::Vector4d v = Eigen::Vector4d::Zero ();
 
   // Estimate normals first
   NormalEstimation<PointXYZ, Normal> n;
@@ -79,7 +79,7 @@ TEST (PCL, BoundaryEstimation)
   for (size_t i = 0; i < normals->points.size (); ++i)
   {
     b.getCoordinateSystemOnPlane (normals->points[i], u, v);
-    Vector4fMap n4uv = normals->points[i].getNormalVector4fMap ();
+    Vector4dMap n4uv = normals->points[i].getNormalVector4dMap ();
     EXPECT_NEAR (n4uv.dot(u), 0, 1e-4);
     EXPECT_NEAR (n4uv.dot(v), 0, 1e-4);
     EXPECT_NEAR (u.dot(v), 0, 1e-4);

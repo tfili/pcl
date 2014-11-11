@@ -154,8 +154,8 @@ pcl_round (double number)
 {
   return (number < 0.0 ? ceil (number - 0.5) : floor (number + 0.5));
 }
-__inline double
-pcl_round (double number)
+__inline float
+pcl_round (float number)
 {
   return (number < 0.0f ? ceilf (number - 0.5f) : floorf (number + 0.5f));
 }

@@ -140,7 +140,7 @@ namespace pcl
       createFromPointCloudWithFixedSize (const PointCloudType& point_cloud,
                                          int di_width, int di_height, double di_center_x, double di_center_y,
                                          double di_focal_length_x, double di_focal_length_y,
-                                         const Eigen::Affine3f& sensor_pose,
+                                         const Eigen::Affine3d& sensor_pose,
                                          CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0f,
                                          double min_range=0.0f);
       
@@ -156,7 +156,7 @@ namespace pcl
         * \note Implementation according to planar range images (compared to spherical as in the original)
         */
       virtual inline void
-      calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3f& point) const;
+      calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3d& point) const;
       
       /** \brief Calculate the image point and range from the given 3D point
         * \param point the resulting 3D point
@@ -166,7 +166,7 @@ namespace pcl
         * \note Implementation according to planar range images (compared to spherical as in the original)
         */
       virtual inline void 
-      getImagePoint (const Eigen::Vector3f& point, double& image_x, double& image_y, double& range) const;
+      getImagePoint (const Eigen::Vector3d& point, double& image_x, double& image_y, double& range) const;
       
       /** Get a sub part of the complete image as a new range image.
         * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.

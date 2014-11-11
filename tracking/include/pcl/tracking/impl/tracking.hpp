@@ -74,14 +74,14 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYZRPY
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
         double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
@@ -229,14 +229,14 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYZR
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
         double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
@@ -384,14 +384,14 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYRPY
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
         double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
@@ -537,14 +537,14 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYRP
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
         double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
@@ -690,14 +690,14 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYR
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
         double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,

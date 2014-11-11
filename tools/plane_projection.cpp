@@ -49,8 +49,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)
@@ -78,7 +78,7 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 void
 project (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output, double a, double b, double c, double d)
 {
-  Eigen::Vector4f coeffs;
+  Eigen::Vector4d coeffs;
   coeffs << a, b, c, d;
 
   // Convert data to PointCloud<T>

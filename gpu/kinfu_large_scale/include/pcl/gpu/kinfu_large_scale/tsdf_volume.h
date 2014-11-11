@@ -72,7 +72,7 @@ namespace pcl
         struct Header
         {
           Eigen::Vector3i resolution;
-          Eigen::Vector3f volume_size;
+          Eigen::Vector3d volume_size;
           int volume_element_size, weights_element_size;
 
           Header ()
@@ -82,7 +82,7 @@ namespace pcl
               weights_element_size (sizeof(short))
           {};
 
-          Header (const Eigen::Vector3i &res, const Eigen::Vector3f &size)
+          Header (const Eigen::Vector3i &res, const Eigen::Vector3d &size)
             : resolution (res),
               volume_size (size),
               volume_element_size (sizeof(double)),
@@ -116,7 +116,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \param[in] size size of tsdf volume in meters
           */
         void
-        setSize (const Eigen::Vector3f& size);
+        setSize (const Eigen::Vector3d& size);
         
         /** \brief Sets Tsdf truncation distance. Must be greater than 2 * volume_voxel_size
           * \param[in] distance TSDF truncation distance 
@@ -129,7 +129,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         data () const;
 
         /** \brief Returns volume size in meters */
-        const Eigen::Vector3f&
+        const Eigen::Vector3d&
         getSize () const;
               
         /** \brief Returns volume resolution */
@@ -137,7 +137,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         getResolution() const;
 
         /** \brief Returns volume voxel size in meters */
-        const Eigen::Vector3f
+        const Eigen::Vector3d
         getVoxelSize () const;
         
         /** \brief Returns tsdf truncation distance in meters */
@@ -231,7 +231,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         
         /** \brief Set the header for data stored on host directly. Useful if directly writing into volume and weights */
         inline void
-        setHeader (const Eigen::Vector3i& resolution, const Eigen::Vector3f& volume_size) {
+        setHeader (const Eigen::Vector3i& resolution, const Eigen::Vector3d& volume_size) {
           header_ = Header (resolution, volume_size);
           if (volume_host_->size() != this->size())
             pcl::console::print_warn ("[TSDFVolume::setHeader] Header volume size (%d) doesn't fit underlying data size (%d)", volume_host_->size(), size());
@@ -261,7 +261,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         
       private:
         /** \brief tsdf volume size in meters */
-        Eigen::Vector3f size_;
+        Eigen::Vector3d size_;
         
         /** \brief tsdf volume resolution */
         Eigen::Vector3i resolution_;      

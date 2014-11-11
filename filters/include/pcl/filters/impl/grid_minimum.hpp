@@ -83,7 +83,7 @@ pcl::GridMinimum<PointT>::applyFilterIndices (std::vector<int> &indices)
   int oii = 0;
 
   // Get the minimum and maximum dimensions
-  Eigen::Vector4f min_p, max_p;
+  Eigen::Vector4d min_p, max_p;
   getMinMax3D<PointT> (*input_, *indices_, min_p, max_p);
 
   // Check that the resolution is not too small, given the size of the data

@@ -49,8 +49,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)
@@ -109,8 +109,8 @@ transform (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &outp
     concatenateFields (*input, output_xyz, output);
   }
 
-  translation = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  translation = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
 
   print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms : "); print_value ("%d", output.width * output.height); print_info (" points]\n");
 }

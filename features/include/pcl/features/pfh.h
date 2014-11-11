@@ -107,7 +107,7 @@ namespace pcl
         feature_map_ (),
         key_list_ (),
         // Default 1GB memory size. Need to set it to something more conservative.
-        max_cache_size_ ((1ul*1024ul*1024ul*1024ul) / sizeof (std::pair<std::pair<int, int>, Eigen::Vector4f>)),
+        max_cache_size_ ((1ul*1024ul*1024ul*1024ul) / sizeof (std::pair<std::pair<int, int>, Eigen::Vector4d>)),
         use_cache_ (false)
       {
         feature_name_ = "PFHEstimation";
@@ -181,7 +181,7 @@ namespace pcl
         */
       void 
       computePointPFHSignature (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, 
-                                const std::vector<int> &indices, int nr_split, Eigen::VectorXf &pfh_histogram);
+                                const std::vector<int> &indices, int nr_split, Eigen::VectorXd &pfh_histogram);
 
     protected:
       /** \brief Estimate the Point Feature Histograms (PFH) descriptors at a set of points given by
@@ -196,10 +196,10 @@ namespace pcl
       int nr_subdiv_;
 
       /** \brief Placeholder for a point's PFH signature. */
-      Eigen::VectorXf pfh_histogram_;
+      Eigen::VectorXd pfh_histogram_;
 
       /** \brief Placeholder for a PFH 4-tuple. */
-      Eigen::Vector4f pfh_tuple_;
+      Eigen::Vector4d pfh_tuple_;
 
       /** \brief Placeholder for a histogram index. */
       int f_index_[3];
@@ -208,7 +208,7 @@ namespace pcl
       double d_pi_; 
 
       /** \brief Internal hashmap, used to optimize efficiency of redundant computations. */
-      std::map<std::pair<int, int>, Eigen::Vector4f, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4f> > feature_map_;
+      std::map<std::pair<int, int>, Eigen::Vector4d, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4d> > feature_map_;
 
       /** \brief Queue of pairs saved, used to constrain memory usage. */
       std::queue<std::pair<int, int> > key_list_;

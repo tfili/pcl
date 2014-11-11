@@ -84,14 +84,14 @@ void verifyPlaneSac (ModelType& model,
   sac.getInliers (inliers);
   EXPECT_LT (inlier_number, inliers.size ());
 
-  Eigen::VectorXf coeff;
+  Eigen::VectorXd coeff;
   sac.getModelCoefficients (coeff);
   EXPECT_EQ (4, coeff.size ());
   EXPECT_NEAR (plane_coeffs_[0], coeff[0] / coeff[3], tol);
   EXPECT_NEAR (plane_coeffs_[1], coeff[1] / coeff[3], tol);
   EXPECT_NEAR (plane_coeffs_[2], coeff[2] / coeff[3], tol);
 
-  Eigen::VectorXf coeff_refined;
+  Eigen::VectorXd coeff_refined;
   model->optimizeModelCoefficients (inliers, coeff, coeff_refined);
   EXPECT_EQ (4, coeff_refined.size ());
   EXPECT_NEAR (plane_coeffs_[0], coeff_refined[0] / coeff_refined[3], refined_tol);
@@ -271,7 +271,7 @@ TEST (SampleConsensusModelNormalParallelPlane, RANSAC)
 
   // Test true axis
   {
-    model->setAxis (Eigen::Vector3f (0, 0, 1));
+    model->setAxis (Eigen::Vector3d (0, 0, 1));
 
     RandomSampleConsensus<PointXYZ> sac (model, 0.03);
     sac.computeModel();
@@ -283,7 +283,7 @@ TEST (SampleConsensusModelNormalParallelPlane, RANSAC)
 
   // test axis slightly in valid range
   {
-    model->setAxis (Eigen::Vector3f (0, sin (max_angle_rad * (1 - angle_eps)), cos (max_angle_rad * (1 - angle_eps))));
+    model->setAxis (Eigen::Vector3d (0, sin (max_angle_rad * (1 - angle_eps)), cos (max_angle_rad * (1 - angle_eps))));
     RandomSampleConsensus<PointXYZ> sac (model, 0.03);
     sac.computeModel ();
 
@@ -294,7 +294,7 @@ TEST (SampleConsensusModelNormalParallelPlane, RANSAC)
 
   // test axis slightly out of valid range
   {
-    model->setAxis (Eigen::Vector3f (0, sin (max_angle_rad * (1 + angle_eps)), cos (max_angle_rad * (1 + angle_eps))));
+    model->setAxis (Eigen::Vector3d (0, sin (max_angle_rad * (1 + angle_eps)), cos (max_angle_rad * (1 + angle_eps))));
     RandomSampleConsensus<PointXYZ> sac (model, 0.03);
     sac.computeModel ();
 

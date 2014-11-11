@@ -53,7 +53,7 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::isSampleGood(const std::vector<i
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> bool
 pcl::SampleConsensusModelCone<PointT, PointNT>::computeModelCoefficients (
-    const std::vector<int> &samples, Eigen::VectorXf &model_coefficients)
+    const std::vector<int> &samples, Eigen::VectorXd &model_coefficients)
 {
   // Need 3 samples
   if (samples.size () != 3)
@@ -68,18 +68,18 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::computeModelCoefficients (
     return (false);
   }
 
-  Eigen::Vector4f p1 (input_->points[samples[0]].x, input_->points[samples[0]].y, input_->points[samples[0]].z, 0);
-  Eigen::Vector4f p2 (input_->points[samples[1]].x, input_->points[samples[1]].y, input_->points[samples[1]].z, 0);
-  Eigen::Vector4f p3 (input_->points[samples[2]].x, input_->points[samples[2]].y, input_->points[samples[2]].z, 0);
+  Eigen::Vector4d p1 (input_->points[samples[0]].x, input_->points[samples[0]].y, input_->points[samples[0]].z, 0);
+  Eigen::Vector4d p2 (input_->points[samples[1]].x, input_->points[samples[1]].y, input_->points[samples[1]].z, 0);
+  Eigen::Vector4d p3 (input_->points[samples[2]].x, input_->points[samples[2]].y, input_->points[samples[2]].z, 0);
 
-  Eigen::Vector4f n1 (normals_->points[samples[0]].normal[0], normals_->points[samples[0]].normal[1], normals_->points[samples[0]].normal[2], 0);
-  Eigen::Vector4f n2 (normals_->points[samples[1]].normal[0], normals_->points[samples[1]].normal[1], normals_->points[samples[1]].normal[2], 0);
-  Eigen::Vector4f n3 (normals_->points[samples[2]].normal[0], normals_->points[samples[2]].normal[1], normals_->points[samples[2]].normal[2], 0);
+  Eigen::Vector4d n1 (normals_->points[samples[0]].normal[0], normals_->points[samples[0]].normal[1], normals_->points[samples[0]].normal[2], 0);
+  Eigen::Vector4d n2 (normals_->points[samples[1]].normal[0], normals_->points[samples[1]].normal[1], normals_->points[samples[1]].normal[2], 0);
+  Eigen::Vector4d n3 (normals_->points[samples[2]].normal[0], normals_->points[samples[2]].normal[1], normals_->points[samples[2]].normal[2], 0);
 
   //calculate apex (intersection of the three planes defined by points and belonging normals
-  Eigen::Vector4f ortho12 = n1.cross3(n2);
-  Eigen::Vector4f ortho23 = n2.cross3(n3);
-  Eigen::Vector4f ortho31 = n3.cross3(n1);
+  Eigen::Vector4d ortho12 = n1.cross3(n2);
+  Eigen::Vector4d ortho23 = n2.cross3(n3);
+  Eigen::Vector4d ortho31 = n3.cross3(n1);
 
   double denominator = n1.dot(ortho23);
 
@@ -87,21 +87,21 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::computeModelCoefficients (
   double d2 = p2.dot (n2);
   double d3 = p3.dot (n3);
 
-  Eigen::Vector4f apex = (d1 * ortho23 + d2 * ortho31 + d3 * ortho12) / denominator;
+  Eigen::Vector4d apex = (d1 * ortho23 + d2 * ortho31 + d3 * ortho12) / denominator;
 
   //compute axis (normal of plane defined by: { apex+(p1-apex)/(||p1-apex||), apex+(p2-apex)/(||p2-apex||), apex+(p3-apex)/(||p3-apex||)}
-  Eigen::Vector4f ap1 = p1 - apex;
-  Eigen::Vector4f ap2 = p2 - apex;
-  Eigen::Vector4f ap3 = p3 - apex;
+  Eigen::Vector4d ap1 = p1 - apex;
+  Eigen::Vector4d ap2 = p2 - apex;
+  Eigen::Vector4d ap3 = p3 - apex;
 
-  Eigen::Vector4f np1 = apex + (ap1/ap1.norm ());
-  Eigen::Vector4f np2 = apex + (ap2/ap2.norm ());
-  Eigen::Vector4f np3 = apex + (ap3/ap3.norm ());
+  Eigen::Vector4d np1 = apex + (ap1/ap1.norm ());
+  Eigen::Vector4d np2 = apex + (ap2/ap2.norm ());
+  Eigen::Vector4d np3 = apex + (ap3/ap3.norm ());
 
-  Eigen::Vector4f np1np2 = np2 - np1;
-  Eigen::Vector4f np1np3 = np3 - np1;
+  Eigen::Vector4d np1np2 = np2 - np1;
+  Eigen::Vector4d np1np3 = np3 - np1;
 
-  Eigen::Vector4f axis_dir = np1np2.cross3 (np1np3);
+  Eigen::Vector4d axis_dir = np1np2.cross3 (np1np3);
   axis_dir.normalize ();
 
   // normalize the vector (apex->p) for opening angle calculation
@@ -135,7 +135,7 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::computeModelCoefficients (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> void
 pcl::SampleConsensusModelCone<PointT, PointNT>::getDistancesToModel (
-    const Eigen::VectorXf &model_coefficients, std::vector<double> &distances)
+    const Eigen::VectorXd &model_coefficients, std::vector<double> &distances)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -146,8 +146,8 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::getDistancesToModel (
 
   distances.resize (indices_->size ());
 
-  Eigen::Vector4f apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
-  Eigen::Vector4f axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
+  Eigen::Vector4d apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
+  Eigen::Vector4d axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double opening_angle = model_coefficients[6];
 
   double apexdotdir = apex.dot (axis_dir);
@@ -155,22 +155,22 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::getDistancesToModel (
   // Iterate through the 3d points and calculate the distances from them to the cone
   for (size_t i = 0; i  < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt (input_->points[(*indices_)[i]].x, input_->points[(*indices_)[i]].y, input_->points[(*indices_)[i]].z, 0);
-    Eigen::Vector4f n  (normals_->points[(*indices_)[i]].normal[0], normals_->points[(*indices_)[i]].normal[1], normals_->points[(*indices_)[i]].normal[2], 0);
+    Eigen::Vector4d pt (input_->points[(*indices_)[i]].x, input_->points[(*indices_)[i]].y, input_->points[(*indices_)[i]].z, 0);
+    Eigen::Vector4d n  (normals_->points[(*indices_)[i]].normal[0], normals_->points[(*indices_)[i]].normal[1], normals_->points[(*indices_)[i]].normal[2], 0);
 
     // Calculate the point's projection on the cone axis
     double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
-    Eigen::Vector4f pt_proj = apex + k * axis_dir;
-    Eigen::Vector4f dir = pt - pt_proj;
+    Eigen::Vector4d pt_proj = apex + k * axis_dir;
+    Eigen::Vector4d dir = pt - pt_proj;
     dir.normalize ();
 
     // Calculate the actual radius of the cone at the level of the projected point
-    Eigen::Vector4f height = apex - pt_proj;
+    Eigen::Vector4d height = apex - pt_proj;
     double actual_cone_radius = tanf (opening_angle) * height.norm ();
     height.normalize ();
 
     // Calculate the cones perfect normals
-    Eigen::Vector4f cone_normal = sinf (opening_angle) * height + cosf (opening_angle) * dir;
+    Eigen::Vector4d cone_normal = sinf (opening_angle) * height + cosf (opening_angle) * dir;
 
     // Aproximate the distance from the point to the cone as the difference between
     // dist(point,cone_axis) and actual cone radius
@@ -187,7 +187,7 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::getDistancesToModel (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> void
 pcl::SampleConsensusModelCone<PointT, PointNT>::selectWithinDistance (
-    const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers)
+    const Eigen::VectorXd &model_coefficients, const double threshold, std::vector<int> &inliers)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -200,8 +200,8 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::selectWithinDistance (
   inliers.resize (indices_->size ());
   error_sqr_dists_.resize (indices_->size ());
 
-  Eigen::Vector4f apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
-  Eigen::Vector4f axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
+  Eigen::Vector4d apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
+  Eigen::Vector4d axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double opening_angle = model_coefficients[6];
 
   double apexdotdir = apex.dot (axis_dir);
@@ -209,24 +209,24 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::selectWithinDistance (
   // Iterate through the 3d points and calculate the distances from them to the cone
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt (input_->points[(*indices_)[i]].x, input_->points[(*indices_)[i]].y, input_->points[(*indices_)[i]].z, 0);
-    Eigen::Vector4f n  (normals_->points[(*indices_)[i]].normal[0], normals_->points[(*indices_)[i]].normal[1], normals_->points[(*indices_)[i]].normal[2], 0);
+    Eigen::Vector4d pt (input_->points[(*indices_)[i]].x, input_->points[(*indices_)[i]].y, input_->points[(*indices_)[i]].z, 0);
+    Eigen::Vector4d n  (normals_->points[(*indices_)[i]].normal[0], normals_->points[(*indices_)[i]].normal[1], normals_->points[(*indices_)[i]].normal[2], 0);
 
     // Calculate the point's projection on the cone axis
     double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
-    Eigen::Vector4f pt_proj = apex + k * axis_dir;
+    Eigen::Vector4d pt_proj = apex + k * axis_dir;
 
     // Calculate the direction of the point from center
-    Eigen::Vector4f pp_pt_dir = pt - pt_proj;
+    Eigen::Vector4d pp_pt_dir = pt - pt_proj;
     pp_pt_dir.normalize ();
 
     // Calculate the actual radius of the cone at the level of the projected point
-    Eigen::Vector4f height = apex - pt_proj;
+    Eigen::Vector4d height = apex - pt_proj;
     double actual_cone_radius = tan(opening_angle) * height.norm ();
     height.normalize ();
 
     // Calculate the cones perfect normals
-    Eigen::Vector4f cone_normal = sinf (opening_angle) * height + cosf (opening_angle) * pp_pt_dir;
+    Eigen::Vector4d cone_normal = sinf (opening_angle) * height + cosf (opening_angle) * pp_pt_dir;
 
     // Aproximate the distance from the point to the cone as the difference between
     // dist(point,cone_axis) and actual cone radius
@@ -253,7 +253,7 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::selectWithinDistance (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> int
 pcl::SampleConsensusModelCone<PointT, PointNT>::countWithinDistance (
-    const Eigen::VectorXf &model_coefficients, const double threshold)
+    const Eigen::VectorXd &model_coefficients, const double threshold)
 {
 
   // Check if the model is valid given the user constraints
@@ -262,8 +262,8 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::countWithinDistance (
 
   int nr_p = 0;
 
-  Eigen::Vector4f apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
-  Eigen::Vector4f axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
+  Eigen::Vector4d apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
+  Eigen::Vector4d axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double opening_angle = model_coefficients[6];
 
   double apexdotdir = apex.dot (axis_dir);
@@ -271,24 +271,24 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::countWithinDistance (
   // Iterate through the 3d points and calculate the distances from them to the cone
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt (input_->points[(*indices_)[i]].x, input_->points[(*indices_)[i]].y, input_->points[(*indices_)[i]].z, 0);
-    Eigen::Vector4f n  (normals_->points[(*indices_)[i]].normal[0], normals_->points[(*indices_)[i]].normal[1], normals_->points[(*indices_)[i]].normal[2], 0);
+    Eigen::Vector4d pt (input_->points[(*indices_)[i]].x, input_->points[(*indices_)[i]].y, input_->points[(*indices_)[i]].z, 0);
+    Eigen::Vector4d n  (normals_->points[(*indices_)[i]].normal[0], normals_->points[(*indices_)[i]].normal[1], normals_->points[(*indices_)[i]].normal[2], 0);
 
     // Calculate the point's projection on the cone axis
     double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
-    Eigen::Vector4f pt_proj = apex + k * axis_dir;
+    Eigen::Vector4d pt_proj = apex + k * axis_dir;
 
     // Calculate the direction of the point from center
-    Eigen::Vector4f pp_pt_dir = pt - pt_proj;
+    Eigen::Vector4d pp_pt_dir = pt - pt_proj;
     pp_pt_dir.normalize ();
 
     // Calculate the actual radius of the cone at the level of the projected point
-    Eigen::Vector4f height = apex - pt_proj;
+    Eigen::Vector4d height = apex - pt_proj;
     double actual_cone_radius = tan(opening_angle) * height.norm ();
     height.normalize ();
 
     // Calculate the cones perfect normals
-    Eigen::Vector4f cone_normal = sinf (opening_angle) * height + cosf (opening_angle) * pp_pt_dir;
+    Eigen::Vector4d cone_normal = sinf (opening_angle) * height + cosf (opening_angle) * pp_pt_dir;
 
     // Aproximate the distance from the point to the cone as the difference between
     // dist(point,cone_axis) and actual cone radius
@@ -307,7 +307,7 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::countWithinDistance (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> void
 pcl::SampleConsensusModelCone<PointT, PointNT>::optimizeModelCoefficients (
-      const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients)
+      const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients, Eigen::VectorXd &optimized_coefficients)
 {
   optimized_coefficients = model_coefficients;
 
@@ -340,7 +340,7 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::optimizeModelCoefficients (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> void
 pcl::SampleConsensusModelCone<PointT, PointNT>::projectPoints (
-      const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, PointCloud &projected_points, bool copy_data_fields)
+      const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients, PointCloud &projected_points, bool copy_data_fields)
 {
   // Needs a valid set of model coefficients
   if (model_coefficients.size () != 7)
@@ -352,8 +352,8 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::projectPoints (
   projected_points.header = input_->header;
   projected_points.is_dense = input_->is_dense;
 
-  Eigen::Vector4f apex  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
-  Eigen::Vector4f axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
+  Eigen::Vector4d apex  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
+  Eigen::Vector4d axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double opening_angle = model_coefficients[6];
 
   double apexdotdir = apex.dot (axis_dir);
@@ -376,21 +376,21 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::projectPoints (
     // Iterate through the 3d points and calculate the distances from them to the cone
     for (size_t i = 0; i < inliers.size (); ++i)
     {
-      Eigen::Vector4f pt (input_->points[inliers[i]].x, 
+      Eigen::Vector4d pt (input_->points[inliers[i]].x, 
                           input_->points[inliers[i]].y, 
                           input_->points[inliers[i]].z, 
                           1);
 
       double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
 
-      pcl::Vector4fMap pp = projected_points.points[inliers[i]].getVector4fMap ();
+      pcl::Vector4dMap pp = projected_points.points[inliers[i]].getVector4dMap ();
       pp.matrix () = apex + k * axis_dir;
 
-      Eigen::Vector4f dir = pt - pp;
+      Eigen::Vector4d dir = pt - pp;
       dir.normalize ();
 
       // Calculate the actual radius of the cone at the level of the projected point
-      Eigen::Vector4f height = apex - pp;
+      Eigen::Vector4d height = apex - pp;
       double actual_cone_radius = tanf (opening_angle) * height.norm ();
 
       // Calculate the projection of the point onto the cone
@@ -413,18 +413,18 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::projectPoints (
     // Iterate through the 3d points and calculate the distances from them to the cone
     for (size_t i = 0; i < inliers.size (); ++i)
     {
-      pcl::Vector4fMap pp = projected_points.points[i].getVector4fMap ();
-      pcl::Vector4fMapConst pt = input_->points[inliers[i]].getVector4fMap ();
+      pcl::Vector4dMap pp = projected_points.points[i].getVector4dMap ();
+      pcl::Vector4dMapConst pt = input_->points[inliers[i]].getVector4dMap ();
 
       double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
       // Calculate the projection of the point on the line
       pp.matrix () = apex + k * axis_dir;
 
-      Eigen::Vector4f dir = pt - pp;
+      Eigen::Vector4d dir = pt - pp;
       dir.normalize ();
 
       // Calculate the actual radius of the cone at the level of the projected point
-      Eigen::Vector4f height = apex - pp;
+      Eigen::Vector4d height = apex - pp;
       double actual_cone_radius = tanf (opening_angle) * height.norm ();
 
       // Calculate the projection of the point onto the cone
@@ -436,7 +436,7 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::projectPoints (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> bool
 pcl::SampleConsensusModelCone<PointT, PointNT>::doSamplesVerifyModel (
-      const std::set<int> &indices, const Eigen::VectorXf &model_coefficients, const double threshold)
+      const std::set<int> &indices, const Eigen::VectorXd &model_coefficients, const double threshold)
 {
   // Needs a valid model coefficients
   if (model_coefficients.size () != 7)
@@ -445,8 +445,8 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::doSamplesVerifyModel (
     return (false);
   }
 
-  Eigen::Vector4f apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
-  Eigen::Vector4f axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
+  Eigen::Vector4d apex (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
+  Eigen::Vector4d axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   double openning_angle = model_coefficients[6];
 
   double apexdotdir = apex.dot (axis_dir);
@@ -455,16 +455,16 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::doSamplesVerifyModel (
   // Iterate through the 3d points and calculate the distances from them to the cone
   for (std::set<int>::const_iterator it = indices.begin (); it != indices.end (); ++it)
   {
-    Eigen::Vector4f pt (input_->points[*it].x, input_->points[*it].y, input_->points[*it].z, 0);
+    Eigen::Vector4d pt (input_->points[*it].x, input_->points[*it].y, input_->points[*it].z, 0);
 
     // Calculate the point's projection on the cone axis
     double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
-    Eigen::Vector4f pt_proj = apex + k * axis_dir;
-    Eigen::Vector4f dir = pt - pt_proj;
+    Eigen::Vector4d pt_proj = apex + k * axis_dir;
+    Eigen::Vector4d dir = pt - pt_proj;
     dir.normalize ();
 
     // Calculate the actual radius of the cone at the level of the projected point
-    Eigen::Vector4f height = apex - pt_proj;
+    Eigen::Vector4d height = apex - pt_proj;
     double actual_cone_radius = tan (openning_angle) * height.norm ();
 
     // Aproximate the distance from the point to the cone as the difference between
@@ -479,16 +479,16 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::doSamplesVerifyModel (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> double
 pcl::SampleConsensusModelCone<PointT, PointNT>::pointToAxisDistance (
-      const Eigen::Vector4f &pt, const Eigen::VectorXf &model_coefficients)
+      const Eigen::Vector4d &pt, const Eigen::VectorXd &model_coefficients)
 {
-  Eigen::Vector4f apex  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
-  Eigen::Vector4f axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
+  Eigen::Vector4d apex  (model_coefficients[0], model_coefficients[1], model_coefficients[2], 0);
+  Eigen::Vector4d axis_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
   return sqrt(pcl::sqrPointToLineDistance (pt, apex, axis_dir));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename PointNT> bool 
-pcl::SampleConsensusModelCone<PointT, PointNT>::isModelValid (const Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelCone<PointT, PointNT>::isModelValid (const Eigen::VectorXd &model_coefficients)
 {
   // Needs a valid model coefficients
   if (model_coefficients.size () != 7)
@@ -501,13 +501,13 @@ pcl::SampleConsensusModelCone<PointT, PointNT>::isModelValid (const Eigen::Vecto
   if (eps_angle_ > 0.0)
   {
     // Obtain the cone direction
-    Eigen::Vector4f coeff;
+    Eigen::Vector4d coeff;
     coeff[0] = model_coefficients[3];
     coeff[1] = model_coefficients[4];
     coeff[2] = model_coefficients[5];
     coeff[3] = 0;
 
-    Eigen::Vector4f axis (axis_[0], axis_[1], axis_[2], 0);
+    Eigen::Vector4d axis (axis_[0], axis_[1], axis_[2], 0);
     double angle_diff = fabs (getAngle3D (axis, coeff));
     angle_diff = (std::min) (angle_diff, M_PI - angle_diff);
     // Check whether the current cone model satisfies our angle threshold criterion with respect to the given axis

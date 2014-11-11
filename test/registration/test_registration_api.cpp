@@ -248,7 +248,7 @@ TEST (PCL, CorrespondenceRejectorSampleConsensus)
   corr_rej_sac.setMaximumIterations (rej_sac_max_iter);
   corr_rej_sac.setInputCorrespondences (correspondences);
   corr_rej_sac.getCorrespondences (*correspondences_result_rej_sac);
-  Eigen::Matrix4f transform_res_from_SAC = corr_rej_sac.getBestTransformation ();
+  Eigen::Matrix4d transform_res_from_SAC = corr_rej_sac.getBestTransformation ();
 
   // check for correct matches and number of matches
   EXPECT_EQ (int (correspondences_result_rej_sac->size ()), nr_correspondences_result_rej_sac);
@@ -392,12 +392,12 @@ TEST (PCL, TransformationEstimationSVD)
   CloudXYZPtr      target (new CloudXYZ ());
   pcl::transformPointCloud (*source, *target, T_ref);
 
-  Eigen::Matrix4f T_SVD_1;
+  Eigen::Matrix4d T_SVD_1;
   const pcl::registration::TransformationEstimationSVD<PointXYZ, PointXYZ> trans_est_svd;
   trans_est_svd.estimateRigidTransformation(*source, *target, T_SVD_1);
 
-  const Eigen::Quaternionf   R_SVD_1 (T_SVD_1.topLeftCorner  <3, 3> ());
-  const Eigen::Translation3f t_SVD_1 (T_SVD_1.topRightCorner <3, 1> ());
+  const Eigen::Quaterniond   R_SVD_1 (T_SVD_1.topLeftCorner  <3, 3> ());
+  const Eigen::Translation3d t_SVD_1 (T_SVD_1.topRightCorner <3, 1> ());
 
   EXPECT_NEAR (R_SVD_1.x (), R_ref.x (), 1e-6f);
   EXPECT_NEAR (R_SVD_1.y (), R_ref.y (), 1e-6f);
@@ -409,13 +409,13 @@ TEST (PCL, TransformationEstimationSVD)
   EXPECT_NEAR (t_SVD_1.z (), t_ref.z (), 1e-6f);
 
   // Check if the estimation with correspondences gives the same results
-  Eigen::Matrix4f T_SVD_2;
+  Eigen::Matrix4d T_SVD_2;
   pcl::Correspondences corr; corr.reserve (source->size ());
   for (size_t i=0; i<source->size (); ++i) corr.push_back (pcl::Correspondence (i, i, 0.f));
   trans_est_svd.estimateRigidTransformation(*source, *target, corr, T_SVD_2);
 
-  const Eigen::Quaternionf   R_SVD_2 (T_SVD_2.topLeftCorner  <3, 3> ());
-  const Eigen::Translation3f t_SVD_2 (T_SVD_2.topRightCorner <3, 1> ());
+  const Eigen::Quaterniond   R_SVD_2 (T_SVD_2.topLeftCorner  <3, 3> ());
+  const Eigen::Translation3d t_SVD_2 (T_SVD_2.topRightCorner <3, 1> ());
 
   EXPECT_FLOAT_EQ (R_SVD_1.x (), R_SVD_2.x ());
   EXPECT_FLOAT_EQ (R_SVD_1.y (), R_SVD_2.y ());
@@ -435,12 +435,12 @@ TEST (PCL, TransformationEstimationDualQuaternion)
   CloudXYZPtr      target (new CloudXYZ ());
   pcl::transformPointCloud (*source, *target, T_ref);
 
-  Eigen::Matrix4f T_DQ_1;
+  Eigen::Matrix4d T_DQ_1;
   const pcl::registration::TransformationEstimationDualQuaternion<PointXYZ, PointXYZ> trans_est_dual_quaternion;
   trans_est_dual_quaternion.estimateRigidTransformation(*source, *target, T_DQ_1);
 
-  const Eigen::Quaternionf   R_DQ_1 (T_DQ_1.topLeftCorner  <3, 3> ());
-  const Eigen::Translation3f t_DQ_1 (T_DQ_1.topRightCorner <3, 1> ());
+  const Eigen::Quaterniond   R_DQ_1 (T_DQ_1.topLeftCorner  <3, 3> ());
+  const Eigen::Translation3d t_DQ_1 (T_DQ_1.topRightCorner <3, 1> ());
 
   EXPECT_NEAR (R_DQ_1.x (), R_ref.x (), 1e-6f);
   EXPECT_NEAR (R_DQ_1.y (), R_ref.y (), 1e-6f);
@@ -452,13 +452,13 @@ TEST (PCL, TransformationEstimationDualQuaternion)
   EXPECT_NEAR (t_DQ_1.z (), t_ref.z (), 1e-6f);
 
   // Check if the estimation with correspondences gives the same results
-  Eigen::Matrix4f T_DQ_2;
+  Eigen::Matrix4d T_DQ_2;
   pcl::Correspondences corr; corr.reserve (source->size ());
   for (size_t i=0; i<source->size (); ++i) corr.push_back (pcl::Correspondence (i, i, 0.f));
   trans_est_dual_quaternion.estimateRigidTransformation(*source, *target, corr, T_DQ_2);
 
-  const Eigen::Quaternionf   R_DQ_2 (T_DQ_2.topLeftCorner  <3, 3> ());
-  const Eigen::Translation3f t_DQ_2 (T_DQ_2.topRightCorner <3, 1> ());
+  const Eigen::Quaterniond   R_DQ_2 (T_DQ_2.topLeftCorner  <3, 3> ());
+  const Eigen::Translation3d t_DQ_2 (T_DQ_2.topRightCorner <3, 1> ());
 
   EXPECT_FLOAT_EQ (R_DQ_1.x (), R_DQ_2.x ());
   EXPECT_FLOAT_EQ (R_DQ_1.y (), R_DQ_2.y ());
@@ -503,7 +503,7 @@ TEST (PCL, TransformationEstimationPointToPlaneLLS)
   src->width = static_cast<uint32_t> (src->points.size ());
 
   // Create a test matrix
-  Eigen::Matrix4f ground_truth_tform = Eigen::Matrix4f::Identity ();
+  Eigen::Matrix4d ground_truth_tform = Eigen::Matrix4d::Identity ();
   ground_truth_tform.row (0) <<  0.9938f,  0.0988f,  0.0517f,  0.1000f;
   ground_truth_tform.row (1) << -0.0997f,  0.9949f,  0.0149f, -0.2000f;
   ground_truth_tform.row (2) << -0.0500f, -0.0200f,  0.9986f,  0.3000f;
@@ -513,7 +513,7 @@ TEST (PCL, TransformationEstimationPointToPlaneLLS)
 
   pcl::transformPointCloudWithNormals (*src, *tgt, ground_truth_tform);
 
-  Eigen::Matrix4f estimated_transform;
+  Eigen::Matrix4d estimated_transform;
   transform_estimator.estimateRigidTransformation (*src, *tgt, estimated_transform);
 
   for (int i = 0; i < 4; ++i)
@@ -529,12 +529,12 @@ TEST (PCL, TransformationEstimationLM)
   pcl::transformPointCloud (*source, *target, T_ref);
 
   // Test the double precision first
-  Eigen::Matrix4f T_LM_float;
+  Eigen::Matrix4d T_LM_float;
   const pcl::registration::TransformationEstimationLM<PointXYZ, PointXYZ, double> trans_est_lm_float;
   trans_est_lm_float.estimateRigidTransformation (*source, *target, T_LM_float);
 
-  const Eigen::Quaternionf   R_LM_1_float (T_LM_float.topLeftCorner  <3, 3> ());
-  const Eigen::Translation3f t_LM_1_float (T_LM_float.topRightCorner <3, 1> ());
+  const Eigen::Quaterniond   R_LM_1_float (T_LM_float.topLeftCorner  <3, 3> ());
+  const Eigen::Translation3d t_LM_1_float (T_LM_float.topRightCorner <3, 1> ());
 
   EXPECT_NEAR (R_LM_1_float.x (), R_ref.x (), 1e-4f);
   EXPECT_NEAR (R_LM_1_float.y (), R_ref.y (), 1e-4f);
@@ -546,15 +546,15 @@ TEST (PCL, TransformationEstimationLM)
   EXPECT_NEAR (t_LM_1_float.z (), t_ref.z (), 1e-3f);
 
   // Check if the estimation with correspondences gives the same results
-  Eigen::Matrix4f T_LM_2_float;
+  Eigen::Matrix4d T_LM_2_float;
   pcl::Correspondences corr;
   corr.reserve (source->size ());
   for (size_t i = 0; i < source->size (); ++i)
     corr.push_back (pcl::Correspondence (i, i, 0.f));
   trans_est_lm_float.estimateRigidTransformation (*source, *target, corr, T_LM_2_float);
 
-  const Eigen::Quaternionf   R_LM_2_float (T_LM_2_float.topLeftCorner  <3, 3> ());
-  const Eigen::Translation3f t_LM_2_float (T_LM_2_float.topRightCorner <3, 1> ());
+  const Eigen::Quaterniond   R_LM_2_float (T_LM_2_float.topLeftCorner  <3, 3> ());
+  const Eigen::Translation3d t_LM_2_float (T_LM_2_float.topRightCorner <3, 1> ());
 
   EXPECT_FLOAT_EQ (R_LM_1_float.x (), R_LM_2_float.x ());
   EXPECT_FLOAT_EQ (R_LM_1_float.y (), R_LM_2_float.y ());
@@ -637,7 +637,7 @@ TEST (PCL, TransformationEstimationPointToPlane)
   src->width = static_cast<uint32_t> (src->points.size ());
 
   // Create a test matrix
-  Eigen::Matrix4f ground_truth_tform = Eigen::Matrix4f::Identity ();
+  Eigen::Matrix4d ground_truth_tform = Eigen::Matrix4d::Identity ();
   ground_truth_tform.row (0) <<  0.9938f,  0.0988f,  0.0517f,  0.1000f;
   ground_truth_tform.row (1) << -0.0997f,  0.9949f,  0.0149f, -0.2000f;
   ground_truth_tform.row (2) << -0.0500f, -0.0200f,  0.9986f,  0.3000f;
@@ -647,7 +647,7 @@ TEST (PCL, TransformationEstimationPointToPlane)
 
   pcl::transformPointCloudWithNormals (*src, *tgt, ground_truth_tform);
 
-  Eigen::Matrix4f estimated_transform_float;
+  Eigen::Matrix4d estimated_transform_float;
   transform_estimator_float.estimateRigidTransformation (*src, *tgt, estimated_transform_float);
 
   for (int i = 0; i < 4; ++i)

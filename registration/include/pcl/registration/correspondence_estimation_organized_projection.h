@@ -89,9 +89,9 @@ namespace pcl
           , fy_ (525.f)
           , cx_ (319.5f)
           , cy_ (239.5f)
-          , src_to_tgt_transformation_ (Eigen::Matrix4f::Identity ())
+          , src_to_tgt_transformation_ (Eigen::Matrix4d::Identity ())
           , depth_threshold_ (std::numeric_limits<double>::max ())
-          , projection_matrix_ (Eigen::Matrix3f::Identity ())
+          , projection_matrix_ (Eigen::Matrix3d::Identity ())
         { }
 
 
@@ -134,7 +134,7 @@ namespace pcl
           * \param[in] src_to_tgt_transformation the transformation
           */
         inline void
-        setSourceTransformation (const Eigen::Matrix4f &src_to_tgt_transformation)
+        setSourceTransformation (const Eigen::Matrix4d &src_to_tgt_transformation)
         { src_to_tgt_transformation_ = src_to_tgt_transformation; }
 
         /** \brief Reads back the transformation from the source point cloud to the target point cloud.
@@ -142,7 +142,7 @@ namespace pcl
           * for that.
           * \return the transformation
           */
-        inline Eigen::Matrix4f
+        inline Eigen::Matrix4d
         getSourceTransformation () const
         { return (src_to_tgt_transformation_); }
 
@@ -194,10 +194,10 @@ namespace pcl
 
         double fx_, fy_;
         double cx_, cy_;
-        Eigen::Matrix4f src_to_tgt_transformation_;
+        Eigen::Matrix4d src_to_tgt_transformation_;
         double depth_threshold_;
 
-        Eigen::Matrix3f projection_matrix_;
+        Eigen::Matrix3d projection_matrix_;
 
       public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW

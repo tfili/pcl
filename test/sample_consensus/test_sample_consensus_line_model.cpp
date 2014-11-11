@@ -56,16 +56,16 @@ TEST (SampleConsensusModelLine, RANSAC)
   PointCloud<PointXYZ> cloud;
   cloud.points.resize (10);
 
-  cloud.points[0].getVector3fMap () <<  1.0f,  2.00f,  3.00f;
-  cloud.points[1].getVector3fMap () <<  4.0f,  5.00f,  6.00f;
-  cloud.points[2].getVector3fMap () <<  7.0f,  8.00f,  9.00f;
-  cloud.points[3].getVector3fMap () << 10.0f, 11.00f, 12.00f;
-  cloud.points[4].getVector3fMap () << 13.0f, 14.00f, 15.00f;
-  cloud.points[5].getVector3fMap () << 16.0f, 17.00f, 18.00f;
-  cloud.points[6].getVector3fMap () << 19.0f, 20.00f, 21.00f;
-  cloud.points[7].getVector3fMap () << 22.0f, 23.00f, 24.00f;
-  cloud.points[8].getVector3fMap () << -5.0f,  1.57f,  0.75f;
-  cloud.points[9].getVector3fMap () <<  4.0f,  2.00f,  3.00f;
+  cloud.points[0].getVector3dMap () <<  1.0f,  2.00f,  3.00f;
+  cloud.points[1].getVector3dMap () <<  4.0f,  5.00f,  6.00f;
+  cloud.points[2].getVector3dMap () <<  7.0f,  8.00f,  9.00f;
+  cloud.points[3].getVector3dMap () << 10.0f, 11.00f, 12.00f;
+  cloud.points[4].getVector3dMap () << 13.0f, 14.00f, 15.00f;
+  cloud.points[5].getVector3dMap () << 16.0f, 17.00f, 18.00f;
+  cloud.points[6].getVector3dMap () << 19.0f, 20.00f, 21.00f;
+  cloud.points[7].getVector3dMap () << 22.0f, 23.00f, 24.00f;
+  cloud.points[8].getVector3dMap () << -5.0f,  1.57f,  0.75f;
+  cloud.points[9].getVector3dMap () <<  4.0f,  2.00f,  3.00f;
 
   // Create a shared line model pointer directly
   SampleConsensusModelLinePtr model (new SampleConsensusModelLine<PointXYZ> (cloud.makeShared ()));
@@ -85,13 +85,13 @@ TEST (SampleConsensusModelLine, RANSAC)
   sac.getInliers (inliers);
   EXPECT_EQ (8, inliers.size ());
 
-  Eigen::VectorXf coeff;
+  Eigen::VectorXd coeff;
   sac.getModelCoefficients (coeff);
   EXPECT_EQ (6, coeff.size ());
   EXPECT_NEAR (1, coeff[4] / coeff[3], 1e-4);
   EXPECT_NEAR (1, coeff[5] / coeff[3], 1e-4);
 
-  Eigen::VectorXf coeff_refined;
+  Eigen::VectorXd coeff_refined;
   model->optimizeModelCoefficients (inliers, coeff, coeff_refined);
   EXPECT_EQ (6, coeff_refined.size ());
   EXPECT_NEAR (1, coeff[4] / coeff[3], 1e-4);

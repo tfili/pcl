@@ -204,17 +204,17 @@ namespace pcl
         /// mean of the gaussian
         Color mu;
         /// covariance matrix of the gaussian
-        Eigen::Matrix3f covariance;
+        Eigen::Matrix3d covariance;
         /// determinant of the covariance matrix
         double determinant;
         /// inverse of the covariance matrix
-        Eigen::Matrix3f inverse;
+        Eigen::Matrix3d inverse;
         /// weighting of this gaussian in the GMM.
         double pi;
         /// heighest eigenvalue of covariance matrix
         double eigenvalue;
         /// eigenvector corresponding to the heighest eigenvector
-        Eigen::Vector3f eigenvector;
+        Eigen::Vector3d eigenvector;
       };
 
       class PCL_EXPORTS GMM
@@ -255,8 +255,8 @@ namespace pcl
       {
         public:
         GaussianFitter (double epsilon = 0.0001)
-          : sum_ (Eigen::Vector3f::Zero ())
-          , accumulator_ (Eigen::Matrix3f::Zero ())
+          : sum_ (Eigen::Vector3d::Zero ())
+          , accumulator_ (Eigen::Matrix3d::Zero ())
           , count_ (0)
           , epsilon_ (epsilon)
         { }
@@ -279,9 +279,9 @@ namespace pcl
 
         private:
         /// sum of r,g, and b
-        Eigen::Vector3f sum_;
+        Eigen::Vector3d sum_;
         /// matrix of products (i.e. r*r, r*g, r*b), some values are duplicated.
-        Eigen::Matrix3f accumulator_;
+        Eigen::Matrix3d accumulator_;
         /// count of color samples added to the gaussian
         uint32_t count_;
         /// small value to add to covariance matrix diagonal to avoid singular values

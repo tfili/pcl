@@ -438,7 +438,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseTomasi (PointClo
 //   Eigen::Matrix2f nnT;
 //   Eigen::Matrix2f NNT;
 //   Eigen::Matrix2f NNTInv;
-//   Eigen::Vector2f NNTp;
+//   Eigen::Vector2d NNTp;
 //   double diff;
 //   const unsigned max_iterations = 10;
 // #ifdef _OPENMP
@@ -460,14 +460,14 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseTomasi (PointClo
 //         if (!pcl_isfinite (normals_->points[*iIt].normal_x))
 //           continue;
 
-//         nnT = normals_->points[*iIt].getNormalVector3fMap () * normals_->points[*iIt].getNormalVector3fMap ().transpose();
+//         nnT = normals_->points[*iIt].getNormalVector3dMap () * normals_->points[*iIt].getNormalVector3dMap ().transpose();
 //         NNT += nnT;
-//         NNTp += nnT * surface_->points[*iIt].getVector3fMap ();
+//         NNTp += nnT * surface_->points[*iIt].getVector3dMap ();
 //       }
 //       if (invert3x3SymMatrix (NNT, NNTInv) != 0)
-//         corners[cIdx].getVector3fMap () = NNTInv * NNTp;
+//         corners[cIdx].getVector3dMap () = NNTInv * NNTp;
 
-//       diff = (corners[cIdx].getVector3fMap () - corner.getVector3fMap()).squaredNorm ();
+//       diff = (corners[cIdx].getVector3dMap () - corner.getVector3dMap()).squaredNorm ();
 //     } while (diff > 1e-6 && ++iterations < max_iterations);
 //   }
 // }

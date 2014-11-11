@@ -123,7 +123,7 @@ class TemplateAlignment
     struct Result
     {
       double fitness_score;
-      Eigen::Matrix4f final_transformation;
+      Eigen::Matrix4d final_transformation;
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     };
 
@@ -290,8 +290,8 @@ main (int argc, char **argv)
   printf ("Best fitness score: %f\n", best_alignment.fitness_score);
 
   // Print the rotation matrix and translation vector
-  Eigen::Matrix3f rotation = best_alignment.final_transformation.block<3,3>(0, 0);
-  Eigen::Vector3f translation = best_alignment.final_transformation.block<3,1>(0, 3);
+  Eigen::Matrix3d rotation = best_alignment.final_transformation.block<3,3>(0, 0);
+  Eigen::Vector3d translation = best_alignment.final_transformation.block<3,1>(0, 3);
 
   printf ("\n");
   printf ("    | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));

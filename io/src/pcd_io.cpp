@@ -109,15 +109,15 @@ pcl::PCDWriter::resetLockingPermissions (const std::string &file_name,
 ///////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PCDReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, 
+                            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, 
                             int &pcd_version, int &data_type, unsigned int &data_idx, const int offset)
 {
   // Default values
   data_idx = 0;
   data_type = 0;
   pcd_version = PCD_V6;
-  origin      = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  origin      = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
   cloud.width = cloud.height = cloud.point_step = cloud.row_step = 0;
   cloud.data.clear ();
 
@@ -312,9 +312,9 @@ pcl::PCDReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
 
         double x, y, z, w;
         sstream >> x >> y >> z ;
-        origin      = Eigen::Vector4f (x, y, z, 0.0f);
+        origin      = Eigen::Vector4d (x, y, z, 0.0f);
         sstream >> w >> x >> y >> z;
-        orientation = Eigen::Quaternionf (w, x, y, z);
+        orientation = Eigen::Quaterniond (w, x, y, z);
         continue;
       }
 
@@ -663,7 +663,7 @@ pcl::PCDReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PCDReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &pcd_version, 
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &pcd_version, 
                       const int offset)
 {
   pcl::console::TicToc tt;
@@ -1041,8 +1041,8 @@ int
 pcl::PCDReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset)
 {
   int pcd_version;
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   // Load the data
   int res = read (file_name, cloud, origin, orientation, pcd_version, offset);
 
@@ -1055,7 +1055,7 @@ pcl::PCDReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::string
 pcl::PCDWriter::generateHeaderASCII (const pcl::PCLPointCloud2 &cloud,
-                                     const Eigen::Vector4f &origin, const Eigen::Quaternionf &orientation)
+                                     const Eigen::Vector4d &origin, const Eigen::Quaterniond &orientation)
 {
   std::ostringstream oss;
   oss.imbue (std::locale::classic ());
@@ -1155,7 +1155,7 @@ pcl::PCDWriter::generateHeaderASCII (const pcl::PCLPointCloud2 &cloud,
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::string
 pcl::PCDWriter::generateHeaderBinary (const pcl::PCLPointCloud2 &cloud,
-                                      const Eigen::Vector4f &origin, const Eigen::Quaternionf &orientation)
+                                      const Eigen::Vector4d &origin, const Eigen::Quaterniond &orientation)
 {
   std::ostringstream oss;
   oss.imbue (std::locale::classic ());
@@ -1236,8 +1236,8 @@ pcl::PCDWriter::generateHeaderBinary (const pcl::PCLPointCloud2 &cloud,
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::string
 pcl::PCDWriter::generateHeaderBinaryCompressed (const pcl::PCLPointCloud2 &cloud,
-                                                const Eigen::Vector4f &origin, 
-                                                const Eigen::Quaternionf &orientation)
+                                                const Eigen::Vector4d &origin, 
+                                                const Eigen::Quaterniond &orientation)
 {
   std::ostringstream oss;
   oss.imbue (std::locale::classic ());
@@ -1289,7 +1289,7 @@ pcl::PCDWriter::generateHeaderBinaryCompressed (const pcl::PCLPointCloud2 &cloud
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PCDWriter::writeASCII (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                            const Eigen::Vector4f &origin, const Eigen::Quaternionf &orientation,
+                            const Eigen::Vector4d &origin, const Eigen::Quaterniond &orientation,
                             const int precision)
 {
   if (cloud.data.empty ())
@@ -1401,7 +1401,7 @@ pcl::PCDWriter::writeASCII (const std::string &file_name, const pcl::PCLPointClo
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PCDWriter::writeBinary (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                             const Eigen::Vector4f &origin, const Eigen::Quaternionf &orientation)
+                             const Eigen::Vector4d &origin, const Eigen::Quaterniond &orientation)
 {
   if (cloud.data.empty ())
   {
@@ -1512,7 +1512,7 @@ pcl::PCDWriter::writeBinary (const std::string &file_name, const pcl::PCLPointCl
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PCDWriter::writeBinaryCompressed (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                                       const Eigen::Vector4f &origin, const Eigen::Quaternionf &orientation)
+                                       const Eigen::Vector4d &origin, const Eigen::Quaterniond &orientation)
 {
   if (cloud.data.empty ())
   {

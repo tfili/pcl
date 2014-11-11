@@ -89,14 +89,14 @@ namespace pcl
         double   total_dist_error;       // sum of all distance errors
         double   norm_dist_error;         // total_dist_error/nr_parts
 
-        Eigen::Vector4f  mean;          // mean in xyz
-        Eigen::Matrix3f  cov;           // covariance in 3x3 matrix
-        Eigen::Vector3f  eigenval;      // eigenvalue of blob
-        Eigen::Matrix3f  eigenvect;     // eigenvector of blob
+        Eigen::Vector4d  mean;          // mean in xyz
+        Eigen::Matrix3d  cov;           // covariance in 3x3 matrix
+        Eigen::Vector3d  eigenval;      // eigenvalue of blob
+        Eigen::Matrix3d  eigenvect;     // eigenvector of blob
 
         pcl::PointIndices indices;      // The indices of the pointcloud
-        Eigen::Vector4f   min;          // The min of the bounding box
-        Eigen::Vector4f   max;          // The max of the bounding box
+        Eigen::Vector4d   min;          // The min of the bounding box
+        Eigen::Vector4d   max;          // The max of the bounding box
       };
 
       inline std::ostream& operator << (std::ostream& os, const Tree2& t)

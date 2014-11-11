@@ -42,18 +42,18 @@
 template<typename PointT> void
 pcl::approximatePolygon (const PlanarPolygon<PointT>& polygon, PlanarPolygon<PointT>& approx_polygon, double threshold, bool refine, bool closed)
 {
-  const Eigen::Vector4f& coefficients = polygon.getCoefficients ();
+  const Eigen::Vector4d& coefficients = polygon.getCoefficients ();
   const typename pcl::PointCloud<PointT>::VectorType &contour = polygon.getContour ();
   
-  Eigen::Vector3f rotation_axis (coefficients[1], -coefficients[0], 0.0f);
+  Eigen::Vector3d rotation_axis (coefficients[1], -coefficients[0], 0.0f);
   rotation_axis.normalize ();
 
   double rotation_angle = acosf (coefficients [2]);
-  Eigen::Affine3f transformation = Eigen::Translation3f (0, 0, coefficients [3]) * Eigen::AngleAxisf (rotation_angle, rotation_axis);
+  Eigen::Affine3d transformation = Eigen::Translation3d (0, 0, coefficients [3]) * Eigen::AngleAxisd (rotation_angle, rotation_axis);
 
   typename pcl::PointCloud<PointT>::VectorType polygon2D (contour.size ());
   for (unsigned pIdx = 0; pIdx < polygon2D.size (); ++pIdx)
-    polygon2D [pIdx].getVector3fMap () = transformation * contour [pIdx].getVector3fMap ();
+    polygon2D [pIdx].getVector3dMap () = transformation * contour [pIdx].getVector3dMap ();
 
   typename pcl::PointCloud<PointT>::VectorType approx_polygon2D;
   approximatePolygon2D<PointT> (polygon2D, approx_polygon2D, threshold, refine, closed);
@@ -61,9 +61,9 @@ pcl::approximatePolygon (const PlanarPolygon<PointT>& polygon, PlanarPolygon<Poi
   typename pcl::PointCloud<PointT>::VectorType &approx_contour = approx_polygon.getContour ();
   approx_contour.resize (approx_polygon2D.size ());
   
-  Eigen::Affine3f inv_transformation = transformation.inverse ();
+  Eigen::Affine3d inv_transformation = transformation.inverse ();
   for (unsigned pIdx = 0; pIdx < approx_polygon2D.size (); ++pIdx)
-    approx_contour [pIdx].getVector3fMap () = inv_transformation * approx_polygon2D [pIdx].getVector3fMap ();
+    approx_contour [pIdx].getVector3dMap () = inv_transformation * approx_polygon2D [pIdx].getVector3dMap ();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
   approx_polygon.reserve (result.size ());
   if (refine)
   {
-    std::vector<Eigen::Vector3f> lines (result.size ());
+    std::vector<Eigen::Vector3d> lines (result.size ());
     std::reverse (result.begin (), result.end ());
     for (unsigned rIdx = 0; rIdx < result.size (); ++rIdx)
     {
@@ -188,7 +188,7 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
       if (nIdx == result.size ())
         nIdx = 0;
       
-      Eigen::Vector2f centroid = Eigen::Vector2f::Zero ();
+      Eigen::Vector2d centroid = Eigen::Vector2d::Zero ();
       Eigen::Matrix2f covariance = Eigen::Matrix2f::Zero ();
       unsigned pIdx = result[rIdx];
       unsigned num_points = 0;
@@ -226,11 +226,11 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
       covariance.coeffRef (3) -= centroid [1] * centroid [1];
       
       double eval;
-      Eigen::Vector2f normal;
+      Eigen::Vector2d normal;
       eigen22 (covariance, eval, normal);
 
       // select the one which is more "parallel" to the original line
-      Eigen::Vector2f direction;
+      Eigen::Vector2d direction;
       direction [0] = polygon[result[nIdx]].x - polygon[result[rIdx]].x;
       direction [1] = polygon[result[nIdx]].y - polygon[result[rIdx]].y;
       direction.normalize ();
@@ -256,13 +256,13 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
       if (nIdx == result.size ())
         nIdx = 0;      
       
-      Eigen::Vector3f vertex = lines [rIdx].cross (lines [nIdx]);
+      Eigen::Vector3d vertex = lines [rIdx].cross (lines [nIdx]);
       vertex /= vertex [2];
       vertex [2] = 0.0;
 
       PointT point;      
       // test whether we need another edge since the intersection point is too far away from the original vertex
-      Eigen::Vector3f pq = polygon [result[nIdx]].getVector3fMap () - vertex;
+      Eigen::Vector3d pq = polygon [result[nIdx]].getVector3dMap () - vertex;
       pq [2] = 0.0;
       
       double distance = pq.squaredNorm ();
@@ -284,7 +284,7 @@ pcl::approximatePolygon2D (const typename pcl::PointCloud<PointT>::VectorType &p
           vertex [1] = polygon[result[nIdx]].y - distance2 * lines [nIdx] [1];
         }
       }
-      point.getVector3fMap () = vertex;
+      point.getVector3dMap () = vertex;
       approx_polygon.push_back (point);
     }
   }

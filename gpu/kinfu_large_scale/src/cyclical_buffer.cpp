@@ -43,7 +43,7 @@
 
 
 bool
-pcl::gpu::kinfuLS::CyclicalBuffer::checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3f &cam_pose, const double distance_camera_target, const bool perform_shift, const bool last_shift, const bool force_shift)
+pcl::gpu::kinfuLS::CyclicalBuffer::checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3d &cam_pose, const double distance_camera_target, const bool perform_shift, const bool last_shift, const bool force_shift)
 {
   bool result = false;
 
@@ -123,11 +123,11 @@ pcl::gpu::kinfuLS::CyclicalBuffer::performShift (const TsdfVolume::Ptr volume, c
   current_slice->height = 1;
 
   // transform the slice from local to global coordinates
-  Eigen::Affine3f global_cloud_transformation;
+  Eigen::Affine3d global_cloud_transformation;
   global_cloud_transformation.translation ()[0] = buffer_.origin_GRID_global.x;
   global_cloud_transformation.translation ()[1] = buffer_.origin_GRID_global.y;
   global_cloud_transformation.translation ()[2] = buffer_.origin_GRID_global.z;
-  global_cloud_transformation.linear () = Eigen::Matrix3f::Identity ();
+  global_cloud_transformation.linear () = Eigen::Matrix3d::Identity ();
   transformPointCloud (*current_slice, *current_slice, global_cloud_transformation);
 
   // retrieve existing data from the world model

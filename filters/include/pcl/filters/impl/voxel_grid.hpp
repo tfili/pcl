@@ -46,9 +46,9 @@
 template <typename PointT> void
 pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
                   const std::string &distance_field_name, double min_distance, double max_distance,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative)
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt, bool limit_negative)
 {
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -79,7 +79,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           continue;
       }
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -111,7 +111,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           !pcl_isfinite (cloud->points[i].z))
         continue;
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -125,9 +125,9 @@ template <typename PointT> void
 pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
                   const std::vector<int> &indices,
                   const std::string &distance_field_name, double min_distance, double max_distance,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative)
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt, bool limit_negative)
 {
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -158,7 +158,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           continue;
       }
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[*it].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[*it].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -190,7 +190,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           !pcl_isfinite (cloud->points[*it].z))
         continue;
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[*it].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[*it].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -225,7 +225,7 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
   output.height       = 1;                    // downsampling breaks the organized structure
   output.is_dense     = true;                 // we filter out invalid points
 
-  Eigen::Vector4f min_p, max_p;
+  Eigen::Vector4d min_p, max_p;
   // Get the minimum and maximum dimensions
   if (!filter_field_name_.empty ()) // If we don't want to process the entire cloud...
     getMinMax3D<PointT> (input_, *indices_, filter_field_name_, static_cast<double> (filter_limit_min_), static_cast<double> (filter_limit_max_), min_p, max_p, filter_limit_negative_);
@@ -407,8 +407,8 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
   }
   
   index = 0;
-  Eigen::VectorXf centroid = Eigen::VectorXf::Zero (centroid_size);
-  Eigen::VectorXf temporary = Eigen::VectorXf::Zero (centroid_size);
+  Eigen::VectorXd centroid = Eigen::VectorXd::Zero (centroid_size);
+  Eigen::VectorXd temporary = Eigen::VectorXd::Zero (centroid_size);
 
   for (unsigned int cp = 0; cp < first_and_last_indices_vector.size (); ++cp)
   {
@@ -493,7 +493,7 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
 }
 
 #define PCL_INSTANTIATE_VoxelGrid(T) template class PCL_EXPORTS pcl::VoxelGrid<T>;
-#define PCL_INSTANTIATE_getMinMax3D(T) template PCL_EXPORTS void pcl::getMinMax3D<T> (const pcl::PointCloud<T>::ConstPtr &, const std::string &, double, double, Eigen::Vector4f &, Eigen::Vector4f &, bool);
+#define PCL_INSTANTIATE_getMinMax3D(T) template PCL_EXPORTS void pcl::getMinMax3D<T> (const pcl::PointCloud<T>::ConstPtr &, const std::string &, double, double, Eigen::Vector4d &, Eigen::Vector4d &, bool);
 
 #endif    // PCL_FILTERS_IMPL_VOXEL_GRID_H_
 

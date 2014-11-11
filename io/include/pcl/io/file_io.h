@@ -84,7 +84,7 @@ namespace pcl
         */
       virtual int 
       readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, 
+                  Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, 
                   int &file_version, int &data_type, unsigned int &data_idx, const int offset = 0) = 0;
 
       /** \brief Read a point cloud data from a FILE file and store it into a pcl/PCLPointCloud2.
@@ -101,7 +101,7 @@ namespace pcl
         */
       virtual int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &file_version, 
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &file_version, 
             const int offset = 0) = 0;
 
       /** \brief Read a point cloud data from a FILE file (FILE_V6 only!) and store it into a pcl/PCLPointCloud2.
@@ -123,8 +123,8 @@ namespace pcl
       int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset = 0)
       {
-        Eigen::Vector4f origin;
-        Eigen::Quaternionf orientation;
+        Eigen::Vector4d origin;
+        Eigen::Quaterniond orientation;
         int file_version;
         return (read (file_name, cloud, origin, orientation, file_version, offset));
       }
@@ -178,8 +178,8 @@ namespace pcl
         */
       virtual int
       write (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false) = 0;
 
       /** \brief Save point cloud data to a FILE file containing n-D points
@@ -192,8 +192,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2::ConstPtr &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false)
       {
         return (write (file_name, *cloud, origin, orientation, binary));
@@ -210,8 +210,8 @@ namespace pcl
              const pcl::PointCloud<PointT> &cloud, 
              const bool binary = false)
       {
-        Eigen::Vector4f origin = cloud.sensor_origin_;
-        Eigen::Quaternionf orientation = cloud.sensor_orientation_;
+        Eigen::Vector4d origin = cloud.sensor_origin_;
+        Eigen::Quaterniond orientation = cloud.sensor_orientation_;
 
         pcl::PCLPointCloud2 blob;
         pcl::toPCLPointCloud2 (cloud, blob);

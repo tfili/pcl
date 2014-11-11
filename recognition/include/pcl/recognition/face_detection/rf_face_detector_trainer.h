@@ -33,13 +33,13 @@ namespace pcl
       std::string directory_;
       double HEAD_ST_DIAMETER_;
       double larger_radius_ratio_;
-      std::vector<Eigen::Vector3f> head_center_votes_;
-      std::vector<std::vector<Eigen::Vector3f> > head_center_votes_clustered_;
-      std::vector<std::vector<Eigen::Vector3f> > head_center_original_votes_clustered_;
-      std::vector<Eigen::Vector3f> angle_votes_;
+      std::vector<Eigen::Vector3d> head_center_votes_;
+      std::vector<std::vector<Eigen::Vector3d> > head_center_votes_clustered_;
+      std::vector<std::vector<Eigen::Vector3d> > head_center_original_votes_clustered_;
+      std::vector<Eigen::Vector3d> angle_votes_;
       std::vector<double> uncertainties_;
-      std::vector<Eigen::Vector3f> head_clusters_centers_;
-      std::vector<Eigen::Vector3f> head_clusters_rotation_;
+      std::vector<Eigen::Vector3d> head_clusters_centers_;
+      std::vector<Eigen::Vector3d> head_clusters_rotation_;
 
       pcl::PointCloud<pcl::PointXYZ>::Ptr input_;
       pcl::PointCloud<pcl::PointXYZI>::Ptr face_heat_map_;
@@ -184,7 +184,7 @@ namespace pcl
 
         for (size_t i = 0; i < head_center_votes_.size (); i++)
         {
-          votes_cloud->points[i].getVector3fMap () = head_center_votes_[i];
+          votes_cloud->points[i].getVector3dMap () = head_center_votes_[i];
         }
       }
 
@@ -199,7 +199,7 @@ namespace pcl
         {
           for (size_t j = 0; j < head_center_votes_clustered_[i].size (); j++, p++)
           {
-            votes_cloud->points[p].getVector3fMap () = head_center_votes_clustered_[i][j];
+            votes_cloud->points[p].getVector3dMap () = head_center_votes_clustered_[i][j];
             votes_cloud->points[p].intensity = 0.1f * static_cast<double> (i);
           }
         }
@@ -218,7 +218,7 @@ namespace pcl
         {
           for (size_t j = 0; j < head_center_original_votes_clustered_[i].size (); j++, p++)
           {
-            votes_cloud->points[p].getVector3fMap () = head_center_original_votes_clustered_[i][j];
+            votes_cloud->points[p].getVector3dMap () = head_center_original_votes_clustered_[i][j];
             votes_cloud->points[p].intensity = 0.1f * static_cast<double> (i);
           }
         }
@@ -227,11 +227,11 @@ namespace pcl
       }
 
       //get heads
-      void getDetectedFaces(std::vector<Eigen::VectorXf> & faces)
+      void getDetectedFaces(std::vector<Eigen::VectorXd> & faces)
       {
         for (size_t i = 0; i < head_clusters_centers_.size (); i++)
         {
-          Eigen::VectorXf head (6);
+          Eigen::VectorXd head (6);
           head[0] = head_clusters_centers_[i][0];
           head[1] = head_clusters_centers_[i][1];
           head[2] = head_clusters_centers_[i][2];

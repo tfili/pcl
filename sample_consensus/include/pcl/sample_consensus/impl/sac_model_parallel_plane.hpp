@@ -46,7 +46,7 @@
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::SampleConsensusModelParallelPlane<PointT>::selectWithinDistance (
-      const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers)
+      const Eigen::VectorXd &model_coefficients, const double threshold, std::vector<int> &inliers)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -61,7 +61,7 @@ pcl::SampleConsensusModelParallelPlane<PointT>::selectWithinDistance (
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> int
 pcl::SampleConsensusModelParallelPlane<PointT>::countWithinDistance (
-      const Eigen::VectorXf &model_coefficients, const double threshold)
+      const Eigen::VectorXd &model_coefficients, const double threshold)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -73,7 +73,7 @@ pcl::SampleConsensusModelParallelPlane<PointT>::countWithinDistance (
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::SampleConsensusModelParallelPlane<PointT>::getDistancesToModel (
-      const Eigen::VectorXf &model_coefficients, std::vector<double> &distances)
+      const Eigen::VectorXd &model_coefficients, std::vector<double> &distances)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -87,7 +87,7 @@ pcl::SampleConsensusModelParallelPlane<PointT>::getDistancesToModel (
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> bool
-pcl::SampleConsensusModelParallelPlane<PointT>::isModelValid (const Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelParallelPlane<PointT>::isModelValid (const Eigen::VectorXd &model_coefficients)
 {
   // Needs a valid model coefficients
   if (model_coefficients.size () != 4)
@@ -100,11 +100,11 @@ pcl::SampleConsensusModelParallelPlane<PointT>::isModelValid (const Eigen::Vecto
   if (eps_angle_ > 0.0)
   {
     // Obtain the plane normal
-    Eigen::Vector4f coeff = model_coefficients;
+    Eigen::Vector4d coeff = model_coefficients;
     coeff[3] = 0;
     coeff.normalize ();
 
-    Eigen::Vector4f axis (axis_[0], axis_[1], axis_[2], 0);
+    Eigen::Vector4d axis (axis_[0], axis_[1], axis_[2], 0);
     if (fabs (axis.dot (coeff)) > sin_angle_)
       return  (false);
   }

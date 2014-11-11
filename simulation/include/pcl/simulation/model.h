@@ -39,12 +39,12 @@ namespace pcl
     struct Vertex
     {
       Vertex () {}
-      //Vertex(Eigen::Vector3f pos, Eigen::Vector3f norm) : pos(pos), norm(norm) {}
-      Vertex (Eigen::Vector3f pos, Eigen::Vector3f rgb) : pos (pos), rgb (rgb) {}
-      Eigen::Vector3f pos;
-      Eigen::Vector3f rgb;
-      //Eigen::Vector3f norm;
-      //Eigen::Vector2f tex;
+      //Vertex(Eigen::Vector3d pos, Eigen::Vector3d norm) : pos(pos), norm(norm) {}
+      Vertex (Eigen::Vector3d pos, Eigen::Vector3d rgb) : pos (pos), rgb (rgb) {}
+      Eigen::Vector3d pos;
+      Eigen::Vector3d rgb;
+      //Eigen::Vector3d norm;
+      //Eigen::Vector2d tex;
     };
 
     struct Face
@@ -54,7 +54,7 @@ namespace pcl
       // Number of vertices on face
       unsigned int count;
       // Normal of face
-      Eigen::Vector3f norm;
+      Eigen::Vector3d norm;
     };
 
     typedef std::vector<Vertex> Vertices;

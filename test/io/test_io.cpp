@@ -457,7 +457,7 @@ TEST (PCL, IO)
 
   // Make sure we have permissions to write there
   PCDWriter w;
-  int res = w.writeASCII ("test_pcl_io.pcd", cloud_blob, Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), 10);
+  int res = w.writeASCII ("test_pcl_io.pcd", cloud_blob, Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), 10);
   EXPECT_EQ (int (res), 0);                            // test for savePCDFileASCII ()
 
   // Please make sure that this file exists, otherwise the test will fail.
@@ -488,7 +488,7 @@ TEST (PCL, IO)
   EXPECT_FLOAT_EQ (cloud.points[nr_p - 1].intensity, last.intensity); // test for fromPCLPointCloud2 ()
 
   // Make sure we have permissions to write there
-  res = savePCDFile ("test_pcl_io.pcd", cloud_blob, Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), true);
+  res = savePCDFile ("test_pcl_io.pcd", cloud_blob, Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), true);
   EXPECT_EQ (int (res), 0);                            // test for savePCDFileBinary ()
 
   // Please make sure that this file exists, otherwise the test will fail.
@@ -690,7 +690,7 @@ TEST (PCL, PCDReaderWriter)
              cloud_blob.width * cloud_blob.height * sizeof (PointXYZI));  // test for toPCLPointCloud2 ()
 
   PCDWriter writer;
-  writer.write ("test_pcl_io.pcd", cloud_blob, Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), true);
+  writer.write ("test_pcl_io.pcd", cloud_blob, Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), true);
 
   PCDReader reader;
   reader.read ("test_pcl_io.pcd", cloud_blob);
@@ -838,7 +838,7 @@ TEST (PCL, PLYReaderWriter)
 
   // test for toPCLPointCloud2 ()
   PLYWriter writer;
-  writer.write ("test_pcl_io.ply", cloud_blob, Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), true, true);
+  writer.write ("test_pcl_io.ply", cloud_blob, Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), true, true);
 
   PLYReader reader;
   reader.read ("test_pcl_io.ply", cloud_blob2);
@@ -930,7 +930,7 @@ TEST (PCL, EigenConversions)
   pcl::PCLPointCloud2 blob;
   toPCLPointCloud2 (cloud, blob);
 
-  Eigen::MatrixXf mat;
+  Eigen::MatrixXd mat;
   getPointCloudAsEigen (blob, mat);
   EXPECT_EQ (mat.cols (), int (cloud.points.size ()));
   EXPECT_EQ (mat.rows (), 4);

@@ -277,8 +277,8 @@ pcl::EnsensoGrabber::configureCapture (const bool auto_exposure,
 bool
 pcl::EnsensoGrabber::setExtrinsicCalibration (const std::string target,
                                               const double euler_angle,
-                                              const Eigen::Vector3f rotation_axis,
-                                              const Eigen::Vector3f translation)
+                                              const Eigen::Vector3d rotation_axis,
+                                              const Eigen::Vector3d translation)
 {
   if (!device_open_)
     return (false);

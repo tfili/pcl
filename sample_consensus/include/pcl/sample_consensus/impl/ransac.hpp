@@ -59,7 +59,7 @@ pcl::RandomSampleConsensus<PointT>::computeModel (int)
   double k = 1.0;
 
   std::vector<int> selection;
-  Eigen::VectorXf model_coefficients;
+  Eigen::VectorXd model_coefficients;
 
   double log_probability  = log (1.0 - probability_);
   double one_over_indices = 1.0 / static_cast<double> (sac_model_->getIndices ()->size ());

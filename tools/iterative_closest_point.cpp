@@ -59,8 +59,8 @@ using namespace pcl::io;
 using namespace pcl::console;
 using namespace pcl::registration;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)
@@ -148,7 +148,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &source,
   print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms : "); print_value ("%d", output.width * output.height); print_info (" points], has converged: ");
   print_value ("%d", icp.hasConverged ()); print_info (" with score: %f\n",  icp.getFitnessScore ());
   Eigen::Matrix4d transformation = icp.getFinalTransformation ();
-  //Eigen::Matrix4f transformation = icp.getFinalTransformation ();
+  //Eigen::Matrix4d transformation = icp.getFinalTransformation ();
   PCL_DEBUG ("Transformation is:\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n", 
       transformation (0, 0), transformation (0, 1), transformation (0, 2), transformation (0, 3),
       transformation (1, 0), transformation (1, 1), transformation (1, 2), transformation (1, 3),

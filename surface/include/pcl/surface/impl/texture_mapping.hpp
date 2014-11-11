@@ -42,17 +42,17 @@
 #include <pcl/surface/texture_mapping.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointInT> std::vector<Eigen::Vector2f>
+template<typename PointInT> std::vector<Eigen::Vector2d>
 pcl::TextureMapping<PointInT>::mapTexture2Face (
-    const Eigen::Vector3f &p1, 
-    const Eigen::Vector3f &p2, 
-    const Eigen::Vector3f &p3)
+    const Eigen::Vector3d &p1, 
+    const Eigen::Vector3d &p2, 
+    const Eigen::Vector3d &p3)
 {
-  std::vector<Eigen::Vector2f> tex_coordinates;
+  std::vector<Eigen::Vector2d> tex_coordinates;
   // process for each face
-  Eigen::Vector3f p1p2 (p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]);
-  Eigen::Vector3f p1p3 (p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]);
-  Eigen::Vector3f p2p3 (p3[0] - p2[0], p3[1] - p2[1], p3[2] - p2[2]);
+  Eigen::Vector3d p1p2 (p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]);
+  Eigen::Vector3d p1p3 (p3[0] - p1[0], p3[1] - p1[1], p3[2] - p1[2]);
+  Eigen::Vector3d p2p3 (p3[0] - p2[0], p3[1] - p2[1], p3[2] - p2[2]);
 
   // Normalize
   p1p2 = p1p2 / std::sqrt (p1p2.dot (p1p2));
@@ -60,17 +60,17 @@ pcl::TextureMapping<PointInT>::mapTexture2Face (
   p2p3 = p2p3 / std::sqrt (p2p3.dot (p2p3));
 
   // compute vector normal of a face
-  Eigen::Vector3f f_normal = p1p2.cross (p1p3);
+  Eigen::Vector3d f_normal = p1p2.cross (p1p3);
   f_normal = f_normal / std::sqrt (f_normal.dot (f_normal));
 
   // project vector field onto the face: vector v1_projected = v1 - Dot(v1, n) * n;
-  Eigen::Vector3f f_vector_field = vector_field_ - vector_field_.dot (f_normal) * f_normal;
+  Eigen::Vector3d f_vector_field = vector_field_ - vector_field_.dot (f_normal) * f_normal;
 
   // Normalize
   f_vector_field = f_vector_field / std::sqrt (f_vector_field.dot (f_vector_field));
 
   // texture coordinates
-  Eigen::Vector2f tp1, tp2, tp3;
+  Eigen::Vector2d tp1, tp2, tp3;
 
   double alpha = std::acos (f_vector_field.dot (p1p2));
 
@@ -94,7 +94,7 @@ pcl::TextureMapping<PointInT>::mapTexture2Face (
   tp3[1] = static_cast<double> (sin_p1 * e2);
 
   // rotating by alpha (angle between V and pp1 & pp2)
-  Eigen::Vector2f r_tp2, r_tp3;
+  Eigen::Vector2d r_tp2, r_tp3;
   r_tp2[0] = static_cast<double> (tp2[0] * std::cos (alpha) - tp2[1] * std::sin (alpha));
   r_tp2[1] = static_cast<double> (tp2[0] * std::sin (alpha) + tp2[1] * std::cos (alpha));
 
@@ -150,15 +150,15 @@ pcl::TextureMapping<PointInT>::mapTexture2Mesh (pcl::TextureMesh &tex_mesh)
   // temporary PointXYZ
   double x, y, z;
   // temporary face
-  Eigen::Vector3f facet[3];
+  Eigen::Vector3d facet[3];
 
   // texture coordinates for each mesh
-  std::vector<std::vector<Eigen::Vector2f> > texture_map;
+  std::vector<std::vector<Eigen::Vector2d> > texture_map;
 
   for (size_t m = 0; m < tex_mesh.tex_polygons.size (); ++m)
   {
     // texture coordinates for each mesh
-    std::vector<Eigen::Vector2f> texture_map_tmp;
+    std::vector<Eigen::Vector2d> texture_map_tmp;
 
     // processing for each face
     for (size_t i = 0; i < tex_mesh.tex_polygons[m].size (); ++i)
@@ -178,7 +178,7 @@ pcl::TextureMapping<PointInT>::mapTexture2Mesh (pcl::TextureMesh &tex_mesh)
       }
 
       // get texture coordinates of each face
-      std::vector<Eigen::Vector2f> tex_coordinates = mapTexture2Face (facet[0], facet[1], facet[2]);
+      std::vector<Eigen::Vector2d> tex_coordinates = mapTexture2Face (facet[0], facet[1], facet[2]);
       for (size_t n = 0; n < tex_coordinates.size (); ++n)
         texture_map_tmp.push_back (tex_coordinates[n]);
     }// end faces
@@ -244,18 +244,18 @@ pcl::TextureMapping<PointInT>::mapTexture2MeshUV (pcl::TextureMesh &tex_mesh)
   double z_offset = 0 - z_lowest;
 
   // texture coordinates for each mesh
-  std::vector<std::vector<Eigen::Vector2f> > texture_map;
+  std::vector<std::vector<Eigen::Vector2d> > texture_map;
 
   for (size_t m = 0; m < tex_mesh.tex_polygons.size (); ++m)
   {
     // texture coordinates for each mesh
-    std::vector<Eigen::Vector2f> texture_map_tmp;
+    std::vector<Eigen::Vector2d> texture_map_tmp;
 
     // processing for each face
     for (size_t i = 0; i < tex_mesh.tex_polygons[m].size (); ++i)
     {
       size_t idx;
-      Eigen::Vector2f tmp_VT;
+      Eigen::Vector2d tmp_VT;
       for (size_t j = 0; j < tex_mesh.tex_polygons[m][i].vertices.size (); ++j)
       {
         idx = tex_mesh.tex_polygons[m][i].vertices[j];
@@ -303,7 +303,7 @@ pcl::TextureMapping<PointInT>::mapMultipleTexturesToMeshUV (pcl::TextureMesh &te
   pcl::fromPCLPointCloud2 (tex_mesh.cloud, *originalCloud);
 
   // texture coordinates for each mesh
-  std::vector<std::vector<Eigen::Vector2f> > texture_map;
+  std::vector<std::vector<Eigen::Vector2d> > texture_map;
 
   for (size_t m = 0; m < cams.size (); ++m)
   {
@@ -311,20 +311,20 @@ pcl::TextureMapping<PointInT>::mapMultipleTexturesToMeshUV (pcl::TextureMesh &te
     Camera current_cam = cams[m];
 
     // get camera transform
-    Eigen::Affine3f cam_trans = current_cam.pose;
+    Eigen::Affine3d cam_trans = current_cam.pose;
 
     // transform cloud into current camera frame
     pcl::transformPointCloud (*originalCloud, *camera_transformed_cloud, cam_trans.inverse ());
 
     // vector of texture coordinates for each face
-    std::vector<Eigen::Vector2f> texture_map_tmp;
+    std::vector<Eigen::Vector2d> texture_map_tmp;
 
     // processing each face visible by this camera
     PointInT pt;
     size_t idx;
     for (size_t i = 0; i < tex_mesh.tex_polygons[m].size (); ++i)
     {
-      Eigen::Vector2f tmp_VT;
+      Eigen::Vector2d tmp_VT;
       // for each point of this face
       for (size_t j = 0; j < tex_mesh.tex_polygons[m][i].vertices.size (); ++j)
       {
@@ -351,11 +351,11 @@ pcl::TextureMapping<PointInT>::mapMultipleTexturesToMeshUV (pcl::TextureMesh &te
   }// end cameras
 
   // push on extra empty UV map (for unseen faces) so that obj writer does not crash!
-  std::vector<Eigen::Vector2f> texture_map_tmp;
+  std::vector<Eigen::Vector2d> texture_map_tmp;
   for (size_t i = 0; i < tex_mesh.tex_polygons[cams.size ()].size (); ++i)
     for (size_t j = 0; j < tex_mesh.tex_polygons[cams.size ()][i].vertices.size (); ++j)
     {
-      Eigen::Vector2f tmp_VT;
+      Eigen::Vector2d tmp_VT;
       tmp_VT[0] = -1;
       tmp_VT[1] = -1;
       texture_map_tmp.push_back (tmp_VT);
@@ -376,7 +376,7 @@ pcl::TextureMapping<PointInT>::mapMultipleTexturesToMeshUV (pcl::TextureMesh &te
 template<typename PointInT> bool
 pcl::TextureMapping<PointInT>::isPointOccluded (const PointInT &pt, OctreePtr octree)
 {
-  Eigen::Vector3f direction;
+  Eigen::Vector3d direction;
   direction (0) = pt.x;
   direction (1) = pt.y;
   direction (2) = pt.z;
@@ -436,7 +436,7 @@ pcl::TextureMapping<PointInT>::removeOccludedPoints (const PointCloudPtr &input_
   visible_indices.clear ();
 
   // for each point of the cloud, raycast toward camera and check intersected voxels.
-  Eigen::Vector3f direction;
+  Eigen::Vector3d direction;
   std::vector<int> indices;
   for (size_t i = 0; i < input_cloud->points.size (); ++i)
   {
@@ -583,7 +583,7 @@ pcl::TextureMapping<PointInT>::sortFacesByCamera (pcl::TextureMesh &tex_mesh, pc
   for (size_t cam = 0; cam < cameras.size (); ++cam)
   {
     // get camera pose as transform
-    Eigen::Affine3f cam_trans = cameras[cam].pose;
+    Eigen::Affine3d cam_trans = cameras[cam].pose;
 
     // transform original cloud in camera coordinates
     pcl::transformPointCloud (*original_cloud, *transformed_cloud, cam_trans.inverse ());
@@ -614,7 +614,7 @@ pcl::TextureMapping<PointInT>::sortFacesByCamera (pcl::TextureMesh &tex_mesh, pc
           // point is not occluded
           // does it land on the camera's image plane?
           PointInT pt = transformed_cloud->points[tex_mesh.tex_polygons[0][faces].vertices[current_pt_indice]];
-          Eigen::Vector2f dummy_UV;
+          Eigen::Vector2d dummy_UV;
           if (!getPointUVCoordinates (pt, cameras[cam], dummy_UV))
           {
             // point is not visible by the camera
@@ -667,7 +667,7 @@ pcl::TextureMapping<PointInT>::showOcclusions (const PointCloudPtr &input_cloud,
   octree->addPointsFromInputCloud ();
 
   // ray direction
-  Eigen::Vector3f direction;
+  Eigen::Vector3d direction;
 
   std::vector<int> indices;
   // point from where we ray-trace
@@ -908,7 +908,7 @@ pcl::TextureMapping<PointInT>::textureMeshwithMultipleCameras (pcl::TextureMesh 
 
     if (static_cast<int> (mesh.tex_coordinates.size ()) <= current_cam)
     {
-      std::vector<Eigen::Vector2f> dummy_container;
+      std::vector<Eigen::Vector2d> dummy_container;
       mesh.tex_coordinates.push_back (dummy_container);
     }
     mesh.tex_coordinates[current_cam].resize (3 * visibility.size ());
@@ -966,14 +966,14 @@ pcl::TextureMapping<PointInT>::textureMeshwithMultipleCameras (pcl::TextureMesh 
 
   if (mesh.tex_coordinates.size() <= cameras.size ())
   {
-   std::vector<Eigen::Vector2f> dummy_container;
+   std::vector<Eigen::Vector2d> dummy_container;
    mesh.tex_coordinates.push_back(dummy_container);
    }
 
 
   for(size_t idx_face = 0 ; idx_face < mesh.tex_polygons[cameras.size()].size() ; ++idx_face)
   {
-    Eigen::Vector2f UV1, UV2, UV3;
+    Eigen::Vector2d UV1, UV2, UV3;
     UV1(0) = -1.0; UV1(1) = -1.0;
     UV2(0) = -1.0; UV2(1) = -1.0;
     UV3(0) = -1.0; UV3(1) = -1.0;

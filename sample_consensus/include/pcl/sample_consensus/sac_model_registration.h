@@ -151,14 +151,14 @@ namespace pcl
         */
       bool
       computeModelCoefficients (const std::vector<int> &samples,
-                                Eigen::VectorXf &model_coefficients);
+                                Eigen::VectorXd &model_coefficients);
 
       /** \brief Compute all distances from the transformed points to their correspondences
         * \param[in] model_coefficients the 4x4 transformation matrix
         * \param[out] distances the resultant estimated distances
         */
       void
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients,
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients,
                            std::vector<double> &distances);
 
       /** \brief Select all the points which respect the given model coefficients as inliers.
@@ -167,7 +167,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients,
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients,
                             const double threshold,
                             std::vector<int> &inliers);
 
@@ -178,7 +178,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients,
+      countWithinDistance (const Eigen::VectorXd &model_coefficients,
                            const double threshold);
 
       /** \brief Recompute the 4x4 transformation using the given inlier set
@@ -188,19 +188,19 @@ namespace pcl
         */
       void
       optimizeModelCoefficients (const std::vector<int> &inliers,
-                                 const Eigen::VectorXf &model_coefficients,
-                                 Eigen::VectorXf &optimized_coefficients);
+                                 const Eigen::VectorXd &model_coefficients,
+                                 Eigen::VectorXd &optimized_coefficients);
 
       void
       projectPoints (const std::vector<int> &,
-                     const Eigen::VectorXf &,
+                     const Eigen::VectorXd &,
                      PointCloud &, bool = true)
       {
       };
 
       bool
       doSamplesVerifyModel (const std::set<int> &,
-                            const Eigen::VectorXf &,
+                            const Eigen::VectorXd &,
                             const double)
       {
         return (false);
@@ -215,7 +215,7 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       inline bool
-      isModelValid (const Eigen::VectorXf &model_coefficients)
+      isModelValid (const Eigen::VectorXd &model_coefficients)
       {
         // Needs a valid model coefficients
         if (model_coefficients.size () != 16)
@@ -239,8 +239,8 @@ namespace pcl
       computeSampleDistanceThreshold (const PointCloudConstPtr &cloud)
       {
         // Compute the principal directions via PCA
-        Eigen::Vector4f xyz_centroid;
-        Eigen::Matrix3f covariance_matrix = Eigen::Matrix3f::Zero ();
+        Eigen::Vector4d xyz_centroid;
+        Eigen::Matrix3d covariance_matrix = Eigen::Matrix3d::Zero ();
 
         computeMeanAndCovarianceMatrix (*cloud, covariance_matrix, xyz_centroid);
 
@@ -250,7 +250,7 @@ namespace pcl
             if (!pcl_isfinite (covariance_matrix.coeffRef (i, j)))
               PCL_ERROR ("[pcl::SampleConsensusModelRegistration::computeSampleDistanceThreshold] Covariance matrix has NaN values! Is the input cloud finite?\n");
 
-        Eigen::Vector3f eigen_values;
+        Eigen::Vector3d eigen_values;
         pcl::eigen33 (covariance_matrix, eigen_values);
 
         // Compute the distance threshold for sample selection
@@ -269,8 +269,8 @@ namespace pcl
                                       const std::vector<int> &indices)
       {
         // Compute the principal directions via PCA
-        Eigen::Vector4f xyz_centroid;
-        Eigen::Matrix3f covariance_matrix;
+        Eigen::Vector4d xyz_centroid;
+        Eigen::Matrix3d covariance_matrix;
         computeMeanAndCovarianceMatrix (*cloud, indices, covariance_matrix, xyz_centroid);
 
         // Check if the covariance matrix is finite or not.
@@ -279,7 +279,7 @@ namespace pcl
             if (!pcl_isfinite (covariance_matrix.coeffRef (i, j)))
               PCL_ERROR ("[pcl::SampleConsensusModelRegistration::computeSampleDistanceThreshold] Covariance matrix has NaN values! Is the input cloud finite?\n");
 
-        Eigen::Vector3f eigen_values;
+        Eigen::Vector3d eigen_values;
         pcl::eigen33 (covariance_matrix, eigen_values);
 
         // Compute the distance threshold for sample selection
@@ -304,7 +304,7 @@ namespace pcl
                                       const std::vector<int> &indices_src,
                                       const pcl::PointCloud<PointT> &cloud_tgt,
                                       const std::vector<int> &indices_tgt,
-                                      Eigen::VectorXf &transform);
+                                      Eigen::VectorXd &transform);
 
       /** \brief Compute mappings between original indices of the input_/target_ clouds. */
       void

@@ -57,7 +57,7 @@ pcl::CrfSegmentation<PointT>::CrfSegmentation () :
   filtered_cloud_ (new pcl::PointCloud<PointT>),
   filtered_anno_ (new pcl::PointCloud<pcl::PointXYZRGBL>),
   filtered_normal_ (new pcl::PointCloud<pcl::PointNormal>),
-  voxel_grid_leaf_size_ (Eigen::Vector4f (0.001f, 0.001f, 0.001f, 0.0f))
+  voxel_grid_leaf_size_ (Eigen::Vector4d (0.001f, 0.001f, 0.001f, 0.0f))
 {
 }
 
@@ -284,7 +284,7 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
   // fill the data vector
   for (size_t i = 0; i < filtered_cloud_->points.size (); i++)
   {
-    Eigen::Vector3f p (filtered_anno_->points[i].x,
+    Eigen::Vector3d p (filtered_anno_->points[i].x,
                        filtered_anno_->points[i].y,
                        filtered_anno_->points[i].z);
     Eigen::Vector3i c = voxel_grid_.getGridCoordinates (p.x (), p.y (), p.y ());
@@ -305,7 +305,7 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
       double n_x = filtered_cloud_->points[i].normal_x;
       double n_y = filtered_cloud_->points[i].normal_y;
       double n_z = filtered_cloud_->points[i].normal_z;
-      normal_[i] = Eigen::Vector3f (n_x, n_y, n_z);
+      normal_[i] = Eigen::Vector3d (n_x, n_y, n_z);
     }
 */
   }
@@ -316,7 +316,7 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
     double n_x = filtered_normal_->points[i].normal_x;
     double n_y = filtered_normal_->points[i].normal_y;
     double n_z = filtered_normal_->points[i].normal_z;
-    normal_[i] = Eigen::Vector3f (n_x, n_y, n_z);
+    normal_[i] = Eigen::Vector3d (n_x, n_y, n_z);
   }
   
 

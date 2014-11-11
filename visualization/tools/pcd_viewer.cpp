@@ -413,8 +413,8 @@ main (int argc, char** argv)
   {
     tt.tic ();
     cloud.reset (new pcl::PCLPointCloud2);
-    Eigen::Vector4f origin;
-    Eigen::Quaternionf orientation;
+    Eigen::Vector4d origin;
+    Eigen::Quaterniond orientation;
     int version;
 
     print_highlight (stderr, "Loading "); print_value (stderr, "%s ", argv[p_file_indices.at (i)]);
@@ -474,7 +474,7 @@ main (int argc, char** argv)
 
       if (!p->cameraParamsSet () && !p->cameraFileLoaded ())
       {
-        Eigen::Matrix3f rotation;
+        Eigen::Matrix3d rotation;
         rotation = orientation;
         p->setCameraPosition (origin [0]                  , origin [1]                  , origin [2],
                               origin [0] + rotation (0, 2), origin [1] + rotation (1, 2), origin [2] + rotation (2, 2),

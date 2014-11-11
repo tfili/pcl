@@ -43,7 +43,7 @@
 using namespace pcl::test;
 
 std::vector<double> v1, v2;
-Eigen::Vector3f ev1, ev2;
+Eigen::Vector3d ev1, ev2;
 
 TEST(MACROS, expect_eq_vectors_macro)
 {

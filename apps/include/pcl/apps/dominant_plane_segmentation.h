@@ -125,7 +125,7 @@ namespace pcl
          * \param model represents the normal and the position of the plane (a,b,c,d)
          */
         void
-        getTableCoefficients (Eigen::Vector4f & model)
+        getTableCoefficients (Eigen::Vector4d & model)
         {
           model = table_coeffs_;
         }
@@ -231,7 +231,7 @@ namespace pcl
           else
           {
             //compute distance and check aginst max_dist
-            if ((p1.getVector3fMap () - p2.getVector3fMap ()).norm () <= max_dist)
+            if ((p1.getVector3dMap () - p2.getVector3dMap ()).norm () <= max_dist)
             {
               p2.intensity = p1.intensity;
               return 0;
@@ -255,7 +255,7 @@ namespace pcl
         /** \brief Input cloud from which to extract clusters */
         CloudPtr input_;
         /** \brief Table coefficients (a,b,c,d) */
-        Eigen::Vector4f table_coeffs_;
+        Eigen::Vector4d table_coeffs_;
         /** \brief Downsampling resolution. */
         double downsample_leaf_;
         /** \brief Number of neighbors for normal estimation */

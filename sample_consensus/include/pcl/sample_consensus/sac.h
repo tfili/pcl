@@ -191,7 +191,7 @@ namespace pcl
         bool inlier_changed = false, oscillating = false;
         std::vector<int> new_inliers, prev_inliers = inliers_;
         std::vector<size_t> inliers_sizes;
-        Eigen::VectorXf new_model_coefficients = model_coefficients_;
+        Eigen::VectorXd new_model_coefficients = model_coefficients_;
         do
         {
           // Optimize the model coefficients
@@ -303,7 +303,7 @@ namespace pcl
         * \param[out] model_coefficients the resultant model coefficients, as documented in \ref sample_consensus
         */
       inline void 
-      getModelCoefficients (Eigen::VectorXf &model_coefficients) { model_coefficients = model_coefficients_; }
+      getModelCoefficients (Eigen::VectorXd &model_coefficients) { model_coefficients = model_coefficients_; }
 
     protected:
       /** \brief The underlying data model used (i.e. what is it that we attempt to search for). */
@@ -316,7 +316,7 @@ namespace pcl
       std::vector<int> inliers_;
 
       /** \brief The coefficients of our model computed directly from the model found. */
-      Eigen::VectorXf model_coefficients_;
+      Eigen::VectorXd model_coefficients_;
 
       /** \brief Desired probability of choosing at least one sample free from outliers. */
       double probability_;

@@ -65,9 +65,9 @@ namespace pcl
     * \ingroup features
     */
   inline void
-  solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-                        const Eigen::Vector4f &point,
-                        Eigen::Vector4f &plane_parameters, double &curvature);
+  solvePlaneParameters (const Eigen::Matrix3d &covariance_matrix,
+                        const Eigen::Vector4d &point,
+                        Eigen::Vector4d &plane_parameters, double &curvature);
 
   /** \brief Solve the eigenvalues and eigenvectors of a given 3x3 covariance matrix, and estimate the least-squares
     * plane normal and surface curvature.
@@ -82,7 +82,7 @@ namespace pcl
     * \ingroup features
     */
   inline void
-  solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+  solvePlaneParameters (const Eigen::Matrix3d &covariance_matrix,
                         double &nx, double &ny, double &nz, double &curvature);
 
   ////////////////////////////////////////////////////////////////////////////////////////////

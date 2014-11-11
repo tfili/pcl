@@ -403,24 +403,24 @@ namespace pcl
           }
 
           inline void
-          getCellIndex (const Eigen::Vector3f &p, Eigen::Vector3i& index) const
+          getCellIndex (const Eigen::Vector3d &p, Eigen::Vector3i& index) const
           {
             for (int i = 0; i < 3; ++i)
               index[i] = static_cast<Eigen::Vector3i::Scalar> ((p[i] - bounding_min_(i)) / voxel_size_);
           }
 
           inline void
-          getPosition (const uint64_t &index_1d, Eigen::Vector3f &point) const
+          getPosition (const uint64_t &index_1d, Eigen::Vector3d &point) const
           {
             Eigen::Vector3i index_3d;
             getIndexIn3D (index_1d, index_3d);
             for (int i = 0; i < 3; ++i)
-              point[i] = static_cast<Eigen::Vector3f::Scalar> (index_3d[i]) * voxel_size_ + bounding_min_[i];
+              point[i] = static_cast<Eigen::Vector3d::Scalar> (index_3d[i]) * voxel_size_ + bounding_min_[i];
           }
 
           typedef std::map<uint64_t, Leaf> HashMap;
           HashMap voxel_grid_;
-          Eigen::Vector4f bounding_min_, bounding_max_;
+          Eigen::Vector4d bounding_min_, bounding_max_;
           uint64_t data_size_;
           double voxel_size_;
       };

@@ -445,9 +445,9 @@ namespace pcl
           double cl[3] = {p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]};
           aux::normalize3 (cl);
 
-          signature[0] = std::acos (aux::clamp (aux::dot3 (n1,cl), -1.0f, 1.0f)); cl[0] = -cl[0]; cl[1] = -cl[1]; cl[2] = -cl[2];
-          signature[1] = std::acos (aux::clamp (aux::dot3 (n2,cl), -1.0f, 1.0f));
-          signature[2] = std::acos (aux::clamp (aux::dot3 (n1,n2), -1.0f, 1.0f));
+          signature[0] = std::acos (aux::clamp (aux::dot3 (n1,cl), -1.0, 1.0)); cl[0] = -cl[0]; cl[1] = -cl[1]; cl[2] = -cl[2];
+          signature[1] = std::acos (aux::clamp (aux::dot3 (n2,cl), -1.0, 1.0));
+          signature[2] = std::acos (aux::clamp (aux::dot3 (n1,n2), -1.0, 1.0));
         }
 
       protected:

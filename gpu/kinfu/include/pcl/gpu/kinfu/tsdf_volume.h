@@ -73,7 +73,7 @@ namespace pcl
         * \param[in] size size of tsdf volume in meters
         */
       void
-      setSize(const Eigen::Vector3f& size);
+      setSize(const Eigen::Vector3d& size);
       
       /** \brief Sets Tsdf truncation distance. Must be greater than 2 * volume_voxel_size
         * \param[in] distance TSDF truncation distance 
@@ -86,7 +86,7 @@ namespace pcl
       data() const;
 
       /** \brief Returns volume size in meters */
-      const Eigen::Vector3f&
+      const Eigen::Vector3d&
       getSize() const;
             
       /** \brief Returns volume resolution */
@@ -94,7 +94,7 @@ namespace pcl
       getResolution() const;
 
       /** \brief Returns volume voxel size in meters */
-      const Eigen::Vector3f
+      const Eigen::Vector3d
       getVoxelSize() const;
       
       /** \brief Returns tsdf truncation distance in meters */
@@ -148,7 +148,7 @@ namespace pcl
 
     private:
       /** \brief tsdf volume size in meters */
-      Eigen::Vector3f size_;
+      Eigen::Vector3d size_;
       
       /** \brief tsdf volume resolution */
       Eigen::Vector3i resolution_;      

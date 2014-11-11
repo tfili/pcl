@@ -221,7 +221,7 @@ namespace pcl
         * \param[out] curvature the computed curvature
         */
       void 
-      computeNormal (const PointCloud& cloud, Eigen::Vector4f &normal, double& curvature);
+      computeNormal (const PointCloud& cloud, Eigen::Vector4d &normal, double& curvature);
 
       /** \brief Computes the covariance matrix for points in the cloud. This is a port from features to avoid features dependency for
         * filters
@@ -231,8 +231,8 @@ namespace pcl
         */
       unsigned int 
       computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-                                      Eigen::Matrix3f &covariance_matrix,
-                                      Eigen::Vector4f &centroid);
+                                      Eigen::Matrix3d &covariance_matrix,
+                                      Eigen::Vector4d &centroid);
 
       /** \brief Solve the eigenvalues and eigenvectors of a given 3x3 covariance matrix, and estimate the least-squares
         * plane normal and surface curvature.
@@ -241,7 +241,7 @@ namespace pcl
         * \param[out] curvature the estimated surface curvature as a measure of
         */
       void 
-      solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+      solvePlaneParameters (const Eigen::Matrix3d &covariance_matrix,
                             double &nx, double &ny, double &nz, double &curvature);
   };
 }

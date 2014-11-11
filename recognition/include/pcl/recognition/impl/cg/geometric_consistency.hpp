@@ -75,7 +75,7 @@ pcl::GeometricConsistencyGrouping<PointModelT, PointSceneT>::clusterCorresponden
   std::vector<int> consensus_set;
   std::vector<bool> taken_corresps (model_scene_corrs_->size (), false);
 
-  Eigen::Vector3f dist_ref, dist_trg;
+  Eigen::Vector3d dist_ref, dist_trg;
 
   //temp copy of scene cloud with the type cast to ModelT in order to use Ransac
   PointCloudPtr temp_scene_cloud_ptr (new PointCloud ());
@@ -108,10 +108,10 @@ pcl::GeometricConsistencyGrouping<PointModelT, PointSceneT>::clusterCorresponden
           int scene_index_j = model_scene_corrs_->at (j).index_match;
           int model_index_j = model_scene_corrs_->at (j).index_query;
           
-          const Eigen::Vector3f& scene_point_k = scene_->at (scene_index_k).getVector3fMap ();
-          const Eigen::Vector3f& model_point_k = input_->at (model_index_k).getVector3fMap ();
-          const Eigen::Vector3f& scene_point_j = scene_->at (scene_index_j).getVector3fMap ();
-          const Eigen::Vector3f& model_point_j = input_->at (model_index_j).getVector3fMap ();
+          const Eigen::Vector3d& scene_point_k = scene_->at (scene_index_k).getVector3dMap ();
+          const Eigen::Vector3d& model_point_k = input_->at (model_index_k).getVector3dMap ();
+          const Eigen::Vector3d& scene_point_j = scene_->at (scene_index_j).getVector3dMap ();
+          const Eigen::Vector3d& model_point_j = input_->at (model_index_j).getVector3dMap ();
 
           dist_ref = scene_point_k - scene_point_j;
           dist_trg = model_point_k - model_point_j;
@@ -151,7 +151,7 @@ pcl::GeometricConsistencyGrouping<PointModelT, PointSceneT>::clusterCorresponden
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointModelT, typename PointSceneT> bool
 pcl::GeometricConsistencyGrouping<PointModelT, PointSceneT>::recognize (
-    std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > &transformations)
+    std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > &transformations)
 {
   std::vector<pcl::Correspondences> model_instances;
   return (this->recognize (transformations, model_instances));
@@ -160,7 +160,7 @@ pcl::GeometricConsistencyGrouping<PointModelT, PointSceneT>::recognize (
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointModelT, typename PointSceneT> bool
 pcl::GeometricConsistencyGrouping<PointModelT, PointSceneT>::recognize (
-    std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > &transformations, std::vector<pcl::Correspondences> &clustered_corrs)
+    std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > &transformations, std::vector<pcl::Correspondences> &clustered_corrs)
 {
   transformations.clear ();
   if (!this->initCompute ())

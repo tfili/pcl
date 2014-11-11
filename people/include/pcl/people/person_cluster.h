@@ -107,23 +107,23 @@ namespace pcl
       double angle_min_;
       
       /** \brief Cluster top point. */
-      Eigen::Vector3f top_;
+      Eigen::Vector3d top_;
       /** \brief Cluster bottom point. */
-      Eigen::Vector3f bottom_;
+      Eigen::Vector3d bottom_;
       /** \brief Cluster centroid. */
-      Eigen::Vector3f center_;
+      Eigen::Vector3d center_;
       
       /** \brief Theoretical cluster top. */
-      Eigen::Vector3f ttop_;
+      Eigen::Vector3d ttop_;
       /** \brief Theoretical cluster bottom (lying on the ground plane). */
-      Eigen::Vector3f tbottom_;
+      Eigen::Vector3d tbottom_;
       /** \brief Theoretical cluster center (between ttop_ and tbottom_). */
-      Eigen::Vector3f tcenter_;
+      Eigen::Vector3d tcenter_;
 
       /** \brief Vector containing the minimum coordinates of the cluster. */
-      Eigen::Vector3f min_;
+      Eigen::Vector3d min_;
       /** \brief Vector containing the maximum coordinates of the cluster. */
-      Eigen::Vector3f max_;
+      Eigen::Vector3d max_;
 
       /** \brief Point cloud indices of the cluster points. */
       pcl::PointIndices points_indices_;
@@ -143,7 +143,7 @@ namespace pcl
       PersonCluster (
           const PointCloudPtr& input_cloud,
           const pcl::PointIndices& indices,
-          const Eigen::VectorXf& ground_coeffs,
+          const Eigen::VectorXd& ground_coeffs,
           double sqrt_ground_coeffs,
           bool head_centroid,
           bool vertical = false);
@@ -164,7 +164,7 @@ namespace pcl
        * \return the height of the cluster.
        */
       double
-      updateHeight (const Eigen::VectorXf& ground_coeffs);
+      updateHeight (const Eigen::VectorXd& ground_coeffs);
 
       /**
        * \brief Update the height of the cluster.
@@ -174,7 +174,7 @@ namespace pcl
        * \return the height of the cluster.
        */
       double
-      updateHeight (const Eigen::VectorXf& ground_coeffs, double sqrt_ground_coeffs);
+      updateHeight (const Eigen::VectorXd& ground_coeffs, double sqrt_ground_coeffs);
 
       /**
        * \brief Returns the distance of the cluster from the sensor.
@@ -216,58 +216,58 @@ namespace pcl
        * \brief Returns the theoretical top point.
        * \return the theoretical top point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTTop ();
 
       /**
        * \brief Returns the theoretical bottom point.
        * \return the theoretical bottom point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTBottom ();
 
       /**
        * \brief Returns the theoretical centroid (at half height).
        * \return the theoretical centroid (at half height).
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTCenter ();
 
       /**
        * \brief Returns the top point.
        * \return the top point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTop ();
 
       /**
        * \brief Returns the bottom point.
        * \return the bottom point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getBottom ();
 
       /**
        * \brief Returns the centroid.
        * \return the centroid.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getCenter ();  
 
-      //Eigen::Vector3f& getTMax();
+      //Eigen::Vector3d& getTMax();
 
       /**
        * \brief Returns the point formed by min x, min y and min z.
        * \return the point formed by min x, min y and min z.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getMin ();
 
       /**
        * \brief Returns the point formed by max x, max y and max z.
        * \return the point formed by max x, max y and max z.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getMax ();
 
       /**
@@ -319,7 +319,7 @@ namespace pcl
       void init(
           const PointCloudPtr& input_cloud,
           const pcl::PointIndices& indices,
-          const Eigen::VectorXf& ground_coeffs,
+          const Eigen::VectorXd& ground_coeffs,
           double sqrt_ground_coeffs,
           bool head_centroid,
           bool vertical);

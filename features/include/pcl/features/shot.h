@@ -116,7 +116,7 @@ namespace pcl
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
                         const std::vector<double> &sqr_dists,
-                        Eigen::VectorXf &shot) = 0;
+                        Eigen::VectorXd &shot) = 0;
 
         /** \brief Set the radius used for local reference frame estimation if the frames are not set by the user */
       virtual void
@@ -147,14 +147,14 @@ namespace pcl
                                 const int index,
                                 std::vector<double> &binDistance,
                                 const int nr_bins,
-                                Eigen::VectorXf &shot);
+                                Eigen::VectorXd &shot);
 
       /** \brief Normalize the SHOT histogram.
         * \param[in,out] shot the SHOT histogram
         * \param[in] desc_length the length of the histogram
         */
       void
-      normalizeHistogram (Eigen::VectorXf &shot, int desc_length);
+      normalizeHistogram (Eigen::VectorXd &shot, int desc_length);
 
 
       /** \brief Create a binned distance shape histogram
@@ -170,7 +170,7 @@ namespace pcl
       int nr_shape_bins_;
 
       /** \brief Placeholder for a point's SHOT. */
-      Eigen::VectorXf shot_;
+      Eigen::VectorXd shot_;
 
       /** \brief The radius used for the LRF computation */
       double lrf_radius_;
@@ -264,7 +264,7 @@ namespace pcl
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
                         const std::vector<double> &sqr_dists,
-                        Eigen::VectorXf &shot);
+                        Eigen::VectorXd &shot);
     protected:
       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
@@ -350,7 +350,7 @@ namespace pcl
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
                         const std::vector<double> &sqr_dists,
-                        Eigen::VectorXf &shot);
+                        Eigen::VectorXd &shot);
     protected:
       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
@@ -378,7 +378,7 @@ namespace pcl
                                 std::vector<double> &binDistanceColor,
                                 const int nr_bins_shape,
                                 const int nr_bins_color,
-                                Eigen::VectorXf &shot);
+                                Eigen::VectorXd &shot);
 
       /** \brief Compute shape descriptor. */
       bool b_describe_shape_;

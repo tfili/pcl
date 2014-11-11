@@ -232,7 +232,7 @@ namespace pcl
       double thresh_;
 
       /** \brief The model coefficients */
-      Eigen::VectorXf model_coefficients_;
+      Eigen::VectorXd model_coefficients_;
 
       /** \brief The type of model to use (user given parameter). */
       pcl::SacModel model_type_;

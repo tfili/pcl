@@ -63,7 +63,7 @@ namespace pcl
       typedef boost::uint16_t uint16;
       typedef boost::uint32_t uint32;         
       
-      typedef double float32;
+      typedef float float32;
       typedef double float64;
       
       template <typename ScalarType>
@@ -88,7 +88,7 @@ namespace pcl
       PLY_TYPE_TRAITS(uint8, "uint8", "uchar");
       PLY_TYPE_TRAITS(uint16, "uint16", "ushort");
       PLY_TYPE_TRAITS(uint32, "uint32", "uint");
-      PLY_TYPE_TRAITS(float32, "float32", "double");
+      PLY_TYPE_TRAITS(float32, "float32", "float");
       PLY_TYPE_TRAITS(float64, "float64", "double");
       
 #undef PLY_TYPE_TRAITS

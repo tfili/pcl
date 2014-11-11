@@ -59,7 +59,7 @@ pcl::RandomizedRandomSampleConsensus<PointT>::computeModel (int debug_verbosity_
   double k = 1.0;
 
   std::vector<int> selection;
-  Eigen::VectorXf model_coefficients;
+  Eigen::VectorXd model_coefficients;
   std::set<int> indices_subset;
 
   int n_inliers_count = 0;

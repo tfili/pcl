@@ -210,7 +210,7 @@ namespace pcl
         /** \brief Get the best transformation after RANSAC rejection.
           * \return The homogeneous 4x4 transformation yielding the largest number of inliers.
           */
-        inline Eigen::Matrix4f 
+        inline Eigen::Matrix4d 
         getBestTransformation () { return best_transformation_; };
 
         /** \brief Specify whether the model should be refined internally using the variance of the inliers
@@ -265,7 +265,7 @@ namespace pcl
         PointCloudPtr input_transformed_;
         PointCloudConstPtr target_;
 
-        Eigen::Matrix4f best_transformation_;
+        Eigen::Matrix4d best_transformation_;
 
         bool refine_;
         std::vector<int> inlier_indices_;

@@ -326,7 +326,7 @@ namespace pcl
         "addCoordinateSystem (scale, t, viewport) is deprecated, please use function "
         "addCoordinateSystem (scale, t, id, viewport) with id a unique string identifier.")
         void
-        addCoordinateSystem (double scale, const Eigen::Affine3f& t, int viewport);
+        addCoordinateSystem (double scale, const Eigen::Affine3d& t, int viewport);
 
          /** \brief Adds 3D axes describing a coordinate system to screen at x, y, z, Roll,Pitch,Yaw
            *
@@ -364,7 +364,7 @@ namespace pcl
            */
 
         void
-        addCoordinateSystem (double scale, const Eigen::Affine3f& t, const std::string &id = "reference", int viewport = 0);
+        addCoordinateSystem (double scale, const Eigen::Affine3d& t, const std::string &id = "reference", int viewport = 0);
 
         /** \brief Removes a previously added 3D axes (coordinate system)
           * \param[in] viewport view port where the 3D axes should be removed from (default: all)
@@ -536,7 +536,7 @@ namespace pcl
           * \return false if no shape or cloud with the specified ID was found
           */
         bool
-        updateShapePose (const std::string &id, const Eigen::Affine3f& pose);
+        updateShapePose (const std::string &id, const Eigen::Affine3d& pose);
 
         /** \brief Set the pose of an existing coordinate system.
           *
@@ -548,7 +548,7 @@ namespace pcl
           * \return false if no coordinate system with the specified ID was found
           */
         bool
-        updateCoordinateSystemPose (const std::string &id, const Eigen::Affine3f& pose);
+        updateCoordinateSystemPose (const std::string &id, const Eigen::Affine3d& pose);
 
         /** \brief Set the pose of an existing point cloud.
           *
@@ -560,7 +560,7 @@ namespace pcl
           * \return false if no point cloud with the specified ID was found
           */
         bool
-        updatePointCloudPose (const std::string &id, const Eigen::Affine3f& pose);
+        updatePointCloudPose (const std::string &id, const Eigen::Affine3d& pose);
 
         /** \brief Add a 3d text to the scene
           * \param[in] text the text to add
@@ -785,7 +785,7 @@ namespace pcl
         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
                        const GeometryHandlerConstPtr &geometry_handler,
                        const ColorHandlerConstPtr &color_handler,
-                       const Eigen::Vector4f& sensor_origin,
+                       const Eigen::Vector4d& sensor_origin,
                        const Eigen::Quaternion<double>& sensor_orientation,
                        const std::string &id = "cloud", int viewport = 0);
 
@@ -806,7 +806,7 @@ namespace pcl
         bool
         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
                        const GeometryHandlerConstPtr &geometry_handler,
-                       const Eigen::Vector4f& sensor_origin,
+                       const Eigen::Vector4d& sensor_origin,
                        const Eigen::Quaternion<double>& sensor_orientation,
                        const std::string &id = "cloud", int viewport = 0);
 
@@ -827,7 +827,7 @@ namespace pcl
         bool
         addPointCloud (const pcl::PCLPointCloud2::ConstPtr &cloud,
                        const ColorHandlerConstPtr &color_handler,
-                       const Eigen::Vector4f& sensor_origin,
+                       const Eigen::Vector4d& sensor_origin,
                        const Eigen::Quaternion<double>& sensor_orientation,
                        const std::string &id = "cloud", int viewport = 0);
 
@@ -1395,7 +1395,7 @@ namespace pcl
           * \code
           * // The following are given (or computed using sample consensus techniques)
           * // See SampleConsensusModelCylinder for more information.
-          * // Eigen::Vector3f pt_on_axis, axis_direction;
+          * // Eigen::Vector3d pt_on_axis, axis_direction;
           * // double radius;
           *
           * pcl::ModelCoefficients cylinder_coeff;
@@ -1426,7 +1426,7 @@ namespace pcl
           * \code
           * // The following are given (or computed using sample consensus techniques)
           * // See SampleConsensusModelSphere for more information
-          * // Eigen::Vector3f sphere_center;
+          * // Eigen::Vector3d sphere_center;
           * // double radius;
           *
           * pcl::ModelCoefficients sphere_coeff;
@@ -1453,7 +1453,7 @@ namespace pcl
           * \code
           * // The following are given (or computed using sample consensus techniques)
           * // See SampleConsensusModelLine for more information
-          * // Eigen::Vector3f point_on_line, line_direction;
+          * // Eigen::Vector3d point_on_line, line_direction;
           *
           * pcl::ModelCoefficients line_coeff;
           * line_coeff.values.resize (6);    // We need 6 values
@@ -1481,7 +1481,7 @@ namespace pcl
           * \code
           * // The following are given (or computed using sample consensus techniques)
           * // See SampleConsensusModelPlane for more information
-          * // Eigen::Vector4f plane_parameters;
+          * // Eigen::Vector4d plane_parameters;
           *
           * pcl::ModelCoefficients plane_coeff;
           * plane_coeff.values.resize (4);    // We need 4 values
@@ -1556,7 +1556,7 @@ namespace pcl
           * \param[in] viewport (optional) the id of the new viewport (default: 0)
           */
         bool
-        addCube (const Eigen::Vector3f &translation, const Eigen::Quaternionf &rotation,
+        addCube (const Eigen::Vector3d &translation, const Eigen::Quaterniond &rotation,
                  double width, double height, double depth,
                  const std::string &id = "cube",
                  int viewport = 0);
@@ -1627,7 +1627,7 @@ namespace pcl
         renderViewTesselatedSphere (
             int xres, int yres,
             pcl::PointCloud<pcl::PointXYZ>::CloudVectorType & cloud,
-            std::vector<Eigen::Matrix4f,Eigen::aligned_allocator< Eigen::Matrix4f > > & poses, std::vector<double> & enthropies, int tesselation_level,
+            std::vector<Eigen::Matrix4d,Eigen::aligned_allocator< Eigen::Matrix4d > > & poses, std::vector<double> & enthropies, int tesselation_level,
             double view_angle = 45, double radius_sphere = 1, bool use_vertices = true);
 
 
@@ -1723,7 +1723,7 @@ namespace pcl
           * \param[in] viewport the viewport to modify camera of (0 modifies all cameras)
           */
         void
-        setCameraParameters (const Eigen::Matrix3f &intrinsics, const Eigen::Matrix4f &extrinsics, int viewport = 0);
+        setCameraParameters (const Eigen::Matrix3d &intrinsics, const Eigen::Matrix4d &extrinsics, int viewport = 0);
 
         /** \brief Set the camera parameters by given a full camera data structure.
           * \param[in] camera camera structure containing all the camera parameters.
@@ -1753,7 +1753,7 @@ namespace pcl
 
 
         /** \brief Get the current viewing pose. */
-        Eigen::Affine3f
+        Eigen::Affine3d
         getViewerPose (int viewport = 0);
 
         /** \brief Save the current rendered image to disk, as a PNG screenshot.
@@ -2062,7 +2062,7 @@ namespace pcl
                               const PointCloudColorHandler<PointT> &color_handler,
                               const std::string &id,
                               int viewport,
-                              const Eigen::Vector4f& sensor_origin = Eigen::Vector4f (0, 0, 0, 0),
+                              const Eigen::Vector4d& sensor_origin = Eigen::Vector4d (0, 0, 0, 0),
                               const Eigen::Quaternion<double>& sensor_orientation = Eigen::Quaternion<double> (1, 0, 0 ,0));
 
         /** \brief Internal function which converts the information present in the geometric
@@ -2080,7 +2080,7 @@ namespace pcl
                               const ColorHandlerConstPtr &color_handler,
                               const std::string &id,
                               int viewport,
-                              const Eigen::Vector4f& sensor_origin = Eigen::Vector4f (0, 0, 0, 0),
+                              const Eigen::Vector4d& sensor_origin = Eigen::Vector4d (0, 0, 0, 0),
                               const Eigen::Quaternion<double>& sensor_orientation = Eigen::Quaternion<double> (1, 0, 0 ,0));
 
         /** \brief Internal function which converts the information present in the geometric
@@ -2098,7 +2098,7 @@ namespace pcl
                               const ColorHandlerConstPtr &color_handler,
                               const std::string &id,
                               int viewport,
-                              const Eigen::Vector4f& sensor_origin = Eigen::Vector4f (0, 0, 0, 0),
+                              const Eigen::Vector4d& sensor_origin = Eigen::Vector4d (0, 0, 0, 0),
                               const Eigen::Quaternion<double>& sensor_orientation = Eigen::Quaternion<double> (1, 0, 0 ,0));
 
         /** \brief Internal function which converts the information present in the geometric
@@ -2116,7 +2116,7 @@ namespace pcl
                               const PointCloudColorHandler<PointT> &color_handler,
                               const std::string &id,
                               int viewport,
-                              const Eigen::Vector4f& sensor_origin = Eigen::Vector4f (0, 0, 0, 0),
+                              const Eigen::Vector4d& sensor_origin = Eigen::Vector4d (0, 0, 0, 0),
                               const Eigen::Quaternion<double>& sensor_orientation = Eigen::Quaternion<double> (1, 0, 0 ,0));
 
         /** \brief Allocate a new polydata smartpointer. Internal
@@ -2143,9 +2143,9 @@ namespace pcl
           * \param[out] transformation the camera transformation matrix
           */
         void
-        getTransformationMatrix (const Eigen::Vector4f &origin,
+        getTransformationMatrix (const Eigen::Vector4d &origin,
                                  const Eigen::Quaternion<double> &orientation,
-                                 Eigen::Matrix4f &transformation);
+                                 Eigen::Matrix4d &transformation);
 
         /** \brief Fills a vtkTexture structure from pcl::TexMaterial.
           * \param[in] tex_mat texture material in PCL format
@@ -2167,12 +2167,12 @@ namespace pcl
         
         //There's no reason these conversion functions shouldn't be public and static so others can use them.
       public:
-        /** \brief Convert Eigen::Matrix4f to vtkMatrix4x4
+        /** \brief Convert Eigen::Matrix4d to vtkMatrix4x4
           * \param[in] m the input Eigen matrix
           * \param[out] vtk_matrix the resultant VTK matrix
           */
         static void
-        convertToVtkMatrix (const Eigen::Matrix4f &m,
+        convertToVtkMatrix (const Eigen::Matrix4d &m,
                             vtkSmartPointer<vtkMatrix4x4> &vtk_matrix);
 
         /** \brief Convert origin and orientation to vtkMatrix4x4
@@ -2181,7 +2181,7 @@ namespace pcl
           * \param[out] vtk_matrix the resultant VTK 4x4 matrix
           */
         static void
-        convertToVtkMatrix (const Eigen::Vector4f &origin,
+        convertToVtkMatrix (const Eigen::Vector4d &origin,
                             const Eigen::Quaternion<double> &orientation,
                             vtkSmartPointer<vtkMatrix4x4> &vtk_matrix);
         
@@ -2191,7 +2191,7 @@ namespace pcl
           */
         static void
         convertToEigenMatrix (const vtkSmartPointer<vtkMatrix4x4> &vtk_matrix,
-                              Eigen::Matrix4f &m);
+                              Eigen::Matrix4d &m);
 
     };
   }

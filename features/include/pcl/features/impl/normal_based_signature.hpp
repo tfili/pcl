@@ -64,19 +64,19 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
   for (size_t index_i = 0; index_i < indices_->size (); ++index_i)
   {
     size_t point_i = (*indices_)[index_i];
-    Eigen::MatrixXf s_matrix (N_, M_);
+    Eigen::MatrixXd s_matrix (N_, M_);
 
-    Eigen::Vector4f center_point = input_->points[point_i].getVector4fMap ();
+    Eigen::Vector4d center_point = input_->points[point_i].getVector4dMap ();
 
     for (size_t k = 0; k < N_; ++k)
     {
-      Eigen::VectorXf s_row (M_);
+      Eigen::VectorXd s_row (M_);
 
       for (size_t l = 0; l < M_; ++l)
       {
-        Eigen::Vector4f normal = normals_->points[point_i].getNormalVector4fMap ();
-        Eigen::Vector4f normal_u = Eigen::Vector4f::Zero ();
-        Eigen::Vector4f normal_v = Eigen::Vector4f::Zero ();
+        Eigen::Vector4d normal = normals_->points[point_i].getNormalVector4dMap ();
+        Eigen::Vector4d normal_u = Eigen::Vector4d::Zero ();
+        Eigen::Vector4d normal_v = Eigen::Vector4d::Zero ();
 
         if (fabs (normal.x ()) > 0.0001f)
         {
@@ -101,12 +101,12 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
         }
         normal_v = normal.cross3 (normal_u);
 
-        Eigen::Vector4f zeta_point = 2.0f * static_cast<double> (l + 1) * scale_h_ / static_cast<double> (M_) * 
+        Eigen::Vector4d zeta_point = 2.0f * static_cast<double> (l + 1) * scale_h_ / static_cast<double> (M_) * 
             (cosf (2.0f * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_u + 
              sinf (2.0f * static_cast<double> (M_PI) * static_cast<double> ((k + 1) / N_)) * normal_v);
 
         // Compute normal by using the neighbors
-        Eigen::Vector4f zeta_point_plus_center = zeta_point + center_point;
+        Eigen::Vector4d zeta_point_plus_center = zeta_point + center_point;
         PointT zeta_point_pcl;
         zeta_point_pcl.x = zeta_point_plus_center.x (); zeta_point_pcl.y = zeta_point_plus_center.y (); zeta_point_pcl.z = zeta_point_plus_center.z ();
 
@@ -120,7 +120,7 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
           tree_->nearestKSearch (zeta_point_pcl, 5, k_indices, k_sqr_distances);
         }
         
-        Eigen::Vector4f average_normal = Eigen::Vector4f::Zero ();
+        Eigen::Vector4d average_normal = Eigen::Vector4d::Zero ();
 
         double average_normalization_factor = 0.0f;
 
@@ -129,11 +129,11 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
         {
           if (k_sqr_distances[nn_i] < 1e-7f)
           {
-            average_normal = normals_->points[k_indices[nn_i]].getNormalVector4fMap ();
+            average_normal = normals_->points[k_indices[nn_i]].getNormalVector4dMap ();
             average_normalization_factor = 1.0f;
             break;
           }
-          average_normal += normals_->points[k_indices[nn_i]].getNormalVector4fMap () / k_sqr_distances[nn_i];
+          average_normal += normals_->points[k_indices[nn_i]].getNormalVector4dMap () / k_sqr_distances[nn_i];
           average_normalization_factor += 1.0f / k_sqr_distances[nn_i];
         }
         average_normal /= average_normalization_factor;
@@ -142,7 +142,7 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
       }
 
       // do DCT on the s_matrix row-wise
-      Eigen::VectorXf dct_row (M_);
+      Eigen::VectorXd dct_row (M_);
       for (int m = 0; m < s_row.size (); ++m)
       {
         double Xk = 0.0f;
@@ -155,10 +155,10 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
     }
 
     // do DFT on the s_matrix column-wise
-    Eigen::MatrixXf dft_matrix (N_, M_);
+    Eigen::MatrixXd dft_matrix (N_, M_);
     for (size_t column_i = 0; column_i < M_; ++column_i)
     {
-      Eigen::VectorXf dft_col (N_);
+      Eigen::VectorXd dft_col (N_);
       for (size_t k = 0; k < N_; ++k)
       {
         double Xk_real = 0.0f, Xk_imag = 0.0f;
@@ -172,7 +172,7 @@ pcl::NormalBasedSignatureEstimation<PointT, PointNT, PointFeature>::computeFeatu
       dft_matrix.col (column_i).matrix () = dft_col;
     }
 
-    Eigen::MatrixXf final_matrix = dft_matrix.block (0, 0, N_prime_, M_prime_);
+    Eigen::MatrixXd final_matrix = dft_matrix.block (0, 0, N_prime_, M_prime_);
 
     PointFeature feature_point;
     for (size_t i = 0; i < N_prime_; ++i)

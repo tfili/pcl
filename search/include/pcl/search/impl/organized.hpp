@@ -92,7 +92,7 @@ pcl::search::OrganizedNeighbor<PointT>::radiusSearch (const               PointT
       double dist_y = input_->points[idx].y - query.y;
       double dist_z = input_->points[idx].z - query.z;
       squared_distance = dist_x * dist_x + dist_y * dist_y + dist_z * dist_z;
-      //squared_distance = (input_->points[idx].getVector3fMap () - query.getVector3fMap ()).squaredNorm ();
+      //squared_distance = (input_->points[idx].getVector3dMap () - query.getVector3dMap ()).squaredNorm ();
       if (squared_distance <= squared_radius)
       {
         k_indices.push_back (idx);
@@ -127,10 +127,10 @@ pcl::search::OrganizedNeighbor<PointT>::nearestKSearch (const PointT &query,
     return (0);
   }
 
-  Eigen::Vector3f queryvec (query.x, query.y, query.z);
+  Eigen::Vector3d queryvec (query.x, query.y, query.z);
   // project query point on the image plane
-  //Eigen::Vector3f q = KR_ * query.getVector3fMap () + projection_matrix_.block <3, 1> (0, 3);
-  Eigen::Vector3f q (KR_ * queryvec + projection_matrix_.block <3, 1> (0, 3));
+  //Eigen::Vector3d q = KR_ * query.getVector3dMap () + projection_matrix_.block <3, 1> (0, 3);
+  Eigen::Vector3d q (KR_ * queryvec + projection_matrix_.block <3, 1> (0, 3));
   int xBegin = int(q [0] / q [2] + 0.5f);
   int yBegin = int(q [1] / q [2] + 0.5f);
   int xEnd   = xBegin + 1; // end is the pixel that is not used anymore, like in iterators
@@ -277,9 +277,9 @@ pcl::search::OrganizedNeighbor<PointT>::getProjectedRadiusSearchBox (const Point
                                                                      unsigned &minY,
                                                                      unsigned &maxY) const
 {
-  Eigen::Vector3f queryvec (point.x, point.y, point.z);
-  //Eigen::Vector3f q = KR_ * point.getVector3fMap () + projection_matrix_.block <3, 1> (0, 3);
-  Eigen::Vector3f q (KR_ * queryvec + projection_matrix_.block <3, 1> (0, 3));
+  Eigen::Vector3d queryvec (point.x, point.y, point.z);
+  //Eigen::Vector3d q = KR_ * point.getVector3dMap () + projection_matrix_.block <3, 1> (0, 3);
+  Eigen::Vector3d q (KR_ * queryvec + projection_matrix_.block <3, 1> (0, 3));
 
   double a = squared_radius * KR_KRT_.coeff (8) - q [2] * q [2];
   double b = squared_radius * KR_KRT_.coeff (7) - q [1] * q [2];
@@ -327,7 +327,7 @@ pcl::search::OrganizedNeighbor<PointT>::getProjectedRadiusSearchBox (const Point
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> void
-pcl::search::OrganizedNeighbor<PointT>::computeCameraMatrix (Eigen::Matrix3f& camera_matrix) const
+pcl::search::OrganizedNeighbor<PointT>::computeCameraMatrix (Eigen::Matrix3d& camera_matrix) const
 {
   pcl::getCameraMatrixFromProjectionMatrix (projection_matrix_, camera_matrix);
 }
@@ -381,7 +381,7 @@ pcl::search::OrganizedNeighbor<PointT>::estimateProjectionMatrix ()
 template<typename PointT> bool
 pcl::search::OrganizedNeighbor<PointT>::projectPoint (const PointT& point, pcl::PointXY& q) const
 {
-  Eigen::Vector3f projected = KR_ * point.getVector3fMap () + projection_matrix_.block <3, 1> (0, 3);
+  Eigen::Vector3d projected = KR_ * point.getVector3dMap () + projection_matrix_.block <3, 1> (0, 3);
   q.x = projected [0] / projected [2];
   q.y = projected [1] / projected [2];
   return (projected[2] != 0);

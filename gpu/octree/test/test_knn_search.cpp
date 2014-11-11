@@ -165,7 +165,7 @@ TEST(PCL_OctreeGPU, exactNeighbourSearch)
             PriorityPair gpu;
             gpu.index = downloaded_cur[n];
 
-            double dist = (data.queries[i].getVector3fMap() - data.points[gpu.index].getVector3fMap()).norm();
+            double dist = (data.queries[i].getVector3dMap() - data.points[gpu.index].getVector3dMap()).norm();
             gpu.dist2 = dist * dist;
             pairs_gpu.push_back(gpu);
         }

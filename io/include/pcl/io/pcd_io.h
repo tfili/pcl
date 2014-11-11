@@ -113,7 +113,7 @@ namespace pcl
         */
       int 
       readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &pcd_version,
+                  Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &pcd_version,
                   int &data_type, unsigned int &data_idx, const int offset = 0);
 
 
@@ -161,7 +161,7 @@ namespace pcl
         */
       int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &pcd_version, const int offset = 0);
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &pcd_version, const int offset = 0);
 
       /** \brief Read a point cloud data from a PCD (PCD_V6) and store it into a pcl/PCLPointCloud2.
         * 
@@ -248,8 +248,8 @@ namespace pcl
         */
       std::string
       generateHeaderBinary (const pcl::PCLPointCloud2 &cloud,
-                            const Eigen::Vector4f &origin, 
-                            const Eigen::Quaternionf &orientation);
+                            const Eigen::Vector4d &origin, 
+                            const Eigen::Quaterniond &orientation);
 
       /** \brief Generate the header of a BINARY_COMPRESSED PCD file format
         * \param[in] cloud the point cloud data message
@@ -258,8 +258,8 @@ namespace pcl
         */
       std::string
       generateHeaderBinaryCompressed (const pcl::PCLPointCloud2 &cloud,
-                                      const Eigen::Vector4f &origin, 
-                                      const Eigen::Quaternionf &orientation);
+                                      const Eigen::Vector4d &origin, 
+                                      const Eigen::Quaterniond &orientation);
 
       /** \brief Generate the header of a PCD file format
         * \param[in] cloud the point cloud data message
@@ -268,8 +268,8 @@ namespace pcl
         */
       std::string
       generateHeaderASCII (const pcl::PCLPointCloud2 &cloud,
-                           const Eigen::Vector4f &origin, 
-                           const Eigen::Quaternionf &orientation);
+                           const Eigen::Vector4d &origin, 
+                           const Eigen::Quaterniond &orientation);
 
       /** \brief Generate the header of a PCD file format
         * \param[in] cloud the point cloud data message
@@ -298,8 +298,8 @@ namespace pcl
         */
       int 
       writeASCII (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                  const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                  const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+                  const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                  const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
                   const int precision = 8);
 
       /** \brief Save point cloud data to a PCD file containing n-D points, in BINARY format
@@ -310,8 +310,8 @@ namespace pcl
         */
       int 
       writeBinary (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                   const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                   const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity ());
+                   const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                   const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity ());
 
       /** \brief Save point cloud data to a PCD file containing n-D points, in BINARY_COMPRESSED format
         * \param[in] file_name the output file name
@@ -321,8 +321,8 @@ namespace pcl
         */
       int 
       writeBinaryCompressed (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity ());
+                             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity ());
 
       /** \brief Save point cloud data to a PCD file containing n-D points
         * \param[in] file_name the output file name
@@ -343,8 +343,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false)
       {
         if (binary)
@@ -370,8 +370,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2::ConstPtr &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false)
       {
         return (write (file_name, *cloud, origin, orientation, binary));
@@ -525,7 +525,7 @@ namespace pcl
       */
     inline int 
     loadPCDFile (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                 Eigen::Vector4f &origin, Eigen::Quaternionf &orientation)
+                 Eigen::Vector4d &origin, Eigen::Quaterniond &orientation)
     {
       pcl::PCDReader p;
       int pcd_version;
@@ -561,8 +561,8 @@ namespace pcl
       */
     inline int 
     savePCDFile (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                 const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                 const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+                 const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                 const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
                  const bool binary_mode = false)
     {
       PCDWriter w;

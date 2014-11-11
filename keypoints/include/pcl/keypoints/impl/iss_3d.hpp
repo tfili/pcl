@@ -106,8 +106,8 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::getBoundaryPoints (PointCloudI
 {
   bool* edge_points = new bool [input.size ()];
 
-  Eigen::Vector4f u = Eigen::Vector4f::Zero ();
-  Eigen::Vector4f v = Eigen::Vector4f::Zero ();
+  Eigen::Vector4d u = Eigen::Vector4d::Zero ();
+  Eigen::Vector4d v = Eigen::Vector4d::Zero ();
 
   pcl::BoundaryEstimation<PointInT, NormalT, pcl::Boundary> boundary_estimator;
   boundary_estimator.setInputCloud (input_);
@@ -435,7 +435,7 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloudOut
 #endif
     {
       PointOutT p;
-      p.getVector3fMap () = input_->points[index].getVector3fMap ();
+      p.getVector3dMap () = input_->points[index].getVector3dMap ();
       output.points.push_back(p);
       keypoints_indices_->indices.push_back (index);
     }

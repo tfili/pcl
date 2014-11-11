@@ -1184,8 +1184,8 @@ TEST (CropBox, Filters)
   // Test the PointCloud<PointT> method
   CropBox<PointXYZ> cropBoxFilter (true);
   cropBoxFilter.setInputCloud (input);
-  Eigen::Vector4f min_pt (-1.0f, -1.0f, -1.0f, 1.0f);
-  Eigen::Vector4f max_pt (1.0f, 1.0f, 1.0f, 1.0f);
+  Eigen::Vector4d min_pt (-1.0f, -1.0f, -1.0f, 1.0f);
+  Eigen::Vector4d max_pt (1.0f, 1.0f, 1.0f, 1.0f);
 
   // Cropbox slighlty bigger then bounding box of points
   cropBoxFilter.setMin (min_pt);
@@ -1222,7 +1222,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Translate crop box up by 1
-  cropBoxFilter.setTranslation(Eigen::Vector3f(0, 1, 0));
+  cropBoxFilter.setTranslation(Eigen::Vector3d(0, 1, 0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1244,7 +1244,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Rotate crop box up by 45
-  cropBoxFilter.setRotation (Eigen::Vector3f (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter.setRotation (Eigen::Vector3d (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1380,7 +1380,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Translate crop box up by 1
-  cropBoxFilter2.setTranslation (Eigen::Vector3f(0, 1, 0));
+  cropBoxFilter2.setTranslation (Eigen::Vector3d(0, 1, 0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1402,7 +1402,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Rotate crop box up by 45
-  cropBoxFilter2.setRotation (Eigen::Vector3f (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter2.setRotation (Eigen::Vector3d (0.0f, 45.0f * double (M_PI) / 180.0f, 0.0f));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1700,8 +1700,8 @@ TEST (ConditionalRemovalSetIndices, Filters)
 
   // build a condition which is always true
   ConditionAnd<PointXYZ>::Ptr true_cond (new ConditionAnd<PointXYZ> ());
-  true_cond->addComparison (TfQuadraticXYZComparison<PointXYZ>::ConstPtr (new TfQuadraticXYZComparison<PointXYZ> (ComparisonOps::EQ, Eigen::Matrix3f::Zero (),
-                                                                                                                  Eigen::Vector3f::Zero (), 0)));
+  true_cond->addComparison (TfQuadraticXYZComparison<PointXYZ>::ConstPtr (new TfQuadraticXYZComparison<PointXYZ> (ComparisonOps::EQ, Eigen::Matrix3d::Zero (),
+                                                                                                                  Eigen::Vector3d::Zero (), 0)));
 
   // build the filter
   ConditionalRemoval<PointXYZ> condrem2;
@@ -1933,17 +1933,17 @@ TEST (FrustumCulling, Filters)
   fc.setNearPlaneDistance (0.0);
   fc.setFarPlaneDistance (10);
 
-  Eigen::Matrix4f camera_pose;
+  Eigen::Matrix4d camera_pose;
   camera_pose.setZero ();
 
-  Eigen::Matrix3f R;
-  R = Eigen::AngleAxisf (0 * M_PI / 180, Eigen::Vector3f::UnitX ()) *
-    Eigen::AngleAxisf (0 * M_PI / 180, Eigen::Vector3f::UnitY ()) *
-    Eigen::AngleAxisf (0 * M_PI / 180, Eigen::Vector3f::UnitZ ());
+  Eigen::Matrix3d R;
+  R = Eigen::AngleAxisd (0 * M_PI / 180, Eigen::Vector3d::UnitX ()) *
+    Eigen::AngleAxisd (0 * M_PI / 180, Eigen::Vector3d::UnitY ()) *
+    Eigen::AngleAxisd (0 * M_PI / 180, Eigen::Vector3d::UnitZ ());
 
   camera_pose.block (0, 0, 3, 3) = R;
 
-  Eigen::Vector3f T;
+  Eigen::Vector3d T;
   T (0) = -5; T (1) = 0; T (2) = 0;
   camera_pose.block (0, 3, 3, 1) = T;
   camera_pose (3, 3) = 1;
@@ -2002,11 +2002,11 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
 
   // build a condition representing the inner of a cylinder including the edge located at the origin and pointing along the x-axis.
   ConditionAnd<PointXYZ>::Ptr cyl_cond (new ConditionAnd<PointXYZ> ());
-  Eigen::Matrix3f cylinderMatrix;
+  Eigen::Matrix3d cylinderMatrix;
   cylinderMatrix << 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0;
   double cylinderScalar = -4; //radius² of cylinder
   TfQuadraticXYZComparison<PointXYZ>::Ptr cyl_comp (new TfQuadraticXYZComparison<PointXYZ> (ComparisonOps::LE, cylinderMatrix,
-                                                                                            Eigen::Vector3f::Zero (), cylinderScalar));
+                                                                                            Eigen::Vector3d::Zero (), cylinderScalar));
   cyl_cond->addComparison (cyl_comp);
 
   // build the filter
@@ -2044,9 +2044,9 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
   EXPECT_EQ (input->points[3].z, output.points[3].z);
 
   // change comparison to a simple plane (x < 5)
-  Eigen::Vector3f planeVector;
+  Eigen::Vector3d planeVector;
   planeVector << 1.0, 0.0, 0.0;
-  Eigen::Matrix3f planeMatrix = Eigen::Matrix3f::Zero ();
+  Eigen::Matrix3d planeMatrix = Eigen::Matrix3d::Zero ();
   cyl_comp->setComparisonMatrix (planeMatrix);
   cyl_comp->setComparisonVector (planeVector);
   cyl_comp->setComparisonScalar (-2 * 5.0);

@@ -57,14 +57,14 @@ namespace pcl
         - static_cast<double>(M_PI)));
   }
 
-  inline double 
-  rad2deg (double alpha)
+  inline float 
+  rad2deg (float alpha)
   {
     return (alpha * 57.29578f);
   }
 
-  inline double 
-  deg2rad (double alpha)
+  inline float 
+  deg2rad (float alpha)
   {
     return (alpha * 0.017453293f);
   }

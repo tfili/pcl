@@ -59,7 +59,7 @@ pcl::registration::CorrespondenceRejectorSampleConsensus2D<PointT>::getRemaining
     return;
   }
 
-  if (projection_matrix_ == Eigen::Matrix3f::Identity ())
+  if (projection_matrix_ == Eigen::Matrix3d::Identity ())
   {
     PCL_ERROR ("[pcl::registration::%s::getRemainingCorrespondences] Intrinsic camera parameters not given!\n", getClassName ().c_str ());
     return;
@@ -123,7 +123,7 @@ pcl::registration::CorrespondenceRejectorSampleConsensus2D<PointT>::getRemaining
       remaining_correspondences[i] = original_correspondences[index_to_correspondence[inliers[i]]];
 
     // get best transformation
-    Eigen::VectorXf model_coefficients;
+    Eigen::VectorXd model_coefficients;
     sac.getModelCoefficients (model_coefficients);
     best_transformation_.row (0) = model_coefficients.segment<4>(0);
     best_transformation_.row (1) = model_coefficients.segment<4>(4);

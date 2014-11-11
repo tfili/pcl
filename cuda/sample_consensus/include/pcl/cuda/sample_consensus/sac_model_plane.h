@@ -142,7 +142,7 @@ namespace pcl
             * \param distances the resultant estimated distances
             */
   //      void 
-  //      getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+  //      getDistancesToModel (const Eigen::VectorXd &model_coefficients, std::vector<double> &distances);
 
         /** \brief Select all the points which respect the given model coefficients as inliers.
           * \param model_coefficients the coefficients of a plane model that we need to 
@@ -178,7 +178,7 @@ namespace pcl
             * \param optimized_coefficients the resultant recomputed coefficients after non-linear optimization
             */
   //      void 
-  //      optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients);
+  //      optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients, Eigen::VectorXd &optimized_coefficients);
 
           /*  \brief Create a new point cloud with inliers projected onto the plane model.
             * \param inliers the data inliers that we want to project on the plane model
@@ -187,7 +187,7 @@ namespace pcl
             * \param copy_data_fields set to true if we need to copy the other data fields
             */
   //      void 
-  //      projectPoints (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, PointCloud &projected_points, bool copy_data_fields = true);
+  //      projectPoints (const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients, PointCloud &projected_points, bool copy_data_fields = true);
 
           /*  \brief Verify whether a subset of indices verifies the given plane model coefficients.
             * \param indices the data indices that need to be tested against the plane model
@@ -195,7 +195,7 @@ namespace pcl
             * \param threshold a maximum admissible distance threshold for determining the inliers from the outliers
             */
   //      bool 
-  //      doSamplesVerifyModel (const std::set<int> &indices, const Eigen::VectorXf &model_coefficients, double threshold);
+  //      doSamplesVerifyModel (const std::set<int> &indices, const Eigen::VectorXd &model_coefficients, double threshold);
 
           /*  \brief Return an unique id for this model (SACMODEL_PLANE). */
   //      inline pcl::SacModel getModelType () const { return (SACMODEL_PLANE); }
@@ -205,7 +205,7 @@ namespace pcl
            * \param model_coefficients the set of model coefficients
            */
   //      inline bool 
-  //      isModelValid (const Eigen::VectorXf &model_coefficients)
+  //      isModelValid (const Eigen::VectorXd &model_coefficients)
   //      {
   //        // Needs a valid model coefficients
   //        if (model_coefficients.size () != 4)

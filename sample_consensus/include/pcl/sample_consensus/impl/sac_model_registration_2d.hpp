@@ -61,7 +61,7 @@ pcl::SampleConsensusModelRegistration2D<PointT>::isSampleGood (const std::vector
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::SampleConsensusModelRegistration2D<PointT>::getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances) 
+pcl::SampleConsensusModelRegistration2D<PointT>::getDistancesToModel (const Eigen::VectorXd &model_coefficients, std::vector<double> &distances) 
 {
   PCL_INFO ("[pcl::SampleConsensusModelRegistration2D<PointT>::getDistancesToModel]\n");
   if (indices_->size () != indices_tgt_->size ())
@@ -79,7 +79,7 @@ pcl::SampleConsensusModelRegistration2D<PointT>::getDistancesToModel (const Eige
   distances.resize (indices_->size ());
 
   // Get the 4x4 transformation
-  Eigen::Matrix4f transform;
+  Eigen::Matrix4d transform;
   transform.row (0).matrix () = model_coefficients.segment<4>(0);
   transform.row (1).matrix () = model_coefficients.segment<4>(4);
   transform.row (2).matrix () = model_coefficients.segment<4>(8);
@@ -87,15 +87,15 @@ pcl::SampleConsensusModelRegistration2D<PointT>::getDistancesToModel (const Eige
 
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt_src (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d pt_src (input_->points[(*indices_)[i]].x, 
                             input_->points[(*indices_)[i]].y, 
                             input_->points[(*indices_)[i]].z, 1); 
 
-    Eigen::Vector4f p_tr (transform * pt_src);
+    Eigen::Vector4d p_tr (transform * pt_src);
 
     // Project the point on the image plane
-    Eigen::Vector3f p_tr3 (p_tr[0], p_tr[1], p_tr[2]);
-    Eigen::Vector3f uv (projection_matrix_ * p_tr3);
+    Eigen::Vector3d p_tr3 (p_tr[0], p_tr[1], p_tr[2]);
+    Eigen::Vector3d uv (projection_matrix_ * p_tr3);
 
     if (uv[2] < 0)
       continue;
@@ -113,7 +113,7 @@ pcl::SampleConsensusModelRegistration2D<PointT>::getDistancesToModel (const Eige
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::SampleConsensusModelRegistration2D<PointT>::selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers) 
+pcl::SampleConsensusModelRegistration2D<PointT>::selectWithinDistance (const Eigen::VectorXd &model_coefficients, const double threshold, std::vector<int> &inliers) 
 {
   if (indices_->size () != indices_tgt_->size ())
   {
@@ -133,7 +133,7 @@ pcl::SampleConsensusModelRegistration2D<PointT>::selectWithinDistance (const Eig
   inliers.resize (indices_->size ());
   error_sqr_dists_.resize (indices_->size ());
 
-  Eigen::Matrix4f transform;
+  Eigen::Matrix4d transform;
   transform.row (0).matrix () = model_coefficients.segment<4>(0);
   transform.row (1).matrix () = model_coefficients.segment<4>(4);
   transform.row (2).matrix () = model_coefficients.segment<4>(8);
@@ -141,15 +141,15 @@ pcl::SampleConsensusModelRegistration2D<PointT>::selectWithinDistance (const Eig
 
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt_src (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d pt_src (input_->points[(*indices_)[i]].x, 
                             input_->points[(*indices_)[i]].y, 
                             input_->points[(*indices_)[i]].z, 1); 
 
-    Eigen::Vector4f p_tr (transform * pt_src);
+    Eigen::Vector4d p_tr (transform * pt_src);
 
     // Project the point on the image plane
-    Eigen::Vector3f p_tr3 (p_tr[0], p_tr[1], p_tr[2]);
-    Eigen::Vector3f uv (projection_matrix_ * p_tr3);
+    Eigen::Vector3d p_tr3 (p_tr[0], p_tr[1], p_tr[2]);
+    Eigen::Vector3d uv (projection_matrix_ * p_tr3);
 
     if (uv[2] < 0)
       continue;
@@ -176,7 +176,7 @@ pcl::SampleConsensusModelRegistration2D<PointT>::selectWithinDistance (const Eig
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> int
 pcl::SampleConsensusModelRegistration2D<PointT>::countWithinDistance (
-    const Eigen::VectorXf &model_coefficients, const double threshold)
+    const Eigen::VectorXd &model_coefficients, const double threshold)
 {
   if (indices_->size () != indices_tgt_->size ())
   {
@@ -191,7 +191,7 @@ pcl::SampleConsensusModelRegistration2D<PointT>::countWithinDistance (
 
   double thresh = threshold * threshold;
 
-  Eigen::Matrix4f transform;
+  Eigen::Matrix4d transform;
   transform.row (0).matrix () = model_coefficients.segment<4>(0);
   transform.row (1).matrix () = model_coefficients.segment<4>(4);
   transform.row (2).matrix () = model_coefficients.segment<4>(8);
@@ -201,15 +201,15 @@ pcl::SampleConsensusModelRegistration2D<PointT>::countWithinDistance (
   
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt_src (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d pt_src (input_->points[(*indices_)[i]].x, 
                             input_->points[(*indices_)[i]].y, 
                             input_->points[(*indices_)[i]].z, 1); 
 
-    Eigen::Vector4f p_tr (transform * pt_src);
+    Eigen::Vector4d p_tr (transform * pt_src);
 
     // Project the point on the image plane
-    Eigen::Vector3f p_tr3 (p_tr[0], p_tr[1], p_tr[2]);
-    Eigen::Vector3f uv (projection_matrix_ * p_tr3);
+    Eigen::Vector3d p_tr3 (p_tr[0], p_tr[1], p_tr[2]);
+    Eigen::Vector3d uv (projection_matrix_ * p_tr3);
 
     if (uv[2] < 0)
       continue;

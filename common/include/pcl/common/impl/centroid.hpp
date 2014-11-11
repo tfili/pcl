@@ -599,7 +599,7 @@ pcl::computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
   }
 
   accu /= static_cast<Scalar> (point_count);
-  //Eigen::Vector3f vec = accu.tail<3> ();
+  //Eigen::Vector3d vec = accu.tail<3> ();
   //centroid.head<3> () = vec;//= accu.tail<3> ();
   //centroid.head<3> () = accu.tail<3> ();    -- does not compile with Clang 3.0
   centroid[0] = accu[6]; centroid[1] = accu[7]; centroid[2] = accu[8];
@@ -764,7 +764,7 @@ pcl::demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
     cloud_out (1, i) = cloud_in[i].y - centroid[1];
     cloud_out (2, i) = cloud_in[i].z - centroid[2];
     // One column at a time
-    //cloud_out.block<4, 1> (0, i) = cloud_in.points[i].getVector4fMap () - centroid;
+    //cloud_out.block<4, 1> (0, i) = cloud_in.points[i].getVector4dMap () - centroid;
   }
 
   // Make sure we zero the 4th dimension out (1 row, N columns)
@@ -788,7 +788,7 @@ pcl::demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
     cloud_out (1, i) = cloud_in[indices[i]].y - centroid[1];
     cloud_out (2, i) = cloud_in[indices[i]].z - centroid[2];
     // One column at a time
-    //cloud_out.block<4, 1> (0, i) = cloud_in.points[indices[i]].getVector4fMap () - centroid;
+    //cloud_out.block<4, 1> (0, i) = cloud_in.points[indices[i]].getVector4dMap () - centroid;
   }
 
   // Make sure we zero the 4th dimension out (1 row, N columns)

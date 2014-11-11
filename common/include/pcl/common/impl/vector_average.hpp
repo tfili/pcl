@@ -140,27 +140,27 @@ namespace pcl
   // Special cases for real=double & dimension=3 -> Partial specialization does not work with class templates. :( //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////
-  // double //
+  // float //
   ///////////
   template <>
-  inline void VectorAverage<double, 3>::doPCA(Eigen::Matrix<double, 3, 1>& eigen_values, Eigen::Matrix<double, 3, 1>& eigen_vector1,
-                                            Eigen::Matrix<double, 3, 1>& eigen_vector2, Eigen::Matrix<double, 3, 1>& eigen_vector3) const
+  inline void VectorAverage<float, 3>::doPCA(Eigen::Matrix<float, 3, 1>& eigen_values, Eigen::Matrix<float, 3, 1>& eigen_vector1,
+                                            Eigen::Matrix<float, 3, 1>& eigen_vector2, Eigen::Matrix<float, 3, 1>& eigen_vector3) const
   {
     //cout << "Using specialized 3x3 version of doPCA!\n";
-    Eigen::Matrix<double, 3, 3> eigen_vectors;
+    Eigen::Matrix<float, 3, 3> eigen_vectors;
     eigen33(covariance_, eigen_vectors, eigen_values);
     eigen_vector1 = eigen_vectors.col(0);
     eigen_vector2 = eigen_vectors.col(1);
     eigen_vector3 = eigen_vectors.col(2);
   }
   template <>
-  inline void VectorAverage<double, 3>::doPCA(Eigen::Matrix<double, 3, 1>& eigen_values) const
+  inline void VectorAverage<float, 3>::doPCA(Eigen::Matrix<float, 3, 1>& eigen_values) const
   {
     //cout << "Using specialized 3x3 version of doPCA!\n";
     computeRoots (covariance_, eigen_values);
   }
   template <>
-  inline void VectorAverage<double, 3>::getEigenVector1(Eigen::Matrix<double, 3, 1>& eigen_vector1) const
+  inline void VectorAverage<float, 3>::getEigenVector1(Eigen::Matrix<float, 3, 1>& eigen_vector1) const
   {
     //cout << "Using specialized 3x3 version of doPCA!\n";
     Eigen::Vector3f::Scalar eigen_value;

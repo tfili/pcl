@@ -86,7 +86,7 @@ RangeImage::createLookupTables ()
 /////////////////////////////////////////////////////////////////////////
 void 
 RangeImage::getCoordinateFrameTransformation (RangeImage::CoordinateFrame coordinate_frame,
-                                             Eigen::Affine3f& transformation)
+                                             Eigen::Affine3d& transformation)
 {
   switch (coordinate_frame)
   {
@@ -106,8 +106,8 @@ RangeImage::getCoordinateFrameTransformation (RangeImage::CoordinateFrame coordi
 /////////////////////////////////////////////////////////////////////////
 RangeImage::RangeImage () : 
   RangeImage::BaseClass (), 
-  to_range_image_system_ (Eigen::Affine3f::Identity ()),
-  to_world_system_ (Eigen::Affine3f::Identity ()),
+  to_range_image_system_ (Eigen::Affine3d::Identity ()),
+  to_world_system_ (Eigen::Affine3d::Identity ()),
   angular_resolution_x_ (0), angular_resolution_y_ (0),
   angular_resolution_x_reciprocal_ (0), angular_resolution_y_reciprocal_ (0),
   image_offset_x_ (0), image_offset_y_ (0),
@@ -139,7 +139,7 @@ RangeImage::reset ()
 
 /////////////////////////////////////////////////////////////////////////
 void
-RangeImage::createEmpty (double angular_resolution, const Eigen::Affine3f& sensor_pose,
+RangeImage::createEmpty (double angular_resolution, const Eigen::Affine3d& sensor_pose,
                          RangeImage::CoordinateFrame coordinate_frame, double angle_width, double angle_height)
 {
   createEmpty (angular_resolution, angular_resolution, sensor_pose, coordinate_frame, angle_width, angle_height);
@@ -147,7 +147,7 @@ RangeImage::createEmpty (double angular_resolution, const Eigen::Affine3f& senso
 
 /////////////////////////////////////////////////////////////////////////
 void
-RangeImage::createEmpty (double angular_resolution_x, double angular_resolution_y, const Eigen::Affine3f& sensor_pose,
+RangeImage::createEmpty (double angular_resolution_x, double angular_resolution_y, const Eigen::Affine3d& sensor_pose,
                          RangeImage::CoordinateFrame coordinate_frame, double angle_width, double angle_height)
 {
   setAngularResolution(angular_resolution_x, angular_resolution_y);
@@ -464,7 +464,7 @@ RangeImage::change3dPointsToLocalCoordinateFrame ()
 
 /////////////////////////////////////////////////////////////////////////
 double* 
-RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int pixel_size, double world_size) const
+RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3d& pose, int pixel_size, double world_size) const
 {
   double max_dist = 0.5f*world_size,
         cell_size = world_size/double (pixel_size);
@@ -472,13 +472,13 @@ RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int p
         world2cell_offset = 0.5f*double (pixel_size)-0.5f;
   double cell2world_factor = cell_size,
         cell2world_offset = -max_dist + 0.5f*cell_size;
-  Eigen::Affine3f inverse_pose = pose.inverse (Eigen::Isometry);
+  Eigen::Affine3d inverse_pose = pose.inverse (Eigen::Isometry);
   
   int no_of_pixels = pixel_size*pixel_size;
   double* surface_patch = new double[no_of_pixels];
   SET_ARRAY (surface_patch, -std::numeric_limits<double>::infinity (), no_of_pixels);
   
-  Eigen::Vector3f position = inverse_pose.translation ();
+  Eigen::Vector3d position = inverse_pose.translation ();
   int middle_x, middle_y;
   getImagePoint (position, middle_x, middle_y);
   int min_search_radius = 2;
@@ -492,7 +492,7 @@ RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int p
     {
       if (i<=2*radius) ++x; else if (i<=4*radius) ++y; else if (i<=6*radius) --x; else --y;
 
-      Eigen::Vector3f point1, point2, point3;
+      Eigen::Vector3d point1, point2, point3;
       if (!isValid (x,y) || !isValid (x+1,y+1))
         continue;
       getPoint (x, y, point1);
@@ -559,7 +559,7 @@ RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int p
         //   we test if it is in the original triangle (in 2D).
         //   If this is the case, we calculate the actual point on the 3D triangle, thereby interpolating the result
         //   See http://www.blackpawn.com/texts/pointinpoly/default.html
-        Eigen::Vector2f cell1 (cell1_x, cell1_y),
+        Eigen::Vector2d cell1 (cell1_x, cell1_y),
                         cell2 (cell2_x, cell2_y),
                         cell3 (cell3_x, cell3_y),
                         v0 = cell3 - cell1,
@@ -573,7 +573,7 @@ RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int p
         {
           for (int cell_y=min_cell_y; cell_y<=max_cell_y; ++cell_y)
           {
-            Eigen::Vector2f current_cell (cell_x, cell_y),
+            Eigen::Vector2d current_cell (cell_x, cell_y),
                             v2 = current_cell - cell1;
             double dot02 = v0.dot (v2),
                   dot12 = v1.dot (v2),
@@ -620,7 +620,7 @@ RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int p
           {
             double cell_pos_x = static_cast<double> (cell_x) + 0.6f * static_cast<double> (cell_x - cell2_x),
                   cell_pos_y = static_cast<double> (cell_y) + 0.6f * static_cast<double> (cell_y - cell2_y);
-            Eigen::Vector3f fake_point (cell2world_factor* (cell_pos_x)+cell2world_offset,
+            Eigen::Vector3d fake_point (cell2world_factor* (cell_pos_x)+cell2world_offset,
                                         cell2world_factor*cell_pos_y+cell2world_offset, neighbor_value);
             fake_point = inverse_pose*fake_point;
             double range_difference = getRangeDifference (fake_point);
@@ -656,22 +656,22 @@ RangeImage::getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int p
 }
 
 /////////////////////////////////////////////////////////////////////////
-double* RangeImage::getInterpolatedSurfaceProjection (const Eigen::Vector3f& point, int pixel_size,
+double* RangeImage::getInterpolatedSurfaceProjection (const Eigen::Vector3d& point, int pixel_size,
                                                      double world_size) const
 {
-  Eigen::Affine3f pose = getTransformationToViewerCoordinateFrame (point);
+  Eigen::Affine3d pose = getTransformationToViewerCoordinateFrame (point);
   return (getInterpolatedSurfaceProjection (pose, pixel_size, world_size));
 }
 
 /////////////////////////////////////////////////////////////////////////
 bool 
-RangeImage::getNormalBasedUprightTransformation (const Eigen::Vector3f& point, double max_dist,
-                                                 Eigen::Affine3f& transformation) const
+RangeImage::getNormalBasedUprightTransformation (const Eigen::Vector3d& point, double max_dist,
+                                                 Eigen::Affine3d& transformation) const
 {
   int x, y;
   getImagePoint (point, x, y);
 
-  Eigen::Vector3f neighbor;
+  Eigen::Vector3d neighbor;
   VectorAverage3f vector_average;
   double max_dist_squared=max_dist*max_dist, max_dist_reciprocal=1.0f/max_dist;
   
@@ -700,10 +700,10 @@ RangeImage::getNormalBasedUprightTransformation (const Eigen::Vector3f& point, d
     }
   }
   
-  Eigen::Vector3f normal, point_on_plane;
+  Eigen::Vector3d normal, point_on_plane;
   if (vector_average.getNoOfSamples () > 10)
   {
-    Eigen::Vector3f eigen_values, eigen_vector2, eigen_vector3;
+    Eigen::Vector3d eigen_values, eigen_vector2, eigen_vector3;
     vector_average.doPCA (eigen_values, normal, eigen_vector2, eigen_vector3);
     if (normal.dot ( (vector_average.getMean ()-getSensorPos ()).normalized ()) < 0.0f)
       normal *= -1.0f;
@@ -714,7 +714,7 @@ RangeImage::getNormalBasedUprightTransformation (const Eigen::Vector3f& point, d
     if (!getNormalForClosestNeighbors (x, y, 2, point, 15, normal, &point_on_plane, 1))
       return false;
   }
-  getTransformationFromTwoUnitVectorsAndOrigin (Eigen::Vector3f (0.0f, 1.0f, 0.0f),
+  getTransformationFromTwoUnitVectorsAndOrigin (Eigen::Vector3d (0.0f, 1.0f, 0.0f),
                                                 normal, point_on_plane, transformation);
   
   return (true);
@@ -783,7 +783,7 @@ RangeImage::getRangeImageWithSmoothedSurface (int radius, RangeImage& smoothed_r
   int no_of_nearest_neighbors = static_cast<int> (pow (static_cast<double> (radius / step_size + 1), 2.0));
   
   smoothed_range_image = *this;
-  Eigen::Vector3f sensor_pos = getSensorPos ();
+  Eigen::Vector3d sensor_pos = getSensorPos ();
   for (int y=0; y<int (height); ++y)
   {
     for (int x=0; x<int (width); ++x)
@@ -791,13 +791,13 @@ RangeImage::getRangeImageWithSmoothedSurface (int radius, RangeImage& smoothed_r
       PointWithRange& point = smoothed_range_image.getPoint (x, y);
       if (pcl_isinf (point.range))
         continue;
-      Eigen::Vector3f normal, mean, eigen_values;
+      Eigen::Vector3d normal, mean, eigen_values;
       double used_squared_max_distance;
-      getSurfaceInformation (x, y, radius, point.getVector3fMap (), no_of_nearest_neighbors,
+      getSurfaceInformation (x, y, radius, point.getVector3dMap (), no_of_nearest_neighbors,
                              step_size, used_squared_max_distance,
                              normal, mean, eigen_values);
       
-      Eigen::Vector3f viewing_direction = (point.getVector3fMap ()-sensor_pos).normalized ();
+      Eigen::Vector3d viewing_direction = (point.getVector3dMap ()-sensor_pos).normalized ();
       double new_range = normal.dot (mean-sensor_pos) / normal.dot (viewing_direction);
       point.range = new_range;
       calculate3DPoint (static_cast<double> (x), static_cast<double> (y), point.range, point);
@@ -868,7 +868,7 @@ RangeImage::extractFarRanges (const pcl::PCLPointCloud2& point_cloud_data,
 
 /////////////////////////////////////////////////////////////////////////
 double
-RangeImage::getOverlap (const RangeImage& other_range_image, const Eigen::Affine3f& relative_transformation,
+RangeImage::getOverlap (const RangeImage& other_range_image, const Eigen::Affine3d& relative_transformation,
                         int search_radius, double max_distance, int pixel_step) const
 {
   int hits_counter=0, valid_points_counter=0;
@@ -885,11 +885,11 @@ RangeImage::getOverlap (const RangeImage& other_range_image, const Eigen::Affine
       if (!pcl_isfinite (point.range))
         continue;
       ++valid_points_counter;
-      Eigen::Vector3f transformed_point = relative_transformation * point.getVector3fMap ();
+      Eigen::Vector3d transformed_point = relative_transformation * point.getVector3dMap ();
       int x,y;
       getImagePoint (transformed_point, x, y);
       double closest_distance = max_distance_squared;
-      Eigen::Vector3f closest_point (0.0f, 0.0f, 0.0f);
+      Eigen::Vector3d closest_point (0.0f, 0.0f, 0.0f);
       bool found_neighbor = false;
       for (int y2=y-pixel_step*search_radius; y2<=y+pixel_step*search_radius; y2+=pixel_step)
       {
@@ -898,11 +898,11 @@ RangeImage::getOverlap (const RangeImage& other_range_image, const Eigen::Affine
           const PointWithRange& neighbor = getPoint (x2, y2);
           if (!pcl_isfinite (neighbor.range))
             continue;
-          double distance = (transformed_point-neighbor.getVector3fMap ()).squaredNorm ();
+          double distance = (transformed_point-neighbor.getVector3dMap ()).squaredNorm ();
           if (distance < closest_distance)
           {
             closest_distance = distance;
-            closest_point = neighbor.getVector3fMap ();
+            closest_point = neighbor.getVector3dMap ();
             found_neighbor = true;
           }
         }

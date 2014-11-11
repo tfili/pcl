@@ -43,7 +43,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 inline double
-pcl::getAngle3D (const Eigen::Vector4f &v1, const Eigen::Vector4f &v2)
+pcl::getAngle3D (const Eigen::Vector4d &v1, const Eigen::Vector4d &v2)
 {
   // Compute the actual angle
   double rad = v1.dot (v2) / sqrt (v1.squaredNorm () * v2.squaredNorm ());
@@ -71,7 +71,7 @@ pcl::getMeanStd (const std::vector<double> &values, double &mean, double &stddev
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> inline void
 pcl::getPointsInBox (const pcl::PointCloud<PointT> &cloud, 
-                     Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt,
+                     Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt,
                      std::vector<int> &indices)
 {
   indices.resize (cloud.points.size ());
@@ -113,7 +113,7 @@ pcl::getPointsInBox (const pcl::PointCloud<PointT> &cloud,
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> inline void
-pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt)
+pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4d &pivot_pt, Eigen::Vector4d &max_pt)
 {
   double max_dist = -FLT_MAX;
   int max_idx = -1;
@@ -124,7 +124,7 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f
   {
     for (size_t i = 0; i < cloud.points.size (); ++i)
     {
-      pcl::Vector4fMapConst pt = cloud.points[i].getVector4fMap ();
+      pcl::Vector4dMapConst pt = cloud.points[i].getVector4dMap ();
       dist = (pivot_pt - pt).norm ();
       if (dist > max_dist)
       {
@@ -141,7 +141,7 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f
       // Check if the point is invalid
       if (!pcl_isfinite (cloud.points[i].x) || !pcl_isfinite (cloud.points[i].y) || !pcl_isfinite (cloud.points[i].z))
         continue;
-      pcl::Vector4fMapConst pt = cloud.points[i].getVector4fMap ();
+      pcl::Vector4dMapConst pt = cloud.points[i].getVector4dMap ();
       dist = (pivot_pt - pt).norm ();
       if (dist > max_dist)
       {
@@ -152,15 +152,15 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f
   }
 
   if(max_idx != -1)
-    max_pt = cloud.points[max_idx].getVector4fMap ();
+    max_pt = cloud.points[max_idx].getVector4dMap ();
   else
-    max_pt = Eigen::Vector4f(std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
+    max_pt = Eigen::Vector4d(std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> inline void
 pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices,
-                     const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt)
+                     const Eigen::Vector4d &pivot_pt, Eigen::Vector4d &max_pt)
 {
   double max_dist = -FLT_MAX;
   int max_idx = -1;
@@ -171,7 +171,7 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int
   {
     for (size_t i = 0; i < indices.size (); ++i)
     {
-      pcl::Vector4fMapConst pt = cloud.points[indices[i]].getVector4fMap ();
+      pcl::Vector4dMapConst pt = cloud.points[indices[i]].getVector4dMap ();
       dist = (pivot_pt - pt).norm ();
       if (dist > max_dist)
       {
@@ -191,7 +191,7 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int
           !pcl_isfinite (cloud.points[indices[i]].z))
         continue;
 
-      pcl::Vector4fMapConst pt = cloud.points[indices[i]].getVector4fMap ();
+      pcl::Vector4dMapConst pt = cloud.points[indices[i]].getVector4dMap ();
       dist = (pivot_pt - pt).norm ();
       if (dist > max_dist)
       {
@@ -202,16 +202,16 @@ pcl::getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int
   }
 
   if(max_idx != -1)
-    max_pt = cloud.points[max_idx].getVector4fMap ();
+    max_pt = cloud.points[max_idx].getVector4dMap ();
   else
-    max_pt = Eigen::Vector4f(std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
+    max_pt = Eigen::Vector4d(std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> inline void
 pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, PointT &min_pt, PointT &max_pt)
 {
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -220,7 +220,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, PointT &min_pt, PointT &
   {
     for (size_t i = 0; i < cloud.points.size (); ++i)
     {
-      pcl::Array4fMapConst pt = cloud.points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -235,7 +235,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, PointT &min_pt, PointT &
           !pcl_isfinite (cloud.points[i].y) || 
           !pcl_isfinite (cloud.points[i].z))
         continue;
-      pcl::Array4fMapConst pt = cloud.points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -246,9 +246,9 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, PointT &min_pt, PointT &
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> inline void
-pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt)
+pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt)
 {
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -257,7 +257,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4f &min_pt,
   {
     for (size_t i = 0; i < cloud.points.size (); ++i)
     {
-      pcl::Array4fMapConst pt = cloud.points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -272,7 +272,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4f &min_pt,
           !pcl_isfinite (cloud.points[i].y) || 
           !pcl_isfinite (cloud.points[i].z))
         continue;
-      pcl::Array4fMapConst pt = cloud.points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -285,9 +285,9 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4f &min_pt,
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> inline void
 pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices &indices,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt)
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt)
 {
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -296,7 +296,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices 
   {
     for (size_t i = 0; i < indices.indices.size (); ++i)
     {
-      pcl::Array4fMapConst pt = cloud.points[indices.indices[i]].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[indices.indices[i]].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -311,7 +311,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices 
           !pcl_isfinite (cloud.points[indices.indices[i]].y) || 
           !pcl_isfinite (cloud.points[indices.indices[i]].z))
         continue;
-      pcl::Array4fMapConst pt = cloud.points[indices.indices[i]].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[indices.indices[i]].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -323,7 +323,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> inline void
 pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt)
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt)
 {
   min_pt.setConstant (FLT_MAX);
   max_pt.setConstant (-FLT_MAX);
@@ -333,7 +333,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &
   {
     for (size_t i = 0; i < indices.size (); ++i)
     {
-      pcl::Array4fMapConst pt = cloud.points[indices[i]].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[indices[i]].getArray4dMap ();
       min_pt = min_pt.array ().min (pt);
       max_pt = max_pt.array ().max (pt);
     }
@@ -348,7 +348,7 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &
           !pcl_isfinite (cloud.points[indices[i]].y) || 
           !pcl_isfinite (cloud.points[indices[i]].z))
         continue;
-      pcl::Array4fMapConst pt = cloud.points[indices[i]].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud.points[indices[i]].getArray4dMap ();
       min_pt = min_pt.array ().min (pt);
       max_pt = max_pt.array ().max (pt);
     }
@@ -359,9 +359,9 @@ pcl::getMinMax3D (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &
 template <typename PointT> inline double 
 pcl::getCircumcircleRadius (const PointT &pa, const PointT &pb, const PointT &pc)
 {
-  Eigen::Vector4f p1 (pa.x, pa.y, pa.z, 0);
-  Eigen::Vector4f p2 (pb.x, pb.y, pb.z, 0);
-  Eigen::Vector4f p3 (pc.x, pc.y, pc.z, 0);
+  Eigen::Vector4d p1 (pa.x, pa.y, pa.z, 0);
+  Eigen::Vector4d p2 (pb.x, pb.y, pb.z, 0);
+  Eigen::Vector4d p3 (pc.x, pc.y, pc.z, 0);
 
   double p2p1 = (p2 - p1).norm (), p3p2 = (p3 - p2).norm (), p1p3 = (p1 - p3).norm ();
   // Calculate the area of the triangle using Heron's formula 
@@ -393,14 +393,14 @@ pcl::calculatePolygonArea (const pcl::PointCloud<PointT> &polygon)
   double area = 0.0f;
   int num_points = polygon.size ();
   int j = 0;
-  Eigen::Vector3f va,vb,res;
+  Eigen::Vector3d va,vb,res;
 
   res(0) = res(1) = res(2) = 0.0f;
   for (int i = 0; i < num_points; ++i) 
   {
     j = (i + 1) % num_points;
-    va = polygon[i].getVector3fMap ();
-    vb = polygon[j].getVector3fMap ();
+    va = polygon[i].getVector3dMap ();
+    vb = polygon[j].getVector3dMap ();
     res += va.cross (vb);
   }
   area = res.norm ();

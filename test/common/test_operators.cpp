@@ -113,7 +113,7 @@ TEST (PointOperators, PointXYZI)
   EXPECT_NEAR (p2.z, 0.1 * p1.z, 1e-4);
   EXPECT_NEAR (p2.intensity, 0.1 * p1.intensity, 1e-4);
   PointXYZI p4 = p1 * 0.1f;
-  EXPECT_EQ_VECTORS (p2.getVector3fMap (), p4.getVector3fMap ());
+  EXPECT_EQ_VECTORS (p2.getVector3dMap (), p4.getVector3dMap ());
   EXPECT_EQ (p2.intensity, p4.intensity);
 }
 
@@ -152,7 +152,7 @@ TEST (PointOperators, PointXYZRGB)
   //EXPECT_EQ (p2.g, static_cast<pcl::uint8_t> (0.1 * p1.g));
   //EXPECT_EQ (p2.b, static_cast<pcl::uint8_t> (0.1 * p1.b));
   PointXYZRGB p4 = p1 * 0.1f;
-  EXPECT_EQ_VECTORS (p2.getVector3fMap (), p4.getVector3fMap ());
+  EXPECT_EQ_VECTORS (p2.getVector3dMap (), p4.getVector3dMap ());
   // Disabled. Doesn't make any sense
   //EXPECT_EQ (p2.r, p4.r);
   //EXPECT_EQ (p2.g, p4.g);

@@ -241,7 +241,7 @@ pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT, BranchContainerT>
       boost::tie (edge, edge_added) = add_edge (u,v,voxel_adjacency_graph);
       
       PointT p_v = voxel_adjacency_graph[v];
-      double dist = (p_v.getVector3fMap () - p_u.getVector3fMap ()).norm ();
+      double dist = (p_v.getVector3dMap () - p_u.getVector3dMap ()).norm ();
       voxel_adjacency_graph[edge] = dist;
       
     }
@@ -257,14 +257,14 @@ pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT, BranchContainerT>
   OctreeKey key;
   this->genOctreeKeyforPoint (point_arg, key);
   // This code follows the method in Octree::PointCloud
-  Eigen::Vector3f sensor(camera_pos.x,
+  Eigen::Vector3d sensor(camera_pos.x,
                          camera_pos.y,
                          camera_pos.z);
   
-  Eigen::Vector3f leaf_centroid(static_cast<double> ((static_cast<double> (key.x) + 0.5f) * this->resolution_ + this->min_x_),
+  Eigen::Vector3d leaf_centroid(static_cast<double> ((static_cast<double> (key.x) + 0.5f) * this->resolution_ + this->min_x_),
                                 static_cast<double> ((static_cast<double> (key.y) + 0.5f) * this->resolution_ + this->min_y_), 
                                 static_cast<double> ((static_cast<double> (key.z) + 0.5f) * this->resolution_ + this->min_z_));
-  Eigen::Vector3f direction = sensor - leaf_centroid;
+  Eigen::Vector3d direction = sensor - leaf_centroid;
   
   double norm = direction.norm ();
   direction.normalize ();
@@ -274,7 +274,7 @@ pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT, BranchContainerT>
   
   OctreeKey prev_key = key;
   // Walk along the line segment with small steps.
-  Eigen::Vector3f p = leaf_centroid;
+  Eigen::Vector3d p = leaf_centroid;
   PointT octree_p;
   for (int i = 0; i < nsteps; ++i)
   {

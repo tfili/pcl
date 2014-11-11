@@ -9,10 +9,10 @@ using namespace pcl;
 #include <iostream>
 using namespace std;
 
-const Eigen::Vector4f subsampling_leaf_size (0.02f, 0.02f, 0.02f, 0.0f);
+const Eigen::Vector4d subsampling_leaf_size (0.02f, 0.02f, 0.02f, 0.0f);
 const double normal_estimation_search_radius = 0.05f;
 
-//const Eigen::Vector4f subsampling_leaf_size (5, 5, 5, 0.0);
+//const Eigen::Vector4d subsampling_leaf_size (5, 5, 5, 0.0);
 //const double normal_estimation_search_radius = 11;
 
 void

@@ -57,7 +57,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::load (const std::string &filename, bool binary
       // read HEADER
       file.read ((char*) &header_, sizeof (Header));
       /* file.read (&header_.resolution, sizeof(Eigen::Array3i));
-      file.read (&header_.volume_size, sizeof(Eigen::Vector3f));
+      file.read (&header_.volume_size, sizeof(Eigen::Vector3d));
       file.read (&header_.volume_element_size, sizeof(int));
       file.read (&header_.weights_element_size, sizeof(int)); */
 
@@ -116,7 +116,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::save (const std::string &filename, bool binary
       // write resolution and size of volume
       file.write ((char*) &header_, sizeof (Header));
       /* file.write ((char*) &header_.resolution, sizeof(Eigen::Vector3i));
-      file.write ((char*) &header_.volume_size, sizeof(Eigen::Vector3f));
+      file.write ((char*) &header_.volume_size, sizeof(Eigen::Vector3d));
       // write  element size
       int volume_element_size = sizeof(VolumeT);
       file.write ((char*) &volume_element_size, sizeof(int));
@@ -193,11 +193,11 @@ pcl::TSDFVolume<VoxelT, WeightT>::convertToTsdfCloud (pcl::PointCloud<pcl::Point
 template <typename VoxelT, typename WeightT> template <typename PointT> void
 pcl::TSDFVolume<VoxelT, WeightT>::getVoxelCoord (const PointT &point, Eigen::Vector3i &coord) const
 {
-  static Eigen::Array3f voxel_size = voxelSize().array();
+  static Eigen::Array3d voxel_size = voxelSize().array();
 
   // point coordinates in world coordinate frame and voxel coordinates
-  Eigen::Array3f point_coord (point.x, point.y, point.z);
-  Eigen::Array3f voxel_coord = (point_coord / voxel_size) - 0.5f; // 0.5f offset due to voxel center vs grid
+  Eigen::Array3d point_coord (point.x, point.y, point.z);
+  Eigen::Array3d voxel_coord = (point_coord / voxel_size) - 0.5f; // 0.5f offset due to voxel center vs grid
   coord(0) = round(voxel_coord(0));
   coord(1) = round(voxel_coord(1));
   coord(2) = round(voxel_coord(2));
@@ -207,13 +207,13 @@ pcl::TSDFVolume<VoxelT, WeightT>::getVoxelCoord (const PointT &point, Eigen::Vec
 /** \brief Retunrs the 3D voxel coordinate and point offset wrt. to the voxel center (in mm) */
 template <typename VoxelT, typename WeightT> template <typename PointT> void
 pcl::TSDFVolume<VoxelT, WeightT>::getVoxelCoordAndOffset (const PointT &point,
-                                                                          Eigen::Vector3i &coord, Eigen::Vector3f &offset) const
+                                                                          Eigen::Vector3i &coord, Eigen::Vector3d &offset) const
 {
-  static Eigen::Array3f voxel_size = voxelSize().array();
+  static Eigen::Array3d voxel_size = voxelSize().array();
 
   // point coordinates in world coordinate frame and voxel coordinates
-  Eigen::Array3f point_coord (point.x, point.y, point.z);
-  Eigen::Array3f voxel_coord = (point_coord / voxel_size) - 0.5f; // 0.5f offset due to voxel center vs grid
+  Eigen::Array3d point_coord (point.x, point.y, point.z);
+  Eigen::Array3d voxel_coord = (point_coord / voxel_size) - 0.5f; // 0.5f offset due to voxel center vs grid
   coord(0) = round(voxel_coord(0));
   coord(1) = round(voxel_coord(1));
   coord(2) = round(voxel_coord(2));
@@ -348,8 +348,8 @@ pcl::TSDFVolume<VoxelT, WeightT>::createFromCloud (const typename pcl::PointClou
 {
   // get depth map from cloud
   double bad_point = std::numeric_limits<double>::quiet_NaN ();
-  // Eigen::MatrixXf depth = Eigen::MatrixXf::Constant(cloud_->height, cloud_->width, bad_point);
-  Eigen::MatrixXf depth (cloud->height, cloud->width);
+  // Eigen::MatrixXd depth = Eigen::MatrixXd::Constant(cloud_->height, cloud_->width, bad_point);
+  Eigen::MatrixXd depth (cloud->height, cloud->width);
 
   // determine max and min value
   double min = 3000.0, max = 0.0;
@@ -387,7 +387,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::createFromCloud (const typename pcl::PointClou
 
   std::cout << "  scaling depth map" << std::endl;
   // scale depth map
-  Eigen::MatrixXf depth_scaled;
+  Eigen::MatrixXd depth_scaled;
   // scaleDepth (depth, depth_scaled, intr);
   // TODO find out what this should do! projection on unit sphere?!
   depth_scaled = depth;
@@ -395,13 +395,13 @@ pcl::TSDFVolume<VoxelT, WeightT>::createFromCloud (const typename pcl::PointClou
   // generate volume
   // std::cout << " generating volume" << std::endl;
   // resizeDefaultSize();
-  Eigen::Vector3f volume_size = volumeSize();
-  Eigen::Vector3f voxel_size = voxelSize();
+  Eigen::Vector3d volume_size = volumeSize();
+  Eigen::Vector3d voxel_size = voxelSize();
 
   double tranc_dist = std::max (DEFAULT_TRANCATION_DISTANCE, 2.1f * voxel_size.maxCoeff());
 
-  Eigen::Matrix3f R_inv_init = Eigen::Matrix3f::Identity();
-  Eigen::Vector3f t_init =  volume_size * 0.5f - Eigen::Vector3f (0, 0, volume_size(2)/2.0f * 1.2f);
+  Eigen::Matrix3d R_inv_init = Eigen::Matrix3d::Identity();
+  Eigen::Vector3d t_init =  volume_size * 0.5f - Eigen::Vector3d (0, 0, volume_size(2)/2.0f * 1.2f);
   // std::cout << "initial pose: R_inv = " << R_inv_init << ", t_init = " << t_init.transpose() << std::endl;
 
   std::cout << "  integrating values" << std::endl;
@@ -410,7 +410,7 @@ pcl::TSDFVolume<VoxelT, WeightT>::createFromCloud (const typename pcl::PointClou
 
 
 /*template <typename VoxelT, typename WeightT> void
-pcl::TSDFVolume<VoxelT, WeightT>::scaleDepth (const Eigen::MatrixXf &depth, Eigen::MatrixXf &depth_scaled, const Intr &intr) const
+pcl::TSDFVolume<VoxelT, WeightT>::scaleDepth (const Eigen::MatrixXd &depth, Eigen::MatrixXd &depth_scaled, const Intr &intr) const
 {
   // function ported from KinFu GPU code
   depth_scaled.resizeLike (depth);
@@ -440,15 +440,15 @@ pcl::TSDFVolume<VoxelT, WeightT>::scaleDepth (const Eigen::MatrixXf &depth, Eige
 
 
 /*template <typename VoxelT, typename WeightT> void
-pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXf &depth_scaled,
+pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXd &depth_scaled,
                                               double tranc_dist,
-                                              const Eigen::Matrix3f &R_inv,
-                                              const Eigen::Vector3f &t,
+                                              const Eigen::Matrix3d &R_inv,
+                                              const Eigen::Vector3d &t,
                                               const Intr &intr)
 {
-  Eigen::Array3f voxel_size = voxelSize();
+  Eigen::Array3d voxel_size = voxelSize();
   Eigen::Array3i volume_res = gridResolution();
-  Eigen::Array3f intr_arr (intr.fx, intr.fy, 1.0f);
+  Eigen::Array3d intr_arr (intr.fx, intr.fy, 1.0f);
   Eigen::Array3i voxel_coord (0,0,0);
 
   // loop over grid in X and Y dimension
@@ -467,15 +467,15 @@ pcl::TSDFVolume<VoxelT, WeightT>::integrateVolume (const Eigen::MatrixXf &depth_
     {
       voxel_coord(2) = 0;
       // points at depth 0, shifted by t
-      Eigen::Vector3f v_g = (voxel_coord.cast<double>() + 0.5f) * voxel_size - t.array();
+      Eigen::Vector3d v_g = (voxel_coord.cast<double>() + 0.5f) * voxel_size - t.array();
       double v_g_part_norm = v_g(0)*v_g(0) + v_g(1)*v_g(1);
 
       // rays in 3d
-      Eigen::Vector3f v = (R_inv * v_g).array() * intr_arr;
+      Eigen::Vector3d v = (R_inv * v_g).array() * intr_arr;
 
       double z_scaled = 0;
 
-      Eigen::Array3f R_inv_z_scaled = R_inv.col(2).array() * voxel_size(2) * intr_arr;
+      Eigen::Array3d R_inv_z_scaled = R_inv.col(2).array() * voxel_size(2) * intr_arr;
 
       double tranc_dist_inv = 1.0f / tranc_dist;
 

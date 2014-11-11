@@ -59,8 +59,8 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
     dps.setDownsamplingSize (0.02f);
     dps.compute_fast (clusters);
     dps.getIndicesClusters (indices);
-    Eigen::Vector4f table_plane_;
-    Eigen::Vector3f normal_plane_ = Eigen::Vector3f (table_plane_[0], table_plane_[1], table_plane_[2]);
+    Eigen::Vector4d table_plane_;
+    Eigen::Vector3d normal_plane_ = Eigen::Vector3d (table_plane_[0], table_plane_[1], table_plane_[2]);
     dps.getTableCoefficients (table_plane_);
 
     vis.removePointCloud ("frame");
@@ -104,7 +104,7 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
       global.getConfidence (conf);
 
       std::string category = categories[0];
-      Eigen::Vector4f centroid;
+      Eigen::Vector4d centroid;
       pcl::compute3DCentroid (*xyz_points, indices[i].indices, centroid);
       for (size_t kk = 0; kk < categories.size (); kk++)
       {

@@ -89,8 +89,8 @@ namespace pcl
         Leaf () : data_indices (), pt_on_surface (), vect_at_grid_pt () {}
 
         std::vector<int> data_indices;
-        Eigen::Vector4f pt_on_surface; 
-        Eigen::Vector3f vect_at_grid_pt;
+        Eigen::Vector4d pt_on_surface; 
+        Eigen::Vector3d vect_at_grid_pt;
       };
 
       typedef boost::unordered_map<int, Leaf, boost::hash<int>, std::equal_to<int>, Eigen::aligned_allocator<int> > HashMap;
@@ -178,13 +178,13 @@ namespace pcl
         return (cell_hash_map_);
       }
 
-      inline const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> >& 
+      inline const std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d> >& 
       getVectorAtDataPoint () const
       {
         return (vector_at_data_point_);
       }
       
-      inline const std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& 
+      inline const std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> >& 
       getSurface () const
       {
         return (surface_);
@@ -243,7 +243,7 @@ namespace pcl
         * \param index the output 3d index
         */
       inline void 
-      getCellIndex (const Eigen::Vector4f &p, Eigen::Vector3i& index) const
+      getCellIndex (const Eigen::Vector4d &p, Eigen::Vector3i& index) const
       {
         for (int i = 0; i < 3; ++i)
           index[i] = static_cast<int> ((p[i] - min_p_(i)) / leaf_size_);
@@ -255,7 +255,7 @@ namespace pcl
         * \param center the resultant cell center
         */
       inline void
-      getCellCenterFromIndex (const Eigen::Vector3i &index, Eigen::Vector4f &center) const
+      getCellCenterFromIndex (const Eigen::Vector3i &index, Eigen::Vector4d &center) const
       {
         for (int i = 0; i < 3; ++i)
           center[i] = 
@@ -269,8 +269,8 @@ namespace pcl
         * \param pts the coordinates of the 8 vertices
         */
       void 
-      getVertexFromCellCenter (const Eigen::Vector4f &cell_center, 
-                               std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > &pts) const;
+      getVertexFromCellCenter (const Eigen::Vector4d &cell_center, 
+                               std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > &pts) const;
 
       /** \brief Given an index (x, y, z) in 3d, translate it into the index 
         * in 1d
@@ -332,7 +332,7 @@ namespace pcl
         * \param projection the resultant point projected
         */
       void
-      getProjection (const Eigen::Vector4f &p, std::vector<int> &pt_union_indices, Eigen::Vector4f &projection);
+      getProjection (const Eigen::Vector4d &p, std::vector<int> &pt_union_indices, Eigen::Vector4d &projection);
 
       /** \brief Given the coordinates of one point, project it onto the surface,
         * return the projected point. Find the plane which fits all the points in
@@ -342,9 +342,9 @@ namespace pcl
         * \param projection the resultant point projected
         */
       void 
-      getProjectionWithPlaneFit (const Eigen::Vector4f &p, 
+      getProjectionWithPlaneFit (const Eigen::Vector4d &p, 
                                  std::vector<int> &pt_union_indices, 
-                                 Eigen::Vector4f &projection);
+                                 Eigen::Vector4d &projection);
 
 
       /** \brief Given the location of a point, get it's vector
@@ -353,8 +353,8 @@ namespace pcl
         * \param vo the resultant vector
         */
       void
-      getVectorAtPoint (const Eigen::Vector4f &p, 
-                        std::vector <int> &pt_union_indices, Eigen::Vector3f &vo);
+      getVectorAtPoint (const Eigen::Vector4d &p, 
+                        std::vector <int> &pt_union_indices, Eigen::Vector3d &vo);
 
       /** \brief Given the location of a point, get it's vector
         * \param p the coordinates of the input point
@@ -364,17 +364,17 @@ namespace pcl
         * \param vo the resultant vector
         */
       void
-      getVectorAtPointKNN (const Eigen::Vector4f &p, 
+      getVectorAtPointKNN (const Eigen::Vector4d &p, 
                            std::vector<int> &k_indices, 
                            std::vector<double> &k_squared_distances,
-                           Eigen::Vector3f &vo);
+                           Eigen::Vector3d &vo);
 
       /** \brief Get the magnitude of the vector by summing up the distance.
         * \param p the coordinate of the input point
         * \param pt_union_indices the union of input data points within the cell and padding cells
         */
       double 
-      getMagAtPoint (const Eigen::Vector4f &p, const std::vector <int> &pt_union_indices);
+      getMagAtPoint (const Eigen::Vector4d &p, const std::vector <int> &pt_union_indices);
 
       /** \brief Get the 1st derivative
         * \param p the coordinate of the input point
@@ -382,7 +382,7 @@ namespace pcl
         * \param pt_union_indices the union of input data points within the cell and padding cells
         */
       double 
-      getD1AtPoint (const Eigen::Vector4f &p, const Eigen::Vector3f &vec, 
+      getD1AtPoint (const Eigen::Vector4d &p, const Eigen::Vector3d &vec, 
                     const std::vector <int> &pt_union_indices);
 
       /** \brief Get the 2nd derivative
@@ -391,7 +391,7 @@ namespace pcl
         * \param pt_union_indices the union of input data points within the cell and padding cells
         */
       double 
-      getD2AtPoint (const Eigen::Vector4f &p, const Eigen::Vector3f &vec, 
+      getD2AtPoint (const Eigen::Vector4d &p, const Eigen::Vector3d &vec, 
                     const std::vector <int> &pt_union_indices);
 
       /** \brief Test whether the edge is intersected by the surface by 
@@ -403,8 +403,8 @@ namespace pcl
         * \param pt_union_indices the union of input data points within the cell and padding cells
         */
       bool 
-      isIntersected (const std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > &end_pts, 
-                     std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > &vect_at_end_pts, 
+      isIntersected (const std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > &end_pts, 
+                     std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d> > &vect_at_end_pts, 
                      std::vector <int> &pt_union_indices);
 
       /** \brief Find point where the edge intersects the surface.
@@ -417,11 +417,11 @@ namespace pcl
         */
       void
       findIntersection (int level, 
-                        const std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > &end_pts, 
-                        const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > &vect_at_end_pts, 
-                        const Eigen::Vector4f &start_pt, 
+                        const std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > &end_pts, 
+                        const std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d> > &vect_at_end_pts, 
+                        const Eigen::Vector4d &start_pt, 
                         std::vector<int> &pt_union_indices,
-                        Eigen::Vector4f &intersection);
+                        Eigen::Vector4d &intersection);
 
       /** \brief Go through all the entries in the hash table and update the
        * cellData. 
@@ -462,7 +462,7 @@ namespace pcl
       HashMap cell_hash_map_;
 
       /** \brief Min and max data points. */
-      Eigen::Vector4f min_p_, max_p_;
+      Eigen::Vector4d min_p_, max_p_;
 
       /** \brief The size of a leaf. */
       double leaf_size_;
@@ -486,10 +486,10 @@ namespace pcl
       PointCloudPtr data_;
 
       /** \brief Store the surface normal(vector) at the each input data point. */
-      std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > vector_at_data_point_;
+      std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d> > vector_at_data_point_;
       
       /** \brief An array of points which lay on the output surface. */
-      std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > surface_;
+      std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > surface_;
 
       /** \brief Bit map which tells if there is any input data point in the cell. */
       boost::dynamic_bitset<> occupied_cell_list_;

@@ -106,13 +106,13 @@ pcl::SACSegmentation<PointT>::segment (PointIndices &inliers, ModelCoefficients 
   sac_->getInliers (inliers.indices);
 
   // Get the model coefficients
-  Eigen::VectorXf coeff;
+  Eigen::VectorXd coeff;
   sac_->getModelCoefficients (coeff);
 
   // If the user needs optimized coefficients
   if (optimize_coefficients_)
   {
-    Eigen::VectorXf coeff_refined;
+    Eigen::VectorXd coeff_refined;
     model_->optimizeModelCoefficients (inliers.indices, coeff, coeff_refined);
     model_coefficients.values.resize (coeff_refined.size ());
     memcpy (&model_coefficients.values[0], &coeff_refined[0], coeff_refined.size () * sizeof (double));
@@ -210,7 +210,7 @@ pcl::SACSegmentation<PointT>::initSACModel (const int model_type)
       PCL_DEBUG ("[pcl::%s::initSACModel] Using a model of type: SACMODEL_PARALLEL_LINE\n", getClassName ().c_str ());
       model_.reset (new SampleConsensusModelParallelLine<PointT> (input_, *indices_, random_));
       typename SampleConsensusModelParallelLine<PointT>::Ptr model_parallel = boost::static_pointer_cast<SampleConsensusModelParallelLine<PointT> > (model_);
-      if (axis_ != Eigen::Vector3f::Zero () && model_parallel->getAxis () != axis_)
+      if (axis_ != Eigen::Vector3d::Zero () && model_parallel->getAxis () != axis_)
       {
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting the axis to %f, %f, %f\n", getClassName ().c_str (), axis_[0], axis_[1], axis_[2]);
         model_parallel->setAxis (axis_);
@@ -227,7 +227,7 @@ pcl::SACSegmentation<PointT>::initSACModel (const int model_type)
       PCL_DEBUG ("[pcl::%s::initSACModel] Using a model of type: SACMODEL_PERPENDICULAR_PLANE\n", getClassName ().c_str ());
       model_.reset (new SampleConsensusModelPerpendicularPlane<PointT> (input_, *indices_, random_));
       typename SampleConsensusModelPerpendicularPlane<PointT>::Ptr model_perpendicular = boost::static_pointer_cast<SampleConsensusModelPerpendicularPlane<PointT> > (model_);
-      if (axis_ != Eigen::Vector3f::Zero () && model_perpendicular->getAxis () != axis_)
+      if (axis_ != Eigen::Vector3d::Zero () && model_perpendicular->getAxis () != axis_)
       {
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting the axis to %f, %f, %f\n", getClassName ().c_str (), axis_[0], axis_[1], axis_[2]);
         model_perpendicular->setAxis (axis_);
@@ -244,7 +244,7 @@ pcl::SACSegmentation<PointT>::initSACModel (const int model_type)
       PCL_DEBUG ("[pcl::%s::initSACModel] Using a model of type: SACMODEL_PARALLEL_PLANE\n", getClassName ().c_str ());
       model_.reset (new SampleConsensusModelParallelPlane<PointT> (input_, *indices_, random_));
       typename SampleConsensusModelParallelPlane<PointT>::Ptr model_parallel = boost::static_pointer_cast<SampleConsensusModelParallelPlane<PointT> > (model_);
-      if (axis_ != Eigen::Vector3f::Zero () && model_parallel->getAxis () != axis_)
+      if (axis_ != Eigen::Vector3d::Zero () && model_parallel->getAxis () != axis_)
       {
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting the axis to %f, %f, %f\n", getClassName ().c_str (), axis_[0], axis_[1], axis_[2]);
         model_parallel->setAxis (axis_);
@@ -379,7 +379,7 @@ pcl::SACSegmentationFromNormals<PointT, PointNT>::initSACModel (const int model_
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting normal distance weight to %f\n", getClassName ().c_str (), distance_weight_);
         model_cylinder->setNormalDistanceWeight (distance_weight_);
       }
-      if (axis_ != Eigen::Vector3f::Zero () && model_cylinder->getAxis () != axis_)
+      if (axis_ != Eigen::Vector3d::Zero () && model_cylinder->getAxis () != axis_)
       {
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting the axis to %f, %f, %f\n", getClassName ().c_str (), axis_[0], axis_[1], axis_[2]);
         model_cylinder->setAxis (axis_);
@@ -422,7 +422,7 @@ pcl::SACSegmentationFromNormals<PointT, PointNT>::initSACModel (const int model_
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting the distance to origin to %f\n", getClassName ().c_str (), distance_from_origin_);
         model_normals->setDistanceFromOrigin (distance_from_origin_);
       }
-      if (axis_ != Eigen::Vector3f::Zero () && model_normals->getAxis () != axis_)
+      if (axis_ != Eigen::Vector3d::Zero () && model_normals->getAxis () != axis_)
       {
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting the axis to %f, %f, %f\n", getClassName ().c_str (), axis_[0], axis_[1], axis_[2]);
         model_normals->setAxis (axis_);
@@ -455,7 +455,7 @@ pcl::SACSegmentationFromNormals<PointT, PointNT>::initSACModel (const int model_
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting normal distance weight to %f\n", getClassName ().c_str (), distance_weight_);
         model_cone->setNormalDistanceWeight (distance_weight_);
       }
-      if (axis_ != Eigen::Vector3f::Zero () && model_cone->getAxis () != axis_)
+      if (axis_ != Eigen::Vector3d::Zero () && model_cone->getAxis () != axis_)
       {
         PCL_DEBUG ("[pcl::%s::initSACModel] Setting the axis to %f, %f, %f\n", getClassName ().c_str (), axis_[0], axis_[1], axis_[2]);
         model_cone->setAxis (axis_);

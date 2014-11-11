@@ -63,8 +63,8 @@ struct pcl::StereoGrabberBase::StereoGrabberImpl
   TimeTrigger time_trigger_;
 
   pcl::PCLPointCloud2 next_cloud_;
-  Eigen::Vector4f origin_;
-  Eigen::Quaternionf orientation_;
+  Eigen::Vector4d origin_;
+  Eigen::Quaterniond orientation_;
   bool valid_;
 };
 
@@ -79,7 +79,7 @@ pcl::StereoGrabberBase::StereoGrabberImpl::StereoGrabberImpl (pcl::StereoGrabber
   , running_ (false)
   , pair_files_ ()
   , pair_iterator_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&StereoGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&StereoGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -100,7 +100,7 @@ pcl::StereoGrabberBase::StereoGrabberImpl::StereoGrabberImpl (pcl::StereoGrabber
   , running_ (false)
   , pair_files_ ()
   , pair_iterator_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&StereoGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&StereoGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()

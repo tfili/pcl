@@ -56,10 +56,10 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
   int indices_count = 0;
   int removed_indices_count = 0;
 
-  Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-  Eigen::Affine3f inverse_transform = Eigen::Affine3f::Identity();
+  Eigen::Affine3d transform = Eigen::Affine3d::Identity();
+  Eigen::Affine3d inverse_transform = Eigen::Affine3d::Identity();
 
-  if (rotation_ != Eigen::Vector3f::Zero ())
+  if (rotation_ != Eigen::Vector3d::Zero ())
   {
     pcl::getTransformation (0, 0, 0,
                             rotation_ (0), rotation_ (1), rotation_ (2),
@@ -68,7 +68,7 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
   }
 
   //PointXYZ local_pt;
-  Eigen::Vector3f local_pt (Eigen::Vector3f::Zero ());
+  Eigen::Vector3d local_pt (Eigen::Vector3d::Zero ());
 
   for (size_t index = 0; index < indices_->size (); ++index)
   {
@@ -87,7 +87,7 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     if (!(transform_.matrix().isIdentity()))
       local_pt = transform_ * local_pt;
 
-    if (translation_ != Eigen::Vector3f::Zero ())
+    if (translation_ != Eigen::Vector3d::Zero ())
     {
       local_pt.x () = local_pt.x () - translation_ (0);
       local_pt.y () = local_pt.y () - translation_ (1);
@@ -142,10 +142,10 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (std::vector<int> &indices)
   int indices_count = 0;
   int removed_indices_count = 0;
 
-  Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-  Eigen::Affine3f inverse_transform = Eigen::Affine3f::Identity();
+  Eigen::Affine3d transform = Eigen::Affine3d::Identity();
+  Eigen::Affine3d inverse_transform = Eigen::Affine3d::Identity();
 
-  if (rotation_ != Eigen::Vector3f::Zero ())
+  if (rotation_ != Eigen::Vector3d::Zero ())
   {
     pcl::getTransformation (0, 0, 0,
                             rotation_ (0), rotation_ (1), rotation_ (2),
@@ -154,7 +154,7 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (std::vector<int> &indices)
   }
 
   //PointXYZ local_pt;
-  Eigen::Vector3f local_pt (Eigen::Vector3f::Zero ());
+  Eigen::Vector3d local_pt (Eigen::Vector3d::Zero ());
 
   for (size_t index = 0; index < indices_->size (); index++)
   {
@@ -167,7 +167,7 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (std::vector<int> &indices)
     if (!(transform_.matrix().isIdentity()))
       local_pt = transform_ * local_pt;
 
-    if (translation_ != Eigen::Vector3f::Zero ())
+    if (translation_ != Eigen::Vector3d::Zero ())
     {
       local_pt.x () -= translation_ (0);
       local_pt.y () -= translation_ (1);

@@ -72,19 +72,19 @@ pcl::PPFRGBEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudO
       if (i != j)
       {
         if (pcl::computeRGBPairFeatures
-            (input_->points[i].getVector4fMap (), normals_->points[i].getNormalVector4fMap (), input_->points[i].getRGBVector4i (),
-             input_->points[j].getVector4fMap (), normals_->points[j].getNormalVector4fMap (), input_->points[j].getRGBVector4i (),
+            (input_->points[i].getVector4dMap (), normals_->points[i].getNormalVector4dMap (), input_->points[i].getRGBVector4i (),
+             input_->points[j].getVector4dMap (), normals_->points[j].getNormalVector4dMap (), input_->points[j].getRGBVector4i (),
              p.f1, p.f2, p.f3, p.f4, p.r_ratio, p.g_ratio, p.b_ratio))
         {
           // Calculate alpha_m angle
-          Eigen::Vector3f model_reference_point = input_->points[i].getVector3fMap (),
-              model_reference_normal = normals_->points[i].getNormalVector3fMap (),
-              model_point = input_->points[j].getVector3fMap ();
-          Eigen::AngleAxisf rotation_mg (acosf (model_reference_normal.dot (Eigen::Vector3f::UnitX ())),
-                                         model_reference_normal.cross (Eigen::Vector3f::UnitX ()).normalized ());
-          Eigen::Affine3f transform_mg = Eigen::Translation3f ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
+          Eigen::Vector3d model_reference_point = input_->points[i].getVector3dMap (),
+              model_reference_normal = normals_->points[i].getNormalVector3dMap (),
+              model_point = input_->points[j].getVector3dMap ();
+          Eigen::AngleAxisd rotation_mg (acosf (model_reference_normal.dot (Eigen::Vector3d::UnitX ())),
+                                         model_reference_normal.cross (Eigen::Vector3d::UnitX ()).normalized ());
+          Eigen::Affine3d transform_mg = Eigen::Translation3d ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
 
-          Eigen::Vector3f model_point_transformed = transform_mg * model_point;
+          Eigen::Vector3d model_point_transformed = transform_mg * model_point;
           double angle = atan2f ( -model_point_transformed(2), model_point_transformed(1));
           if (sin (angle) * model_point_transformed(2) < 0.0f)
             angle *= (-1);
@@ -142,8 +142,8 @@ pcl::PPFRGBRegionEstimation<PointInT, PointNT, PointOutT>::computeFeature (Point
       {
         double f1, f2, f3, f4, r_ratio, g_ratio, b_ratio;
         if (pcl::computeRGBPairFeatures
-            (input_->points[i].getVector4fMap (), normals_->points[i].getNormalVector4fMap (), input_->points[i].getRGBVector4i (),
-             input_->points[j].getVector4fMap (), normals_->points[j].getNormalVector4fMap (), input_->points[j].getRGBVector4i (),
+            (input_->points[i].getVector4dMap (), normals_->points[i].getNormalVector4dMap (), input_->points[i].getRGBVector4i (),
+             input_->points[j].getVector4dMap (), normals_->points[j].getNormalVector4dMap (), input_->points[j].getRGBVector4i (),
              f1, f2, f3, f4, r_ratio, g_ratio, b_ratio))
         {
           average_feature_nn.f1 += f1;

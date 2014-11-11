@@ -152,9 +152,9 @@ namespace pcl
           void
           getNormal (Normal &normal_arg) const;
 
-          Eigen::Vector3f xyz_;
-          Eigen::Vector3f rgb_;
-          Eigen::Vector4f normal_;
+          Eigen::Vector3d xyz_;
+          Eigen::Vector3d rgb_;
+          Eigen::Vector4d normal_;
           double curvature_;
           double distance_;
           int idx_;
@@ -448,15 +448,15 @@ namespace pcl
           getLabel () const 
           { return label_; }
 
-          Eigen::Vector4f 
+          Eigen::Vector4d 
           getNormal () const 
           { return centroid_.normal_; }
 
-          Eigen::Vector3f 
+          Eigen::Vector3d 
           getRGB () const 
           { return centroid_.rgb_; }
 
-          Eigen::Vector3f
+          Eigen::Vector3d
           getXYZ () const 
           { return centroid_.xyz_;}
 

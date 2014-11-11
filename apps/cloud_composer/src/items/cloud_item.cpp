@@ -9,8 +9,8 @@
 
 pcl::cloud_composer::CloudItem::CloudItem (QString name,
                                            pcl::PCLPointCloud2::Ptr cloud_ptr,
-                                           const Eigen::Vector4f& origin, 
-                                           const Eigen::Quaternionf& orientation,
+                                           const Eigen::Vector4d& origin, 
+                                           const Eigen::Quaterniond& orientation,
                                            bool make_templated_cloud)
   : CloudComposerItem (name)
   , origin_ (origin)
@@ -57,7 +57,7 @@ pcl::cloud_composer::CloudItem*
 pcl::cloud_composer::CloudItem::clone () const
 {
   pcl::PCLPointCloud2::Ptr cloud_copy (new pcl::PCLPointCloud2 (*cloud_blob_ptr_));
-  //Vector4f and Quaternionf do deep copies using constructor
+  //Vector4d and Quaterniond do deep copies using constructor
   CloudItem* new_item = new CloudItem (this->text (), cloud_copy, origin_,orientation_);
   
   PropertiesModel* new_item_properties = new_item->getPropertiesModel ();

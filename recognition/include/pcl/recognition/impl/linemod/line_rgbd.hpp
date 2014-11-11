@@ -818,7 +818,7 @@ pcl::LineRGBD<PointXYZT, PointRGBT>::removeOverlappingDetections ()
 {
   // compute overlap between each detection
   const size_t nr_detections = detections_.size ();
-  Eigen::MatrixXf overlaps (nr_detections, nr_detections);
+  Eigen::MatrixXd overlaps (nr_detections, nr_detections);
   for (size_t detection_index_1 = 0; detection_index_1 < nr_detections; ++detection_index_1)
   {
     for (size_t detection_index_2 = detection_index_1+1; detection_index_2 < nr_detections; ++detection_index_2)

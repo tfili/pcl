@@ -74,7 +74,7 @@ double estimateFocalLength(const pcl::PointCloud<PointT>::ConstPtr &cloud)
 {
   ProjMatrix proj_matrix;
   proj_matrix.setInputCloud(cloud);  
-  Eigen::Matrix3f KR = proj_matrix.projection_matrix_.topLeftCorner <3, 3> ();    
+  Eigen::Matrix3d KR = proj_matrix.projection_matrix_.topLeftCorner <3, 3> ();    
   return (KR(0,0) + KR(1,1))/KR(2,2)/2;
 }
 

@@ -171,7 +171,7 @@ namespace pcl
         /** \brief Nd voxel centroid
          * \note Differs from \ref mean_ when color data is used
          */
-        Eigen::VectorXf centroid;
+        Eigen::VectorXd centroid;
 
         /** \brief Voxel covariance matrix */
         Eigen::Matrix3d cov_;
@@ -344,7 +344,7 @@ namespace pcl
        * \return const pointer to leaf structure
        */
       inline LeafConstPtr
-      getLeaf (Eigen::Vector3f &p)
+      getLeaf (Eigen::Vector3d &p)
       {
         // Generate index associated with p
         int ijk0 = static_cast<int> (floor (p[0] * inverse_leaf_size_[0]) - min_b_[0]);

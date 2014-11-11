@@ -94,17 +94,17 @@ namespace pcl
         point.z = normalization_factor / disparity;
         point.x = (static_cast<double> (x) - center_x_) * point.z * focal_length_x_reciprocal_;
         point.y = (static_cast<double> (y) - center_y_) * point.z * focal_length_y_reciprocal_;
-        point.range = point.getVector3fMap ().norm ();
+        point.range = point.getVector3dMap ().norm ();
         //cout << point<<std::flush;
         
         //// Just a test:
         //PointWithRange test_point1;
         //calculate3DPoint (double (x), double (y), point.range, test_point1);
-        //if ( (point.getVector3fMap ()-test_point1.getVector3fMap ()).norm () > 1e-5)
+        //if ( (point.getVector3dMap ()-test_point1.getVector3dMap ()).norm () > 1e-5)
           //cerr << "Something's wrong here...\n";
         
         //double image_x, image_y;
-        //getImagePoint (point.getVector3fMap (), image_x, image_y);
+        //getImagePoint (point.getVector3dMap (), image_x, image_y);
         //if (fabsf (image_x-x)+fabsf (image_y-y)>1e-4)
           //cerr << PVARC (x)<<PVARC (y)<<PVARC (image_x)<<PVARN (image_y);
       }
@@ -151,7 +151,7 @@ namespace pcl
         point.z = depth;
         point.x = (static_cast<double> (x) - center_x_) * point.z * focal_length_x_reciprocal_;
         point.y = (static_cast<double> (y) - center_y_) * point.z * focal_length_y_reciprocal_;
-        point.range = point.getVector3fMap ().norm ();
+        point.range = point.getVector3dMap ().norm ();
       }
     }
   }
@@ -197,7 +197,7 @@ namespace pcl
         point.z = depth;
         point.x = (static_cast<double> (x) - center_x_) * point.z * focal_length_x_reciprocal_;
         point.y = (static_cast<double> (y) - center_y_) * point.z * focal_length_y_reciprocal_;
-        point.range = point.getVector3fMap ().norm ();
+        point.range = point.getVector3dMap ().norm ();
       }
     }
   }

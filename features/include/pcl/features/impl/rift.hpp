@@ -48,7 +48,7 @@ template <typename PointInT, typename GradientT, typename PointOutT> void
 pcl::RIFTEstimation<PointInT, GradientT, PointOutT>::computeRIFT (
       const PointCloudIn &cloud, const PointCloudGradient &gradient, 
       int p_idx, double radius, const std::vector<int> &indices, 
-      const std::vector<double> &sqr_distances, Eigen::MatrixXf &rift_descriptor)
+      const std::vector<double> &sqr_distances, Eigen::MatrixXd &rift_descriptor)
 {
   if (indices.empty ())
   {
@@ -61,15 +61,15 @@ pcl::RIFTEstimation<PointInT, GradientT, PointOutT>::computeRIFT (
   int nr_gradient_bins = static_cast<int> (rift_descriptor.cols ());
 
   // Get the center point
-  pcl::Vector3fMapConst p0 = cloud.points[p_idx].getVector3fMap ();
+  pcl::Vector3dMapConst p0 = cloud.points[p_idx].getVector3dMap ();
 
   // Compute the RIFT descriptor
   rift_descriptor.setZero ();
   for (size_t idx = 0; idx < indices.size (); ++idx)
   {
     // Compute the gradient magnitude and orientation (relative to the center point)
-    pcl::Vector3fMapConst point = cloud.points[indices[idx]].getVector3fMap ();
-    Eigen::Map<const Eigen::Vector3f> gradient_vector (& (gradient.points[indices[idx]].gradient[0]));
+    pcl::Vector3dMapConst point = cloud.points[indices[idx]].getVector3dMap ();
+    Eigen::Map<const Eigen::Vector3d> gradient_vector (& (gradient.points[indices[idx]].gradient[0]));
 
     double gradient_magnitude = gradient_vector.norm ();
     double gradient_angle_from_center = acosf (gradient_vector.dot ((point - p0).normalized ()) / gradient_magnitude);
@@ -157,7 +157,7 @@ pcl::RIFTEstimation<PointInT, GradientT, PointOutT>::computeFeature (PointCloudO
     return;
   }
 
-  Eigen::MatrixXf rift_descriptor (nr_distance_bins_, nr_gradient_bins_);
+  Eigen::MatrixXd rift_descriptor (nr_distance_bins_, nr_gradient_bins_);
   std::vector<int> nn_indices;
   std::vector<double> nn_dist_sqr;
  

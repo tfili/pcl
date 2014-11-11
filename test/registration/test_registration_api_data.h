@@ -1121,9 +1121,9 @@ const int correspondences_trimmed[198][2] = {
 };
 
 // Reference transformation for the transformation estimation (some arbitrary values)
-const Eigen::Quaternionf   R_ref = Eigen::Quaternionf (.9f, .1f, -.25f, .15f).normalized ();
-const Eigen::Translation3f t_ref = Eigen::Translation3f (.5f, -2.f, 1.f);
-const Eigen::Affine3f      T_ref = Eigen::Affine3f (t_ref * R_ref);
+const Eigen::Quaterniond   R_ref = Eigen::Quaterniond (.9f, .1f, -.25f, .15f).normalized ();
+const Eigen::Translation3d t_ref = Eigen::Translation3d (.5f, -2.f, 1.f);
+const Eigen::Affine3d      T_ref = Eigen::Affine3d (t_ref * R_ref);
 
 const double transform_from_SAC[4][4] = {
   { 0.948507f, -0.0486455f, -0.312997f, 0.0176326f },

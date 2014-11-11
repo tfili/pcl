@@ -106,17 +106,17 @@ namespace pcl
         * \param[in] p the point to check
         */
       bool
-      isInsideTriangle (const Eigen::Vector3f& u,
-                        const Eigen::Vector3f& v,
-                        const Eigen::Vector3f& w,
-                        const Eigen::Vector3f& p);
+      isInsideTriangle (const Eigen::Vector3d& u,
+                        const Eigen::Vector3d& v,
+                        const Eigen::Vector3d& w,
+                        const Eigen::Vector3d& p);
 
       /** \brief Compute the cross product between 2D vectors.
        * \param[in] p1 the first 2D vector
        * \param[in] p2 the first 2D vector
        */
       double
-      crossProduct (const Eigen::Vector2f& p1, const Eigen::Vector2f& p2) const
+      crossProduct (const Eigen::Vector2d& p1, const Eigen::Vector2d& p2) const
       {
         return p1[0]*p2[1] - p1[1]*p2[0];
       }

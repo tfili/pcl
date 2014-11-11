@@ -56,8 +56,8 @@ namespace pcl
     * \ingroup common
     */
   PCL_EXPORTS void
-  lineToLineSegment (const Eigen::VectorXf &line_a, const Eigen::VectorXf &line_b, 
-                     Eigen::Vector4f &pt1_seg, Eigen::Vector4f &pt2_seg);
+  lineToLineSegment (const Eigen::VectorXd &line_a, const Eigen::VectorXd &line_b, 
+                     Eigen::Vector4d &pt1_seg, Eigen::Vector4d &pt2_seg);
 
   /** \brief Get the square distance from a point to a line (represented by a point and a direction)
     * \param pt a point
@@ -66,7 +66,7 @@ namespace pcl
     * \ingroup common
     */
   double inline
-  sqrPointToLineDistance (const Eigen::Vector4f &pt, const Eigen::Vector4f &line_pt, const Eigen::Vector4f &line_dir)
+  sqrPointToLineDistance (const Eigen::Vector4d &pt, const Eigen::Vector4d &line_pt, const Eigen::Vector4d &line_dir)
   {
     // Calculate the distance from the point to the line
     // D = ||(P2-P1) x (P1-P0)|| / ||P2-P1|| = norm (cross (p2-p1, p1-p0)) / norm(p2-p1)
@@ -82,7 +82,7 @@ namespace pcl
     * \ingroup common
     */
   double inline
-  sqrPointToLineDistance (const Eigen::Vector4f &pt, const Eigen::Vector4f &line_pt, const Eigen::Vector4f &line_dir, const double sqr_length)
+  sqrPointToLineDistance (const Eigen::Vector4d &pt, const Eigen::Vector4d &line_pt, const Eigen::Vector4d &line_dir, const double sqr_length)
   {
     // Calculate the distance from the point to the line
     // D = ||(P2-P1) x (P1-P0)|| / ||P2-P1|| = norm (cross (p2-p1, p1-p0)) / norm(p2-p1)
@@ -108,8 +108,8 @@ namespace pcl
       for (size_t j = i; j < cloud.points.size (); ++j)
       {
         // Compute the distance 
-        double dist = (cloud.points[i].getVector4fMap () - 
-                       cloud.points[j].getVector4fMap ()).squaredNorm ();
+        double dist = (cloud.points[i].getVector4dMap () - 
+                       cloud.points[j].getVector4dMap ()).squaredNorm ();
         if (dist <= max_dist)
           continue;
 
@@ -147,8 +147,8 @@ namespace pcl
       for (size_t j = i; j < indices.size (); ++j)
       {
         // Compute the distance 
-        double dist = (cloud.points[indices[i]].getVector4fMap () - 
-                       cloud.points[indices[j]].getVector4fMap ()).squaredNorm ();
+        double dist = (cloud.points[indices[i]].getVector4dMap () - 
+                       cloud.points[indices[j]].getVector4dMap ()).squaredNorm ();
         if (dist <= max_dist)
           continue;
 

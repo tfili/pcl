@@ -64,7 +64,7 @@ pcl::MarchingCubes<PointNT>::getBoundingBox ()
   min_p_ -= (max_p_ - min_p_) * percentage_extend_grid_/2;
   max_p_ += (max_p_ - min_p_) * percentage_extend_grid_/2;
 
-  Eigen::Vector4f bounding_box_size = max_p_ - min_p_;
+  Eigen::Vector4d bounding_box_size = max_p_ - min_p_;
 
   bounding_box_size = max_p_ - min_p_;
   PCL_DEBUG ("[pcl::MarchingCubesHoppe::getBoundingBox] Size of Bounding Box is [%f, %f, %f]\n",
@@ -84,11 +84,11 @@ pcl::MarchingCubes<PointNT>::getBoundingBox ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointNT> void
-pcl::MarchingCubes<PointNT>::interpolateEdge (Eigen::Vector3f &p1,
-                                              Eigen::Vector3f &p2,
+pcl::MarchingCubes<PointNT>::interpolateEdge (Eigen::Vector3d &p1,
+                                              Eigen::Vector3d &p2,
                                               double val_p1,
                                               double val_p2,
-                                              Eigen::Vector3f &output)
+                                              Eigen::Vector3d &output)
 {
   double mu = (iso_level_ - val_p1) / (val_p2-val_p1);
   output = p1 + mu * (p2 - p1);
@@ -102,7 +102,7 @@ pcl::MarchingCubes<PointNT>::createSurface (std::vector<double> &leaf_node,
                                             pcl::PointCloud<PointNT> &cloud)
 {
   int cubeindex = 0;
-  Eigen::Vector3f vertex_list[12];
+  Eigen::Vector3d vertex_list[12];
   if (leaf_node[0] < iso_level_) cubeindex |= 1;
   if (leaf_node[1] < iso_level_) cubeindex |= 2;
   if (leaf_node[2] < iso_level_) cubeindex |= 4;
@@ -116,17 +116,17 @@ pcl::MarchingCubes<PointNT>::createSurface (std::vector<double> &leaf_node,
   if (edgeTable[cubeindex] == 0)
     return;
 
-  //Eigen::Vector4f index_3df (index_3d[0], index_3d[1], index_3d[2], 0.0f);
-  Eigen::Vector3f center;// TODO coeff wise product = min_p_ + Eigen::Vector4f (1.0f/res_x_, 1.0f/res_y_, 1.0f/res_z_) * index_3df * (max_p_ - min_p_);
+  //Eigen::Vector4d index_3df (index_3d[0], index_3d[1], index_3d[2], 0.0f);
+  Eigen::Vector3d center;// TODO coeff wise product = min_p_ + Eigen::Vector4d (1.0f/res_x_, 1.0f/res_y_, 1.0f/res_z_) * index_3df * (max_p_ - min_p_);
   center[0] = min_p_[0] + (max_p_[0] - min_p_[0]) * double (index_3d[0]) / double (res_x_);
   center[1] = min_p_[1] + (max_p_[1] - min_p_[1]) * double (index_3d[1]) / double (res_y_);
   center[2] = min_p_[2] + (max_p_[2] - min_p_[2]) * double (index_3d[2]) / double (res_z_);
 
-  std::vector<Eigen::Vector3f> p;
+  std::vector<Eigen::Vector3d> p;
   p.resize (8);
   for (int i = 0; i < 8; ++i)
   {
-    Eigen::Vector3f point = center;
+    Eigen::Vector3d point = center;
     if(i & 0x4)
       point[1] = static_cast<double> (center[1] + (max_p_[1] - min_p_[1]) / double (res_y_));
 

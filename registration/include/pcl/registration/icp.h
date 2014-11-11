@@ -84,7 +84,7 @@ namespace pcl
     * icp.align (cloud_source_registered);
     *
     * // Obtain the transformation that aligned cloud_source to cloud_source_registered
-    * Eigen::Matrix4f transformation = icp.getFinalTransformation ();
+    * Eigen::Matrix4d transformation = icp.getFinalTransformation ();
     * \endcode
     *
     * \author Radu B. Rusu, Michael Dixon

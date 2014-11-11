@@ -75,7 +75,7 @@ pcl::ihs::InHandScanner::InHandScanner (Base* parent)
     new_data_connection_   (),
     input_data_processing_ (new InputDataProcessing ()),
     icp_                   (new ICP ()),
-    transformation_        (Eigen::Matrix4f::Identity ()),
+    transformation_        (Eigen::Matrix4d::Identity ()),
     integration_           (new Integration ()),
     mesh_processing_       (new MeshProcessing ()),
     mesh_model_            (new Mesh ()),
@@ -232,7 +232,7 @@ pcl::ihs::InHandScanner::reset ()
   Base::removeAllMeshes ();
 
   iteration_      = 0;
-  transformation_ = Eigen::Matrix4f::Identity ();
+  transformation_ = Eigen::Matrix4d::Identity ();
 
   lock.unlock ();
   this->showUnprocessedData ();
@@ -324,7 +324,7 @@ pcl::ihs::InHandScanner::newDataCallback (const CloudXYZRGBAConstPtr& cloud_in)
 
     if (iteration_ == 0)
     {
-      transformation_ = Eigen::Matrix4f::Identity ();
+      transformation_ = Eigen::Matrix4d::Identity ();
 
       sw.reset ();
       integration_->reconstructMesh (cloud_data, mesh_model_);
@@ -337,7 +337,7 @@ pcl::ihs::InHandScanner::newDataCallback (const CloudXYZRGBAConstPtr& cloud_in)
     }
     else
     {
-      Eigen::Matrix4f T_final = Eigen::Matrix4f::Identity ();
+      Eigen::Matrix4d T_final = Eigen::Matrix4d::Identity ();
       if (icp_->findTransformation (mesh_model_, cloud_data, transformation_, T_final))
       {
         transformation_ = T_final;

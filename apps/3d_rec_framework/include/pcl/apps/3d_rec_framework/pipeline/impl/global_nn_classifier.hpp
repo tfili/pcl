@@ -83,7 +83,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
     PointInTPtr in (new pcl::PointCloud<PointInT>);
 
     typename pcl::PointCloud<FeatureT>::CloudVectorType signatures;
-    std::vector < Eigen::Vector3f > centroids;
+    std::vector < Eigen::Vector3d > centroids;
 
     if (indices_.size ())
     {
@@ -187,7 +187,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           PointInTPtr processed (new pcl::PointCloud<PointInT>);
           //pro view, compute signatures
           typename pcl::PointCloud<FeatureT>::CloudVectorType signatures;
-          std::vector < Eigen::Vector3f > centroids;
+          std::vector < Eigen::Vector3d > centroids;
           estimator_->estimate (models->at (i).views_->at (v), processed, signatures, centroids);
 
           //source_->makeModelPersistent (models->at (i), training_dir_, descr_name_, static_cast<int> (v));
@@ -214,7 +214,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           {
             std::stringstream path_centroid;
             path_centroid << path << "/centroid_" << v << "_" << j << ".txt";
-            Eigen::Vector3f centroid (centroids[j][0], centroids[j][1], centroids[j][2]);
+            Eigen::Vector3d centroid (centroids[j][0], centroids[j][1], centroids[j][2]);
             PersistenceUtils::writeCentroidToFile (path_centroid.str (), centroid);
 
             std::stringstream path_descriptor;

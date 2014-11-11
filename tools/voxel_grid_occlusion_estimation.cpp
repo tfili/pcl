@@ -85,7 +85,7 @@ getCuboid (double minX, double maxX, double minY, double maxY, double minZ, doub
 
 void
 getVoxelActors (pcl::PointCloud<pcl::PointXYZ>& voxelCenters,
-                 double voxelSideLen, Eigen::Vector3f color,
+                 double voxelSideLen, Eigen::Vector3d color,
                  vtkSmartPointer<vtkActorCollection> coll)
 {
   vtkSmartPointer < vtkAppendPolyData > treeWireframe = vtkSmartPointer<vtkAppendPolyData>::New ();
@@ -125,7 +125,7 @@ getVoxelActors (pcl::PointCloud<pcl::PointXYZ>& voxelCenters,
 }
 
 void
-displayBoundingBox (Eigen::Vector3f& min_b, Eigen::Vector3f& max_b,
+displayBoundingBox (Eigen::Vector3d& min_b, Eigen::Vector3d& max_b,
                     vtkSmartPointer<vtkActorCollection> coll)
 {
   vtkSmartPointer < vtkAppendPolyData > treeWireframe = vtkSmartPointer<vtkAppendPolyData>::New ();
@@ -208,7 +208,7 @@ int main (int argc, char** argv)
   vg.setLeafSize (leaf_x, leaf_y, leaf_z);
   vg.initializeVoxelGrid ();
 
-  Eigen::Vector3f b_min, b_max;
+  Eigen::Vector3d b_min, b_max;
   b_min = vg.getMinBoundCoordinates ();
   b_max = vg.getMaxBoundCoordinates ();
 
@@ -229,7 +229,7 @@ int main (int argc, char** argv)
   occ_centroids->points.resize (occluded_voxels.size ());
   for (size_t i = 0; i < occluded_voxels.size (); ++i)
   {
-    Eigen::Vector4f xyz = vg.getCentroidCoordinate (occluded_voxels[i]);
+    Eigen::Vector4d xyz = vg.getCentroidCoordinate (occluded_voxels[i]);
     PointT point;
     point.x = xyz[0];
     point.y = xyz[1];
@@ -249,7 +249,7 @@ int main (int argc, char** argv)
     double y = input_cloud->points[i].y;
     double z = input_cloud->points[i].z;
     Eigen::Vector3i c = vg.getGridCoordinates (x, y, z);
-    Eigen::Vector4f xyz = vg.getCentroidCoordinate (c);
+    Eigen::Vector4d xyz = vg.getCentroidCoordinate (c);
     PointT point;
     point.x = xyz[0];
     point.y = xyz[1];
@@ -258,8 +258,8 @@ int main (int argc, char** argv)
   }
 
   // visualization
-  Eigen::Vector3f red (1.0, 0.0, 0.0);  
-  Eigen::Vector3f blue (0.0, 0.0, 1.0);
+  Eigen::Vector3d red (1.0, 0.0, 0.0);  
+  Eigen::Vector3d blue (0.0, 0.0, 1.0);
   // draw point cloud voxels
   getVoxelActors (*cloud_centroids, leaf_x, red, coll);
   // draw the bounding box of the voxel grid

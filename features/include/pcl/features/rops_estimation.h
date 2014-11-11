@@ -144,7 +144,7 @@ namespace pcl
         * \paran[out] lrf_matrix strores computed LRF matrix for the given point
         */
       void
-      computeLRF (const PointInT& point, const std::set <unsigned int>& local_triangles, Eigen::Matrix3f& lrf_matrix) const;
+      computeLRF (const PointInT& point, const std::set <unsigned int>& local_triangles, Eigen::Matrix3d& lrf_matrix) const;
 
       /** \brief This method calculates the eigen values and eigen vectors
         * for the given covariance matrix. Note that it returns normalized eigen
@@ -155,8 +155,8 @@ namespace pcl
         * \param[out] minor_axis eigen vector which corresponds to a minor eigen value
         */
       void
-      computeEigenVectors (const Eigen::Matrix3f& matrix, Eigen::Vector3f& major_axis, Eigen::Vector3f& middle_axis,
-                           Eigen::Vector3f& minor_axis) const;
+      computeEigenVectors (const Eigen::Matrix3d& matrix, Eigen::Vector3d& major_axis, Eigen::Vector3d& middle_axis,
+                           Eigen::Vector3d& minor_axis) const;
 
       /** \brief This method translates the cloud so that the given point becomes the origin.
         * After that the cloud is rotated with the help of the given matrix.
@@ -166,7 +166,7 @@ namespace pcl
         * \param[out] transformed_cloud stores the transformed cloud
         */
       void
-      transformCloud (const PointInT& point, const Eigen::Matrix3f& matrix, const std::vector <int>& local_points, PointCloudIn& transformed_cloud) const;
+      transformCloud (const PointInT& point, const Eigen::Matrix3d& matrix, const std::vector <int>& local_points, PointCloudIn& transformed_cloud) const;
 
       /** \brief This method rotates the cloud around the given axis and computes AABB of the rotated cloud.
         * \param[in] axis axis around which cloud must be rotated
@@ -178,7 +178,7 @@ namespace pcl
         */
       void
       rotateCloud (const PointInT& axis, const double angle, const PointCloudIn& cloud, PointCloudIn& rotated_cloud,
-                   Eigen::Vector3f& min, Eigen::Vector3f& max) const;
+                   Eigen::Vector3d& min, Eigen::Vector3d& max) const;
 
       /** \brief This method projects the local surface onto the XY, XZ or YZ plane
         * and computes the distribution matrix.
@@ -189,14 +189,14 @@ namespace pcl
         * \param[out] matrix stores computed distribution matrix
         */
       void
-      getDistributionMatrix (const unsigned int projection, const Eigen::Vector3f& min, const Eigen::Vector3f& max, const PointCloudIn& cloud, Eigen::MatrixXf& matrix) const;
+      getDistributionMatrix (const unsigned int projection, const Eigen::Vector3d& min, const Eigen::Vector3d& max, const PointCloudIn& cloud, Eigen::MatrixXd& matrix) const;
 
       /** \brief This method computes the set ofcentral moments for the given matrix.
         * \param[in] matrix input matrix
         * \param[out] moments set of computed moments
         */
       void
-      computeCentralMoments (const Eigen::MatrixXf& matrix, std::vector <double>& moments) const;
+      computeCentralMoments (const Eigen::MatrixXd& matrix, std::vector <double>& moments) const;
 
     private:
 

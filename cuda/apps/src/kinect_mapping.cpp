@@ -229,19 +229,19 @@ class MultiRansac
           //    if (logo_cloud_)
           //    {
           //      boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> > transformed_logo (new pcl::PointCloud<pcl::PointXYZRGB>);
-          //      Eigen::Affine3f transformation;
+          //      Eigen::Affine3d transformation;
 
-          //      Eigen::Vector3f plane_normal (coeffs[i].x, coeffs[i].y, coeffs[i].z);
+          //      Eigen::Vector3d plane_normal (coeffs[i].x, coeffs[i].y, coeffs[i].z);
           //      plane_normal.normalize ();
-          //      if (plane_normal.dot (Eigen::Vector3f::Zero()) - coeffs[i].w > 0)
+          //      if (plane_normal.dot (Eigen::Vector3d::Zero()) - coeffs[i].w > 0)
           //        plane_normal = -plane_normal;
 
-          //      Eigen::Vector3f logo_normal (0,0,-1);
+          //      Eigen::Vector3d logo_normal (0,0,-1);
 
-          //      Eigen::Vector3f trans (Eigen::Vector3f(centroids[i].x, centroids[i].y, centroids[i].z) * 0.97);
-          //      Eigen::AngleAxisf rot (acos (logo_normal.dot (plane_normal)), logo_normal.cross (plane_normal).normalized ());
+          //      Eigen::Vector3d trans (Eigen::Vector3d(centroids[i].x, centroids[i].y, centroids[i].z) * 0.97);
+          //      Eigen::AngleAxisd rot (acos (logo_normal.dot (plane_normal)), logo_normal.cross (plane_normal).normalized ());
 
-          //      transformation = Eigen::Affine3f::Identity();// = ....;
+          //      transformation = Eigen::Affine3d::Identity();// = ....;
           //      transformation.translate (trans);// = ....;
           //      transformation.rotate (rot);// = ....;
           //      transformation.scale (0.001 * sqrt (planes_inlier_counts[i]));// = ....;

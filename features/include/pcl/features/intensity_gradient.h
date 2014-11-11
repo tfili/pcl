@@ -99,10 +99,10 @@ namespace pcl
       void
       computePointIntensityGradient (const pcl::PointCloud<PointInT> &cloud,
                                      const std::vector<int> &indices,
-                                     const Eigen::Vector3f &point, 
+                                     const Eigen::Vector3d &point, 
                                      double mean_intensity, 
-                                     const Eigen::Vector3f &normal,
-                                     Eigen::Vector3f &gradient);
+                                     const Eigen::Vector3d &normal,
+                                     Eigen::Vector3d &gradient);
 
     protected:
       ///intensity field accessor structure

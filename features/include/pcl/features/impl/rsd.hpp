@@ -45,15 +45,15 @@
 #include <pcl/features/rsd.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointInT, typename PointNT, typename PointOutT> Eigen::MatrixXf
+template <typename PointInT, typename PointNT, typename PointOutT> Eigen::MatrixXd
 pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointInT> > &surface, boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
 		 const std::vector<int> &indices, double max_dist,
 		 int nr_subdiv, double plane_radius, PointOutT &radii, bool compute_histogram)
 {
   // Check if the full histogram has to be saved or not
-  Eigen::MatrixXf histogram;
+  Eigen::MatrixXd histogram;
   if (compute_histogram)
-    histogram = Eigen::MatrixXf::Zero (nr_subdiv, nr_subdiv);
+    histogram = Eigen::MatrixXd::Zero (nr_subdiv, nr_subdiv);
 
   // Check if enough points are provided or not
   if (indices.size () < 2)
@@ -146,15 +146,15 @@ pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointInT> > &surface, b
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointNT, typename PointOutT> Eigen::MatrixXf
+template <typename PointNT, typename PointOutT> Eigen::MatrixXd
 pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
 		 const std::vector<int> &indices, const std::vector<double> &sqr_dists, double max_dist,
 		 int nr_subdiv, double plane_radius, PointOutT &radii, bool compute_histogram)
 {
   // Check if the full histogram has to be saved or not
-  Eigen::MatrixXf histogram;
+  Eigen::MatrixXd histogram;
   if (compute_histogram)
-    histogram = Eigen::MatrixXf::Zero (nr_subdiv, nr_subdiv);
+    histogram = Eigen::MatrixXd::Zero (nr_subdiv, nr_subdiv);
   
   // Check if enough points are provided or not
   if (indices.size () < 2)
@@ -266,7 +266,7 @@ pcl::RSDEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
   if (save_histograms_)
   {
     // Reserve space for the output histogram dataset
-    histograms_.reset (new std::vector<Eigen::MatrixXf, Eigen::aligned_allocator<Eigen::MatrixXf> >);
+    histograms_.reset (new std::vector<Eigen::MatrixXd, Eigen::aligned_allocator<Eigen::MatrixXd> >);
     histograms_->reserve (output.points.size ());
     
     // Iterating over the entire index vector

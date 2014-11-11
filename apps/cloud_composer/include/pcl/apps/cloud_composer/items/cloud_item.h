@@ -67,13 +67,13 @@ namespace pcl
     {
       public:
         
-        //This is needed because we have members which are Vector4f and Quaternionf
+        //This is needed because we have members which are Vector4d and Quaterniond
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         
         CloudItem (const QString name,
                    const pcl::PCLPointCloud2::Ptr cloud_ptr,
-                   const Eigen::Vector4f& origin = Eigen::Vector4f (),
-                   const Eigen::Quaternionf& orientation = Eigen::Quaternionf (),
+                   const Eigen::Vector4d& origin = Eigen::Vector4d (),
+                   const Eigen::Quaterniond& orientation = Eigen::Quaterniond (),
                    bool make_templated_cloud = true);
         
         CloudItem (const CloudItem& to_copy);
@@ -132,8 +132,8 @@ namespace pcl
        
 
         //We keep actual local copies of these.
-        Eigen::Vector4f origin_;
-        Eigen::Quaternionf orientation_;
+        Eigen::Vector4d origin_;
+        Eigen::Quaterniond orientation_;
         
         //Internal Storage of the templated type of this cloud
         int point_type_;
@@ -179,8 +179,8 @@ namespace pcl
 Q_DECLARE_METATYPE (pcl::PCLPointCloud2::ConstPtr);
 Q_DECLARE_METATYPE (GeometryHandler::ConstPtr);
 Q_DECLARE_METATYPE (ColorHandler::ConstPtr);
-Q_DECLARE_METATYPE (Eigen::Vector4f);
-Q_DECLARE_METATYPE (Eigen::Quaternionf);
+Q_DECLARE_METATYPE (Eigen::Vector4d);
+Q_DECLARE_METATYPE (Eigen::Quaterniond);
 
 Q_DECLARE_METATYPE (pcl::search::KdTree<pcl::PointXYZ>::Ptr);
 Q_DECLARE_METATYPE (pcl::search::KdTree<pcl::PointXYZRGB>::Ptr);

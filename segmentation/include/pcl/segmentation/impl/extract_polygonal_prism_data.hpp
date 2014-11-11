@@ -47,15 +47,15 @@ template <typename PointT> bool
 pcl::isPointIn2DPolygon (const PointT &point, const pcl::PointCloud<PointT> &polygon)
 {
   // Compute the plane coefficients
-  Eigen::Vector4f model_coefficients;
-  EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
-  Eigen::Vector4f xyz_centroid;
+  Eigen::Vector4d model_coefficients;
+  EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
+  Eigen::Vector4d xyz_centroid;
 
   computeMeanAndCovarianceMatrix (polygon, covariance_matrix, xyz_centroid);
 
   // Compute the model coefficients
-  EIGEN_ALIGN16 Eigen::Vector3f::Scalar eigen_value;
-  EIGEN_ALIGN16 Eigen::Vector3f eigen_vector;
+  EIGEN_ALIGN16 Eigen::Vector3d::Scalar eigen_value;
+  EIGEN_ALIGN16 Eigen::Vector3d eigen_vector;
   eigen33 (covariance_matrix, eigen_value, eigen_vector);
 
   model_coefficients[0] = eigen_vector [0];
@@ -88,14 +88,14 @@ pcl::isPointIn2DPolygon (const PointT &point, const pcl::PointCloud<PointT> &pol
   xy_polygon.points.resize (polygon.points.size ());
   for (size_t i = 0; i < polygon.points.size (); ++i)
   {
-    Eigen::Vector4f pt (polygon.points[i].x, polygon.points[i].y, polygon.points[i].z, 0);
+    Eigen::Vector4d pt (polygon.points[i].x, polygon.points[i].y, polygon.points[i].z, 0);
     xy_polygon.points[i].x = pt[k1];
     xy_polygon.points[i].y = pt[k2];
     xy_polygon.points[i].z = 0;
   }
   PointT xy_point;
   xy_point.z = 0;
-  Eigen::Vector4f pt (ppoint.x, ppoint.y, ppoint.z, 0);
+  Eigen::Vector4d pt (ppoint.x, ppoint.y, ppoint.z, 0);
   xy_point.x = pt[k1];
   xy_point.y = pt[k2];
 
@@ -185,15 +185,15 @@ pcl::ExtractPolygonalPrismData<PointT>::segment (pcl::PointIndices &output)
   }
 
   // Compute the plane coefficients
-  Eigen::Vector4f model_coefficients;
-  EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
-  Eigen::Vector4f xyz_centroid;
+  Eigen::Vector4d model_coefficients;
+  EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
+  Eigen::Vector4d xyz_centroid;
 
   computeMeanAndCovarianceMatrix (*planar_hull_, covariance_matrix, xyz_centroid);
 
   // Compute the model coefficients
-  EIGEN_ALIGN16 Eigen::Vector3f::Scalar eigen_value;
-  EIGEN_ALIGN16 Eigen::Vector3f eigen_vector;
+  EIGEN_ALIGN16 Eigen::Vector3d::Scalar eigen_value;
+  EIGEN_ALIGN16 Eigen::Vector3d eigen_vector;
   eigen33 (covariance_matrix, eigen_value, eigen_vector);
 
   model_coefficients[0] = eigen_vector [0];
@@ -205,9 +205,9 @@ pcl::ExtractPolygonalPrismData<PointT>::segment (pcl::PointIndices &output)
   model_coefficients[3] = -1 * model_coefficients.dot (xyz_centroid);
 
   // Need to flip the plane normal towards the viewpoint
-  Eigen::Vector4f vp (vpx_, vpy_, vpz_, 0);
+  Eigen::Vector4d vp (vpx_, vpy_, vpz_, 0);
   // See if we need to flip any plane normals
-  vp -= planar_hull_->points[0].getVector4fMap ();
+  vp -= planar_hull_->points[0].getVector4dMap ();
   vp[3] = 0;
   // Dot product between the (viewpoint - point) and the plane normal
   double cos_theta = vp.dot (model_coefficients);
@@ -217,7 +217,7 @@ pcl::ExtractPolygonalPrismData<PointT>::segment (pcl::PointIndices &output)
     model_coefficients *= -1;
     model_coefficients[3] = 0;
     // Hessian form (D = nc . p_plane (centroid here) + p)
-    model_coefficients[3] = -1 * (model_coefficients.dot (planar_hull_->points[0].getVector4fMap ()));
+    model_coefficients[3] = -1 * (model_coefficients.dot (planar_hull_->points[0].getVector4dMap ()));
   }
 
   // Project all points
@@ -237,7 +237,7 @@ pcl::ExtractPolygonalPrismData<PointT>::segment (pcl::PointIndices &output)
   polygon.points.resize (planar_hull_->points.size ());
   for (size_t i = 0; i < planar_hull_->points.size (); ++i)
   {
-    Eigen::Vector4f pt (planar_hull_->points[i].x, planar_hull_->points[i].y, planar_hull_->points[i].z, 0);
+    Eigen::Vector4d pt (planar_hull_->points[i].x, planar_hull_->points[i].y, planar_hull_->points[i].z, 0);
     polygon.points[i].x = pt[k1];
     polygon.points[i].y = pt[k2];
     polygon.points[i].z = 0;
@@ -256,7 +256,7 @@ pcl::ExtractPolygonalPrismData<PointT>::segment (pcl::PointIndices &output)
       continue;
 
     // Check what points are inside the hull
-    Eigen::Vector4f pt (projected_points.points[i].x,
+    Eigen::Vector4d pt (projected_points.points[i].x,
                          projected_points.points[i].y,
                          projected_points.points[i].z, 0);
     pt_xy.x = pt[k1];

@@ -152,14 +152,14 @@
 namespace pcl
 {
 
-  typedef Eigen::Map<Eigen::Array3f> Array3fMap;
-  typedef const Eigen::Map<const Eigen::Array3f> Array3fMapConst;
-  typedef Eigen::Map<Eigen::Array4f, Eigen::Aligned> Array4fMap;
-  typedef const Eigen::Map<const Eigen::Array4f, Eigen::Aligned> Array4fMapConst;
-  typedef Eigen::Map<Eigen::Vector3f> Vector3fMap;
-  typedef const Eigen::Map<const Eigen::Vector3f> Vector3fMapConst;
-  typedef Eigen::Map<Eigen::Vector4f, Eigen::Aligned> Vector4fMap;
-  typedef const Eigen::Map<const Eigen::Vector4f, Eigen::Aligned> Vector4fMapConst;
+  typedef Eigen::Map<Eigen::Array3d> Array3dMap;
+  typedef const Eigen::Map<const Eigen::Array3d> Array3dMapConst;
+  typedef Eigen::Map<Eigen::Array4d, Eigen::Aligned> Array4dMap;
+  typedef const Eigen::Map<const Eigen::Array4d, Eigen::Aligned> Array4dMapConst;
+  typedef Eigen::Map<Eigen::Vector3d> Vector3dMap;
+  typedef const Eigen::Map<const Eigen::Vector3d> Vector3dMapConst;
+  typedef Eigen::Map<Eigen::Vector4d, Eigen::Aligned> Vector4dMap;
+  typedef const Eigen::Map<const Eigen::Vector4d, Eigen::Aligned> Vector4dMapConst;
 
   typedef Eigen::Matrix<uint8_t, 3, 1> Vector3c;
   typedef Eigen::Map<Vector3c> Vector3cMap;
@@ -179,14 +179,14 @@ namespace pcl
   };
 
 #define PCL_ADD_EIGEN_MAPS_POINT4D \
-  inline pcl::Vector3fMap getVector3fMap () { return (pcl::Vector3fMap (data)); } \
-  inline pcl::Vector3fMapConst getVector3fMap () const { return (pcl::Vector3fMapConst (data)); } \
-  inline pcl::Vector4fMap getVector4fMap () { return (pcl::Vector4fMap (data)); } \
-  inline pcl::Vector4fMapConst getVector4fMap () const { return (pcl::Vector4fMapConst (data)); } \
-  inline pcl::Array3fMap getArray3fMap () { return (pcl::Array3fMap (data)); } \
-  inline pcl::Array3fMapConst getArray3fMap () const { return (pcl::Array3fMapConst (data)); } \
-  inline pcl::Array4fMap getArray4fMap () { return (pcl::Array4fMap (data)); } \
-  inline pcl::Array4fMapConst getArray4fMap () const { return (pcl::Array4fMapConst (data)); }
+  inline pcl::Vector3dMap getVector3dMap () { return (pcl::Vector3dMap (data)); } \
+  inline pcl::Vector3dMapConst getVector3dMap () const { return (pcl::Vector3dMapConst (data)); } \
+  inline pcl::Vector4dMap getVector4dMap () { return (pcl::Vector4dMap (data)); } \
+  inline pcl::Vector4dMapConst getVector4dMap () const { return (pcl::Vector4dMapConst (data)); } \
+  inline pcl::Array3dMap getArray3dMap () { return (pcl::Array3dMap (data)); } \
+  inline pcl::Array3dMapConst getArray3dMap () const { return (pcl::Array3dMapConst (data)); } \
+  inline pcl::Array4dMap getArray4dMap () { return (pcl::Array4dMap (data)); } \
+  inline pcl::Array4dMapConst getArray4dMap () const { return (pcl::Array4dMapConst (data)); }
 
 #define PCL_ADD_POINT4D \
   PCL_ADD_UNION_POINT4D \
@@ -204,10 +204,10 @@ namespace pcl
   };
 
 #define PCL_ADD_EIGEN_MAPS_NORMAL4D \
-  inline pcl::Vector3fMap getNormalVector3fMap () { return (pcl::Vector3fMap (data_n)); } \
-  inline pcl::Vector3fMapConst getNormalVector3fMap () const { return (pcl::Vector3fMapConst (data_n)); } \
-  inline pcl::Vector4fMap getNormalVector4fMap () { return (pcl::Vector4fMap (data_n)); } \
-  inline pcl::Vector4fMapConst getNormalVector4fMap () const { return (pcl::Vector4fMapConst (data_n)); }
+  inline pcl::Vector3dMap getNormalVector3dMap () { return (pcl::Vector3dMap (data_n)); } \
+  inline pcl::Vector3dMapConst getNormalVector3dMap () const { return (pcl::Vector3dMapConst (data_n)); } \
+  inline pcl::Vector4dMap getNormalVector4dMap () { return (pcl::Vector4dMap (data_n)); } \
+  inline pcl::Vector4dMapConst getNormalVector4dMap () const { return (pcl::Vector4dMapConst (data_n)); }
 
 #define PCL_ADD_NORMAL4D \
   PCL_ADD_UNION_NORMAL4D \
@@ -1309,14 +1309,14 @@ namespace pcl
       };
     };
 
-    inline Eigen::Map<Eigen::Vector3f> getXAxisVector3fMap () { return (Eigen::Vector3f::Map (x_axis)); }
-    inline const Eigen::Map<const Eigen::Vector3f> getXAxisVector3fMap () const { return (Eigen::Vector3f::Map (x_axis)); }
-    inline Eigen::Map<Eigen::Vector3f> getYAxisVector3fMap () { return (Eigen::Vector3f::Map (y_axis)); }
-    inline const Eigen::Map<const Eigen::Vector3f> getYAxisVector3fMap () const { return (Eigen::Vector3f::Map (y_axis)); }
-    inline Eigen::Map<Eigen::Vector3f> getZAxisVector3fMap () { return (Eigen::Vector3f::Map (z_axis)); }
-    inline const Eigen::Map<const Eigen::Vector3f> getZAxisVector3fMap () const { return (Eigen::Vector3f::Map (z_axis)); }
-    inline Eigen::Map<Eigen::Matrix3f> getMatrix3fMap () { return (Eigen::Matrix3f::Map (rf)); }
-    inline const Eigen::Map<const Eigen::Matrix3f> getMatrix3fMap () const { return (Eigen::Matrix3f::Map (rf)); }
+    inline Eigen::Map<Eigen::Vector3d> getXAxisVector3dMap () { return (Eigen::Vector3d::Map (x_axis)); }
+    inline const Eigen::Map<const Eigen::Vector3d> getXAxisVector3dMap () const { return (Eigen::Vector3d::Map (x_axis)); }
+    inline Eigen::Map<Eigen::Vector3d> getYAxisVector3dMap () { return (Eigen::Vector3d::Map (y_axis)); }
+    inline const Eigen::Map<const Eigen::Vector3d> getYAxisVector3dMap () const { return (Eigen::Vector3d::Map (y_axis)); }
+    inline Eigen::Map<Eigen::Vector3d> getZAxisVector3dMap () { return (Eigen::Vector3d::Map (z_axis)); }
+    inline const Eigen::Map<const Eigen::Vector3d> getZAxisVector3dMap () const { return (Eigen::Vector3d::Map (z_axis)); }
+    inline Eigen::Map<Eigen::Matrix3d> getMatrix3dMap () { return (Eigen::Matrix3d::Map (rf)); }
+    inline const Eigen::Map<const Eigen::Matrix3d> getMatrix3dMap () const { return (Eigen::Matrix3d::Map (rf)); }
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };

@@ -114,7 +114,7 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::setNumberOfThreads
 //                                                                     const std::vector<int>& neighbors, 
 //                                                                     const double& t,
 //                                                                     double& response,
-//                                                                     Eigen::Vector3f& centroid) const
+//                                                                     Eigen::Vector3d& centroid) const
 // {
 //   double area = 0;
 //   response = 0;
@@ -128,11 +128,11 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::setNumberOfThreads
 //   {
 //     if (pcl_isfinite (normals_->points[*index].normal_x))
 //     {
-//       Eigen::Vector3f diff = normals_->points[*index].getNormal3fMap () - nucleus_normal.getNormal3fMap ();
+//       Eigen::Vector3d diff = normals_->points[*index].getNormal3fMap () - nucleus_normal.getNormal3fMap ();
 //       double c = diff.norm () / t;
 //       c = -1 * pow (c, 6.0);
 //       c = exp (c);
-//       Eigen::Vector3f xyz = surface_->points[*index].getVector3fMap ();
+//       Eigen::Vector3d xyz = surface_->points[*index].getVector3dMap ();
 //       centroid += c * xyz;
 //       area += c;
 //       coefficients[0] += c * (x0 - xyz.x) * (x0 - xyz.x);
@@ -152,17 +152,17 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::setNumberOfThreads
 //     // Look for edge direction
 //     // X direction
 //     if ((coefficients[3]/coefficients[0]) < 1 && (coefficients[5]/coefficients[0]) < 1)
-//       direction = Eigen::Vector3f (1, 0, 0);
+//       direction = Eigen::Vector3d (1, 0, 0);
 //     else
 //     {
 //       // Y direction
 //       if ((coefficients[0]/coefficients[3]) < 1 && (coefficients[5]/coefficients[3]) < 1)
-//         direction = Eigen::Vector3f (0, 1, 0);
+//         direction = Eigen::Vector3d (0, 1, 0);
 //       else
 //       {
 //         // Z direction
 //         if ((coefficients[0]/coefficients[5]) < 1 && (coefficients[3]/coefficients[5]) < 1)
-//           direction = Eigen::Vector3f (0, 1, 0);
+//           direction = Eigen::Vector3d (0, 1, 0);
 //         // Diagonal edge
 //         else 
 //         {
@@ -170,9 +170,9 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::setNumberOfThreads
 //           if ((coefficients[2]/coeffcients[1]) < 1 && (coeffcients[4]/coeffcients[1]) < 1)
 //           {
 //             if (coeffcients[1] > 0)
-//               direction = Eigen::Vector3f (1,1,0);
+//               direction = Eigen::Vector3d (1,1,0);
 //             else
-//               direction = Eigen::Vector3f (-1,1,0);
+//               direction = Eigen::Vector3d (-1,1,0);
 //           }
 //           else
 //           {
@@ -180,17 +180,17 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::setNumberOfThreads
 //             if ((coefficients[1]/coeffcients[2]) > 1 && (coeffcients[4]/coeffcients[2]) < 1)
 //             {
 //               if (coeffcients[2] > 0)
-//                 direction = Eigen::Vector3f (1,0,1);
+//                 direction = Eigen::Vector3d (1,0,1);
 //               else
-//                 direction = Eigen::Vector3f (-1,0,1);
+//                 direction = Eigen::Vector3d (-1,0,1);
 //             }
 //             //YZ direction
 //             else
 //             {
 //               if (coeffcients[4] > 0)
-//                 direction = Eigen::Vector3f (0,1,1);
+//                 direction = Eigen::Vector3d (0,1,1);
 //               else
-//                 direction = Eigen::Vector3f (0,-1,1);
+//                 direction = Eigen::Vector3d (0,-1,1);
 //             }
 //           }
 //         }
@@ -200,12 +200,12 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::setNumberOfThreads
 //     // std::size_t max_index = std::distance (coefficients.begin (), max);
 //     // switch (max_index)
 //     // {
-//     //   case 0 : direction = Eigen::Vector3f (1, 0, 0); break;
-//     //   case 1 : direction = Eigen::Vector3f (1, 1, 0); break;
-//     //   case 2 : direction = Eigen::Vector3f (1, 0, 1); break;
-//     //   case 3 : direction = Eigen::Vector3f (0, 1, 0); break;
-//     //   case 4 : direction = Eigen::Vector3f (0, 1, 1); break;
-//     //   case 5 : direction = Eigen::Vector3f (0, 0, 1); break;
+//     //   case 0 : direction = Eigen::Vector3d (1, 0, 0); break;
+//     //   case 1 : direction = Eigen::Vector3d (1, 1, 0); break;
+//     //   case 2 : direction = Eigen::Vector3d (1, 0, 1); break;
+//     //   case 3 : direction = Eigen::Vector3d (0, 1, 0); break;
+//     //   case 4 : direction = Eigen::Vector3d (0, 1, 1); break;
+//     //   case 5 : direction = Eigen::Vector3d (0, 0, 1); break;
 //     // }
 //   }
 // }
@@ -252,14 +252,14 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::initCompute ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT, typename NormalT, typename IntensityT> bool
-pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::isWithinNucleusCentroid (const Eigen::Vector3f& nucleus,
-                                                                                       const Eigen::Vector3f& centroid,
-                                                                                       const Eigen::Vector3f& nc,
+pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::isWithinNucleusCentroid (const Eigen::Vector3d& nucleus,
+                                                                                       const Eigen::Vector3d& centroid,
+                                                                                       const Eigen::Vector3d& nc,
                                                                                        const PointInT& point) const
 {
-  Eigen::Vector3f pc = centroid - point.getVector3fMap ();
-  Eigen::Vector3f pn = nucleus - point.getVector3fMap ();
-  Eigen::Vector3f pc_cross_nc = pc.cross (nc);
+  Eigen::Vector3d pc = centroid - point.getVector3dMap ();
+  Eigen::Vector3d pn = nucleus - point.getVector3dMap ();
+  Eigen::Vector3d pc_cross_nc = pc.cross (nc);
   return ((pc_cross_nc.norm () <= tolerance_) && (pc.dot (nc) >= 0) && (pn.dot (nc) <= 0));
 }
 
@@ -286,15 +286,15 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::isWithinNucleusCen
 // template <typename PointInT, typename PointOutT, typename NormalT, typename IntensityT> bool
 // pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::isWithinSusan3D (int nucleus, int neighbor) const
 // {
-//   Eigen::Vector3f nucleus_normal = normals_->point[nucleus].getVector3fMap ();
-//   return (1 - nucleus_normal.dot (normals_->points[*index].getNormalVector3fMap ()) <= angular_threshold_);
+//   Eigen::Vector3d nucleus_normal = normals_->point[nucleus].getVector3dMap ();
+//   return (1 - nucleus_normal.dot (normals_->points[*index].getNormalVector3dMap ()) <= angular_threshold_);
 // }
 
 // template <typename PointInT, typename PointOutT, typename NormalT, typename IntensityT> bool
 // pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::isWithinSusanH (int nucleus, int neighbor) const
 // {
-//   Eigen::Vector3f nucleus_normal = normals_->point[nucleus].getVector3fMap ();
-//   return ((1 - nucleus_normal.dot (normals_->points[*index].getNormalVector3fMap ()) <= angular_threshold_) || 
+//   Eigen::Vector3d nucleus_normal = normals_->point[nucleus].getVector3dMap ();
+//   return ((1 - nucleus_normal.dot (normals_->points[*index].getNormalVector3dMap ()) <= angular_threshold_) || 
 //           (fabs (intensity_ (surface_->points[nucleus]) - intensity_ (surface_->points[neighbor])) <= intensity_threshold_));
 // }
 
@@ -320,14 +320,14 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::detectKeypoints (P
       continue;
     else
     {
-      Eigen::Vector3f nucleus = point_in.getVector3fMap ();
-      Eigen::Vector3f nucleus_normal = normals_->points [point_index].getNormalVector3fMap ();
+      Eigen::Vector3d nucleus = point_in.getVector3dMap ();
+      Eigen::Vector3d nucleus_normal = normals_->points [point_index].getNormalVector3dMap ();
       double nucleus_intensity = intensity_ (point_in);
       std::vector<int> nn_indices;
       std::vector<double> nn_dists;
       tree_->radiusSearch (point_in, search_radius_, nn_indices, nn_dists);
       double area = 0;
-      Eigen::Vector3f centroid = Eigen::Vector3f::Zero ();
+      Eigen::Vector3d centroid = Eigen::Vector3d::Zero ();
       // Exclude nucleus from the usan
       std::vector<int> usan; usan.reserve (nn_indices.size () - 1);
       for (std::vector<int>::const_iterator index = nn_indices.begin(); index != nn_indices.end(); ++index)
@@ -336,10 +336,10 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::detectKeypoints (P
         {
           // if the point fulfill condition
           if ((fabs (nucleus_intensity - intensity_ (input_->points[*index])) <= intensity_threshold_) ||
-              (1 - nucleus_normal.dot (normals_->points[*index].getNormalVector3fMap ()) <= angular_threshold_))
+              (1 - nucleus_normal.dot (normals_->points[*index].getNormalVector3dMap ()) <= angular_threshold_))
           {
             ++area;
-            centroid += input_->points[*index].getVector3fMap ();
+            centroid += input_->points[*index].getVector3dMap ();
             usan.push_back (*index);
           }
         }
@@ -352,7 +352,7 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::detectKeypoints (P
         if (!geometric_validation_)
         {
           PointOutT point_out;
-          point_out.getVector3fMap () = point_in.getVector3fMap ();
+          point_out.getVector3dMap () = point_in.getVector3dMap ();
           //point_out.intensity = geometric_threshold - area; 
           intensity_out_.set (point_out, geometric_threshold - area);
           // if a label field is found use it to save the index
@@ -371,12 +371,12 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::detectKeypoints (P
         else
         {
           centroid /= area;
-          Eigen::Vector3f dist = nucleus - centroid;
+          Eigen::Vector3d dist = nucleus - centroid;
           // Check the distance <= distance_threshold_
           if (dist.norm () >= distance_threshold_)
           {
             // point is valid from distance point of view 
-            Eigen::Vector3f nc = centroid - nucleus;
+            Eigen::Vector3d nc = centroid - nucleus;
             // Check the contiguity
             std::vector<int>::const_iterator usan_it = usan.begin ();
             for (; usan_it != usan.end (); ++usan_it)
@@ -388,7 +388,7 @@ pcl::SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT>::detectKeypoints (P
             if (usan_it == usan.end ())
             {
               PointOutT point_out;
-              point_out.getVector3fMap () = point_in.getVector3fMap ();
+              point_out.getVector3dMap () = point_in.getVector3dMap ();
               // point_out.intensity = geometric_threshold - area; 
               intensity_out_.set (point_out, geometric_threshold - area);
               // if a label field is found use it to save the index

@@ -138,7 +138,7 @@ pcl::FPFHEstimationOMP<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
       nn_indices[i] = spfh_hist_lookup[nn_indices[i]];
 
     // Compute the FPFH signature (i.e. compute a weighted combination of local SPFH signatures) ...
-    Eigen::VectorXf fpfh_histogram = Eigen::VectorXf::Zero (nr_bins);
+    Eigen::VectorXd fpfh_histogram = Eigen::VectorXd::Zero (nr_bins);
     weightPointSPFHSignature (hist_f1_, hist_f2_, hist_f3_, nn_indices, nn_dists, fpfh_histogram);
 
     // ...and copy it into the output cloud

@@ -184,8 +184,8 @@ namespace pcl
           */
   //      virtual void 
   //      optimizeModelCoefficients (const std::vector<int> &inliers, 
-  //                                 const Eigen::VectorXf &model_coefficients,
-  //                                 Eigen::VectorXf &optimized_coefficients) = 0;
+  //                                 const Eigen::VectorXd &model_coefficients,
+  //                                 Eigen::VectorXd &optimized_coefficients) = 0;
 
       /*  \brief Compute all distances from the cloud data to a given model. Pure virtual.
         * \param model_coefficients the coefficients of a model that we need to
@@ -193,7 +193,7 @@ namespace pcl
         * \param distances the resultant estimated distances
         */
   //      virtual void 
-  //      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
+  //      getDistancesToModel (const Eigen::VectorXd &model_coefficients, 
   //                           std::vector<double> &distances) = 0;
 
         /** \brief Select all the points which respect the given model
@@ -241,7 +241,7 @@ namespace pcl
           */
   //      virtual void 
   //      projectPoints (const std::vector<int> &inliers, 
-  //                     const Eigen::VectorXf &model_coefficients,
+  //                     const Eigen::VectorXd &model_coefficients,
   //                     PointCloud &projected_points, 
   //                     bool copy_data_fields = true) = 0;
 
@@ -255,7 +255,7 @@ namespace pcl
           */
   //      virtual bool 
   //      doSamplesVerifyModel (const std::set<int> &indices, 
-  //                            const Eigen::VectorXf &model_coefficients, 
+  //                            const Eigen::VectorXd &model_coefficients, 
   //                            double threshold) = 0;
 
         /** \brief Provide a pointer to the input dataset
@@ -344,7 +344,7 @@ namespace pcl
           * \param model_coefficients the set of model coefficients
           */
   //      virtual inline bool
-  //      isModelValid (const Eigen::VectorXf &model_coefficients) = 0;
+  //      isModelValid (const Eigen::VectorXd &model_coefficients) = 0;
 
         /** \brief A boost shared pointer to the point cloud data array. */
         PointCloudConstPtr input_;

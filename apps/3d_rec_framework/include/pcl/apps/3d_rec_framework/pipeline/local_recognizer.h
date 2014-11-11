@@ -88,15 +88,15 @@ namespace pcl
         std::vector<int> indices_;
 
         bool use_cache_;
-        std::map<std::pair<std::string, int>, Eigen::Matrix4f, std::less<std::pair<std::string, int> >, Eigen::aligned_allocator<std::pair<std::pair<
-            std::string, int>, Eigen::Matrix4f> > > poses_cache_;
+        std::map<std::pair<std::string, int>, Eigen::Matrix4d, std::less<std::pair<std::string, int> >, Eigen::aligned_allocator<std::pair<std::pair<
+            std::string, int>, Eigen::Matrix4d> > > poses_cache_;
         std::map<std::pair<std::string, int>, typename pcl::PointCloud<PointInT>::Ptr> keypoints_cache_;
 
         double threshold_accept_model_hypothesis_;
         int ICP_iterations_;
 
         boost::shared_ptr<std::vector<ModelT> > models_;
-        boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms_;
+        boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms_;
 
         int kdtree_splits_;
         double VOXEL_SIZE_ICP_;
@@ -139,7 +139,7 @@ namespace pcl
         };
 
         void
-        getPose (ModelT & model, int view_id, Eigen::Matrix4f & pose_matrix);
+        getPose (ModelT & model, int view_id, Eigen::Matrix4d & pose_matrix);
 
         void
         getKeypoints (ModelT & model, int view_id, typename pcl::PointCloud<PointInT>::Ptr & keypoints_cloud);
@@ -161,9 +161,9 @@ namespace pcl
           for (size_t kk = 0; kk < correspondences.size (); kk++)
           {
             pcl::PointXYZ p;
-            p.getVector4fMap () = oh.correspondences_pointcloud->points[correspondences[kk].index_query].getVector4fMap ();
+            p.getVector4dMap () = oh.correspondences_pointcloud->points[correspondences[kk].index_query].getVector4dMap ();
             pcl::PointXYZ p_scene;
-            p_scene.getVector4fMap () = keypoints_pointcloud->points[correspondences[kk].index_match].getVector4fMap ();
+            p_scene.getVector4dMap () = keypoints_pointcloud->points[correspondences[kk].index_match].getVector4dMap ();
 
             std::stringstream line_name;
             line_name << "line_" << kk;
@@ -247,7 +247,7 @@ namespace pcl
           return models_;
         }
 
-        boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > >
+        boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > >
         getTransforms ()
         {
           return transforms_;

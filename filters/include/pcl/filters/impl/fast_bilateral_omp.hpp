@@ -103,20 +103,20 @@ pcl::FastBilateralFilterOMP<PointT>::applyFilter (PointCloud &output)
     size_t small_x = static_cast<size_t> (i % small_width);
     size_t small_y = static_cast<size_t> (i / small_width);
     size_t start_x = static_cast<size_t>( 
-        std::max ((static_cast<double> (small_x) - static_cast<double> (padding_xy) - 0.5f) * sigma_s_ + 1, 0.f));
+        std::max ((static_cast<double> (small_x) - static_cast<double> (padding_xy) - 0.5) * sigma_s_ + 1, 0.));
     size_t end_x = static_cast<size_t>( 
-      std::max ((static_cast<double> (small_x) - static_cast<double> (padding_xy) + 0.5f) * sigma_s_ + 1, 0.f));
+      std::max ((static_cast<double> (small_x) - static_cast<double> (padding_xy) + 0.5) * sigma_s_ + 1, 0.));
     size_t start_y = static_cast<size_t>( 
-      std::max ((static_cast<double> (small_y) - static_cast<double> (padding_xy) - 0.5f) * sigma_s_ + 1, 0.f));
+      std::max ((static_cast<double> (small_y) - static_cast<double> (padding_xy) - 0.5) * sigma_s_ + 1, 0.));
     size_t end_y = static_cast<size_t>( 
-      std::max ((static_cast<double> (small_y) - static_cast<double> (padding_xy) + 0.5f) * sigma_s_ + 1, 0.f));
+      std::max ((static_cast<double> (small_y) - static_cast<double> (padding_xy) + 0.5) * sigma_s_ + 1, 0.));
     for (size_t x = start_x; x < end_x && x < input_->width; ++x)
     {
       for (size_t y = start_y; y < end_y && y < input_->height; ++y)
       {
         const double z = output (x,y).z - base_min;
         const size_t small_z = static_cast<size_t> (static_cast<double> (z) / sigma_r_ + 0.5f) + padding_z;
-        Eigen::Vector2f& d = data (small_x, small_y, small_z);
+        Eigen::Vector2d& d = data (small_x, small_y, small_z);
         d[0] += output (x,y).z;
         d[1] += 1.0f;
       }
@@ -144,8 +144,8 @@ pcl::FastBilateralFilterOMP<PointT>::applyFilter (PointCloud &output)
         size_t x = static_cast<size_t> (i % (small_width - 2) + 1);
         size_t y = static_cast<size_t> (i / (small_width - 2) + 1);
         const long int off = offset[dim];
-        Eigen::Vector2f* d_ptr = &(current_data->operator() (x,y,1));
-        Eigen::Vector2f* b_ptr = &(current_buffer->operator() (x,y,1));
+        Eigen::Vector2d* d_ptr = &(current_data->operator() (x,y,1));
+        Eigen::Vector2d* b_ptr = &(current_buffer->operator() (x,y,1));
 
         for(size_t z = 1; z < small_depth - 1; ++z, ++d_ptr, ++b_ptr)
           *d_ptr = (*(b_ptr - off) + *(b_ptr + off) + 2.0 * (*b_ptr)) / 4.0;
@@ -158,7 +158,7 @@ pcl::FastBilateralFilterOMP<PointT>::applyFilter (PointCloud &output)
 
   if (early_division_)
   {
-    for (std::vector<Eigen::Vector2f >::iterator d = data.begin (); d != data.end (); ++d)
+    for (std::vector<Eigen::Vector2d >::iterator d = data.begin (); d != data.end (); ++d)
       *d /= ((*d)[0] != 0) ? (*d)[1] : 1;
 
 #ifdef _OPENMP
@@ -169,7 +169,7 @@ pcl::FastBilateralFilterOMP<PointT>::applyFilter (PointCloud &output)
       size_t x = static_cast<size_t> (i % input_->width);
       size_t y = static_cast<size_t> (i / input_->width);
       const double z = output (x,y).z - base_min;
-      const Eigen::Vector2f D = data.trilinear_interpolation (static_cast<double> (x) / sigma_s_ + padding_xy,
+      const Eigen::Vector2d D = data.trilinear_interpolation (static_cast<double> (x) / sigma_s_ + padding_xy,
                                                               static_cast<double> (y) / sigma_s_ + padding_xy,
                                                               z / sigma_r_ + padding_z);
       output(x,y).z = D[0];
@@ -185,7 +185,7 @@ pcl::FastBilateralFilterOMP<PointT>::applyFilter (PointCloud &output)
       size_t x = static_cast<size_t> (i % input_->width);
       size_t y = static_cast<size_t> (i / input_->width);
       const double z = output (x,y).z - base_min;
-      const Eigen::Vector2f D = data.trilinear_interpolation (static_cast<double> (x) / sigma_s_ + padding_xy,
+      const Eigen::Vector2d D = data.trilinear_interpolation (static_cast<double> (x) / sigma_s_ + padding_xy,
                                                               static_cast<double> (y) / sigma_s_ + padding_xy,
                                                               z / sigma_r_ + padding_z);
       output (x,y).z = D[0] / D[1];

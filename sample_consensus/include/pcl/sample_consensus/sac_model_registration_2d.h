@@ -74,7 +74,7 @@ namespace pcl
       SampleConsensusModelRegistration2D (const PointCloudConstPtr &cloud,
                                           bool random = false) 
         : pcl::SampleConsensusModelRegistration<PointT> (cloud, random)
-        , projection_matrix_ (Eigen::Matrix3f::Identity ())
+        , projection_matrix_ (Eigen::Matrix3d::Identity ())
       {
         // Call our own setInputCloud
         setInputCloud (cloud);
@@ -89,7 +89,7 @@ namespace pcl
                                           const std::vector<int> &indices,
                                           bool random = false)
         : pcl::SampleConsensusModelRegistration<PointT> (cloud, indices, random)
-        , projection_matrix_ (Eigen::Matrix3f::Identity ())
+        , projection_matrix_ (Eigen::Matrix3d::Identity ())
       {
         computeOriginalIndexMapping ();
         computeSampleDistanceThreshold (cloud, indices);
@@ -103,7 +103,7 @@ namespace pcl
         * \param[out] distances the resultant estimated distances
         */
       void
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients,
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients,
                            std::vector<double> &distances);
 
       /** \brief Select all the points which respect the given model coefficients as inliers.
@@ -112,7 +112,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients,
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients,
                             const double threshold,
                             std::vector<int> &inliers);
 
@@ -123,18 +123,18 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients,
+      countWithinDistance (const Eigen::VectorXd &model_coefficients,
                            const double threshold);
 
       /** \brief Set the camera projection matrix. 
         * \param[in] projection_matrix the camera projection matrix 
         */
       inline void
-      setProjectionMatrix (const Eigen::Matrix3f &projection_matrix)
+      setProjectionMatrix (const Eigen::Matrix3d &projection_matrix)
       { projection_matrix_ = projection_matrix; }
 
       /** \brief Get the camera projection matrix. */
-      inline Eigen::Matrix3f
+      inline Eigen::Matrix3d
       getProjectionMatrix () const
       { return (projection_matrix_); }
 
@@ -153,8 +153,8 @@ namespace pcl
       computeSampleDistanceThreshold (const PointCloudConstPtr&)
       {
         //// Compute the principal directions via PCA
-        //Eigen::Vector4f xyz_centroid;
-        //Eigen::Matrix3f covariance_matrix = Eigen::Matrix3f::Zero ();
+        //Eigen::Vector4d xyz_centroid;
+        //Eigen::Matrix3d covariance_matrix = Eigen::Matrix3d::Zero ();
 
         //computeMeanAndCovarianceMatrix (*cloud, covariance_matrix, xyz_centroid);
 
@@ -164,7 +164,7 @@ namespace pcl
         //    if (!pcl_isfinite (covariance_matrix.coeffRef (i, j)))
         //      PCL_ERROR ("[pcl::SampleConsensusModelRegistration::computeSampleDistanceThreshold] Covariance matrix has NaN values! Is the input cloud finite?\n");
 
-        //Eigen::Vector3f eigen_values;
+        //Eigen::Vector3d eigen_values;
         //pcl::eigen33 (covariance_matrix, eigen_values);
 
         //// Compute the distance threshold for sample selection
@@ -181,8 +181,8 @@ namespace pcl
                                       const std::vector<int>&)
       {
         //// Compute the principal directions via PCA
-        //Eigen::Vector4f xyz_centroid;
-        //Eigen::Matrix3f covariance_matrix;
+        //Eigen::Vector4d xyz_centroid;
+        //Eigen::Matrix3d covariance_matrix;
         //computeMeanAndCovarianceMatrix (*cloud, indices, covariance_matrix, xyz_centroid);
 
         //// Check if the covariance matrix is finite or not.
@@ -191,7 +191,7 @@ namespace pcl
         //    if (!pcl_isfinite (covariance_matrix.coeffRef (i, j)))
         //      PCL_ERROR ("[pcl::SampleConsensusModelRegistration::computeSampleDistanceThreshold] Covariance matrix has NaN values! Is the input cloud finite?\n");
 
-        //Eigen::Vector3f eigen_values;
+        //Eigen::Vector3d eigen_values;
         //pcl::eigen33 (covariance_matrix, eigen_values);
 
         //// Compute the distance threshold for sample selection
@@ -202,7 +202,7 @@ namespace pcl
 
     private:
       /** \brief Camera projection matrix. */
-      Eigen::Matrix3f projection_matrix_;
+      Eigen::Matrix3d projection_matrix_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

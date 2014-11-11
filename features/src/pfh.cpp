@@ -42,11 +42,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, 
-                          const Eigen::Vector4f &p2, const Eigen::Vector4f &n2,
+pcl::computePairFeatures (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1, 
+                          const Eigen::Vector4d &p2, const Eigen::Vector4d &n2,
                           double &f1, double &f2, double &f3, double &f4)
 {
-  Eigen::Vector4f dp2p1 = p2 - p1;
+  Eigen::Vector4d dp2p1 = p2 - p1;
   dp2p1[3] = 0.0f;
   f4 = dp2p1.norm ();
 
@@ -57,7 +57,7 @@ pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
     return (false);
   }
 
-  Eigen::Vector4f n1_copy = n1,
+  Eigen::Vector4d n1_copy = n1,
                   n2_copy = n2;
   n1_copy[3] = n2_copy[3] = 0.0f;
   double angle1 = n1_copy.dot (dp2p1) / f4;
@@ -78,7 +78,7 @@ pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
 
   // Create a Darboux frame coordinate system u-v-w
   // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
-  Eigen::Vector4f v = dp2p1.cross3 (n1_copy);
+  Eigen::Vector4d v = dp2p1.cross3 (n1_copy);
   v[3] = 0.0f;
   double v_norm = v.norm ();
   if (v_norm == 0.0f)
@@ -90,7 +90,7 @@ pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
   // Normalize v
   v /= v_norm;
 
-  Eigen::Vector4f w = n1_copy.cross3 (v);
+  Eigen::Vector4d w = n1_copy.cross3 (v);
   // Do not have to normalize w - it is a unit vector by construction
 
   v[3] = 0.0f;
@@ -104,11 +104,11 @@ pcl::computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, const Eigen::Vector4i &colors1,
-                             const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, const Eigen::Vector4i &colors2,
+pcl::computeRGBPairFeatures (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1, const Eigen::Vector4i &colors1,
+                             const Eigen::Vector4d &p2, const Eigen::Vector4d &n2, const Eigen::Vector4i &colors2,
                              double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7)
 {
-  Eigen::Vector4f dp2p1 = p2 - p1;
+  Eigen::Vector4d dp2p1 = p2 - p1;
   dp2p1[3] = 0.0f;
   f4 = dp2p1.norm ();
 
@@ -119,7 +119,7 @@ pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n
     return (false);
   }
 
-  Eigen::Vector4f n1_copy = n1,
+  Eigen::Vector4d n1_copy = n1,
       n2_copy = n2;
   n1_copy[3] = n2_copy[3] = 0.0f;
   double angle1 = n1_copy.dot (dp2p1) / f4;
@@ -128,7 +128,7 @@ pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n
 
   // Create a Darboux frame coordinate system u-v-w
   // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
-  Eigen::Vector4f v = dp2p1.cross3 (n1_copy);
+  Eigen::Vector4d v = dp2p1.cross3 (n1_copy);
   v[3] = 0.0f;
   double v_norm = v.norm ();
   if (v_norm == 0.0f)
@@ -140,7 +140,7 @@ pcl::computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n
   // Normalize v
   v /= v_norm;
 
-  Eigen::Vector4f w = n1_copy.cross3 (v);
+  Eigen::Vector4d w = n1_copy.cross3 (v);
   // Do not have to normalize w - it is a unit vector by construction
 
   v[3] = 0.0f;

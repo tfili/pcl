@@ -67,7 +67,7 @@ pcl::filters::Pyramid<PointT>::initCompute ()
   
   if (large_)
   {
-    Eigen::VectorXf k (5);
+    Eigen::VectorXd k (5);
     k << 1.f/16.f, 1.f/4.f, 3.f/8.f, 1.f/4.f, 1.f/16.f;
     kernel_ = k * k.transpose ();
     if (threshold_ != std::numeric_limits<double>::infinity ())
@@ -76,7 +76,7 @@ pcl::filters::Pyramid<PointT>::initCompute ()
   }
   else
   {
-    Eigen::VectorXf k (3);
+    Eigen::VectorXd k (3);
     k << 1.f/4.f, 1.f/2.f, 1.f/4.f;
     kernel_ = k * k.transpose ();
     if (threshold_ != std::numeric_limits<double>::infinity ())

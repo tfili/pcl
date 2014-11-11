@@ -28,7 +28,7 @@ namespace pcl
         void
         estimate (PointInTPtr & in, PointInTPtr & processed,
                   typename pcl::PointCloud<FeatureT>::CloudVectorType & signatures,
-                  std::vector<Eigen::Vector3f> & centroids)
+                  std::vector<Eigen::Vector3d> & centroids)
         {
 
           if (!normal_estimator_)
@@ -57,9 +57,9 @@ namespace pcl
 
           signatures[0] = vfh_signature;
 
-          Eigen::Vector4f centroid4f;
+          Eigen::Vector4d centroid4f;
           pcl::compute3DCentroid (*in, centroid4f);
-          centroids[0] = Eigen::Vector3f (centroid4f[0], centroid4f[1], centroid4f[2]);
+          centroids[0] = Eigen::Vector3d (centroid4f[0], centroid4f[1], centroid4f[2]);
 
         }
 

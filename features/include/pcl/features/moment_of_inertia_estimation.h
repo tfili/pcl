@@ -172,7 +172,7 @@ namespace pcl
         * \param[out] rotational_matrix this matrix represents the rotation transform
         */
       bool
-      getOBB (PointT& min_point, PointT& max_point, PointT& position, Eigen::Matrix3f& rotational_matrix) const;
+      getOBB (PointT& min_point, PointT& max_point, PointT& position, Eigen::Matrix3d& rotational_matrix) const;
 
       /** \brief This method gives access to the computed eigen values. It returns true
         * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
@@ -190,7 +190,7 @@ namespace pcl
         * \param[out] minor axis which corresponds to the eigen vector with the minor eigen value
         */
       bool
-      getEigenVectors (Eigen::Vector3f& major, Eigen::Vector3f& middle, Eigen::Vector3f& minor) const;
+      getEigenVectors (Eigen::Vector3d& major, Eigen::Vector3d& middle, Eigen::Vector3d& minor) const;
 
       /** \brief This method gives access to the computed moments of inertia. It returns true
         * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
@@ -212,7 +212,7 @@ namespace pcl
         * \param[out] mass_center computed mass center
         */
       bool
-      getMassCenter (Eigen::Vector3f& mass_center) const;
+      getMassCenter (Eigen::Vector3d& mass_center) const;
 
     private:
 
@@ -223,7 +223,7 @@ namespace pcl
         * \param[out] rotated_vector resultant vector
         */
       void
-      rotateVector (const Eigen::Vector3f& vector, const Eigen::Vector3f& axis, const double angle, Eigen::Vector3f& rotated_vector) const;
+      rotateVector (const Eigen::Vector3d& vector, const Eigen::Vector3d& axis, const double angle, Eigen::Vector3d& rotated_vector) const;
 
       /** \brief This method computes center of mass and axis aligned bounding box. */
       void
@@ -259,8 +259,8 @@ namespace pcl
         * \param[out] minor_value minor eigen value
         */
       void
-      computeEigenVectors (const Eigen::Matrix <double, 3, 3>& covariance_matrix, Eigen::Vector3f& major_axis,
-                           Eigen::Vector3f& middle_axis, Eigen::Vector3f& minor_axis, double& major_value, double& middle_value,
+      computeEigenVectors (const Eigen::Matrix <double, 3, 3>& covariance_matrix, Eigen::Vector3d& major_axis,
+                           Eigen::Vector3d& middle_axis, Eigen::Vector3d& minor_axis, double& major_value, double& middle_value,
                            double& minor_value);
 
       /** \brief This method returns the moment of inertia of a given input_ cloud.
@@ -270,7 +270,7 @@ namespace pcl
         * \param[in] mean_value mean value(center of mass) of the cloud
         */
       double
-      calculateMomentOfInertia (const Eigen::Vector3f& current_axis, const Eigen::Vector3f& mean_value) const;
+      calculateMomentOfInertia (const Eigen::Vector3d& current_axis, const Eigen::Vector3d& mean_value) const;
 
       /** \brief This method simply projects the given input_ cloud on the plane specified with
         * the normal vector.
@@ -279,14 +279,14 @@ namespace pcl
         * \param[out] projected_cloud projected cloud
         */
       void
-      getProjectedCloud (const Eigen::Vector3f& normal_vector, const Eigen::Vector3f& point, typename pcl::PointCloud <PointT>::Ptr projected_cloud) const;
+      getProjectedCloud (const Eigen::Vector3d& normal_vector, const Eigen::Vector3d& point, typename pcl::PointCloud <PointT>::Ptr projected_cloud) const;
 
       /** \brief This method returns the eccentricity of the projected cloud.
         * \param[in] covariance_matrix covariance matrix of the projected cloud
         * \param[in] normal_vector normal vector of the plane, it is used to discard the
         *            third eigen vector and eigen value*/
       double
-      computeEccentricity (const Eigen::Matrix <double, 3, 3>& covariance_matrix, const Eigen::Vector3f& normal_vector);
+      computeEccentricity (const Eigen::Matrix <double, 3, 3>& covariance_matrix, const Eigen::Vector3d& normal_vector);
 
     private:
 
@@ -304,16 +304,16 @@ namespace pcl
       bool normalize_;
 
       /** \brief Stores the mean value (center of mass) of the cloud */
-      Eigen::Vector3f mean_value_;
+      Eigen::Vector3d mean_value_;
 
       /** \brief Major eigen vector */
-      Eigen::Vector3f major_axis_;
+      Eigen::Vector3d major_axis_;
 
       /** \brief Middle eigen vector */
-      Eigen::Vector3f middle_axis_;
+      Eigen::Vector3d middle_axis_;
 
       /** \brief Minor eigen vector */
-      Eigen::Vector3f minor_axis_;
+      Eigen::Vector3d minor_axis_;
 
       /** \brief Major eigen value */
       double major_value_;
@@ -343,10 +343,10 @@ namespace pcl
       PointT obb_max_point_;
 
       /** \brief Stores position of the oriented bounding box */
-      Eigen::Vector3f obb_position_;
+      Eigen::Vector3d obb_position_;
 
       /** \brief Stores the rotational matrix of the oriented bounding box */
-      Eigen::Matrix3f obb_rotational_matrix_;
+      Eigen::Matrix3d obb_rotational_matrix_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

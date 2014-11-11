@@ -57,7 +57,7 @@ TEST (PCL, compute3DCentroidFloat)
   std::vector<int> indices;
   PointXYZ point;
   PointCloud<PointXYZ> cloud;
-  Eigen::Vector4f centroid;
+  Eigen::Vector4d centroid;
 
   // test empty cloud which is dense
   cloud.is_dense = true;
@@ -268,7 +268,7 @@ TEST (PCL, compute3DCentroidCloudIterator)
   std::vector<int> indices;
   PointXYZ point;
   PointCloud<PointXYZ> cloud;
-  Eigen::Vector4f centroid_f;
+  Eigen::Vector4d centroid_f;
 
   for (point.x = -1; point.x < 2; point.x += 2)
   {
@@ -314,8 +314,8 @@ TEST (PCL, computeCovarianceMatrix)
   PointCloud<PointXYZ> cloud;
   PointXYZ point;
   std::vector <int> indices;
-  Eigen::Vector4f centroid;
-  Eigen::Matrix3f covariance_matrix;
+  Eigen::Vector4d centroid;
+  Eigen::Matrix3d covariance_matrix;
 
   centroid [0] = 0;
   centroid [1] = 0;
@@ -430,8 +430,8 @@ TEST (PCL, computeCovarianceMatrixNormalized)
   PointCloud<PointXYZ> cloud;
   PointXYZ point;
   std::vector <int> indices;
-  Eigen::Vector4f centroid;
-  Eigen::Matrix3f covariance_matrix;
+  Eigen::Vector4d centroid;
+  Eigen::Matrix3d covariance_matrix;
 
   centroid [0] = 0;
   centroid [1] = 0;
@@ -548,7 +548,7 @@ TEST (PCL, computeDemeanedCovariance)
   PointCloud<PointXYZ> cloud;
   PointXYZ point;
   std::vector <int> indices;
-  Eigen::Matrix3f covariance_matrix;
+  Eigen::Matrix3d covariance_matrix;
 
   // test empty cloud which is dense
   cloud.is_dense = true;
@@ -654,8 +654,8 @@ TEST (PCL, computeMeanAndCovariance)
   PointCloud<PointXYZ> cloud;
   PointXYZ point;
   std::vector <int> indices;
-  Eigen::Matrix3f covariance_matrix;
-  Eigen::Vector4f centroid;
+  Eigen::Matrix3d covariance_matrix;
+  Eigen::Vector4d centroid;
 
   // test empty cloud which is dense
   cloud.is_dense = true;
@@ -782,9 +782,9 @@ TEST (PCL, computeMeanAndCovariance)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, CentroidPoint)
 {
-  PointXYZ p1; p1.getVector3fMap () << 1, 2, 3;
-  PointXYZ p2; p2.getVector3fMap () << 3, 2, 1;
-  PointXYZ p3; p3.getVector3fMap () << 5, 5, 5;
+  PointXYZ p1; p1.getVector3dMap () << 1, 2, 3;
+  PointXYZ p2; p2.getVector3dMap () << 3, 2, 1;
+  PointXYZ p3; p3.getVector3dMap () << 5, 5, 5;
 
   // Zero points (get should have no effect)
   {
@@ -824,9 +824,9 @@ TEST (PCL, CentroidPoint)
 
   // Centroid with XYZ and RGB
   {
-    PointXYZRGB cp1; cp1.getVector3fMap () << 4, 2, 4; cp1.rgba = 0xFF330000;
-    PointXYZRGB cp2; cp2.getVector3fMap () << 2, 4, 2; cp2.rgba = 0xFF003300;
-    PointXYZRGB cp3; cp3.getVector3fMap () << 3, 3, 3; cp3.rgba = 0xFF000033;
+    PointXYZRGB cp1; cp1.getVector3dMap () << 4, 2, 4; cp1.rgba = 0xFF330000;
+    PointXYZRGB cp2; cp2.getVector3dMap () << 2, 4, 2; cp2.rgba = 0xFF003300;
+    PointXYZRGB cp3; cp3.getVector3dMap () << 3, 3, 3; cp3.rgba = 0xFF000033;
     CentroidPoint<PointXYZRGB> centroid;
     centroid.add (cp1);
     centroid.add (cp2);
@@ -839,9 +839,9 @@ TEST (PCL, CentroidPoint)
 
   // Centroid with normal and curavture
   {
-    Normal np1; np1.getNormalVector4fMap () << 1, 0, 0, 0; np1.curvature = 0.2;
-    Normal np2; np2.getNormalVector4fMap () << -1, 0, 0, 0; np2.curvature = 0.1;
-    Normal np3; np3.getNormalVector4fMap () << 0, 1, 0, 0; np3.curvature = 0.9;
+    Normal np1; np1.getNormalVector4dMap () << 1, 0, 0, 0; np1.curvature = 0.2;
+    Normal np2; np2.getNormalVector4dMap () << -1, 0, 0, 0; np2.curvature = 0.1;
+    Normal np3; np3.getNormalVector4dMap () << 0, 1, 0, 0; np3.curvature = 0.9;
     CentroidPoint<Normal> centroid;
     centroid.add (np1);
     centroid.add (np2);
@@ -854,9 +854,9 @@ TEST (PCL, CentroidPoint)
 
   // Centroid with XYZ and intensity
   {
-    PointXYZI ip1; ip1.getVector3fMap () << 1, 2, 3; ip1.intensity = 0.8;
-    PointXYZI ip2; ip2.getVector3fMap () << 3, 2, 1; ip2.intensity = 0.2;
-    PointXYZI ip3; ip3.getVector3fMap () << 5, 5, 5; ip3.intensity = 0.2;
+    PointXYZI ip1; ip1.getVector3dMap () << 1, 2, 3; ip1.intensity = 0.8;
+    PointXYZI ip2; ip2.getVector3dMap () << 3, 2, 1; ip2.intensity = 0.2;
+    PointXYZI ip3; ip3.getVector3dMap () << 5, 5, 5; ip3.intensity = 0.2;
     CentroidPoint<PointXYZI> centroid;
     centroid.add (ip1);
     centroid.add (ip2);

@@ -28,7 +28,7 @@ main (int argc, char** argv)
 
   pcl::PCDWriter writer;
   writer.write ("table_scene_lms400_downsampled.pcd", *cloud_filtered, 
-         Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), false);
+         Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), false);
 
   return (0);
 }

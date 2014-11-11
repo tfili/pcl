@@ -129,12 +129,12 @@ pcl::people::PersonClassifier<PointT>::resize (PointCloudPtr& input_image,
   double scale1 = double(height) / double(input_image->height);
   double scale2 = double(width) / double(input_image->width);
 
-  Eigen::Matrix3f T_inv;
+  Eigen::Matrix3d T_inv;
   T_inv << 1/scale1, 0, 0,
        0, 1/scale2, 0,
        0,   0,   1;
 
-  Eigen::Vector3f A;
+  Eigen::Vector3d A;
   int c1, c2, f1, f2;
   PointT g1, g2, g3, g4;
   double w1, w2;
@@ -142,7 +142,7 @@ pcl::people::PersonClassifier<PointT>::resize (PointCloudPtr& input_image,
   {
   for (int j = 0; j < width; j++)  // for every column
   {
-    A = T_inv * Eigen::Vector3f(i, j, 1);
+    A = T_inv * Eigen::Vector3d(i, j, 1);
     c1 = ceil(A(0));
     f1 = floor(A(0));
     c2 = ceil(A(1));
@@ -280,9 +280,9 @@ pcl::people::PersonClassifier<PointT>::evaluate (double height_person,
 
 template <typename PointT> double
 pcl::people::PersonClassifier<PointT>::evaluate (PointCloudPtr& image,
-              Eigen::Vector3f& bottom,
-              Eigen::Vector3f& top,
-              Eigen::Vector3f& centroid,
+              Eigen::Vector3d& bottom,
+              Eigen::Vector3d& top,
+              Eigen::Vector3d& centroid,
               bool vertical)
 {
   double pixel_height;

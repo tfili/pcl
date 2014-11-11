@@ -203,12 +203,12 @@ pcl::octree::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, OctreeT>
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename LeafContainerT, typename BranchContainerT, typename OctreeT> int
 pcl::octree::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, OctreeT>::getApproxIntersectedVoxelCentersBySegment (
-    const Eigen::Vector3f& origin,
-    const Eigen::Vector3f& end,
+    const Eigen::Vector3d& origin,
+    const Eigen::Vector3d& end,
     AlignedPointTVector &voxel_center_list,
     double precision)
 {
-  Eigen::Vector3f direction = end - origin;
+  Eigen::Vector3d direction = end - origin;
   double norm = direction.norm ();
   direction.normalize ();
 
@@ -223,7 +223,7 @@ pcl::octree::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, OctreeT>
   // Walk along the line segment with small steps.
   for (int i = 0; i < nsteps; ++i)
   {
-    Eigen::Vector3f p = origin + (direction * step_size * static_cast<const double> (i));
+    Eigen::Vector3d p = origin + (direction * step_size * static_cast<const double> (i));
 
     PointT octree_p;
     octree_p.x = p.x ();
@@ -731,8 +731,8 @@ template<typename PointT, typename LeafContainerT, typename BranchContainerT, ty
 pcl::octree::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, OctreeT>::genVoxelBoundsFromOctreeKey (
     const OctreeKey & key_arg,
     unsigned int tree_depth_arg,
-    Eigen::Vector3f &min_pt,
-    Eigen::Vector3f &max_pt) const
+    Eigen::Vector3d &min_pt,
+    Eigen::Vector3d &max_pt) const
 {
   // calculate voxel size of current tree depth
   double voxel_side_len = this->resolution_ * static_cast<double> (1 << (this->octree_depth_ - tree_depth_arg));

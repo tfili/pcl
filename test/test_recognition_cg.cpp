@@ -71,7 +71,7 @@ PointCloud<DescriptorType>::Ptr scene_descriptors_ (new PointCloud<DescriptorTyp
 CorrespondencesPtr model_scene_corrs_ (new Correspondences ());
 
 double
-computeRmsE (const PointCloud<PointType>::ConstPtr &model, const PointCloud<PointType>::ConstPtr &scene, const Eigen::Matrix4f &rototranslation)
+computeRmsE (const PointCloud<PointType>::ConstPtr &model, const PointCloud<PointType>::ConstPtr &scene, const Eigen::Matrix4d &rototranslation)
 {
   PointCloud<PointType> transformed_model;
   transformPointCloud (*model, transformed_model, rototranslation);
@@ -120,7 +120,7 @@ TEST (PCL, Hough3DGrouping)
   rf_est.setSearchSurface (scene_);
   rf_est.compute (*scene_rf);
 
-  vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
+  vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > rototranslations;
 
   //Actual CG
   Hough3DGrouping<PointType, PointType, RFType, RFType> clusterer;
@@ -141,7 +141,7 @@ TEST (PCL, Hough3DGrouping)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, GeometricConsistencyGrouping)
 {
-  vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
+  vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > rototranslations;
 
   GeometricConsistencyGrouping<PointType, PointType> clusterer;
   clusterer.setInputCloud (model_downsampled_);

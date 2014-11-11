@@ -111,15 +111,15 @@ namespace pcl
           // If we expect at max an opening angle of 170degree in x-direction -> f_x = 2.0 * width / tan (85 degree);
           // 2 * tan (85 degree) ~ 22.86
           double min_f = 0.043744332f * static_cast<double>(input_->width);
-          //std::cout << "isValid: " << determinant3x3Matrix<Eigen::Matrix3f> (KR_ / sqrt (KR_KRT_.coeff (8))) << " >= " << (min_f * min_f) << std::endl;
-          return (determinant3x3Matrix<Eigen::Matrix3f> (KR_ / sqrtf (KR_KRT_.coeff (8))) >= (min_f * min_f));
+          //std::cout << "isValid: " << determinant3x3Matrix<Eigen::Matrix3d> (KR_ / sqrt (KR_KRT_.coeff (8))) << " >= " << (min_f * min_f) << std::endl;
+          return (determinant3x3Matrix<Eigen::Matrix3d> (KR_ / sqrtf (KR_KRT_.coeff (8))) >= (min_f * min_f));
         }
         
         /** \brief Compute the camera matrix
           * \param[out] camera_matrix the resultant computed camera matrix 
           */
         void 
-        computeCameraMatrix (Eigen::Matrix3f& camera_matrix) const;
+        computeCameraMatrix (Eigen::Matrix3d& camera_matrix) const;
         
         /** \brief Provide a pointer to the input data set, if user has focal length he must set it before calling this
           * \param[in] cloud the const boost shared pointer to a PointCloud message
@@ -218,7 +218,7 @@ namespace pcl
           const PointT& point = input_->points [index];
           if (mask_ [index] && pcl_isfinite (point.x))
           {
-            //double squared_distance = (point.getVector3fMap () - query.getVector3fMap ()).squaredNorm ();
+            //double squared_distance = (point.getVector3dMap () - query.getVector3dMap ()).squaredNorm ();
             double dist_x = point.x - query.x;
             double dist_y = point.y - query.y;
             double dist_z = point.z - query.z;

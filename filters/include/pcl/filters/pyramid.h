@@ -154,7 +154,7 @@ namespace pcl
         /// \brief filter name
         std::string name_;
         /// \brief smoothing kernel
-        Eigen::MatrixXf kernel_;
+        Eigen::MatrixXd kernel_;
         /// Threshold distance between adjacent points
         double threshold_;
         /// \brief number of threads

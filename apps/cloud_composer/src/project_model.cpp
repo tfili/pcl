@@ -171,8 +171,8 @@ pcl::cloud_composer::ProjectModel::insertNewCloudFromFile ()
   }
     
   pcl::PCLPointCloud2::Ptr cloud_blob (new pcl::PCLPointCloud2);
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   int version;
   
   pcl::PCDReader pcd;
@@ -378,8 +378,8 @@ pcl::cloud_composer::ProjectModel::saveSelectedCloudToFile ()
   }
   
   pcl::PCLPointCloud2::ConstPtr cloud = cloud_to_save->data (ItemDataRole::CLOUD_BLOB).value <pcl::PCLPointCloud2::ConstPtr> ();
-  Eigen::Vector4f origin = cloud_to_save->data (ItemDataRole::ORIGIN).value <Eigen::Vector4f> ();
-  Eigen::Quaternionf orientation = cloud_to_save->data (ItemDataRole::ORIENTATION).value <Eigen::Quaternionf> ();
+  Eigen::Vector4d origin = cloud_to_save->data (ItemDataRole::ORIGIN).value <Eigen::Vector4d> ();
+  Eigen::Quaterniond orientation = cloud_to_save->data (ItemDataRole::ORIENTATION).value <Eigen::Quaterniond> ();
   pcl::io::savePCDFile (filename.toStdString (), *cloud, origin, orientation );
   
 }

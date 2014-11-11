@@ -50,8 +50,8 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computePairFeatures (
     const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
     int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4)
 {
-  pcl::computePairFeatures (cloud.points[p_idx].getVector4fMap (), normals.points[p_idx].getNormalVector4fMap (),
-      cloud.points[q_idx].getVector4fMap (), normals.points[q_idx].getNormalVector4fMap (),
+  pcl::computePairFeatures (cloud.points[p_idx].getVector4dMap (), normals.points[p_idx].getNormalVector4dMap (),
+      cloud.points[q_idx].getVector4dMap (), normals.points[q_idx].getNormalVector4dMap (),
       f1, f2, f3, f4);
   return (true);
 }
@@ -61,9 +61,9 @@ template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (
     const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
     int p_idx, int row, const std::vector<int> &indices,
-    Eigen::MatrixXf &hist_f1, Eigen::MatrixXf &hist_f2, Eigen::MatrixXf &hist_f3)
+    Eigen::MatrixXd &hist_f1, Eigen::MatrixXd &hist_f2, Eigen::MatrixXd &hist_f3)
 {
-  Eigen::Vector4f pfh_tuple;
+  Eigen::Vector4d pfh_tuple;
   // Get the number of bins from the histograms size
   int nr_bins_f1 = static_cast<int> (hist_f1.cols ());
   int nr_bins_f2 = static_cast<int> (hist_f2.cols ());
@@ -104,8 +104,8 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::weightPointSPFHSignature (
-    const Eigen::MatrixXf &hist_f1, const Eigen::MatrixXf &hist_f2, const Eigen::MatrixXf &hist_f3,
-    const std::vector<int> &indices, const std::vector<double> &dists, Eigen::VectorXf &fpfh_histogram)
+    const Eigen::MatrixXd &hist_f1, const Eigen::MatrixXd &hist_f2, const Eigen::MatrixXd &hist_f3,
+    const std::vector<int> &indices, const std::vector<double> &dists, Eigen::VectorXd &fpfh_histogram)
 {
   assert (indices.size () == dists.size ());
   double sum_f1 = 0.0, sum_f2 = 0.0, sum_f3 = 0.0;
@@ -172,7 +172,7 @@ pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::weightPointSPFHSignature (
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::FPFHEstimation<PointInT, PointNT, PointOutT>::computeSPFHSignatures (std::vector<int> &spfh_hist_lookup,
-    Eigen::MatrixXf &hist_f1, Eigen::MatrixXf &hist_f2, Eigen::MatrixXf &hist_f3)
+    Eigen::MatrixXd &hist_f1, Eigen::MatrixXd &hist_f2, Eigen::MatrixXd &hist_f3)
 {
   // Allocate enough space to hold the NN search results
   // \note This resize is irrelevant for a radiusSearch ().

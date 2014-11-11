@@ -14,7 +14,7 @@
 
 template<template<class > class Distance, typename PointInT, typename FeatureT>
   void
-  pcl::rec_3d_framework::GlobalNNCVFHRecognizer<Distance, PointInT, FeatureT>::getPose (ModelT & model, int view_id, Eigen::Matrix4f & pose_matrix)
+  pcl::rec_3d_framework::GlobalNNCVFHRecognizer<Distance, PointInT, FeatureT>::getPose (ModelT & model, int view_id, Eigen::Matrix4d & pose_matrix)
   {
 
     if (use_cache_)
@@ -22,7 +22,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
       typedef std::pair<std::string, int> mv_pair;
       mv_pair pair_model_view = std::make_pair (model.id_, view_id);
 
-      std::map<mv_pair, Eigen::Matrix4f, std::less<mv_pair>, Eigen::aligned_allocator<std::pair<mv_pair, Eigen::Matrix4f> > >::iterator it =
+      std::map<mv_pair, Eigen::Matrix4d, std::less<mv_pair>, Eigen::aligned_allocator<std::pair<mv_pair, Eigen::Matrix4d> > >::iterator it =
           poses_cache_.find (pair_model_view);
 
       if (it != poses_cache_.end ())
@@ -43,7 +43,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 template<template<class > class Distance, typename PointInT, typename FeatureT>
   bool
   pcl::rec_3d_framework::GlobalNNCVFHRecognizer<Distance, PointInT, FeatureT>::getRollPose (ModelT & model, int view_id, int d_id,
-                                                                                            Eigen::Matrix4f & pose_matrix)
+                                                                                            Eigen::Matrix4d & pose_matrix)
   {
 
     std::stringstream dir;
@@ -66,7 +66,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 template<template<class > class Distance, typename PointInT, typename FeatureT>
   void
   pcl::rec_3d_framework::GlobalNNCVFHRecognizer<Distance, PointInT, FeatureT>::getCentroid (ModelT & model, int view_id, int d_id,
-                                                                                            Eigen::Vector3f & centroid)
+                                                                                            Eigen::Vector3d & centroid)
   {
     std::stringstream dir;
     std::string path = source_->getModelDescriptorDir (model, training_dir_, descr_name_);
@@ -172,7 +172,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
             std::stringstream dir_pose;
             dir_pose << path << "/pose_" << descr_model.view_id << ".txt";
 
-            Eigen::Matrix4f pose_matrix;
+            Eigen::Matrix4d pose_matrix;
             PersistenceUtils::readMatrixFromFile (dir_pose.str (), pose_matrix);
 
             std::pair<std::string, int> pair_model_view = std::make_pair (models->at (i).id_, descr_model.view_id);
@@ -230,13 +230,13 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
   {
 
     models_.reset (new std::vector<ModelT>);
-    transforms_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
+    transforms_.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
 
     PointInTPtr processed (new pcl::PointCloud<PointInT>);
     PointInTPtr in (new pcl::PointCloud<PointInT>);
 
     std::vector<pcl::PointCloud<FeatureT>, Eigen::aligned_allocator<pcl::PointCloud<FeatureT> > > signatures;
-    std::vector < Eigen::Vector3f > centroids;
+    std::vector < Eigen::Vector3d > centroids;
 
     if (indices_.size ())
       pcl::copyPointCloud (*input_, indices_, *in);
@@ -397,7 +397,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         std::cout << "Number of object hypotheses... " << num_n << std::endl;
 
         std::vector<bool> valid_trans;
-        std::vector < Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transformations;
+        std::vector < Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transformations;
 
         micvfh_estimator_->getValidTransformsVec (valid_trans);
         micvfh_estimator_->getTransformsVec (transformations);
@@ -412,40 +412,40 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
           std::cout << m.class_ << "/" << m.id_ << " ==> " << indices_scores[i].score_ << std::endl;
 
-          Eigen::Matrix4f roll_view_pose;
+          Eigen::Matrix4d roll_view_pose;
           bool roll_pose_found = getRollPose (m, view_id, desc_id, roll_view_pose);
 
           if (roll_pose_found && valid_trans[idx_input])
           {
-            Eigen::Matrix4f transposed = roll_view_pose.transpose ();
+            Eigen::Matrix4d transposed = roll_view_pose.transpose ();
 
             //std::cout << transposed << std::endl;
 
             PointInTPtr view;
             getView (m, view_id, view);
 
-            Eigen::Matrix4f model_view_pose;
+            Eigen::Matrix4d model_view_pose;
             getPose (m, view_id, model_view_pose);
 
-            Eigen::Matrix4f scale_mat;
+            Eigen::Matrix4d scale_mat;
             scale_mat.setIdentity (4, 4);
 
             if (compute_scale_)
             {
               //compute scale using the whole view
               PointInTPtr view_transformed (new pcl::PointCloud<PointInT>);
-              Eigen::Matrix4f hom_from_OVC_to_CC;
+              Eigen::Matrix4d hom_from_OVC_to_CC;
               hom_from_OVC_to_CC = transformations[idx_input].inverse () * transposed;
               pcl::transformPointCloud (*view, *view_transformed, hom_from_OVC_to_CC);
 
-              Eigen::Vector3f input_centroid = centroids[indices_scores[i].idx_input_];
-              Eigen::Vector3f view_centroid;
+              Eigen::Vector3d input_centroid = centroids[indices_scores[i].idx_input_];
+              Eigen::Vector3d view_centroid;
               getCentroid (m, view_id, desc_id, view_centroid);
 
-              Eigen::Vector4f cmatch4f (view_centroid[0], view_centroid[1], view_centroid[2], 0);
-              Eigen::Vector4f cinput4f (input_centroid[0], input_centroid[1], input_centroid[2], 0);
+              Eigen::Vector4d cmatch4f (view_centroid[0], view_centroid[1], view_centroid[2], 0);
+              Eigen::Vector4d cinput4f (input_centroid[0], input_centroid[1], input_centroid[2], 0);
 
-              Eigen::Vector4f max_pt_input;
+              Eigen::Vector4d max_pt_input;
               pcl::getMaxDistance (*processed, cinput4f, max_pt_input);
               max_pt_input[3] = 0;
               double max_dist_input = (cinput4f - max_pt_input).norm ();
@@ -461,7 +461,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
               double scale_factor_view = max_dist_input / max_dist_view;
               std::cout << "Scale factor:" << scale_factor_view << std::endl;
 
-              Eigen::Matrix4f center, center_inv;
+              Eigen::Matrix4d center, center_inv;
 
               center.setIdentity (4, 4);
               center (0, 3) = -cinput4f[0];
@@ -480,7 +480,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
               scale_mat = center_inv * scale_mat * center;
             }
 
-            Eigen::Matrix4f hom_from_OC_to_CC;
+            Eigen::Matrix4d hom_from_OC_to_CC;
             hom_from_OC_to_CC = scale_mat * transformations[idx_input].inverse () * transposed * model_view_pose;
 
             models_->push_back (m);
@@ -550,7 +550,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           typename pcl::PointCloud<PointInT>::Ptr output_ (new pcl::PointCloud<PointInT> ());
           reg.align (*output_);
 
-          Eigen::Matrix4f icp_trans = reg.getFinalTransformation ();
+          Eigen::Matrix4d icp_trans = reg.getFinalTransformation ();
           transforms_->at (i) = icp_trans * transforms_->at (i);
         }
       }
@@ -601,10 +601,10 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         hv_algorithm_->getMask (mask_hv);
 
         boost::shared_ptr < std::vector<ModelT> > models_temp;
-        boost::shared_ptr < std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms_temp;
+        boost::shared_ptr < std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms_temp;
 
         models_temp.reset (new std::vector<ModelT>);
-        transforms_temp.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
+        transforms_temp.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
 
         for (size_t i = 0; i < models_->size (); i++)
         {
@@ -669,11 +669,11 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
           //pro view, compute signatures
           std::vector<pcl::PointCloud<FeatureT>, Eigen::aligned_allocator<pcl::PointCloud<FeatureT> > > signatures;
-          std::vector < Eigen::Vector3f > centroids;
+          std::vector < Eigen::Vector3d > centroids;
           micvfh_estimator_->estimate (view, processed, signatures, centroids);
 
           std::vector<bool> valid_trans;
-          std::vector < Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transforms;
+          std::vector < Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transforms;
 
           micvfh_estimator_->getValidTransformsVec (valid_trans);
           micvfh_estimator_->getTransformsVec (transforms);
@@ -703,7 +703,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
             {
               std::stringstream path_centroid;
               path_centroid << path << "/centroid_" << v << "_" << j << ".txt";
-              Eigen::Vector3f centroid (centroids[j][0], centroids[j][1], centroids[j][2]);
+              Eigen::Vector3d centroid (centroids[j][0], centroids[j][1], centroids[j][2]);
               PersistenceUtils::writeCentroidToFile (path_centroid.str (), centroid);
 
               std::stringstream path_descriptor;

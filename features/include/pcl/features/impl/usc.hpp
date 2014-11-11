@@ -143,13 +143,13 @@ pcl::UniqueShapeContext<PointInT, PointOutT, PointRFT>::initCompute ()
 template <typename PointInT, typename PointOutT, typename PointRFT> void
 pcl::UniqueShapeContext<PointInT, PointOutT, PointRFT>::computePointDescriptor (size_t index, /*double rf[9],*/ std::vector<double> &desc)
 {
-  pcl::Vector3fMapConst origin = input_->points[(*indices_)[index]].getVector3fMap ();
+  pcl::Vector3dMapConst origin = input_->points[(*indices_)[index]].getVector3dMap ();
 
-  const Eigen::Vector3f x_axis (frames_->points[index].x_axis[0],
+  const Eigen::Vector3d x_axis (frames_->points[index].x_axis[0],
                                 frames_->points[index].x_axis[1],
                                 frames_->points[index].x_axis[2]);
-  //const Eigen::Vector3f& y_axis = frames_->points[index].y_axis.getNormalVector3fMap ();
-  const Eigen::Vector3f normal (frames_->points[index].z_axis[0],
+  //const Eigen::Vector3d& y_axis = frames_->points[index].y_axis.getNormalVector3dMap ();
+  const Eigen::Vector3d normal (frames_->points[index].z_axis[0],
                                 frames_->points[index].z_axis[1],
                                 frames_->points[index].z_axis[2]);
 
@@ -160,10 +160,10 @@ pcl::UniqueShapeContext<PointInT, PointOutT, PointRFT>::computePointDescriptor (
   // For each point within radius
   for (size_t ne = 0; ne < neighb_cnt; ne++)
   {
-    if (pcl::utils::equal(nn_dists[ne], 0.0f))
+    if (pcl::utils::equal(nn_dists[ne], 0.0))
       continue;
     // Get neighbours coordinates
-    Eigen::Vector3f neighbour = surface_->points[nn_indices[ne]].getVector3fMap ();
+    Eigen::Vector3d neighbour = surface_->points[nn_indices[ne]].getVector3dMap ();
 
     // ----- Compute current neighbour polar coordinates -----
 
@@ -171,7 +171,7 @@ pcl::UniqueShapeContext<PointInT, PointOutT, PointRFT>::computePointDescriptor (
     double r = sqrtf (nn_dists[ne]);
 
     // Project point into the tangent plane
-    Eigen::Vector3f proj;
+    Eigen::Vector3d proj;
     pcl::geometry::project (neighbour, origin, normal, proj);
     proj -= origin;
 
@@ -179,14 +179,14 @@ pcl::UniqueShapeContext<PointInT, PointOutT, PointRFT>::computePointDescriptor (
     proj.normalize ();
 
     // Compute the angle between the projection and the x axis in the interval [0,360]
-    Eigen::Vector3f cross = x_axis.cross (proj);
+    Eigen::Vector3d cross = x_axis.cross (proj);
     double phi = rad2deg (std::atan2 (cross.norm (), x_axis.dot (proj)));
     phi = cross.dot (normal) < 0.f ? (360.0f - phi) : phi;
     /// Compute the angle between the neighbour and the z axis (normal) in the interval [0, 180]
-    Eigen::Vector3f no = neighbour - origin;
+    Eigen::Vector3d no = neighbour - origin;
     no.normalize ();
     double theta = normal.dot (no);
-    theta = pcl::rad2deg (acosf (std::min (1.0f, std::max (-1.0f, theta))));
+    theta = pcl::rad2deg (acos (std::min (1.0, std::max (-1.0, theta))));
 
     /// Bin (j, k, l)
     size_t j = 0;

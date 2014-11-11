@@ -75,17 +75,17 @@ pcl::FrustumCulling<PointT>::applyFilter (PointCloud& output)
 template <typename PointT> void
 pcl::FrustumCulling<PointT>::applyFilter (std::vector<int> &indices)
 {
-  Eigen::Vector4f pl_n; // near plane 
-  Eigen::Vector4f pl_f; // far plane
-  Eigen::Vector4f pl_t; // top plane
-  Eigen::Vector4f pl_b; // bottom plane
-  Eigen::Vector4f pl_r; // right plane
-  Eigen::Vector4f pl_l; // left plane
+  Eigen::Vector4d pl_n; // near plane 
+  Eigen::Vector4d pl_f; // far plane
+  Eigen::Vector4d pl_t; // top plane
+  Eigen::Vector4d pl_b; // bottom plane
+  Eigen::Vector4d pl_r; // right plane
+  Eigen::Vector4d pl_l; // left plane
 
-  Eigen::Vector3f view = camera_pose_.block (0, 0, 3, 1);    // view vector for the camera  - first column of the rotation matrix
-  Eigen::Vector3f up = camera_pose_.block (0, 1, 3, 1);      // up vector for the camera    - second column of the rotation matix
-  Eigen::Vector3f right = camera_pose_.block (0, 2, 3, 1);   // right vector for the camera - third column of the rotation matrix
-  Eigen::Vector3f T = camera_pose_.block (0, 3, 3, 1);       // The (X, Y, Z) position of the camera w.r.t origin
+  Eigen::Vector3d view = camera_pose_.block (0, 0, 3, 1);    // view vector for the camera  - first column of the rotation matrix
+  Eigen::Vector3d up = camera_pose_.block (0, 1, 3, 1);      // up vector for the camera    - second column of the rotation matix
+  Eigen::Vector3d right = camera_pose_.block (0, 2, 3, 1);   // right vector for the camera - third column of the rotation matrix
+  Eigen::Vector3d T = camera_pose_.block (0, 3, 3, 1);       // The (X, Y, Z) position of the camera w.r.t origin
 
 
   double vfov_rad = double (vfov_ * M_PI / 180); // degrees to radians
@@ -97,17 +97,17 @@ pcl::FrustumCulling<PointT>::applyFilter (std::vector<int> &indices)
   double fp_h = double (2 * tan (vfov_rad / 2) * fp_dist_);    // far plane height
   double fp_w = double (2 * tan (hfov_rad / 2) * fp_dist_);    // far plane width
 
-  Eigen::Vector3f fp_c (T + view * fp_dist_);                 // far plane center
-  Eigen::Vector3f fp_tl (fp_c + (up * fp_h / 2) - (right * fp_w / 2));  // Top left corner of the far plane
-  Eigen::Vector3f fp_tr (fp_c + (up * fp_h / 2) + (right * fp_w / 2));  // Top right corner of the far plane
-  Eigen::Vector3f fp_bl (fp_c - (up * fp_h / 2) - (right * fp_w / 2));  // Bottom left corner of the far plane
-  Eigen::Vector3f fp_br (fp_c - (up * fp_h / 2) + (right * fp_w / 2));  // Bottom right corner of the far plane
+  Eigen::Vector3d fp_c (T + view * fp_dist_);                 // far plane center
+  Eigen::Vector3d fp_tl (fp_c + (up * fp_h / 2) - (right * fp_w / 2));  // Top left corner of the far plane
+  Eigen::Vector3d fp_tr (fp_c + (up * fp_h / 2) + (right * fp_w / 2));  // Top right corner of the far plane
+  Eigen::Vector3d fp_bl (fp_c - (up * fp_h / 2) - (right * fp_w / 2));  // Bottom left corner of the far plane
+  Eigen::Vector3d fp_br (fp_c - (up * fp_h / 2) + (right * fp_w / 2));  // Bottom right corner of the far plane
 
-  Eigen::Vector3f np_c (T + view * np_dist_);                   // near plane center
-  //Eigen::Vector3f np_tl = np_c + (up * np_h/2) - (right * np_w/2); // Top left corner of the near plane
-  Eigen::Vector3f np_tr (np_c + (up * np_h / 2) + (right * np_w / 2));   // Top right corner of the near plane
-  Eigen::Vector3f np_bl (np_c - (up * np_h / 2) - (right * np_w / 2));   // Bottom left corner of the near plane
-  Eigen::Vector3f np_br (np_c - (up * np_h / 2) + (right * np_w / 2));   // Bottom right corner of the near plane
+  Eigen::Vector3d np_c (T + view * np_dist_);                   // near plane center
+  //Eigen::Vector3d np_tl = np_c + (up * np_h/2) - (right * np_w/2); // Top left corner of the near plane
+  Eigen::Vector3d np_tr (np_c + (up * np_h / 2) + (right * np_w / 2));   // Top right corner of the near plane
+  Eigen::Vector3d np_bl (np_c - (up * np_h / 2) - (right * np_w / 2));   // Bottom left corner of the near plane
+  Eigen::Vector3d np_br (np_c - (up * np_h / 2) + (right * np_w / 2));   // Bottom right corner of the near plane
 
   pl_f.block (0, 0, 3, 1).matrix () = (fp_bl - fp_br).cross (fp_tr - fp_br);   // Far plane equation - cross product of the 
   pl_f (3) = -fp_c.dot (pl_f.block (0, 0, 3, 1));                    // perpendicular edges of the far plane
@@ -115,10 +115,10 @@ pcl::FrustumCulling<PointT>::applyFilter (std::vector<int> &indices)
   pl_n.block (0, 0, 3, 1).matrix () = (np_tr - np_br).cross (np_bl - np_br);   // Near plane equation - cross product of the 
   pl_n (3) = -np_c.dot (pl_n.block (0, 0, 3, 1));                    // perpendicular edges of the far plane
 
-  Eigen::Vector3f a (fp_bl - T);    // Vector connecting the camera and far plane bottom left
-  Eigen::Vector3f b (fp_br - T);    // Vector connecting the camera and far plane bottom right
-  Eigen::Vector3f c (fp_tr - T);    // Vector connecting the camera and far plane top right
-  Eigen::Vector3f d (fp_tl - T);    // Vector connecting the camera and far plane top left
+  Eigen::Vector3d a (fp_bl - T);    // Vector connecting the camera and far plane bottom left
+  Eigen::Vector3d b (fp_br - T);    // Vector connecting the camera and far plane bottom right
+  Eigen::Vector3d c (fp_tr - T);    // Vector connecting the camera and far plane top right
+  Eigen::Vector3d d (fp_tl - T);    // Vector connecting the camera and far plane top left
 
   //                   Frustum and the vectors a, b, c and d. T is the position of the camera
   //                             _________
@@ -153,7 +153,7 @@ pcl::FrustumCulling<PointT>::applyFilter (std::vector<int> &indices)
   for (size_t i = 0; i < indices_->size (); i++) 
   {
     int idx = indices_->at (i);
-    Eigen::Vector4f pt (input_->points[idx].x,
+    Eigen::Vector4d pt (input_->points[idx].x,
                         input_->points[idx].y,
                         input_->points[idx].z,
                         1.0f);

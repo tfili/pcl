@@ -23,8 +23,8 @@ loadHist (const boost::filesystem::path &path, vfh_model &vfh)
   {
     pcl::PCLPointCloud2 cloud;
     int version;
-    Eigen::Vector4f origin;
-    Eigen::Quaternionf orientation;
+    Eigen::Vector4d origin;
+    Eigen::Quaterniond orientation;
     pcl::PCDReader r;
     int type; unsigned int idx;
     r.readHeader (path.string (), cloud, origin, orientation, version, type, idx);

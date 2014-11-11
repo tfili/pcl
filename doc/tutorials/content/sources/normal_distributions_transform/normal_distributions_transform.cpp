@@ -58,9 +58,9 @@ main (int argc, char** argv)
   ndt.setInputTarget (target_cloud);
 
   // Set initial alignment estimate found using robot odometry.
-  Eigen::AngleAxisf init_rotation (0.6931, Eigen::Vector3f::UnitZ ());
-  Eigen::Translation3f init_translation (1.79387, 0.720047, 0);
-  Eigen::Matrix4f init_guess = (init_translation * init_rotation).matrix ();
+  Eigen::AngleAxisd init_rotation (0.6931, Eigen::Vector3d::UnitZ ());
+  Eigen::Translation3d init_translation (1.79387, 0.720047, 0);
+  Eigen::Matrix4d init_guess = (init_translation * init_rotation).matrix ();
 
   // Calculating required rigid transform to align the input cloud to the target cloud.
   pcl::PointCloud<pcl::PointXYZ>::Ptr output_cloud (new pcl::PointCloud<pcl::PointXYZ>);

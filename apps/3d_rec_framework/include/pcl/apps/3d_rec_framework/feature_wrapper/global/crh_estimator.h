@@ -43,7 +43,7 @@ namespace pcl
       void
       estimate (PointInTPtr & in, PointInTPtr & processed,
                 std::vector<pcl::PointCloud<FeatureT>, Eigen::aligned_allocator<pcl::PointCloud<FeatureT> > > & signatures,
-                std::vector<Eigen::Vector3f> & centroids)
+                std::vector<Eigen::Vector3d> & centroids)
       {
 
         if (!feature_estimator_)
@@ -70,7 +70,7 @@ namespace pcl
 
         for (size_t idx = 0; idx < signatures.size (); idx++)
         {
-          Eigen::Vector4f centroid4f(centroids[idx][0],centroids[idx][1],centroids[idx][2],0);
+          Eigen::Vector4d centroid4f(centroids[idx][0],centroids[idx][1],centroids[idx][2],0);
           crh.setCentroid(centroid4f);
           crh_histograms_[idx].reset(new CRHPointCloud());
           crh.compute (*crh_histograms_[idx]);

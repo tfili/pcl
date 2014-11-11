@@ -94,7 +94,7 @@ namespace pcl
                                  double radius, double sigma, int k, 
                                  const std::vector<int> &indices, 
                                  const std::vector<double> &squared_distances, 
-                                 Eigen::MatrixXf &intensity_spin_image);
+                                 Eigen::MatrixXd &intensity_spin_image);
 
       /** \brief Set the number of bins to use in the distance dimension of the spin image
         * \param[in] nr_distance_bins the number of bins to use in the distance dimension of the spin image

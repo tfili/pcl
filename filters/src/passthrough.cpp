@@ -102,7 +102,7 @@ pcl::PassThrough<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
   Eigen::Array4i xyz_offset (input_->fields[x_idx_].offset, input_->fields[y_idx_].offset,
                              input_->fields[z_idx_].offset, 0);
 
-  Eigen::Vector4f pt = Eigen::Vector4f::Zero ();
+  Eigen::Vector4d pt = Eigen::Vector4d::Zero ();
   // If we don't want to process the entire cloud, but rather filter points far away from the viewpoint first...
   if (!filter_field_name_.empty ())
   {

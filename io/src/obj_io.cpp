@@ -51,9 +51,9 @@ pcl::MTLReader::MTLReader ()
 }
 
 inline void
-pcl::MTLReader::cie2rgb (const Eigen::Vector3f &xyz, pcl::TexMaterial::RGB& rgb) const
+pcl::MTLReader::cie2rgb (const Eigen::Vector3d &xyz, pcl::TexMaterial::RGB& rgb) const
 {
-  Eigen::Vector3f rgb_vec = xyz_to_rgb_matrix_ * xyz;
+  Eigen::Vector3d rgb_vec = xyz_to_rgb_matrix_ * xyz;
   rgb.r = rgb_vec[0]; rgb.g = rgb_vec[1]; rgb.b = rgb_vec[2];
 }
 
@@ -61,7 +61,7 @@ int
 pcl::MTLReader::fillRGBfromXYZ (const std::vector<std::string>& split_line,
                                 pcl::TexMaterial::RGB& rgb)
 {
-  Eigen::Vector3f xyz;
+  Eigen::Vector3d xyz;
   if (split_line.size () == 5)
   {
     try
@@ -348,12 +348,12 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
 
 int
 pcl::OBJReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                             int &file_version, int &data_type, unsigned int &data_idx,
                             const int offset)
 {
-  origin       = Eigen::Vector4f::Zero ();
-  orientation  = Eigen::Quaternionf::Identity ();
+  origin       = Eigen::Vector4d::Zero ();
+  orientation  = Eigen::Quaterniond::Identity ();
   file_version = 0;
   cloud.width  = cloud.height = cloud.point_step = cloud.row_step = 0;
   cloud.data.clear ();
@@ -506,14 +506,14 @@ int
 pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset)
 {
   int file_version;
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   return (read (file_name, cloud, origin, orientation, file_version, offset));
 }
 
 int
 pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &file_version, const int offset)
 {
   pcl::console::TicToc tt;
@@ -642,14 +642,14 @@ int
 pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh, const int offset)
 {
   int file_version;
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   return (read (file_name, mesh, origin, orientation, file_version, offset));
 }
 
 int
 pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &file_version, const int offset)
 {
   pcl::console::TicToc tt;
@@ -692,7 +692,7 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
   std::size_t f_idx = 0;
   std::string line;
   std::vector<std::string> st;
-  std::vector<Eigen::Vector2f> coordinates;
+  std::vector<Eigen::Vector2d> coordinates;
   try
   {
     while (!fs.eof ())
@@ -759,13 +759,13 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
       {
         try
         {
-          Eigen::Vector3f c (0, 0, 0);
+          Eigen::Vector3d c (0, 0, 0);
           for (std::size_t i = 1; i < st.size (); ++i)
             c[i-1] = boost::lexical_cast<double> (st[i]);
           if (c[2] == 0)
-            coordinates.push_back (Eigen::Vector2f (c[0], c[1]));
+            coordinates.push_back (Eigen::Vector2d (c[0], c[1]));
           else
-            coordinates.push_back (Eigen::Vector2f (c[0]/c[2], c[1]/c[2]));
+            coordinates.push_back (Eigen::Vector2d (c[0]/c[2], c[1]/c[2]));
           ++vt_idx;
         }
         catch (const boost::bad_lexical_cast &e)
@@ -833,14 +833,14 @@ int
 pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh, const int offset)
 {
   int file_version;
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   return (read (file_name, mesh, origin, orientation, file_version, offset));
 }
 
 int
 pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &file_version, const int offset)
 {
   pcl::console::TicToc tt;

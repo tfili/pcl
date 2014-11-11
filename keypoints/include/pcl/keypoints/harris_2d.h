@@ -166,8 +166,8 @@ namespace pcl
       unsigned int threads_;      
 
     private:
-      Eigen::MatrixXf derivatives_rows_;
-      Eigen::MatrixXf derivatives_cols_;
+      Eigen::MatrixXd derivatives_rows_;
+      Eigen::MatrixXd derivatives_cols_;
       /// intermediate holder for computed responses
       boost::shared_ptr<pcl::PointCloud<PointOutT> > response_;
       /// comparator for responses intensity

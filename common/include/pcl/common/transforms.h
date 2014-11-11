@@ -65,7 +65,7 @@ namespace pcl
   template <typename PointT> void 
   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
                        pcl::PointCloud<PointT> &cloud_out, 
-                       const Eigen::Affine3f &transform,
+                       const Eigen::Affine3d &transform,
                        bool copy_all_fields = true)
   {
     return (transformPointCloud<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
@@ -91,7 +91,7 @@ namespace pcl
   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
                        const std::vector<int> &indices, 
                        pcl::PointCloud<PointT> &cloud_out, 
-                       const Eigen::Affine3f &transform,
+                       const Eigen::Affine3d &transform,
                        bool copy_all_fields = true)
   {
     return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -120,7 +120,7 @@ namespace pcl
   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
                        const pcl::PointIndices &indices, 
                        pcl::PointCloud<PointT> &cloud_out, 
-                       const Eigen::Affine3f &transform,
+                       const Eigen::Affine3d &transform,
                        bool copy_all_fields = true)
   {
     return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -144,7 +144,7 @@ namespace pcl
   template <typename PointT> void 
   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
                                   pcl::PointCloud<PointT> &cloud_out, 
-                                  const Eigen::Affine3f &transform,
+                                  const Eigen::Affine3d &transform,
                                   bool copy_all_fields = true)
   {
     return (transformPointCloudWithNormals<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
@@ -170,7 +170,7 @@ namespace pcl
   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
                                   const std::vector<int> &indices, 
                                   pcl::PointCloud<PointT> &cloud_out, 
-                                  const Eigen::Affine3f &transform,
+                                  const Eigen::Affine3d &transform,
                                   bool copy_all_fields = true)
   {
     return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -200,7 +200,7 @@ namespace pcl
   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
                                   const pcl::PointIndices &indices, 
                                   pcl::PointCloud<PointT> &cloud_out, 
-                                  const Eigen::Affine3f &transform,
+                                  const Eigen::Affine3d &transform,
                                   bool copy_all_fields = true)
   {
     return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -228,7 +228,7 @@ namespace pcl
   template <typename PointT> void 
   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
                        pcl::PointCloud<PointT> &cloud_out, 
-                       const Eigen::Matrix4f &transform,
+                       const Eigen::Matrix4d &transform,
                        bool copy_all_fields = true)
   {
     return (transformPointCloud<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
@@ -258,7 +258,7 @@ namespace pcl
   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
                        const std::vector<int> &indices, 
                        pcl::PointCloud<PointT> &cloud_out, 
-                       const Eigen::Matrix4f &transform,
+                       const Eigen::Matrix4d &transform,
                        bool copy_all_fields = true)
   {
     return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -287,7 +287,7 @@ namespace pcl
   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
                        const pcl::PointIndices &indices, 
                        pcl::PointCloud<PointT> &cloud_out, 
-                       const Eigen::Matrix4f &transform,
+                       const Eigen::Matrix4d &transform,
                        bool copy_all_fields = true)
   {
     return (transformPointCloud<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -317,7 +317,7 @@ namespace pcl
   template <typename PointT> void 
   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
                                   pcl::PointCloud<PointT> &cloud_out, 
-                                  const Eigen::Matrix4f &transform,
+                                  const Eigen::Matrix4d &transform,
                                   bool copy_all_fields = true)
   {
     return (transformPointCloudWithNormals<PointT, double> (cloud_in, cloud_out, transform, copy_all_fields));
@@ -350,7 +350,7 @@ namespace pcl
   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
                                   const std::vector<int> &indices, 
                                   pcl::PointCloud<PointT> &cloud_out, 
-                                  const Eigen::Matrix4f &transform,
+                                  const Eigen::Matrix4d &transform,
                                   bool copy_all_fields = true)
   {
     return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -383,7 +383,7 @@ namespace pcl
   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
                                   const pcl::PointIndices &indices, 
                                   pcl::PointCloud<PointT> &cloud_out, 
-                                  const Eigen::Matrix4f &transform,
+                                  const Eigen::Matrix4d &transform,
                                   bool copy_all_fields = true)
   {
     return (transformPointCloudWithNormals<PointT, double> (cloud_in, indices, cloud_out, transform, copy_all_fields));
@@ -408,8 +408,8 @@ namespace pcl
   template <typename PointT> inline void 
   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
                        pcl::PointCloud<PointT> &cloud_out, 
-                       const Eigen::Vector3f &offset, 
-                       const Eigen::Quaternionf &rotation,
+                       const Eigen::Vector3d &offset, 
+                       const Eigen::Quaterniond &rotation,
                        bool copy_all_fields = true)
   {
     return (transformPointCloud<PointT, double> (cloud_in, cloud_out, offset, rotation, copy_all_fields));
@@ -435,8 +435,8 @@ namespace pcl
   template <typename PointT> void 
   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
                                   pcl::PointCloud<PointT> &cloud_out, 
-                                  const Eigen::Vector3f &offset, 
-                                  const Eigen::Quaternionf &rotation,
+                                  const Eigen::Vector3d &offset, 
+                                  const Eigen::Quaterniond &rotation,
                                   bool copy_all_fields = true)
   {
     return (transformPointCloudWithNormals<PointT, double> (cloud_in, cloud_out, offset, rotation, copy_all_fields));
@@ -454,7 +454,7 @@ namespace pcl
   
   template <typename PointT> inline PointT
   transformPoint (const PointT &point, 
-                  const Eigen::Affine3f &transform)
+                  const Eigen::Affine3d &transform)
   {
     return (transformPoint<PointT, double> (point, transform));
   }
@@ -471,7 +471,7 @@ namespace pcl
   
   template <typename PointT> inline PointT
   transformPointWithNormal (const PointT &point, 
-                  const Eigen::Affine3f &transform)
+                  const Eigen::Affine3d &transform)
   {
     return (transformPointWithNormal<PointT, double> (point, transform));
   }
@@ -489,7 +489,7 @@ namespace pcl
 
   template <typename PointT> inline double
   getPrincipalTransformation (const pcl::PointCloud<PointT> &cloud, 
-                              Eigen::Affine3f &transform)
+                              Eigen::Affine3d &transform)
   {
     return (getPrincipalTransformation<PointT, double> (cloud, transform));
   }

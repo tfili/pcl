@@ -201,7 +201,7 @@ pcl::VTKUtils::mesh2vtk (const pcl::PolygonMesh& mesh, vtkSmartPointer<vtkPolyDa
   vtk_mesh_points->SetNumberOfPoints (nr_points);
   if (nr_points > 0)
   {
-    Eigen::Vector4f pt = Eigen::Vector4f::Zero ();
+    Eigen::Vector4d pt = Eigen::Vector4d::Zero ();
     Eigen::Array4i xyz_offset (mesh.cloud.fields[idx_x].offset, mesh.cloud.fields[idx_y].offset, mesh.cloud.fields[idx_z].offset, 0);
     for (vtkIdType cp = 0; cp < nr_points; ++cp, xyz_offset += mesh.cloud.point_step)
     {

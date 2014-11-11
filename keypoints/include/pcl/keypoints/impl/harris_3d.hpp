@@ -455,7 +455,7 @@ template <typename PointInT, typename PointOutT, typename NormalT> void
 pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseTomasi (PointCloudOut &output) const
 {
   PCL_ALIGN (16) double covar [8];
-  Eigen::Matrix3f covariance_matrix;
+  Eigen::Matrix3d covariance_matrix;
   output.resize (input_->size ());
 #ifdef _OPENMP
   #pragma omp parallel for shared (output) private (covar, covariance_matrix) num_threads(threads_)
@@ -480,7 +480,7 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseTomasi (PointCloudO
         covariance_matrix.coeffRef (5) = covariance_matrix.coeffRef (7) = covar [6];
         covariance_matrix.coeffRef (8) = covar [7];
 
-        EIGEN_ALIGN16 Eigen::Vector3f eigen_values;
+        EIGEN_ALIGN16 Eigen::Vector3d eigen_values;
         pcl::eigen33(covariance_matrix, eigen_values);
         output [pIdx].intensity = eigen_values[0];
       }
@@ -497,10 +497,10 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::responseTomasi (PointCloudO
 template <typename PointInT, typename PointOutT, typename NormalT> void
 pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOut &corners) const
 {
-  Eigen::Matrix3f nnT;
-  Eigen::Matrix3f NNT;
-  Eigen::Matrix3f NNTInv;
-  Eigen::Vector3f NNTp;
+  Eigen::Matrix3d nnT;
+  Eigen::Matrix3d NNT;
+  Eigen::Matrix3d NNTInv;
+  Eigen::Vector3d NNTp;
   double diff;
   const unsigned max_iterations = 10;
 #ifdef _OPENMP
@@ -524,14 +524,14 @@ pcl::HarrisKeypoint3D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOu
         if (!pcl_isfinite (normals_->points[*iIt].normal_x))
           continue;
 
-        nnT = normals_->points[*iIt].getNormalVector3fMap () * normals_->points[*iIt].getNormalVector3fMap ().transpose();
+        nnT = normals_->points[*iIt].getNormalVector3dMap () * normals_->points[*iIt].getNormalVector3dMap ().transpose();
         NNT += nnT;
-        NNTp += nnT * surface_->points[*iIt].getVector3fMap ();
+        NNTp += nnT * surface_->points[*iIt].getVector3dMap ();
       }
       if (invert3x3SymMatrix (NNT, NNTInv) != 0)
-        corners[cIdx].getVector3fMap () = NNTInv * NNTp;
+        corners[cIdx].getVector3dMap () = NNTInv * NNTp;
 
-      diff = (corners[cIdx].getVector3fMap () - corner.getVector3fMap()).squaredNorm ();
+      diff = (corners[cIdx].getVector3dMap () - corner.getVector3dMap()).squaredNorm ();
     } while (diff > 1e-6 && ++iterations < max_iterations);
   }
 }

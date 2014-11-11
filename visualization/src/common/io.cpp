@@ -146,8 +146,8 @@ pcl::visualization::savePointData (vtkPolyData* data, const std::string &out_fil
     std::stringstream ss;
     ss << out_file << i++ << ".pcd";
     pcl::console::print_debug ("  Save: %s ... ", ss.str ().c_str ());
-    if (pcl::io::savePCDFile (ss.str (), cloud_out, Eigen::Vector4f::Zero (),
-                              Eigen::Quaternionf::Identity (), true) == -1)
+    if (pcl::io::savePCDFile (ss.str (), cloud_out, Eigen::Vector4d::Zero (),
+                              Eigen::Quaterniond::Identity (), true) == -1)
     {
       pcl::console::print_error (stdout, "[failed]\n");
       return (false);

@@ -16,8 +16,8 @@ namespace pcl
         int label_;
 
         //save pose head information
-        Eigen::Vector3f trans_;
-        Eigen::Vector3f rot_;
+        Eigen::Vector3d trans_;
+        Eigen::Vector3d rot_;
     };
 
     class FeatureType

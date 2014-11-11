@@ -20,7 +20,7 @@ int main (int argc, char** argv) {
   double angularResolution = (double) (  1.0f * (M_PI/180.0f));  //   1.0 degree in radians
   double maxAngleWidth     = (double) (360.0f * (M_PI/180.0f));  // 360.0 degree in radians
   double maxAngleHeight    = (double) (180.0f * (M_PI/180.0f));  // 180.0 degree in radians
-  Eigen::Affine3f sensorPose = (Eigen::Affine3f)Eigen::Translation3f(0.0f, 0.0f, 0.0f);
+  Eigen::Affine3d sensorPose = (Eigen::Affine3d)Eigen::Translation3d(0.0f, 0.0f, 0.0f);
   pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
   double noiseLevel=0.00;
   double minRange = 0.0f;

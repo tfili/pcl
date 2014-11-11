@@ -24,8 +24,8 @@ pcl::cloud_composer::ComposerMainWindow::ComposerMainWindow (QWidget *parent)
   qRegisterMetaType<pcl::PCLPointCloud2::Ptr> ("PCLPointCloud2Ptr");
   qRegisterMetaType<GeometryHandler::ConstPtr> ("GeometryHandlerConstPtr");
   qRegisterMetaType<ColorHandler::ConstPtr> ("ColorHandlerConstPtr");
-  qRegisterMetaType<Eigen::Vector4f> ("EigenVector4f");
-  qRegisterMetaType<Eigen::Quaternionf> ("EigenQuaternionf");
+  qRegisterMetaType<Eigen::Vector4d> ("EigenVector4d");
+  qRegisterMetaType<Eigen::Quaterniond> ("EigenQuaterniond");
   qRegisterMetaType<ProjectModel> ("ProjectModel");
   qRegisterMetaType<CloudView> ("CloudView");
   qRegisterMetaType<ConstItemList> ("ConstComposerItemList");

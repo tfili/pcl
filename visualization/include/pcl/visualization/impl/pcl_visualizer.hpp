@@ -461,7 +461,7 @@ pcl::visualization::PCLVisualizer::addLine (const P1 &pt1, const P2 &pt2, double
     return (false);
   }
 
-  vtkSmartPointer<vtkDataSet> data = createLine (pt1.getVector4fMap (), pt2.getVector4fMap ());
+  vtkSmartPointer<vtkDataSet> data = createLine (pt1.getVector4dMap (), pt2.getVector4dMap ());
 
   // Create an Actor
   vtkSmartPointer<vtkLODActor> actor;
@@ -921,13 +921,13 @@ pcl::visualization::PCLVisualizer::addPointCloudPrincipalCurvatures (
   // Create the second sets of lines
   for (size_t i = 0; i < cloud->points.size (); i += level)
   {
-    Eigen::Vector3f pc (pcs->points[i].principal_curvature[0],
+    Eigen::Vector3d pc (pcs->points[i].principal_curvature[0],
                         pcs->points[i].principal_curvature[1],
                         pcs->points[i].principal_curvature[2]);
-    Eigen::Vector3f normal (normals->points[i].normal[0],
+    Eigen::Vector3d normal (normals->points[i].normal[0],
                             normals->points[i].normal[1],
                             normals->points[i].normal[2]);
-    Eigen::Vector3f pc_c = pc.cross (normal);
+    Eigen::Vector3d pc_c = pc.cross (normal);
 
     PointT p = cloud->points[i];
     p.x += (pcs->points[i].pc2 * pc_c[0]) * scale;
@@ -1361,7 +1361,7 @@ pcl::visualization::PCLVisualizer::fromHandlersToScreen (
   const PointCloudColorHandler<PointT> &color_handler,
   const std::string &id,
   int viewport,
-  const Eigen::Vector4f& sensor_origin,
+  const Eigen::Vector4d& sensor_origin,
   const Eigen::Quaternion<double>& sensor_orientation)
 {
   if (!geometry_handler.isCapable ())
@@ -1424,7 +1424,7 @@ pcl::visualization::PCLVisualizer::fromHandlersToScreen (
   const ColorHandlerConstPtr &color_handler,
   const std::string &id,
   int viewport,
-  const Eigen::Vector4f& sensor_origin,
+  const Eigen::Vector4d& sensor_origin,
   const Eigen::Quaternion<double>& sensor_orientation)
 {
   if (!geometry_handler.isCapable ())
@@ -1488,7 +1488,7 @@ pcl::visualization::PCLVisualizer::fromHandlersToScreen (
   const PointCloudColorHandler<PointT> &color_handler,
   const std::string &id,
   int viewport,
-  const Eigen::Vector4f& sensor_origin,
+  const Eigen::Vector4d& sensor_origin,
   const Eigen::Quaternion<double>& sensor_orientation)
 {
   if (!geometry_handler->isCapable ())

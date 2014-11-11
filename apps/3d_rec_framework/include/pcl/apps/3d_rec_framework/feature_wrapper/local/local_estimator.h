@@ -110,10 +110,10 @@ namespace pcl
             if (tree->radiusSearch (keypoints_cloud[i], radius_, (*neighborhood_indices_)[good], (*neighborhood_dist_)[good]))
             {
 
-              EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
-              Eigen::Vector4f xyz_centroid;
-              EIGEN_ALIGN16 Eigen::Vector3f eigenValues;
-              EIGEN_ALIGN16 Eigen::Matrix3f eigenVectors;
+              EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
+              Eigen::Vector4d xyz_centroid;
+              EIGEN_ALIGN16 Eigen::Vector3d eigenValues;
+              EIGEN_ALIGN16 Eigen::Matrix3d eigenVectors;
 
               //compute planarity of the region
               computeMeanAndCovarianceMatrix (*input, (*neighborhood_indices_)[good], covariance_matrix, xyz_centroid);
@@ -240,8 +240,8 @@ namespace pcl
           input_cloud->points.resize (input_->width * input_->height);
           for (size_t i = 0; i < input_->points.size (); i++)
           {
-            input_cloud->points[i].getVector3fMap () = input_->points[i].getVector3fMap ();
-            input_cloud->points[i].getNormalVector3fMap () = normals_->points[i].getNormalVector3fMap ();
+            input_cloud->points[i].getVector3dMap () = input_->points[i].getVector3dMap ();
+            input_cloud->points[i].getNormalVector3dMap () = normals_->points[i].getNormalVector3dMap ();
           }
 
           typename pcl::PointCloud<pcl::PointXYZI>::Ptr intensity_keypoints (new pcl::PointCloud<pcl::PointXYZI>);
@@ -498,10 +498,10 @@ namespace pcl
          if (tree->radiusSearch (keypoints_cloud[i], support_radius_, (*neighborhood_indices_)[good], (*neighborhood_dist_)[good]))
          {
 
-         EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
-         Eigen::Vector4f xyz_centroid;
-         EIGEN_ALIGN16 Eigen::Vector3f eigenValues;
-         EIGEN_ALIGN16 Eigen::Matrix3f eigenVectors;
+         EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
+         Eigen::Vector4d xyz_centroid;
+         EIGEN_ALIGN16 Eigen::Vector3d eigenValues;
+         EIGEN_ALIGN16 Eigen::Matrix3d eigenVectors;
 
          //compute planarity of the region
          computeMeanAndCovarianceMatrix (*input, (*neighborhood_indices_)[good], covariance_matrix, xyz_centroid);

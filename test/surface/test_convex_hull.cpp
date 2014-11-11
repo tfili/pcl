@@ -81,10 +81,10 @@ TEST (PCL, ConvexHull_bunny)
   EXPECT_EQ (polygons.size (), 206);
 
   //check distance between min and max in the hull
-  Eigen::Vector4f min_pt_hull, max_pt_hull;
+  Eigen::Vector4d min_pt_hull, max_pt_hull;
   pcl::getMinMax3D (hull, min_pt_hull, max_pt_hull);
 
-  Eigen::Vector4f min_pt, max_pt;
+  Eigen::Vector4d min_pt, max_pt;
   pcl::getMinMax3D (hull, min_pt, max_pt);
 
   EXPECT_NEAR ((min_pt - max_pt).norm (), (min_pt_hull - max_pt_hull).norm (), 1e-5);
@@ -344,25 +344,25 @@ TEST (PCL, ConvexHull_2dsquare)
   
   //Verify that all points lie within the plane we generated
   //This plane has normal equal to the z-axis (parallel to the xy plane, 1m up)
-  Eigen::Vector4f plane_normal (0.0, 0.0, -1.0, 1.0);
+  Eigen::Vector4d plane_normal (0.0, 0.0, -1.0, 1.0);
 
   //Make sure they're actually near some edge
-  std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > facets;
-  facets.push_back (Eigen::Vector4f (-1.0, 0.0, 0.0, 1.0));
-  facets.push_back (Eigen::Vector4f (-1.0, 0.0, 0.0, -1.0));
-  facets.push_back (Eigen::Vector4f (0.0, -1.0, 0.0, 1.0));
-  facets.push_back (Eigen::Vector4f (0.0, -1.0, 0.0, -1.0));
+  std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > facets;
+  facets.push_back (Eigen::Vector4d (-1.0, 0.0, 0.0, 1.0));
+  facets.push_back (Eigen::Vector4d (-1.0, 0.0, 0.0, -1.0));
+  facets.push_back (Eigen::Vector4d (0.0, -1.0, 0.0, 1.0));
+  facets.push_back (Eigen::Vector4d (0.0, -1.0, 0.0, -1.0));
 
   //Make sure they're in the plane
   for (size_t i = 0; i < hull.points.size (); i++)
   {
-    double dist = fabs (hull.points[i].getVector4fMap ().dot (plane_normal));
+    double dist = fabs (hull.points[i].getVector4dMap ().dot (plane_normal));
     EXPECT_NEAR (dist, 0.0, 1e-2);
 
     double min_dist = std::numeric_limits<double>::infinity ();
     for (size_t j = 0; j < facets.size (); j++)
     {
-      double d2 = fabs (hull.points[i].getVector4fMap ().dot (facets[j]));
+      double d2 = fabs (hull.points[i].getVector4dMap ().dot (facets[j]));
       
       if (d2 < min_dist)
         min_dist = d2;
@@ -403,13 +403,13 @@ TEST (PCL, ConvexHull_3dcube)
   ASSERT_EQ (3, chull.getDimension ());
   
   //Make sure they're actually near some edge
-  std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > facets;
-  facets.push_back (Eigen::Vector4f (-1.0f, 0.0f, 0.0f, 1.0f));
-  facets.push_back (Eigen::Vector4f (-1.0f, 0.0f, 0.0f, -1.0f));
-  facets.push_back (Eigen::Vector4f (0.0f, -1.0f, 0.0f, 1.0f));
-  facets.push_back (Eigen::Vector4f (0.0f, -1.0f, 0.0f, -1.0f));
-  facets.push_back (Eigen::Vector4f (0.0f, 0.0f, -1.0f, 1.0f));
-  facets.push_back (Eigen::Vector4f (0.0f, 0.0f, -1.0f, -1.0f));
+  std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > facets;
+  facets.push_back (Eigen::Vector4d (-1.0f, 0.0f, 0.0f, 1.0f));
+  facets.push_back (Eigen::Vector4d (-1.0f, 0.0f, 0.0f, -1.0f));
+  facets.push_back (Eigen::Vector4d (0.0f, -1.0f, 0.0f, 1.0f));
+  facets.push_back (Eigen::Vector4d (0.0f, -1.0f, 0.0f, -1.0f));
+  facets.push_back (Eigen::Vector4d (0.0f, 0.0f, -1.0f, 1.0f));
+  facets.push_back (Eigen::Vector4d (0.0f, 0.0f, -1.0f, -1.0f));
 
   //Make sure they're near a facet
   for (size_t i = 0; i < hull.points.size (); i++)
@@ -417,7 +417,7 @@ TEST (PCL, ConvexHull_3dcube)
     double min_dist = std::numeric_limits<double>::infinity ();
     for (size_t j = 0; j < facets.size (); j++)
     {
-      double dist = fabs (hull.points[i].getVector4fMap ().dot (facets[j]));
+      double dist = fabs (hull.points[i].getVector4dMap ().dot (facets[j]));
       
       if (dist < min_dist)
         min_dist = dist;

@@ -72,11 +72,11 @@ namespace pcl
         */
       CropBox (bool extract_removed_indices = false) :
         FilterIndices<PointT>::FilterIndices (extract_removed_indices),
-        min_pt_ (Eigen::Vector4f (-1, -1, -1, 1)),
-        max_pt_ (Eigen::Vector4f (1, 1, 1, 1)),
-        rotation_ (Eigen::Vector3f::Zero ()),
-        translation_ (Eigen::Vector3f::Zero ()),
-        transform_ (Eigen::Affine3f::Identity ())
+        min_pt_ (Eigen::Vector4d (-1, -1, -1, 1)),
+        max_pt_ (Eigen::Vector4d (1, 1, 1, 1)),
+        rotation_ (Eigen::Vector3d::Zero ()),
+        translation_ (Eigen::Vector3d::Zero ()),
+        transform_ (Eigen::Affine3d::Identity ())
       {
         filter_name_ = "CropBox";
       }
@@ -85,7 +85,7 @@ namespace pcl
         * \param[in] min_pt the minimum point of the box
         */
       inline void
-      setMin (const Eigen::Vector4f &min_pt)
+      setMin (const Eigen::Vector4d &min_pt)
       {
         min_pt_ = min_pt;
       }
@@ -93,7 +93,7 @@ namespace pcl
       /** \brief Get the value of the minimum point of the box, as set by the user
         * \return the value of the internal \a min_pt parameter.
         */
-      inline Eigen::Vector4f
+      inline Eigen::Vector4d
       getMin () const
       {
         return (min_pt_);
@@ -103,7 +103,7 @@ namespace pcl
         * \param[in] max_pt the maximum point of the box
         */
       inline void
-      setMax (const Eigen::Vector4f &max_pt)
+      setMax (const Eigen::Vector4d &max_pt)
       {
         max_pt_ = max_pt;
       }
@@ -111,7 +111,7 @@ namespace pcl
       /** \brief Get the value of the maxiomum point of the box, as set by the user
         * \return the value of the internal \a max_pt parameter.
         */
-      inline Eigen::Vector4f
+      inline Eigen::Vector4d
       getMax () const
       {
         return (max_pt_);
@@ -121,13 +121,13 @@ namespace pcl
         * \param[in] translation the (tx,ty,tz) values that the box should be translated by
         */
       inline void
-      setTranslation (const Eigen::Vector3f &translation)
+      setTranslation (const Eigen::Vector3d &translation)
       {
         translation_ = translation;
       }
 
       /** \brief Get the value of the box translation parameter as set by the user. */
-      Eigen::Vector3f
+      Eigen::Vector3d
       getTranslation () const
       {
         return (translation_);
@@ -137,13 +137,13 @@ namespace pcl
         * \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
         */
       inline void
-      setRotation (const Eigen::Vector3f &rotation)
+      setRotation (const Eigen::Vector3d &rotation)
       {
         rotation_ = rotation;
       }
 
       /** \brief Get the value of the box rotatation parameter, as set by the user. */
-      inline Eigen::Vector3f
+      inline Eigen::Vector3d
       getRotation () const
       {
         return (rotation_);
@@ -153,13 +153,13 @@ namespace pcl
         * \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
         */
       inline void
-      setTransform (const Eigen::Affine3f &transform)
+      setTransform (const Eigen::Affine3d &transform)
       {
         transform_ = transform;
       }
 
       /** \brief Get the value of the transformation parameter, as set by the user. */
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       getTransform () const
       {
         return (transform_);
@@ -189,15 +189,15 @@ namespace pcl
 
     private:
       /** \brief The minimum point of the box. */
-      Eigen::Vector4f min_pt_;
+      Eigen::Vector4d min_pt_;
       /** \brief The maximum point of the box. */
-      Eigen::Vector4f max_pt_;
+      Eigen::Vector4d max_pt_;
       /** \brief The 3D rotation for the box. */
-      Eigen::Vector3f rotation_;
+      Eigen::Vector3d rotation_;
       /** \brief The 3D translation for the box. */
-      Eigen::Vector3f translation_;
+      Eigen::Vector3d translation_;
       /** \brief The affine transform applied to the cloud. */
-      Eigen::Affine3f transform_;
+      Eigen::Affine3d transform_;
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -223,11 +223,11 @@ namespace pcl
         */
        CropBox (bool extract_removed_indices = false) :
         FilterIndices<pcl::PCLPointCloud2>::FilterIndices (extract_removed_indices),
-        min_pt_(Eigen::Vector4f (-1, -1, -1, 1)),
-        max_pt_(Eigen::Vector4f (1, 1, 1, 1)),
-        translation_ (Eigen::Vector3f::Zero ()),
-        rotation_ (Eigen::Vector3f::Zero ()),
-        transform_(Eigen::Affine3f::Identity ())
+        min_pt_(Eigen::Vector4d (-1, -1, -1, 1)),
+        max_pt_(Eigen::Vector4d (1, 1, 1, 1)),
+        translation_ (Eigen::Vector3d::Zero ()),
+        rotation_ (Eigen::Vector3d::Zero ()),
+        transform_(Eigen::Affine3d::Identity ())
       {
         filter_name_ = "CropBox";
       }
@@ -236,7 +236,7 @@ namespace pcl
         * \param[in] min_pt the minimum point of the box
         */
       inline void
-      setMin (const Eigen::Vector4f& min_pt)
+      setMin (const Eigen::Vector4d& min_pt)
       {
         min_pt_ = min_pt;
       }
@@ -244,7 +244,7 @@ namespace pcl
       /** \brief Get the value of the minimum point of the box, as set by the user
         * \return the value of the internal \a min_pt parameter.
         */
-      inline Eigen::Vector4f
+      inline Eigen::Vector4d
       getMin () const
       {
         return (min_pt_);
@@ -254,7 +254,7 @@ namespace pcl
         * \param[in] max_pt the maximum point of the box
         */
       inline void
-      setMax (const Eigen::Vector4f &max_pt)
+      setMax (const Eigen::Vector4d &max_pt)
       {
         max_pt_ = max_pt;
       }
@@ -262,7 +262,7 @@ namespace pcl
       /** \brief Get the value of the maxiomum point of the box, as set by the user
         * \return the value of the internal \a max_pt parameter.
         */
-      inline Eigen::Vector4f
+      inline Eigen::Vector4d
       getMax () const
       {
         return (max_pt_);
@@ -272,13 +272,13 @@ namespace pcl
         * \param[in] translation the (tx,ty,tz) values that the box should be translated by
         */
       inline void
-      setTranslation (const Eigen::Vector3f &translation)
+      setTranslation (const Eigen::Vector3d &translation)
       {
         translation_ = translation;
       }
 
       /** \brief Get the value of the box translation parameter as set by the user. */
-      inline Eigen::Vector3f
+      inline Eigen::Vector3d
       getTranslation () const
       {
         return (translation_);
@@ -288,13 +288,13 @@ namespace pcl
         * \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
         */
       inline void
-      setRotation (const Eigen::Vector3f &rotation)
+      setRotation (const Eigen::Vector3d &rotation)
       {
         rotation_ = rotation;
       }
 
       /** \brief Get the value of the box rotatation parameter, as set by the user. */
-      inline Eigen::Vector3f
+      inline Eigen::Vector3d
       getRotation () const
       {
         return (rotation_);
@@ -304,13 +304,13 @@ namespace pcl
         * \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
         */
       inline void
-      setTransform (const Eigen::Affine3f &transform)
+      setTransform (const Eigen::Affine3d &transform)
       {
         transform_ = transform;
       }
 
       /** \brief Get the value of the transformation parameter, as set by the user. */
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       getTransform () const
       {
         return (transform_);
@@ -330,15 +330,15 @@ namespace pcl
       applyFilter (std::vector<int> &indices);
 
       /** \brief The minimum point of the box. */
-      Eigen::Vector4f min_pt_;
+      Eigen::Vector4d min_pt_;
       /** \brief The maximum point of the box. */
-      Eigen::Vector4f max_pt_;
+      Eigen::Vector4d max_pt_;
       /** \brief The 3D translation for the box. */
-      Eigen::Vector3f translation_;
+      Eigen::Vector3d translation_;
       /** \brief The 3D rotation for the box. */
-      Eigen::Vector3f rotation_;
+      Eigen::Vector3d rotation_;
       /** \brief The affine transform applied to the cloud. */
-      Eigen::Affine3f transform_;
+      Eigen::Affine3d transform_;
   };
 }
 

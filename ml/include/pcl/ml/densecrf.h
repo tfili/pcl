@@ -97,7 +97,7 @@ namespace pcl
 
       void
       addPairwiseNormals (std::vector<Eigen::Vector3i> &coord,
-                          std::vector<Eigen::Vector3f> &normals,
+                          std::vector<Eigen::Vector3d> &normals,
                           double sx, double sy, double sz, 
                           double snx, double sny, double snz,
                           double w);

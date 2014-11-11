@@ -110,7 +110,7 @@ namespace pcl
       }
 
       inline void
-      setCentroid (Eigen::Vector4f & centroid)
+      setCentroid (Eigen::Vector4d & centroid)
       {
         centroid_ = centroid;
       }
@@ -125,7 +125,7 @@ namespace pcl
       int nbins_;
 
       /** \brief Centroid to be used */
-      Eigen::Vector4f centroid_;
+      Eigen::Vector4d centroid_;
 
       /** \brief Estimate the CRH histogram at
        * a set of points given by <setInputCloud (), setIndices ()> using the surface in

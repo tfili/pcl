@@ -49,11 +49,11 @@ namespace pcl
       /** \brief View of the input */
       PointTPtr input_view_;
       /** \brief Centroid of the model_view_ */
-      Eigen::Vector3f centroid_target_;
+      Eigen::Vector3d centroid_target_;
       /** \brief Centroid of the input_view_ */
-      Eigen::Vector3f centroid_input_;
+      Eigen::Vector3d centroid_input_;
       /** \brief transforms from model view to input view */
-      std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transforms_;
+      std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transforms_;
       /** \brief Allowed maximum number of peaks  */
       int max_peaks_;
       /** \brief Quantile of peaks after sorting to be checked  */
@@ -68,18 +68,18 @@ namespace pcl
         * \param[out] trasnformation to z-axis
         */
       void
-      computeTransformToZAxes (Eigen::Vector3f & centroid, Eigen::Affine3f & transform)
+      computeTransformToZAxes (Eigen::Vector3d & centroid, Eigen::Affine3d & transform)
       {
-        Eigen::Vector3f plane_normal;
+        Eigen::Vector3d plane_normal;
         plane_normal[0] = -centroid[0];
         plane_normal[1] = -centroid[1];
         plane_normal[2] = -centroid[2];
-        Eigen::Vector3f z_vector = Eigen::Vector3f::UnitZ ();
+        Eigen::Vector3d z_vector = Eigen::Vector3d::UnitZ ();
         plane_normal.normalize ();
-        Eigen::Vector3f axis = plane_normal.cross (z_vector);
+        Eigen::Vector3d axis = plane_normal.cross (z_vector);
         double rotation = -asin (axis.norm ());
         axis.normalize ();
-        transform = Eigen::Affine3f (Eigen::AngleAxisf (static_cast<double>(rotation), axis));
+        transform = Eigen::Affine3d (Eigen::AngleAxisd (static_cast<double>(rotation), axis));
       }
 
       /** \brief computes the roll transformation
@@ -89,14 +89,14 @@ namespace pcl
         * \param[out] roll transformation
         */
       void
-      computeRollTransform (Eigen::Vector3f & centroidInput, Eigen::Vector3f & centroidResult, double roll_angle, Eigen::Affine3f & final_trans)
+      computeRollTransform (Eigen::Vector3d & centroidInput, Eigen::Vector3d & centroidResult, double roll_angle, Eigen::Affine3d & final_trans)
       {
-        Eigen::Affine3f transformInputToZ;
+        Eigen::Affine3d transformInputToZ;
         computeTransformToZAxes (centroidInput, transformInputToZ);
 
         transformInputToZ = transformInputToZ.inverse ();
-        Eigen::Affine3f transformRoll (Eigen::AngleAxisf (-static_cast<double>(roll_angle * M_PI / 180), Eigen::Vector3f::UnitZ ()));
-        Eigen::Affine3f transformDBResultToZ;
+        Eigen::Affine3d transformRoll (Eigen::AngleAxisd (-static_cast<double>(roll_angle * M_PI / 180), Eigen::Vector3d::UnitZ ()));
+        Eigen::Affine3d transformDBResultToZ;
         computeTransformToZAxes (centroidResult, transformDBResultToZ);
 
         final_trans = transformInputToZ * transformRoll * transformDBResultToZ;
@@ -113,7 +113,7 @@ namespace pcl
       /** \brief returns the computed transformations
        * \param[out] transforms transformations
        */
-      void getTransforms(std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & transforms) {
+      void getTransforms(std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & transforms) {
         transforms = transforms_;
       }
 
@@ -133,7 +133,7 @@ namespace pcl
         * \param[in] c2 input view centroid
         */
       void
-      setInputAndTargetCentroids (Eigen::Vector3f & c1, Eigen::Vector3f & c2)
+      setInputAndTargetCentroids (Eigen::Vector3d & c1, Eigen::Vector3d & c2)
       {
         centroid_target_ = c2;
         centroid_input_ = c1;
@@ -156,21 +156,21 @@ namespace pcl
 
         for (size_t i = 0; i < peaks.size(); i++)
         {
-          Eigen::Affine3f rollToRot;
+          Eigen::Affine3d rollToRot;
           computeRollTransform (centroid_input_, centroid_target_, peaks[i], rollToRot);
 
-          Eigen::Matrix4f rollHomMatrix = Eigen::Matrix4f ();
+          Eigen::Matrix4d rollHomMatrix = Eigen::Matrix4d ();
           rollHomMatrix.setIdentity (4, 4);
           rollHomMatrix = rollToRot.matrix ();
 
-          Eigen::Matrix4f translation2;
+          Eigen::Matrix4d translation2;
           translation2.setIdentity (4, 4);
-          Eigen::Vector3f centr = rollToRot * centroid_target_;
+          Eigen::Vector3d centr = rollToRot * centroid_target_;
           translation2 (0, 3) = centroid_input_[0] - centr[0];
           translation2 (1, 3) = centroid_input_[1] - centr[1];
           translation2 (2, 3) = centroid_input_[2] - centr[2];
 
-          Eigen::Matrix4f resultHom (translation2 * rollHomMatrix);
+          Eigen::Matrix4d resultHom (translation2 * rollHomMatrix);
           transforms_.push_back(resultHom.inverse());
         }
 

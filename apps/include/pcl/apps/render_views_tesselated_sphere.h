@@ -27,7 +27,7 @@ namespace pcl
     class PCL_EXPORTS RenderViewsTesselatedSphere
     {
     private:
-      std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > poses_;
+      std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > poses_;
       std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> generated_views_;
       std::vector<double> entropies_;
       int resolution_;
@@ -39,12 +39,12 @@ namespace pcl
       vtkSmartPointer<vtkPolyData> polydata_;
       bool gen_organized_;
       boost::function<bool
-      (const Eigen::Vector3f &)> campos_constraints_func_;
+      (const Eigen::Vector3d &)> campos_constraints_func_;
 
       struct camPosConstraintsAllTrue
       {
         bool
-        operator() (const Eigen::Vector3f & /*pos*/) const
+        operator() (const Eigen::Vector3d & /*pos*/) const
         {
           return true;
         }
@@ -65,7 +65,7 @@ namespace pcl
       }
 
       void
-      setCamPosConstraints (boost::function<bool (const Eigen::Vector3f &)> & bb)
+      setCamPosConstraints (boost::function<bool (const Eigen::Vector3d &)> & bb)
       {
         campos_constraints_func_ = bb;
       }
@@ -152,7 +152,7 @@ namespace pcl
        * \param poses 4x4 matrices representing the pose of the cloud relative to the model coordinate system
        */
       void
-      getPoses (std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & poses)
+      getPoses (std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & poses)
       {
         poses = poses_;
       }

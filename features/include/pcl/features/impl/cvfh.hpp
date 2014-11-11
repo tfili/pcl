@@ -275,24 +275,24 @@ pcl::CVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
 
     for (size_t i = 0; i < clusters.size (); ++i) //for each cluster
     {
-      Eigen::Vector4f avg_normal = Eigen::Vector4f::Zero ();
-      Eigen::Vector4f avg_centroid = Eigen::Vector4f::Zero ();
+      Eigen::Vector4d avg_normal = Eigen::Vector4d::Zero ();
+      Eigen::Vector4d avg_centroid = Eigen::Vector4d::Zero ();
 
       for (size_t j = 0; j < clusters[i].indices.size (); j++)
       {
-        avg_normal += normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4fMap ();
-        avg_centroid += normals_filtered_cloud->points[clusters[i].indices[j]].getVector4fMap ();
+        avg_normal += normals_filtered_cloud->points[clusters[i].indices[j]].getNormalVector4dMap ();
+        avg_centroid += normals_filtered_cloud->points[clusters[i].indices[j]].getVector4dMap ();
       }
 
       avg_normal /= static_cast<double> (clusters[i].indices.size ());
       avg_centroid /= static_cast<double> (clusters[i].indices.size ());
 
-      Eigen::Vector4f centroid_test;
+      Eigen::Vector4d centroid_test;
       pcl::compute3DCentroid (*normals_filtered_cloud, centroid_test);
       avg_normal.normalize ();
 
-      Eigen::Vector3f avg_norm (avg_normal[0], avg_normal[1], avg_normal[2]);
-      Eigen::Vector3f avg_dominant_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
+      Eigen::Vector3d avg_norm (avg_normal[0], avg_normal[1], avg_normal[2]);
+      Eigen::Vector3d avg_dominant_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
 
       //append normal and centroid for the clusters
       dominant_normals_.push_back (avg_norm);
@@ -315,9 +315,9 @@ pcl::CVFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut
   }
   else
   { // ---[ Step 1b.1 : If no, compute CVFH using all the object points
-    Eigen::Vector4f avg_centroid;
+    Eigen::Vector4d avg_centroid;
     pcl::compute3DCentroid (*surface_, avg_centroid);
-    Eigen::Vector3f cloud_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
+    Eigen::Vector3d cloud_centroid (avg_centroid[0], avg_centroid[1], avg_centroid[2]);
     centroids_dominant_orientations_.push_back (cloud_centroid);
 
     //configure VFH computation for CVFH using all object points

@@ -155,8 +155,8 @@ pcl::ihs::ICP::getMaxAngle () const
 bool
 pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
                                    const CloudXYZRGBNormalConstPtr& cloud_data,
-                                   const Eigen::Matrix4f&           T_init,
-                                   Eigen::Matrix4f&                 T_final)
+                                   const Eigen::Matrix4d&           T_init,
+                                   Eigen::Matrix4d&                 T_final)
 {
   // Check the input
   // TODO: Double check the minimum number of points necessary for icp
@@ -186,7 +186,7 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
   double squared_distance_threshold = std::numeric_limits<double>::max();
 
   // Transformation
-  Eigen::Matrix4f T_cur = T_init;
+  Eigen::Matrix4d T_cur = T_init;
 
   // Point selection
   sw.reset ();
@@ -231,8 +231,8 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
     {
       // Transform the data point
       pt_d = *it_d;
-      pt_d.getVector4fMap ()       = T_cur * pt_d.getVector4fMap ();
-      pt_d.getNormalVector4fMap () = T_cur * pt_d.getNormalVector4fMap ();
+      pt_d.getVector4dMap ()       = T_cur * pt_d.getVector4dMap ();
+      pt_d.getNormalVector4dMap () = T_cur * pt_d.getNormalVector4dMap ();
 
       // Find the correspondence to the model points
       if (!kd_tree_->nearestKSearch (pt_d, 1, index, squared_distance))
@@ -254,7 +254,7 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
         const PointNormal& pt_m = cloud_model_selected->operator [] (index [0]);
 
         // Check the normals threshold
-        if (pt_m.getNormalVector4fMap ().dot (pt_d.getNormalVector4fMap ()) > dot_min)
+        if (pt_m.getNormalVector4dMap ().dot (pt_d.getNormalVector4dMap ()) > dot_min)
         {
           squared_distance_sum += squared_distance [0];
 
@@ -287,7 +287,7 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
 
     // Minimize the point to plane distance
     sw.reset ();
-    Eigen::Matrix4f T_delta = Eigen::Matrix4f::Identity ();
+    Eigen::Matrix4d T_delta = Eigen::Matrix4d::Identity ();
     if (!this->minimizePointPlane (cloud_data_corr, cloud_model_corr, T_delta))
     {
       std::cerr << "ERROR in icp.cpp: minimizePointPlane failed!\n";
@@ -372,7 +372,7 @@ pcl::ihs::ICP::findTransformation (const MeshConstPtr&              mesh_model,
 
 pcl::ihs::ICP::CloudNormalConstPtr
 pcl::ihs::ICP::selectModelPoints (const MeshConstPtr&    mesh_model,
-                                  const Eigen::Matrix4f& T_inv) const
+                                  const Eigen::Matrix4d& T_inv) const
 {
   const CloudNormalPtr cloud_model_out (new CloudNormal ());
   cloud_model_out->reserve (mesh_model->sizeVertices ());
@@ -382,11 +382,11 @@ pcl::ihs::ICP::selectModelPoints (const MeshConstPtr&    mesh_model,
   for (Mesh::VertexDataCloud::const_iterator it=cloud.begin (); it!=cloud.end (); ++it)
   {
     // Don't consider points that are facing away from the camera.
-    if ((T_inv * it->getNormalVector4fMap ()).z () < 0.f)
+    if ((T_inv * it->getNormalVector4dMap ()).z () < 0.f)
     {
       PointNormal pt;
-      pt.getVector4fMap ()       = it->getVector4fMap ();
-      pt.getNormalVector4fMap () = it->getNormalVector4fMap ();
+      pt.getVector4dMap ()       = it->getVector4dMap ();
+      pt.getNormalVector4dMap () = it->getNormalVector4dMap ();
 
       // NOTE: Not the transformed points!!
       cloud_model_out->push_back (pt);
@@ -410,8 +410,8 @@ pcl::ihs::ICP::selectDataPoints (const CloudXYZRGBNormalConstPtr& cloud_data) co
     if (!boost::math::isnan (it_in->x))
     {
       PointNormal pt;
-      pt.getVector4fMap ()       = it_in->getVector4fMap ();
-      pt.getNormalVector4fMap () = it_in->getNormalVector4fMap ();
+      pt.getVector4dMap ()       = it_in->getVector4dMap ();
+      pt.getNormalVector4dMap () = it_in->getNormalVector4dMap ();
 
       cloud_data_out->push_back (pt);
     }
@@ -425,7 +425,7 @@ pcl::ihs::ICP::selectDataPoints (const CloudXYZRGBNormalConstPtr& cloud_data) co
 bool
 pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
                                    const CloudNormal& cloud_target,
-                                   Eigen::Matrix4f&   T) const
+                                   Eigen::Matrix4d&   T) const
 {
   // Check the input
   // n < n_min already checked in the icp main loop
@@ -443,13 +443,13 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
   // TODO: Check the resulting C matrix for the conditioning.
 
   // Subtract the centroid and calculate the scaling factor
-  Eigen::Vector4f c_s (0.f, 0.f, 0.f, 1.f);
-  Eigen::Vector4f c_t (0.f, 0.f, 0.f, 1.f);
+  Eigen::Vector4d c_s (0.f, 0.f, 0.f, 1.f);
+  Eigen::Vector4d c_t (0.f, 0.f, 0.f, 1.f);
   pcl::compute3DCentroid (cloud_source, c_s); c_s.w () = 1.f;
   pcl::compute3DCentroid (cloud_target, c_t); c_t.w () = 1.f;
 
   // The normals are only needed for the target
-  typedef std::vector <Eigen::Vector4f, Eigen::aligned_allocator <Eigen::Vector4f> > Vec4Xf;
+  typedef std::vector <Eigen::Vector4d, Eigen::aligned_allocator <Eigen::Vector4d> > Vec4Xf;
   Vec4Xf xyz_s, xyz_t, nor_t;
   xyz_s.reserve (n);
   xyz_t.reserve (n);
@@ -459,16 +459,16 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
   CloudNormal::const_iterator it_t = cloud_target.begin ();
 
   double accum = 0.f;
-  Eigen::Vector4f pt_s, pt_t;
+  Eigen::Vector4d pt_s, pt_t;
   for (; it_s!=cloud_source.end (); ++it_s, ++it_t)
   {
     // Subtract the centroid
-    pt_s = it_s->getVector4fMap () - c_s;
-    pt_t = it_t->getVector4fMap () - c_t;
+    pt_s = it_s->getVector4dMap () - c_s;
+    pt_t = it_t->getVector4dMap () - c_t;
 
     xyz_s.push_back (pt_s);
     xyz_t.push_back (pt_t);
-    nor_t.push_back (it_t->getNormalVector4fMap ());
+    nor_t.push_back (it_t->getNormalVector4dMap ());
 
     // Calculate the radius (L2 norm) of the bounding sphere through both shapes and accumulate the average
     // TODO: Change to squared norm and adapt the rest accordingly
@@ -488,18 +488,18 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
   // For Eigen vectorization: use 4x4 submatrixes instead of 3x3 submatrixes
   // -> top left 3x3 matrix will form the final C
   // Same for b
-  Eigen::Matrix4f C_tl    = Eigen::Matrix4f::Zero(); // top left corner
-  Eigen::Matrix4f C_tr_bl = Eigen::Matrix4f::Zero(); // top right / bottom left
-  Eigen::Matrix4f C_br    = Eigen::Matrix4f::Zero(); // bottom right
+  Eigen::Matrix4d C_tl    = Eigen::Matrix4d::Zero(); // top left corner
+  Eigen::Matrix4d C_tr_bl = Eigen::Matrix4d::Zero(); // top right / bottom left
+  Eigen::Matrix4d C_br    = Eigen::Matrix4d::Zero(); // bottom right
 
-  Eigen::Vector4f b_t     = Eigen::Vector4f::Zero(); // top
-  Eigen::Vector4f b_b     = Eigen::Vector4f::Zero(); // bottom
+  Eigen::Vector4d b_t     = Eigen::Vector4d::Zero(); // top
+  Eigen::Vector4d b_b     = Eigen::Vector4d::Zero(); // bottom
 
   Vec4Xf::const_iterator it_xyz_s = xyz_s.begin ();
   Vec4Xf::const_iterator it_xyz_t = xyz_t.begin ();
   Vec4Xf::const_iterator it_nor_t = nor_t.begin ();
 
-  Eigen::Vector4f cross;
+  Eigen::Vector4d cross;
   double dot;
   for (; it_xyz_s!=xyz_s.end (); ++it_xyz_s, ++it_xyz_t, ++it_nor_t)
   {
@@ -541,14 +541,14 @@ pcl::ihs::ICP::minimizePointPlane (const CloudNormal& cloud_source,
       ty = x (4),
       tz = x (5);
 
-  Eigen::Matrix4f TT;
+  Eigen::Matrix4d TT;
   TT << cg*cb, -sg*ca+cg*sb*sa,  sg*sa+cg*sb*ca, tx,
       sg*cb  ,  cg*ca+sg*sb*sa, -cg*sa+sg*sb*ca, ty,
       -sb    ,  cb*sa         ,  cb*ca         , tz,
       0.f    ,  0.f           ,  0.f           , 1.f;
 
   // Transformation matrixes into the local coordinate systems of model/data
-  Eigen::Matrix4f T_s, T_t;
+  Eigen::Matrix4d T_s, T_t;
 
   T_s << factor, 0.f   , 0.f   , -c_s.x () * factor,
       0.f      , factor, 0.f   , -c_s.y () * factor,

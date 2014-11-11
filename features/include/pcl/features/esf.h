@@ -124,7 +124,7 @@ namespace pcl
 
       /** \brief ... */
       void
-      scale_points_unit_sphere (const pcl::PointCloud<PointInT> &pc, double scalefactor, Eigen::Vector4f& centroid);
+      scale_points_unit_sphere (const pcl::PointCloud<PointInT> &pc, double scalefactor, Eigen::Vector4d& centroid);
 
     private:
 

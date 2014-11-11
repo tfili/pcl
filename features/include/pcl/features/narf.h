@@ -81,7 +81,7 @@ namespace pcl
 
       /** Add features extracted at the given interest point and add them to the list */
       static void 
-      extractFromRangeImageAndAddToList (const RangeImage& range_image, const Eigen::Vector3f& interest_point, int descriptor_size,
+      extractFromRangeImageAndAddToList (const RangeImage& range_image, const Eigen::Vector3d& interest_point, int descriptor_size,
                                          double support_size, bool rotation_invariant, std::vector<Narf*>& feature_list);
       /** Same as above */
       static void 
@@ -103,7 +103,7 @@ namespace pcl
        *  descriptor_size_ determines the size of the descriptor,
        *  support_size determines the support size of the feature, meaning the size in the world it covers */
       bool 
-      extractFromRangeImage (const RangeImage& range_image, const Eigen::Affine3f& pose, int descriptor_size, double support_size,
+      extractFromRangeImage (const RangeImage& range_image, const Eigen::Affine3d& pose, int descriptor_size, double support_size,
                              int surface_patch_world_size=NARF_DEFAULT_SURFACE_PATCH_PIXEL_SIZE);
       
       //! Same as above, but determines the transformation from the surface in the range image
@@ -116,12 +116,12 @@ namespace pcl
 
       //! Same as above
       bool 
-      extractFromRangeImage (const RangeImage& range_image, const Eigen::Vector3f& interest_point, int descriptor_size, double support_size);
+      extractFromRangeImage (const RangeImage& range_image, const Eigen::Vector3d& interest_point, int descriptor_size, double support_size);
 
       /** Same as above, but using the rotational invariant version by choosing the best extracted rotation around the normal.
        *  Use extractFromRangeImageAndAddToList if you want to enable the system to return multiple features with different rotations. */
       bool 
-      extractFromRangeImageWithBestRotation (const RangeImage& range_image, const Eigen::Vector3f& interest_point,
+      extractFromRangeImageWithBestRotation (const RangeImage& range_image, const Eigen::Vector3d& interest_point,
                                              int descriptor_size, double support_size);
       
       /* Get the dominant rotations of the current descriptor
@@ -184,16 +184,16 @@ namespace pcl
       inline int& 
       getDescriptorSize () { return descriptor_size_;}
       //! Getter (const) for the position
-      inline const Eigen::Vector3f& 
+      inline const Eigen::Vector3d& 
       getPosition () const { return position_;}
       //! Getter for the position
-      inline Eigen::Vector3f& 
+      inline Eigen::Vector3d& 
       getPosition () { return position_;}
       //! Getter (const) for the 6DoF pose
-      inline const Eigen::Affine3f& 
+      inline const Eigen::Affine3d& 
       getTransformation () const { return transformation_;}
       //! Getter for the 6DoF pose
-      inline Eigen::Affine3f& 
+      inline Eigen::Affine3d& 
       getTransformation () { return transformation_;}
       //! Getter (const) for the pixel size of the surface patch (only one dimension)
       inline const int& 
@@ -270,8 +270,8 @@ namespace pcl
       const static int VERSION = 1;
 
       // =====PROTECTED MEMBER VARIABLES=====
-      Eigen::Vector3f position_;
-      Eigen::Affine3f transformation_;
+      Eigen::Vector3d position_;
+      Eigen::Affine3d transformation_;
       double* surface_patch_;
       int surface_patch_pixel_size_;
       double surface_patch_world_size_;

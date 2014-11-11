@@ -163,7 +163,7 @@ namespace pcl
           */
         bool
         loadTransform (const std::string& filename,
-                       Eigen::Matrix4f&   transform) const;
+                       Eigen::Matrix4d&   transform) const;
 
         /** \brief Load the cloud and transformation from the files and compute the normals.
           * \param[in] filename Path to the pcd file.
@@ -174,7 +174,7 @@ namespace pcl
         bool
         load (const std::string&    filename,
               CloudXYZRGBNormalPtr& cloud,
-              Eigen::Matrix4f&      T) const;
+              Eigen::Matrix4d&      T) const;
 
         /** \see http://doc.qt.digia.com/qt/qwidget.html#paintEvent
           * \see http://doc.qt.digia.com/qt/opengl-overpainting.html

@@ -340,7 +340,7 @@ private:
 
     for (tree_it = octree.begin(depth); tree_it!=tree_it_end; ++tree_it)
     {
-      Eigen::Vector3f voxel_min, voxel_max;
+      Eigen::Vector3d voxel_min, voxel_max;
       octree.getVoxelBounds(tree_it, voxel_min, voxel_max);
 
       pt.x = (voxel_min.x() + voxel_max.x()) / 2.0f;

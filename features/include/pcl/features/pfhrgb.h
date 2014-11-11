@@ -73,7 +73,7 @@ namespace pcl
 
       void
       computePointPFHRGBSignature (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
-                                   const std::vector<int> &indices, int nr_split, Eigen::VectorXf &pfhrgb_histogram);
+                                   const std::vector<int> &indices, int nr_split, Eigen::VectorXd &pfhrgb_histogram);
 
     protected:
       void
@@ -84,10 +84,10 @@ namespace pcl
       int nr_subdiv_;
 
       /** \brief Placeholder for a point's PFHRGB signature. */
-      Eigen::VectorXf pfhrgb_histogram_;
+      Eigen::VectorXd pfhrgb_histogram_;
 
       /** \brief Placeholder for a PFHRGB 7-tuple. */
-      Eigen::VectorXf pfhrgb_tuple_;
+      Eigen::VectorXd pfhrgb_tuple_;
 
       /** \brief Placeholder for a histogram index. */
       int f_index_[7];

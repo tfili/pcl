@@ -105,7 +105,7 @@ namespace pcl
           * \param[in] pose Initial camera pose
           */
         void
-        setInitalCameraPose (const Eigen::Affine3f& pose);
+        setInitalCameraPose (const Eigen::Affine3d& pose);
                         
 		/** \brief Sets truncation threshold for depth image for ICP step only! This helps 
 		  *  to filter measurements that are outside tsdf volume. Pass zero to disable the truncation.
@@ -147,7 +147,7 @@ namespace pcl
           * \param hint
           * \return true if can render 3D view.
           */
-        bool operator() (const DepthMap& depth, Eigen::Affine3f* hint=NULL);
+        bool operator() (const DepthMap& depth, Eigen::Affine3d* hint=NULL);
 
         /** \brief Processes next frame (both depth and color integration). Please call initColorIntegration before invpoking this.
           * \param[in] depth next depth frame with values in millimeters
@@ -160,7 +160,7 @@ namespace pcl
           * \param[in] time Index of frame for which camera pose is returned.
           * \return camera pose
           */
-        Eigen::Affine3f
+        Eigen::Affine3d
         getCameraPose (int time = -1) const;
 
         /** \brief Returns number of poses including initial */
@@ -211,8 +211,8 @@ namespace pcl
         /** \brief Vertex or Normal Map type */
         typedef DeviceArray2D<double> MapArr;
         
-        typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> Matrix3frm;
-        typedef Eigen::Vector3f Vector3f;
+        typedef Eigen::Matrix<double, 3, 3, Eigen::RowMajor> Matrix3drm;
+        typedef Eigen::Vector3d Vector3d;
 
         /** \brief Height of input depth image. */
         int rows_;
@@ -232,10 +232,10 @@ namespace pcl
         ColorVolume::Ptr color_volume_;
                 
         /** \brief Initial camera rotation in volume coo space. */
-        Matrix3frm init_Rcam_;
+        Matrix3drm init_Rcam_;
 
         /** \brief Initial camera position in volume coo space. */
-        Vector3f   init_tcam_;
+        Vector3d   init_tcam_;
 
         /** \brief array with IPC iteration numbers for each pyramid level */
         int icp_iterations_[LEVELS];
@@ -273,10 +273,10 @@ namespace pcl
         DeviceArray<double> sumbuf_;
 
         /** \brief Array of camera rotation matrices for each moment of time. */
-        std::vector<Matrix3frm> rmats_;
+        std::vector<Matrix3drm> rmats_;
         
         /** \brief Array of camera translations for each moment of time. */
-        std::vector<Vector3f> tvecs_;
+        std::vector<Vector3d> tvecs_;
 
         /** \brief Camera movement threshold. TSDF is integrated iff a camera movement metric exceedes some value. */
         double integration_metric_threshold_;

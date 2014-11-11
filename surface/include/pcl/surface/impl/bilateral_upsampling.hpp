@@ -88,8 +88,8 @@ pcl::BilateralUpsampling<PointInT, PointOutT>::performProcessing (PointCloudOut 
     output.resize (input_->size ());
     double nan = std::numeric_limits<double>::quiet_NaN ();
 
-    Eigen::MatrixXf val_exp_depth_matrix;
-    Eigen::VectorXf val_exp_rgb_vector;
+    Eigen::MatrixXd val_exp_depth_matrix;
+    Eigen::VectorXd val_exp_rgb_vector;
     computeDistances (val_exp_depth_matrix, val_exp_rgb_vector);
 
     for (int x = 0; x < static_cast<int> (input_->width); ++x)
@@ -132,8 +132,8 @@ pcl::BilateralUpsampling<PointInT, PointOutT>::performProcessing (PointCloudOut 
         if (norm_sum != 0.0f)
         {
           double depth = sum / norm_sum;
-          Eigen::Vector3f pc (static_cast<double> (x) * depth, static_cast<double> (y) * depth, depth);
-          Eigen::Vector3f pw (unprojection_matrix_ * pc);
+          Eigen::Vector3d pc (static_cast<double> (x) * depth, static_cast<double> (y) * depth, depth);
+          Eigen::Vector3d pw (unprojection_matrix_ * pc);
           output.points[y*input_->width + x].x = pw[0];
           output.points[y*input_->width + x].y = pw[1];
           output.points[y*input_->width + x].z = pw[2];
@@ -153,7 +153,7 @@ pcl::BilateralUpsampling<PointInT, PointOutT>::performProcessing (PointCloudOut 
 
 
 template <typename PointInT, typename PointOutT> void
-pcl::BilateralUpsampling<PointInT, PointOutT>::computeDistances (Eigen::MatrixXf &val_exp_depth, Eigen::VectorXf &val_exp_rgb)
+pcl::BilateralUpsampling<PointInT, PointOutT>::computeDistances (Eigen::MatrixXd &val_exp_depth, Eigen::VectorXd &val_exp_rgb)
 {
   val_exp_depth.resize (2*window_size_+1,2*window_size_+1);
   val_exp_rgb.resize (3*255);

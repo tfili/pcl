@@ -53,19 +53,19 @@ namespace pcl
     * \param[out] q the resultant projected point
     */
   template <typename Point> inline void
-  projectPoint (const Point &p, const Eigen::Vector4f &model_coefficients, Point &q)
+  projectPoint (const Point &p, const Eigen::Vector4d &model_coefficients, Point &q)
   {
     // Calculate the distance from the point to the plane
-    Eigen::Vector4f pp (p.x, p.y, p.z, 1);
+    Eigen::Vector4d pp (p.x, p.y, p.z, 1);
     // use normalized coefficients to calculate the scalar projection 
     double distance_to_plane = pp.dot(model_coefficients);
 
 
     //TODO: Why doesn't getVector4Map work here?
-    //Eigen::Vector4f q_e = q.getVector4fMap ();
+    //Eigen::Vector4d q_e = q.getVector4dMap ();
     //q_e = pp - model_coefficients * distance_to_plane;
     
-    Eigen::Vector4f q_e = pp - distance_to_plane * model_coefficients;
+    Eigen::Vector4d q_e = pp - distance_to_plane * model_coefficients;
     q.x = q_e[0];
     q.y = q_e[1];
     q.z = q_e[2];
@@ -91,7 +91,7 @@ namespace pcl
     * \ingroup sample_consensus
     */
   template <typename Point> inline double
-  pointToPlaneDistanceSigned (const Point &p, const Eigen::Vector4f &plane_coefficients)
+  pointToPlaneDistanceSigned (const Point &p, const Eigen::Vector4d &plane_coefficients)
   {
     return ( plane_coefficients[0] * p.x + plane_coefficients[1] * p.y + plane_coefficients[2] * p.z + plane_coefficients[3] );
   }
@@ -116,7 +116,7 @@ namespace pcl
     * \ingroup sample_consensus
     */
   template <typename Point> inline double
-  pointToPlaneDistance (const Point &p, const Eigen::Vector4f &plane_coefficients)
+  pointToPlaneDistance (const Point &p, const Eigen::Vector4d &plane_coefficients)
   {
     return ( fabs (pointToPlaneDistanceSigned (p, plane_coefficients)) );
   }
@@ -174,14 +174,14 @@ namespace pcl
         */
       bool 
       computeModelCoefficients (const std::vector<int> &samples, 
-                                Eigen::VectorXf &model_coefficients);
+                                Eigen::VectorXd &model_coefficients);
 
       /** \brief Compute all distances from the cloud data to a given plane model.
         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
         * \param[out] distances the resultant estimated distances
         */
       void 
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients, 
                            std::vector<double> &distances);
 
       /** \brief Select all the points which respect the given model coefficients as inliers.
@@ -190,7 +190,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void 
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients, 
                             const double threshold, 
                             std::vector<int> &inliers);
 
@@ -201,7 +201,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      countWithinDistance (const Eigen::VectorXd &model_coefficients, 
                            const double threshold);
 
       /** \brief Recompute the plane coefficients using the given inlier set and return them to the user.
@@ -212,8 +212,8 @@ namespace pcl
         */
       void 
       optimizeModelCoefficients (const std::vector<int> &inliers, 
-                                 const Eigen::VectorXf &model_coefficients, 
-                                 Eigen::VectorXf &optimized_coefficients);
+                                 const Eigen::VectorXd &model_coefficients, 
+                                 Eigen::VectorXd &optimized_coefficients);
 
       /** \brief Create a new point cloud with inliers projected onto the plane model.
         * \param[in] inliers the data inliers that we want to project on the plane model
@@ -223,7 +223,7 @@ namespace pcl
         */
       void 
       projectPoints (const std::vector<int> &inliers, 
-                     const Eigen::VectorXf &model_coefficients, 
+                     const Eigen::VectorXd &model_coefficients, 
                      PointCloud &projected_points, 
                      bool copy_data_fields = true);
 
@@ -234,7 +234,7 @@ namespace pcl
         */
       bool 
       doSamplesVerifyModel (const std::set<int> &indices, 
-                            const Eigen::VectorXf &model_coefficients, 
+                            const Eigen::VectorXd &model_coefficients, 
                             const double threshold);
 
       /** \brief Return an unique id for this model (SACMODEL_PLANE). */
@@ -246,7 +246,7 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       inline bool 
-      isModelValid (const Eigen::VectorXf &model_coefficients)
+      isModelValid (const Eigen::VectorXd &model_coefficients)
       {
         // Needs a valid model coefficients
         if (model_coefficients.size () != 4)

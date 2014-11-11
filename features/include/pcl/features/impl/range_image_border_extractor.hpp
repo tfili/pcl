@@ -108,7 +108,7 @@ double RangeImageBorderExtractor::getNeighborDistanceChangeScore(
   //}
   
   //double normal_distance_to_plane_squared = local_surface.smallest_eigenvalue_no_jumps;
-  //double distance_to_plane = local_surface.normal_no_jumps.dot(local_surface.neighborhood_mean_no_jumps-neighbor.getVector3fMap());
+  //double distance_to_plane = local_surface.normal_no_jumps.dot(local_surface.neighborhood_mean_no_jumps-neighbor.getVector3dMap());
   //bool shadow_side = distance_to_plane < 0.0f;
   //double distance_to_plane_squared = pow(distance_to_plane, 2);
   //if (distance_to_plane_squared <= normal_distance_to_plane_squared)
@@ -120,7 +120,7 @@ double RangeImageBorderExtractor::getNeighborDistanceChangeScore(
   //return ret;
 //}
 
-bool RangeImageBorderExtractor::get3dDirection(const BorderDescription& border_description, Eigen::Vector3f& direction,
+bool RangeImageBorderExtractor::get3dDirection(const BorderDescription& border_description, Eigen::Vector3d& direction,
                                                const LocalSurface* local_surface)
 {
   const BorderTraits border_traits = border_description.traits;
@@ -140,14 +140,14 @@ bool RangeImageBorderExtractor::get3dDirection(const BorderDescription& border_d
   
   int x=border_description.x, y=border_description.y;
   const PointWithRange& point = range_image_->getPoint(x, y);
-  Eigen::Vector3f neighbor_point;
+  Eigen::Vector3d neighbor_point;
   range_image_->calculate3DPoint(static_cast<double> (x+delta_x), static_cast<double> (y+delta_y), point.range, neighbor_point);
   //cout << "Neighborhood point is "<<neighbor_point[0]<<", "<<neighbor_point[1]<<", "<<neighbor_point[2]<<".\n";
   
   if (local_surface!=NULL)
   {
     // Get the point that lies on the local plane approximation
-    Eigen::Vector3f sensor_pos = range_image_->getSensorPos(),
+    Eigen::Vector3d sensor_pos = range_image_->getSensorPos(),
                     viewing_direction = neighbor_point-sensor_pos;
 
     double lambda = (local_surface->normal_no_jumps.dot(local_surface->neighborhood_mean_no_jumps-sensor_pos)/
@@ -156,7 +156,7 @@ bool RangeImageBorderExtractor::get3dDirection(const BorderDescription& border_d
     //cout << "Neighborhood point projected onto plane is "<<neighbor_point[0]<<", "<<neighbor_point[1]<<", "<<neighbor_point[2]<<".\n";
   }
   //cout << point.x<<","<< point.y<<","<< point.z<<" -> "<< direction[0]<<","<< direction[1]<<","<< direction[2]<<"\n";
-  direction = neighbor_point-point.getVector3fMap();
+  direction = neighbor_point-point.getVector3dMap();
   direction.normalize();
   
   return true;
@@ -165,13 +165,13 @@ bool RangeImageBorderExtractor::get3dDirection(const BorderDescription& border_d
 void RangeImageBorderExtractor::calculateBorderDirection(int x, int y)
 {
   int index = y*range_image_->width + x;
-  Eigen::Vector3f*& border_direction = border_directions_[index];
+  Eigen::Vector3d*& border_direction = border_directions_[index];
   border_direction = NULL;
   const BorderDescription& border_description = border_descriptions_->points[index];
   const BorderTraits& border_traits = border_description.traits;
   if (!border_traits[BORDER_TRAIT__OBSTACLE_BORDER])
     return;
-  border_direction = new Eigen::Vector3f(0.0f, 0.0f, 0.0f);
+  border_direction = new Eigen::Vector3d(0.0f, 0.0f, 0.0f);
   if (!get3dDirection(border_description, *border_direction, surface_structure_[index]))
   {
     delete border_direction;
@@ -313,7 +313,7 @@ bool RangeImageBorderExtractor::checkIfMaximum(int x, int y, int offset_x, int o
 }
 
 bool RangeImageBorderExtractor::calculateMainPrincipalCurvature(int x, int y, int radius, double& magnitude,
-                                                                Eigen::Vector3f& main_direction) const
+                                                                Eigen::Vector3d& main_direction) const
 {
   magnitude = 0.0f;
   int index = y*range_image_->width+x;
@@ -322,8 +322,8 @@ bool RangeImageBorderExtractor::calculateMainPrincipalCurvature(int x, int y, in
     return false;
   //const PointWithRange& point = range_image_->getPointNoCheck(x,y);
   
-  //Eigen::Vector3f& normal = local_surface->normal_no_jumps;
-  //Eigen::Matrix3f to_tangent_plane = Eigen::Matrix3f::Identity() - normal*normal.transpose();
+  //Eigen::Vector3d& normal = local_surface->normal_no_jumps;
+  //Eigen::Matrix3d to_tangent_plane = Eigen::Matrix3d::Identity() - normal*normal.transpose();
   
   VectorAverage3f vector_average;
   bool beams_valid[9];
@@ -363,7 +363,7 @@ bool RangeImageBorderExtractor::calculateMainPrincipalCurvature(int x, int y, in
         LocalSurface* local_surface2 = surface_structure_[index2];
         if (local_surface2==NULL)
           continue;
-        Eigen::Vector3f& normal2 = local_surface2->normal_no_jumps;
+        Eigen::Vector3d& normal2 = local_surface2->normal_no_jumps;
         //double distance_squared = squaredEuclideanDistance(point, point2);
         //vector_average.add(to_tangent_plane*normal2);
         vector_average.add(normal2);
@@ -374,7 +374,7 @@ bool RangeImageBorderExtractor::calculateMainPrincipalCurvature(int x, int y, in
   if (vector_average.getNoOfSamples() < 3)
     return false;
   
-  Eigen::Vector3f eigen_values, eigen_vector1, eigen_vector2;
+  Eigen::Vector3d eigen_values, eigen_vector1, eigen_vector2;
   vector_average.doPCA(eigen_values, eigen_vector1, eigen_vector2, main_direction);
   magnitude = sqrtf(eigen_values[2]);
   //magnitude = eigen_values[2];

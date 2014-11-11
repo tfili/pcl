@@ -57,7 +57,7 @@ namespace pcl
     public:
       // =====TYPEDEFS=====
       typedef pcl::PointCloud<PointWithRange> BaseClass;
-      typedef std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > VectorOfEigenVector3f;
+      typedef std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d> > VectorOfEigenVector3d;
       typedef boost::shared_ptr<RangeImage> Ptr;
       typedef boost::shared_ptr<const RangeImage> ConstPtr;
       
@@ -86,15 +86,15 @@ namespace pcl
         * \return the size of the area as viewed according to \a viewer_pose
         */
       static inline double
-      getMaxAngleSize (const Eigen::Affine3f& viewer_pose, const Eigen::Vector3f& center, 
+      getMaxAngleSize (const Eigen::Affine3d& viewer_pose, const Eigen::Vector3d& center, 
                        double radius);
       
-      /** \brief Get Eigen::Vector3f from PointWithRange
+      /** \brief Get Eigen::Vector3d from PointWithRange
         * \param point the input point
-        * \return an Eigen::Vector3f representation of the input point
+        * \return an Eigen::Vector3d representation of the input point
         */
-      static inline Eigen::Vector3f
-      getEigenVector3f (const PointWithRange& point);
+      static inline Eigen::Vector3d
+      getEigenVector3d (const PointWithRange& point);
       
       /** \brief Get the transformation that transforms the given coordinate frame into CAMERA_FRAME
         * \param coordinate_frame the input coordinate frame
@@ -102,14 +102,14 @@ namespace pcl
         */
       PCL_EXPORTS static void
       getCoordinateFrameTransformation (RangeImage::CoordinateFrame coordinate_frame,
-                                        Eigen::Affine3f& transformation);
+                                        Eigen::Affine3d& transformation);
       
       /** \brief Get the average viewpoint of a point cloud where each point carries viewpoint information as 
         * vp_x, vp_y, vp_z
         * \param point_cloud the input point cloud
-        * \return the average viewpoint (as an Eigen::Vector3f)
+        * \return the average viewpoint (as an Eigen::Vector3d)
         */
-      template <typename PointCloudTypeWithViewpoints> static Eigen::Vector3f
+      template <typename PointCloudTypeWithViewpoints> static Eigen::Vector3d
       getAverageViewPoint (const PointCloudTypeWithViewpoints& point_cloud);
       
       /** \brief Check if the provided data includes far ranges and add them to far_ranges
@@ -134,7 +134,7 @@ namespace pcl
         * \param max_angle_width an angle (in radians) defining the horizontal bounds of the sensor
         * \param max_angle_height an angle (in radians) defining the vertical bounds of the sensor
         * \param sensor_pose an affine matrix defining the pose of the sensor (defaults to
-        *                    Eigen::Affine3f::Identity () )
+        *                    Eigen::Affine3d::Identity () )
         * \param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
         * \param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
         *                      but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
@@ -145,7 +145,7 @@ namespace pcl
       template <typename PointCloudType> void
       createFromPointCloud (const PointCloudType& point_cloud, double angular_resolution=pcl::deg2rad (0.5f),
           double max_angle_width=pcl::deg2rad (360.0f), double max_angle_height=pcl::deg2rad (180.0f),
-          const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
+          const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
           CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0f,
           double min_range=0.0f, int border_size=0);
       
@@ -158,7 +158,7 @@ namespace pcl
         * \param max_angle_width an angle (in radians) defining the horizontal bounds of the sensor
         * \param max_angle_height an angle (in radians) defining the vertical bounds of the sensor
         * \param sensor_pose an affine matrix defining the pose of the sensor (defaults to
-        *                    Eigen::Affine3f::Identity () )
+        *                    Eigen::Affine3d::Identity () )
         * \param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
         * \param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
         *                      but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
@@ -170,7 +170,7 @@ namespace pcl
       createFromPointCloud (const PointCloudType& point_cloud,
           double angular_resolution_x=pcl::deg2rad (0.5f), double angular_resolution_y=pcl::deg2rad (0.5f),
           double max_angle_width=pcl::deg2rad (360.0f), double max_angle_height=pcl::deg2rad (180.0f),
-          const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
+          const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
           CoordinateFrame coordinate_frame=CAMERA_FRAME,
           double noise_level=0.0f, double min_range=0.0f, int border_size=0);
       
@@ -181,7 +181,7 @@ namespace pcl
         * \param point_cloud_center the center of bounding sphere
         * \param point_cloud_radius the radius of the bounding sphere
         * \param sensor_pose an affine matrix defining the pose of the sensor (defaults to
-        *                     Eigen::Affine3f::Identity () )
+        *                     Eigen::Affine3d::Identity () )
         * \param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
         * \param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
         *                      but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
@@ -191,8 +191,8 @@ namespace pcl
         */
       template <typename PointCloudType> void
       createFromPointCloudWithKnownSize (const PointCloudType& point_cloud, double angular_resolution,
-                                         const Eigen::Vector3f& point_cloud_center, double point_cloud_radius,
-                                         const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
+                                         const Eigen::Vector3d& point_cloud_center, double point_cloud_radius,
+                                         const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
                                          CoordinateFrame coordinate_frame=CAMERA_FRAME,
                                          double noise_level=0.0f, double min_range=0.0f, int border_size=0);
       
@@ -206,7 +206,7 @@ namespace pcl
         * \param point_cloud_center the center of bounding sphere
         * \param point_cloud_radius the radius of the bounding sphere
         * \param sensor_pose an affine matrix defining the pose of the sensor (defaults to
-        *                     Eigen::Affine3f::Identity () )
+        *                     Eigen::Affine3d::Identity () )
         * \param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
         * \param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
         *                      but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
@@ -217,8 +217,8 @@ namespace pcl
       template <typename PointCloudType> void
       createFromPointCloudWithKnownSize (const PointCloudType& point_cloud,
                                          double angular_resolution_x, double angular_resolution_y,
-                                         const Eigen::Vector3f& point_cloud_center, double point_cloud_radius,
-                                         const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
+                                         const Eigen::Vector3d& point_cloud_center, double point_cloud_radius,
+                                         const Eigen::Affine3d& sensor_pose = Eigen::Affine3d::Identity (),
                                          CoordinateFrame coordinate_frame=CAMERA_FRAME,
                                          double noise_level=0.0f, double min_range=0.0f, int border_size=0);
       
@@ -270,13 +270,13 @@ namespace pcl
       
       /** \brief Create an empty depth image (filled with unobserved points)
         * \param[in] angular_resolution the angle (in radians) between each sample in the depth image
-        * \param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3f::Identity () )
+        * \param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3d::Identity () )
         * \param[in] coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
         * \param[in] angle_width an angle (in radians) defining the horizontal bounds of the sensor (defaults to 2*pi (360deg))
         * \param[in] angle_height an angle (in radians) defining the vertical bounds of the sensor (defaults to pi (180deg))
         */
       void
-      createEmpty (double angular_resolution, const Eigen::Affine3f& sensor_pose=Eigen::Affine3f::Identity (),
+      createEmpty (double angular_resolution, const Eigen::Affine3d& sensor_pose=Eigen::Affine3d::Identity (),
                    RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, double angle_width=pcl::deg2rad (360.0f),
                    double angle_height=pcl::deg2rad (180.0f));     
       
@@ -285,14 +285,14 @@ namespace pcl
         *                             individual pixels in the image in the x-direction
         * \param angular_resolution_y the angular difference (in radians) between the
         *                             individual pixels in the image in the y-direction
-        * \param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3f::Identity () )
+        * \param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3d::Identity () )
         * \param[in] coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
         * \param[in] angle_width an angle (in radians) defining the horizontal bounds of the sensor (defaults to 2*pi (360deg))
         * \param[in] angle_height an angle (in radians) defining the vertical bounds of the sensor (defaults to pi (180deg))
         */
       void
       createEmpty (double angular_resolution_x, double angular_resolution_y,
-                   const Eigen::Affine3f& sensor_pose=Eigen::Affine3f::Identity (),
+                   const Eigen::Affine3d& sensor_pose=Eigen::Affine3d::Identity (),
                    RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, double angle_width=pcl::deg2rad (360.0f),
                    double angle_height=pcl::deg2rad (180.0f));
       
@@ -335,17 +335,17 @@ namespace pcl
       
       /** Getter for the transformation from the world system into the range image system
        *  (the sensor coordinate frame) */
-      inline const Eigen::Affine3f&
+      inline const Eigen::Affine3d&
       getTransformationToRangeImageSystem () const { return (to_range_image_system_); }
       
       /** Setter for the transformation from the range image system
        *  (the sensor coordinate frame) into the world system */
       inline void 
-      setTransformationToRangeImageSystem (const Eigen::Affine3f& to_range_image_system);
+      setTransformationToRangeImageSystem (const Eigen::Affine3d& to_range_image_system);
       
       /** Getter for the transformation from the range image system
        *  (the sensor coordinate frame) into the world system */
-      inline const Eigen::Affine3f&
+      inline const Eigen::Affine3d&
       getTransformationToWorldSystem () const { return to_world_system_;}
       
       /** Getter for the angular resolution of the range image in x direction in radians per pixel.
@@ -414,19 +414,19 @@ namespace pcl
 
       /** Same as above */
       inline void
-      getPoint (int image_x, int image_y, Eigen::Vector3f& point) const;
+      getPoint (int image_x, int image_y, Eigen::Vector3d& point) const;
       
       /** Same as above */
       inline void
-      getPoint (int index, Eigen::Vector3f& point) const;
+      getPoint (int index, Eigen::Vector3d& point) const;
       
       /** Same as above */
-      inline const Eigen::Map<const Eigen::Vector3f>
-      getEigenVector3f (int x, int y) const;
+      inline const Eigen::Map<const Eigen::Vector3d>
+      getEigenVector3d (int x, int y) const;
 
       /** Same as above */
-      inline const Eigen::Map<const Eigen::Vector3f>
-      getEigenVector3f (int index) const;
+      inline const Eigen::Map<const Eigen::Vector3d>
+      getEigenVector3d (int index) const;
       
       /** Return the 3d point with range at the given index (whereas index=y*width+x) */
       inline const PointWithRange&
@@ -441,10 +441,10 @@ namespace pcl
 
       /** Calculate the 3D point according to the given image point and range */
       virtual inline void
-      calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3f& point) const;
+      calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3d& point) const;
       /** Calculate the 3D point according to the given image point and the range value at the closest pixel */
       inline void
-      calculate3DPoint (double image_x, double image_y, Eigen::Vector3f& point) const;
+      calculate3DPoint (double image_x, double image_y, Eigen::Vector3d& point) const;
       
       /** Recalculate all 3D point positions according to their pixel position and range */
       PCL_EXPORTS void
@@ -452,19 +452,19 @@ namespace pcl
       
       /** Get imagePoint from 3D point in world coordinates */
       inline virtual void
-      getImagePoint (const Eigen::Vector3f& point, double& image_x, double& image_y, double& range) const;
+      getImagePoint (const Eigen::Vector3d& point, double& image_x, double& image_y, double& range) const;
 
       /** Same as above */
       inline void
-      getImagePoint (const Eigen::Vector3f& point, int& image_x, int& image_y, double& range) const;
+      getImagePoint (const Eigen::Vector3d& point, int& image_x, int& image_y, double& range) const;
       
       /** Same as above */
       inline void
-      getImagePoint (const Eigen::Vector3f& point, double& image_x, double& image_y) const;
+      getImagePoint (const Eigen::Vector3d& point, double& image_x, double& image_y) const;
       
       /** Same as above */
       inline void
-      getImagePoint (const Eigen::Vector3f& point, int& image_x, int& image_y) const;
+      getImagePoint (const Eigen::Vector3d& point, int& image_x, int& image_y) const;
       
       /** Same as above */
       inline void
@@ -481,13 +481,13 @@ namespace pcl
       /** point_in_image will be the point in the image at the position the given point would be. Returns
        * the range of the given point. */
       inline double
-      checkPoint (const Eigen::Vector3f& point, PointWithRange& point_in_image) const;
+      checkPoint (const Eigen::Vector3d& point, PointWithRange& point_in_image) const;
 
       /** Returns the difference in range between the given point and the range of the point in the image
        * at the position the given point would be.
        *  (Return value is point_in_image.range-given_point.range) */
       inline double
-      getRangeDifference (const Eigen::Vector3f& point) const;
+      getRangeDifference (const Eigen::Vector3d& point) const;
       
       /** Get the image point corresponding to the given angles */
       inline void
@@ -525,33 +525,33 @@ namespace pcl
        *  step_size determines how many pixels are used. 1 means all, 2 only every second, etc..
        *  Returns false if it was unable to calculate a normal.*/
       inline bool
-      getNormal (int x, int y, int radius, Eigen::Vector3f& normal, int step_size=1) const;
+      getNormal (int x, int y, int radius, Eigen::Vector3d& normal, int step_size=1) const;
       
       /** Same as above, but only the no_of_nearest_neighbors points closest to the given point are considered. */
       inline bool
       getNormalForClosestNeighbors (int x, int y, int radius, const PointWithRange& point,
-                                    int no_of_nearest_neighbors, Eigen::Vector3f& normal, int step_size=1) const;
+                                    int no_of_nearest_neighbors, Eigen::Vector3d& normal, int step_size=1) const;
       
       /** Same as above */
       inline bool
-      getNormalForClosestNeighbors (int x, int y, int radius, const Eigen::Vector3f& point,
-                                    int no_of_nearest_neighbors, Eigen::Vector3f& normal,
-                                    Eigen::Vector3f* point_on_plane=NULL, int step_size=1) const;
+      getNormalForClosestNeighbors (int x, int y, int radius, const Eigen::Vector3d& point,
+                                    int no_of_nearest_neighbors, Eigen::Vector3d& normal,
+                                    Eigen::Vector3d* point_on_plane=NULL, int step_size=1) const;
       
       /** Same as above, using default values */
       inline bool
-      getNormalForClosestNeighbors (int x, int y, Eigen::Vector3f& normal, int radius=2) const;
+      getNormalForClosestNeighbors (int x, int y, Eigen::Vector3d& normal, int radius=2) const;
       
       /** Same as above but extracts some more data and can also return the extracted
        * information for all neighbors in radius if normal_all_neighbors is not NULL */
       inline bool
-      getSurfaceInformation (int x, int y, int radius, const Eigen::Vector3f& point,
+      getSurfaceInformation (int x, int y, int radius, const Eigen::Vector3d& point,
                              int no_of_closest_neighbors, int step_size,
                              double& max_closest_neighbor_distance_squared,
-                             Eigen::Vector3f& normal, Eigen::Vector3f& mean, Eigen::Vector3f& eigen_values,
-                             Eigen::Vector3f* normal_all_neighbors=NULL,
-                             Eigen::Vector3f* mean_all_neighbors=NULL,
-                             Eigen::Vector3f* eigen_values_all_neighbors=NULL) const;
+                             Eigen::Vector3d& normal, Eigen::Vector3d& mean, Eigen::Vector3d& eigen_values,
+                             Eigen::Vector3d* normal_all_neighbors=NULL,
+                             Eigen::Vector3d* mean_all_neighbors=NULL,
+                             Eigen::Vector3d* eigen_values_all_neighbors=NULL) const;
       
       // Return the squared distance to the n-th neighbors of the point at x,y
       inline double
@@ -620,7 +620,7 @@ namespace pcl
       getCurvature (int x, int y, int radius, int step_size) const;
       
       //! Get the sensor position
-      inline const Eigen::Vector3f
+      inline const Eigen::Vector3d
       getSensorPos () const;
       
       /** Sets all -INFINITY values to INFINITY */
@@ -674,27 +674,27 @@ namespace pcl
        *  covers world_size/pixel_size meters in the world
        *  You are responsible for deleting the structure afterwards! */
       PCL_EXPORTS double*
-      getInterpolatedSurfaceProjection (const Eigen::Affine3f& pose, int pixel_size, double world_size) const;
+      getInterpolatedSurfaceProjection (const Eigen::Affine3d& pose, int pixel_size, double world_size) const;
       
       //! Same as above, but using the local coordinate frame defined by point and the viewing direction
       PCL_EXPORTS double*
-      getInterpolatedSurfaceProjection (const Eigen::Vector3f& point, int pixel_size, double world_size) const;
+      getInterpolatedSurfaceProjection (const Eigen::Vector3d& point, int pixel_size, double world_size) const;
       
       //! Get the local coordinate frame with 0,0,0 in point, upright and Z as the viewing direction
-      inline Eigen::Affine3f
-      getTransformationToViewerCoordinateFrame (const Eigen::Vector3f& point) const;
+      inline Eigen::Affine3d
+      getTransformationToViewerCoordinateFrame (const Eigen::Vector3d& point) const;
       //! Same as above, using a reference for the retrurn value
       inline void
-      getTransformationToViewerCoordinateFrame (const Eigen::Vector3f& point,
-                                                Eigen::Affine3f& transformation) const;
+      getTransformationToViewerCoordinateFrame (const Eigen::Vector3d& point,
+                                                Eigen::Affine3d& transformation) const;
       //! Same as above, but only returning the rotation
       inline void
-      getRotationToViewerCoordinateFrame (const Eigen::Vector3f& point, Eigen::Affine3f& transformation) const;
+      getRotationToViewerCoordinateFrame (const Eigen::Vector3d& point, Eigen::Affine3d& transformation) const;
 
       /** Get a local coordinate frame at the given point based on the normal. */
       PCL_EXPORTS bool
-      getNormalBasedUprightTransformation (const Eigen::Vector3f& point,
-                                           double max_dist, Eigen::Affine3f& transformation) const;
+      getNormalBasedUprightTransformation (const Eigen::Vector3d& point,
+                                           double max_dist, Eigen::Affine3d& transformation) const;
       
       /** Get the integral image of the range values (used for fast blur operations).
        *  You are responsible for deleting it after usage! */
@@ -734,16 +734,16 @@ namespace pcl
       /** Calculates the overlap of two range images given the relative transformation
        *  (from the given image to *this) */
       PCL_EXPORTS double
-      getOverlap (const RangeImage& other_range_image, const Eigen::Affine3f& relative_transformation,
+      getOverlap (const RangeImage& other_range_image, const Eigen::Affine3d& relative_transformation,
                   int search_radius, double max_distance, int pixel_step=1) const;
       
       /** Get the viewing direction for the given point */
       inline bool
-      getViewingDirection (int x, int y, Eigen::Vector3f& viewing_direction) const;
+      getViewingDirection (int x, int y, Eigen::Vector3d& viewing_direction) const;
       
       /** Get the viewing direction for the given point */
       inline void
-      getViewingDirection (const Eigen::Vector3f& point, Eigen::Vector3f& viewing_direction) const;
+      getViewingDirection (const Eigen::Vector3d& point, Eigen::Vector3d& viewing_direction) const;
       
       /** Return a newly created Range image.
        *  Can be reimplmented in derived classes like RangeImagePlanar to return an image of the same type. */
@@ -767,8 +767,8 @@ namespace pcl
       
     protected:
       // =====PROTECTED MEMBER VARIABLES=====
-      Eigen::Affine3f to_range_image_system_;  /**< Inverse of to_world_system_ */
-      Eigen::Affine3f to_world_system_;        /**< Inverse of to_range_image_system_ */
+      Eigen::Affine3d to_range_image_system_;  /**< Inverse of to_world_system_ */
+      Eigen::Affine3d to_world_system_;        /**< Inverse of to_range_image_system_ */
       double angular_resolution_x_;             /**< Angular resolution of the range image in x direction in radians per pixel */
       double angular_resolution_y_;             /**< Angular resolution of the range image in y direction in radians per pixel */
       double angular_resolution_x_reciprocal_;  /**< 1.0/angular_resolution_x_ - provided for better performace of

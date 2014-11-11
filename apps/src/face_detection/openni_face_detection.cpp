@@ -67,7 +67,7 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, bool heat_map = false, bool show_vot
       vis.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_OPACITY, 0.75, "votes_cloud");
     }
 
-    std::vector<Eigen::VectorXf> heads;
+    std::vector<Eigen::VectorXd> heads;
     fdrf.getDetectedFaces (heads);
 
     face_detection_apps_utils::displayHeads (heads, vis);

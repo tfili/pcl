@@ -92,8 +92,8 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
   
   // Transform the target
   pcl::PointCloud<pcl::PointXYZ> target;
-  Eigen::Vector3f t(0.1f, 0.2f, 0.3f);
-  Eigen::Quaternionf q (double (std::cos (0.5*M_PI_4)), 0.0f, 0.0f, double (std::sin (0.5*M_PI_4)));
+  Eigen::Vector3d t(0.1f, 0.2f, 0.3f);
+  Eigen::Quaterniond q (double (std::cos (0.5*M_PI_4)), 0.0f, 0.0f, double (std::sin (0.5*M_PI_4)));
   pcl::transformPointCloud (cloud, target, t, q);
   
   // Noisify the target with a known seed and N(0, 0.005) using deterministic sampling

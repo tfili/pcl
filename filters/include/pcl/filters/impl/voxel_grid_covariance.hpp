@@ -64,7 +64,7 @@ pcl::VoxelGridCovariance<PointT>::applyFilter (PointCloud &output)
   output.is_dense = true;                     // we filter out invalid points
   output.points.clear ();
 
-  Eigen::Vector4f min_p, max_p;
+  Eigen::Vector4d min_p, max_p;
   // Get the minimum and maximum dimensions
   if (!filter_field_name_.empty ()) // If we don't want to process the entire cloud...
     getMinMax3D<PointT> (input_, filter_field_name_, static_cast<double> (filter_limit_min_), static_cast<double> (filter_limit_max_), min_p, max_p, filter_limit_negative_);
@@ -178,13 +178,13 @@ pcl::VoxelGridCovariance<PointT>::applyFilter (PointCloud &output)
       // Do we need to process all the fields?
       if (!downsample_all_data_)
       {
-        Eigen::Vector4f pt (input_->points[cp].x, input_->points[cp].y, input_->points[cp].z, 0);
+        Eigen::Vector4d pt (input_->points[cp].x, input_->points[cp].y, input_->points[cp].z, 0);
         leaf.centroid.template head<4> () += pt;
       }
       else
       {
         // Copy all the fields
-        Eigen::VectorXf centroid = Eigen::VectorXf::Zero (centroid_size);
+        Eigen::VectorXd centroid = Eigen::VectorXd::Zero (centroid_size);
         // ---[ RGB special case
         if (rgba_index >= 0)
         {
@@ -221,7 +221,7 @@ pcl::VoxelGridCovariance<PointT>::applyFilter (PointCloud &output)
       // Compute the centroid leaf index
       int idx = ijk0 * divb_mul_[0] + ijk1 * divb_mul_[1] + ijk2 * divb_mul_[2];
 
-      //int idx = (((input_->points[cp].getArray4fmap () * inverse_leaf_size_).template cast<int> ()).matrix () - min_b_).dot (divb_mul_);
+      //int idx = (((input_->points[cp].getArray4dmap () * inverse_leaf_size_).template cast<int> ()).matrix () - min_b_).dot (divb_mul_);
       Leaf& leaf = leaves_[idx];
       if (leaf.nr_points == 0)
       {
@@ -238,13 +238,13 @@ pcl::VoxelGridCovariance<PointT>::applyFilter (PointCloud &output)
       // Do we need to process all the fields?
       if (!downsample_all_data_)
       {
-        Eigen::Vector4f pt (input_->points[cp].x, input_->points[cp].y, input_->points[cp].z, 0);
+        Eigen::Vector4d pt (input_->points[cp].x, input_->points[cp].y, input_->points[cp].z, 0);
         leaf.centroid.template head<4> () += pt;
       }
       else
       {
         // Copy all the fields
-        Eigen::VectorXf centroid = Eigen::VectorXf::Zero (centroid_size);
+        Eigen::VectorXd centroid = Eigen::VectorXd::Zero (centroid_size);
         // ---[ RGB special case
         if (rgba_index >= 0)
         {

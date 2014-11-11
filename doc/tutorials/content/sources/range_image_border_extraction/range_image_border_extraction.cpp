@@ -70,7 +70,7 @@ main (int argc, char** argv)
   pcl::PointCloud<PointType>::Ptr point_cloud_ptr (new pcl::PointCloud<PointType>);
   pcl::PointCloud<PointType>& point_cloud = *point_cloud_ptr;
   pcl::PointCloud<pcl::PointWithViewpoint> far_ranges;
-  Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ());
+  Eigen::Affine3d scene_sensor_pose (Eigen::Affine3d::Identity ());
   std::vector<int> pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, "pcd");
   if (!pcd_filename_indices.empty ())
   {
@@ -81,10 +81,10 @@ main (int argc, char** argv)
       printUsage (argv[0]);
       return 0;
     }
-    scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
+    scene_sensor_pose = Eigen::Affine3d (Eigen::Translation3d (point_cloud.sensor_origin_[0],
                                                                point_cloud.sensor_origin_[1],
                                                                point_cloud.sensor_origin_[2])) *
-                        Eigen::Affine3f (point_cloud.sensor_orientation_);
+                        Eigen::Affine3d (point_cloud.sensor_orientation_);
   
     std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+"_far_ranges.pcd";
     if (pcl::io::loadPCDFile(far_ranges_filename.c_str(), far_ranges) == -1)

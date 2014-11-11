@@ -90,7 +90,7 @@ namespace pcl
       setInputCloud (const PointCloudConstPtr& cloud)
       {
         input_ = cloud;
-        Eigen::Matrix3f rot = input_->sensor_orientation_.toRotationMatrix ();
+        Eigen::Matrix3d rot = input_->sensor_orientation_.toRotationMatrix ();
         z_axis_ = rot.col (2);
       }
       
@@ -182,7 +182,7 @@ namespace pcl
         double dist_threshold = distance_threshold_;
         if (depth_dependent_)
         {
-          Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();
+          Eigen::Vector3d vec = input_->points[idx1].getVector3dMap ();
           double z = vec.dot (z_axis_);
           dist_threshold *= z * z;
         }
@@ -203,7 +203,7 @@ namespace pcl
       double angular_threshold_;
       double distance_threshold_;
       bool depth_dependent_;
-      Eigen::Vector3f z_axis_;
+      Eigen::Vector3d z_axis_;
   };
 }
 

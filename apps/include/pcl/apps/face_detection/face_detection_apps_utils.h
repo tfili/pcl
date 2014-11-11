@@ -10,7 +10,7 @@
 
 namespace face_detection_apps_utils
 {
-  inline bool readMatrixFromFile(std::string file, Eigen::Matrix4f & matrix)
+  inline bool readMatrixFromFile(std::string file, Eigen::Matrix4d & matrix)
   {
 
     std::ifstream in;
@@ -109,7 +109,7 @@ namespace face_detection_apps_utils
     }
   }
 
-  void displayHeads(std::vector<Eigen::VectorXf> & heads, pcl::visualization::PCLVisualizer & vis)
+  void displayHeads(std::vector<Eigen::VectorXd> & heads, pcl::visualization::PCLVisualizer & vis)
   {
     for (size_t i = 0; i < heads.size (); i++)
     {
@@ -127,11 +127,11 @@ namespace face_detection_apps_utils
       cylinder_coeff.values[1] = center_point.y;
       cylinder_coeff.values[2] = center_point.z;
 
-      Eigen::Vector3f vec = Eigen::Vector3f::UnitZ () * -1.f;
-      Eigen::Matrix3f matrixxx;
+      Eigen::Vector3d vec = Eigen::Vector3d::UnitZ () * -1.f;
+      Eigen::Matrix3d matrixxx;
 
-      matrixxx = Eigen::AngleAxisf (heads[i][3], Eigen::Vector3f::UnitX ()) * Eigen::AngleAxisf (heads[i][4], Eigen::Vector3f::UnitY ())
-          * Eigen::AngleAxisf (heads[i][5], Eigen::Vector3f::UnitZ ());
+      matrixxx = Eigen::AngleAxisd (heads[i][3], Eigen::Vector3d::UnitX ()) * Eigen::AngleAxisd (heads[i][4], Eigen::Vector3d::UnitY ())
+          * Eigen::AngleAxisd (heads[i][5], Eigen::Vector3d::UnitZ ());
 
       vec = matrixxx * vec;
 

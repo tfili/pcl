@@ -75,9 +75,9 @@ selfTest ()
   pcl::NormalDistributionsTransform2D<PointType, PointType> ndt;
 
   ndt.setMaximumIterations (40);
-  ndt.setGridCentre (Eigen::Vector2f (0,0));
-  ndt.setGridExtent (Eigen::Vector2f (20,20));
-  ndt.setGridStep (Eigen::Vector2f (20,20));
+  ndt.setGridCentre (Eigen::Vector2d (0,0));
+  ndt.setGridExtent (Eigen::Vector2d (20,20));
+  ndt.setGridStep (Eigen::Vector2d (20,20));
   ndt.setOptimizationStepSize (Eigen::Vector3d (0.4,0.4,0.1));
   ndt.setTransformationEpsilon (1e-9);
 
@@ -126,7 +126,7 @@ main (int argc, char **argv)
     std::cerr << e.what() << std::endl;
   }
 
-  Eigen::Matrix4f t (Eigen::Matrix4f::Identity ());
+  Eigen::Matrix4d t (Eigen::Matrix4d::Identity ());
 
   for (size_t i = 1; i < pcd_indices.size (); i++)
   {
@@ -143,9 +143,9 @@ main (int argc, char **argv)
     pcl::NormalDistributionsTransform2D<PointType, PointType> ndt;
 
     ndt.setMaximumIterations (iter);
-    ndt.setGridCentre (Eigen::Vector2f (15,0));
-    ndt.setGridExtent (Eigen::Vector2f (grid_extent,grid_extent));
-    ndt.setGridStep (Eigen::Vector2f (grid_step,grid_step));
+    ndt.setGridCentre (Eigen::Vector2d (15,0));
+    ndt.setGridExtent (Eigen::Vector2d (grid_extent,grid_extent));
+    ndt.setGridStep (Eigen::Vector2d (grid_step,grid_step));
     ndt.setOptimizationStepSize (optim_step);
     ndt.setTransformationEpsilon (1e-5);
 

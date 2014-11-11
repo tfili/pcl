@@ -198,8 +198,8 @@ int main (int argc, char** argv)
     
     keypoints_cloud.points.resize (keypoint_indices.points.size ());
     for (size_t i=0; i<keypoint_indices.points.size (); ++i)
-      keypoints_cloud.points[i].getVector3fMap () =
-        range_image_planar.points[keypoint_indices.points[i]].getVector3fMap ();
+      keypoints_cloud.points[i].getVector3dMap () =
+        range_image_planar.points[keypoint_indices.points[i]].getVector3dMap ();
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> color_handler_keypoints
       (keypoints_cloud_ptr, 0, 255, 0);
     if (!viewer.updatePointCloud (keypoints_cloud_ptr, color_handler_keypoints, "keypoints"))

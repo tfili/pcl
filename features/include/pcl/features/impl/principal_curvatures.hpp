@@ -49,12 +49,12 @@ pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computePointPr
       const pcl::PointCloud<PointNT> &normals, int p_idx, const std::vector<int> &indices,
       double &pcx, double &pcy, double &pcz, double &pc1, double &pc2)
 {
-  EIGEN_ALIGN16 Eigen::Matrix3f I = Eigen::Matrix3f::Identity ();
-  Eigen::Vector3f n_idx (normals.points[p_idx].normal[0], normals.points[p_idx].normal[1], normals.points[p_idx].normal[2]);
-  EIGEN_ALIGN16 Eigen::Matrix3f M = I - n_idx * n_idx.transpose ();    // projection matrix (into tangent plane)
+  EIGEN_ALIGN16 Eigen::Matrix3d I = Eigen::Matrix3d::Identity ();
+  Eigen::Vector3d n_idx (normals.points[p_idx].normal[0], normals.points[p_idx].normal[1], normals.points[p_idx].normal[2]);
+  EIGEN_ALIGN16 Eigen::Matrix3d M = I - n_idx * n_idx.transpose ();    // projection matrix (into tangent plane)
 
   // Project normals into the tangent plane
-  Eigen::Vector3f normal;
+  Eigen::Vector3d normal;
   projected_normals_.resize (indices.size ());
   xyz_centroid_.setZero ();
   for (size_t idx = 0; idx < indices.size(); ++idx)

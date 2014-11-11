@@ -83,9 +83,9 @@ visualize_correspondences (const PointCloudPtr points1, const PointCloudPtr keyp
   PointCloudPtr keypoints_right (new PointCloud);
 
   // Shift the first clouds' points to the left
-  //const Eigen::Vector3f translate (0.0, 0.0, 0.3);
-  const Eigen::Vector3f translate (0.4, 0.0, 0.0);
-  const Eigen::Quaternionf no_rotation (0, 0, 0, 0);
+  //const Eigen::Vector3d translate (0.0, 0.0, 0.3);
+  const Eigen::Vector3d translate (0.4, 0.0, 0.0);
+  const Eigen::Quaterniond no_rotation (0, 0, 0, 0);
   pcl::transformPointCloud (*points1, *points_left, -translate, no_rotation);
   pcl::transformPointCloud (*keypoints1, *keypoints_left, -translate, no_rotation);
 

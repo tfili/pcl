@@ -115,7 +115,7 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
   }
 
   // setup grid based on scale and extents
-  Eigen::Vector4f global_max, global_min;
+  Eigen::Vector4d global_max, global_min;
   pcl::getMinMax3D<PointT> (*input_, global_min, global_max);
 
   double xextent = global_max.x () - global_min.x ();
@@ -124,13 +124,13 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
   int rows = static_cast<int> (std::floor (yextent / cell_size_) + 1);
   int cols = static_cast<int> (std::floor (xextent / cell_size_) + 1);
 
-  Eigen::MatrixXf A (rows, cols);
+  Eigen::MatrixXd A (rows, cols);
   A.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
-  Eigen::MatrixXf Z (rows, cols);
+  Eigen::MatrixXd Z (rows, cols);
   Z.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
-  Eigen::MatrixXf Zf (rows, cols);
+  Eigen::MatrixXd Zf (rows, cols);
   Zf.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
 #ifdef _OPENMP
