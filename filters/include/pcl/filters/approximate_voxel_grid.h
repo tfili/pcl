@@ -43,13 +43,13 @@
 
 namespace pcl
 {
-  /** \brief Helper functor structure for copying data between an Eigen::VectorXf and a PointT. */
+  /** \brief Helper functor structure for copying data between an Eigen::VectorXd and a PointT. */
   template <typename PointT>
   struct xNdCopyEigenPointFunctor
   {
     typedef typename traits::POD<PointT>::type Pod;
     
-    xNdCopyEigenPointFunctor (const Eigen::VectorXf &p1, PointT &p2)
+    xNdCopyEigenPointFunctor (const Eigen::VectorXd &p1, PointT &p2)
       : p1_ (p1),
         p2_ (reinterpret_cast<Pod&>(p2)),
         f_idx_ (0) { }
@@ -63,18 +63,18 @@ namespace pcl
     }
 
     private:
-      const Eigen::VectorXf &p1_;
+      const Eigen::VectorXd &p1_;
       Pod &p2_;
       int f_idx_;
   };
 
-  /** \brief Helper functor structure for copying data between an Eigen::VectorXf and a PointT. */
+  /** \brief Helper functor structure for copying data between an Eigen::VectorXd and a PointT. */
   template <typename PointT>
   struct xNdCopyPointEigenFunctor
   {
     typedef typename traits::POD<PointT>::type Pod;
     
-    xNdCopyPointEigenFunctor (const PointT &p1, Eigen::VectorXf &p2)
+    xNdCopyPointEigenFunctor (const PointT &p1, Eigen::VectorXd &p2)
       : p1_ (reinterpret_cast<const Pod&>(p1)), p2_ (p2), f_idx_ (0) { }
 
     template<typename Key> inline void operator() ()
@@ -82,12 +82,12 @@ namespace pcl
       //p2_[f_idx_++] = boost::fusion::at_key<Key> (p1_);
       typedef typename pcl::traits::datatype<PointT, Key>::type T;
       const uint8_t* data_ptr = reinterpret_cast<const uint8_t*>(&p1_) + pcl::traits::offset<PointT, Key>::value;
-      p2_[f_idx_++] = static_cast<float> (*reinterpret_cast<const T*>(data_ptr));
+      p2_[f_idx_++] = static_cast<double> (*reinterpret_cast<const T*>(data_ptr));
     }
 
     private:
       const Pod &p1_;
-      Eigen::VectorXf &p2_;
+      Eigen::VectorXd &p2_;
       int f_idx_;
   };
 
@@ -114,7 +114,7 @@ namespace pcl
         he () : ix (), iy (), iz (), count (0), centroid () {}
         int ix, iy, iz;
         int count;
-        Eigen::VectorXf centroid;
+        Eigen::VectorXd centroid;
       };
 
     public:
@@ -126,8 +126,8 @@ namespace pcl
       /** \brief Empty constructor. */
       ApproximateVoxelGrid () : 
         pcl::Filter<PointT> (),
-        leaf_size_ (Eigen::Vector3f::Ones ()),
-        inverse_leaf_size_ (Eigen::Array3f::Ones ()),
+        leaf_size_ (Eigen::Vector3d::Ones ()),
+        inverse_leaf_size_ (Eigen::Array3d::Ones ()),
         downsample_all_data_ (true), histsize_ (512),
         history_ (new he[histsize_])
       {
@@ -179,10 +179,10 @@ namespace pcl
         * \param[in] leaf_size the voxel grid leaf size
         */
       inline void 
-      setLeafSize (const Eigen::Vector3f &leaf_size) 
+      setLeafSize (const Eigen::Vector3d &leaf_size) 
       { 
         leaf_size_ = leaf_size; 
-        inverse_leaf_size_ = Eigen::Array3f::Ones () / leaf_size_.array ();
+        inverse_leaf_size_ = Eigen::Array3d::Ones () / leaf_size_.array ();
       }
 
       /** \brief Set the voxel grid leaf size.
@@ -191,13 +191,13 @@ namespace pcl
         * \param[in] lz the leaf size for Z
         */
       inline void
-      setLeafSize (float lx, float ly, float lz)
+      setLeafSize (double lx, double ly, double lz)
       {
-        setLeafSize (Eigen::Vector3f (lx, ly, lz));
+        setLeafSize (Eigen::Vector3d (lx, ly, lz));
       }
 
       /** \brief Get the voxel grid leaf size. */
-      inline Eigen::Vector3f 
+      inline Eigen::Vector3d 
       getLeafSize () const { return (leaf_size_); }
 
       /** \brief Set to true if all fields need to be downsampled, or false if just XYZ.
@@ -214,10 +214,10 @@ namespace pcl
 
     protected:
       /** \brief The size of a leaf. */
-      Eigen::Vector3f leaf_size_;
+      Eigen::Vector3d leaf_size_;
 
       /** \brief Compute 1/leaf_size_ to avoid division later */ 
-      Eigen::Array3f inverse_leaf_size_;
+      Eigen::Array3d inverse_leaf_size_;
 
       /** \brief Set to true if all fields need to be downsampled, or false if just XYZ. */
       bool downsample_all_data_;

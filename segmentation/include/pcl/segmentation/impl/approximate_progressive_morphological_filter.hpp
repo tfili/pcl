@@ -51,11 +51,11 @@
 template <typename PointT>
 pcl::ApproximateProgressiveMorphologicalFilter<PointT>::ApproximateProgressiveMorphologicalFilter () :
   max_window_size_ (33),
-  slope_ (0.7f),
-  max_distance_ (10.0f),
-  initial_distance_ (0.15f),
-  cell_size_ (1.0f),
-  base_ (2.0f),
+  slope_ (0.7),
+  max_distance_ (10.0),
+  initial_distance_ (0.15),
+  cell_size_ (1.0),
+  base_ (2.0),
   exponential_ (true),
   threads_ (0)
 {
@@ -79,19 +79,19 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
   }
 
   // Compute the series of window sizes and height thresholds
-  std::vector<float> height_thresholds;
-  std::vector<float> window_sizes;
+  std::vector<double> height_thresholds;
+  std::vector<double> window_sizes;
   std::vector<int> half_sizes;
   int iteration = 0;
-  int half_size = 0.0f;
-  float window_size = 0.0f;
-  float height_threshold = 0.0f;
+  int half_size = 0.0;
+  double window_size = 0.0;
+  double height_threshold = 0.0;
 
   while (window_size < max_window_size_)
   {
     // Determine the initial window size.
     if (exponential_)
-      half_size = static_cast<int> (std::pow (static_cast<float> (base_), iteration));
+      half_size = static_cast<int> (std::pow (static_cast<double> (base_), iteration));
     else
       half_size = (iteration+1) * base_;
 
@@ -115,23 +115,23 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
   }
 
   // setup grid based on scale and extents
-  Eigen::Vector4f global_max, global_min;
+  Eigen::Vector4d global_max, global_min;
   pcl::getMinMax3D<PointT> (*input_, global_min, global_max);
 
-  float xextent = global_max.x () - global_min.x ();
-  float yextent = global_max.y () - global_min.y ();
+  double xextent = global_max.x () - global_min.x ();
+  double yextent = global_max.y () - global_min.y ();
 
   int rows = static_cast<int> (std::floor (yextent / cell_size_) + 1);
   int cols = static_cast<int> (std::floor (xextent / cell_size_) + 1);
 
-  Eigen::MatrixXf A (rows, cols);
-  A.setConstant (std::numeric_limits<float>::quiet_NaN ());
+  Eigen::MatrixXd A (rows, cols);
+  A.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
-  Eigen::MatrixXf Z (rows, cols);
-  Z.setConstant (std::numeric_limits<float>::quiet_NaN ());
+  Eigen::MatrixXd Z (rows, cols);
+  Z.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
-  Eigen::MatrixXf Zf (rows, cols);
-  Zf.setConstant (std::numeric_limits<float>::quiet_NaN ());
+  Eigen::MatrixXd Zf (rows, cols);
+  Zf.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
 #ifdef _OPENMP
 #pragma omp parallel for num_threads(threads_)
@@ -179,13 +179,13 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
         cs = ((col - half_sizes[i]) < 0) ? 0 : col - half_sizes[i];
         ce = ((col + half_sizes[i]) > (cols-1)) ? (cols-1) : col + half_sizes[i];
 
-        float min_coeff = std::numeric_limits<float>::max ();
+        double min_coeff = std::numeric_limits<double>::max ();
 
         for (int j = rs; j < (re + 1); ++j)
         {
           for (int k = cs; k < (ce + 1); ++k)
           {
-            if (A (j, k) != std::numeric_limits<float>::quiet_NaN ())
+            if (A (j, k) != std::numeric_limits<double>::quiet_NaN ())
             {
               if (A (j, k) < min_coeff)
                 min_coeff = A (j, k);
@@ -193,7 +193,7 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
           }
         }
 
-        if (min_coeff != std::numeric_limits<float>::max ())
+        if (min_coeff != std::numeric_limits<double>::max ())
           Z(row, col) = min_coeff;
       }
     }
@@ -213,13 +213,13 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
         cs = ((col - half_sizes[i]) < 0) ? 0 : col - half_sizes[i];
         ce = ((col + half_sizes[i]) > (cols-1)) ? (cols-1) : col + half_sizes[i];
 
-        float max_coeff = -std::numeric_limits<float>::max ();
+        double max_coeff = -std::numeric_limits<double>::max ();
 
         for (int j = rs; j < (re + 1); ++j)
         {
           for (int k = cs; k < (ce + 1); ++k)
           {
-            if (Z (j, k) != std::numeric_limits<float>::quiet_NaN ())
+            if (Z (j, k) != std::numeric_limits<double>::quiet_NaN ())
             {
               if (Z (j, k) > max_coeff)
                 max_coeff = Z (j, k);
@@ -227,7 +227,7 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
           }
         }
 
-        if (max_coeff != -std::numeric_limits<float>::max ())
+        if (max_coeff != -std::numeric_limits<double>::max ())
           Zf (row, col) = max_coeff;
       }
     }
@@ -241,7 +241,7 @@ pcl::ApproximateProgressiveMorphologicalFilter<PointT>::extract (std::vector<int
       int erow = static_cast<int> (std::floor ((p.y - global_min.y ()) / cell_size_));
       int ecol = static_cast<int> (std::floor ((p.x - global_min.x ()) / cell_size_));
 
-      float diff = p.z - Zf (erow, ecol);
+      double diff = p.z - Zf (erow, ecol);
       if (diff < height_thresholds[i])
         pt_indices.push_back (ground[p_idx]);
     }

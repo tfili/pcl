@@ -49,7 +49,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 pcl::LINEMOD::LINEMOD () 
-  : template_threshold_ (0.75f)
+  : template_threshold_ (0.75)
   , use_non_max_suppression_ (false)
   , average_detections_ (false)
   , templates_ ()
@@ -330,7 +330,7 @@ pcl::LINEMOD::matchTemplates (const std::vector<QuantizableModality*> & modaliti
     }
 #endif
 
-    const float inv_max_score = 1.0f / float (max_score);
+    const double inv_max_score = 1.0 / double (max_score);
     
     size_t max_value = 0;
     size_t max_index = 0;
@@ -350,7 +350,7 @@ pcl::LINEMOD::matchTemplates (const std::vector<QuantizableModality*> & modaliti
     detection.x = static_cast<int> (max_col_index);
     detection.y = static_cast<int> (max_row_index);
     detection.template_id = static_cast<int> (template_index);
-    detection.score = static_cast<float> (max_value) * inv_max_score;
+    detection.score = static_cast<double> (max_value) * inv_max_score;
 
     detections.push_back (detection);
 
@@ -671,33 +671,33 @@ pcl::LINEMOD::detectTemplates (const std::vector<QuantizableModality*> & modalit
     }
 #endif
 
-    const float inv_max_score = 1.0f / float (max_score);
+    const double inv_max_score = 1.0 / double (max_score);
 
     // we compute a new threshold based on the threshold supplied by the user;
     // this is due to the use of the cosine approx. in the response computation;
 #ifdef LINEMOD_USE_SEPARATE_ENERGY_MAPS
-    const float raw_threshold = (4.0f * float (max_score) / 2.0f + template_threshold_ * (4.0f * float (max_score) / 2.0f));
+    const double raw_threshold = (4.0 * double (max_score) / 2.0 + template_threshold_ * (4.0 * double (max_score) / 2.0));
 #else
-    const float raw_threshold = (float (max_score) / 2.0f + template_threshold_ * (float (max_score) / 2.0f));
+    const double raw_threshold = (double (max_score) / 2.0 + template_threshold_ * (double (max_score) / 2.0));
 #endif
 
     //int max_value = 0;
     //size_t max_index = 0;
     for (size_t mem_index = 0; mem_index < mem_size; ++mem_index)
     {
-      //const float score = score_sums[mem_index] * inv_max_score;
+      //const double score = score_sums[mem_index] * inv_max_score;
 
 #ifdef LINEMOD_USE_SEPARATE_ENERGY_MAPS
-      const float raw_score = score_sums[mem_index] 
+      const double raw_score = score_sums[mem_index] 
         + score_sums_1[mem_index]
         + score_sums_2[mem_index]
         + score_sums_3[mem_index];
 
-      const float score = 2.0f * static_cast<float> (raw_score) * 0.25f * inv_max_score - 1.0f;
+      const double score = 2.0 * static_cast<double> (raw_score) * 0.25 * inv_max_score - 1.0;
 #else
-      const float raw_score = score_sums[mem_index];
+      const double raw_score = score_sums[mem_index];
 
-      const float score = 2.0f * static_cast<float> (raw_score) * inv_max_score - 1.0f;
+      const double score = 2.0 * static_cast<double> (raw_score) * inv_max_score - 1.0;
 #endif
 
 
@@ -785,11 +785,11 @@ pcl::LINEMOD::detectTemplates (const std::vector<QuantizableModality*> & modalit
         detection.score = score;
 
 #ifdef LINEMOD_USE_SEPARATE_ENERGY_MAPS
-        std::cerr << "score: " << static_cast<float> (raw_score) * inv_max_score * 0.25f << ", " << (2.0f * static_cast<float> (raw_score) * inv_max_score - 1.0f) << std::endl;
-        std::cerr << "score0: " << static_cast<float> (score_sums[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums[mem_index]) * inv_max_score - 1.0f) << std::endl;
-        std::cerr << "score1: " << static_cast<float> (score_sums_1[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums_1[mem_index]) * inv_max_score - 1.0f) << std::endl;
-        std::cerr << "score2: " << static_cast<float> (score_sums_2[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums_2[mem_index]) * inv_max_score - 1.0f) << std::endl;
-        std::cerr << "score3: " << static_cast<float> (score_sums_3[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums_3[mem_index]) * inv_max_score - 1.0f) << std::endl;
+        std::cerr << "score: " << static_cast<double> (raw_score) * inv_max_score * 0.25 << ", " << (2.0 * static_cast<double> (raw_score) * inv_max_score - 1.0) << std::endl;
+        std::cerr << "score0: " << static_cast<double> (score_sums[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums[mem_index]) * inv_max_score - 1.0) << std::endl;
+        std::cerr << "score1: " << static_cast<double> (score_sums_1[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums_1[mem_index]) * inv_max_score - 1.0) << std::endl;
+        std::cerr << "score2: " << static_cast<double> (score_sums_2[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums_2[mem_index]) * inv_max_score - 1.0) << std::endl;
+        std::cerr << "score3: " << static_cast<double> (score_sums_3[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums_3[mem_index]) * inv_max_score - 1.0) << std::endl;
 #endif
 
 
@@ -837,9 +837,9 @@ void
 pcl::LINEMOD::detectTemplatesSemiScaleInvariant (
     const std::vector<QuantizableModality*> & modalities,
     std::vector<LINEMODDetection> & detections,
-    const float min_scale,
-    const float max_scale,
-    const float scale_multiplier) const
+    const double min_scale,
+    const double max_scale,
+    const double scale_multiplier) const
 {
   // create energy maps
   std::vector<EnergyMaps> modality_energy_maps;
@@ -1006,7 +1006,7 @@ pcl::LINEMOD::detectTemplatesSemiScaleInvariant (
     const size_t mem_height = height / step_size;
     const size_t mem_size = mem_width * mem_height;
 
-    for (float scale = min_scale; scale <= max_scale; scale *= scale_multiplier)
+    for (double scale = min_scale; scale <= max_scale; scale *= scale_multiplier)
     {
 #ifdef __SSE2__
       unsigned short * score_sums = reinterpret_cast<unsigned short*> (aligned_malloc (mem_size*sizeof(unsigned short)));
@@ -1034,7 +1034,7 @@ pcl::LINEMOD::detectTemplatesSemiScaleInvariant (
             max_score += 4;
 
             unsigned char *data = modality_linearized_maps[feature.modality_index][bin_index].getOffsetMap (
-                size_t (float (feature.x) * scale), size_t (float (feature.y) * scale));
+                size_t (double (feature.x) * scale), size_t (double (feature.y) * scale));
             __m128i * data_m128i = reinterpret_cast<__m128i*> (data);
 
             for (size_t mem_index = 0; mem_index < mem_size_16; ++mem_index)
@@ -1145,33 +1145,33 @@ pcl::LINEMOD::detectTemplatesSemiScaleInvariant (
       }
 #endif
 
-      const float inv_max_score = 1.0f / float (max_score);
+      const double inv_max_score = 1.0 / double (max_score);
 
       // we compute a new threshold based on the threshold supplied by the user;
       // this is due to the use of the cosine approx. in the response computation;
 #ifdef LINEMOD_USE_SEPARATE_ENERGY_MAPS
-      const float raw_threshold = (4.0f * float (max_score) / 2.0f + template_threshold_ * (4.0f * float (max_score) / 2.0f));
+      const double raw_threshold = (4.0 * double (max_score) / 2.0 + template_threshold_ * (4.0 * double (max_score) / 2.0));
 #else
-      const float raw_threshold = (float (max_score) / 2.0f + template_threshold_ * (float (max_score) / 2.0f));
+      const double raw_threshold = (double (max_score) / 2.0 + template_threshold_ * (double (max_score) / 2.0));
 #endif
 
       //int max_value = 0;
       //size_t max_index = 0;
       for (size_t mem_index = 0; mem_index < mem_size; ++mem_index)
       {
-        //const float score = score_sums[mem_index] * inv_max_score;
+        //const double score = score_sums[mem_index] * inv_max_score;
 
 #ifdef LINEMOD_USE_SEPARATE_ENERGY_MAPS
-        const float raw_score = score_sums[mem_index] 
+        const double raw_score = score_sums[mem_index] 
           + score_sums_1[mem_index]
           + score_sums_2[mem_index]
           + score_sums_3[mem_index];
 
-        const float score = 2.0f * static_cast<float> (raw_score) * 0.25f * inv_max_score - 1.0f;
+        const double score = 2.0 * static_cast<double> (raw_score) * 0.25 * inv_max_score - 1.0;
 #else
-        const float raw_score = score_sums[mem_index];
+        const double raw_score = score_sums[mem_index];
 
-        const float score = 2.0f * static_cast<float> (raw_score) * inv_max_score - 1.0f;
+        const double score = 2.0 * static_cast<double> (raw_score) * inv_max_score - 1.0;
 #endif
 
 
@@ -1260,11 +1260,11 @@ pcl::LINEMOD::detectTemplatesSemiScaleInvariant (
           detection.scale = scale;
 
 #ifdef LINEMOD_USE_SEPARATE_ENERGY_MAPS
-          std::cerr << "score: " << static_cast<float> (raw_score) * inv_max_score * 0.25f << ", " << (2.0f * static_cast<float> (raw_score) * inv_max_score - 1.0f) << std::endl;
-          std::cerr << "score0: " << static_cast<float> (score_sums[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums[mem_index]) * inv_max_score - 1.0f) << std::endl;
-          std::cerr << "score1: " << static_cast<float> (score_sums_1[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums_1[mem_index]) * inv_max_score - 1.0f) << std::endl;
-          std::cerr << "score2: " << static_cast<float> (score_sums_2[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums_2[mem_index]) * inv_max_score - 1.0f) << std::endl;
-          std::cerr << "score3: " << static_cast<float> (score_sums_3[mem_index]) * inv_max_score << ", " << (2.0f * static_cast<float> (score_sums_3[mem_index]) * inv_max_score - 1.0f) << std::endl;
+          std::cerr << "score: " << static_cast<double> (raw_score) * inv_max_score * 0.25 << ", " << (2.0 * static_cast<double> (raw_score) * inv_max_score - 1.0) << std::endl;
+          std::cerr << "score0: " << static_cast<double> (score_sums[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums[mem_index]) * inv_max_score - 1.0) << std::endl;
+          std::cerr << "score1: " << static_cast<double> (score_sums_1[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums_1[mem_index]) * inv_max_score - 1.0) << std::endl;
+          std::cerr << "score2: " << static_cast<double> (score_sums_2[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums_2[mem_index]) * inv_max_score - 1.0) << std::endl;
+          std::cerr << "score3: " << static_cast<double> (score_sums_3[mem_index]) * inv_max_score << ", " << (2.0 * static_cast<double> (score_sums_3[mem_index]) * inv_max_score - 1.0) << std::endl;
 #endif
 
 

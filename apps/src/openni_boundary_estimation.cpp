@@ -83,7 +83,7 @@ class OpenNIIntegralImageNormalEstimation
       new_cloud_ = false;
 
       pass_.setDownsampleAllData (true);
-      pass_.setLeafSize (0.005f, 0.005f, 0.005f);
+      pass_.setLeafSize (0.005, 0.005, 0.005);
 
       pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>::Ptr tree (new pcl::search::OrganizedNeighbor<pcl::PointXYZRGBNormal>);
       be_.setRadiusSearch (0.02);

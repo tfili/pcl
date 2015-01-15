@@ -51,7 +51,7 @@ using namespace pcl::recognition;
 
 //============================================================================================================================================
 
-ModelLibrary::ModelLibrary (float pair_width, float voxel_size, float max_coplanarity_angle)
+ModelLibrary::ModelLibrary (double pair_width, double voxel_size, double max_coplanarity_angle)
 : pair_width_ (pair_width),
   voxel_size_ (voxel_size),
   max_coplanarity_angle_ (max_coplanarity_angle),
@@ -62,10 +62,10 @@ ModelLibrary::ModelLibrary (float pair_width, float voxel_size, float max_coplan
   num_of_cells_[2] = 60;
 
   // Compute the bounds of the hash table
-  float eps = 0.000001f; // To be sure that an angle of 0 or PI will not be excluded because it lies on the boundary of the voxel structure
-  float bounds[6] = {-eps, static_cast<float> (M_PI) + eps,
-                     -eps, static_cast<float> (M_PI) + eps,
-                     -eps, static_cast<float> (M_PI) + eps};
+  double eps = 0.000001; // To be sure that an angle of 0 or PI will not be excluded because it lies on the boundary of the voxel structure
+  double bounds[6] = {-eps, static_cast<double> (M_PI) + eps,
+                     -eps, static_cast<double> (M_PI) + eps,
+                     -eps, static_cast<double> (M_PI) + eps};
  
   hash_table_.build (bounds, num_of_cells_);
 }
@@ -104,7 +104,7 @@ ModelLibrary::removeAllModels ()
 
 bool
 ModelLibrary::addModel (const PointCloudIn& points, const PointCloudN& normals, const std::string& object_name,
-                        float frac_of_points_for_registration, void* user_data)
+                        double frac_of_points_for_registration, void* user_data)
 {
 #ifdef OBJ_REC_RANSAC_VERBOSE
   printf("ModelLibrary::%s(): begin [%s]\n", __func__, object_name.c_str ());
@@ -158,7 +158,7 @@ ModelLibrary::addModel (const PointCloudIn& points, const PointCloudN& normals, 
 bool
 ModelLibrary::addToHashTable (Model* model, const ORROctree::Node::Data* data1, const ORROctree::Node::Data* data2)
 {
-  float key[3];
+  double key[3];
 
   // Compute the descriptor signature for the oriented point pair (i, j)
   ObjRecRANSAC::compute_oriented_point_pair_signature (

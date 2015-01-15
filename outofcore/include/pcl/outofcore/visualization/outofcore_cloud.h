@@ -64,7 +64,7 @@ class OutofcoreCloud : public Object
 
     struct PcdQueueItem
     {
-      PcdQueueItem (std::string pcd_file, float coverage)
+      PcdQueueItem (std::string pcd_file, double coverage)
       {
        this->pcd_file = pcd_file;
        this->coverage = coverage;
@@ -80,7 +80,7 @@ class OutofcoreCloud : public Object
       }
 
       std::string pcd_file;
-      float coverage;
+      double coverage;
     };
 
     typedef std::priority_queue<PcdQueueItem> PcdQueue;
@@ -92,7 +92,7 @@ class OutofcoreCloud : public Object
     {
     public:
 
-      CloudDataCacheItem (std::string pcd_file, float coverage, vtkSmartPointer<vtkPolyData> cloud_data, size_t timestamp)
+      CloudDataCacheItem (std::string pcd_file, double coverage, vtkSmartPointer<vtkPolyData> cloud_data, size_t timestamp)
       {
        this->pcd_file = pcd_file;
        this->coverage = coverage;
@@ -107,7 +107,7 @@ class OutofcoreCloud : public Object
       }
 
       std::string pcd_file;
-      float coverage;
+      double coverage;
     };
 
 

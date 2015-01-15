@@ -94,14 +94,14 @@ TEST (PointCloudSpring, duplicateRows)
 
   for (int i = 0; i < w; ++i)
   {
-    EXPECT_EQ_VECTORS ((*output) (i, 0).getVector3fMap (), 
-           (*output) (i, 1).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (i, 0).getVector3fMap (), 
-           (*output) (i, 2).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (i, output->height - 3).getVector3fMap (), 
-           (*output) (i, output->height - 1).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (i, output->height - 3).getVector3fMap (), 
-           (*output) (i, output->height - 2).getVector3fMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, 0).getVector3dMap (), 
+           (*output) (i, 1).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, 0).getVector3dMap (), 
+           (*output) (i, 2).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, output->height - 3).getVector3dMap (), 
+           (*output) (i, output->height - 1).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, output->height - 3).getVector3dMap (), 
+           (*output) (i, output->height - 2).getVector3dMap ());
   }
 }
 
@@ -115,14 +115,14 @@ TEST (PointCloudSpring, duplicateColumns)
 
   for (int i = 0; i < h; ++i)
   {
-    EXPECT_EQ_VECTORS ((*output) (0, i).getVector3fMap (), 
-           (*output) (1, i).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (0, i).getVector3fMap (), 
-           (*output) (2, i).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (w - 3, i).getVector3fMap (), 
-           (*output) (w - 1, i).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (w - 3, i).getVector3fMap (), 
-           (*output) (w - 2, i).getVector3fMap ());
+    EXPECT_EQ_VECTORS ((*output) (0, i).getVector3dMap (), 
+           (*output) (1, i).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (0, i).getVector3dMap (), 
+           (*output) (2, i).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (w - 3, i).getVector3dMap (), 
+           (*output) (w - 1, i).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (w - 3, i).getVector3dMap (), 
+           (*output) (w - 2, i).getVector3dMap ());
   }
 }
 
@@ -136,14 +136,14 @@ TEST (PointCloudSpring, mirrorRows)
 
   for (int i = 0; i < w; ++i)
   {
-    EXPECT_EQ_VECTORS ((*output) (i, 1).getVector3fMap (), 
-           (*output) (i, 2).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (i, 0).getVector3fMap (), 
-           (*output) (i, 3).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (i, h - 3).getVector3fMap (), 
-           (*output) (i, h - 2).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (i, h - 4).getVector3fMap (), 
-           (*output) (i, h - 1).getVector3fMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, 1).getVector3dMap (), 
+           (*output) (i, 2).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, 0).getVector3dMap (), 
+           (*output) (i, 3).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, h - 3).getVector3dMap (), 
+           (*output) (i, h - 2).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (i, h - 4).getVector3dMap (), 
+           (*output) (i, h - 1).getVector3dMap ());
   }
 }
 
@@ -158,14 +158,14 @@ TEST (PointCloudSpring, mirrorColumns)
 
   for (int j = 0; j < h; ++j)
   {
-    EXPECT_EQ_VECTORS ((*output) (0, j).getVector3fMap (), 
-           (*output) (3, j).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (1, j).getVector3fMap (), 
-           (*output) (2, j).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (w - 3, j).getVector3fMap (), 
-           (*output) (w - 2, j).getVector3fMap ());
-    EXPECT_EQ_VECTORS ((*output) (w - 4, j).getVector3fMap (), 
-           (*output) (w - 1, j).getVector3fMap ());
+    EXPECT_EQ_VECTORS ((*output) (0, j).getVector3dMap (), 
+           (*output) (3, j).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (1, j).getVector3dMap (), 
+           (*output) (2, j).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (w - 3, j).getVector3dMap (), 
+           (*output) (w - 2, j).getVector3dMap ());
+    EXPECT_EQ_VECTORS ((*output) (w - 4, j).getVector3dMap (), 
+           (*output) (w - 1, j).getVector3dMap ());
   }
 }
 
@@ -180,8 +180,8 @@ TEST (PointCloudSpring, deleteRows)
   for (uint32_t i = 0; i < cloud_ptr->width; i++)
     for (uint32_t j = 0; j < cloud_ptr->height; j++)
     {
-      EXPECT_EQ_VECTORS ((*output) (i, j).getVector3fMap (),
-                         (*cloud_ptr) (i, j).getVector3fMap ());
+      EXPECT_EQ_VECTORS ((*output) (i, j).getVector3dMap (),
+                         (*cloud_ptr) (i, j).getVector3dMap ());
     }
 }
 
@@ -196,8 +196,8 @@ TEST (PointCloudSpring, deleteCols)
   for (uint32_t i = 0; i < cloud_ptr->width; i++)
     for (uint32_t j = 0; j < cloud_ptr->height; j++)
     {
-      EXPECT_EQ_VECTORS ((*output) (i, j).getVector3fMap (),
-                         (*cloud_ptr) (i, j).getVector3fMap ());
+      EXPECT_EQ_VECTORS ((*output) (i, j).getVector3dMap (),
+                         (*cloud_ptr) (i, j).getVector3dMap ());
     }
 }
 

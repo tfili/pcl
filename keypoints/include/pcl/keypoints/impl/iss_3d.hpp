@@ -102,12 +102,12 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::setNormals (const PointCloudNC
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointOutT, typename NormalT> bool*
-pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::getBoundaryPoints (PointCloudIn &input, double border_radius, float angle_threshold)
+pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::getBoundaryPoints (PointCloudIn &input, double border_radius, double angle_threshold)
 {
   bool* edge_points = new bool [input.size ()];
 
-  Eigen::Vector4f u = Eigen::Vector4f::Zero ();
-  Eigen::Vector4f v = Eigen::Vector4f::Zero ();
+  Eigen::Vector4d u = Eigen::Vector4d::Zero ();
+  Eigen::Vector4d v = Eigen::Vector4d::Zero ();
 
   pcl::BoundaryEstimation<PointInT, NormalT, pcl::Boundary> boundary_estimator;
   boundary_estimator.setInputCloud (input_);
@@ -124,7 +124,7 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::getBoundaryPoints (PointCloudI
     if (pcl::isFinite(current_point))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_distances;
+      std::vector<double> nn_distances;
       int n_neighbors;
 
       this->searchForNeighbors (static_cast<int> (index), border_radius, nn_indices, nn_distances);
@@ -160,7 +160,7 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::getScatterMatrix (const int& c
   cov_m = Eigen::Matrix3d::Zero ();
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
   int n_neighbors;
 
   this->searchForNeighbors (current_index, salient_radius_, nn_indices, nn_distances);
@@ -312,7 +312,7 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloudOut
     if ((border_radius_ > 0.0) && (pcl::isFinite(current_point)))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_distances;
+      std::vector<double> nn_distances;
 
       this->searchForNeighbors (static_cast<int> (index), border_radius_, nn_indices, nn_distances);
 
@@ -404,7 +404,7 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloudOut
     if ((third_eigen_value_[index] > 0.0) && (pcl::isFinite(current_point)))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_distances;
+      std::vector<double> nn_distances;
       int n_neighbors;
 
       this->searchForNeighbors (static_cast<int> (index), non_max_radius_, nn_indices, nn_distances);
@@ -435,7 +435,7 @@ pcl::ISSKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloudOut
 #endif
     {
       PointOutT p;
-      p.getVector3fMap () = input_->points[index].getVector3fMap ();
+      p.getVector3dMap () = input_->points[index].getVector3dMap ();
       output.points.push_back(p);
       keypoints_indices_->indices.push_back (index);
     }

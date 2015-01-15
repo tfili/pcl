@@ -71,19 +71,19 @@ Triangulation::createIndices (std::vector<pcl::Vertices> &vertices, unsigned vid
 }
 
 void
-Triangulation::createVertices (pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, float x0, float y0, float z0, float width,
-                               float height, unsigned segX, unsigned segY)
+Triangulation::createVertices (pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, double x0, double y0, double z0, double width,
+                               double height, unsigned segX, unsigned segY)
 {
   pcl::PointXYZ v;
-  float dx = width / float (segX);
-  float dy = height / float (segY);
+  double dx = width / double (segX);
+  double dy = height / double (segY);
 
   for (unsigned j = 0; j <= segY; j++)
   {
     for (unsigned i = 0; i <= segX; i++)
     {
-      v.x = x0 + float (i) * dx;
-      v.y = y0 + float (j) * dy;
+      v.x = x0 + double (i) * dx;
+      v.y = y0 + double (j) * dy;
       v.z = z0;
       cloud->push_back (v);
     }
@@ -179,7 +179,7 @@ Triangulation::convertSurface2PolygonMesh (const ON_NurbsSurface &nurbs, Polygon
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   mesh.polygons.clear ();
-  createVertices (cloud, float (x0), float (y0), 0.0f, float (w), float (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (mesh.polygons, 0, resolution, resolution);
 
   for (unsigned i = 0; i < cloud->size (); i++)
@@ -189,9 +189,9 @@ Triangulation::convertSurface2PolygonMesh (const ON_NurbsSurface &nurbs, Polygon
     double point[9];
     nurbs.Evaluate (v.x, v.y, 1, 3, point);
 
-    v.x = float (point[0]);
-    v.y = float (point[1]);
-    v.z = float (point[2]);
+    v.x = double (point[0]);
+    v.y = double (point[1]);
+    v.z = double (point[2]);
   }
 
   toPCLPointCloud2 (*cloud, mesh.cloud);
@@ -219,7 +219,7 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   std::vector<pcl::Vertices> polygons;
-  createVertices (cloud, float (x0), float (y0), 0.0f, float (w), float (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (polygons, 0, resolution, resolution);
 
   vector_vec2d points (cloud->size (), Eigen::Vector2d ());
@@ -295,8 +295,8 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
   {
     pcl::PointXYZ &v = cloud->at (out_idx[i]);
     Eigen::Vector2d &pc = out_pc[i];
-    v.x = float (pc (0));
-    v.y = float (pc (1));
+    v.x = double (pc (0));
+    v.y = double (pc (1));
   }
 
   for (std::size_t i = 0; i < cloud->size (); i++)
@@ -307,9 +307,9 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
     double point[3];
     nurbs.Evaluate (v.x, v.y, 0, 3, point);
 
-    v.x = float (point[0]);
-    v.y = float (point[1]);
-    v.z = float (point[2]);
+    v.x = double (point[0]);
+    v.y = double (point[1]);
+    v.z = double (point[2]);
     //    tu[0] = point[3];
     //    tu[1] = point[4];
     //    tu[2] = point[5];
@@ -346,7 +346,7 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   std::vector<pcl::Vertices> polygons;
-  createVertices (cloud, float (x0), float (y0), 0.0f, float (w), float (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (polygons, 0, resolution, resolution);
 
   vector_vec2d points (cloud->size (), Eigen::Vector2d ());
@@ -425,8 +425,8 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
   {
     pcl::PointXYZ &v = cloud->at (out_idx[i]);
     Eigen::Vector2d &pc = out_pc[i];
-    v.x = float (pc (0));
-    v.y = float (pc (1));
+    v.x = double (pc (0));
+    v.y = double (pc (1));
   }
 
   for (std::size_t i = 0; i < cloud->size (); i++)
@@ -436,9 +436,9 @@ Triangulation::convertTrimmedSurface2PolygonMesh (const ON_NurbsSurface &nurbs, 
     double point[3];
     nurbs.Evaluate (v.x, v.y, 0, 3, point);
 
-    v.x = float (point[0]);
-    v.y = float (point[1]);
-    v.z = float (point[2]);
+    v.x = double (point[0]);
+    v.y = double (point[1]);
+    v.z = double (point[2]);
   }
 
   for (std::size_t i = 0; i < start.size (); i++)
@@ -482,7 +482,7 @@ Triangulation::convertSurface2Vertices (const ON_NurbsSurface &nurbs, pcl::Point
   double y1 = nurbs.Knot (1, nurbs.KnotCount (1) - 1);
   double h = y1 - y0;
 
-  createVertices (cloud, float (x0), float (y0), 0.0f, float (w), float (h), resolution, resolution);
+  createVertices (cloud, double (x0), double (y0), 0.0, double (w), double (h), resolution, resolution);
   createIndices (vertices, 0, resolution, resolution);
 
   for (unsigned i = 0; i < cloud->size (); i++)
@@ -492,9 +492,9 @@ Triangulation::convertSurface2Vertices (const ON_NurbsSurface &nurbs, pcl::Point
     double point[9];
     nurbs.Evaluate (v.x, v.y, 1, 3, point);
 
-    v.x = static_cast<float> (point[0]);
-    v.y = static_cast<float> (point[1]);
-    v.z = static_cast<float> (point[2]);
+    v.x = static_cast<double> (point[0]);
+    v.y = static_cast<double> (point[1]);
+    v.z = static_cast<double> (point[2]);
   }
 }
 
@@ -530,9 +530,9 @@ Triangulation::convertCurve2PointCloud (const ON_NurbsCurve &nurbs, pcl::PointCl
 
       double points[3];
       nurbs.Evaluate (xi, 0, 3, points);
-      p.x = static_cast<float> (points[0]);
-      p.y = static_cast<float> (points[1]);
-      p.z = static_cast<float> (points[2]);
+      p.x = static_cast<double> (points[0]);
+      p.y = static_cast<double> (points[1]);
+      p.z = static_cast<double> (points[2]);
       p.r = 255;
       p.g = 0;
       p.b = 0;
@@ -579,9 +579,9 @@ Triangulation::convertCurve2PointCloud (const ON_NurbsCurve &curve, const ON_Nur
       double pp[3];
       curve.Evaluate (xi, 0, 2, pp);
       surf.Evaluate (pp[0], pp[1], 0, 3, p);
-      pt.x = float (p[0]);
-      pt.y = float (p[1]);
-      pt.z = float (p[2]);
+      pt.x = double (p[0]);
+      pt.y = double (p[1]);
+      pt.z = double (p[2]);
       pt.r = 255;
       pt.g = 0;
       pt.b = 0;

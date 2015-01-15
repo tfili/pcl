@@ -62,7 +62,7 @@ namespace pcl
   //        uint8_t r;
   //        uint8_t _unused;
   //      };
-  //      float rgb;
+  //      double rgb;
   //    };
   //    uint32_t rgba;
   //  };
@@ -87,12 +87,12 @@ namespace pcl
     {
       struct
       {
-        float x;
-        float y;
-        float angle;
-        float magnitude;
+        double x;
+        double y;
+        double angle;
+        double magnitude;
       };
-      float data[4];
+      double data[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 

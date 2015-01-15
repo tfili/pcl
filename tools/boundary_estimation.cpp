@@ -52,8 +52,8 @@ int    default_k = 0;
 double default_radius = 0.0;
 double default_angle  = M_PI/2.0;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)
@@ -108,7 +108,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
   ne.setInputNormals (xyznormals);
   //ne.setSearchMethod (pcl::KdTreeFLANN<pcl::PointNormal>::Ptr (new pcl::KdTreeFLANN<pcl::PointNormal>));
   ne.setKSearch (k);
-  ne.setAngleThreshold (static_cast<float> (angle));
+  ne.setAngleThreshold (static_cast<double> (angle));
   ne.setRadiusSearch (radius);
   
   PointCloud<Boundary> boundaries;

@@ -84,7 +84,7 @@ namespace pcl
         */
       virtual int 
       readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, 
+                  Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, 
                   int &file_version, int &data_type, unsigned int &data_idx, const int offset = 0) = 0;
 
       /** \brief Read a point cloud data from a FILE file and store it into a pcl/PCLPointCloud2.
@@ -101,7 +101,7 @@ namespace pcl
         */
       virtual int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &file_version, 
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &file_version, 
             const int offset = 0) = 0;
 
       /** \brief Read a point cloud data from a FILE file (FILE_V6 only!) and store it into a pcl/PCLPointCloud2.
@@ -123,8 +123,8 @@ namespace pcl
       int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset = 0)
       {
-        Eigen::Vector4f origin;
-        Eigen::Quaternionf orientation;
+        Eigen::Vector4d origin;
+        Eigen::Quaterniond orientation;
         int file_version;
         return (read (file_name, cloud, origin, orientation, file_version, offset));
       }
@@ -178,8 +178,8 @@ namespace pcl
         */
       virtual int
       write (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false) = 0;
 
       /** \brief Save point cloud data to a FILE file containing n-D points
@@ -192,8 +192,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2::ConstPtr &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false)
       {
         return (write (file_name, *cloud, origin, orientation, binary));
@@ -210,8 +210,8 @@ namespace pcl
              const pcl::PointCloud<PointT> &cloud, 
              const bool binary = false)
       {
-        Eigen::Vector4f origin = cloud.sensor_origin_;
-        Eigen::Quaternionf orientation = cloud.sensor_orientation_;
+        Eigen::Vector4d origin = cloud.sensor_origin_;
+        Eigen::Quaterniond orientation = cloud.sensor_orientation_;
 
         pcl::PCLPointCloud2 blob;
         pcl::toPCLPointCloud2 (cloud, blob);
@@ -221,7 +221,7 @@ namespace pcl
       }
   };
 
-  /** \brief insers a value of type Type (uchar, char, uint, int, float, double, ...) into a stringstream.
+  /** \brief insers a value of type Type (uchar, char, uint, int, double, double, ...) into a stringstream.
     *
     * If the value is NaN, it inserst "nan".
     *
@@ -280,7 +280,7 @@ namespace pcl
       stream << boost::numeric_cast<int>(value);
   }
 
-  /** \brief Check whether a given value of type Type (uchar, char, uint, int, float, double, ...) is finite or not
+  /** \brief Check whether a given value of type Type (uchar, char, uint, int, double, double, ...) is finite or not
     *
     * \param[in] cloud the cloud that contains the data
     * \param[in] point_index the index of the point
@@ -304,7 +304,7 @@ namespace pcl
     return (true);
   }
 
-  /** \brief Copy one single value of type T (uchar, char, uint, int, float, double, ...) from a string
+  /** \brief Copy one single value of type T (uchar, char, uint, int, double, double, ...) from a string
     * 
     * Uses aoti/atof to do the conversion.
     * Checks if the st is "nan" and converts it accordingly.
@@ -427,7 +427,7 @@ namespace pcl
     /** \brief Save point cloud data to a binary file when available else to ASCII.
       * \param[in] file_name the output file name
       * \param[in] blob the point cloud data message
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     PCL_EXPORTS int
@@ -436,7 +436,7 @@ namespace pcl
     /** \brief Save point cloud to a binary file when available else to ASCII.
       * \param[in] file_name the output file name
       * \param[in] cloud the point cloud
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     template<typename PointT> int
@@ -445,7 +445,7 @@ namespace pcl
     /** \brief Saves a TextureMesh to a binary file when available else to ASCII.
       * \param[in] file_name the name of the file to write to disk
       * \param[in] tex_mesh the texture mesh to save
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     PCL_EXPORTS int
@@ -454,7 +454,7 @@ namespace pcl
     /** \brief Saves a PolygonMesh to a binary file when available else to ASCII.
       * \param[in] file_name the name of the file to write to disk
       * \param[in] mesh the polygonal mesh to save
-      * \param[in] precision float precision when saving to ASCII files
+      * \param[in] precision double precision when saving to ASCII files
       * \ingroup io
       */
     PCL_EXPORTS int

@@ -50,7 +50,7 @@ pcl::cloud_composer::VoxelGridDownsampleTool::performAction (ConstItemList input
     // Create the filtering object
     pcl::VoxelGrid<pcl::PCLPointCloud2> vox_grid;
     vox_grid.setInputCloud (input_cloud);
-    vox_grid.setLeafSize (float (leaf_x), float (leaf_y), float (leaf_z));
+    vox_grid.setLeafSize (double (leaf_x), double (leaf_y), double (leaf_z));
     
     
     //Create output cloud
@@ -60,8 +60,8 @@ pcl::cloud_composer::VoxelGridDownsampleTool::performAction (ConstItemList input
 
     //////////////////////////////////////////////////////////////////
     //Get copies of the original origin and orientation
-    Eigen::Vector4f source_origin = input_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4f> ();
-    Eigen::Quaternionf source_orientation =  input_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaternionf> ();
+    Eigen::Vector4d source_origin = input_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4d> ();
+    Eigen::Quaterniond source_orientation =  input_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaterniond> ();
     //Put the modified cloud into an item, stick in output
     CloudItem* cloud_item = new CloudItem (input_item->text () + tr (" vox ds")
                                            , cloud_filtered

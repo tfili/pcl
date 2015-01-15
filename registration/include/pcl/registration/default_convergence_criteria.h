@@ -61,7 +61,7 @@ namespace pcl
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename Scalar = float>
+    template <typename Scalar = double>
     class DefaultConvergenceCriteria : public ConvergenceCriteria
     {
       public:

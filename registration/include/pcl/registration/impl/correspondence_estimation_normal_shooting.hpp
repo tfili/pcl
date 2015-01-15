@@ -66,7 +66,7 @@ pcl::registration::CorrespondenceEstimationNormalShooting<PointSource, PointTarg
   correspondences.resize (indices_->size ());
 
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   double min_dist = std::numeric_limits<double>::max ();
   int min_index = 0;
@@ -185,9 +185,9 @@ pcl::registration::CorrespondenceEstimationNormalShooting<PointSource, PointTarg
   correspondences.resize (indices_->size ());
 
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
   std::vector<int> index_reciprocal (1);
-  std::vector<float> distance_reciprocal (1);
+  std::vector<double> distance_reciprocal (1);
 
   double min_dist = std::numeric_limits<double>::max ();
   int min_index = 0;

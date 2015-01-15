@@ -661,7 +661,7 @@ pcl::ihs::OpenGLViewer::stopTimer ()
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::OpenGLViewer::setVisibilityConfidenceNormalization (const float vis_conf_norm)
+pcl::ihs::OpenGLViewer::setVisibilityConfidenceNormalization (const double vis_conf_norm)
 {
   boost::mutex::scoped_lock lock (mutex_vis_);
 
@@ -784,7 +784,7 @@ pcl::ihs::OpenGLViewer::paintEvent (QPaintEvent* /*event*/)
   this->makeCurrent ();
 
   // Clear information from the last draw
-  glClearColor (0.f, 0.f, 0.f, 0.f);
+  glClearColor (0., 0., 0., 0.);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   this->setupViewport (this->width (), this->height ());
@@ -795,21 +795,21 @@ pcl::ihs::OpenGLViewer::paintEvent (QPaintEvent* /*event*/)
   glLoadIdentity();
 
   // light 0 (directional)
-  glLightfv (GL_LIGHT0, GL_AMBIENT , Eigen::Vector4f (0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT0, GL_DIFFUSE , Eigen::Vector4f (0.6f, 0.6f, 0.6f, 1.0f).eval ().data () );
-  glLightfv (GL_LIGHT0, GL_SPECULAR, Eigen::Vector4f (0.2f, 0.2f, 0.2f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT0, GL_POSITION, Eigen::Vector4f (0.3f, 0.5f, 0.8f, 0.0f).normalized ().eval ().data ());
+  glLightfv (GL_LIGHT0, GL_AMBIENT , Eigen::Vector4f (0.1f, 0.1f, 0.1f, 1.0).eval ().data ());
+  glLightfv (GL_LIGHT0, GL_DIFFUSE , Eigen::Vector4f (0.6, 0.6, 0.6, 1.0).eval ().data () );
+  glLightfv (GL_LIGHT0, GL_SPECULAR, Eigen::Vector4f (0.2f, 0.2f, 0.2f, 1.0).eval ().data ());
+  glLightfv (GL_LIGHT0, GL_POSITION, Eigen::Vector4f (0.3f, 0.5, 0.8, 0.0).normalized ().eval ().data ());
 
   // light 1 (directional)
-  glLightfv (GL_LIGHT1, GL_AMBIENT , Eigen::Vector4f ( 0.0f, 0.0f, 0.0f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT1, GL_DIFFUSE , Eigen::Vector4f ( 0.3f, 0.3f, 0.3f, 1.0f).eval ().data () );
-  glLightfv (GL_LIGHT1, GL_SPECULAR, Eigen::Vector4f ( 0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
-  glLightfv (GL_LIGHT1, GL_POSITION, Eigen::Vector4f (-0.3f, 0.5f, 0.8f, 0.0f).normalized ().eval ().data ());
+  glLightfv (GL_LIGHT1, GL_AMBIENT , Eigen::Vector4f ( 0.0, 0.0, 0.0, 1.0).eval ().data ());
+  glLightfv (GL_LIGHT1, GL_DIFFUSE , Eigen::Vector4f ( 0.3f, 0.3f, 0.3f, 1.0).eval ().data () );
+  glLightfv (GL_LIGHT1, GL_SPECULAR, Eigen::Vector4f ( 0.1f, 0.1f, 0.1f, 1.0).eval ().data ());
+  glLightfv (GL_LIGHT1, GL_POSITION, Eigen::Vector4f (-0.3f, 0.5, 0.8, 0.0).normalized ().eval ().data ());
 
   // Material
   glColorMaterial (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-  glMaterialfv    (GL_FRONT, GL_SPECULAR , Eigen::Vector4f (0.1f, 0.1f, 0.1f, 1.0f).eval ().data ());
-  glMaterialf     (GL_FRONT, GL_SHININESS, 25.f);
+  glMaterialfv    (GL_FRONT, GL_SPECULAR , Eigen::Vector4f (0.1f, 0.1f, 0.1f, 1.0).eval ().data ());
+  glMaterialf     (GL_FRONT, GL_SHININESS, 25.);
 
   glEnable (GL_DEPTH_TEST);
   glEnable (GL_NORMALIZE);
@@ -870,7 +870,7 @@ pcl::ihs::OpenGLViewer::calcPivot ()
   boost::mutex::scoped_lock lock (mutex_vis_);
   if (this->getMeshIsAdded (cam_pivot_id_))
   {
-    Eigen::Vector4f pivot;
+    Eigen::Vector4d pivot;
     const FaceVertexMeshConstPtr mesh = drawn_meshes_ [cam_pivot_id_];
 
     if (pcl::compute3DCentroid (mesh->vertices, pivot))
@@ -927,7 +927,7 @@ pcl::ihs::OpenGLViewer::drawMeshes ()
         }
         case COL_ONE_COLOR:
         {
-          glColor3f (.7f, .7f, .7f);
+          glColor3f (.7, .7, .7);
           break;
         }
         case COL_VISCONF:
@@ -936,8 +936,8 @@ pcl::ihs::OpenGLViewer::drawMeshes ()
           {
             const unsigned int n = pcl::ihs::countDirections (mesh.vertices [i].directions);
             const unsigned int index = static_cast <unsigned int> (
-                                         static_cast <float> (colormap_.cols ()) *
-                                         static_cast <float> (n) / vis_conf_norm_);
+                                         static_cast <double> (colormap_.cols ()) *
+                                         static_cast <double> (n) / vis_conf_norm_);
 
             colors.col (i) = colormap_.col (index < 256 ? index : 255);
           }
@@ -986,7 +986,7 @@ pcl::ihs::OpenGLViewer::drawBox ()
     else           return;
   }
 
-  glColor3f (1.f, 1.f, 1.f);
+  glColor3f (1., 1., 1.);
 
   glPushMatrix ();
   {
@@ -1046,7 +1046,7 @@ pcl::ihs::OpenGLViewer::initializeGL ()
 void
 pcl::ihs::OpenGLViewer::setupViewport (const int w, const int h)
 {
-  const float aspect_ratio = 4./3.;
+  const double aspect_ratio = 4./3.;
 
   // Use the biggest possible area of the window to draw to
   //    case 1 (w < w_scaled):        case 2 (w >= w_scaled):
@@ -1056,16 +1056,16 @@ pcl::ihs::OpenGLViewer::setupViewport (const int w, const int h)
   //    |   | | h_sc  | h             |-------------|  v
   //    |---| v       |                    <---> w_sc
   //    |---|         v               <----- w ----->
-  const float w_scaled = h * aspect_ratio;
-  const float h_scaled = w / aspect_ratio;
+  const double w_scaled = h * aspect_ratio;
+  const double h_scaled = w / aspect_ratio;
 
   if (w < w_scaled)
   {
-    glViewport (0, static_cast <GLint> ((h - h_scaled) / 2.f), w, static_cast <GLsizei> (h_scaled));
+    glViewport (0, static_cast <GLint> ((h - h_scaled) / 2.), w, static_cast <GLsizei> (h_scaled));
   }
   else
   {
-    glViewport (static_cast <GLint> ((w - w_scaled) / 2.f), 0, static_cast <GLsizei> (w_scaled), h);
+    glViewport (static_cast <GLint> ((w - w_scaled) / 2.), 0, static_cast <GLsizei> (w_scaled), h);
   }
 }
 

@@ -53,8 +53,8 @@ int    default_max_iterations = 1000;
 double default_threshold = 0.05;
 bool   default_negative = false;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)
@@ -110,7 +110,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
   
   vector<int> inliers;
   sac.getInliers (inliers);
-  Eigen::VectorXf coefficients;
+  Eigen::VectorXd coefficients;
   sac.getModelCoefficients (coefficients);
 
   if (!res || inliers.empty ())

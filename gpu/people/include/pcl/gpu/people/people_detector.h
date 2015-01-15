@@ -94,7 +94,7 @@ namespace pcl
 
           /** \brief User must set non standard intrinsics */
           void
-          setIntrinsics (float fx, float fy, float cx = -1, float cy = -1);                    
+          setIntrinsics (double fx, double fy, double cx = -1, double cy = -1);                    
 
           /** \brief Possible will be removed because of extra overheads */
           int
@@ -125,18 +125,18 @@ namespace pcl
 
           typedef DeviceArray2D<unsigned char> Labels;
           typedef DeviceArray2D<unsigned char> Mask;
-          typedef DeviceArray2D<float> Hue;
+          typedef DeviceArray2D<double> Hue;
 
           /** \brief indicates first time callback (allows for tracking features to start from second frame) **/
           bool first_iteration_;
-          float fx_, fy_, cx_, cy_;
+          double fx_, fy_, cx_, cy_;
           unsigned int  delta_hue_tolerance_;
                    
           DeviceArray<unsigned char>  kernelRect5x5_;
 
           PointCloud<PointT>          cloud_host_;
           PointCloud<PointTC>         cloud_host_color_;
-          PointCloud<float>           hue_host_;
+          PointCloud<double>           hue_host_;
           PointCloud<unsigned short>  depth_host_;
           PointCloud<unsigned char>   flowermat_host_;
                     

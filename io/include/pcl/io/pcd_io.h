@@ -113,7 +113,7 @@ namespace pcl
         */
       int 
       readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &pcd_version,
+                  Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &pcd_version,
                   int &data_type, unsigned int &data_idx, const int offset = 0);
 
 
@@ -161,7 +161,7 @@ namespace pcl
         */
       int 
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &pcd_version, const int offset = 0);
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &pcd_version, const int offset = 0);
 
       /** \brief Read a point cloud data from a PCD (PCD_V6) and store it into a pcl/PCLPointCloud2.
         * 
@@ -248,8 +248,8 @@ namespace pcl
         */
       std::string
       generateHeaderBinary (const pcl::PCLPointCloud2 &cloud,
-                            const Eigen::Vector4f &origin, 
-                            const Eigen::Quaternionf &orientation);
+                            const Eigen::Vector4d &origin, 
+                            const Eigen::Quaterniond &orientation);
 
       /** \brief Generate the header of a BINARY_COMPRESSED PCD file format
         * \param[in] cloud the point cloud data message
@@ -258,8 +258,8 @@ namespace pcl
         */
       std::string
       generateHeaderBinaryCompressed (const pcl::PCLPointCloud2 &cloud,
-                                      const Eigen::Vector4f &origin, 
-                                      const Eigen::Quaternionf &orientation);
+                                      const Eigen::Vector4d &origin, 
+                                      const Eigen::Quaterniond &orientation);
 
       /** \brief Generate the header of a PCD file format
         * \param[in] cloud the point cloud data message
@@ -268,8 +268,8 @@ namespace pcl
         */
       std::string
       generateHeaderASCII (const pcl::PCLPointCloud2 &cloud,
-                           const Eigen::Vector4f &origin, 
-                           const Eigen::Quaternionf &orientation);
+                           const Eigen::Vector4d &origin, 
+                           const Eigen::Quaterniond &orientation);
 
       /** \brief Generate the header of a PCD file format
         * \param[in] cloud the point cloud data message
@@ -288,8 +288,8 @@ namespace pcl
         * \param[in] precision the specified output numeric stream precision (default: 8)
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -298,8 +298,8 @@ namespace pcl
         */
       int 
       writeASCII (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                  const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                  const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+                  const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                  const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
                   const int precision = 8);
 
       /** \brief Save point cloud data to a PCD file containing n-D points, in BINARY format
@@ -310,8 +310,8 @@ namespace pcl
         */
       int 
       writeBinary (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                   const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                   const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity ());
+                   const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                   const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity ());
 
       /** \brief Save point cloud data to a PCD file containing n-D points, in BINARY_COMPRESSED format
         * \param[in] file_name the output file name
@@ -321,8 +321,8 @@ namespace pcl
         */
       int 
       writeBinaryCompressed (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity ());
+                             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity ());
 
       /** \brief Save point cloud data to a PCD file containing n-D points
         * \param[in] file_name the output file name
@@ -333,8 +333,8 @@ namespace pcl
         * PCD format, false (default) for ASCII
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -343,8 +343,8 @@ namespace pcl
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false)
       {
         if (binary)
@@ -362,16 +362,16 @@ namespace pcl
         * \param[in] orientation the sensor acquisition orientation
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
         */
       inline int
       write (const std::string &file_name, const pcl::PCLPointCloud2::ConstPtr &cloud,
-             const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-             const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+             const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+             const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
              const bool binary = false)
       {
         return (write (file_name, *cloud, origin, orientation, binary));
@@ -432,8 +432,8 @@ namespace pcl
         * PCD format, false (default) for ASCII
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -457,8 +457,8 @@ namespace pcl
         * PCD format, false (default) for ASCII
         *
         * Caution: PointCloud structures containing an RGB field have
-        * traditionally used packed float values to store RGB data. Storing a
-        * float as ASCII can introduce variations to the smallest bits, and
+        * traditionally used packed double values to store RGB data. Storing a
+        * double as ASCII can introduce variations to the smallest bits, and
         * thus significantly alter the data. This is a known issue, and the fix
         * involves switching RGB data to be stored as a packed integer in
         * future versions of PCL.
@@ -525,7 +525,7 @@ namespace pcl
       */
     inline int 
     loadPCDFile (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                 Eigen::Vector4f &origin, Eigen::Quaternionf &orientation)
+                 Eigen::Vector4d &origin, Eigen::Quaterniond &orientation)
     {
       pcl::PCDReader p;
       int pcd_version;
@@ -552,8 +552,8 @@ namespace pcl
       * \param[in] binary_mode true for binary mode, false (default) for ASCII
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.
@@ -561,8 +561,8 @@ namespace pcl
       */
     inline int 
     savePCDFile (const std::string &file_name, const pcl::PCLPointCloud2 &cloud,
-                 const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
-                 const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
+                 const Eigen::Vector4d &origin = Eigen::Vector4d::Zero (), 
+                 const Eigen::Quaterniond &orientation = Eigen::Quaterniond::Identity (),
                  const bool binary_mode = false)
     {
       PCDWriter w;
@@ -576,8 +576,8 @@ namespace pcl
       * \param[in] binary_mode true for binary mode, false (default) for ASCII
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.
@@ -599,8 +599,8 @@ namespace pcl
       * \param[in] cloud the point cloud data message
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.
@@ -639,8 +639,8 @@ namespace pcl
       * \param[in] binary_mode true for binary mode, false (default) for ASCII
       *
       * Caution: PointCloud structures containing an RGB field have
-      * traditionally used packed float values to store RGB data. Storing a
-      * float as ASCII can introduce variations to the smallest bits, and
+      * traditionally used packed double values to store RGB data. Storing a
+      * double as ASCII can introduce variations to the smallest bits, and
       * thus significantly alter the data. This is a known issue, and the fix
       * involves switching RGB data to be stored as a packed integer in
       * future versions of PCL.

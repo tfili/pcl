@@ -221,7 +221,7 @@ OutofcoreCloud::render (vtkRenderer* renderer)
       }
 
       // Bounding box lod projection
-      float coverage = pcl::visualization::viewScreenArea(eye, min_bb, max_bb, view_projection_matrix, size[0], size[1]);
+      double coverage = pcl::visualization::viewScreenArea(eye, min_bb, max_bb, view_projection_matrix, size[0], size[1]);
       if (coverage <= lod_pixel_threshold_)
       {
         breadth_first_it.skipChildVoxels();

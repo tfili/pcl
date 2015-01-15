@@ -47,7 +47,7 @@ using namespace pcl::io;
 using namespace pcl::console;
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::Histogram<153>,
-  (float[153], histogram, spinimage)
+  (double[153], histogram, spinimage)
 )
 
 int    default_image_width = 8;
@@ -55,8 +55,8 @@ double default_support_angle = 0.5;
 int    default_min_neigh = 1;
 double default_radius = 0.0;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)

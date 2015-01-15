@@ -55,8 +55,8 @@ class TransformCommand : public Command
     /// @param matrix a (4x4) transform matrix following OpenGL's format.
     /// @pre Assumes the selection_ptr is valid, non-NULL.
     TransformCommand (ConstSelectionPtr selection_ptr, CloudPtr cloud_ptr,
-                      const float* matrix, float translate_x,
-                      float translate_y, float translate_z);
+                      const double* matrix, double translate_x,
+                      double translate_y, double translate_z);
   
     /// @brief Destructor
     ~TransformCommand ()
@@ -98,22 +98,22 @@ class TransformCommand : public Command
     /// a pointer poiting to the cloud
     CloudPtr cloud_ptr_;
 
-    float translate_x_, translate_y_, translate_z_;
+    double translate_x_, translate_y_, translate_z_;
 
     /// An internal selection object used to perform undo
     SelectionPtr internal_selection_ptr_;
 
     /// the transform matrix to be used to compute the new coordinates
     /// of the selected points
-    float transform_matrix_[MATRIX_SIZE];
+    double transform_matrix_[MATRIX_SIZE];
 
     /// The transform matrix of the cloud used by this command
-    float cloud_matrix_[MATRIX_SIZE];
+    double cloud_matrix_[MATRIX_SIZE];
     /// The inverted transform matrix of the cloud used by this command
-    float cloud_matrix_inv_[MATRIX_SIZE];
+    double cloud_matrix_inv_[MATRIX_SIZE];
 
     /// The center of the cloud used by this command
-    float cloud_center_[XYZ_SIZE];
+    double cloud_center_[XYZ_SIZE];
 };
 
 #endif // TRANSFORM_COMMAND_H_

@@ -73,7 +73,7 @@ bool show_normals = false, normals_changed = false;
 bool show_adjacency = false;
 bool show_supervoxels = false;
 bool show_help = true;
-float normals_scale;
+double normals_scale;
 
 /** \brief Callback for setting options in the visualizer via keyboard.
  *  \param[in] event_arg Registered keyboard event  */
@@ -243,17 +243,17 @@ LCCPSegmentation Parameters: \n\
 
   ///  Default values of parameters before parsing
   // Supervoxel Stuff
-  float voxel_resolution = 0.0075f;
-  float seed_resolution = 0.03f;
-  float color_importance = 0.0f;
-  float spatial_importance = 1.0f;
-  float normal_importance = 4.0f;
+  double voxel_resolution = 0.0075;
+  double seed_resolution = 0.03f;
+  double color_importance = 0.0;
+  double spatial_importance = 1.0;
+  double normal_importance = 4.0;
   bool use_single_cam_transform = false;
   bool use_supervoxel_refinement = false;
 
   // LCCPSegmentation Stuff
-  float concavity_tolerance_threshold = 10;
-  float smoothness_threshold = 0.1;
+  double concavity_tolerance_threshold = 10;
+  double smoothness_threshold = 0.1;
   uint32_t min_segment_size = 0;
   bool use_extended_convexity = false;
   bool use_sanity_criterion = false;
@@ -347,7 +347,7 @@ LCCPSegmentation Parameters: \n\
         pcl::PCLPointCloud2 output_label_cloud2, output_concat_cloud2;
         pcl::toPCLPointCloud2 (*lccp_labeled_cloud, output_label_cloud2);
         pcl::concatenateFields (input_pointcloud2, output_label_cloud2, output_concat_cloud2);
-        pcl::io::savePCDFile (outputname + "_out.pcd", output_concat_cloud2, Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), save_binary_pcd);
+        pcl::io::savePCDFile (outputname + "_out.pcd", output_concat_cloud2, Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), save_binary_pcd);
       }
       else
         pcl::io::savePCDFile (outputname + "_out.pcd", *lccp_labeled_cloud, save_binary_pcd);

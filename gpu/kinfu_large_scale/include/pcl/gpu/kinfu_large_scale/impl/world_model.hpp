@@ -113,7 +113,7 @@ pcl::kinfuLS::WorldModel<PointT>::getExistingData(const double previous_origin_x
   if(existing_slice.points.size () != 0)
   {
 	//transform the slice in new cube coordinates
-	Eigen::Affine3f transformation; 
+	Eigen::Affine3d transformation; 
 	transformation.translation ()[0] = newOriginX;
 	transformation.translation ()[1] = newOriginY;
 	transformation.translation ()[2] = newOriginZ;
@@ -128,7 +128,7 @@ pcl::kinfuLS::WorldModel<PointT>::getExistingData(const double previous_origin_x
 
 template <typename PointT>
 void
-pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vector<typename WorldModel<PointT>::PointCloudPtr> &cubes, std::vector<Eigen::Vector3f> &transforms, double overlap)
+pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vector<typename WorldModel<PointT>::PointCloudPtr> &cubes, std::vector<Eigen::Vector3d> &transforms, double overlap)
 {
   
   if(world_->points.size () == 0)
@@ -149,25 +149,25 @@ pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vecto
 
   // check cube size value
   double cubeSide = size;
-  if (cubeSide <= 0.0f)
+  if (cubeSide <= 0.0)
   {
 	PCL_ERROR ("Size of the cube must be positive and non null (%f given). Setting it to 3.0 meters.\n", cubeSide);
-	cubeSide = 512.0f;
+	cubeSide = 512.0;
   }
 
   std::cout << "cube size is set to " << cubeSide << std::endl;
 
   // check overlap value
-  double step_increment = 1.0f - overlap;
+  double step_increment = 1.0 - overlap;
   if (overlap < 0.0)
   {
 	PCL_ERROR ("Overlap ratio must be positive or null (%f given). Setting it to 0.0 procent.\n", overlap);
-	step_increment = 1.0f;
+	step_increment = 1.0;
   }
   if (overlap > 1.0)
   {
 	PCL_ERROR ("Overlap ratio must be less or equal to 1.0 (%f given). Setting it to 10 procent.\n", overlap);
-	step_increment = 0.1f;
+	step_increment = 0.1;
   }
 
   
@@ -218,7 +218,7 @@ pcl::kinfuLS::WorldModel<PointT>::getWorldAsCubes (const double size, std::vecto
 		// also push transform along with points.
 		if(box->points.size() > 0)
 		{
-		  Eigen::Vector3f transform;
+		  Eigen::Vector3d transform;
 		  transform[0] = origin.x, transform[1] = origin.y, transform[2] = origin.z;
 		  transforms.push_back(transform);
 		  cubes.push_back(box);        
@@ -253,13 +253,13 @@ pcl::kinfuLS::WorldModel<PointT>::setIndicesAsNans (PointCloudPtr cloud, Indices
 {
   std::vector<pcl::PCLPointField> fields;
   pcl::for_each_type<FieldList> (pcl::detail::FieldAdder<PointT> (fields));
-  float my_nan = std::numeric_limits<float>::quiet_NaN ();
+  double my_nan = std::numeric_limits<double>::quiet_NaN ();
   
   for (int rii = 0; rii < static_cast<int> (indices->size ()); ++rii)  // rii = removed indices iterator
   {
 	uint8_t* pt_data = reinterpret_cast<uint8_t*> (&cloud->points[(*indices)[rii]]);
 	for (int fi = 0; fi < static_cast<int> (fields.size ()); ++fi)  // fi = field iterator
-	  memcpy (pt_data + fields[fi].offset, &my_nan, sizeof (float));
+	  memcpy (pt_data + fields[fi].offset, &my_nan, sizeof (double));
   }
 }
 

@@ -63,7 +63,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::genAliasTable (std::vect
   std::vector<int>::iterator L = HL.end () - 1;
   size_t num = particles->points.size ();
   for ( size_t i = 0; i < num; i++ )
-    q[i] = particles->points[i].weight * static_cast<float> (num);
+    q[i] = particles->points[i].weight * static_cast<double> (num);
   for ( size_t i = 0; i < num; i++ )
     a[i] = static_cast<int> (i);
   // setup H and L
@@ -98,7 +98,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::initParticles (bool rese
     representative_state_.zero ();
     StateT offset = StateT::toState (trans_);
     representative_state_ = offset;
-    representative_state_.weight = 1.0f / static_cast<float> (particle_num_);
+    representative_state_.weight = 1.0 / static_cast<double> (particle_num_);
   }
 
   // sampling...
@@ -108,7 +108,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::initParticles (bool rese
     p.zero ();
     p.sample (initial_noise_mean_, initial_noise_covariance_);
     p = p + representative_state_;
-    p.weight = 1.0f / static_cast<float> (particle_num_);
+    p.weight = 1.0 / static_cast<double> (particle_num_);
     particles_->points.push_back (p); // update
   }
 }
@@ -135,14 +135,14 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::normalizeWeight ()
       {
         if (particles_->points[i].weight != 0.0)
         {
-          particles_->points[i].weight = static_cast<float> (normalizeParticleWeight (particles_->points[i].weight, w_min, w_max));
+          particles_->points[i].weight = static_cast<double> (normalizeParticleWeight (particles_->points[i].weight, w_min, w_max));
         }
       }
     }
     else
     {
       for ( size_t i = 0; i < particles_->points.size (); i++ )
-        particles_->points[i].weight = 1.0f / static_cast<float> (particles_->points.size ());
+        particles_->points[i].weight = 1.0 / static_cast<double> (particles_->points.size ());
     }
     
     double sum = 0.0;
@@ -154,12 +154,12 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::normalizeWeight ()
     if (sum != 0.0)
     {
       for ( size_t i = 0; i < particles_->points.size (); i++ )
-        particles_->points[i].weight =  particles_->points[i].weight / static_cast<float> (sum);
+        particles_->points[i].weight =  particles_->points[i].weight / static_cast<double> (sum);
     }
     else
     {
       for ( size_t i = 0; i < particles_->points.size (); i++ )
-        particles_->points[i].weight = 1.0f / static_cast<float> (particles_->points.size ());
+        particles_->points[i].weight = 1.0 / static_cast<double> (particles_->points.size ());
     }
 }
 
@@ -170,9 +170,9 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::cropInputPointCloud (
 {
   double x_min, y_min, z_min, x_max, y_max, z_max;
   calcBoundingBox (x_min, x_max, y_min, y_max, z_min, z_max);
-  pass_x_.setFilterLimits (float (x_min), float (x_max));
-  pass_y_.setFilterLimits (float (y_min), float (y_max));
-  pass_z_.setFilterLimits (float (z_min), float (z_max));
+  pass_x_.setFilterLimits (double (x_min), double (x_max));
+  pass_y_.setFilterLimits (double (y_min), double (y_max));
+  pass_z_.setFilterLimits (double (z_min), double (z_max));
   
   // x
   PointCloudInPtr xcloud (new PointCloudIn);
@@ -285,7 +285,7 @@ template <typename PointInT, typename StateT> void
 pcl::tracking::ParticleFilterTracker<PointInT, StateT>::computeTransformedPointCloudWithoutNormal
 (const StateT& hypothesis, PointCloudIn &cloud)
 {
-  const Eigen::Affine3f trans = toEigenMatrix (hypothesis);
+  const Eigen::Affine3d trans = toEigenMatrix (hypothesis);
   // destructively assigns to cloud
   pcl::transformPointCloud<PointInT> (*ref_, cloud, trans);
 }
@@ -300,7 +300,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::computeTransformedPointC
 #endif
 {
 #ifdef PCL_TRACKING_NORMAL_SUPPORTED
-  const Eigen::Affine3f trans = toEigenMatrix (hypothesis);
+  const Eigen::Affine3d trans = toEigenMatrix (hypothesis);
   // destructively assigns to cloud
   pcl::transformPointCloudWithNormals<PointInT> (*ref_, cloud, trans);
   for ( size_t i = 0; i < cloud.points.size (); i++ )
@@ -310,8 +310,8 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::computeTransformedPointC
     if (!pcl_isfinite(input_point.x) || !pcl_isfinite(input_point.y) || !pcl_isfinite(input_point.z))
       continue;
     // take occlusion into account
-    Eigen::Vector4f p = input_point.getVector4fMap ();
-    Eigen::Vector4f n = input_point.getNormalVector4fMap ();
+    Eigen::Vector4d p = input_point.getVector4dMap ();
+    Eigen::Vector4d n = input_point.getNormalVector4dMap ();
     double theta = pcl::getAngle3D (p, n);
     if ( theta > occlusion_angle_thr_ )
       indices.push_back (i);
@@ -378,7 +378,7 @@ pcl::tracking::ParticleFilterTracker<PointInT, StateT>::update ()
     StateT p = particles_->points[i];
     representative_state_ = representative_state_ + p * p.weight;
   }
-  representative_state_.weight = 1.0f / static_cast<float> (particles_->points.size ());
+  representative_state_.weight = 1.0 / static_cast<double> (particles_->points.size ());
   motion_ = representative_state_ - orig_representative;
 }
 

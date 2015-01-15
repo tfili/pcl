@@ -74,24 +74,24 @@ namespace pcl
 
       typedef pcl::PointCloud<PointOutT> PointCloudOut;
 
-      Eigen::Matrix3f KinectVGAProjectionMatrix, KinectSXGAProjectionMatrix;
+      Eigen::Matrix3d KinectVGAProjectionMatrix, KinectSXGAProjectionMatrix;
 
       /** \brief Constructor. */
       BilateralUpsampling () 
         : KinectVGAProjectionMatrix ()
         , KinectSXGAProjectionMatrix ()
         , window_size_ (5)
-        , sigma_color_ (15.0f)
-        , sigma_depth_ (0.5f)
+        , sigma_color_ (15.0)
+        , sigma_depth_ (0.5)
         , projection_matrix_ ()
         , unprojection_matrix_ ()
       {
-        KinectVGAProjectionMatrix << 525.0f, 0.0f, 320.0f,
-                                     0.0f, 525.0f, 240.0f,
-                                     0.0f, 0.0f, 1.0f;
-        KinectSXGAProjectionMatrix << 1050.0f, 0.0f, 640.0f,
-                                      0.0f, 1050.0f, 480.0f,
-                                      0.0f, 0.0f, 1.0f;
+        KinectVGAProjectionMatrix << 525.0, 0.0, 320.0,
+                                     0.0, 525.0, 240.0,
+                                     0.0, 0.0, 1.0;
+        KinectSXGAProjectionMatrix << 1050.0, 0.0, 640.0,
+                                      0.0, 1050.0, 480.0,
+                                      0.0, 0.0, 1.0;
       };
 
       /** \brief Method that sets the window size for the filter
@@ -108,20 +108,20 @@ namespace pcl
         * \param[in] sigma_color the new value to be set
         */
       inline void
-      setSigmaColor (const float &sigma_color) { sigma_color_ = sigma_color; }
+      setSigmaColor (const double &sigma_color) { sigma_color_ = sigma_color; }
 
       /** \brief Returns the current sigma color value */
-      inline float
+      inline double
       getSigmaColor () const { return (sigma_color_); }
 
       /** \brief Method that sets the sigma depth parameter
         * \param[in] sigma_depth the new value to be set
         */
       inline void
-      setSigmaDepth (const float &sigma_depth) { sigma_depth_ = sigma_depth; }
+      setSigmaDepth (const double &sigma_depth) { sigma_depth_ = sigma_depth; }
 
       /** \brief Returns the current sigma depth value */
-      inline float
+      inline double
       getSigmaDepth () const { return (sigma_depth_); }
 
       /** \brief Method that sets the projection matrix to be used when unprojecting the points in the depth image
@@ -130,10 +130,10 @@ namespace pcl
         * are tuned to be the same as the ones in the OpenNiGrabber
         * \param[in] projection_matrix the new projection matrix to be set */
       inline void
-      setProjectionMatrix (const Eigen::Matrix3f &projection_matrix) { projection_matrix_ = projection_matrix; }
+      setProjectionMatrix (const Eigen::Matrix3d &projection_matrix) { projection_matrix_ = projection_matrix; }
 
       /** \brief Returns the current projection matrix */
-      inline Eigen::Matrix3f
+      inline Eigen::Matrix3d
       getProjectionMatrix () const { return (projection_matrix_); }
 
       /** \brief Method that does the actual processing on the input cloud.
@@ -149,12 +149,12 @@ namespace pcl
         * \param[out] val_exp_depth distance values for depth
         * \param[out] val_exp_rgb distance values for RGB */
       void
-      computeDistances (Eigen::MatrixXf &val_exp_depth, Eigen::VectorXf &val_exp_rgb);
+      computeDistances (Eigen::MatrixXd &val_exp_depth, Eigen::VectorXd &val_exp_rgb);
 
     private:
       int window_size_;
-      float sigma_color_, sigma_depth_;
-      Eigen::Matrix3f projection_matrix_, unprojection_matrix_;
+      double sigma_color_, sigma_depth_;
+      Eigen::Matrix3d projection_matrix_, unprojection_matrix_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

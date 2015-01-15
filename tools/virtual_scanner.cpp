@@ -166,7 +166,7 @@ main (int argc, char** argv)
 
   int noise_model = 0;               // set the default noise level to none
   console::parse_argument (argc, argv, "-noise", noise_model);
-  float noise_std = 0.05f;           // 0.5 standard deviations by default
+  double noise_std = 0.05;           // 0.5 standard deviations by default
   console::parse_argument (argc, argv, "-noise_std", noise_std);
   if (noise_model)
     PCL_INFO ("Adding Gaussian noise to the final model with %f x std_dev.\n", noise_std);
@@ -193,8 +193,8 @@ main (int argc, char** argv)
 
   // Reset and set a random seed for the Global Random Number Generator
   boost::mt19937 rng (static_cast<unsigned int> (std::time (0)));
-  boost::normal_distribution<float> normal_distrib (0.0f, noise_std * noise_std);
-  boost::variate_generator<boost::mt19937&, boost::normal_distribution<float> > gaussian_rng (rng, normal_distrib);
+  boost::normal_distribution<double> normal_distrib (0.0, noise_std * noise_std);
+  boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > gaussian_rng (rng, normal_distrib);
 
   std::vector<std::string> st;
   // Virtual camera parameters
@@ -348,22 +348,22 @@ main (int argc, char** argv)
           pcl::PointWithViewpoint pt;
           if (object_coordinates)
           {
-            pt.x = static_cast<float> (x[0]); 
-            pt.y = static_cast<float> (x[1]); 
-            pt.z = static_cast<float> (x[2]);
-            pt.vp_x = static_cast<float> (eye[0]); 
-            pt.vp_y = static_cast<float> (eye[1]); 
-            pt.vp_z = static_cast<float> (eye[2]);
+            pt.x = static_cast<double> (x[0]); 
+            pt.y = static_cast<double> (x[1]); 
+            pt.z = static_cast<double> (x[2]);
+            pt.vp_x = static_cast<double> (eye[0]); 
+            pt.vp_y = static_cast<double> (eye[1]); 
+            pt.vp_z = static_cast<double> (eye[2]);
           }
           else
           {
             // z axis is the viewray
             // y axis is up
             // x axis is -right (negative because z*y=-x but viewray*up=right)
-            pt.x = static_cast<float> (-right[0]*x[1] + up[0]*x[2] + viewray[0]*x[0] + eye[0]);
-            pt.y = static_cast<float> (-right[1]*x[1] + up[1]*x[2] + viewray[1]*x[0] + eye[1]);
-            pt.z = static_cast<float> (-right[2]*x[1] + up[2]*x[2] + viewray[2]*x[0] + eye[2]);
-            pt.vp_x = pt.vp_y = pt.vp_z = 0.0f;
+            pt.x = static_cast<double> (-right[0]*x[1] + up[0]*x[2] + viewray[0]*x[0] + eye[0]);
+            pt.y = static_cast<double> (-right[1]*x[1] + up[1]*x[2] + viewray[1]*x[0] + eye[1]);
+            pt.z = static_cast<double> (-right[2]*x[1] + up[2]*x[2] + viewray[2]*x[0] + eye[2]);
+            pt.vp_x = pt.vp_y = pt.vp_z = 0.0;
           }
           cloud.points.push_back (pt);
         }
@@ -371,10 +371,10 @@ main (int argc, char** argv)
           if (organized)
           {
             pcl::PointWithViewpoint pt;
-            pt.x = pt.y = pt.z = std::numeric_limits<float>::quiet_NaN ();
-            pt.vp_x = static_cast<float> (eye[0]);
-            pt.vp_y = static_cast<float> (eye[1]);
-            pt.vp_z = static_cast<float> (eye[2]);
+            pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
+            pt.vp_x = static_cast<double> (eye[0]);
+            pt.vp_y = static_cast<double> (eye[1]);
+            pt.vp_z = static_cast<double> (eye[2]);
             cloud.points.push_back (pt);
           }
       } // Horizontal

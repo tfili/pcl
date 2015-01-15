@@ -75,14 +75,14 @@ namespace pcl
        * \param angle_discretization_step the step value between each bin of the hash map for the angular values
        * \param distance_discretization_step the step value between each bin of the hash map for the distance values
        */
-      PPFHashMapSearch (float angle_discretization_step = 12.0f / 180.0f * static_cast<float> (M_PI),
-                        float distance_discretization_step = 0.01f)
+      PPFHashMapSearch (double angle_discretization_step = 12.0 / 180.0 * static_cast<double> (M_PI),
+                        double distance_discretization_step = 0.01)
         : alpha_m_ ()
         , feature_hash_map_ (new FeatureHashMapType)
         , internals_initialized_ (false)
         , angle_discretization_step_ (angle_discretization_step)
         , distance_discretization_step_ (distance_discretization_step)
-        , max_dist_ (-1.0f)
+        , max_dist_ (-1.0)
       {
       }
 
@@ -101,7 +101,7 @@ namespace pcl
        * corresponding to the query feature
        */
       void
-      nearestNeighborSearch (float &f1, float &f2, float &f3, float &f4,
+      nearestNeighborSearch (double &f1, double &f2, double &f3, double &f4,
                              std::vector<std::pair<size_t, size_t> > &indices);
 
       /** \brief Convenience method for returning a copy of the class instance as a boost::shared_ptr */
@@ -109,24 +109,24 @@ namespace pcl
       makeShared() { return Ptr (new PPFHashMapSearch (*this)); }
 
       /** \brief Returns the angle discretization step parameter (the step value between each bin of the hash map for the angular values) */
-      inline float
+      inline double
       getAngleDiscretizationStep () { return angle_discretization_step_; }
 
       /** \brief Returns the distance discretization step parameter (the step value between each bin of the hash map for the distance values) */
-      inline float
+      inline double
       getDistanceDiscretizationStep () { return distance_discretization_step_; }
 
       /** \brief Returns the maximum distance found between any feature pair in the given input feature cloud */
-      inline float
+      inline double
       getModelDiameter () { return max_dist_; }
 
-      std::vector <std::vector <float> > alpha_m_;
+      std::vector <std::vector <double> > alpha_m_;
     private:
       FeatureHashMapTypePtr feature_hash_map_;
       bool internals_initialized_;
 
-      float angle_discretization_step_, distance_discretization_step_;
-      float max_dist_;
+      double angle_discretization_step_, distance_discretization_step_;
+      double max_dist_;
   };
 
   /** \brief Class that registers two point clouds based on their sets of PPFSignatures.
@@ -144,18 +144,18 @@ namespace pcl
   class PPFRegistration : public Registration<PointSource, PointTarget>
   {
     public:
-      /** \brief Structure for storing a pose (represented as an Eigen::Affine3f) and an integer for counting votes
-        * \note initially used std::pair<Eigen::Affine3f, unsigned int>, but it proved problematic
+      /** \brief Structure for storing a pose (represented as an Eigen::Affine3d) and an integer for counting votes
+        * \note initially used std::pair<Eigen::Affine3d, unsigned int>, but it proved problematic
         * because of the Eigen structures alignment problems - std::pair does not have a custom allocator
         */
       struct PoseWithVotes
       {
-        PoseWithVotes(Eigen::Affine3f &a_pose, unsigned int &a_votes)
+        PoseWithVotes(Eigen::Affine3d &a_pose, unsigned int &a_votes)
         : pose (a_pose),
           votes (a_votes)
         {}
 
-        Eigen::Affine3f pose;
+        Eigen::Affine3d pose;
         unsigned int votes;
       };
       typedef std::vector<PoseWithVotes, Eigen::aligned_allocator<PoseWithVotes> > PoseWithVotesList;
@@ -182,8 +182,8 @@ namespace pcl
       :  Registration<PointSource, PointTarget> (),
          search_method_ (),
          scene_reference_point_sampling_rate_ (5),
-         clustering_position_diff_threshold_ (0.01f),
-         clustering_rotation_diff_threshold_ (20.0f / 180.0f * static_cast<float> (M_PI))
+         clustering_position_diff_threshold_ (0.01),
+         clustering_rotation_diff_threshold_ (20.0 / 180.0 * static_cast<double> (M_PI))
       {}
 
       /** \brief Method for setting the position difference clustering parameter
@@ -191,13 +191,13 @@ namespace pcl
        * considered close enough to be in the same cluster (for the clustering phase of the algorithm)
        */
       inline void
-      setPositionClusteringThreshold (float clustering_position_diff_threshold) { clustering_position_diff_threshold_ = clustering_position_diff_threshold; }
+      setPositionClusteringThreshold (double clustering_position_diff_threshold) { clustering_position_diff_threshold_ = clustering_position_diff_threshold; }
 
       /** \brief Returns the parameter defining the position difference clustering parameter -
        * distance threshold below which two poses are considered close enough to be in the same cluster
        * (for the clustering phase of the algorithm)
        */
-      inline float
+      inline double
       getPositionClusteringThreshold () { return clustering_position_diff_threshold_; }
 
       /** \brief Method for setting the rotation clustering parameter
@@ -205,11 +205,11 @@ namespace pcl
        * poses are considered to be in the same cluster (for the clustering phase of the algorithm)
        */
       inline void
-      setRotationClusteringThreshold (float clustering_rotation_diff_threshold) { clustering_rotation_diff_threshold_ = clustering_rotation_diff_threshold; }
+      setRotationClusteringThreshold (double clustering_rotation_diff_threshold) { clustering_rotation_diff_threshold_ = clustering_rotation_diff_threshold; }
 
       /** \brief Returns the parameter defining the rotation clustering threshold
        */
-      inline float
+      inline double
       getRotationClusteringThreshold () { return clustering_rotation_diff_threshold_; }
 
       /** \brief Method for setting the scene reference point sampling rate
@@ -244,7 +244,7 @@ namespace pcl
     private:
       /** \brief Method that calculates the transformation between the input_ and target_ point clouds, based on the PPF features */
       void
-      computeTransformation (PointCloudSource &output, const Eigen::Matrix4f& guess);
+      computeTransformation (PointCloudSource &output, const Eigen::Matrix4d& guess);
 
 
       /** \brief the search method that is going to be used to find matching feature pairs */
@@ -255,7 +255,7 @@ namespace pcl
 
       /** \brief position and rotation difference thresholds below which two
         * poses are considered to be in the same cluster (for the clustering phase of the algorithm) */
-      float clustering_position_diff_threshold_, clustering_rotation_diff_threshold_;
+      double clustering_position_diff_threshold_, clustering_rotation_diff_threshold_;
 
       /** \brief use a kd-tree with range searches of range max_dist to skip an O(N) pass through the point cloud */
       typename pcl::KdTreeFLANN<PointTarget>::Ptr scene_search_tree_;
@@ -281,8 +281,8 @@ namespace pcl
       /** \brief Method that checks whether two poses are close together - based on the clustering threshold parameters
        * of the class */
       bool
-      posesWithinErrorBounds (Eigen::Affine3f &pose1,
-                              Eigen::Affine3f &pose2);
+      posesWithinErrorBounds (Eigen::Affine3d &pose1,
+                              Eigen::Affine3d &pose2);
   };
 }
 

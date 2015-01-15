@@ -114,9 +114,9 @@ namespace pcl
                                                    bool convertToMono = false,
                                                    bool bShowStatistics_arg = true,
                                                    int pngLevel_arg = -1,
-                                                   float focalLength_arg = 525.0f,
-                                                   float disparityShift_arg = 174.825f,
-                                                   float disparityScale_arg = -0.161175f);
+                                                   double focalLength_arg = 525.0,
+                                                   double disparityShift_arg = 174.825,
+                                                   double disparityScale_arg = -0.161175);
 
         /** \brief Decode point cloud from input stream
          * \param[in] compressedDataIn_arg: binary input stream containing compressed data
@@ -135,8 +135,8 @@ namespace pcl
          * \param[out] focalLength_arg: estimated focal length
          */
         void analyzeOrganizedCloud (PointCloudConstPtr cloud_arg,
-                                    float& maxDepth_arg,
-                                    float& focalLength_arg) const;
+                                    double& maxDepth_arg,
+                                    double& focalLength_arg) const;
 
       private:
         // frame header identifier

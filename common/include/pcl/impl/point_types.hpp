@@ -152,14 +152,14 @@
 namespace pcl
 {
 
-  typedef Eigen::Map<Eigen::Array3f> Array3fMap;
-  typedef const Eigen::Map<const Eigen::Array3f> Array3fMapConst;
-  typedef Eigen::Map<Eigen::Array4f, Eigen::Aligned> Array4fMap;
-  typedef const Eigen::Map<const Eigen::Array4f, Eigen::Aligned> Array4fMapConst;
-  typedef Eigen::Map<Eigen::Vector3f> Vector3fMap;
-  typedef const Eigen::Map<const Eigen::Vector3f> Vector3fMapConst;
-  typedef Eigen::Map<Eigen::Vector4f, Eigen::Aligned> Vector4fMap;
-  typedef const Eigen::Map<const Eigen::Vector4f, Eigen::Aligned> Vector4fMapConst;
+  typedef Eigen::Map<Eigen::Array3d> Array3dMap;
+  typedef const Eigen::Map<const Eigen::Array3d> Array3dMapConst;
+  typedef Eigen::Map<Eigen::Array4d, Eigen::Aligned> Array4dMap;
+  typedef const Eigen::Map<const Eigen::Array4d, Eigen::Aligned> Array4dMapConst;
+  typedef Eigen::Map<Eigen::Vector3d> Vector3dMap;
+  typedef const Eigen::Map<const Eigen::Vector3d> Vector3dMapConst;
+  typedef Eigen::Map<Eigen::Vector4d, Eigen::Aligned> Vector4dMap;
+  typedef const Eigen::Map<const Eigen::Vector4d, Eigen::Aligned> Vector4dMapConst;
 
   typedef Eigen::Matrix<uint8_t, 3, 1> Vector3c;
   typedef Eigen::Map<Vector3c> Vector3cMap;
@@ -170,23 +170,23 @@ namespace pcl
 
 #define PCL_ADD_UNION_POINT4D \
   union EIGEN_ALIGN16 { \
-    float data[4]; \
+    double data[4]; \
     struct { \
-      float x; \
-      float y; \
-      float z; \
+      double x; \
+      double y; \
+      double z; \
     }; \
   };
 
 #define PCL_ADD_EIGEN_MAPS_POINT4D \
-  inline pcl::Vector3fMap getVector3fMap () { return (pcl::Vector3fMap (data)); } \
-  inline pcl::Vector3fMapConst getVector3fMap () const { return (pcl::Vector3fMapConst (data)); } \
-  inline pcl::Vector4fMap getVector4fMap () { return (pcl::Vector4fMap (data)); } \
-  inline pcl::Vector4fMapConst getVector4fMap () const { return (pcl::Vector4fMapConst (data)); } \
-  inline pcl::Array3fMap getArray3fMap () { return (pcl::Array3fMap (data)); } \
-  inline pcl::Array3fMapConst getArray3fMap () const { return (pcl::Array3fMapConst (data)); } \
-  inline pcl::Array4fMap getArray4fMap () { return (pcl::Array4fMap (data)); } \
-  inline pcl::Array4fMapConst getArray4fMap () const { return (pcl::Array4fMapConst (data)); }
+  inline pcl::Vector3dMap getVector3dMap () { return (pcl::Vector3dMap (data)); } \
+  inline pcl::Vector3dMapConst getVector3dMap () const { return (pcl::Vector3dMapConst (data)); } \
+  inline pcl::Vector4dMap getVector4dMap () { return (pcl::Vector4dMap (data)); } \
+  inline pcl::Vector4dMapConst getVector4dMap () const { return (pcl::Vector4dMapConst (data)); } \
+  inline pcl::Array3dMap getArray3dMap () { return (pcl::Array3dMap (data)); } \
+  inline pcl::Array3dMapConst getArray3dMap () const { return (pcl::Array3dMapConst (data)); } \
+  inline pcl::Array4dMap getArray4dMap () { return (pcl::Array4dMap (data)); } \
+  inline pcl::Array4dMapConst getArray4dMap () const { return (pcl::Array4dMapConst (data)); }
 
 #define PCL_ADD_POINT4D \
   PCL_ADD_UNION_POINT4D \
@@ -194,20 +194,20 @@ namespace pcl
 
 #define PCL_ADD_UNION_NORMAL4D \
   union EIGEN_ALIGN16 { \
-    float data_n[4]; \
-    float normal[3]; \
+    double data_n[4]; \
+    double normal[3]; \
     struct { \
-      float normal_x; \
-      float normal_y; \
-      float normal_z; \
+      double normal_x; \
+      double normal_y; \
+      double normal_z; \
     }; \
   };
 
 #define PCL_ADD_EIGEN_MAPS_NORMAL4D \
-  inline pcl::Vector3fMap getNormalVector3fMap () { return (pcl::Vector3fMap (data_n)); } \
-  inline pcl::Vector3fMapConst getNormalVector3fMap () const { return (pcl::Vector3fMapConst (data_n)); } \
-  inline pcl::Vector4fMap getNormalVector4fMap () { return (pcl::Vector4fMap (data_n)); } \
-  inline pcl::Vector4fMapConst getNormalVector4fMap () const { return (pcl::Vector4fMapConst (data_n)); }
+  inline pcl::Vector3dMap getNormalVector3dMap () { return (pcl::Vector3dMap (data_n)); } \
+  inline pcl::Vector3dMapConst getNormalVector3dMap () const { return (pcl::Vector3dMapConst (data_n)); } \
+  inline pcl::Vector4dMap getNormalVector4dMap () { return (pcl::Vector4dMap (data_n)); } \
+  inline pcl::Vector4dMapConst getNormalVector4dMap () const { return (pcl::Vector4dMapConst (data_n)); }
 
 #define PCL_ADD_NORMAL4D \
   PCL_ADD_UNION_NORMAL4D \
@@ -225,7 +225,7 @@ namespace pcl
         uint8_t r; \
         uint8_t a; \
       }; \
-      float rgb; \
+      double rgb; \
     }; \
     uint32_t rgba; \
   };
@@ -249,7 +249,7 @@ namespace pcl
 #define PCL_ADD_INTENSITY \
     struct \
     { \
-      float intensity; \
+      double intensity; \
     }; \
 
 #define PCL_ADD_INTENSITY_8U \
@@ -267,7 +267,7 @@ namespace pcl
 
   struct _PointXYZ
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -280,19 +280,19 @@ namespace pcl
   {
     inline PointXYZ (const _PointXYZ &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
     }
 
     inline PointXYZ ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
     }
 
-    inline PointXYZ (float _x, float _y, float _z)
+    inline PointXYZ (double _x, double _y, double _z)
     {
       x = _x; y = _y; z = _z;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
 
     friend std::ostream& operator << (std::ostream& os, const PointXYZ& p);
@@ -322,9 +322,9 @@ namespace pcl
     *
     * \code
     * int rgb = ...;
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)     & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)     & 0x0000f;
     * \endcode
     *
     */
@@ -351,7 +351,7 @@ namespace pcl
 
   PCL_EXPORTS std::ostream& operator << (std::ostream& os, const Intensity& p);
   /** \brief A point structure representing the grayscale intensity in single-channel images.
-    * Intensity is represented as a float value.
+    * Intensity is represented as a double value.
     * \ingroup common
     */
   struct Intensity: public _Intensity
@@ -363,7 +363,7 @@ namespace pcl
 
     inline Intensity ()
     {
-      intensity = 0.0f;
+      intensity = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const Intensity& p);
@@ -432,14 +432,14 @@ namespace pcl
     */
   struct EIGEN_ALIGN16 _PointXYZI
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float intensity;
+        double intensity;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -449,20 +449,20 @@ namespace pcl
   {
     inline PointXYZI (const _PointXYZI &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       intensity = p.intensity;
     }
 
     inline PointXYZI ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      intensity = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      intensity = 0.0;
     }
-    inline PointXYZI (float _intensity)
+    inline PointXYZI (double _intensity)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       intensity = _intensity;
     }
     friend std::ostream& operator << (std::ostream& os, const PointXYZI& p);
@@ -471,7 +471,7 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointXYZL
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     uint32_t label;
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -481,14 +481,14 @@ namespace pcl
   {
     inline PointXYZL (const _PointXYZL &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       label = p.label;
     }
 
     inline PointXYZL ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       label = 0;
     }
   
@@ -507,7 +507,7 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointXYZRGBA
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     PCL_ADD_RGB;
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -526,9 +526,9 @@ namespace pcl
     *
     * \code
     * int rgb = ...;
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)     & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)     & 0x0000f;
     * \endcode
     *
     * \ingroup common
@@ -537,14 +537,14 @@ namespace pcl
   {
     inline PointXYZRGBA (const _PointXYZRGBA &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgba = p.rgba;
     }
 
     inline PointXYZRGBA ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = 0;
       a = 255;
     }
@@ -555,14 +555,14 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointXYZRGB
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     PCL_ADD_RGB;
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
 
   struct EIGEN_ALIGN16 _PointXYZRGBL
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     PCL_ADD_RGB;
     uint32_t label;
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -572,7 +572,7 @@ namespace pcl
   /** \brief A point structure representing Euclidean xyz coordinates, and the RGB color.
     *
     * Due to historical reasons (PCL was first developed as a ROS package), the
-    * RGB information is packed into an integer and casted to a float. This is
+    * RGB information is packed into an integer and casted to a double. This is
     * something we wish to remove in the near future, but in the meantime, the
     * following code snippet should help you pack and unpack RGB colors in your
     * PointXYZRGB structure:
@@ -581,7 +581,7 @@ namespace pcl
     * // pack r/g/b into rgb
     * uint8_t r = 255, g = 0, b = 0;    // Example: Red color
     * uint32_t rgb = ((uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b);
-    * p.rgb = *reinterpret_cast<float*>(&rgb);
+    * p.rgb = *reinterpret_cast<double*>(&rgb);
     * \endcode
     *
     * To unpack the data into separate values, use:
@@ -590,9 +590,9 @@ namespace pcl
     * PointXYZRGB p;
     * // unpack rgb into r/g/b
     * uint32_t rgb = *reinterpret_cast<int*>(&p.rgb);
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)       & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)       & 0x0000f;
     * \endcode
     *
     *
@@ -604,20 +604,20 @@ namespace pcl
   {
     inline PointXYZRGB (const _PointXYZRGB &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgb = p.rgb;
     }
 
     inline PointXYZRGB ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = a = 0;
     }
     inline PointXYZRGB (uint8_t _r, uint8_t _g, uint8_t _b)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = _r;
       g = _g;
       b = _b;
@@ -634,23 +634,23 @@ namespace pcl
   {
     inline PointXYZRGBL (const _PointXYZRGBL &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgba = p.rgba;
       label = p.label;
     }
 
     inline PointXYZRGBL ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = 0;
       a = 0;
       label = 255;
     }
     inline PointXYZRGBL (uint8_t _r, uint8_t _g, uint8_t _b, uint32_t _label)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = _r;
       g = _g;
       b = _b;
@@ -665,16 +665,16 @@ namespace pcl
 
   struct _PointXYZHSV
   {
-    PCL_ADD_POINT4D;    // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D;    // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float h;
-        float s;
-        float v;
+        double h;
+        double s;
+        double v;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   } EIGEN_ALIGN16;
@@ -684,20 +684,20 @@ namespace pcl
   {
     inline PointXYZHSV (const _PointXYZHSV &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       h = p.h; s = p.s; v = p.v;
     }
 
     inline PointXYZHSV ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       h = s = v = data_c[3] = 0;
     }
-    inline PointXYZHSV (float _h, float _v, float _s)
+    inline PointXYZHSV (double _h, double _v, double _s)
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       h = _h; v = _v; s = _s;
       data_c[3] = 0;
     }
@@ -714,21 +714,21 @@ namespace pcl
     */
   struct PointXY
   {
-    float x;
-    float y;
+    double x;
+    double y;
   
     friend std::ostream& operator << (std::ostream& os, const PointXY& p);
   };
 
   PCL_EXPORTS std::ostream& operator << (std::ostream& os, const PointUV& p);
   /** \brief A 2D point structure representing pixel image coordinates.
-    * \note We use float to be able to represent subpixels.
+    * \note We use double to be able to represent subpixels.
     * \ingroup common
     */
   struct PointUV
   {
-    float u;
-    float v;
+    double u;
+    double v;
   
     friend std::ostream& operator << (std::ostream& os, const PointUV& p);
   };
@@ -739,14 +739,14 @@ namespace pcl
     */
   struct EIGEN_ALIGN16 InterestPoint
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float strength;
+        double strength;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   
@@ -755,14 +755,14 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _Normal
   {
-    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is float[4])
+    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float curvature;
+        double curvature;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -776,21 +776,21 @@ namespace pcl
     inline Normal (const _Normal &p)
     {
       normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
       curvature = p.curvature;
     }
 
     inline Normal ()
     {
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       curvature = 0;
     }
 
-    inline Normal (float n_x, float n_y, float n_z)
+    inline Normal (double n_x, double n_y, double n_z)
     {
       normal_x = n_x; normal_y = n_y; normal_z = n_z;
       curvature = 0;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
     }
 
     friend std::ostream& operator << (std::ostream& os, const Normal& p);
@@ -813,18 +813,18 @@ namespace pcl
     inline Axis (const _Axis &p)
     {
       normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
     }
 
     inline Axis ()
     {
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
     }
 
-    inline Axis (float n_x, float n_y, float n_z)
+    inline Axis (double n_x, double n_y, double n_z)
     {
       normal_x = n_x; normal_y = n_y; normal_z = n_z;
-      data_n[3] = 0.0f;
+      data_n[3] = 0.0;
     }
 
     friend std::ostream& operator << (std::ostream& os, const Axis& p);
@@ -834,15 +834,15 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointNormal
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
-    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
+    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float curvature;
+        double curvature;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -855,16 +855,16 @@ namespace pcl
   {
     inline PointNormal (const _PointNormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
     }
 
     inline PointNormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointNormal& p);
@@ -873,16 +873,16 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointXYZRGBNormal
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
-    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
+    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
         PCL_ADD_UNION_RGB;
-        float curvature;
+        double curvature;
       };
-      float data_c[4];
+      double data_c[4];
     };
     PCL_ADD_EIGEN_MAPS_RGB;
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -891,7 +891,7 @@ namespace pcl
   PCL_EXPORTS std::ostream& operator << (std::ostream& os, const PointXYZRGBNormal& p);
   /** \brief A point structure representing Euclidean xyz coordinates, and the RGB color, together with normal coordinates and the surface curvature estimate.
     * Due to historical reasons (PCL was first developed as a ROS package), the
-    * RGB information is packed into an integer and casted to a float. This is
+    * RGB information is packed into an integer and casted to a double. This is
     * something we wish to remove in the near future, but in the meantime, the
     * following code snippet should help you pack and unpack RGB colors in your
     * PointXYZRGB structure:
@@ -900,7 +900,7 @@ namespace pcl
     * // pack r/g/b into rgb
     * uint8_t r = 255, g = 0, b = 0;    // Example: Red color
     * uint32_t rgb = ((uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b);
-    * p.rgb = *reinterpret_cast<float*>(&rgb);
+    * p.rgb = *reinterpret_cast<double*>(&rgb);
     * \endcode
     *
     * To unpack the data into separate values, use:
@@ -909,9 +909,9 @@ namespace pcl
     * PointXYZRGB p;
     * // unpack rgb into r/g/b
     * uint32_t rgb = *reinterpret_cast<int*>(&p.rgb);
-    * uint8_t r = (rgb >> 16) & 0x0000ff;
-    * uint8_t g = (rgb >> 8)  & 0x0000ff;
-    * uint8_t b = (rgb)       & 0x0000ff;
+    * uint8_t r = (rgb >> 16) & 0x0000f;
+    * uint8_t g = (rgb >> 8)  & 0x0000f;
+    * uint8_t b = (rgb)       & 0x0000f;
     * \endcode
     *
     *
@@ -922,18 +922,18 @@ namespace pcl
   {
     inline PointXYZRGBNormal (const _PointXYZRGBNormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
       rgba = p.rgba;
     }
 
     inline PointXYZRGBNormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
       r = g = b = a = 0;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       curvature = 0;
     }
 
@@ -942,16 +942,16 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointXYZINormal
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
-    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
+    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float intensity;
-        float curvature;
+        double intensity;
+        double curvature;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -964,18 +964,18 @@ namespace pcl
   {
     inline PointXYZINormal (const _PointXYZINormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
       intensity = p.intensity;
     }
 
     inline PointXYZINormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
-      intensity = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
+      intensity = 0.0;
       curvature = 0;
     }
   
@@ -985,16 +985,16 @@ namespace pcl
 //----
   struct EIGEN_ALIGN16 _PointXYZLNormal
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
-    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
+    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
         uint32_t label;
-        float curvature;
+        double curvature;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -1007,17 +1007,17 @@ namespace pcl
   {
     inline PointXYZLNormal (const _PointXYZLNormal &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
-      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
+      normal_x = p.normal_x; normal_y = p.normal_y; normal_z = p.normal_z; data_n[3] = 0.0;
       curvature = p.curvature;
       label = p.label;
     }
 
     inline PointXYZLNormal ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       label = 0;
       curvature = 0;
     }
@@ -1030,35 +1030,35 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointWithRange
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float range;
+        double range;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
 
   PCL_EXPORTS std::ostream& operator << (std::ostream& os, const PointWithRange& p);
-  /** \brief A point structure representing Euclidean xyz coordinates, padded with an extra range float.
+  /** \brief A point structure representing Euclidean xyz coordinates, padded with an extra range double.
     * \ingroup common
     */
   struct PointWithRange : public _PointWithRange
   {
     inline PointWithRange (const _PointWithRange &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       range = p.range;
     }
 
     inline PointWithRange ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      range = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      range = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointWithRange& p);
@@ -1067,16 +1067,16 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointWithViewpoint
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
-        float vp_x;
-        float vp_y;
-        float vp_z;
+        double vp_x;
+        double vp_y;
+        double vp_z;
       };
-      float data_c[4];
+      double data_c[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -1089,15 +1089,15 @@ namespace pcl
   {
     inline PointWithViewpoint (const _PointWithViewpoint &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       vp_x = p.vp_x; vp_y = p.vp_y; vp_z = p.vp_z;
     }
 
-    inline PointWithViewpoint (float _x = 0.0f, float _y = 0.0f, float _z = 0.0f,
-                               float _vp_x = 0.0f, float _vp_y = 0.0f, float _vp_z = 0.0f)
+    inline PointWithViewpoint (double _x = 0.0, double _y = 0.0, double _z = 0.0,
+                               double _vp_x = 0.0, double _vp_y = 0.0, double _vp_z = 0.0)
     {
       x = _x; y = _y; z = _z;
-      data[3] = 1.0f;
+      data[3] = 1.0;
       vp_x = _vp_x; vp_y = _vp_y; vp_z = _vp_z;
     }
   
@@ -1110,7 +1110,7 @@ namespace pcl
     */
   struct MomentInvariants
   {
-    float j1, j2, j3;
+    double j1, j2, j3;
   
     friend std::ostream& operator << (std::ostream& os, const MomentInvariants& p);
   };
@@ -1121,7 +1121,7 @@ namespace pcl
     */
   struct PrincipalRadiiRSD
   {
-    float r_min, r_max;
+    double r_min, r_max;
   
     friend std::ostream& operator << (std::ostream& os, const PrincipalRadiiRSD& p);
   };
@@ -1152,16 +1152,16 @@ namespace pcl
   {
     union
     {
-      float principal_curvature[3];
+      double principal_curvature[3];
       struct
       {
-        float principal_curvature_x;
-        float principal_curvature_y;
-        float principal_curvature_z;
+        double principal_curvature_x;
+        double principal_curvature_y;
+        double principal_curvature_z;
       };
     };
-    float pc1;
-    float pc2;
+    double pc1;
+    double pc2;
   
     friend std::ostream& operator << (std::ostream& os, const PrincipalCurvatures& p);
   };
@@ -1172,7 +1172,7 @@ namespace pcl
     */
   struct PFHSignature125
   {
-    float histogram[125];
+    double histogram[125];
     static int descriptorSize () { return 125; }
   
     friend std::ostream& operator << (std::ostream& os, const PFHSignature125& p);
@@ -1184,7 +1184,7 @@ namespace pcl
     */
   struct PFHRGBSignature250
   {
-    float histogram[250];
+    double histogram[250];
     static int descriptorSize () { return 250; }
 
     friend std::ostream& operator << (std::ostream& os, const PFHRGBSignature250& p);
@@ -1196,8 +1196,8 @@ namespace pcl
     */
   struct PPFSignature
   {
-    float f1, f2, f3, f4;
-    float alpha_m;
+    double f1, f2, f3, f4;
+    double alpha_m;
   
     friend std::ostream& operator << (std::ostream& os, const PPFSignature& p);
   };
@@ -1208,8 +1208,8 @@ namespace pcl
     */
   struct CPPFSignature
   {
-    float f1, f2, f3, f4, f5, f6, f7, f8, f9, f10;
-    float alpha_m;
+    double f1, f2, f3, f4, f5, f6, f7, f8, f9, f10;
+    double alpha_m;
   
     friend std::ostream& operator << (std::ostream& os, const CPPFSignature& p);
   };
@@ -1220,9 +1220,9 @@ namespace pcl
     */
   struct PPFRGBSignature
   {
-    float f1, f2, f3, f4;
-    float r_ratio, g_ratio, b_ratio;
-    float alpha_m;
+    double f1, f2, f3, f4;
+    double r_ratio, g_ratio, b_ratio;
+    double alpha_m;
   
     friend std::ostream& operator << (std::ostream& os, const PPFRGBSignature& p);
   };
@@ -1234,7 +1234,7 @@ namespace pcl
     */
   struct NormalBasedSignature12
   {
-    float values[12];
+    double values[12];
   
     friend std::ostream& operator << (std::ostream& os, const NormalBasedSignature12& p);
   };
@@ -1245,8 +1245,8 @@ namespace pcl
     */
   struct ShapeContext1980
   {
-    float descriptor[1980];
-    float rf[9];
+    double descriptor[1980];
+    double rf[9];
     static int descriptorSize () { return 1980; }
 
     friend std::ostream& operator << (std::ostream& os, const ShapeContext1980& p);
@@ -1258,8 +1258,8 @@ namespace pcl
     */
   struct UniqueShapeContext1960
   {
-    float descriptor[1960];
-    float rf[9];
+    double descriptor[1960];
+    double rf[9];
     static int descriptorSize () { return 1960; }
 
     friend std::ostream& operator << (std::ostream& os, const UniqueShapeContext1960& p);
@@ -1271,8 +1271,8 @@ namespace pcl
     */
   struct SHOT352
   {
-    float descriptor[352];
-    float rf[9];
+    double descriptor[352];
+    double rf[9];
     static int descriptorSize () { return 352; }
 
     friend std::ostream& operator << (std::ostream& os, const SHOT352& p);
@@ -1285,8 +1285,8 @@ namespace pcl
     */
   struct SHOT1344
   {
-    float descriptor[1344];
-    float rf[9];
+    double descriptor[1344];
+    double rf[9];
     static int descriptorSize () { return 1344; }
 
     friend std::ostream& operator << (std::ostream& os, const SHOT1344& p);
@@ -1300,23 +1300,23 @@ namespace pcl
   {
     union
     {
-      float rf[9];
+      double rf[9];
       struct
       {
-        float x_axis[3];
-        float y_axis[3];
-        float z_axis[3];
+        double x_axis[3];
+        double y_axis[3];
+        double z_axis[3];
       };
     };
 
-    inline Eigen::Map<Eigen::Vector3f> getXAxisVector3fMap () { return (Eigen::Vector3f::Map (x_axis)); }
-    inline const Eigen::Map<const Eigen::Vector3f> getXAxisVector3fMap () const { return (Eigen::Vector3f::Map (x_axis)); }
-    inline Eigen::Map<Eigen::Vector3f> getYAxisVector3fMap () { return (Eigen::Vector3f::Map (y_axis)); }
-    inline const Eigen::Map<const Eigen::Vector3f> getYAxisVector3fMap () const { return (Eigen::Vector3f::Map (y_axis)); }
-    inline Eigen::Map<Eigen::Vector3f> getZAxisVector3fMap () { return (Eigen::Vector3f::Map (z_axis)); }
-    inline const Eigen::Map<const Eigen::Vector3f> getZAxisVector3fMap () const { return (Eigen::Vector3f::Map (z_axis)); }
-    inline Eigen::Map<Eigen::Matrix3f> getMatrix3fMap () { return (Eigen::Matrix3f::Map (rf)); }
-    inline const Eigen::Map<const Eigen::Matrix3f> getMatrix3fMap () const { return (Eigen::Matrix3f::Map (rf)); }
+    inline Eigen::Map<Eigen::Vector3d> getXAxisVector3dMap () { return (Eigen::Vector3d::Map (x_axis)); }
+    inline const Eigen::Map<const Eigen::Vector3d> getXAxisVector3dMap () const { return (Eigen::Vector3d::Map (x_axis)); }
+    inline Eigen::Map<Eigen::Vector3d> getYAxisVector3dMap () { return (Eigen::Vector3d::Map (y_axis)); }
+    inline const Eigen::Map<const Eigen::Vector3d> getYAxisVector3dMap () const { return (Eigen::Vector3d::Map (y_axis)); }
+    inline Eigen::Map<Eigen::Vector3d> getZAxisVector3dMap () { return (Eigen::Vector3d::Map (z_axis)); }
+    inline const Eigen::Map<const Eigen::Vector3d> getZAxisVector3dMap () const { return (Eigen::Vector3d::Map (z_axis)); }
+    inline Eigen::Map<Eigen::Matrix3d> getMatrix3dMap () { return (Eigen::Matrix3d::Map (rf)); }
+    inline const Eigen::Map<const Eigen::Matrix3d> getMatrix3dMap () const { return (Eigen::Matrix3d::Map (rf)); }
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -1347,7 +1347,7 @@ namespace pcl
     */
   struct FPFHSignature33
   {
-    float histogram[33];
+    double histogram[33];
     static int descriptorSize () { return 33; }
 
     friend std::ostream& operator << (std::ostream& os, const FPFHSignature33& p);
@@ -1359,7 +1359,7 @@ namespace pcl
     */
   struct VFHSignature308
   {
-    float histogram[308];
+    double histogram[308];
     static int descriptorSize () { return 308; }
 
     friend std::ostream& operator << (std::ostream& os, const VFHSignature308& p);
@@ -1371,7 +1371,7 @@ namespace pcl
     */
   struct GRSDSignature21
   {
-    float histogram[21];
+    double histogram[21];
     static int descriptorSize () { return 21; }
 
     friend std::ostream& operator << (std::ostream& os, const GRSDSignature21& p);
@@ -1383,8 +1383,8 @@ namespace pcl
     */
   struct BRISKSignature512
   {
-    float scale;
-    float orientation;
+    double scale;
+    double orientation;
     unsigned char descriptor[64];
     static int descriptorSize () { return 64; }
 
@@ -1397,7 +1397,7 @@ namespace pcl
     */
   struct ESFSignature640
   {
-    float histogram[640];
+    double histogram[640];
     static int descriptorSize () { return 640; }
 
     friend std::ostream& operator << (std::ostream& os, const ESFSignature640& p);
@@ -1409,7 +1409,7 @@ namespace pcl
     */
   struct GFPFHSignature16
   {
-    float histogram[16];
+    double histogram[16];
     static int descriptorSize () { return 16; }
     
     friend std::ostream& operator << (std::ostream& os, const GFPFHSignature16& p);
@@ -1421,8 +1421,8 @@ namespace pcl
     */
   struct Narf36
   {
-    float x, y, z, roll, pitch, yaw;
-    float descriptor[36];
+    double x, y, z, roll, pitch, yaw;
+    double descriptor[36];
     static int descriptorSize () { return 36; }
 
     friend std::ostream& operator << (std::ostream& os, const Narf36& p);
@@ -1450,12 +1450,12 @@ namespace pcl
   {
     union
     {
-      float gradient[3];
+      double gradient[3];
       struct
       {
-        float gradient_x;
-        float gradient_y;
-        float gradient_z;
+        double gradient_x;
+        double gradient_y;
+        double gradient_z;
       };
     };
   
@@ -1468,25 +1468,25 @@ namespace pcl
   template <int N>
   struct Histogram
   {
-    float histogram[N];
+    double histogram[N];
     static int descriptorSize () { return N; }
   };
 
   struct EIGEN_ALIGN16 _PointWithScale
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
 
     union
     {
       /** \brief Diameter of the meaningfull keypoint neighborhood. */
-      float scale;
-      float size;
+      double scale;
+      double size;
     };
 
     /** \brief Computed orientation of the keypoint (-1 if not applicable). */
-    float angle;
+    double angle;
     /** \brief The response by which the most strong keypoints have been selected. */
-    float response;
+    double response;
     /** \brief octave (pyramid layer) from which the keypoint has been extracted. */
     int   octave;
 
@@ -1501,7 +1501,7 @@ namespace pcl
   {
     inline PointWithScale (const _PointWithScale &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       scale = p.scale;
       angle = p.angle;
       response = p.response;
@@ -1510,27 +1510,27 @@ namespace pcl
 
     inline PointWithScale ()
     {
-      x = y = z = 0.0f;
-      scale = 1.0f;
-      angle = -1.0f;
-      response = 0.0f;
+      x = y = z = 0.0;
+      scale = 1.0;
+      angle = -1.0;
+      response = 0.0;
       octave = 0;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
 
-    inline PointWithScale (float _x, float _y, float _z, float _scale)
+    inline PointWithScale (double _x, double _y, double _z, double _scale)
     {
       x = _x;
       y = _y;
       z = _z;
       scale = _scale;
-      angle = -1.0f;
-      response = 0.0f;
+      angle = -1.0;
+      response = 0.0;
       octave = 0;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
 
-    inline PointWithScale (float _x, float _y, float _z, float _scale, float _angle, float _response, int _octave)
+    inline PointWithScale (double _x, double _y, double _z, double _scale, double _angle, double _response, int _octave)
     {
       x = _x;
       y = _y;
@@ -1539,7 +1539,7 @@ namespace pcl
       angle = _angle;
       response = _response;
       octave = _octave;
-      data[3] = 1.0f;
+      data[3] = 1.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointWithScale& p);
@@ -1548,18 +1548,18 @@ namespace pcl
 
   struct EIGEN_ALIGN16 _PointSurfel
   {
-    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is float[4])
-    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is float[4])
+    PCL_ADD_POINT4D; // This adds the members x,y,z which can also be accessed using the point (which is double[4])
+    PCL_ADD_NORMAL4D; // This adds the member normal[3] which can also be accessed using the point (which is double[4])
     union
     {
       struct
       {
         PCL_ADD_UNION_RGB;
-        float radius;
-        float confidence;
-        float curvature;
+        double radius;
+        double confidence;
+        double curvature;
       };
-      float data_c[4];
+      double data_c[4];
     };
     PCL_ADD_EIGEN_MAPS_RGB;
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -1573,7 +1573,7 @@ namespace pcl
   {
     inline PointSurfel (const _PointSurfel &p)
     {
-      x = p.x; y = p.y; z = p.z; data[3] = 1.0f;
+      x = p.x; y = p.y; z = p.z; data[3] = 1.0;
       rgba = p.rgba;
       radius = p.radius;
       confidence = p.confidence;
@@ -1582,11 +1582,11 @@ namespace pcl
 
     inline PointSurfel ()
     {
-      x = y = z = 0.0f;
-      data[3] = 1.0f;
-      normal_x = normal_y = normal_z = data_n[3] = 0.0f;
+      x = y = z = 0.0;
+      data[3] = 1.0;
+      normal_x = normal_y = normal_z = data_n[3] = 0.0;
       rgba = 0;
-      radius = confidence = curvature = 0.0f;
+      radius = confidence = curvature = 0.0;
     }
   
     friend std::ostream& operator << (std::ostream& os, const PointSurfel& p);

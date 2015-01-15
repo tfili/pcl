@@ -115,15 +115,15 @@ namespace pcl
       virtual void
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
-                        const std::vector<float> &sqr_dists,
-                        Eigen::VectorXf &shot) = 0;
+                        const std::vector<double> &sqr_dists,
+                        Eigen::VectorXd &shot) = 0;
 
         /** \brief Set the radius used for local reference frame estimation if the frames are not set by the user */
       virtual void
-      setLRFRadius (float radius) { lrf_radius_ = radius; }
+      setLRFRadius (double radius) { lrf_radius_ = radius; }
 
         /** \brief Get the radius used for local reference frame estimation */
-      virtual float
+      virtual double
       getLRFRadius () const { return lrf_radius_; }
 
     protected:
@@ -143,18 +143,18 @@ namespace pcl
         */
       void
       interpolateSingleChannel (const std::vector<int> &indices,
-                                const std::vector<float> &sqr_dists,
+                                const std::vector<double> &sqr_dists,
                                 const int index,
                                 std::vector<double> &binDistance,
                                 const int nr_bins,
-                                Eigen::VectorXf &shot);
+                                Eigen::VectorXd &shot);
 
       /** \brief Normalize the SHOT histogram.
         * \param[in,out] shot the SHOT histogram
         * \param[in] desc_length the length of the histogram
         */
       void
-      normalizeHistogram (Eigen::VectorXf &shot, int desc_length);
+      normalizeHistogram (Eigen::VectorXd &shot, int desc_length);
 
 
       /** \brief Create a binned distance shape histogram
@@ -170,10 +170,10 @@ namespace pcl
       int nr_shape_bins_;
 
       /** \brief Placeholder for a point's SHOT. */
-      Eigen::VectorXf shot_;
+      Eigen::VectorXd shot_;
 
       /** \brief The radius used for the LRF computation */
-      float lrf_radius_;
+      double lrf_radius_;
 
       /** \brief The squared search radius. */
       double sqradius_;
@@ -263,8 +263,8 @@ namespace pcl
       virtual void
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
-                        const std::vector<float> &sqr_dists,
-                        Eigen::VectorXf &shot);
+                        const std::vector<double> &sqr_dists,
+                        Eigen::VectorXd &shot);
     protected:
       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
@@ -349,8 +349,8 @@ namespace pcl
       virtual void
       computePointSHOT (const int index,
                         const std::vector<int> &indices,
-                        const std::vector<float> &sqr_dists,
-                        Eigen::VectorXf &shot);
+                        const std::vector<double> &sqr_dists,
+                        Eigen::VectorXd &shot);
     protected:
       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
@@ -372,13 +372,13 @@ namespace pcl
         */
       void
       interpolateDoubleChannel (const std::vector<int> &indices,
-                                const std::vector<float> &sqr_dists,
+                                const std::vector<double> &sqr_dists,
                                 const int index,
                                 std::vector<double> &binDistanceShape,
                                 std::vector<double> &binDistanceColor,
                                 const int nr_bins_shape,
                                 const int nr_bins_color,
-                                Eigen::VectorXf &shot);
+                                Eigen::VectorXd &shot);
 
       /** \brief Compute shape descriptor. */
       bool b_describe_shape_;
@@ -399,10 +399,10 @@ namespace pcl
         * \param[out] B2 the second color-opponent dimension
         */
       static void
-      RGB2CIELAB (unsigned char R, unsigned char G, unsigned char B, float &L, float &A, float &B2);
+      RGB2CIELAB (unsigned char R, unsigned char G, unsigned char B, double &L, double &A, double &B2);
 
-      static float sRGB_LUT[256];
-      static float sXYZ_LUT[4000];
+      static double sRGB_LUT[256];
+      static double sXYZ_LUT[4000];
   };
 }
 

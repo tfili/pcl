@@ -51,7 +51,7 @@ boost::variate_generator< boost::mt19937, boost::uniform_int<unsigned> > rand_ui
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, InverseGeneral3x3f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix = RMatrix::Zero ();
@@ -61,7 +61,7 @@ TEST (PCL, InverseGeneral3x3f)
   Eigen::Matrix<Scalar, 3, 3> result = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Eigen::Matrix<Scalar, 3, 3> error = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Scalar determinant;
-  const Scalar epsilon = 1e-5f;
+  const Scalar epsilon = 1e-5;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major
@@ -76,7 +76,7 @@ TEST (PCL, InverseGeneral3x3f)
     determinant = invert3x3Matrix (r_matrix, r_inverse);
     if (fabs (determinant) > epsilon)
     {
-      float eps = std::max (epsilon, epsilon / fabs(determinant));
+      double eps = std::max (epsilon, epsilon / fabs(determinant));
 
       result = r_inverse * r_matrix;
       error = result - Eigen::Matrix<Scalar, 3, 3>::Identity ();
@@ -171,7 +171,7 @@ TEST (PCL, InverseGeneral3x3d)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, InverseSymmetric3x3f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix = RMatrix::Zero ();
@@ -181,7 +181,7 @@ TEST (PCL, InverseSymmetric3x3f)
   Eigen::Matrix<Scalar, 3, 3> result = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Eigen::Matrix<Scalar, 3, 3> error = Eigen::Matrix<Scalar, 3, 3>::Zero ();
   Scalar determinant;
-  const Scalar epsilon = 1e-5f;
+  const Scalar epsilon = 1e-5;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major
@@ -202,7 +202,7 @@ TEST (PCL, InverseSymmetric3x3f)
     determinant = invert3x3SymMatrix (r_matrix, r_inverse);
     if (fabs (determinant) > epsilon)
     {
-      float eps = std::max (epsilon, epsilon / fabs(determinant));
+      double eps = std::max (epsilon, epsilon / fabs(determinant));
 
       result = r_inverse * r_matrix;
       error = result - Eigen::Matrix<Scalar, 3, 3>::Identity ();
@@ -304,7 +304,7 @@ TEST (PCL, InverseSymmetric3x3d)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, Inverse2x2f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix = RMatrix::Zero ();
@@ -314,7 +314,7 @@ TEST (PCL, Inverse2x2f)
   Eigen::Matrix<Scalar, 2, 2> result = Eigen::Matrix<Scalar, 2, 2>::Zero ();
   Eigen::Matrix<Scalar, 2, 2> error = Eigen::Matrix<Scalar, 2, 2>::Zero ();
   Scalar determinant;
-  const Scalar epsilon = 1e-6f;
+  const Scalar epsilon = 1e-6;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major
@@ -328,7 +328,7 @@ TEST (PCL, Inverse2x2f)
     determinant = invert2x2 (r_matrix, r_inverse);
     if (fabs (determinant) > epsilon)
     {
-      float eps = std::max (epsilon, epsilon / fabs(determinant));
+      double eps = std::max (epsilon, epsilon / fabs(determinant));
 
       result = r_inverse * r_matrix;
       error = result - Eigen::Matrix<Scalar, 2, 2>::Identity ();
@@ -523,7 +523,7 @@ TEST (PCL, eigen22d)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, eigen22f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 2, 2, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix;
@@ -540,7 +540,7 @@ TEST (PCL, eigen22f)
   Eigen::Matrix<Scalar, 2, 2> c_error;
   Scalar diff;
 
-  const Scalar epsilon = 3.1e-5f;
+  const Scalar epsilon = 3.1e-5;
   const unsigned iterations = 1000000;
 
   // test floating point row-major : row-major
@@ -720,11 +720,11 @@ TEST (PCL, eigen33d)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// since we use float in this test and some matrices are bad conditioned for the eigenvalue decomposition, we will have
+// since we use double in this test and some matrices are bad conditioned for the eigenvalue decomposition, we will have
 // some errors > 0.2 but less than 1% is > 1e-3 -> we will just check whether the failure rate is below 1%
 TEST (PCL, eigen33f)
 {
-  typedef float Scalar;
+  typedef double Scalar;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::RowMajor> RMatrix;
   typedef Eigen::Matrix<Scalar, 3, 3, Eigen::ColMajor> CMatrix;
   RMatrix r_matrix;
@@ -795,15 +795,15 @@ TEST (PCL, eigen33f)
   }
 
   // less than 1% failure rate
-  EXPECT_LE (float(r_fail_count) / float(iterations), 0.01);
-  EXPECT_LE (float(r_fail_count) / float(iterations), 0.01);
+  EXPECT_LE (double(r_fail_count) / double(iterations), 0.01);
+  EXPECT_LE (double(r_fail_count) / double(iterations), 0.01);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, transformLine)
 {
   // This also tests transformPoint and transformVector
-  Eigen::VectorXf line;
+  Eigen::VectorXd line;
   Eigen::VectorXd lined, test;
   line.resize(6);
   lined.resize(6);
@@ -811,7 +811,7 @@ TEST (PCL, transformLine)
   double tolerance = 1e-7;
 
   // Simple translation
-  Eigen::Affine3f transformation = Eigen::Affine3f::Identity ();
+  Eigen::Affine3d transformation = Eigen::Affine3d::Identity ();
   Eigen::Affine3d transformationd = Eigen::Affine3d::Identity ();
   transformation.translation() << 1, -2, 0;
   transformationd.translation() << 1, -2, 0;
@@ -828,9 +828,9 @@ TEST (PCL, transformLine)
   }
 
   // Simple rotation
-  transformation = Eigen::Affine3f::Identity ();
+  transformation = Eigen::Affine3d::Identity ();
   transformationd = Eigen::Affine3d::Identity ();
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/2, Eigen::Vector3f::UnitZ());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
 
   line << 1, 2, 3, 0, 1, 0;
@@ -847,12 +847,12 @@ TEST (PCL, transformLine)
   }
 
   // Random transformation
-  transformation = Eigen::Affine3f::Identity ();
+  transformation = Eigen::Affine3d::Identity ();
   transformationd = Eigen::Affine3d::Identity ();
   transformation.translation() << 25.97, -2.45, 0.48941;
   transformationd.translation() << 25.97, -2.45, 0.48941;
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/5, Eigen::Vector3f::UnitX())
-  * Eigen::AngleAxisf(M_PI/3, Eigen::Vector3f::UnitY());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/5, Eigen::Vector3d::UnitX())
+  * Eigen::AngleAxisd(M_PI/3, Eigen::Vector3d::UnitY());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/5, Eigen::Vector3d::UnitX())
   * Eigen::AngleAxisd(M_PI/3, Eigen::Vector3d::UnitY());
 
@@ -882,7 +882,7 @@ TEST (PCL, transformPlane)
   plane->values[3] = -2.0;
 
   // Simple translation
-  Eigen::Affine3f transformation = Eigen::Affine3f::Identity ();
+  Eigen::Affine3d transformation = Eigen::Affine3d::Identity ();
   Eigen::Affine3d transformationd = Eigen::Affine3d::Identity ();
   transformation.translation() << 1, 0, 0;
   transformationd.translation() << 1, 0, 0;
@@ -903,7 +903,7 @@ TEST (PCL, transformPlane)
   // Simple rotation
   transformation.translation() << 0, 0, 0;
   transformationd.translation() << 0, 0, 0;
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/2, Eigen::Vector3f::UnitZ());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d::UnitZ());
   test << 0, 1, 0, -2;
   tolerance = 1e-6;
@@ -927,8 +927,8 @@ TEST (PCL, transformPlane)
   // Random transformation
   transformation.translation() << 12.5, -5.4, 0.1;
   transformationd.translation() << 12.5, -5.4, 0.1;
-  transformation.linear() = (Eigen::Matrix3f) Eigen::AngleAxisf(M_PI/7, Eigen::Vector3f::UnitY())
-  * Eigen::AngleAxisf(M_PI/4, Eigen::Vector3f::UnitZ());
+  transformation.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/7, Eigen::Vector3d::UnitY())
+  * Eigen::AngleAxisd(M_PI/4, Eigen::Vector3d::UnitZ());
   transformationd.linear() = (Eigen::Matrix3d) Eigen::AngleAxisd(M_PI/7, Eigen::Vector3d::UnitY())
   * Eigen::AngleAxisd(M_PI/4, Eigen::Vector3d::UnitZ());
   test << 5.35315, 2.89914, 0.196848, -49.2788;
@@ -1017,9 +1017,9 @@ TEST (PCL, checkCoordinateSystem)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, transformBetween2CoordinateSystems)
 {
-  Eigen::Affine3f transformation;
+  Eigen::Affine3d transformation;
   Eigen::Affine3d transformationd;
-  Eigen::VectorXf from_line_x, from_line_y, to_line_x, to_line_y;
+  Eigen::VectorXd from_line_x, from_line_y, to_line_x, to_line_y;
   Eigen::VectorXd from_line_xd, from_line_yd, to_line_xd, to_line_yd;
   from_line_x.resize(6); from_line_y.resize(6);
   to_line_x.resize(6); to_line_y.resize(6);

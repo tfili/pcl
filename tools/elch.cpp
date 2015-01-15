@@ -64,11 +64,11 @@ loopDetection (int end, const CloudVector &clouds, double dist, int &first, int 
 
   for (int i = end-1; i > 0; i--)
   {
-    Eigen::Vector4f cstart, cend;
+    Eigen::Vector4d cstart, cend;
     //TODO use pose of scan
     pcl::compute3DCentroid (*(clouds[i].second), cstart);
     pcl::compute3DCentroid (*(clouds[end].second), cend);
-    Eigen::Vector4f diff = cend - cstart;
+    Eigen::Vector4d diff = cend - cstart;
 
     double norm = diff.norm ();
 

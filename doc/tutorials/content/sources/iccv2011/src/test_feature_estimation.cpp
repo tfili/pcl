@@ -51,10 +51,10 @@ main (int argc, char ** argv)
     std::vector<std::string> tokens;
     boost::split (tokens, params_string, boost::is_any_of (","), boost::token_compress_on);
     assert (tokens.size () == 4);    
-    float min_scale = atof(tokens[0].c_str ());
+    double min_scale = atof(tokens[0].c_str ());
     int nr_octaves = atoi(tokens[1].c_str ());
     int nr_scales = atoi(tokens[2].c_str ());
-    float min_contrast = atof(tokens[3].c_str ());
+    double min_contrast = atof(tokens[3].c_str ());
     keypoints = detectKeypoints (cloud, normals, min_scale, nr_octaves, nr_scales, min_contrast);
     pcl::console::print_info ("Detected %lu keypoints\n", keypoints->size ());
   }

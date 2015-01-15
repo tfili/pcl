@@ -26,7 +26,7 @@ main (int argc, char ** argv)
   // Load the points
   PointCloudPtr src_points = loadPoints (argv[1]);
   PointCloudPtr tgt_points = loadPoints (argv[2]);
-  Eigen::Matrix4f tform = Eigen::Matrix4f::Identity ();
+  Eigen::Matrix4d tform = Eigen::Matrix4d::Identity ();
 
   // Compute the intial alignment
   double min_sample_dist, max_correspondence_dist, nr_iters;
@@ -55,9 +55,9 @@ main (int argc, char ** argv)
     std::vector<std::string> tokens;
     boost::split (tokens, params_string, boost::is_any_of (","), boost::token_compress_on);
     assert (tokens.size () == 4);    
-    float max_correspondence_distance = atof(tokens[0].c_str ());
-    float outlier_rejection_threshold = atof(tokens[1].c_str ());
-    float transformation_epsilon = atoi(tokens[2].c_str ());
+    double max_correspondence_distance = atof(tokens[0].c_str ());
+    double outlier_rejection_threshold = atof(tokens[1].c_str ());
+    double transformation_epsilon = atoi(tokens[2].c_str ());
     int max_iterations = atoi(tokens[3].c_str ());
 
     tform = refineAlignment (src_points, tgt_points, tform, max_correspondence_distance,  

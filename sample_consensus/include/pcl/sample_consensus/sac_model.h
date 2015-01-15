@@ -218,7 +218,7 @@ namespace pcl
         */
       virtual bool 
       computeModelCoefficients (const std::vector<int> &samples, 
-                                Eigen::VectorXf &model_coefficients) = 0;
+                                Eigen::VectorXd &model_coefficients) = 0;
 
       /** \brief Recompute the model coefficients using the given inlier set
         * and return them to the user. Pure virtual.
@@ -232,8 +232,8 @@ namespace pcl
         */
       virtual void 
       optimizeModelCoefficients (const std::vector<int> &inliers, 
-                                 const Eigen::VectorXf &model_coefficients,
-                                 Eigen::VectorXf &optimized_coefficients) = 0;
+                                 const Eigen::VectorXd &model_coefficients,
+                                 Eigen::VectorXd &optimized_coefficients) = 0;
 
       /** \brief Compute all distances from the cloud data to a given model. Pure virtual.
         * 
@@ -241,7 +241,7 @@ namespace pcl
         * \param[out] distances the resultant estimated distances
         */
       virtual void 
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients, 
                            std::vector<double> &distances) = 0;
 
       /** \brief Select all the points which respect the given model
@@ -253,7 +253,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       virtual void 
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients, 
                             const double threshold,
                             std::vector<int> &inliers) = 0;
 
@@ -267,7 +267,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      countWithinDistance (const Eigen::VectorXd &model_coefficients, 
                            const double threshold) = 0;
 
       /** \brief Create a new point cloud with inliers projected onto the model. Pure virtual.
@@ -280,7 +280,7 @@ namespace pcl
         */
       virtual void 
       projectPoints (const std::vector<int> &inliers, 
-                     const Eigen::VectorXf &model_coefficients,
+                     const Eigen::VectorXd &model_coefficients,
                      PointCloud &projected_points, 
                      bool copy_data_fields = true) = 0;
 
@@ -294,7 +294,7 @@ namespace pcl
         */
       virtual bool 
       doSamplesVerifyModel (const std::set<int> &indices, 
-                            const Eigen::VectorXf &model_coefficients, 
+                            const Eigen::VectorXd &model_coefficients, 
                             const double threshold) = 0;
 
       /** \brief Provide a pointer to the input dataset
@@ -465,7 +465,7 @@ namespace pcl
         //const PointT& pt0 = (*input_)[shuffled_indices_[0]];
 
         std::vector<int> indices;
-        std::vector<float> sqr_dists;
+        std::vector<double> sqr_dists;
 
         // If indices have been set when the search object was constructed,
         // radiusSearch() expects an index into the indices vector as its
@@ -496,7 +496,7 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       virtual inline bool
-      isModelValid (const Eigen::VectorXf &model_coefficients) = 0;
+      isModelValid (const Eigen::VectorXd &model_coefficients) = 0;
 
       /** \brief Check if a sample of indices results in a good sample of points
         * indices. Pure virtual.
@@ -613,7 +613,7 @@ namespace pcl
 
   /** Base functor all the models that need non linear optimization must
     * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
-    * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
+    * or operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec) dependening on the choosen _Scalar
     */
   template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
   struct Functor

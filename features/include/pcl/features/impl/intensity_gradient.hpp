@@ -47,16 +47,16 @@
 template <typename PointInT, typename PointNT, typename PointOutT, typename IntensitySelectorT> void
 pcl::IntensityGradientEstimation <PointInT, PointNT, PointOutT, IntensitySelectorT>::computePointIntensityGradient (
   const pcl::PointCloud <PointInT> &cloud, const std::vector <int> &indices,
-  const Eigen::Vector3f &point, float mean_intensity, const Eigen::Vector3f &normal, Eigen::Vector3f &gradient)
+  const Eigen::Vector3d &point, double mean_intensity, const Eigen::Vector3d &normal, Eigen::Vector3d &gradient)
 {
   if (indices.size () < 3)
   {
-    gradient[0] = gradient[1] = gradient[2] = std::numeric_limits<float>::quiet_NaN ();
+    gradient[0] = gradient[1] = gradient[2] = std::numeric_limits<double>::quiet_NaN ();
     return;
   }
 
-  Eigen::Matrix3f A = Eigen::Matrix3f::Zero ();
-  Eigen::Vector3f b = Eigen::Vector3f::Zero ();
+  Eigen::Matrix3d A = Eigen::Matrix3d::Zero ();
+  Eigen::Vector3d b = Eigen::Vector3d::Zero ();
 
   for (size_t i_point = 0; i_point < indices.size (); ++i_point)
   {
@@ -91,11 +91,11 @@ pcl::IntensityGradientEstimation <PointInT, PointNT, PointOutT, IntensitySelecto
   A (2, 1) = A (1, 2);
 
 //*
-  Eigen::Vector3f x = A.colPivHouseholderQr ().solve (b);
+  Eigen::Vector3d x = A.colPivHouseholderQr ().solve (b);
 /*/
 
-  Eigen::Vector3f eigen_values;
-  Eigen::Matrix3f eigen_vectors;
+  Eigen::Vector3d eigen_values;
+  Eigen::Matrix3d eigen_vectors;
   eigen33 (A, eigen_vectors, eigen_values);
 
   b = eigen_vectors.transpose () * b;
@@ -116,7 +116,7 @@ pcl::IntensityGradientEstimation <PointInT, PointNT, PointOutT, IntensitySelecto
     b (2) = 0;
 
 
-  Eigen::Vector3f x = eigen_vectors * b;
+  Eigen::Vector3d x = eigen_vectors * b;
 
 //  if (A.col (0).squaredNorm () != 0)
 //    x [0] /= A.col (0).squaredNorm ();
@@ -136,7 +136,7 @@ pcl::IntensityGradientEstimation <PointInT, PointNT, PointOutT, IntensitySelecto
 //  std::cout << A << "\n*\n" << bb << "\n=\n" << x << "\nvs.\n" << x2 << "\n\n";
 //  std::cout << A * x << "\nvs.\n" << A * x2 << "\n\n------\n";
   // Project the gradient vector, x, onto the tangent plane
-  gradient = (Eigen::Matrix3f::Identity () - normal*normal.transpose ()) * x;
+  gradient = (Eigen::Matrix3d::Identity () - normal*normal.transpose ()) * x;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
   output.is_dense = true;
 
   // If the data is dense, we don't need to check for NaN
@@ -162,25 +162,25 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
 
       if (!this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists))
       {
-        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<float>::quiet_NaN ();
+        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }
 
-      Eigen::Vector3f centroid;
-      float mean_intensity = 0;
+      Eigen::Vector3d centroid;
+      double mean_intensity = 0;
       // Initialize to 0
       centroid.setZero ();
       for (size_t i = 0; i < nn_indices.size (); ++i)
       {
-        centroid += surface_->points[nn_indices[i]].getVector3fMap ();
+        centroid += surface_->points[nn_indices[i]].getVector3dMap ();
         mean_intensity += intensity_ (surface_->points[nn_indices[i]]);
       }
-      centroid /= static_cast<float> (nn_indices.size ());
-      mean_intensity /= static_cast<float> (nn_indices.size ());
+      centroid /= static_cast<double> (nn_indices.size ());
+      mean_intensity /= static_cast<double> (nn_indices.size ());
 
-      Eigen::Vector3f normal = Eigen::Vector3f::Map (normals_->points[(*indices_) [idx]].normal);
-      Eigen::Vector3f gradient;
+      Eigen::Vector3d normal = Eigen::Vector3d::Map (normals_->points[(*indices_) [idx]].normal);
+      Eigen::Vector3d gradient;
       computePointIntensityGradient (*surface_, nn_indices, centroid, mean_intensity, normal, gradient);
 
       p_out.gradient[0] = gradient[0];
@@ -200,12 +200,12 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
       if (!isFinite ((*surface_) [(*indices_)[idx]]) ||
           !this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists))
       {
-        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<float>::quiet_NaN ();
+        p_out.gradient[0] = p_out.gradient[1] = p_out.gradient[2] = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }
-      Eigen::Vector3f centroid;
-      float mean_intensity = 0;
+      Eigen::Vector3d centroid;
+      double mean_intensity = 0;
       // Initialize to 0
       centroid.setZero ();
       unsigned cp = 0;
@@ -215,14 +215,14 @@ pcl::IntensityGradientEstimation<PointInT, PointNT, PointOutT, IntensitySelector
         if (!isFinite ((*surface_) [nn_indices[i]]))
           continue;
 
-        centroid += surface_->points [nn_indices[i]].getVector3fMap ();
+        centroid += surface_->points [nn_indices[i]].getVector3dMap ();
         mean_intensity += intensity_ (surface_->points [nn_indices[i]]);
         ++cp;
       }
-      centroid /= static_cast<float> (cp);
-      mean_intensity /= static_cast<float> (cp);
-      Eigen::Vector3f normal = Eigen::Vector3f::Map (normals_->points[(*indices_) [idx]].normal);
-      Eigen::Vector3f gradient;
+      centroid /= static_cast<double> (cp);
+      mean_intensity /= static_cast<double> (cp);
+      Eigen::Vector3d normal = Eigen::Vector3d::Map (normals_->points[(*indices_) [idx]].normal);
+      Eigen::Vector3d gradient;
       computePointIntensityGradient (*surface_, nn_indices, centroid, mean_intensity, normal, gradient);
 
       p_out.gradient[0] = gradient[0];

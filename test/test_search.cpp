@@ -95,7 +95,7 @@ PointCloud<PointXYZ>::Ptr unorganized_grid_cloud (new PointCloud<PointXYZ>);
 /** \brief uniform distributed random number generator for unsigned it in range [0;10]*/
 boost::variate_generator< boost::mt19937, boost::uniform_int<unsigned> > rand_uint(boost::mt19937 (), boost::uniform_int<unsigned> (0, 10));
 /** \brief uniform distributed random number generator for floats in the range [0;1] */
-boost::variate_generator< boost::mt19937, boost::uniform_real<float> > rand_float(boost::mt19937 (), boost::uniform_real<float> (0, 1));
+boost::variate_generator< boost::mt19937, boost::uniform_real<double> > rand_float(boost::mt19937 (), boost::uniform_real<double> (0, 1));
 
 /** \brief used by the *_VIEW_* tests to use only a subset of points from the point cloud*/
 std::vector<int> unorganized_input_indices;
@@ -159,7 +159,7 @@ bool testUniqueness (const vector<int>& indices, const string& name)
   * \param name name of the search method that returned these distances
   * \return true if distances in weak ascending order, false otherwise
   */
-bool testOrder (const vector<float>& distances, const string& name)
+bool testOrder (const vector<double>& distances, const string& name)
 {
   bool ordered = true;
   for (unsigned idx1 = 1; idx1 < distances.size (); ++idx1)
@@ -228,8 +228,8 @@ testResultValidity (const typename PointCloud<PointT>::ConstPtr point_cloud, con
   * \param eps threshold for comparing the distances
   * \return true if both sets are the same, false otherwise
   */
-bool compareResults (const std::vector<int>& indices1, const::vector<float>& distances1, const std::string& name1,
-                     const std::vector<int>& indices2, const::vector<float>& distances2, const std::string& name2, float eps)
+bool compareResults (const std::vector<int>& indices1, const::vector<double>& distances1, const std::string& name1,
+                     const std::vector<int>& indices2, const::vector<double>& distances2, const std::string& name2, double eps)
 {
   bool equal = true;
   if (indices1.size () != indices2.size ())
@@ -280,7 +280,7 @@ testKNNSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<search:
                 const vector<int>& query_indices, const vector<int>& input_indices = vector<int> () )
 {
   vector< vector<int> >indices (search_methods.size ());
-  vector< vector<float> >distances (search_methods.size ());
+  vector< vector<double> >distances (search_methods.size ());
   vector<bool> passed (search_methods.size (), true);
   
   vector<bool> indices_mask (point_cloud->size (), true);
@@ -329,7 +329,7 @@ testKNNSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<search:
       for (int sIdx = 1; sIdx < int (search_methods.size ()); ++sIdx)
       {
         passed [sIdx] = passed [sIdx] && compareResults (indices [0],    distances [0],    search_methods [0]->getName (),
-                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6f);
+                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6);
       }
     }
   }
@@ -351,7 +351,7 @@ testRadiusSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<sear
                    const vector<int>& query_indices, const vector<int>& input_indices = vector<int> ())
 {
   vector< vector<int> >indices (search_methods.size ());
-  vector< vector<float> >distances (search_methods.size ());
+  vector< vector<double> >distances (search_methods.size ());
   vector <bool> passed (search_methods.size (), true);
   vector<bool> indices_mask (point_cloud->size (), true);
   vector<bool> nan_mask (point_cloud->size (), true);
@@ -380,7 +380,7 @@ testRadiusSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<sear
     search_methods [sIdx]->setInputCloud (point_cloud, input_indices_);
 
   // test radii 0.01, 0.02, 0.04, 0.08
-  for (float radius = 0.01f; radius < 0.1f; radius *= 2.0f)
+  for (double radius = 0.01; radius < 0.1; radius *= 2.0f)
   {
     //cout << radius << endl;
     // find nn for each point in the cloud
@@ -400,7 +400,7 @@ testRadiusSearch (typename PointCloud<PointT>::ConstPtr point_cloud, vector<sear
       for (int sIdx = 1; sIdx < static_cast<int> (search_methods.size ()); ++sIdx)
       {
         passed [sIdx] = passed [sIdx] && compareResults (indices [0],    distances [0],    search_methods [0]->getName (),
-                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6f);
+                                                         indices [sIdx], distances [sIdx], search_methods [sIdx]->getName (), 1e-6);
       }
     }
   }
@@ -588,7 +588,7 @@ main (int argc, char** argv)
     unorganized_dense_cloud->points [pIdx] = point;
     
     if (rand_uint () == 0)
-      unorganized_sparse_cloud->points [pIdx].x = unorganized_sparse_cloud->points [pIdx].y = unorganized_sparse_cloud->points [pIdx].z = std::numeric_limits<float>::quiet_NaN ();
+      unorganized_sparse_cloud->points [pIdx].x = unorganized_sparse_cloud->points [pIdx].y = unorganized_sparse_cloud->points [pIdx].z = std::numeric_limits<double>::quiet_NaN ();
     else
       unorganized_sparse_cloud->points [pIdx] = point;
   }
@@ -605,9 +605,9 @@ main (int argc, char** argv)
     {
       for (unsigned zIdx = 0; zIdx < 10; ++zIdx)
       {
-        point.x = 0.1f * static_cast<float>(xIdx);
-        point.y = 0.1f * static_cast<float>(yIdx);
-        point.z = 0.1f * static_cast<float>(zIdx);
+        point.x = 0.1 * static_cast<double>(xIdx);
+        point.y = 0.1 * static_cast<double>(yIdx);
+        point.z = 0.1 * static_cast<double>(zIdx);
         unorganized_grid_cloud->push_back (point);
       }
     }

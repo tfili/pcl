@@ -18,7 +18,7 @@
  * Return: A pointer to a SurfaceNormals point cloud
  */
 SurfaceNormalsPtr
-estimateSurfaceNormals (const PointCloudPtr & input, float radius)
+estimateSurfaceNormals (const PointCloudPtr & input, double radius)
 {
   SurfaceNormalsPtr normals;
   return (normals);
@@ -42,7 +42,7 @@ estimateSurfaceNormals (const PointCloudPtr & input, float radius)
  */
 PointCloudPtr
 detectKeypoints (const PointCloudPtr & points, const SurfaceNormalsPtr & normals,
-                 float min_scale, int nr_octaves, int nr_scales_per_octave, float min_contrast)  
+                 double min_scale, int nr_octaves, int nr_scales_per_octave, double min_contrast)  
 {
   PointCloudPtr keypoints;
   return (keypoints);
@@ -62,7 +62,7 @@ detectKeypoints (const PointCloudPtr & points, const SurfaceNormalsPtr & normals
  */
 LocalDescriptorsPtr
 computeLocalDescriptors (const PointCloudPtr & points, const SurfaceNormalsPtr & normals, 
-                         const PointCloudPtr & keypoints, float feature_radius)
+                         const PointCloudPtr & keypoints, double feature_radius)
 {
   LocalDescriptorsPtr local_descriptors;
   return (local_descriptors);

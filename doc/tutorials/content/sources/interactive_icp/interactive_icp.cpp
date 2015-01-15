@@ -123,8 +123,8 @@ main (int argc,
   viewer.createViewPort (0.5, 0.0, 1.0, 1.0, v2);
 
   // The color we will be using
-  float bckgr_gray_level = 0.0;  // Black
-  float txt_gray_lvl = 1.0 - bckgr_gray_level;
+  double bckgr_gray_level = 0.0;  // Black
+  double txt_gray_lvl = 1.0 - bckgr_gray_level;
 
   // Original point cloud is white
   pcl::visualization::PointCloudColorHandlerCustom<PointT> cloud_in_color_h (cloud_in, (int) 255 * txt_gray_lvl, (int) 255 * txt_gray_lvl,

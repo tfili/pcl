@@ -106,11 +106,11 @@ TEST(PCL_FeaturesGPU, ppf)
         PPFSignature& gpu = downloaded[i];
         PPFSignature& cpu = ppfs.points[i];        
 
-        ASSERT_NEAR(gpu.f1, cpu.f1, 0.01f);
-        ASSERT_NEAR(gpu.f2, cpu.f2, 0.01f);
-        ASSERT_NEAR(gpu.f3, cpu.f3, 0.01f);
-        ASSERT_NEAR(gpu.f4, cpu.f4, 0.01f);
-        ASSERT_NEAR(gpu.alpha_m, cpu.alpha_m, 0.01f);              
+        ASSERT_NEAR(gpu.f1, cpu.f1, 0.01);
+        ASSERT_NEAR(gpu.f2, cpu.f2, 0.01);
+        ASSERT_NEAR(gpu.f3, cpu.f3, 0.01);
+        ASSERT_NEAR(gpu.f4, cpu.f4, 0.01);
+        ASSERT_NEAR(gpu.alpha_m, cpu.alpha_m, 0.01);              
     }
 }
 
@@ -183,19 +183,19 @@ TEST(PCL_FeaturesGPU, ppfrgb)
         PPFRGBSignature& gpu = downloaded[i];
         PPFRGBSignature& cpu = ppfs.points[i];        
 
-        ASSERT_NEAR(gpu.f1, cpu.f1, 0.01f);
-        ASSERT_NEAR(gpu.f2, cpu.f2, 0.01f);
-        ASSERT_NEAR(gpu.f3, cpu.f3, 0.01f);
-        ASSERT_NEAR(gpu.f4, cpu.f4, 0.01f);
-        ASSERT_NEAR(gpu.alpha_m, cpu.alpha_m, 0.01f); 
+        ASSERT_NEAR(gpu.f1, cpu.f1, 0.01);
+        ASSERT_NEAR(gpu.f2, cpu.f2, 0.01);
+        ASSERT_NEAR(gpu.f3, cpu.f3, 0.01);
+        ASSERT_NEAR(gpu.f4, cpu.f4, 0.01);
+        ASSERT_NEAR(gpu.alpha_m, cpu.alpha_m, 0.01); 
 
         if (pcl_isnan(gpu.r_ratio) || pcl_isnan(gpu.g_ratio) || pcl_isnan(gpu.b_ratio) || 
             pcl_isnan(cpu.r_ratio) || pcl_isnan(cpu.g_ratio) || pcl_isnan(cpu.b_ratio))
             continue;
         
-        ASSERT_NEAR(gpu.r_ratio, cpu.r_ratio, 0.01f);
-        ASSERT_NEAR(gpu.g_ratio, cpu.g_ratio, 0.01f);
-        ASSERT_NEAR(gpu.b_ratio, cpu.b_ratio, 0.01f);     
+        ASSERT_NEAR(gpu.r_ratio, cpu.r_ratio, 0.01);
+        ASSERT_NEAR(gpu.g_ratio, cpu.g_ratio, 0.01);
+        ASSERT_NEAR(gpu.b_ratio, cpu.b_ratio, 0.01);     
     }
 }
 
@@ -274,18 +274,18 @@ TEST(PCL_FeaturesGPU, ppfrgb_region)
         PPFRGBSignature& gpu = downloaded[i];
         PPFRGBSignature& cpu = ppfs.points[i];        
 
-        ASSERT_NEAR(gpu.f1, cpu.f1, 0.01f);
-        ASSERT_NEAR(gpu.f2, cpu.f2, 0.01f);
-        ASSERT_NEAR(gpu.f3, cpu.f3, 0.01f);
-        ASSERT_NEAR(gpu.f4, cpu.f4, 0.01f);
-        ASSERT_NEAR(gpu.alpha_m, cpu.alpha_m, 0.01f); 
+        ASSERT_NEAR(gpu.f1, cpu.f1, 0.01);
+        ASSERT_NEAR(gpu.f2, cpu.f2, 0.01);
+        ASSERT_NEAR(gpu.f3, cpu.f3, 0.01);
+        ASSERT_NEAR(gpu.f4, cpu.f4, 0.01);
+        ASSERT_NEAR(gpu.alpha_m, cpu.alpha_m, 0.01); 
 
         if (pcl_isnan(gpu.r_ratio) || pcl_isnan(gpu.g_ratio) || pcl_isnan(gpu.b_ratio) || 
             pcl_isnan(cpu.r_ratio) || pcl_isnan(cpu.g_ratio) || pcl_isnan(cpu.b_ratio))
             continue;
         
-        ASSERT_NEAR(gpu.r_ratio, cpu.r_ratio, 0.01f);
-        ASSERT_NEAR(gpu.g_ratio, cpu.g_ratio, 0.01f);
-        ASSERT_NEAR(gpu.b_ratio, cpu.b_ratio, 0.01f);     
+        ASSERT_NEAR(gpu.r_ratio, cpu.r_ratio, 0.01);
+        ASSERT_NEAR(gpu.g_ratio, cpu.g_ratio, 0.01);
+        ASSERT_NEAR(gpu.b_ratio, cpu.b_ratio, 0.01);     
     }
 }

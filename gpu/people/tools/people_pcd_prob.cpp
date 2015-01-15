@@ -70,11 +70,11 @@ struct ProjMatrix : public pcl::search::OrganizedNeighbor<PointT>
   using pcl::search::OrganizedNeighbor<PointT>::projection_matrix_;
 };
 
-float estimateFocalLength(const pcl::PointCloud<PointT>::ConstPtr &cloud)
+double estimateFocalLength(const pcl::PointCloud<PointT>::ConstPtr &cloud)
 {
   ProjMatrix proj_matrix;
   proj_matrix.setInputCloud(cloud);  
-  Eigen::Matrix3f KR = proj_matrix.projection_matrix_.topLeftCorner <3, 3> ();    
+  Eigen::Matrix3d KR = proj_matrix.projection_matrix_.topLeftCorner <3, 3> ();    
   return (KR(0,0) + KR(1,1))/KR(2,2)/2;
 }
 
@@ -189,8 +189,8 @@ class PeoplePCDApp
     {
       for(size_t t; t < histograms.points.size(); t++)
       {
-        float value = histograms.points[t].probs[label];
-        float value8 = value * 255;
+        double value = histograms.points[t].probs[label];
+        double value8 = value * 255;
         char val = static_cast<char> (value8);
         pcl::RGB p;
         p.r = val; p.b = val; p.g = val;

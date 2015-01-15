@@ -53,9 +53,9 @@ namespace pcl
 
     struct RGB
     {
-      float r;
-      float g;
-      float b;
+      double r;
+      double g;
+      double b;
     }; //RGB
 
     /** \brief Texture name. */
@@ -74,10 +74,10 @@ namespace pcl
     RGB         tex_Ks;
 
     /** \brief Defines the transparency of the material to be alpha. */
-    float       tex_d;
+    double       tex_d;
 
     /** \brief Defines the shininess of the material to be s. */
-    float       tex_Ns;
+    double       tex_Ns;
 
     /** \brief Denotes the illumination model used by the material.
       *
@@ -98,7 +98,7 @@ namespace pcl
 
 
     std::vector<std::vector<pcl::Vertices> >    tex_polygons;     // polygon which is mapped with specific texture defined in TexMaterial
-    std::vector<std::vector<Eigen::Vector2f> >  tex_coordinates;  // UV coordinates
+    std::vector<std::vector<Eigen::Vector2d> >  tex_coordinates;  // UV coordinates
     std::vector<pcl::TexMaterial>               tex_materials;    // define texture material
 
     public:

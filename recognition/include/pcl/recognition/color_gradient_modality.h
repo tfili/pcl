@@ -102,7 +102,7 @@ namespace pcl
         * \param[in] threshold the new gradient magnitude threshold.
         */
       inline void
-      setGradientMagnitudeThreshold (const float threshold)
+      setGradientMagnitudeThreshold (const double threshold)
       {
         gradient_magnitude_threshold_ = threshold;
       }
@@ -112,7 +112,7 @@ namespace pcl
         * \param[in] threshold the new gradient magnitude threshold.
         */
       inline void
-      setGradientMagnitudeThresholdForFeatureExtraction (const float threshold)
+      setGradientMagnitudeThresholdForFeatureExtraction (const double threshold)
       {
         gradient_magnitude_threshold_feature_extraction_ = threshold;
       }
@@ -209,7 +209,7 @@ namespace pcl
         * \param[in] sigma the sigma.
         * \param[out] kernel_values the destination for the values of the kernel. */
       void
-      computeGaussianKernel (const size_t kernel_size, const float sigma, std::vector <float> & kernel_values);
+      computeGaussianKernel (const size_t kernel_size, const double sigma, std::vector <double> & kernel_values);
 
       /** \brief Computes the max-RGB gradients for the specified cloud.
         * \param[in] cloud the cloud for which the gradients are computed.
@@ -250,9 +250,9 @@ namespace pcl
       FeatureSelectionMethod feature_selection_method_;
 
       /** \brief The threshold applied on the gradient magnitudes (for quantization). */
-      float gradient_magnitude_threshold_;
+      double gradient_magnitude_threshold_;
       /** \brief The threshold applied on the gradient magnitudes for feature extraction. */
-      float gradient_magnitude_threshold_feature_extraction_;
+      double gradient_magnitude_threshold_feature_extraction_;
 
       /** \brief The point cloud which holds the max-RGB gradients. */
       pcl::PointCloud<pcl::GradientXY> color_gradients_;
@@ -278,8 +278,8 @@ ColorGradientModality ()
   : variable_feature_nr_ (false)
   , smoothed_input_ (new pcl::PointCloud<pcl::RGB> ())
   , feature_selection_method_ (DISTANCE_MAGNITUDE_SCORE)
-  , gradient_magnitude_threshold_ (10.0f)
-  , gradient_magnitude_threshold_feature_extraction_ (55.0f)
+  , gradient_magnitude_threshold_ (10.0)
+  , gradient_magnitude_threshold_feature_extraction_ (55.0)
   , color_gradients_ ()
   , spreading_size_ (8)
   , quantized_color_gradients_ ()
@@ -298,26 +298,26 @@ pcl::ColorGradientModality<PointInT>::
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT> void
 pcl::ColorGradientModality<PointInT>::
-computeGaussianKernel (const size_t kernel_size, const float sigma, std::vector <float> & kernel_values)
+computeGaussianKernel (const size_t kernel_size, const double sigma, std::vector <double> & kernel_values)
 {
   // code taken from OpenCV
   const int n = int (kernel_size);
   const int SMALL_GAUSSIAN_SIZE = 7;
-  static const float small_gaussian_tab[][SMALL_GAUSSIAN_SIZE] =
+  static const double small_gaussian_tab[][SMALL_GAUSSIAN_SIZE] =
   {
       {1.f},
-      {0.25f, 0.5f, 0.25f},
-      {0.0625f, 0.25f, 0.375f, 0.25f, 0.0625f},
-      {0.03125f, 0.109375f, 0.21875f, 0.28125f, 0.21875f, 0.109375f, 0.03125f}
+      {0.25, 0.5, 0.25},
+      {0.0625, 0.25, 0.375, 0.25, 0.0625},
+      {0.03125, 0.109375, 0.21875, 0.28125, 0.21875, 0.109375, 0.03125}
   };
 
-  const float* fixed_kernel = n % 2 == 1 && n <= SMALL_GAUSSIAN_SIZE && sigma <= 0 ?
+  const double* fixed_kernel = n % 2 == 1 && n <= SMALL_GAUSSIAN_SIZE && sigma <= 0 ?
       small_gaussian_tab[n>>1] : 0;
 
   //CV_Assert( ktype == CV_32F || ktype == CV_64F );
   /*Mat kernel(n, 1, ktype);*/
   kernel_values.resize (n);
-  float* cf = &(kernel_values[0]);
+  double* cf = &(kernel_values[0]);
   //double* cd = (double*)kernel.data;
 
   double sigmaX = sigma > 0 ? sigma : ((n-1)*0.5 - 1)*0.3 + 0.8;
@@ -330,14 +330,14 @@ computeGaussianKernel (const size_t kernel_size, const float sigma, std::vector 
     double x = i - (n-1)*0.5;
     double t = fixed_kernel ? double (fixed_kernel[i]) : std::exp (scale2X*x*x);
 
-    cf[i] = float (t);
+    cf[i] = double (t);
     sum += cf[i];
   }
 
   sum = 1./sum;
   for (i = 0; i < n; i++ )
   {
-    cf[i] = float (cf[i]*sum);
+    cf[i] = double (cf[i]*sum);
   }
 }
 
@@ -349,14 +349,14 @@ processInputData ()
 {
   // compute gaussian kernel values
   const size_t kernel_size = 7;
-  std::vector<float> kernel_values;
-  computeGaussianKernel (kernel_size, 0.0f, kernel_values);
+  std::vector<double> kernel_values;
+  computeGaussianKernel (kernel_size, 0.0, kernel_values);
 
   // smooth input
 	pcl::filters::Convolution<pcl::RGB, pcl::RGB> convolution;
 	Eigen::ArrayXf gaussian_kernel(kernel_size);
-	//gaussian_kernel << 1.f/16, 1.f/8, 3.f/16, 2.f/8, 3.f/16, 1.f/8, 1.f/16;
-	//gaussian_kernel << 16.f/1600.f,  32.f/1600.f,  64.f/1600.f, 128.f/1600.f, 256.f/1600.f, 128.f/1600.f,  64.f/1600.f,  32.f/1600.f,  16.f/1600.f;
+	//gaussian_kernel << 1./16, 1./8, 3./16, 2.f/8, 3./16, 1./8, 1./16;
+	//gaussian_kernel << 16./1600.,  32./1600.,  64./1600., 128./1600., 256./1600., 128./1600.,  64./1600.,  32./1600.,  16./1600.;
   gaussian_kernel << kernel_values[0], kernel_values[1], kernel_values[2], kernel_values[3], kernel_values[4], kernel_values[5], kernel_values[6];
 
   pcl::PointCloud<pcl::RGB>::Ptr rgb_input_ (new pcl::PointCloud<pcl::RGB>());
@@ -457,18 +457,18 @@ extractFeatures (const MaskMap & mask, const size_t nr_features, const size_t mo
       bool feature_selection_finished = false;
       while (!feature_selection_finished)
       {
-        float best_score = 0.0f;
+        double best_score = 0.0;
         typename std::list<Candidate>::iterator best_iter = list1.end ();
         for (typename std::list<Candidate>::iterator iter1 = list1.begin (); iter1 != list1.end (); ++iter1)
         {
           // find smallest distance
-          float smallest_distance = std::numeric_limits<float>::max ();
+          double smallest_distance = std::numeric_limits<double>::max ();
           for (typename std::list<Candidate>::iterator iter2 = list2.begin (); iter2 != list2.end (); ++iter2)
           {
-            const float dx = static_cast<float> (iter1->x) - static_cast<float> (iter2->x);
-            const float dy = static_cast<float> (iter1->y) - static_cast<float> (iter2->y);
+            const double dx = static_cast<double> (iter1->x) - static_cast<double> (iter2->x);
+            const double dy = static_cast<double> (iter1->y) - static_cast<double> (iter2->y);
 
-            const float distance = dx*dx + dy*dy;
+            const double distance = dx*dx + dy*dy;
 
             if (distance < smallest_distance)
             {
@@ -476,7 +476,7 @@ extractFeatures (const MaskMap & mask, const size_t nr_features, const size_t mo
             }
           }
 
-          const float score = smallest_distance * iter1->gradient.magnitude;
+          const double score = smallest_distance * iter1->gradient.magnitude;
 
           if (score > best_score)
           {
@@ -486,20 +486,20 @@ extractFeatures (const MaskMap & mask, const size_t nr_features, const size_t mo
         }
 
 
-        float min_min_sqr_distance = std::numeric_limits<float>::max ();
-        float max_min_sqr_distance = 0;
+        double min_min_sqr_distance = std::numeric_limits<double>::max ();
+        double max_min_sqr_distance = 0;
         for (typename std::list<Candidate>::iterator iter2 = list2.begin (); iter2 != list2.end (); ++iter2)
         {
-          float min_sqr_distance = std::numeric_limits<float>::max ();
+          double min_sqr_distance = std::numeric_limits<double>::max ();
           for (typename std::list<Candidate>::iterator iter3 = list2.begin (); iter3 != list2.end (); ++iter3)
           {
             if (iter2 == iter3)
               continue;
 
-            const float dx = static_cast<float> (iter2->x) - static_cast<float> (iter3->x);
-            const float dy = static_cast<float> (iter2->y) - static_cast<float> (iter3->y);
+            const double dx = static_cast<double> (iter2->x) - static_cast<double> (iter3->x);
+            const double dy = static_cast<double> (iter2->y) - static_cast<double> (iter3->y);
 
-            const float sqr_distance = dx*dx + dy*dy;
+            const double sqr_distance = dx*dx + dy*dy;
 
             if (sqr_distance < min_sqr_distance)
             {
@@ -512,10 +512,10 @@ extractFeatures (const MaskMap & mask, const size_t nr_features, const size_t mo
 
           // check current feature
           {
-            const float dx = static_cast<float> (iter2->x) - static_cast<float> (best_iter->x);
-            const float dy = static_cast<float> (iter2->y) - static_cast<float> (best_iter->y);
+            const double dx = static_cast<double> (iter2->x) - static_cast<double> (best_iter->x);
+            const double dy = static_cast<double> (iter2->y) - static_cast<double> (best_iter->y);
 
-            const float sqr_distance = dx*dx + dy*dy;
+            const double sqr_distance = dx*dx + dy*dy;
 
             if (sqr_distance < min_sqr_distance)
             {
@@ -568,18 +568,18 @@ extractFeatures (const MaskMap & mask, const size_t nr_features, const size_t mo
       list2.push_back (*(list1.begin ()));
       while (list2.size () != nr_features)
       {
-        float best_score = 0.0f;
+        double best_score = 0.0;
         typename std::list<Candidate>::iterator best_iter = list1.end ();
         for (typename std::list<Candidate>::iterator iter1 = list1.begin (); iter1 != list1.end (); ++iter1)
         {
           // find smallest distance
-          float smallest_distance = std::numeric_limits<float>::max ();
+          double smallest_distance = std::numeric_limits<double>::max ();
           for (typename std::list<Candidate>::iterator iter2 = list2.begin (); iter2 != list2.end (); ++iter2)
           {
-            const float dx = static_cast<float> (iter1->x) - static_cast<float> (iter2->x);
-            const float dy = static_cast<float> (iter1->y) - static_cast<float> (iter2->y);
+            const double dx = static_cast<double> (iter1->x) - static_cast<double> (iter2->x);
+            const double dy = static_cast<double> (iter1->y) - static_cast<double> (iter2->y);
 
-            const float distance = dx*dx + dy*dy;
+            const double distance = dx*dx + dy*dy;
 
             if (distance < smallest_distance)
             {
@@ -587,7 +587,7 @@ extractFeatures (const MaskMap & mask, const size_t nr_features, const size_t mo
             }
           }
 
-          const float score = smallest_distance * iter1->gradient.magnitude;
+          const double score = smallest_distance * iter1->gradient.magnitude;
 
           if (score > best_score)
           {
@@ -761,7 +761,7 @@ computeMaxColorGradients (const typename pcl::PointCloud<pcl::RGB>::ConstPtr & c
   color_gradients_.width = width;
   color_gradients_.height = height;
 
-  const float pi = tan (1.0f) * 2;
+  const double pi = tan (1.0) * 2;
   for (int row_index = 0; row_index < height-2; ++row_index)
   {
     for (int col_index = 0; col_index < width-2; ++col_index)
@@ -784,25 +784,25 @@ computeMaxColorGradients (const typename pcl::PointCloud<pcl::RGB>::ConstPtr & c
       const unsigned char g_r = cloud->points[index_r].g;
       const unsigned char b_r = cloud->points[index_r].b;
 
-      const float r_dx = static_cast<float> (r_c) - static_cast<float> (r0);
-      const float g_dx = static_cast<float> (g_c) - static_cast<float> (g0);
-      const float b_dx = static_cast<float> (b_c) - static_cast<float> (b0);
+      const double r_dx = static_cast<double> (r_c) - static_cast<double> (r0);
+      const double g_dx = static_cast<double> (g_c) - static_cast<double> (g0);
+      const double b_dx = static_cast<double> (b_c) - static_cast<double> (b0);
 
-      const float r_dy = static_cast<float> (r_r) - static_cast<float> (r0);
-      const float g_dy = static_cast<float> (g_r) - static_cast<float> (g0);
-      const float b_dy = static_cast<float> (b_r) - static_cast<float> (b0);
+      const double r_dy = static_cast<double> (r_r) - static_cast<double> (r0);
+      const double g_dy = static_cast<double> (g_r) - static_cast<double> (g0);
+      const double b_dy = static_cast<double> (b_r) - static_cast<double> (b0);
 
-      const float sqr_mag_r = r_dx*r_dx + r_dy*r_dy;
-      const float sqr_mag_g = g_dx*g_dx + g_dy*g_dy;
-      const float sqr_mag_b = b_dx*b_dx + b_dy*b_dy;
+      const double sqr_mag_r = r_dx*r_dx + r_dy*r_dy;
+      const double sqr_mag_g = g_dx*g_dx + g_dy*g_dy;
+      const double sqr_mag_b = b_dx*b_dx + b_dy*b_dy;
 
       if (sqr_mag_r > sqr_mag_g && sqr_mag_r > sqr_mag_b)
       {
         GradientXY gradient;
         gradient.magnitude = sqrt (sqr_mag_r);
-        gradient.angle = atan2 (r_dy, r_dx) * 180.0f / pi;
-        gradient.x = static_cast<float> (col_index);
-        gradient.y = static_cast<float> (row_index);
+        gradient.angle = atan2 (r_dy, r_dx) * 180.0 / pi;
+        gradient.x = static_cast<double> (col_index);
+        gradient.y = static_cast<double> (row_index);
 
         color_gradients_ (col_index+1, row_index+1) = gradient;
       }
@@ -810,9 +810,9 @@ computeMaxColorGradients (const typename pcl::PointCloud<pcl::RGB>::ConstPtr & c
       {
         GradientXY gradient;
         gradient.magnitude = sqrt (sqr_mag_g);
-        gradient.angle = atan2 (g_dy, g_dx) * 180.0f / pi;
-        gradient.x = static_cast<float> (col_index);
-        gradient.y = static_cast<float> (row_index);
+        gradient.angle = atan2 (g_dy, g_dx) * 180.0 / pi;
+        gradient.x = static_cast<double> (col_index);
+        gradient.y = static_cast<double> (row_index);
 
         color_gradients_ (col_index+1, row_index+1) = gradient;
       }
@@ -820,9 +820,9 @@ computeMaxColorGradients (const typename pcl::PointCloud<pcl::RGB>::ConstPtr & c
       {
         GradientXY gradient;
         gradient.magnitude = sqrt (sqr_mag_b);
-        gradient.angle = atan2 (b_dy, b_dx) * 180.0f / pi;
-        gradient.x = static_cast<float> (col_index);
-        gradient.y = static_cast<float> (row_index);
+        gradient.angle = atan2 (b_dy, b_dx) * 180.0 / pi;
+        gradient.x = static_cast<double> (col_index);
+        gradient.y = static_cast<double> (row_index);
 
         color_gradients_ (col_index+1, row_index+1) = gradient;
       }
@@ -848,7 +848,7 @@ computeMaxColorGradientsSobel (const typename pcl::PointCloud<pcl::RGB>::ConstPt
   color_gradients_.width = width;
   color_gradients_.height = height;
 
-  const float pi = tanf (1.0f) * 2.0f;
+  const double pi = tan (1.0) * 2.0;
   for (int row_index = 1; row_index < height-1; ++row_index)
   {
     for (int col_index = 1; col_index < width-1; ++col_index)
@@ -915,36 +915,36 @@ computeMaxColorGradientsSobel (const typename pcl::PointCloud<pcl::RGB>::ConstPt
       if (sqr_mag_r > sqr_mag_g && sqr_mag_r > sqr_mag_b)
       {
         GradientXY gradient;
-        gradient.magnitude = sqrtf (static_cast<float> (sqr_mag_r));
-        gradient.angle = atan2f (static_cast<float> (r_dy), static_cast<float> (r_dx)) * 180.0f / pi;
-        if (gradient.angle < -180.0f) gradient.angle += 360.0f;
-        if (gradient.angle >= 180.0f) gradient.angle -= 360.0f;
-        gradient.x = static_cast<float> (col_index);
-        gradient.y = static_cast<float> (row_index);
+        gradient.magnitude = sqrt (static_cast<double> (sqr_mag_r));
+        gradient.angle = atan2 (static_cast<double> (r_dy), static_cast<double> (r_dx)) * 180.0 / pi;
+        if (gradient.angle < -180.0) gradient.angle += 360.0;
+        if (gradient.angle >= 180.0) gradient.angle -= 360.0;
+        gradient.x = static_cast<double> (col_index);
+        gradient.y = static_cast<double> (row_index);
 
         color_gradients_ (col_index, row_index) = gradient;
       }
       else if (sqr_mag_g > sqr_mag_b)
       {
         GradientXY gradient;
-        gradient.magnitude = sqrtf (static_cast<float> (sqr_mag_g));
-        gradient.angle = atan2f (static_cast<float> (g_dy), static_cast<float> (g_dx)) * 180.0f / pi;
-        if (gradient.angle < -180.0f) gradient.angle += 360.0f;
-        if (gradient.angle >= 180.0f) gradient.angle -= 360.0f;
-        gradient.x = static_cast<float> (col_index);
-        gradient.y = static_cast<float> (row_index);
+        gradient.magnitude = sqrt (static_cast<double> (sqr_mag_g));
+        gradient.angle = atan2 (static_cast<double> (g_dy), static_cast<double> (g_dx)) * 180.0 / pi;
+        if (gradient.angle < -180.0) gradient.angle += 360.0;
+        if (gradient.angle >= 180.0) gradient.angle -= 360.0;
+        gradient.x = static_cast<double> (col_index);
+        gradient.y = static_cast<double> (row_index);
 
         color_gradients_ (col_index, row_index) = gradient;
       }
       else
       {
         GradientXY gradient;
-        gradient.magnitude = sqrtf (static_cast<float> (sqr_mag_b));
-        gradient.angle = atan2f (static_cast<float> (b_dy), static_cast<float> (b_dx)) * 180.0f / pi;
-        if (gradient.angle < -180.0f) gradient.angle += 360.0f;
-        if (gradient.angle >= 180.0f) gradient.angle -= 360.0f;
-        gradient.x = static_cast<float> (col_index);
-        gradient.y = static_cast<float> (row_index);
+        gradient.magnitude = sqrt (static_cast<double> (sqr_mag_b));
+        gradient.angle = atan2 (static_cast<double> (b_dy), static_cast<double> (b_dx)) * 180.0 / pi;
+        if (gradient.angle < -180.0) gradient.angle += 360.0;
+        if (gradient.angle >= 180.0) gradient.angle -= 360.0;
+        gradient.x = static_cast<double> (col_index);
+        gradient.y = static_cast<double> (row_index);
 
         color_gradients_ (col_index, row_index) = gradient;
       }
@@ -968,7 +968,7 @@ quantizeColorGradients ()
   //unsigned char quantization_map[16] = {0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7};
   //unsigned char quantization_map[16] = {1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
 
-  //for (float angle = 0.0f; angle < 360.0f; angle += 1.0f)
+  //for (double angle = 0.0; angle < 360.0; angle += 1.0)
   //{
   //  const int quantized_value = quantization_map[static_cast<int> (angle * angleScale)];
   //  std::cerr << angle << ": " << quantized_value << std::endl;
@@ -980,10 +980,10 @@ quantizeColorGradients ()
 
   quantized_color_gradients_.resize (width, height);
 
-  const float angleScale = 16.0f/360.0f;
+  const double angleScale = 16.0/360.0;
 
-  //float min_angle = std::numeric_limits<float>::max ();
-  //float max_angle = -std::numeric_limits<float>::max ();
+  //double min_angle = std::numeric_limits<double>::max ();
+  //double max_angle = -std::numeric_limits<double>::max ();
   for (size_t row_index = 0; row_index < height; ++row_index)
   {
     for (size_t col_index = 0; col_index < width; ++col_index)
@@ -994,16 +994,16 @@ quantizeColorGradients ()
         continue;
       }
 
-      const float angle = 11.25f + color_gradients_ (col_index, row_index).angle + 180.0f;
+      const double angle = 11.25 + color_gradients_ (col_index, row_index).angle + 180.0;
       const int quantized_value = (static_cast<int> (angle * angleScale)) & 7;
       quantized_color_gradients_ (col_index, row_index) = static_cast<unsigned char> (quantized_value + 1); 
 
-      //const float angle = color_gradients_ (col_index, row_index).angle + 180.0f;
+      //const double angle = color_gradients_ (col_index, row_index).angle + 180.0;
 
       //min_angle = std::min (min_angle, angle);
       //max_angle = std::max (max_angle, angle);
 
-      //if (angle < 0.0f || angle >= 360.0f)
+      //if (angle < 0.0 || angle >= 360.0)
       //{
       //  std::cerr << "angle shitty: " << angle << std::endl;
       //}

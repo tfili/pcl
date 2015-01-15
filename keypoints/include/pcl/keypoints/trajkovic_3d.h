@@ -80,8 +80,8 @@ namespace pcl
         */
       TrajkovicKeypoint3D (ComputationMethod method = FOUR_CORNERS,
                            int window_size = 3,
-                           float first_threshold = 0.00046,
-                           float second_threshold = 0.03589)
+                           double first_threshold = 0.00046,
+                           double second_threshold = 0.03589)
         : method_ (method)
         , window_size_ (window_size)
         , first_threshold_ (first_threshold)
@@ -114,10 +114,10 @@ namespace pcl
         * \param[in] threshold
         */
       inline void
-      setFirstThreshold (float threshold) { first_threshold_= threshold; }
+      setFirstThreshold (double threshold) { first_threshold_= threshold; }
 
       /// \brief \return first threshold
-      inline float
+      inline double
       getFirstThreshold () const { return (first_threshold_); }
 
       /** \brief set the second threshold to reject corners in the final cornerness
@@ -125,10 +125,10 @@ namespace pcl
         * \param[in] threshold
         */
       inline void
-      setSecondThreshold (float threshold) { second_threshold_= threshold; }
+      setSecondThreshold (double threshold) { second_threshold_= threshold; }
 
       /// \brief \return second threshold
-      inline float
+      inline double
       getSecondThreshold () const { return (second_threshold_); }
 
       /** \brief Set normals if precalculated normals are available.
@@ -172,18 +172,18 @@ namespace pcl
         return ((*normals_) (i,j));
       }
       /// \return difference of two normals vectors
-      inline float
+      inline double
       normalsDiff (const NormalT& a, const NormalT& b) const
       {
         double nx = a.normal_x; double ny = a.normal_y; double nz = a.normal_z;
         double mx = b.normal_x; double my = b.normal_y; double mz = b.normal_z;
-        return (static_cast<float> (1.0 - (nx*mx + ny*my + nz*mz)));
+        return (static_cast<double> (1.0 - (nx*mx + ny*my + nz*mz)));
       }
       /// \return squared difference of two normals vectors
-      inline float
+      inline double
       squaredNormalsDiff (const NormalT& a, const NormalT& b) const
       {
-        float diff = normalsDiff (a,b);
+        double diff = normalsDiff (a,b);
         return (diff * diff);
       }
       /** Comparator for responses intensity
@@ -201,15 +201,15 @@ namespace pcl
       /// half window size
       int half_window_size_;
       /// first threshold for quick rejection
-      float first_threshold_;
+      double first_threshold_;
       /// second threshold for corner evaluation
-      float second_threshold_;
+      double second_threshold_;
       /// number of threads to be used
       unsigned int threads_;
       /// point cloud normals
       NormalsConstPtr normals_;
       /// point cloud response
-      pcl::PointCloud<float>::Ptr response_;
+      pcl::PointCloud<double>::Ptr response_;
   };
 }
 

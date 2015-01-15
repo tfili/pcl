@@ -72,20 +72,20 @@ namespace pcl
         struct Header
         {
           Eigen::Vector3i resolution;
-          Eigen::Vector3f volume_size;
+          Eigen::Vector3d volume_size;
           int volume_element_size, weights_element_size;
 
           Header ()
             : resolution (0,0,0),
               volume_size (0,0,0),
-              volume_element_size (sizeof(float)),
+              volume_element_size (sizeof(double)),
               weights_element_size (sizeof(short))
           {};
 
-          Header (const Eigen::Vector3i &res, const Eigen::Vector3f &size)
+          Header (const Eigen::Vector3i &res, const Eigen::Vector3d &size)
             : resolution (res),
               volume_size (size),
-              volume_element_size (sizeof(float)),
+              volume_element_size (sizeof(double)),
               weights_element_size (sizeof(short))
           {};
 
@@ -116,20 +116,20 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \param[in] size size of tsdf volume in meters
           */
         void
-        setSize (const Eigen::Vector3f& size);
+        setSize (const Eigen::Vector3d& size);
         
         /** \brief Sets Tsdf truncation distance. Must be greater than 2 * volume_voxel_size
           * \param[in] distance TSDF truncation distance 
           */
         void
-        setTsdfTruncDist (float distance);
+        setTsdfTruncDist (double distance);
 
         /** \brief Returns tsdf volume container that point to data in GPU memroy */
         DeviceArray2D<int> 
         data () const;
 
         /** \brief Returns volume size in meters */
-        const Eigen::Vector3f&
+        const Eigen::Vector3d&
         getSize () const;
               
         /** \brief Returns volume resolution */
@@ -137,11 +137,11 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         getResolution() const;
 
         /** \brief Returns volume voxel size in meters */
-        const Eigen::Vector3f
+        const Eigen::Vector3d
         getVoxelSize () const;
         
         /** \brief Returns tsdf truncation distance in meters */
-        float
+        double
         getTsdfTruncDist () const;
       
         /** \brief Resets tsdf volume data to uninitialized state */
@@ -186,7 +186,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \return DeviceArray with disabled reference counting that points to filled part of cloud_buffer.
           */
         size_t
-        fetchSliceAsCloud (DeviceArray<PointType>& cloud_buffer_xyz, DeviceArray<float>& cloud_buffer_intensity, const tsdf_buffer* buffer, int shiftX, int shiftY, int shiftZ ) const;
+        fetchSliceAsCloud (DeviceArray<PointType>& cloud_buffer_xyz, DeviceArray<double>& cloud_buffer_intensity, const tsdf_buffer* buffer, int shiftX, int shiftY, int shiftZ ) const;
 
         /** \brief Computes normals as gradient of tsdf for given points
           * \param[in] cloud Points where normals are computed.
@@ -207,7 +207,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \param[out] tsdf Array with tsdf values. if volume resolution is 512x512x512, so for voxel (x,y,z) tsdf value can be retrieved as volume[512*512*z + 512*y + x];
           */
         void
-        downloadTsdf (std::vector<float>& tsdf) const;
+        downloadTsdf (std::vector<double>& tsdf) const;
 
         /** \brief Downloads tsdf volume from GPU memory to local CPU buffer*/
         void
@@ -218,7 +218,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
           * \param[out] weights Array with tsdf voxel weights. Same size and access index as for tsdf. A weight of 0 indicates the voxel was never used.
           */
         void
-        downloadTsdfAndWeights (std::vector<float>& tsdf, std::vector<short>& weights) const;
+        downloadTsdfAndWeights (std::vector<double>& tsdf, std::vector<short>& weights) const;
         
         /** \brief Downloads TSDF volume and according voxel weights from GPU memory to local CPU buffers*/
         void
@@ -231,7 +231,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         
         /** \brief Set the header for data stored on host directly. Useful if directly writing into volume and weights */
         inline void
-        setHeader (const Eigen::Vector3i& resolution, const Eigen::Vector3f& volume_size) {
+        setHeader (const Eigen::Vector3i& resolution, const Eigen::Vector3d& volume_size) {
           header_ = Header (resolution, volume_size);
           if (volume_host_->size() != this->size())
             pcl::console::print_warn ("[TSDFVolume::setHeader] Header volume size (%d) doesn't fit underlying data size (%d)", volume_host_->size(), size());
@@ -261,7 +261,7 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         
       private:
         /** \brief tsdf volume size in meters */
-        Eigen::Vector3f size_;
+        Eigen::Vector3d size_;
         
         /** \brief tsdf volume resolution */
         Eigen::Vector3i resolution_;      
@@ -270,11 +270,11 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         DeviceArray2D<int> volume_;
 
         /** \brief tsdf truncation distance */
-        float tranc_dist_;
+        double tranc_dist_;
         
         // The following member are resulting from the merge of TSDFVolume with TsdfVolume class.
         
-        typedef boost::shared_ptr<std::vector<float> > VolumePtr;
+        typedef boost::shared_ptr<std::vector<double> > VolumePtr;
         typedef boost::shared_ptr<std::vector<short> > WeightsPtr;
         
         Header header_;

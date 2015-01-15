@@ -23,8 +23,8 @@ class FeatureCloud
 
     FeatureCloud () :
       search_method_xyz_ (new SearchMethod),
-      normal_radius_ (0.02f),
-      feature_radius_ (0.02f)
+      normal_radius_ (0.02),
+      feature_radius_ (0.02)
     {}
 
     ~FeatureCloud () {}
@@ -111,8 +111,8 @@ class FeatureCloud
     SearchMethod::Ptr search_method_xyz_;
 
     // Parameters
-    float normal_radius_;
-    float feature_radius_;
+    double normal_radius_;
+    double feature_radius_;
 };
 
 class TemplateAlignment
@@ -122,14 +122,14 @@ class TemplateAlignment
     // A struct for storing alignment results
     struct Result
     {
-      float fitness_score;
-      Eigen::Matrix4f final_transformation;
+      double fitness_score;
+      Eigen::Matrix4d final_transformation;
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     };
 
     TemplateAlignment () :
-      min_sample_distance_ (0.05f),
-      max_correspondence_distance_ (0.01f*0.01f),
+      min_sample_distance_ (0.05),
+      max_correspondence_distance_ (0.01*0.01),
       nr_iterations_ (500)
     {
       // Intialize the parameters in the Sample Consensus Intial Alignment (SAC-IA) algorithm
@@ -166,7 +166,7 @@ class TemplateAlignment
       pcl::PointCloud<pcl::PointXYZ> registration_output;
       sac_ia_.align (registration_output);
 
-      result.fitness_score = (float) sac_ia_.getFitnessScore (max_correspondence_distance_);
+      result.fitness_score = (double) sac_ia_.getFitnessScore (max_correspondence_distance_);
       result.final_transformation = sac_ia_.getFinalTransformation ();
     }
 
@@ -190,7 +190,7 @@ class TemplateAlignment
       alignAll (results);
 
       // Find the template with the best (lowest) fitness score
-      float lowest_score = std::numeric_limits<float>::infinity ();
+      double lowest_score = std::numeric_limits<double>::infinity ();
       int best_template = 0;
       for (size_t i = 0; i < results.size (); ++i)
       {
@@ -214,8 +214,8 @@ class TemplateAlignment
 
     // The Sample Consensus Initial Alignment (SAC-IA) registration routine and its parameters
     pcl::SampleConsensusInitialAlignment<pcl::PointXYZ, pcl::PointXYZ, pcl::FPFHSignature33> sac_ia_;
-    float min_sample_distance_;
-    float max_correspondence_distance_;
+    double min_sample_distance_;
+    double max_correspondence_distance_;
     int nr_iterations_;
 };
 
@@ -252,7 +252,7 @@ main (int argc, char **argv)
 
   // Preprocess the cloud by...
   // ...removing distant points
-  const float depth_limit = 1.0;
+  const double depth_limit = 1.0;
   pcl::PassThrough<pcl::PointXYZ> pass;
   pass.setInputCloud (cloud);
   pass.setFilterFieldName ("z");
@@ -260,7 +260,7 @@ main (int argc, char **argv)
   pass.filter (*cloud);
 
   // ... and downsampling the point cloud
-  const float voxel_grid_size = 0.005f;
+  const double voxel_grid_size = 0.005;
   pcl::VoxelGrid<pcl::PointXYZ> vox_grid;
   vox_grid.setInputCloud (cloud);
   vox_grid.setLeafSize (voxel_grid_size, voxel_grid_size, voxel_grid_size);
@@ -290,8 +290,8 @@ main (int argc, char **argv)
   printf ("Best fitness score: %f\n", best_alignment.fitness_score);
 
   // Print the rotation matrix and translation vector
-  Eigen::Matrix3f rotation = best_alignment.final_transformation.block<3,3>(0, 0);
-  Eigen::Vector3f translation = best_alignment.final_transformation.block<3,1>(0, 3);
+  Eigen::Matrix3d rotation = best_alignment.final_transformation.block<3,3>(0, 0);
+  Eigen::Vector3d translation = best_alignment.final_transformation.block<3,1>(0, 3);
 
   printf ("\n");
   printf ("    | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));

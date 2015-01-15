@@ -49,8 +49,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)
@@ -76,9 +76,9 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 }
 
 void
-project (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output, float a, float b, float c, float d)
+project (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output, double a, double b, double c, double d)
 {
-  Eigen::Vector4f coeffs;
+  Eigen::Vector4d coeffs;
   coeffs << a, b, c, d;
 
   // Convert data to PointCloud<T>
@@ -161,10 +161,10 @@ main (int argc, char** argv)
   }
 
   // Command line parsing
-  float a = static_cast<float> (atof (argv[3]));
-  float b = static_cast<float> (atof (argv[4]));
-  float c = static_cast<float> (atof (argv[5]));
-  float d = static_cast<float> (atof (argv[6]));
+  double a = static_cast<double> (atof (argv[3]));
+  double b = static_cast<double> (atof (argv[4]));
+  double c = static_cast<double> (atof (argv[5]));
+  double d = static_cast<double> (atof (argv[6]));
 
   // Load the first file
   pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);

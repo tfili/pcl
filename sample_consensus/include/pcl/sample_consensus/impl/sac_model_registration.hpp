@@ -64,7 +64,7 @@ pcl::SampleConsensusModelRegistration<PointT>::isSampleGood (const std::vector<i
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> bool
-pcl::SampleConsensusModelRegistration<PointT>::computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelRegistration<PointT>::computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXd &model_coefficients)
 {
   if (!target_)
   {
@@ -85,7 +85,7 @@ pcl::SampleConsensusModelRegistration<PointT>::computeModelCoefficients (const s
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::SampleConsensusModelRegistration<PointT>::getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances) 
+pcl::SampleConsensusModelRegistration<PointT>::getDistancesToModel (const Eigen::VectorXd &model_coefficients, std::vector<double> &distances) 
 {
   if (indices_->size () != indices_tgt_->size ())
   {
@@ -107,7 +107,7 @@ pcl::SampleConsensusModelRegistration<PointT>::getDistancesToModel (const Eigen:
   distances.resize (indices_->size ());
 
   // Get the 4x4 transformation
-  Eigen::Matrix4f transform;
+  Eigen::Matrix4d transform;
   transform.row (0).matrix () = model_coefficients.segment<4>(0);
   transform.row (1).matrix () = model_coefficients.segment<4>(4);
   transform.row (2).matrix () = model_coefficients.segment<4>(8);
@@ -115,14 +115,14 @@ pcl::SampleConsensusModelRegistration<PointT>::getDistancesToModel (const Eigen:
 
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt_src (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d pt_src (input_->points[(*indices_)[i]].x, 
                             input_->points[(*indices_)[i]].y, 
                             input_->points[(*indices_)[i]].z, 1); 
-    Eigen::Vector4f pt_tgt (target_->points[(*indices_tgt_)[i]].x, 
+    Eigen::Vector4d pt_tgt (target_->points[(*indices_tgt_)[i]].x, 
                             target_->points[(*indices_tgt_)[i]].y, 
                             target_->points[(*indices_tgt_)[i]].z, 1); 
 
-    Eigen::Vector4f p_tr (transform * pt_src);
+    Eigen::Vector4d p_tr (transform * pt_src);
     // Calculate the distance from the transformed point to its correspondence
     // need to compute the real norm here to keep MSAC and friends general
     distances[i] = (p_tr - pt_tgt).norm ();
@@ -131,7 +131,7 @@ pcl::SampleConsensusModelRegistration<PointT>::getDistancesToModel (const Eigen:
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::SampleConsensusModelRegistration<PointT>::selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers) 
+pcl::SampleConsensusModelRegistration<PointT>::selectWithinDistance (const Eigen::VectorXd &model_coefficients, const double threshold, std::vector<int> &inliers) 
 {
   if (indices_->size () != indices_tgt_->size ())
   {
@@ -158,7 +158,7 @@ pcl::SampleConsensusModelRegistration<PointT>::selectWithinDistance (const Eigen
   inliers.resize (indices_->size ());
   error_sqr_dists_.resize (indices_->size ());
 
-  Eigen::Matrix4f transform;
+  Eigen::Matrix4d transform;
   transform.row (0).matrix () = model_coefficients.segment<4>(0);
   transform.row (1).matrix () = model_coefficients.segment<4>(4);
   transform.row (2).matrix () = model_coefficients.segment<4>(8);
@@ -166,16 +166,16 @@ pcl::SampleConsensusModelRegistration<PointT>::selectWithinDistance (const Eigen
 
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt_src (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d pt_src (input_->points[(*indices_)[i]].x, 
                             input_->points[(*indices_)[i]].y, 
                             input_->points[(*indices_)[i]].z, 1); 
-    Eigen::Vector4f pt_tgt (target_->points[(*indices_tgt_)[i]].x, 
+    Eigen::Vector4d pt_tgt (target_->points[(*indices_tgt_)[i]].x, 
                             target_->points[(*indices_tgt_)[i]].y, 
                             target_->points[(*indices_tgt_)[i]].z, 1); 
 
-    Eigen::Vector4f p_tr (transform * pt_src);
+    Eigen::Vector4d p_tr (transform * pt_src);
   
-    float distance = (p_tr - pt_tgt).squaredNorm (); 
+    double distance = (p_tr - pt_tgt).squaredNorm (); 
     // Calculate the distance from the transformed point to its correspondence
     if (distance < thresh)
     {
@@ -191,7 +191,7 @@ pcl::SampleConsensusModelRegistration<PointT>::selectWithinDistance (const Eigen
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> int
 pcl::SampleConsensusModelRegistration<PointT>::countWithinDistance (
-    const Eigen::VectorXf &model_coefficients, const double threshold)
+    const Eigen::VectorXd &model_coefficients, const double threshold)
 {
   if (indices_->size () != indices_tgt_->size ())
   {
@@ -210,7 +210,7 @@ pcl::SampleConsensusModelRegistration<PointT>::countWithinDistance (
   if (!isModelValid (model_coefficients))
     return (0);
   
-  Eigen::Matrix4f transform;
+  Eigen::Matrix4d transform;
   transform.row (0).matrix () = model_coefficients.segment<4>(0);
   transform.row (1).matrix () = model_coefficients.segment<4>(4);
   transform.row (2).matrix () = model_coefficients.segment<4>(8);
@@ -219,14 +219,14 @@ pcl::SampleConsensusModelRegistration<PointT>::countWithinDistance (
   int nr_p = 0; 
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f pt_src (input_->points[(*indices_)[i]].x, 
+    Eigen::Vector4d pt_src (input_->points[(*indices_)[i]].x, 
                             input_->points[(*indices_)[i]].y, 
                             input_->points[(*indices_)[i]].z, 1); 
-    Eigen::Vector4f pt_tgt (target_->points[(*indices_tgt_)[i]].x, 
+    Eigen::Vector4d pt_tgt (target_->points[(*indices_tgt_)[i]].x, 
                             target_->points[(*indices_tgt_)[i]].y, 
                             target_->points[(*indices_tgt_)[i]].z, 1); 
 
-    Eigen::Vector4f p_tr (transform * pt_src);
+    Eigen::Vector4d p_tr (transform * pt_src);
     // Calculate the distance from the transformed point to its correspondence
     if ((p_tr - pt_tgt).squaredNorm () < thresh)
       nr_p++;
@@ -236,7 +236,7 @@ pcl::SampleConsensusModelRegistration<PointT>::countWithinDistance (
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::SampleConsensusModelRegistration<PointT>::optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients) 
+pcl::SampleConsensusModelRegistration<PointT>::optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients, Eigen::VectorXd &optimized_coefficients) 
 {
   if (indices_->size () != indices_tgt_->size ())
   {
@@ -270,7 +270,7 @@ pcl::SampleConsensusModelRegistration<PointT>::estimateRigidTransformationSVD (
     const std::vector<int> &indices_src, 
     const pcl::PointCloud<PointT> &cloud_tgt,
     const std::vector<int> &indices_tgt, 
-    Eigen::VectorXf &transform)
+    Eigen::VectorXd &transform)
 {
   transform.resize (16);
 
@@ -292,10 +292,10 @@ pcl::SampleConsensusModelRegistration<PointT>::estimateRigidTransformationSVD (
   Eigen::Matrix4d transformation_matrix = pcl::umeyama (src, tgt, false);
 
   // Return the correct transformation
-  transform.segment<4> (0).matrix () = transformation_matrix.cast<float> ().row (0); 
-  transform.segment<4> (4).matrix () = transformation_matrix.cast<float> ().row (1);
-  transform.segment<4> (8).matrix () = transformation_matrix.cast<float> ().row (2);
-  transform.segment<4> (12).matrix () = transformation_matrix.cast<float> ().row (3);
+  transform.segment<4> (0).matrix () = transformation_matrix.cast<double> ().row (0); 
+  transform.segment<4> (4).matrix () = transformation_matrix.cast<double> ().row (1);
+  transform.segment<4> (8).matrix () = transformation_matrix.cast<double> ().row (2);
+  transform.segment<4> (12).matrix () = transformation_matrix.cast<double> ().row (3);
 }
 
 #define PCL_INSTANTIATE_SampleConsensusModelRegistration(T) template class PCL_EXPORTS pcl::SampleConsensusModelRegistration<T>;

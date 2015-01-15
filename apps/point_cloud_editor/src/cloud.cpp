@@ -45,26 +45,26 @@
 #include <pcl/apps/point_cloud_editor/common.h>
 #include <pcl/apps/point_cloud_editor/copyBuffer.h>
 
-const float Cloud::DEFAULT_POINT_DISPLAY_SIZE_ = 2.0f;
-const float Cloud::DEFAULT_POINT_HIGHLIGHT_SIZE_ = 4.0f;
+const double Cloud::DEFAULT_POINT_DISPLAY_SIZE_ = 2.0;
+const double Cloud::DEFAULT_POINT_HIGHLIGHT_SIZE_ = 4.0;
 
-const float Cloud::DEFAULT_POINT_DISPLAY_COLOR_RED_ = 1.0f;
-const float Cloud::DEFAULT_POINT_DISPLAY_COLOR_GREEN_ = 1.0f;
-const float Cloud::DEFAULT_POINT_DISPLAY_COLOR_BLUE_ = 1.0f;
+const double Cloud::DEFAULT_POINT_DISPLAY_COLOR_RED_ = 1.0;
+const double Cloud::DEFAULT_POINT_DISPLAY_COLOR_GREEN_ = 1.0;
+const double Cloud::DEFAULT_POINT_DISPLAY_COLOR_BLUE_ = 1.0;
 
-const float Cloud::DEFAULT_POINT_HIGHLIGHT_COLOR_RED_ = 0.0f;
-const float Cloud::DEFAULT_POINT_HIGHLIGHT_COLOR_GREEN_ = 1.0f;
-const float Cloud::DEFAULT_POINT_HIGHLIGHT_COLOR_BLUE_ = 0.0f;
+const double Cloud::DEFAULT_POINT_HIGHLIGHT_COLOR_RED_ = 0.0;
+const double Cloud::DEFAULT_POINT_HIGHLIGHT_COLOR_GREEN_ = 1.0;
+const double Cloud::DEFAULT_POINT_HIGHLIGHT_COLOR_BLUE_ = 0.0;
 
 
 Cloud::Cloud ()
   : use_color_ramp_(true), color_ramp_axis_(Y),
-  display_scale_(1.0f),
+  display_scale_(1.0),
   point_size_(DEFAULT_POINT_DISPLAY_SIZE_),
   selected_point_size_(DEFAULT_POINT_HIGHLIGHT_SIZE_),
   select_translate_x_(0), select_translate_y_(0), select_translate_z_(0)
 {
-  std::fill_n(center_xyz_, XYZ_SIZE, 0.0f);
+  std::fill_n(center_xyz_, XYZ_SIZE, 0.0);
   setIdentity(cloud_matrix_);
   setIdentity(select_matrix_);
   color_[RED] = DEFAULT_POINT_DISPLAY_COLOR_RED_;
@@ -78,12 +78,12 @@ Cloud::Cloud ()
 Cloud::Cloud (const Cloud3D &cloud, bool register_stats)
   : cloud_(cloud),
   use_color_ramp_(true), color_ramp_axis_(Y),
-  display_scale_(1.0f),
+  display_scale_(1.0),
   point_size_(DEFAULT_POINT_DISPLAY_SIZE_),
   selected_point_size_(DEFAULT_POINT_HIGHLIGHT_SIZE_),
   select_translate_x_(0), select_translate_y_(0), select_translate_z_(0)
 {
-  std::fill_n(center_xyz_, XYZ_SIZE, 0.0f);
+  std::fill_n(center_xyz_, XYZ_SIZE, 0.0);
   setIdentity(cloud_matrix_);
   setIdentity(select_matrix_);
   color_[RED] = DEFAULT_POINT_DISPLAY_COLOR_RED_;
@@ -158,25 +158,25 @@ Cloud::operator[] (unsigned int index) const
 }
 
 void
-Cloud::loadMatrix (const float *matrix)
+Cloud::loadMatrix (const double *matrix)
 {
   std::copy(matrix, matrix+MATRIX_SIZE, cloud_matrix_);
 }
 
 void
-Cloud::multMatrix (const float *matrix)
+Cloud::multMatrix (const double *matrix)
 {
   ::multMatrix(cloud_matrix_, matrix, cloud_matrix_);
 }
 
 void
-Cloud::setSelectionRotation (const float* matrix)
+Cloud::setSelectionRotation (const double* matrix)
 {
   std::copy(matrix, matrix+MATRIX_SIZE, select_matrix_);
 }
 
 void
-Cloud::setSelectionTranslation (float dx, float dy, float dz)
+Cloud::setSelectionTranslation (double dx, double dy, double dz)
 {
   select_translate_x_ = dx;
   select_translate_y_ = dy;
@@ -202,7 +202,7 @@ Cloud::setSelection (SelectionPtr selection_ptr)
 }
 
 void
-Cloud::setRGB (float r, float g, float b)
+Cloud::setRGB (double r, double g, double b)
 {
   color_[RED] = r;
   color_[GREEN] = g;
@@ -210,7 +210,7 @@ Cloud::setRGB (float r, float g, float b)
 }
 
 void
-Cloud::setHighlightColor (float r, float g, float b)
+Cloud::setHighlightColor (double r, double g, double b)
 {
   highlight_color_[RED] = r;
   highlight_color_[GREEN] = g;
@@ -271,7 +271,7 @@ Cloud::draw (bool disable_highlight) const
       glPushMatrix();
       {
         glLoadIdentity();
-        glTranslatef(0.0f, 0.0f, DISPLAY_Z_TRANSLATION);
+        glTranslatef(0.0, 0.0, DISPLAY_Z_TRANSLATION);
         glScalef(display_scale_, display_scale_, display_scale_);
         glMultMatrixf(cloud_matrix_);
         glTranslatef(-center_xyz_[0], -center_xyz_[1], -center_xyz_[2]);
@@ -293,7 +293,7 @@ Cloud::draw (bool disable_highlight) const
 
           // handle selection transformation
           glLoadIdentity();
-          glTranslatef(0.0f, 0.0f, DISPLAY_Z_TRANSLATION);
+          glTranslatef(0.0, 0.0, DISPLAY_Z_TRANSLATION);
           glScalef(display_scale_, display_scale_, display_scale_);
           glTranslatef(select_translate_x_,
                        select_translate_y_, select_translate_z_);
@@ -373,7 +373,7 @@ Point3D
 Cloud::getObjectSpacePoint (unsigned int index) const
 {
   Point3D pt = cloud_[index];
-  float x, y, z;
+  double x, y, z;
   pt.x -= center_xyz_[0];
   pt.y -= center_xyz_[1];
   pt.z -= center_xyz_[2];
@@ -400,7 +400,7 @@ Point3D
 Cloud::getDisplaySpacePoint (unsigned int index) const
 {
   Point3D pt = cloud_[index];
-  float x, y, z;
+  double x, y, z;
   pt.x -= center_xyz_[0];
   pt.y -= center_xyz_[1];
   pt.z -= center_xyz_[2];
@@ -469,9 +469,9 @@ Cloud::updateCloudMembers ()
   if (cloud_.empty())
       return;
 
-  std::fill_n(min_xyz_, XYZ_SIZE, 0.0f);
-  std::fill_n(max_xyz_, XYZ_SIZE, 0.0f);
-  float *pt = &(cloud_.points[0].data[X]);
+  std::fill_n(min_xyz_, XYZ_SIZE, 0.0);
+  std::fill_n(max_xyz_, XYZ_SIZE, 0.0);
+  double *pt = &(cloud_.points[0].data[X]);
   std::copy(pt, pt+XYZ_SIZE, max_xyz_);
   std::copy(max_xyz_, max_xyz_+XYZ_SIZE, min_xyz_);
   for (unsigned int i = 1; i < cloud_.size(); ++i)
@@ -482,13 +482,13 @@ Cloud::updateCloudMembers ()
       max_xyz_[j] = std::max(max_xyz_[j], cloud_.points[i].data[j]);
     }
   }
-  float range = 0.0f;
+  double range = 0.0;
   for (unsigned int j = 0; j < XYZ_SIZE; ++j)
   {
     range = std::max(range, max_xyz_[j] - min_xyz_[j]);
-    center_xyz_[j] = 0.5f * (max_xyz_[j] + min_xyz_[j]);
+    center_xyz_[j] = 0.5 * (max_xyz_[j] + min_xyz_[j]);
   }
-  display_scale_ = 1.0f / range;
+  display_scale_ = 1.0 / range;
 }
 
 void
@@ -496,12 +496,12 @@ Cloud::enableTexture () const
 {
   if (!use_color_ramp_)
     return;
-  float ranges[3] ={max_xyz_[0] - min_xyz_[0],
+  double ranges[3] ={max_xyz_[0] - min_xyz_[0],
                     max_xyz_[1] - min_xyz_[1],
                     max_xyz_[2] - min_xyz_[2]};
-  float transvals[3] = {-min_xyz_[0], -min_xyz_[1], -min_xyz_[2]};
-  float range = ranges[color_ramp_axis_];
-  float transval = transvals[color_ramp_axis_];
+  double transvals[3] = {-min_xyz_[0], -min_xyz_[1], -min_xyz_[2]};
+  double range = ranges[color_ramp_axis_];
+  double transval = transvals[color_ramp_axis_];
   glEnable(GL_TEXTURE_1D);
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
   glTexCoordPointer(1, GL_FLOAT, sizeof(Point3D),
@@ -509,10 +509,10 @@ Cloud::enableTexture () const
   glMatrixMode(GL_TEXTURE);
   glPushMatrix();
   glLoadIdentity();
-  if (range <= 0.0f)
-    range = 1.0f;
-  glScalef(1.0f/range, 1.0f, 1.0f);
-  glTranslatef(transval, 0.0f, 0.0f);
+  if (range <= 0.0)
+    range = 1.0;
+  glScalef(1.0/range, 1.0, 1.0);
+  glTranslatef(transval, 0.0, 0.0);
   glMatrixMode(GL_MODELVIEW);
 }
 

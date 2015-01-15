@@ -388,10 +388,10 @@ openni_wrapper::OpenNIDevice::Init ()
       THROW_OPENNI_EXCEPTION ("reading the value for pixels with no depth estimation failed. Reason: %s", xnGetStatusString (status));
 
     // baseline from cm -> meters
-    baseline_ = static_cast<float> (baseline * 0.01);
+    baseline_ = static_cast<double> (baseline * 0.01);
 
     //focal length from mm -> pixels (valid for 1280x1024)
-    depth_focal_length_SXGA_ = static_cast<float> (static_cast<XnDouble> (depth_focal_length_SXGA) / pixel_size);
+    depth_focal_length_SXGA_ = static_cast<double> (static_cast<XnDouble> (depth_focal_length_SXGA) / pixel_size);
 
     depth_thread_ = boost::thread (&OpenNIDevice::DepthDataThreadFunction, this);
   }

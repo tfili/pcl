@@ -78,12 +78,12 @@ namespace pcl
         * \param[in] radius The radius to use to determine if a point is the local max.
         */
       inline void
-      setRadius (float radius) { radius_ = radius; }
+      setRadius (double radius) { radius_ = radius; }
 
       /** \brief Get the radius to use to determine if a point is the local max.
         * \return The radius to use to determine if a point is the local max.
         */
-      inline float
+      inline double
       getRadius () const { return (radius_); }
 
     protected:
@@ -121,7 +121,7 @@ namespace pcl
       SearcherPtr searcher_;
 
       /** \brief The radius to use to determine if a point is the local max. */
-      float radius_;
+      double radius_;
   };
 }
 

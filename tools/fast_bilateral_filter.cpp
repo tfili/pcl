@@ -47,8 +47,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float default_sigma_s = 5.0f;
-float default_sigma_r = 0.03f;
+double default_sigma_s = 5.0;
+double default_sigma_r = 0.03f;
 
 void
 printHelp (int, char **argv)
@@ -66,7 +66,7 @@ printHelp (int, char **argv)
 
 bool
 loadCloud (const string &filename, pcl::PCLPointCloud2 &cloud,
-           Eigen::Vector4f &translation, Eigen::Quaternionf &orientation)
+           Eigen::Vector4d &translation, Eigen::Quaterniond &orientation)
 {
   if (loadPCDFile (filename, cloud, translation, orientation) < 0)
     return (false);
@@ -76,7 +76,7 @@ loadCloud (const string &filename, pcl::PCLPointCloud2 &cloud,
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         float sigma_s = 5.f, float sigma_r = 0.03f)
+         double sigma_s = 5., double sigma_r = 0.03f)
 {
   // Convert data to PointCloud<T>
   PointCloud<PointXYZ>::Ptr xyz (new PointCloud<PointXYZ>);
@@ -103,14 +103,14 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
 
 void
 saveCloud (const string &filename, const pcl::PCLPointCloud2 &output,
-           const Eigen::Vector4f &translation, const Eigen::Quaternionf &orientation)
+           const Eigen::Vector4d &translation, const Eigen::Quaterniond &orientation)
 {
   PCDWriter w;
   w.writeBinaryCompressed (filename, output, translation, orientation);
 }
 
 int
-batchProcess (const vector<string> &pcd_files, string &output_dir, float sigma_s, float sigma_r)
+batchProcess (const vector<string> &pcd_files, string &output_dir, double sigma_s, double sigma_r)
 {
 #if _OPENMP
 #pragma omp parallel for
@@ -118,8 +118,8 @@ batchProcess (const vector<string> &pcd_files, string &output_dir, float sigma_s
   for (int i = 0; i < int (pcd_files.size ()); ++i)
   {
     // Load the first file
-    Eigen::Vector4f translation;
-    Eigen::Quaternionf rotation;
+    Eigen::Vector4d translation;
+    Eigen::Quaterniond rotation;
     pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
     if (!loadCloud (pcd_files[i], *cloud, translation, rotation)) 
       continue;
@@ -157,8 +157,8 @@ main (int argc, char** argv)
   bool batch_mode = false;
 
   // Command line parsing
-  float sigma_s = default_sigma_s;
-  float sigma_r = default_sigma_r;
+  double sigma_s = default_sigma_s;
+  double sigma_r = default_sigma_r;
   parse_argument (argc, argv, "-sigma_s", sigma_s);
   parse_argument (argc, argv, "-sigma_r", sigma_r);
   string input_dir, output_dir;
@@ -190,8 +190,8 @@ main (int argc, char** argv)
     print_value ("%f / %f\n", sigma_s, sigma_r);
 
     // Load the first file
-    Eigen::Vector4f translation;
-    Eigen::Quaternionf rotation;
+    Eigen::Vector4d translation;
+    Eigen::Quaterniond rotation;
     pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
     if (!loadCloud (argv[p_file_indices[0]], *cloud, translation, rotation)) 
       return (-1);

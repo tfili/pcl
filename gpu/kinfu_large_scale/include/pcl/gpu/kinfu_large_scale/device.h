@@ -53,7 +53,7 @@ namespace pcl
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       // Types
       typedef unsigned short ushort;
-      typedef DeviceArray2D<float> MapArr;
+      typedef DeviceArray2D<double> MapArr;
       typedef DeviceArray2D<ushort> DepthMap;
       typedef float4 PointType;
 
@@ -61,18 +61,18 @@ namespace pcl
       const int DIVISOR = 32767;     // SHRT_MAX;
       
       //RGB images resolution
-      const float  HEIGHT = 480.0f;
-      const float  WIDTH = 640.0f;
+      const double  HEIGHT = 480.0;
+      const double  WIDTH = 640.0;
 
       //Should be multiple of 32
       enum { VOLUME_X = 512, VOLUME_Y = 512, VOLUME_Z = 512 };
 
           
       //Temporary constant (until we make it automatic) that holds the Kinect's focal length
-      const float FOCAL_LENGTH = 575.816f;
+      const double FOCAL_LENGTH = 575.816;
     
-      const float VOLUME_SIZE = 3.0f; // physical size represented by the TSDF volume. In meters
-      const float DISTANCE_THRESHOLD = 1.5f; // when the camera target point is farther than DISTANCE_THRESHOLD from the current cube's center, shifting occurs. In meters
+      const double VOLUME_SIZE = 3.0; // physical size represented by the TSDF volume. In meters
+      const double DISTANCE_THRESHOLD = 1.5; // when the camera target point is farther than DISTANCE_THRESHOLD from the current cube's center, shifting occurs. In meters
       const int SNAPSHOT_RATE = 45; // every 45 frames an RGB snapshot will be saved. -et parameter is needed when calling Kinfu Large Scale in command line.
 
 
@@ -80,9 +80,9 @@ namespace pcl
         */ 
       struct Intr
       {
-        float fx, fy, cx, cy;
+        double fx, fy, cx, cy;
         Intr () {}
-        Intr (float fx_, float fy_, float cx_, float cy_) : fx (fx_), fy (fy_), cx (cx_), cy (cy_) {}
+        Intr (double fx_, double fy_, double cx_, double cy_) : fx (fx_), fy (fy_), cx (cx_), cy (cy_) {}
 
         Intr operator () (int level_index) const
         { 

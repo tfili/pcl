@@ -70,7 +70,7 @@ namespace pcl
 
       /** \brief Add a point cloud and the associated camera pose to the graph */
       template <typename PointT> inline void
-      addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr& cloud, const Eigen::Matrix4f& pose)
+      addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr& cloud, const Eigen::Matrix4d& pose)
       {
         last_vertices_.push_back (graph_handler_->addPointCloud (cloud, pose));
       }

@@ -94,8 +94,8 @@ namespace pcl
         * \param[in] index the index
         * \param[out] rf reference frame to compute
         */
-      float
-      getLocalRF (const int &index, Eigen::Matrix3f &rf);
+      double
+      getLocalRF (const int &index, Eigen::Matrix3d &rf);
 
       /** \brief Feature estimation method.
         * \param[out] output the resultant features

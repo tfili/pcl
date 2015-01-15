@@ -124,7 +124,7 @@ class OpenNIOrganizedMultiPlaneSegmentation
       pcl::IntegralImageNormalEstimation<PointT, pcl::Normal> ne;
       ne.setNormalEstimationMethod (ne.COVARIANCE_MATRIX);
       ne.setMaxDepthChangeFactor (0.03f);
-      ne.setNormalSmoothingSize (20.0f);
+      ne.setNormalSmoothingSize (20.0);
 
       pcl::OrganizedMultiPlaneSegmentation<PointT, pcl::Normal, pcl::Label> mps;
       mps.setMinInliers (10000);
@@ -167,12 +167,12 @@ class OpenNIOrganizedMultiPlaneSegmentation
           //Draw Visualization
           for (size_t i = 0; i < regions.size (); i++)
           {
-            Eigen::Vector3f centroid = regions[i].getCentroid ();
-            Eigen::Vector4f model = regions[i].getCoefficients ();
+            Eigen::Vector3d centroid = regions[i].getCentroid ();
+            Eigen::Vector4d model = regions[i].getCoefficients ();
             pcl::PointXYZ pt1 = pcl::PointXYZ (centroid[0], centroid[1], centroid[2]);
-            pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5f * model[0]),
-                                               centroid[1] + (0.5f * model[1]),
-                                               centroid[2] + (0.5f * model[2]));
+            pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5 * model[0]),
+                                               centroid[1] + (0.5 * model[1]),
+                                               centroid[2] + (0.5 * model[2]));
             sprintf (name, "normal_%lu", i);
             viewer->addArrow (pt2, pt1, 1.0, 0, 0, false, name);
 

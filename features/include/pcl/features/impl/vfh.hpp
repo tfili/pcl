@@ -89,13 +89,13 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::compute (PointCloudOut &output
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointNT, typename PointOutT> void
-pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (const Eigen::Vector4f &centroid_p,
-                                                                             const Eigen::Vector4f &centroid_n,
+pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (const Eigen::Vector4d &centroid_p,
+                                                                             const Eigen::Vector4d &centroid_n,
                                                                              const pcl::PointCloud<PointInT> &cloud,
                                                                              const pcl::PointCloud<PointNT> &normals,
                                                                              const std::vector<int> &indices)
 {
-  Eigen::Vector4f pfh_tuple;
+  Eigen::Vector4d pfh_tuple;
   // Reset the whole thing
   hist_f1_.setZero (nr_bins_f1_);
   hist_f2_.setZero (nr_bins_f2_);
@@ -103,7 +103,7 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (con
   hist_f4_.setZero (nr_bins_f4_);
 
   // Get the bounding box of the current cluster
-  //Eigen::Vector4f min_pt, max_pt;
+  //Eigen::Vector4d min_pt, max_pt;
   //pcl::getMinMax3D (cloud, indices, min_pt, max_pt);
   //double distance_normalization_factor = (std::max)((centroid_p - min_pt).norm (), (centroid_p - max_pt).norm ());
 
@@ -114,20 +114,20 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (con
   double distance_normalization_factor = 1.0;
   if (normalize_distances_) 
   {
-    Eigen::Vector4f max_pt;
+    Eigen::Vector4d max_pt;
     pcl::getMaxDistance (cloud, indices, centroid_p, max_pt);
     max_pt[3] = 0;
     distance_normalization_factor = (centroid_p - max_pt).norm ();
   }
 
   // Factorization constant
-  float hist_incr;
+  double hist_incr;
   if (normalize_bins_)
-    hist_incr = 100.0f / static_cast<float> (indices.size () - 1);
+    hist_incr = 100.0 / static_cast<double> (indices.size () - 1);
   else
-    hist_incr = 1.0f;
+    hist_incr = 1.0;
 
-  float hist_incr_size_component;
+  double hist_incr_size_component;
   if (size_component_)
     hist_incr_size_component = hist_incr;
   else
@@ -137,8 +137,8 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computePointSPFHSignature (con
   for (size_t idx = 0; idx < indices.size (); ++idx)
   {
     // Compute the pair P to NNi
-    if (!computePairFeatures (centroid_p, centroid_n, cloud.points[indices[idx]].getVector4fMap (),
-                              normals.points[indices[idx]].getNormalVector4fMap (), pfh_tuple[0], pfh_tuple[1],
+    if (!computePairFeatures (centroid_p, centroid_n, cloud.points[indices[idx]].getVector4dMap (),
+                              normals.points[indices[idx]].getNormalVector4dMap (), pfh_tuple[0], pfh_tuple[1],
                               pfh_tuple[2], pfh_tuple[3]))
       continue;
 
@@ -182,7 +182,7 @@ template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut &output)
 {
   // ---[ Step 1a : compute the centroid in XYZ space
-  Eigen::Vector4f xyz_centroid;
+  Eigen::Vector4d xyz_centroid;
 
   if (use_given_centroid_) 
     xyz_centroid = centroid_to_use_;
@@ -190,7 +190,7 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
     compute3DCentroid (*surface_, *indices_, xyz_centroid);          // Estimate the XYZ centroid
 
   // ---[ Step 1b : compute the centroid in normal space
-  Eigen::Vector4f normal_centroid = Eigen::Vector4f::Zero ();
+  Eigen::Vector4d normal_centroid = Eigen::Vector4d::Zero ();
   int cp = 0;
 
   // If the data is dense, we don't need to check for NaN
@@ -202,7 +202,7 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
     {
       for (size_t i = 0; i < indices_->size (); ++i)
       {
-        normal_centroid += normals_->points[(*indices_)[i]].getNormalVector4fMap ();
+        normal_centroid += normals_->points[(*indices_)[i]].getNormalVector4dMap ();
         cp++;
       }
     }
@@ -217,16 +217,16 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
             ||
             !pcl_isfinite (normals_->points[(*indices_)[i]].normal[2]))
           continue;
-        normal_centroid += normals_->points[(*indices_)[i]].getNormalVector4fMap ();
+        normal_centroid += normals_->points[(*indices_)[i]].getNormalVector4dMap ();
         cp++;
       }
     }
-    normal_centroid /= static_cast<float> (cp);
+    normal_centroid /= static_cast<double> (cp);
   }
 
   // Compute the direction of view from the viewpoint to the centroid
-  Eigen::Vector4f viewpoint (vpx_, vpy_, vpz_, 0);
-  Eigen::Vector4f d_vp_p = viewpoint - xyz_centroid;
+  Eigen::Vector4d viewpoint (vpx_, vpy_, vpz_, 0);
+  Eigen::Vector4d d_vp_p = viewpoint - xyz_centroid;
   d_vp_p.normalize ();
 
   // Estimate the SPFH at nn_indices[0] using the entire cloud
@@ -264,7 +264,7 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
 
   for (size_t i = 0; i < indices_->size (); ++i)
   {
-    Eigen::Vector4f normal (normals_->points[(*indices_)[i]].normal[0],
+    Eigen::Vector4d normal (normals_->points[(*indices_)[i]].normal[0],
                             normals_->points[(*indices_)[i]].normal[1],
                             normals_->points[(*indices_)[i]].normal[2], 0);
     // Normalize
@@ -275,7 +275,7 @@ pcl::VFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
     if (fi > (static_cast<int> (hist_vp_.size ()) - 1))
       fi = static_cast<int> (hist_vp_.size ()) - 1;
     // Bin into the histogram
-    hist_vp_ [fi] += static_cast<float> (hist_incr);
+    hist_vp_ [fi] += static_cast<double> (hist_incr);
   }
   data_size += hist_f4_.size ();
   // Copy the resultant signature

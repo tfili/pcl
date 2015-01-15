@@ -62,9 +62,9 @@ namespace pcl
     using HypothesisVerification<ModelT, SceneT>::resolution_;
     using HypothesisVerification<ModelT, SceneT>::inliers_threshold_;
 
-    float conflict_threshold_size_;
-    float penalty_threshold_;
-    float support_threshold_;
+    double conflict_threshold_size_;
+    double penalty_threshold_;
+    double support_threshold_;
 
     class RecognitionModel 
     {
@@ -93,20 +93,20 @@ namespace pcl
 
     public:
       PapazovHV() : HypothesisVerification<ModelT,SceneT>() {
-        support_threshold_ = 0.1f;
-        penalty_threshold_ = 0.1f;
+        support_threshold_ = 0.1;
+        penalty_threshold_ = 0.1;
         conflict_threshold_size_ = 0.02f;
       }
 
-      void setConflictThreshold(float t) {
+      void setConflictThreshold(double t) {
         conflict_threshold_size_ = t;
       }
 
-      void setSupportThreshold(float t) {
+      void setSupportThreshold(double t) {
         support_threshold_ = t;
       }
 
-      void setPenaltyThreshold(float t) {
+      void setPenaltyThreshold(double t) {
         penalty_threshold_ = t;
       }
 

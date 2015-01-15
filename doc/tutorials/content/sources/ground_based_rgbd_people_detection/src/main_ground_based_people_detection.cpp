@@ -115,11 +115,11 @@ int main (int argc, char** argv)
 
   // Algorithm parameters:
   std::string svm_filename = "../../people/data/trainedLinearSVMForPeopleDetectionWithHOG.yaml";
-  float min_confidence = -1.5;
-  float min_height = 1.3;
-  float max_height = 2.3;
-  float voxel_size = 0.06;
-  Eigen::Matrix3f rgb_intrinsics_matrix;
+  double min_confidence = -1.5;
+  double min_height = 1.3;
+  double max_height = 2.3;
+  double voxel_size = 0.06;
+  Eigen::Matrix3d rgb_intrinsics_matrix;
   rgb_intrinsics_matrix << 525, 0.0, 319.5, 0.0, 525, 239.5, 0.0, 0.0, 1.0; // Kinect RGB camera intrinsics
 
   // Read if some parameters are passed from command line:
@@ -164,7 +164,7 @@ int main (int argc, char** argv)
   cloud_mutex.unlock ();    
 
   // Ground plane estimation:
-  Eigen::VectorXf ground_coeffs;
+  Eigen::VectorXd ground_coeffs;
   ground_coeffs.resize(4);
   std::vector<int> clicked_points_indices;
   for (unsigned int i = 0; i < clicked_points_3d->points.size(); i++)

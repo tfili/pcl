@@ -65,7 +65,7 @@ namespace pcl
       /** 
        * \brief Compute gradient magnitude and orientation at each location (uses sse). 
        * 
-       * \param[in] I Image as array of float.
+       * \param[in] I Image as array of double.
        * \param[in] h Image height.
        * \param[in] w Image width.
        * \param[in] d Image number of channels.
@@ -73,7 +73,7 @@ namespace pcl
        * \param[out] O Gradient orientation for each image point.
        */
       void 
-      gradMag ( float *I, int h, int w, int d, float *M, float *O ) const;
+      gradMag ( double *I, int h, int w, int d, double *M, double *O ) const;
 
       /** 
        * \brief Compute n_orients gradient histograms per bin_size x bin_size block of pixels.  
@@ -88,7 +88,7 @@ namespace pcl
        * \param[out] H Gradient histograms.
        */
       void 
-      gradHist ( float *M, float *O, int h, int w, int bin_size, int n_orients, bool soft_bin, float *H) const;
+      gradHist ( double *M, double *O, int h, int w, int bin_size, int n_orients, bool soft_bin, double *H) const;
       
       /** 
        * \brief Normalize histogram of gradients. 
@@ -102,12 +102,12 @@ namespace pcl
        * \param[out] G Normalized gradient histograms.
        */
       void 
-      normalization ( float *H, int h, int w, int bin_size, int n_orients, float clip, float *G ) const;
+      normalization ( double *H, int h, int w, int bin_size, int n_orients, double clip, double *G ) const;
       
       /**
        * \brief Compute HOG descriptor.
        * 
-       * \param[in] I Image as array of float between 0 and 1.
+       * \param[in] I Image as array of double between 0 and 1.
        * \param[in] h Image height.
        * \param[in] w Image width.
        * \param[in] n_channels Image number of channels.
@@ -117,16 +117,16 @@ namespace pcl
        * \param[out] descriptor HOG descriptor.
        */
       void
-      compute (float *I, int h, int w, int n_channels, int bin_size, int n_orients, bool soft_bin, float *descriptor);
+      compute (double *I, int h, int w, int n_channels, int bin_size, int n_orients, bool soft_bin, double *descriptor);
       
       /**
        * \brief Compute HOG descriptor with default parameters.
        * 
-       * \param[in] I Image as array of float between 0 and 1.
+       * \param[in] I Image as array of double between 0 and 1.
        * \param[out] descriptor HOG descriptor.
        */
       void
-      compute (float *I, float *descriptor) const;
+      compute (double *I, double *descriptor) const;
       
         private:
     
@@ -134,19 +134,19 @@ namespace pcl
        * \brief Compute x and y gradients for just one column (uses sse). 
        */
       void 
-      grad1 ( float *I, float *Gx, float *Gy, int h, int w, int x ) const; 
+      grad1 ( double *I, double *Gx, double *Gy, int h, int w, int x ) const; 
       
       /** 
        * \brief Build lookup table a[] s.t. a[dx/2.02*n]~=acos(dx). 
        */
-      float* 
+      double* 
       acosTable () const;
       
       /** 
        * \brief Helper for gradHist, quantize O and M into O0, O1 and M0, M1 (uses sse). 
        */
       void 
-      gradQuantize ( float *O, float *M, int *O0, int *O1, float *M0, float *M1, int n_orients, int nb, int n, float norm ) const;
+      gradQuantize ( double *O, double *M, int *O0, int *O1, double *M0, double *M1, int n_orients, int nb, int n, double norm ) const;
       
       /** 
        * \brief Platform independent aligned memory allocation (see also alFree).
@@ -181,7 +181,7 @@ namespace pcl
       bool soft_bin_;   
       
       /** \brief value at which to clip histogram bins (default = 0.2) */
-      float clip_; 
+      double clip_; 
       
     };
   } /* namespace people */

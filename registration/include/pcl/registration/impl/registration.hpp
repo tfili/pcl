@@ -118,12 +118,12 @@ pcl::Registration<PointSource, PointTarget, Scalar>::initComputeReciprocal ()
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointTarget, typename Scalar> inline double
 pcl::Registration<PointSource, PointTarget, Scalar>::getFitnessScore (
-    const std::vector<float> &distances_a,
-    const std::vector<float> &distances_b)
+    const std::vector<double> &distances_a,
+    const std::vector<double> &distances_b)
 {
   unsigned int nr_elem = static_cast<unsigned int> (std::min (distances_a.size (), distances_b.size ()));
-  Eigen::VectorXf map_a = Eigen::VectorXf::Map (&distances_a[0], nr_elem);
-  Eigen::VectorXf map_b = Eigen::VectorXf::Map (&distances_b[0], nr_elem);
+  Eigen::VectorXd map_a = Eigen::VectorXd::Map (&distances_a[0], nr_elem);
+  Eigen::VectorXd map_b = Eigen::VectorXd::Map (&distances_b[0], nr_elem);
   return (static_cast<double> ((map_a - map_b).sum ()) / static_cast<double> (nr_elem));
 }
 
@@ -139,7 +139,7 @@ pcl::Registration<PointSource, PointTarget, Scalar>::getFitnessScore (double max
   transformPointCloud (*input_, input_transformed, final_transformation_);
 
   std::vector<int> nn_indices (1);
-  std::vector<float> nn_dists (1);
+  std::vector<double> nn_dists (1);
 
   // For each point in the source dataset
   int nr = 0;

@@ -45,7 +45,7 @@
 template<typename PointSource, typename PointTarget>
 pcl::NormalDistributionsTransform<PointSource, PointTarget>::NormalDistributionsTransform () 
   : target_cells_ ()
-  , resolution_ (1.0f)
+  , resolution_ (1.0)
   , step_size_ (0.1)
   , outlier_ratio_ (0.55)
   , gauss_d1_ ()
@@ -74,7 +74,7 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::NormalDistributions
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointSource, typename PointTarget> void
-pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4f &guess)
+pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4d &guess)
 {
   nr_iterations_ = 0;
   converged_ = false;
@@ -88,7 +88,7 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeTransformati
   gauss_d1_ = -log ( gauss_c1 + gauss_c2 ) - gauss_d3;
   gauss_d2_ = -2 * log ((-log ( gauss_c1 * exp ( -0.5 ) + gauss_c2 ) - gauss_d3) / gauss_d1_);
 
-  if (guess != Eigen::Matrix4f::Identity ())
+  if (guess != Eigen::Matrix4d::Identity ())
   {
     // Initialise final transformation to the guessed one
     final_transformation_ = guess;
@@ -101,13 +101,13 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeTransformati
   point_gradient_.block<3, 3>(0, 0).setIdentity ();
   point_hessian_.setZero ();
 
-  Eigen::Transform<float, 3, Eigen::Affine, Eigen::ColMajor> eig_transformation;
+  Eigen::Transform<double, 3, Eigen::Affine, Eigen::ColMajor> eig_transformation;
   eig_transformation.matrix () = final_transformation_;
 
   // Convert initial guess matrix to 6 element transformation vector
   Eigen::Matrix<double, 6, 1> p, delta_p, score_gradient;
-  Eigen::Vector3f init_translation = eig_transformation.translation ();
-  Eigen::Vector3f init_rotation = eig_transformation.rotation ().eulerAngles (0, 1, 2);
+  Eigen::Vector3d init_translation = eig_transformation.translation ();
+  Eigen::Vector3d init_rotation = eig_transformation.rotation ().eulerAngles (0, 1, 2);
   p << init_translation (0), init_translation (1), init_translation (2),
   init_rotation (0), init_rotation (1), init_rotation (2);
 
@@ -144,10 +144,10 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeTransformati
     delta_p *= delta_p_norm;
 
 
-    transformation_ = (Eigen::Translation<float, 3> (static_cast<float> (delta_p (0)), static_cast<float> (delta_p (1)), static_cast<float> (delta_p (2))) *
-                       Eigen::AngleAxis<float> (static_cast<float> (delta_p (3)), Eigen::Vector3f::UnitX ()) *
-                       Eigen::AngleAxis<float> (static_cast<float> (delta_p (4)), Eigen::Vector3f::UnitY ()) *
-                       Eigen::AngleAxis<float> (static_cast<float> (delta_p (5)), Eigen::Vector3f::UnitZ ())).matrix ();
+    transformation_ = (Eigen::Translation<double, 3> (static_cast<double> (delta_p (0)), static_cast<double> (delta_p (1)), static_cast<double> (delta_p (2))) *
+                       Eigen::AngleAxis<double> (static_cast<double> (delta_p (3)), Eigen::Vector3d::UnitX ()) *
+                       Eigen::AngleAxis<double> (static_cast<double> (delta_p (4)), Eigen::Vector3d::UnitY ()) *
+                       Eigen::AngleAxis<double> (static_cast<double> (delta_p (5)), Eigen::Vector3d::UnitZ ())).matrix ();
 
 
     p = p + delta_p;
@@ -202,7 +202,7 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeDerivatives 
 
     // Find nieghbors (Radius search has been experimentally faster than direct neighbor checking.
     std::vector<TargetGridLeafConstPtr> neighborhood;
-    std::vector<float> distances;
+    std::vector<double> distances;
     target_cells_.radiusSearch (x_trans_pt, resolution_, neighborhood, distances);
 
     for (typename std::vector<TargetGridLeafConstPtr>::iterator neighborhood_it = neighborhood.begin (); neighborhood_it != neighborhood.end (); neighborhood_it++)
@@ -417,7 +417,7 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeHessian (Eig
 
     // Find nieghbors (Radius search has been experimentally faster than direct neighbor checking.
     std::vector<TargetGridLeafConstPtr> neighborhood;
-    std::vector<float> distances;
+    std::vector<double> distances;
     target_cells_.radiusSearch (x_trans_pt, resolution_, neighborhood, distances);
 
     for (typename std::vector<TargetGridLeafConstPtr>::iterator neighborhood_it = neighborhood.begin (); neighborhood_it != neighborhood.end (); neighborhood_it++)
@@ -655,10 +655,10 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeStepLengthMT
 
   x_t = x + step_dir * a_t;
 
-  final_transformation_ = (Eigen::Translation<float, 3>(static_cast<float> (x_t (0)), static_cast<float> (x_t (1)), static_cast<float> (x_t (2))) *
-                           Eigen::AngleAxis<float> (static_cast<float> (x_t (3)), Eigen::Vector3f::UnitX ()) *
-                           Eigen::AngleAxis<float> (static_cast<float> (x_t (4)), Eigen::Vector3f::UnitY ()) *
-                           Eigen::AngleAxis<float> (static_cast<float> (x_t (5)), Eigen::Vector3f::UnitZ ())).matrix ();
+  final_transformation_ = (Eigen::Translation<double, 3>(static_cast<double> (x_t (0)), static_cast<double> (x_t (1)), static_cast<double> (x_t (2))) *
+                           Eigen::AngleAxis<double> (static_cast<double> (x_t (3)), Eigen::Vector3d::UnitX ()) *
+                           Eigen::AngleAxis<double> (static_cast<double> (x_t (4)), Eigen::Vector3d::UnitY ()) *
+                           Eigen::AngleAxis<double> (static_cast<double> (x_t (5)), Eigen::Vector3d::UnitZ ())).matrix ();
 
   // New transformed point cloud
   transformPointCloud (*input_, trans_cloud, final_transformation_);
@@ -699,10 +699,10 @@ pcl::NormalDistributionsTransform<PointSource, PointTarget>::computeStepLengthMT
 
     x_t = x + step_dir * a_t;
 
-    final_transformation_ = (Eigen::Translation<float, 3> (static_cast<float> (x_t (0)), static_cast<float> (x_t (1)), static_cast<float> (x_t (2))) *
-                             Eigen::AngleAxis<float> (static_cast<float> (x_t (3)), Eigen::Vector3f::UnitX ()) *
-                             Eigen::AngleAxis<float> (static_cast<float> (x_t (4)), Eigen::Vector3f::UnitY ()) *
-                             Eigen::AngleAxis<float> (static_cast<float> (x_t (5)), Eigen::Vector3f::UnitZ ())).matrix ();
+    final_transformation_ = (Eigen::Translation<double, 3> (static_cast<double> (x_t (0)), static_cast<double> (x_t (1)), static_cast<double> (x_t (2))) *
+                             Eigen::AngleAxis<double> (static_cast<double> (x_t (3)), Eigen::Vector3d::UnitX ()) *
+                             Eigen::AngleAxis<double> (static_cast<double> (x_t (4)), Eigen::Vector3d::UnitY ()) *
+                             Eigen::AngleAxis<double> (static_cast<double> (x_t (5)), Eigen::Vector3d::UnitZ ())).matrix ();
 
     // New transformed point cloud
     // Done on final cloud to prevent wasted computation

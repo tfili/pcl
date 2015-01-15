@@ -57,7 +57,7 @@ KdTreePtr tree;
 
 CloudPtr cloud_milk;
 KdTreePtr tree_milk;
-float leaf_size_ = 0.005f;
+double leaf_size_ = 0.005;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, CVFHEstimation)
@@ -107,7 +107,7 @@ TEST (PCL, CVFHEstimationMilk)
   cvfh.setSearchMethod (tree_milk);
   cvfh.setClusterTolerance (leaf_size_ * 3);
   cvfh.setEPSAngleThreshold (0.13f);
-  cvfh.setCurvatureThreshold (0.025f);
+  cvfh.setCurvatureThreshold (0.025);
   cvfh.setNormalizeBins (false);
   cvfh.setRadiusNormals (leaf_size_ * 4);
 

@@ -167,9 +167,9 @@ namespace pcl
           if (this->height > 1)
             return (points[v * this->width + u]);
           else
-            return (PointXYZRGB (std::numeric_limits<float>::quiet_NaN (),
-                                 std::numeric_limits<float>::quiet_NaN (),
-                                 std::numeric_limits<float>::quiet_NaN (),
+            return (PointXYZRGB (std::numeric_limits<double>::quiet_NaN (),
+                                 std::numeric_limits<double>::quiet_NaN (),
+                                 std::numeric_limits<double>::quiet_NaN (),
                                  0));
             // throw IsNotDenseException ("Can't use 2D indexing with a sparse point cloud");
         }
@@ -266,9 +266,9 @@ namespace pcl
         }
   
         /** \brief The point data. */
-        typename Storage<float>::type points_x;
-        typename Storage<float>::type points_y;
-        typename Storage<float>::type points_z;
+        typename Storage<double>::type points_x;
+        typename Storage<double>::type points_y;
+        typename Storage<double>::type points_z;
         typename Storage<int>::type rgb;
   
         /** \brief The point cloud width (if organized as an image-structure). */
@@ -284,8 +284,8 @@ namespace pcl
   
         //////////////////////////////////////////////////////////////////////////////////////
         // Extras. Testing ZIP iterators
-        typedef thrust::tuple<float, float, float> tuple_type;
-        typedef typename Storage<float>::type::iterator float_iterator;
+        typedef thrust::tuple<double, double, double> tuple_type;
+        typedef typename Storage<double>::type::iterator float_iterator;
         typedef thrust::tuple<float_iterator, float_iterator, float_iterator> iterator_tuple; 
         typedef thrust::zip_iterator<iterator_tuple> zip_iterator;
   

@@ -27,8 +27,8 @@ class SimpleHDLGrabber
     void 
     sectorScan (
         const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&, 
-        float,
-        float) 
+        double,
+        double) 
     {
       static unsigned count = 0;
       static double last = pcl::getTime ();
@@ -51,8 +51,8 @@ class SimpleHDLGrabber
       if (sweep->header.seq == 0) {
         pcl::uint64_t stamp;
         stamp = sweep->header.stamp;
-        time_t systemTime = static_cast<time_t>(((stamp & 0xffffffff00000000l) >> 32) & 0x00000000ffffffff);
-        pcl::uint32_t usec = static_cast<pcl::uint32_t>(stamp & 0x00000000ffffffff);
+        time_t systemTime = static_cast<time_t>(((stamp & 0xffffffff00000000l) >> 32) & 0x00000000fffffff);
+        pcl::uint32_t usec = static_cast<pcl::uint32_t>(stamp & 0x00000000fffffff);
         std::cout << std::hex << stamp << "  " << ctime(&systemTime) << " usec: " << usec << std::endl;
       }
 
@@ -70,7 +70,7 @@ class SimpleHDLGrabber
     {
       pcl::HDLGrabber interface (calibrationFile, pcapFile);
       // make callback function from member function
-      boost::function<void(const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&, float, float)> f =
+      boost::function<void(const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&, double, double)> f =
           boost::bind(&SimpleHDLGrabber::sectorScan, this, _1, _2, _3);
 
       // connect callback function for desired signal. In this case its a sector with XYZ and intensity information

@@ -47,14 +47,14 @@
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computePointPrincipalCurvatures (
       const pcl::PointCloud<PointNT> &normals, int p_idx, const std::vector<int> &indices,
-      float &pcx, float &pcy, float &pcz, float &pc1, float &pc2)
+      double &pcx, double &pcy, double &pcz, double &pc1, double &pc2)
 {
-  EIGEN_ALIGN16 Eigen::Matrix3f I = Eigen::Matrix3f::Identity ();
-  Eigen::Vector3f n_idx (normals.points[p_idx].normal[0], normals.points[p_idx].normal[1], normals.points[p_idx].normal[2]);
-  EIGEN_ALIGN16 Eigen::Matrix3f M = I - n_idx * n_idx.transpose ();    // projection matrix (into tangent plane)
+  EIGEN_ALIGN16 Eigen::Matrix3d I = Eigen::Matrix3d::Identity ();
+  Eigen::Vector3d n_idx (normals.points[p_idx].normal[0], normals.points[p_idx].normal[1], normals.points[p_idx].normal[2]);
+  EIGEN_ALIGN16 Eigen::Matrix3d M = I - n_idx * n_idx.transpose ();    // projection matrix (into tangent plane)
 
   // Project normals into the tangent plane
-  Eigen::Vector3f normal;
+  Eigen::Vector3d normal;
   projected_normals_.resize (indices.size ());
   xyz_centroid_.setZero ();
   for (size_t idx = 0; idx < indices.size(); ++idx)
@@ -68,7 +68,7 @@ pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computePointPr
   }
 
   // Estimate the XYZ centroid
-  xyz_centroid_ /= static_cast<float> (indices.size ());
+  xyz_centroid_ /= static_cast<double> (indices.size ());
 
   // Initialize to 0
   covariance_matrix_.setZero ();
@@ -84,15 +84,15 @@ pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computePointPr
     demean_yz = demean_[1] * demean_[2];
 
     covariance_matrix_(0, 0) += demean_[0] * demean_[0];
-    covariance_matrix_(0, 1) += static_cast<float> (demean_xy);
-    covariance_matrix_(0, 2) += static_cast<float> (demean_xz);
+    covariance_matrix_(0, 1) += static_cast<double> (demean_xy);
+    covariance_matrix_(0, 2) += static_cast<double> (demean_xz);
 
-    covariance_matrix_(1, 0) += static_cast<float> (demean_xy);
+    covariance_matrix_(1, 0) += static_cast<double> (demean_xy);
     covariance_matrix_(1, 1) += demean_[1] * demean_[1];
-    covariance_matrix_(1, 2) += static_cast<float> (demean_yz);
+    covariance_matrix_(1, 2) += static_cast<double> (demean_yz);
 
-    covariance_matrix_(2, 0) += static_cast<float> (demean_xz);
-    covariance_matrix_(2, 1) += static_cast<float> (demean_yz);
+    covariance_matrix_(2, 0) += static_cast<double> (demean_xz);
+    covariance_matrix_(2, 1) += static_cast<double> (demean_yz);
     covariance_matrix_(2, 2) += demean_[2] * demean_[2];
   }
 
@@ -103,7 +103,7 @@ pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computePointPr
   pcx = eigenvector_ [0];
   pcy = eigenvector_ [1];
   pcz = eigenvector_ [2];
-  float indices_size = 1.0f / static_cast<float> (indices.size ());
+  double indices_size = 1.0 / static_cast<double> (indices.size ());
   pc1 = eigenvalues_ [2] * indices_size;
   pc2 = eigenvalues_ [1] * indices_size;
 }
@@ -116,7 +116,7 @@ pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computeFeature
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   output.is_dense = true;
   // Save a few cycles by not checking every point for NaN/Inf values if the cloud is set to dense
@@ -128,7 +128,7 @@ pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computeFeature
       if (this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
         output.points[idx].principal_curvature[0] = output.points[idx].principal_curvature[1] = output.points[idx].principal_curvature[2] =
-          output.points[idx].pc1 = output.points[idx].pc2 = std::numeric_limits<float>::quiet_NaN ();
+          output.points[idx].pc1 = output.points[idx].pc2 = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }
@@ -148,7 +148,7 @@ pcl::PrincipalCurvaturesEstimation<PointInT, PointNT, PointOutT>::computeFeature
           this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
         output.points[idx].principal_curvature[0] = output.points[idx].principal_curvature[1] = output.points[idx].principal_curvature[2] =
-          output.points[idx].pc1 = output.points[idx].pc2 = std::numeric_limits<float>::quiet_NaN ();
+          output.points[idx].pc1 = output.points[idx].pc2 = std::numeric_limits<double>::quiet_NaN ();
         output.is_dense = false;
         continue;
       }

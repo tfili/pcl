@@ -77,16 +77,16 @@ namespace pcl
       typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
       /** \brief Empty constructor. */
       OURCVFHEstimation () :
-        vpx_ (0), vpy_ (0), vpz_ (0), leaf_size_ (0.005f), normalize_bins_ (false), curv_threshold_ (0.03f), cluster_tolerance_ (leaf_size_ * 3),
-            eps_angle_threshold_ (0.125f), min_points_ (50), radius_normals_ (leaf_size_ * 3), centroids_dominant_orientations_ (),
+        vpx_ (0), vpy_ (0), vpz_ (0), leaf_size_ (0.005), normalize_bins_ (false), curv_threshold_ (0.03f), cluster_tolerance_ (leaf_size_ * 3),
+            eps_angle_threshold_ (0.125), min_points_ (50), radius_normals_ (leaf_size_ * 3), centroids_dominant_orientations_ (),
             dominant_normals_ ()
       {
         search_radius_ = 0;
         k_ = 1;
         feature_name_ = "OURCVFHEstimation";
-        refine_clusters_ = 1.f;
-        min_axis_value_ = 0.925f;
-        axis_ratio_ = 0.8f;
+        refine_clusters_ = 1.;
+        min_axis_value_ = 0.925;
+        axis_ratio_ = 0.8;
       }
       ;
 
@@ -97,11 +97,11 @@ namespace pcl
        * \param[out] transformPC the resulting transformation
        * \param[in] center_mat 4x4 matrix concatenated to the resulting transformation
        */
-      inline Eigen::Matrix4f
-      createTransFromAxes (Eigen::Vector3f & evx, Eigen::Vector3f & evy, Eigen::Vector3f & evz, Eigen::Affine3f & transformPC,
-                           Eigen::Matrix4f & center_mat)
+      inline Eigen::Matrix4d
+      createTransFromAxes (Eigen::Vector3d & evx, Eigen::Vector3d & evy, Eigen::Vector3d & evz, Eigen::Affine3d & transformPC,
+                           Eigen::Matrix4d & center_mat)
       {
-        Eigen::Matrix4f trans;
+        Eigen::Matrix4d trans;
         trans.setIdentity (4, 4);
         trans (0, 0) = evx (0, 0);
         trans (1, 0) = evx (1, 0);
@@ -113,11 +113,11 @@ namespace pcl
         trans (1, 2) = evz (1, 0);
         trans (2, 2) = evz (2, 0);
 
-        Eigen::Matrix4f homMatrix = Eigen::Matrix4f ();
+        Eigen::Matrix4d homMatrix = Eigen::Matrix4d ();
         homMatrix.setIdentity (4, 4);
         homMatrix = transformPC.matrix ();
 
-        Eigen::Matrix4f trans_copy = trans.inverse ();
+        Eigen::Matrix4d trans_copy = trans.inverse ();
         trans = trans_copy * center_mat * homMatrix;
         return trans;
       }
@@ -139,7 +139,7 @@ namespace pcl
        * \param[in] indices the indices of the stable cluster
        */
       bool
-      sgurf (Eigen::Vector3f & centroid, Eigen::Vector3f & normal_centroid, PointInTPtr & processed, std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & transformations,
+      sgurf (Eigen::Vector3d & centroid, Eigen::Vector3d & normal_centroid, PointInTPtr & processed, std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & transformations,
              PointInTPtr & grid, pcl::PointIndices & indices);
 
       /** \brief Removes normals with high curvature caused by real edges or noisy data
@@ -151,7 +151,7 @@ namespace pcl
        */
       void
       filterNormalsWithHighCurvature (const pcl::PointCloud<PointNT> & cloud, std::vector<int> & indices_to_use, std::vector<int> &indices_out,
-                                      std::vector<int> &indices_in, float threshold);
+                                      std::vector<int> &indices_in, double threshold);
 
       /** \brief Set the viewpoint.
        * \param[in] vpx the X coordinate of the viewpoint
@@ -159,7 +159,7 @@ namespace pcl
        * \param[in] vpz the Z coordinate of the viewpoint
        */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -170,7 +170,7 @@ namespace pcl
        * \param[in] radius_normals the radius
        */
       inline void
-      setRadiusNormals (float radius_normals)
+      setRadiusNormals (double radius_normals)
       {
         radius_normals_ = radius_normals;
       }
@@ -181,7 +181,7 @@ namespace pcl
        * \param[out] vpz the Z coordinate of the viewpoint
        */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz)
+      getViewPoint (double &vpx, double &vpy, double &vpz)
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -192,7 +192,7 @@ namespace pcl
        * \param[out] centroids vector to hold the centroids
        */
       inline void
-      getCentroidClusters (std::vector<Eigen::Vector3f> & centroids)
+      getCentroidClusters (std::vector<Eigen::Vector3d> & centroids)
       {
         for (size_t i = 0; i < centroids_dominant_orientations_.size (); ++i)
           centroids.push_back (centroids_dominant_orientations_[i]);
@@ -202,7 +202,7 @@ namespace pcl
        * \param[out] centroids vector to hold the normal centroids
        */
       inline void
-      getCentroidNormalClusters (std::vector<Eigen::Vector3f> & centroids)
+      getCentroidNormalClusters (std::vector<Eigen::Vector3d> & centroids)
       {
         for (size_t i = 0; i < dominant_normals_.size (); ++i)
           centroids.push_back (dominant_normals_[i]);
@@ -213,7 +213,7 @@ namespace pcl
        */
 
       inline void
-      setClusterTolerance (float d)
+      setClusterTolerance (double d)
       {
         cluster_tolerance_ = d;
       }
@@ -222,7 +222,7 @@ namespace pcl
        * \param[in] d the maximum deviation
        */
       inline void
-      setEPSAngleThreshold (float d)
+      setEPSAngleThreshold (double d)
       {
         eps_angle_threshold_ = d;
       }
@@ -231,7 +231,7 @@ namespace pcl
        * \param[in] d the curvature threshold
        */
       inline void
-      setCurvatureThreshold (float d)
+      setCurvatureThreshold (double d)
       {
         curv_threshold_ = d;
       }
@@ -276,7 +276,7 @@ namespace pcl
        * \param[in] rc the factor used to decide if a point is used to estimate a stable cluster
        */
       void
-      setRefineClusters (float rc)
+      setRefineClusters (double rc)
       {
         refine_clusters_ = rc;
       }
@@ -285,7 +285,7 @@ namespace pcl
        * \param[out] trans vector of transformations
        */
       void
-      getTransforms (std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & trans)
+      getTransforms (std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & trans)
       {
         trans = transforms_;
       }
@@ -304,7 +304,7 @@ namespace pcl
        * \param[in] f the ratio between axes
        */
       void
-      setAxisRatio (float f)
+      setAxisRatio (double f)
       {
         axis_ratio_ = f;
       }
@@ -313,7 +313,7 @@ namespace pcl
        * \param[in] f the min axis value
        */
       void
-      setMinAxisValue (float f)
+      setMinAxisValue (double f)
       {
         min_axis_value_ = f;
       }
@@ -328,24 +328,24 @@ namespace pcl
       /** \brief Values describing the viewpoint ("pinhole" camera model assumed). 
        * By default, the viewpoint is set to 0,0,0.
        */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** \brief Size of the voxels after voxel gridding. IMPORTANT: Must match the voxel 
        * size of the training data or the normalize_bins_ flag must be set to true.
        */
-      float leaf_size_;
+      double leaf_size_;
 
       /** \brief Wether to normalize the signatures or not. Default: false. */
       bool normalize_bins_;
 
       /** \brief Curvature threshold for removing normals. */
-      float curv_threshold_;
+      double curv_threshold_;
 
       /** \brief allowed Euclidean distance between points to be added to the cluster. */
-      float cluster_tolerance_;
+      double cluster_tolerance_;
 
       /** \brief deviation of the normals between two points so they can be clustered together. */
-      float eps_angle_threshold_;
+      double eps_angle_threshold_;
 
       /** \brief Minimum amount of points in a clustered region to be considered stable for CVFH
        * computation.
@@ -353,16 +353,16 @@ namespace pcl
       size_t min_points_;
 
       /** \brief Radius for the normals computation. */
-      float radius_normals_;
+      double radius_normals_;
 
       /** \brief Factor for the cluster refinement */
-      float refine_clusters_;
+      double refine_clusters_;
 
-      std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transforms_;
+      std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transforms_;
       std::vector<bool> valid_transforms_;
 
-      float axis_ratio_;
-      float min_axis_value_;
+      double axis_ratio_;
+      double min_axis_value_;
 
       /** \brief Estimate the OUR-CVFH descriptors at
        * a set of points given by <setInputCloud (), setIndices ()> using the surface in
@@ -389,15 +389,15 @@ namespace pcl
        */
       void
       extractEuclideanClustersSmooth (const pcl::PointCloud<pcl::PointNormal> &cloud, const pcl::PointCloud<pcl::PointNormal> &normals,
-                                      float tolerance, const pcl::search::Search<pcl::PointNormal>::Ptr &tree,
+                                      double tolerance, const pcl::search::Search<pcl::PointNormal>::Ptr &tree,
                                       std::vector<pcl::PointIndices> &clusters, double eps_angle, unsigned int min_pts_per_cluster = 1,
                                       unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ());
 
     protected:
       /** \brief Centroids that were used to compute different OUR-CVFH descriptors */
-      std::vector<Eigen::Vector3f> centroids_dominant_orientations_;
+      std::vector<Eigen::Vector3d> centroids_dominant_orientations_;
       /** \brief Normal centroids that were used to compute different OUR-CVFH descriptors */
-      std::vector<Eigen::Vector3f> dominant_normals_;
+      std::vector<Eigen::Vector3d> dominant_normals_;
       /** \brief Indices to the points representing the stable clusters */
       std::vector<pcl::PointIndices> clusters_;
       /** \brief Mapping from clusters to OUR-CVFH descriptors */

@@ -17,9 +17,9 @@ main ()
   // 1.1 Add noise
   for (size_t i = 0; i < noise_size; ++i)
   {
-    cloud->points[i].x = 1024 * rand () / (RAND_MAX + 1.0f);
-    cloud->points[i].y = 1024 * rand () / (RAND_MAX + 1.0f);
-    cloud->points[i].z = 1024 * rand () / (RAND_MAX + 1.0f);
+    cloud->points[i].x = 1024 * rand () / (RAND_MAX + 1.0);
+    cloud->points[i].y = 1024 * rand () / (RAND_MAX + 1.0);
+    cloud->points[i].z = 1024 * rand () / (RAND_MAX + 1.0);
   }
   // 1.2 Add sphere:
   double rand_x1 = 1;
@@ -29,8 +29,8 @@ main ()
     // See: http://mathworld.wolfram.com/SpherePointPicking.html
     while (pow (rand_x1, 2) + pow (rand_x2, 2) >= 1)
     {
-      rand_x1 = (rand () % 100) / (50.0f) - 1;
-      rand_x2 = (rand () % 100) / (50.0f) - 1;
+      rand_x1 = (rand () % 100) / (50.0) - 1;
+      rand_x2 = (rand () % 100) / (50.0) - 1;
     }
     double pre_calc = sqrt (1 - pow (rand_x1, 2) - pow (rand_x2, 2));
     cloud->points[i].x = 2 * rand_x1 * pre_calc;

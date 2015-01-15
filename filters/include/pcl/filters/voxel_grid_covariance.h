@@ -171,7 +171,7 @@ namespace pcl
         /** \brief Nd voxel centroid
          * \note Differs from \ref mean_ when color data is used
          */
-        Eigen::VectorXf centroid;
+        Eigen::VectorXd centroid;
 
         /** \brief Voxel covariance matrix */
         Eigen::Matrix3d cov_;
@@ -344,7 +344,7 @@ namespace pcl
        * \return const pointer to leaf structure
        */
       inline LeafConstPtr
-      getLeaf (Eigen::Vector3f &p)
+      getLeaf (Eigen::Vector3d &p)
       {
         // Generate index associated with p
         int ijk0 = static_cast<int> (floor (p[0] * inverse_leaf_size_[0]) - min_b_[0]);
@@ -412,7 +412,7 @@ namespace pcl
        */
       int
       nearestKSearch (const PointT &point, int k,
-                      std::vector<LeafConstPtr> &k_leaves, std::vector<float> &k_sqr_distances)
+                      std::vector<LeafConstPtr> &k_leaves, std::vector<double> &k_sqr_distances)
       {
         k_leaves.clear ();
 
@@ -447,7 +447,7 @@ namespace pcl
        */
       inline int
       nearestKSearch (const PointCloud &cloud, int index, int k,
-                      std::vector<LeafConstPtr> &k_leaves, std::vector<float> &k_sqr_distances)
+                      std::vector<LeafConstPtr> &k_leaves, std::vector<double> &k_sqr_distances)
       {
         if (index >= static_cast<int> (cloud.points.size ()) || index < 0)
           return (0);
@@ -466,7 +466,7 @@ namespace pcl
        */
       int
       radiusSearch (const PointT &point, double radius, std::vector<LeafConstPtr> &k_leaves,
-                    std::vector<float> &k_sqr_distances, unsigned int max_nn = 0)
+                    std::vector<double> &k_sqr_distances, unsigned int max_nn = 0)
       {
         k_leaves.clear ();
 
@@ -502,7 +502,7 @@ namespace pcl
        */
       inline int
       radiusSearch (const PointCloud &cloud, int index, double radius,
-                    std::vector<LeafConstPtr> &k_leaves, std::vector<float> &k_sqr_distances,
+                    std::vector<LeafConstPtr> &k_leaves, std::vector<double> &k_sqr_distances,
                     unsigned int max_nn = 0)
       {
         if (index >= static_cast<int> (cloud.points.size ()) || index < 0)

@@ -20,7 +20,7 @@ namespace pcl
   template<>
     struct SIFTKeypointFieldSelector<PointXYZ>
     {
-      inline float
+      inline double
       operator () (const PointXYZ & p) const
       {
         return p.z;
@@ -40,7 +40,7 @@ namespace pcl
         typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
         typedef typename pcl::PointCloud<PointInT>::Ptr PointOutTPtr;
         typename pcl::PointCloud<PointInT>::Ptr input_;
-        float radius_;
+        double radius_;
 
       public:
         void
@@ -50,7 +50,7 @@ namespace pcl
         }
 
         void
-        setSupportRadius (float f)
+        setSupportRadius (double f)
         {
           radius_ = f;
         }
@@ -80,9 +80,9 @@ namespace pcl
         bool filter_planar_;
         using KeypointExtractor<PointInT>::input_;
         using KeypointExtractor<PointInT>::radius_;
-        float sampling_density_;
+        double sampling_density_;
         boost::shared_ptr<std::vector<std::vector<int> > > neighborhood_indices_;
-        boost::shared_ptr<std::vector<std::vector<float> > > neighborhood_dist_;
+        boost::shared_ptr<std::vector<std::vector<double> > > neighborhood_dist_;
 
         void
         filterPlanar (PointInTPtr & input, pcl::PointCloud<int> & keypoints_cloud)
@@ -98,7 +98,7 @@ namespace pcl
 
           neighborhood_indices_.reset (new std::vector<std::vector<int> >);
           neighborhood_indices_->resize (keypoints_cloud.points.size ());
-          neighborhood_dist_.reset (new std::vector<std::vector<float> >);
+          neighborhood_dist_.reset (new std::vector<std::vector<double> >);
           neighborhood_dist_->resize (keypoints_cloud.points.size ());
 
           filtered_keypoints.points.resize (keypoints_cloud.points.size ());
@@ -110,16 +110,16 @@ namespace pcl
             if (tree->radiusSearch (keypoints_cloud[i], radius_, (*neighborhood_indices_)[good], (*neighborhood_dist_)[good]))
             {
 
-              EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
-              Eigen::Vector4f xyz_centroid;
-              EIGEN_ALIGN16 Eigen::Vector3f eigenValues;
-              EIGEN_ALIGN16 Eigen::Matrix3f eigenVectors;
+              EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
+              Eigen::Vector4d xyz_centroid;
+              EIGEN_ALIGN16 Eigen::Vector3d eigenValues;
+              EIGEN_ALIGN16 Eigen::Matrix3d eigenVectors;
 
               //compute planarity of the region
               computeMeanAndCovarianceMatrix (*input, (*neighborhood_indices_)[good], covariance_matrix, xyz_centroid);
               pcl::eigen33 (covariance_matrix, eigenVectors, eigenValues);
 
-              float eigsum = eigenValues.sum ();
+              double eigsum = eigenValues.sum ();
               if (!pcl_isfinite(eigsum))
               {
                 PCL_ERROR("Eigen sum is not finite\n");
@@ -152,7 +152,7 @@ namespace pcl
         }
 
         void
-        setSamplingDensity (float f)
+        setSamplingDensity (double f)
         {
           sampling_density_ = f;
         }
@@ -197,7 +197,7 @@ namespace pcl
           typename pcl::PointCloud<pcl::PointXYZI>::Ptr intensity_keypoints (new pcl::PointCloud<pcl::PointXYZI>);
           pcl::SIFTKeypoint<PointInT, pcl::PointXYZI> sift3D;
           sift3D.setScales (0.003f, 3, 2);
-          sift3D.setMinimumContrast (0.1f);
+          sift3D.setMinimumContrast (0.1);
           sift3D.setInputCloud (input_);
           sift3D.setSearchSurface (input_);
           sift3D.compute (*intensity_keypoints);
@@ -240,8 +240,8 @@ namespace pcl
           input_cloud->points.resize (input_->width * input_->height);
           for (size_t i = 0; i < input_->points.size (); i++)
           {
-            input_cloud->points[i].getVector3fMap () = input_->points[i].getVector3fMap ();
-            input_cloud->points[i].getNormalVector3fMap () = normals_->points[i].getNormalVector3fMap ();
+            input_cloud->points[i].getVector3dMap () = input_->points[i].getVector3dMap ();
+            input_cloud->points[i].getNormalVector3dMap () = normals_->points[i].getNormalVector3dMap ();
           }
 
           typename pcl::PointCloud<pcl::PointXYZI>::Ptr intensity_keypoints (new pcl::PointCloud<pcl::PointXYZI>);
@@ -264,16 +264,16 @@ namespace pcl
         using KeypointExtractor<PointInT>::input_;
         using KeypointExtractor<PointInT>::radius_;
         typename pcl::HarrisKeypoint3D<PointInT, pcl::PointXYZI>::ResponseMethod m_;
-        float non_max_radius_;
-        float threshold_;
+        double non_max_radius_;
+        double threshold_;
 
       public:
 
         HarrisKeypointExtractor ()
         {
           m_ = pcl::HarrisKeypoint3D<PointInT, pcl::PointXYZI>::HARRIS;
-          non_max_radius_ = 0.01f;
-          threshold_ = 0.f;
+          non_max_radius_ = 0.01;
+          threshold_ = 0.;
         }
 
         bool
@@ -289,7 +289,7 @@ namespace pcl
         }
 
         void
-        setThreshold(float t) {
+        setThreshold(double t) {
           threshold_ = t;
         }
 
@@ -300,7 +300,7 @@ namespace pcl
         }
 
         void
-        setNonMaximaRadius(float r) {
+        setNonMaximaRadius(double r) {
           non_max_radius_ = r;
         }
 
@@ -371,8 +371,8 @@ namespace pcl
           susan.setNonMaxSupression (true);
           susan.setInputCloud (input_);
           susan.setNormals (normals_);
-          susan.setRadius (0.01f);
-          susan.setRadiusSearch (0.01f);
+          susan.setRadius (0.01);
+          susan.setRadiusSearch (0.01);
           susan.compute (*intensity_keypoints);
 
           pcl::copyPointCloud (*intensity_keypoints, *keypoints);
@@ -389,16 +389,16 @@ namespace pcl
         typename boost::shared_ptr<PreProcessorAndNormalEstimator<PointInT, pcl::Normal> > normal_estimator_;
         //typename boost::shared_ptr<UniformSampling<PointInT> > keypoint_extractor_;
         std::vector<typename boost::shared_ptr<KeypointExtractor<PointInT> > > keypoint_extractor_; //this should be a vector
-        float support_radius_;
+        double support_radius_;
         //bool filter_planar_;
 
         bool adaptative_MLS_;
 
         boost::shared_ptr<std::vector<std::vector<int> > > neighborhood_indices_;
-        boost::shared_ptr<std::vector<std::vector<float> > > neighborhood_dist_;
+        boost::shared_ptr<std::vector<std::vector<double> > > neighborhood_dist_;
 
         //std::vector< std::vector<int> > neighborhood_indices_;
-        //std::vector< std::vector<float> > neighborhood_dist_;
+        //std::vector< std::vector<double> > neighborhood_dist_;
 
         void
         computeKeypoints (PointInTPtr & cloud, PointInTPtr & keypoints, pcl::PointCloud<pcl::Normal>::Ptr & normals)
@@ -457,7 +457,7 @@ namespace pcl
         }
 
         void
-        setSupportRadius (float r)
+        setSupportRadius (double r)
         {
           support_radius_ = r;
         }
@@ -481,11 +481,11 @@ namespace pcl
          tree->setInputCloud (input);
 
          //std::vector<int> nn_indices;
-         //std::vector<float> nn_distances;
+         //std::vector<double> nn_distances;
 
          neighborhood_indices_.reset (new std::vector<std::vector<int> >);
          neighborhood_indices_->resize (keypoints_cloud.points.size ());
-         neighborhood_dist_.reset (new std::vector<std::vector<float> >);
+         neighborhood_dist_.reset (new std::vector<std::vector<double> >);
          neighborhood_dist_->resize (keypoints_cloud.points.size ());
 
          filtered_keypoints.points.resize (keypoints_cloud.points.size ());
@@ -498,16 +498,16 @@ namespace pcl
          if (tree->radiusSearch (keypoints_cloud[i], support_radius_, (*neighborhood_indices_)[good], (*neighborhood_dist_)[good]))
          {
 
-         EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix;
-         Eigen::Vector4f xyz_centroid;
-         EIGEN_ALIGN16 Eigen::Vector3f eigenValues;
-         EIGEN_ALIGN16 Eigen::Matrix3f eigenVectors;
+         EIGEN_ALIGN16 Eigen::Matrix3d covariance_matrix;
+         Eigen::Vector4d xyz_centroid;
+         EIGEN_ALIGN16 Eigen::Vector3d eigenValues;
+         EIGEN_ALIGN16 Eigen::Matrix3d eigenVectors;
 
          //compute planarity of the region
          computeMeanAndCovarianceMatrix (*input, (*neighborhood_indices_)[good], covariance_matrix, xyz_centroid);
          pcl::eigen33 (covariance_matrix, eigenVectors, eigenValues);
 
-         float eigsum = eigenValues.sum ();
+         double eigsum = eigenValues.sum ();
          if (!pcl_isfinite(eigsum))
          {
          PCL_ERROR("Eigen sum is not finite\n");

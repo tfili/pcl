@@ -120,7 +120,7 @@ namespace pcl
       , edge_points_ (0)
       , min_neighbors_ (5)
       , normals_ (new pcl::PointCloud<NormalT>)
-      , angle_threshold_ (static_cast<float> (M_PI) / 2.0f)
+      , angle_threshold_ (static_cast<double> (M_PI) / 2.0)
       , threads_ (0)
       {
         name_ = "ISSKeypoint3D";
@@ -182,7 +182,7 @@ namespace pcl
         * \param[in] angle the angle threshold
         */
       inline void
-      setAngleThreshold (float angle)
+      setAngleThreshold (double angle)
       {
 	angle_threshold_ = angle;
       }
@@ -202,7 +202,7 @@ namespace pcl
         * \return the vector of boolean values in which the information about the boundary points is stored
         */
       bool*
-      getBoundaryPoints (PointCloudIn &input, double border_radius, float angle_threshold);
+      getBoundaryPoints (PointCloudIn &input, double border_radius, double angle_threshold);
 
       /** \brief Compute the scatter matrix for a point index.
         * \param[in] current_index the index of the point
@@ -255,7 +255,7 @@ namespace pcl
       PointCloudNConstPtr normals_;
 
       /** \brief The decision boundary (angle threshold) that marks points as boundary or regular. (default \f$\pi / 2.0\f$) */
-      float angle_threshold_;
+      double angle_threshold_;
 
       /** \brief The number of threads that has to be used by the scheduler. */
       unsigned int threads_;

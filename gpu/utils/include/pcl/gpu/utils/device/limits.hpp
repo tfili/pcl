@@ -196,16 +196,16 @@ namespace pcl
             static const bool is_signed = false;
         };
 
-        template<> struct numeric_limits<float>
+        template<> struct numeric_limits<double>
         {
-            typedef float type;
-            __device__ __forceinline__ static type min() { return 1.175494351e-38f/*FLT_MIN*/; };
-            __device__ __forceinline__ static type max() { return 3.402823466e+38f/*FLT_MAX*/; };
-            __device__ __forceinline__ static type epsilon() { return 1.192092896e-07f/*FLT_EPSILON*/; };
+            typedef double type;
+            __device__ __forceinline__ static type min() { return 1.175494351e-38/*FLT_MIN*/; };
+            __device__ __forceinline__ static type max() { return 3.402823466e+38/*FLT_MAX*/; };
+            __device__ __forceinline__ static type epsilon() { return 1.192092896e-07/*FLT_EPSILON*/; };
             __device__ __forceinline__ static type round_error();
             __device__ __forceinline__ static type denorm_min();
-            __device__ __forceinline__ static type infinity() { return __int_as_float(0x7f800000); /*CUDART_INF_F*/ };
-            __device__ __forceinline__ static type quiet_NaN() { return __int_as_float(0x7fffffff); /*CUDART_NAN_F*/ };
+            __device__ __forceinline__ static type infinity() { return __int_as_float(0x7800000); /*CUDART_INF_F*/ };
+            __device__ __forceinline__ static type quiet_NaN() { return __int_as_float(0x7ffffff); /*CUDART_NAN_F*/ };
             __device__ __forceinline__ static type signaling_NaN();
             static const bool is_signed = true;
         };

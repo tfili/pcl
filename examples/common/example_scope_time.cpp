@@ -48,10 +48,10 @@ main ()
 {
   pcl::ScopeTime scope_time ("Test loop");
   {
-    float total = 0.0f;
+    double total = 0.0;
     for (size_t i = 0; i < 1e4; ++i)
     {
-      total += static_cast<float> (i);
+      total += static_cast<double> (i);
     }
   }
   std::cout << "Done." << std::endl;

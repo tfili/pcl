@@ -82,8 +82,8 @@ namespace pcl
   namespace poisson
   {
 
-    typedef float Real;
-    typedef float BSplineDataReal;
+    typedef double Real;
+    typedef double BSplineDataReal;
     typedef pcl::poisson::OctNode< class TreeNodeData , Real > TreeOctNode;
 
 
@@ -218,8 +218,8 @@ namespace pcl
         Real GetDivergenceMinusLaplacian( const TreeOctNode* node1 , const TreeOctNode* node2 , Real value1 , const pcl::poisson::Point3D<Real>& normal1 ) const;
         struct PointInfo
         {
-            float splineValues[3][3];
-            float weightedValue;
+            double splineValues[3][3];
+            double weightedValue;
         };
         Real GetValue( const PointInfo points[3][3][3] , const bool hasPoints[3][3] , const int d[3] ) const;
 
@@ -255,8 +255,8 @@ namespace pcl
         void SetMatrixRowBounds( const TreeOctNode* node , int rDepth , const int rOff[3] , int& xStart , int& xEnd , int& yStart , int& yEnd , int& zStart , int& zEnd ) const;
         int GetMatrixRowSize( const TreeOctNode::Neighbors5& neighbors5 ) const;
         int GetMatrixRowSize( const TreeOctNode::Neighbors5& neighbors5 , int xStart , int xEnd , int yStart , int yEnd , int zStart , int zEnd ) const;
-        int SetMatrixRow( const TreeOctNode::Neighbors5& neighbors5 , pcl::poisson::MatrixEntry< float >* row , int offset , const double stencil[5][5][5] ) const;
-        int SetMatrixRow( const TreeOctNode::Neighbors5& neighbors5 , pcl::poisson::MatrixEntry< float >* row , int offset , const double stencil[5][5][5] , int xStart , int xEnd , int yStart , int yEnd , int zStart , int zEnd ) const;
+        int SetMatrixRow( const TreeOctNode::Neighbors5& neighbors5 , pcl::poisson::MatrixEntry< double >* row , int offset , const double stencil[5][5][5] ) const;
+        int SetMatrixRow( const TreeOctNode::Neighbors5& neighbors5 , pcl::poisson::MatrixEntry< double >* row , int offset , const double stencil[5][5][5] , int xStart , int xEnd , int yStart , int yEnd , int zStart , int zEnd ) const;
         void SetDivergenceStencil( int depth , pcl::poisson::Point3D< double > *stencil , bool scatter ) const;
         void SetLaplacianStencil( int depth , double stencil[5][5][5] ) const;
         template< class C , int N > struct Stencil{ C values[N][N][N]; };
@@ -272,8 +272,8 @@ namespace pcl
         void DownSampleFinerConstraints( int depth , SortedTreeNodes& sNodes ) const;
         template< class C > void DownSample( int depth , const SortedTreeNodes& sNodes , C* constraints ) const;
         template< class C > void   UpSample( int depth , const SortedTreeNodes& sNodes , C* coefficients ) const;
-        int GetFixedDepthLaplacian( pcl::poisson::SparseSymmetricMatrix<float>& matrix , int depth , const SortedTreeNodes& sNodes , Real* subConstraints );
-        int GetRestrictedFixedDepthLaplacian( pcl::poisson::SparseSymmetricMatrix<float>& matrix , int depth , const int* entries , int entryCount , const TreeOctNode* rNode, Real radius , const SortedTreeNodes& sNodes , Real* subConstraints );
+        int GetFixedDepthLaplacian( pcl::poisson::SparseSymmetricMatrix<double>& matrix , int depth , const SortedTreeNodes& sNodes , Real* subConstraints );
+        int GetRestrictedFixedDepthLaplacian( pcl::poisson::SparseSymmetricMatrix<double>& matrix , int depth , const int* entries , int entryCount , const TreeOctNode* rNode, Real radius , const SortedTreeNodes& sNodes , Real* subConstraints );
 
         void SetIsoCorners( Real isoValue , TreeOctNode* leaf , SortedTreeNodes::CornerTableData& cData , char* valuesSet , Real* values , TreeOctNode::ConstNeighborKey3& nKey , const Real* metSolution , const Stencil< double , 3 > stencil1[8] , const Stencil< double , 3 > stencil2[8][8] );
         static int IsBoundaryFace( const TreeOctNode* node , int faceIndex , int subdivideDepth );
@@ -297,15 +297,15 @@ namespace pcl
 
         int SetBoundaryMCRootPositions( int sDepth , Real isoValue , RootData& rootData , pcl::poisson::CoredMeshData* mesh , int nonLinearFit );
         int SetMCRootPositions( TreeOctNode* node , int sDepth , Real isoValue , TreeOctNode::ConstNeighborKey5& neighborKey5 , RootData& rootData ,
-                                std::vector< pcl::poisson::Point3D< float > >* interiorPositions , pcl::poisson::CoredMeshData* mesh , const Real* metSolution , int nonLinearFit );
+                                std::vector< pcl::poisson::Point3D< double > >* interiorPositions , pcl::poisson::CoredMeshData* mesh , const Real* metSolution , int nonLinearFit );
 #if MISHA_DEBUG
         int GetMCIsoTriangles( TreeOctNode* node , pcl::poisson::CoredMeshData* mesh , RootData& rootData ,
-                               std::vector< pcl::poisson::Point3D< float > >* interiorPositions , int offSet , int sDepth , bool polygonMesh , std::vector< pcl::poisson::Point3D< float > >* barycenters );
-        static int AddTriangles(  pcl::poisson::CoredMeshData* mesh , std::vector<pcl::poisson::CoredPointIndex>& edges , std::vector<pcl::poisson::Point3D<float> >* interiorPositions , int offSet , bool polygonMesh , std::vector< pcl::poisson::Point3D< float > >* barycenters );
+                               std::vector< pcl::poisson::Point3D< double > >* interiorPositions , int offSet , int sDepth , bool polygonMesh , std::vector< pcl::poisson::Point3D< double > >* barycenters );
+        static int AddTriangles(  pcl::poisson::CoredMeshData* mesh , std::vector<pcl::poisson::CoredPointIndex>& edges , std::vector<pcl::poisson::Point3D<double> >* interiorPositions , int offSet , bool polygonMesh , std::vector< pcl::poisson::Point3D< double > >* barycenters );
 #else // !MISHA_DEBUG
         int GetMCIsoTriangles( TreeOctNode* node ,  pcl::poisson::CoredMeshData* mesh , RootData& rootData ,
-                               std::vector< pcl::poisson::Point3D< float > >* interiorPositions , int offSet , int sDepth , bool addBarycenter , bool polygonMesh );
-        static int AddTriangles(  pcl::poisson::CoredMeshData* mesh , std::vector<CoredPointIndex>& edges , std::vector<Point3D<float> >* interiorPositions , int offSet , bool addBarycenter , bool polygonMesh );
+                               std::vector< pcl::poisson::Point3D< double > >* interiorPositions , int offSet , int sDepth , bool addBarycenter , bool polygonMesh );
+        static int AddTriangles(  pcl::poisson::CoredMeshData* mesh , std::vector<CoredPointIndex>& edges , std::vector<Point3D<double> >* interiorPositions , int offSet , bool addBarycenter , bool polygonMesh );
 #endif // MISHA_DEBUG
 
 
@@ -313,7 +313,7 @@ namespace pcl
         static int GetEdgeLoops( std::vector< std::pair< RootInfo , RootInfo > >& edges , std::vector< std::vector< std::pair< RootInfo , RootInfo > > >& loops);
         static int InteriorFaceRootCount( const TreeOctNode* node , const int &faceIndex , int maxDepth );
         static int EdgeRootCount( const TreeOctNode* node , int edgeIndex , int maxDepth );
-        static void GetRootSpan( const RootInfo& ri , pcl::poisson::Point3D< float >& start , pcl::poisson::Point3D< float >& end );
+        static void GetRootSpan( const RootInfo& ri , pcl::poisson::Point3D< double >& start , pcl::poisson::Point3D< double >& end );
         int GetRoot( const RootInfo& ri , Real isoValue , TreeOctNode::ConstNeighborKey5& neighborKey5 , pcl::poisson::Point3D<Real> & position , RootData& rootData , int sDepth , const Real* metSolution , int nonLinearFit );
         static int GetRootIndex( const TreeOctNode* node , int edgeIndex , int maxDepth , RootInfo& ri );
         static int GetRootIndex( const TreeOctNode* node , int edgeIndex , int maxDepth , int sDepth , RootInfo& ri );
@@ -345,7 +345,7 @@ namespace pcl
         void finalize( void );
         void RefineBoundary( int subdivisionDepth );
         Real* GetWeightGrid( int& res , int depth=-1 );
-        Real* GetSolutionGrid( int& res , float isoValue=0.f , int depth=-1 );
+        Real* GetSolutionGrid( int& res , double isoValue=0. , int depth=-1 );
 
         template<typename PointNT> int
         setTree( boost::shared_ptr<const pcl::PointCloud<PointNT> > input_ , int maxDepth , int minDepth ,

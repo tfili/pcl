@@ -56,14 +56,14 @@ uniform_deviate (int seed)
 }
 
 inline void
-randomPointTriangle (float a1, float a2, float a3, float b1, float b2, float b3, float c1, float c2, float c3,
-                     Eigen::Vector4f& p)
+randomPointTriangle (double a1, double a2, double a3, double b1, double b2, double b3, double c1, double c2, double c3,
+                     Eigen::Vector4d& p)
 {
-  float r1 = static_cast<float> (uniform_deviate (rand ()));
-  float r2 = static_cast<float> (uniform_deviate (rand ()));
-  float r1sqr = sqrtf (r1);
-  float OneMinR1Sqr = (1 - r1sqr);
-  float OneMinR2 = (1 - r2);
+  double r1 = static_cast<double> (uniform_deviate (rand ()));
+  double r2 = static_cast<double> (uniform_deviate (rand ()));
+  double r1sqr = sqrt (r1);
+  double OneMinR1Sqr = (1 - r1sqr);
+  double OneMinR2 = (1 - r2);
   a1 *= OneMinR1Sqr;
   a2 *= OneMinR1Sqr;
   a3 *= OneMinR1Sqr;
@@ -80,9 +80,9 @@ randomPointTriangle (float a1, float a2, float a3, float b1, float b2, float b3,
 }
 
 inline void
-randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4f& p)
+randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4d& p)
 {
-  float r = static_cast<float> (uniform_deviate (rand ()) * totalArea);
+  double r = static_cast<double> (uniform_deviate (rand ()) * totalArea);
 
   std::vector<double>::iterator low = std::lower_bound (cumulativeAreas->begin (), cumulativeAreas->end (), r);
   vtkIdType el = vtkIdType (low - cumulativeAreas->begin ());
@@ -94,9 +94,9 @@ randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, dou
   polydata->GetPoint (ptIds[0], A);
   polydata->GetPoint (ptIds[1], B);
   polydata->GetPoint (ptIds[2], C);
-  randomPointTriangle (float (A[0]), float (A[1]), float (A[2]), 
-                       float (B[0]), float (B[1]), float (B[2]), 
-                       float (C[0]), float (C[1]), float (C[2]), p);
+  randomPointTriangle (double (A[0]), double (A[1]), double (A[2]), 
+                       double (B[0]), double (B[1]), double (B[2]), 
+                       double (C[0]), double (C[1]), double (C[2]), p);
 }
 
 void
@@ -124,7 +124,7 @@ uniform_sampling (vtkSmartPointer<vtkPolyData> polydata, size_t n_samples, pcl::
 
   for (i = 0; i < n_samples; i++)
   {
-    Eigen::Vector4f p;
+    Eigen::Vector4d p;
     randPSurface (polydata, &cumulativeAreas, totalArea, p);
     cloud_out.points[i].x = p[0];
     cloud_out.points[i].y = p[1];
@@ -137,7 +137,7 @@ using namespace pcl::io;
 using namespace pcl::console;
 
 int default_number_samples = 100000;
-float default_leaf_size = 0.01f;
+double default_leaf_size = 0.01;
 
 void
 printHelp (int, char **argv)
@@ -169,7 +169,7 @@ main (int argc, char **argv)
   // Parse command line arguments
   int SAMPLE_POINTS_ = default_number_samples;
   parse_argument (argc, argv, "-n_samples", SAMPLE_POINTS_);
-  float leaf_size = default_leaf_size;
+  double leaf_size = default_leaf_size;
   parse_argument (argc, argv, "-leaf_size", leaf_size);
 
   // Parse the command line arguments for .ply and PCD files

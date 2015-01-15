@@ -48,11 +48,11 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float default_iso_level = 0.0f;
+double default_iso_level = 0.0;
 int default_hoppe_or_rbf = 0;
-float default_extend_percentage = 0.0f;
+double default_extend_percentage = 0.0;
 int default_grid_res = 50;
-float default_off_surface_displacement = 0.01f;
+double default_off_surface_displacement = 0.01;
 
 void
 printHelp (int, char **argv)
@@ -88,7 +88,7 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, PolygonMesh &output,
-         int hoppe_or_rbf, float iso_level, int grid_res, float extend_percentage, float off_surface_displacement)
+         int hoppe_or_rbf, double iso_level, int grid_res, double extend_percentage, double off_surface_displacement)
 {
   PointCloud<PointNormal>::Ptr xyz_cloud (new pcl::PointCloud<PointNormal> ());
   fromPCLPointCloud2 (*input, *xyz_cloud);
@@ -175,7 +175,7 @@ main (int argc, char** argv)
     print_info ("Selected algorithm: MarchingCubesRBF\n");
   }
 
-  float iso_level = default_iso_level;
+  double iso_level = default_iso_level;
   parse_argument (argc, argv, "-iso_level", iso_level);
   print_info ("Setting an iso level of: "); print_value ("%f\n", iso_level);
 
@@ -183,11 +183,11 @@ main (int argc, char** argv)
   parse_argument (argc, argv, "-grid_res", grid_res);
   print_info ("Setting a cubic grid resolution of: "); print_value ("%d\n", grid_res);
 
-  float extend_percentage = default_extend_percentage;
+  double extend_percentage = default_extend_percentage;
   parse_argument (argc, argv, "-extend", extend_percentage);
   print_info ("Setting an extend percentage of: "); print_value ("%f\n", extend_percentage);
 
-  float off_surface_displacement = default_off_surface_displacement;
+  double off_surface_displacement = default_off_surface_displacement;
   parse_argument (argc, argv, "-displacement", off_surface_displacement);
   print_info ("Setting an off-surface displacement of: "); print_value ("%f\n", off_surface_displacement);
 

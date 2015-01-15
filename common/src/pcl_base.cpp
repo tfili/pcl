@@ -112,7 +112,7 @@ pcl::PCLBase<pcl::PCLPointCloud2>::setInputCloud (const PCLPointCloud2ConstPtr &
         break;
       }
     }
-    field_sizes_[d] = (std::min) (fsize, static_cast<int>(sizeof (float)));
+    field_sizes_[d] = (std::min) (fsize, static_cast<int>(sizeof (double)));
   }
 }
 

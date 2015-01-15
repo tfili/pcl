@@ -52,7 +52,7 @@ namespace pcl
       PCL_ADD_POINT4D
       PCL_ADD_NORMAL4D
       PCL_ADD_RGB
-      float        weight;
+      double        weight;
       unsigned int age;
       uint32_t     directions;
 
@@ -64,15 +64,15 @@ namespace pcl
       // NOTE: I rely on NaN in the default constructor!
       inline PointIHS ()
       {
-        this->x = this->y = this->z = std::numeric_limits<float>::quiet_NaN ();
-        this->data[3] = 1.f;
+        this->x = this->y = this->z = std::numeric_limits<double>::quiet_NaN ();
+        this->data[3] = 1.;
 
-        this->normal_x = this->normal_y = this->normal_z = std::numeric_limits<float>::quiet_NaN ();
-        this->data_n[3] = 0.f;
+        this->normal_x = this->normal_y = this->normal_z = std::numeric_limits<double>::quiet_NaN ();
+        this->data_n[3] = 0.;
 
         this->b = this->g = this->r = 0; this->a = 255;
 
-        this->weight     = 0.f;
+        this->weight     = 0.;
         this->age        = 0;
         this->directions = 0;
       }
@@ -96,7 +96,7 @@ namespace pcl
         this->directions = other.directions;
       }
 
-      inline PointIHS (const pcl::PointXYZRGBNormal& other, const float weight)
+      inline PointIHS (const pcl::PointXYZRGBNormal& other, const double weight)
       {
         this->x       = other.x;
         this->y       = other.y;

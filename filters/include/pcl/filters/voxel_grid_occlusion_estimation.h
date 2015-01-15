@@ -130,13 +130,13 @@ namespace pcl
       /** \brief Returns the minimum bounding of coordinates of the voxel grid (x,y,z).
         * \return the minimum coordinates (x,y,z)
         */
-      inline Eigen::Vector3f
+      inline Eigen::Vector3d
       getMinBoundCoordinates () { return (b_min_.head<3> ()); }
 
       /** \brief Returns the maximum bounding of coordinates of the voxel grid (x,y,z).
         * \return the maximum coordinates (x,y,z)
         */
-      inline Eigen::Vector3f
+      inline Eigen::Vector3d
       getMaxBoundCoordinates () { return (b_max_.head<3> ()); }
 
       /** \brief Returns the corresponding centroid (x,y,z) coordinates
@@ -144,7 +144,7 @@ namespace pcl
         * \param[in] ijk the coordinate (i, j, k) of the voxel
         * \return the (x,y,z) coordinate of the voxel centroid
         */
-      inline Eigen::Vector4f
+      inline Eigen::Vector4d
       getCentroidCoordinate (const Eigen::Vector3i& ijk)
       {
         int i,j,k;
@@ -152,19 +152,19 @@ namespace pcl
         j = ((b_min_[1] < 0) ? (abs (min_b_[1]) + ijk[1]) : (ijk[1] - min_b_[1]));
         k = ((b_min_[2] < 0) ? (abs (min_b_[2]) + ijk[2]) : (ijk[2] - min_b_[2]));
 
-        Eigen::Vector4f xyz;
-        xyz[0] = b_min_[0] + (leaf_size_[0] * 0.5f) + (static_cast<float> (i) * leaf_size_[0]);
-        xyz[1] = b_min_[1] + (leaf_size_[1] * 0.5f) + (static_cast<float> (j) * leaf_size_[1]);
-        xyz[2] = b_min_[2] + (leaf_size_[2] * 0.5f) + (static_cast<float> (k) * leaf_size_[2]);
+        Eigen::Vector4d xyz;
+        xyz[0] = b_min_[0] + (leaf_size_[0] * 0.5) + (static_cast<double> (i) * leaf_size_[0]);
+        xyz[1] = b_min_[1] + (leaf_size_[1] * 0.5) + (static_cast<double> (j) * leaf_size_[1]);
+        xyz[2] = b_min_[2] + (leaf_size_[2] * 0.5) + (static_cast<double> (k) * leaf_size_[2]);
         xyz[3] = 0;
         return xyz;
       }
 
       // inline void
-      // setSensorOrigin (const Eigen::Vector4f origin) { sensor_origin_ = origin; }
+      // setSensorOrigin (const Eigen::Vector4d origin) { sensor_origin_ = origin; }
 
       // inline void
-      // setSensorOrientation (const Eigen::Quaternionf orientation) { sensor_orientation_ = orientation; }
+      // setSensorOrientation (const Eigen::Quaterniond orientation) { sensor_orientation_ = orientation; }
 
     protected:
 
@@ -174,9 +174,9 @@ namespace pcl
         * \param[in] direction The sensor orientation
         * \return the scaling value
         */
-      float
-      rayBoxIntersection (const Eigen::Vector4f& origin, 
-                          const Eigen::Vector4f& direction);
+      double
+      rayBoxIntersection (const Eigen::Vector4d& origin, 
+                          const Eigen::Vector4d& direction);
 
       /** \brief Returns the state of the target voxel (0 = visible, 1 = occupied)
         * unsing a ray traversal algorithm.
@@ -188,9 +188,9 @@ namespace pcl
         */
       int
       rayTraversal (const Eigen::Vector3i& target_voxel,
-                    const Eigen::Vector4f& origin, 
-                    const Eigen::Vector4f& direction,
-                    const float t_min);
+                    const Eigen::Vector4d& origin, 
+                    const Eigen::Vector4d& direction,
+                    const double t_min);
 
       /** \brief Returns the state of the target voxel (0 = visible, 1 = occupied) and
         * the voxels penetrated by the ray unsing a ray traversal algorithm.
@@ -204,18 +204,18 @@ namespace pcl
       int
       rayTraversal (std::vector <Eigen::Vector3i>& out_ray,
                     const Eigen::Vector3i& target_voxel,
-                    const Eigen::Vector4f& origin, 
-                    const Eigen::Vector4f& direction,
-                    const float t_min);
+                    const Eigen::Vector4d& origin, 
+                    const Eigen::Vector4d& direction,
+                    const double t_min);
 
       /** \brief Returns a rounded value. 
         * \param[in] d
         * \return rounded value
         */
-      inline float
-      round (float d)
+      inline double
+      round (double d)
       {
-        return static_cast<float> (floor (d + 0.5f));
+        return static_cast<double> (floor (d + 0.5));
       }
 
       // We use round here instead of floor due to some numerical issues.
@@ -225,7 +225,7 @@ namespace pcl
         * \param[in] z the Z point coordinate to get the (i, j, k) index at
         */
       inline Eigen::Vector3i
-      getGridCoordinatesRound (float x, float y, float z) 
+      getGridCoordinatesRound (double x, double y, double z) 
       {
         return Eigen::Vector3i (static_cast<int> (round (x * inverse_leaf_size_[0])), 
                                 static_cast<int> (round (y * inverse_leaf_size_[1])), 
@@ -235,11 +235,11 @@ namespace pcl
       // initialization flag
       bool initialized_;
 
-      Eigen::Vector4f sensor_origin_;
-      Eigen::Quaternionf sensor_orientation_;
+      Eigen::Vector4d sensor_origin_;
+      Eigen::Quaterniond sensor_orientation_;
 
       // minimum and maximum bounding box coordinates
-      Eigen::Vector4f b_min_, b_max_;
+      Eigen::Vector4d b_min_, b_max_;
 
       // voxel grid filtered cloud
       PointCloud filtered_cloud_;

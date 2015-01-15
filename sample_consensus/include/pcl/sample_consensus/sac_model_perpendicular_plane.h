@@ -58,7 +58,7 @@ namespace pcl
     * Code example for a plane model, perpendicular (within a 15 degrees tolerance) with the Z axis:
     * \code
     * SampleConsensusModelPerpendicularPlane<pcl::PointXYZ> model (cloud);
-    * model.setAxis (Eigen::Vector3f (0.0, 0.0, 1.0));
+    * model.setAxis (Eigen::Vector3d (0.0, 0.0, 1.0));
     * model.setEpsAngle (pcl::deg2rad (15));
     * \endcode
     *
@@ -84,7 +84,7 @@ namespace pcl
       SampleConsensusModelPerpendicularPlane (const PointCloudConstPtr &cloud,
                                               bool random = false) 
         : SampleConsensusModelPlane<PointT> (cloud, random)
-        , axis_ (Eigen::Vector3f::Zero ())
+        , axis_ (Eigen::Vector3d::Zero ())
         , eps_angle_ (0.0)
       {
       }
@@ -98,7 +98,7 @@ namespace pcl
                                               const std::vector<int> &indices,
                                               bool random = false) 
         : SampleConsensusModelPlane<PointT> (cloud, indices, random)
-        , axis_ (Eigen::Vector3f::Zero ())
+        , axis_ (Eigen::Vector3d::Zero ())
         , eps_angle_ (0.0)
       {
       }
@@ -110,10 +110,10 @@ namespace pcl
         * \param[in] ax the axis along which we need to search for a plane perpendicular to
         */
       inline void 
-      setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
+      setAxis (const Eigen::Vector3d &ax) { axis_ = ax; }
 
       /** \brief Get the axis along which we need to search for a plane perpendicular to. */
-      inline Eigen::Vector3f 
+      inline Eigen::Vector3d 
       getAxis ()  { return (axis_); }
 
       /** \brief Set the angle epsilon (delta) threshold.
@@ -133,7 +133,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void 
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients, 
                             const double threshold, 
                             std::vector<int> &inliers);
 
@@ -144,7 +144,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      countWithinDistance (const Eigen::VectorXd &model_coefficients, 
                            const double threshold);
 
       /** \brief Compute all distances from the cloud data to a given plane model.
@@ -152,7 +152,7 @@ namespace pcl
         * \param[out] distances the resultant estimated distances
         */
       void 
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients, 
                            std::vector<double> &distances);
 
       /** \brief Return an unique id for this model (SACMODEL_PERPENDICULAR_PLANE). */
@@ -164,10 +164,10 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       bool 
-      isModelValid (const Eigen::VectorXf &model_coefficients);
+      isModelValid (const Eigen::VectorXd &model_coefficients);
 
       /** \brief The axis along which we need to search for a plane perpendicular to. */
-      Eigen::Vector3f axis_;
+      Eigen::Vector3d axis_;
 
       /** \brief The maximum allowed difference between the plane normal and the given axis. */
       double eps_angle_;

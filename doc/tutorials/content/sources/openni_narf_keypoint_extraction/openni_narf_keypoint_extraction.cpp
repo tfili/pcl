@@ -14,11 +14,11 @@ using namespace std;
 
 std::string device_id = "#1";
 
-float angular_resolution = 0.5;
-float support_size = 0.2f;
+double angular_resolution = 0.5;
+double support_size = 0.2;
 bool set_unseen_to_max_range = true;
 int max_no_of_threads = 1;
-float min_interest_value = 0.5;
+double min_interest_value = 0.5;
 
 boost::mutex depth_image_mutex,
              ir_image_mutex,
@@ -53,10 +53,10 @@ printUsage (const char* progName)
        << "Options:\n"
        << "-------------------------------------------\n"
        << "-d <device_id>  set the device id (default \""<<device_id<<"\")\n"
-       << "-r <float>      angular resolution in degrees (default "<<angular_resolution<<")\n"
-       << "-s <float>      support size for the interest points (diameter of the used sphere in meters)"
+       << "-r <double>      angular resolution in degrees (default "<<angular_resolution<<")\n"
+       << "-s <double>      support size for the interest points (diameter of the used sphere in meters)"
        <<                 " (default "<<support_size<<")\n"
-       << "-i <float>      minimum interest value (0-1) (default "<<min_interest_value<<")"
+       << "-i <double>      minimum interest value (0-1) (default "<<min_interest_value<<")"
        << "-t <int>        maximum number of threads to use (default "<< max_no_of_threads<<")\n"
        << "-h              this help\n"
        << "\n\n";
@@ -87,7 +87,7 @@ int main (int argc, char** argv)
   pcl::visualization::RangeImageVisualizer range_image_widget ("Range Image");
   
   pcl::visualization::PCLVisualizer viewer ("3D Viewer");
-  viewer.addCoordinateSystem (1.0f, "global");
+  viewer.addCoordinateSystem (1.0, "global");
   viewer.setBackgroundColor (1, 1, 1);
   
   viewer.initCameraParameters ();
@@ -153,10 +153,10 @@ int main (int argc, char** argv)
       //int frame_id = depth_image_ptr->getFrameID ();
       const unsigned short* depth_map = depth_image_ptr->getDepthMetaData ().Data ();
       int width = depth_image_ptr->getWidth (), height = depth_image_ptr->getHeight ();
-      float center_x = width/2, center_y = height/2;
-      float focal_length_x = depth_image_ptr->getFocalLength (), focal_length_y = focal_length_x;
-      float original_angular_resolution = asinf (0.5f*float (width)/float (focal_length_x)) / (0.5f*float (width));
-      float desired_angular_resolution = angular_resolution;
+      double center_x = width/2, center_y = height/2;
+      double focal_length_x = depth_image_ptr->getFocalLength (), focal_length_y = focal_length_x;
+      double original_angular_resolution = asin (0.5*double (width)/double (focal_length_x)) / (0.5*double (width));
+      double desired_angular_resolution = angular_resolution;
       range_image_planar.setDepthImage (depth_map, width, height, center_x, center_y,
                                         focal_length_x, focal_length_y, desired_angular_resolution);
       depth_image_mutex.unlock ();
@@ -182,7 +182,7 @@ int main (int argc, char** argv)
     // ----------------------------------------------
     // -----Show keypoints in range image widget-----
     // ----------------------------------------------
-    range_image_widget.showRangeImage (range_image_planar, 0.5f, 10.0f);
+    range_image_widget.showRangeImage (range_image_planar, 0.5, 10.0);
     //for (size_t i=0; i<keypoint_indices.points.size (); ++i)
       //range_image_widget.markPoint (keypoint_indices.points[i]%range_image_planar.width,
                                     //keypoint_indices.points[i]/range_image_planar.width,
@@ -198,8 +198,8 @@ int main (int argc, char** argv)
     
     keypoints_cloud.points.resize (keypoint_indices.points.size ());
     for (size_t i=0; i<keypoint_indices.points.size (); ++i)
-      keypoints_cloud.points[i].getVector3fMap () =
-        range_image_planar.points[keypoint_indices.points[i]].getVector3fMap ();
+      keypoints_cloud.points[i].getVector3dMap () =
+        range_image_planar.points[keypoint_indices.points[i]].getVector3dMap ();
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> color_handler_keypoints
       (keypoints_cloud_ptr, 0, 255, 0);
     if (!viewer.updatePointCloud (keypoints_cloud_ptr, color_handler_keypoints, "keypoints"))

@@ -87,13 +87,13 @@ main (int argc, char** argv)
     wm.addSlice (cloud);
   
     std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clouds;
-    std::vector<Eigen::Vector3f> transforms;
+    std::vector<Eigen::Vector3d> transforms;
   
     //Get world as a vector of cubes 
     wm.getWorldAsCubes (pcl::device::kinfuLS::VOLUME_X, clouds, transforms, 0.025); // 2.5% overlapp (12 cells with a 512-wide cube)
 
     //Creating the standalone marching cubes instance
-    float volume_size = pcl::device::kinfuLS::VOLUME_SIZE;
+    double volume_size = pcl::device::kinfuLS::VOLUME_SIZE;
     pcl::console::parse_argument (argc, argv, "--volume_size", volume_size);
     pcl::console::parse_argument (argc, argv, "-vs", volume_size);
 

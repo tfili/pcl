@@ -54,7 +54,7 @@ namespace pcl
         * \param[in] p point
         * \return p.intensity
         */
-      inline float
+      inline double
       operator () (const PointT &p) const
       {
         return p.intensity;
@@ -64,7 +64,7 @@ namespace pcl
         * \param[in] intensity value of the intensity field
         */
       inline void
-      get (const PointT &p, float &intensity) const
+      get (const PointT &p, double &intensity) const
       {
         intensity = p.intensity;
       }
@@ -73,7 +73,7 @@ namespace pcl
         * \param[in] intensity value of the intensity field
         */
       inline void
-      set (PointT &p, float intensity) const
+      set (PointT &p, double intensity) const
       {
         p.intensity = intensity;
       }
@@ -82,7 +82,7 @@ namespace pcl
         * \param[in] value value to be subtracted from point intensity
         */
       inline void
-      demean (PointT& p, float value) const
+      demean (PointT& p, double value) const
       {
         p.intensity -= value;
       }
@@ -91,7 +91,7 @@ namespace pcl
         * \param[in] value value to be added to point intensity
         */
       inline void
-      add (PointT& p, float value) const
+      add (PointT& p, double value) const
       {
         p.intensity += value;
       }

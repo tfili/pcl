@@ -51,7 +51,7 @@
 
 std::string TEST_DATA_DIR;
 
-typedef float Weight;
+typedef double Weight;
 typedef uint32_t Color;
 typedef boost::adjacency_list
         <boost::vecS,
@@ -93,7 +93,7 @@ struct GraphInfo
     BOOST_FOREACH (ptree::value_type& v, pt.get_child ("Topology"))
     {
       uint32_t source, target;
-      float weight;
+      double weight;
       std::stringstream (v.second.data ()) >> source >> target >> weight;
       boost::add_edge (source, target, weight, graph);
     }
@@ -198,7 +198,7 @@ TEST_P (RandomWalkerTest, BuildLinearSystem)
   }
   for (size_t i = 0; i < g.rows; ++i)
   {
-    float sum = L_sums[i] + B_sums[i];
+    double sum = L_sums[i] + B_sums[i];
     EXPECT_FLOAT_EQ (degrees[i], sum);
   }
 }

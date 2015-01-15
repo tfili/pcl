@@ -52,8 +52,8 @@ pcl::simulation::SimExample::SimExample(int argc, char** argv,
   
   for (int i=0; i<2048; i++)
   {
-    float v = i/2048.0;
-    v = powf(v, 3)* 6;
+    double v = i/2048.0;
+    v = pow(v, 3)* 6;
     t_gamma[i] = v*6*256;
   }  
 }
@@ -98,8 +98,8 @@ void
 pcl::simulation::SimExample::doSim (Eigen::Isometry3d pose_in)
 {
   // No reference image - but this is kept for compatability with range_test_v2:
-  float* reference = new float[rl_->getRowHeight() * rl_->getColWidth()];
-  const float* depth_buffer = rl_->getDepthBuffer();
+  double* reference = new double[rl_->getRowHeight() * rl_->getColWidth()];
+  const double* depth_buffer = rl_->getDepthBuffer();
   // Copy one image from our last as a reference.
   for (int i=0, n=0; i<rl_->getRowHeight(); ++i)
   {
@@ -110,7 +110,7 @@ pcl::simulation::SimExample::doSim (Eigen::Isometry3d pose_in)
   }
 
   std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > poses;
-  std::vector<float> scores;
+  std::vector<double> scores;
   int n = 1;
   poses.push_back (pose_in);
   rl_->computeLikelihoods (reference, poses, scores);
@@ -128,13 +128,13 @@ pcl::simulation::SimExample::doSim (Eigen::Isometry3d pose_in)
 
 
 void
-pcl::simulation::SimExample::write_score_image(const float* score_buffer, std::string fname)
+pcl::simulation::SimExample::write_score_image(const double* score_buffer, std::string fname)
 {
   int npixels = rl_->getWidth() * rl_->getHeight();
   uint8_t* score_img = new uint8_t[npixels * 3];
 
-  float min_score = score_buffer[0];
-  float max_score = score_buffer[0];
+  double min_score = score_buffer[0];
+  double max_score = score_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (score_buffer[i] < min_score) min_score = score_buffer[i];
@@ -148,7 +148,7 @@ pcl::simulation::SimExample::write_score_image(const float* score_buffer, std::s
       int i = y*width_ + x ;
       int i_in= (height_-1 -y) *width_ + x ; // flip up
 
-      float d = (score_buffer[i_in]-min_score)/(max_score-min_score);
+      double d = (score_buffer[i_in]-min_score)/(max_score-min_score);
       score_img[3*i+0] = 0;
       score_img[3*i+1] = d*255;
       score_img[3*i+2] = 0;
@@ -162,13 +162,13 @@ pcl::simulation::SimExample::write_score_image(const float* score_buffer, std::s
 }
 
 void
-pcl::simulation::SimExample::write_depth_image(const float* depth_buffer, std::string fname)
+pcl::simulation::SimExample::write_depth_image(const double* depth_buffer, std::string fname)
 {
   int npixels = rl_->getWidth() * rl_->getHeight();
   uint8_t* depth_img = new uint8_t[npixels * 3];
 
-  float min_depth = depth_buffer[0];
-  float max_depth = depth_buffer[0];
+  double min_depth = depth_buffer[0];
+  double max_depth = depth_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (depth_buffer[i] < min_depth) min_depth = depth_buffer[i];
@@ -183,12 +183,12 @@ pcl::simulation::SimExample::write_depth_image(const float* depth_buffer, std::s
       int i_in= (height_-1 -y) *width_ + x ; // flip up down
     
     
-      float zn = 0.7;
-      float zf = 20.0;
-      float d = depth_buffer[i_in];
-      float z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
-      float b = 0.075;
-      float f = 580.0;
+      double zn = 0.7;
+      double zf = 20.0;
+      double d = depth_buffer[i_in];
+      double z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
+      double b = 0.075;
+      double f = 580.0;
       uint16_t kd = static_cast<uint16_t>(1090 - b*f/z*8);
       if (kd < 0) kd = 0;
       else if (kd>2047) kd = 2047;
@@ -243,13 +243,13 @@ pcl::simulation::SimExample::write_depth_image(const float* depth_buffer, std::s
 
 
 void
-pcl::simulation::SimExample::write_depth_image_uint(const float* depth_buffer, std::string fname)
+pcl::simulation::SimExample::write_depth_image_uint(const double* depth_buffer, std::string fname)
 {
   int npixels = rl_->getWidth() * rl_->getHeight();
   unsigned short * depth_img = new unsigned short[npixels ];
 
-  float min_depth = depth_buffer[0];
-  float max_depth = depth_buffer[0];
+  double min_depth = depth_buffer[0];
+  double max_depth = depth_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (depth_buffer[i] < min_depth) min_depth = depth_buffer[i];
@@ -263,9 +263,9 @@ pcl::simulation::SimExample::write_depth_image_uint(const float* depth_buffer, s
       int i= y*width_ + x ;
       int i_in= (height_-1 -y) *width_ + x ; // flip up down
     
-      float zn = 0.7;
-      float zf = 20.0;
-      float d = depth_buffer[i_in];
+      double zn = 0.7;
+      double zf = 20.0;
+      double d = depth_buffer[i_in];
       
       unsigned short z_new = (unsigned short)  floor( 1000*( -zf*zn/((zf-zn)*(d - zf/(zf-zn)))));
       if (z_new < 0) z_new = 0;
@@ -275,9 +275,9 @@ pcl::simulation::SimExample::write_depth_image_uint(const float* depth_buffer, s
 	  cout << z_new << " " << d << " " << x << "\n";  
       }
 	
-      float z = 1000*( -zf*zn/((zf-zn)*(d - zf/(zf-zn))));
-      float b = 0.075;
-      float f = 580.0;
+      double z = 1000*( -zf*zn/((zf-zn)*(d - zf/(zf-zn))));
+      double b = 0.075;
+      double f = 580.0;
       uint16_t kd = static_cast<uint16_t>(1090 - b*f/z*8);
       if (kd < 0) kd = 0;
       else if (kd>2047) kd = 2047;

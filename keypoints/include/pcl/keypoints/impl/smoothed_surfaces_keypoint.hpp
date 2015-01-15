@@ -48,12 +48,12 @@ template <typename PointT, typename PointNT> void
 pcl::SmoothedSurfacesKeypoint<PointT, PointNT>::addSmoothedPointCloud (const PointCloudTConstPtr &cloud,
                                                                        const PointCloudNTConstPtr &normals,
                                                                        KdTreePtr &kdtree,
-                                                                       float &scale)
+                                                                       double &scale)
 {
   clouds_.push_back (cloud);
   cloud_normals_.push_back (normals);
   cloud_trees_.push_back (kdtree);
-  scales_.push_back (std::pair<float, size_t> (scale, scales_.size ()));
+  scales_.push_back (std::pair<double, size_t> (scale, scales_.size ()));
 }
 
 
@@ -72,10 +72,10 @@ template <typename PointT, typename PointNT> void
 pcl::SmoothedSurfacesKeypoint<PointT, PointNT>::detectKeypoints (PointCloudT &output)
 {
   // Calculate differences for each cloud
-  std::vector<std::vector<float> > diffs (scales_.size ());
+  std::vector<std::vector<double> > diffs (scales_.size ());
 
   // The cloud with the smallest scale has no differences
-  std::vector<float> aux_diffs (input_->points.size (), 0.0f);
+  std::vector<double> aux_diffs (input_->points.size (), 0.0);
   diffs[scales_[0].second] = aux_diffs;
 
   cloud_trees_[scales_[0].second]->setInputCloud (clouds_[scales_[0].second]);
@@ -86,8 +86,8 @@ pcl::SmoothedSurfacesKeypoint<PointT, PointNT>::detectKeypoints (PointCloudT &ou
     diffs[cloud_i].resize (input_->points.size ());
     PCL_INFO ("cloud_i %u cloud_i_minus_one %u\n", cloud_i, cloud_i_minus_one);
     for (size_t point_i = 0; point_i < input_->points.size (); ++point_i)
-      diffs[cloud_i][point_i] = cloud_normals_[cloud_i]->points[point_i].getNormalVector3fMap ().dot (
-          clouds_[cloud_i]->points[point_i].getVector3fMap () - clouds_[cloud_i_minus_one]->points[point_i].getVector3fMap ());
+      diffs[cloud_i][point_i] = cloud_normals_[cloud_i]->points[point_i].getNormalVector3dMap ().dot (
+          clouds_[cloud_i]->points[point_i].getVector3dMap () - clouds_[cloud_i_minus_one]->points[point_i].getVector3dMap ());
 
     // Setup kdtree for this cloud
     cloud_trees_[cloud_i]->setInputCloud (clouds_[cloud_i]);
@@ -99,7 +99,7 @@ pcl::SmoothedSurfacesKeypoint<PointT, PointNT>::detectKeypoints (PointCloudT &ou
   for (int point_i = 0; point_i < static_cast<int> (input_->points.size ()); ++point_i)
   {
     std::vector<int> nn_indices;
-    std::vector<float> nn_distances;
+    std::vector<double> nn_distances;
     input_tree->radiusSearch (point_i, input_scale_ * neighborhood_constant_, nn_indices, nn_distances);
 
     bool is_min = true, is_max = true;
@@ -222,7 +222,7 @@ pcl::SmoothedSurfacesKeypoint<PointT, PointNT>::initCompute ()
   }
 
   // Add the input cloud as the last index
-  scales_.push_back (std::pair<float, size_t> (input_scale_, scales_.size ()));
+  scales_.push_back (std::pair<double, size_t> (input_scale_, scales_.size ()));
   clouds_.push_back (input_);
   cloud_normals_.push_back (normals_);
   cloud_trees_.push_back (tree_);

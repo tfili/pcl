@@ -364,7 +364,7 @@ ON_Xform::ON_Xform( const double m[4][4] )
 }
 
 #if defined(ON_COMPILER_MSC)
-ON_Xform::ON_Xform( float m[4][4] )
+ON_Xform::ON_Xform( double m[4][4] )
 {
   m_xform[0][0] = (double)m[0][0];
   m_xform[0][1] = (double)m[0][1];
@@ -388,7 +388,7 @@ ON_Xform::ON_Xform( float m[4][4] )
 }
 #endif
 
-ON_Xform::ON_Xform( const float m[4][4] )
+ON_Xform::ON_Xform( const double m[4][4] )
 {
   m_xform[0][0] = (double)m[0][0];
   m_xform[0][1] = (double)m[0][1];
@@ -416,7 +416,7 @@ ON_Xform::ON_Xform( const double* m )
   memcpy( &m_xform[0][0], m, sizeof(m_xform) );
 }
 
-ON_Xform::ON_Xform( const float* m )
+ON_Xform::ON_Xform( const double* m )
 {
   m_xform[0][0] = (double)m[0];
   m_xform[0][1] = (double)m[1];
@@ -499,7 +499,7 @@ ON_Xform& ON_Xform::operator=( int d )
   return *this;
 }
 
-ON_Xform& ON_Xform::operator=( float d )
+ON_Xform& ON_Xform::operator=( double d )
 {
   memset( m_xform, 0, sizeof(m_xform) );
   m_xform[0][0] = m_xform[1][1] = m_xform[2][2] = (double)d;

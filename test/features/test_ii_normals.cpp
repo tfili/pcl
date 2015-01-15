@@ -60,16 +60,16 @@ TEST(PCL, IntegralImage1D)
   const unsigned height = 480;
   const unsigned max_window_size = 5;
   const unsigned min_window_size = 1;
-  IntegralImage2D<float,1> integral_image1(true); // calculate second order
-  IntegralImage2D<float,1> integral_image2(false);// calculate just first order (other if branch)
+  IntegralImage2D<double,1> integral_image1(true); // calculate second order
+  IntegralImage2D<double,1> integral_image2(false);// calculate just first order (other if branch)
 
   // test for dense data with element stride = 1
-  float* data = new float[width * height];
+  double* data = new double[width * height];
   for(unsigned yIdx = 0; yIdx < height; ++yIdx)
   {
     for(unsigned xIdx = 0; xIdx < width; ++xIdx)
     {
-      data[width * yIdx + xIdx] = static_cast<float> (xIdx);
+      data[width * yIdx + xIdx] = static_cast<double> (xIdx);
     }
   }
 
@@ -104,12 +104,12 @@ TEST(PCL, IntegralImage1D)
   //now test with element-stride 2 and modulo even row stride (no padding)
   unsigned element_stride = 2;
   unsigned row_stride = width * element_stride;
-  data = new float[row_stride * height];
+  data = new double[row_stride * height];
   for(unsigned yIdx = 0; yIdx < height; ++yIdx)
   {
     for(unsigned xIdx = 0; xIdx < row_stride; xIdx += element_stride)
     {
-      data[row_stride * yIdx + xIdx] = static_cast<float> (xIdx >> 1);
+      data[row_stride * yIdx + xIdx] = static_cast<double> (xIdx >> 1);
       data[row_stride * yIdx + xIdx + 1] = -1;
     }
   }
@@ -140,14 +140,14 @@ TEST(PCL, IntegralImage1D)
   //now test with odd element-stride 3 and modulo-uneven row_stride
   element_stride = 3;
   row_stride = width * element_stride + 1; // +1 to enforce a non-zero modulo
-  data = new float[row_stride * height];
+  data = new double[row_stride * height];
   for (unsigned yIdx = 0; yIdx < height; ++yIdx)
   {
     for (unsigned xIdx = 0; xIdx < width; ++xIdx)
     {
-      data[row_stride * yIdx + element_stride * xIdx] = 1.0f;
-      data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0f;
-      data[row_stride * yIdx + element_stride * xIdx + 2] = static_cast<float> (xIdx);
+      data[row_stride * yIdx + element_stride * xIdx] = 1.0;
+      data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0;
+      data[row_stride * yIdx + element_stride * xIdx + 2] = static_cast<double> (xIdx);
     }
   }
   integral_image1.setInput (data, width, height, element_stride, row_stride);
@@ -220,7 +220,7 @@ TEST(PCL, IntegralImage1D)
   //now test whether count of non finite elements are correct
   element_stride = 3;
   row_stride = width * element_stride + 1; // +1 to enforce a non-zero modulo
-  data = new float[row_stride * height];
+  data = new double[row_stride * height];
   for(unsigned yIdx = 0; yIdx < height; ++yIdx)
   {
     for(unsigned xIdx = 0; xIdx < width; ++xIdx)
@@ -228,15 +228,15 @@ TEST(PCL, IntegralImage1D)
       // set nans for odd fields
       if (xIdx & 1)
       {
-        data[row_stride * yIdx + element_stride * xIdx]     = std::numeric_limits<float>::quiet_NaN ();;
-        data[row_stride * yIdx + element_stride * xIdx + 1] = std::numeric_limits<float>::quiet_NaN ();;
-        data[row_stride * yIdx + element_stride * xIdx + 2] = std::numeric_limits<float>::quiet_NaN ();;
+        data[row_stride * yIdx + element_stride * xIdx]     = std::numeric_limits<double>::quiet_NaN ();;
+        data[row_stride * yIdx + element_stride * xIdx + 1] = std::numeric_limits<double>::quiet_NaN ();;
+        data[row_stride * yIdx + element_stride * xIdx + 2] = std::numeric_limits<double>::quiet_NaN ();;
       }
       else
       {
-        data[row_stride * yIdx + element_stride * xIdx] = 3.0f;
-        data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0f;
-        data[row_stride * yIdx + element_stride * xIdx + 2] = static_cast<float> (xIdx);
+        data[row_stride * yIdx + element_stride * xIdx] = 3.0;
+        data[row_stride * yIdx + element_stride * xIdx + 1] = 2.0;
+        data[row_stride * yIdx + element_stride * xIdx + 2] = static_cast<double> (xIdx);
       }
     }
   }
@@ -273,18 +273,18 @@ TEST(PCL, IntegralImage3D)
   const unsigned height = 480;
   const unsigned max_window_size = 5;
   const unsigned min_window_size = 1;
-  IntegralImage2D<float, 3> integral_image3(true);
+  IntegralImage2D<double, 3> integral_image3(true);
   unsigned element_stride = 4;
   unsigned row_stride = width * element_stride + 1;
-  float* data = new float[row_stride * height];
+  double* data = new double[row_stride * height];
   for(unsigned yIdx = 0; yIdx < height; ++yIdx)
   {
     for(unsigned xIdx = 0; xIdx < width; ++xIdx)
     {
-      data[row_stride * yIdx + xIdx * element_stride] = static_cast<float> (xIdx);
-      data[row_stride * yIdx + xIdx * element_stride + 1] = static_cast<float> (yIdx);
-      data[row_stride * yIdx + xIdx * element_stride + 2] = static_cast<float> (xIdx + yIdx);
-      data[row_stride * yIdx + xIdx * element_stride + 3] = -1000.0f;
+      data[row_stride * yIdx + xIdx * element_stride] = static_cast<double> (xIdx);
+      data[row_stride * yIdx + xIdx * element_stride + 1] = static_cast<double> (yIdx);
+      data[row_stride * yIdx + xIdx * element_stride + 2] = static_cast<double> (xIdx + yIdx);
+      data[row_stride * yIdx + xIdx * element_stride + 3] = -1000.0;
     }
   }
   integral_image3.setInput (data, width, height, element_stride, row_stride);
@@ -296,21 +296,21 @@ TEST(PCL, IntegralImage3D)
       {
         for(unsigned xIdx = 0; xIdx < width - window_width; ++xIdx)
         {
-          IntegralImage2D<float, 3>::ElementType sum = integral_image3.getFirstOrderSum (xIdx, yIdx, window_width, window_height);
+          IntegralImage2D<double, 3>::ElementType sum = integral_image3.getFirstOrderSum (xIdx, yIdx, window_width, window_height);
 
           EXPECT_EQ (window_height * window_width * (window_width + 2 * xIdx - 1), sum[0] * 2);
           EXPECT_EQ (window_width * window_height * (window_height + 2 * yIdx - 1), sum[1] * 2);
           EXPECT_EQ (window_width * window_height * (window_height + 2 * yIdx - 1) + window_height * window_width * (window_width + 2 * xIdx - 1), sum[2] * 2);
 
-          IntegralImage2D<float, 3>::SecondOrderType sumSqr = integral_image3.getSecondOrderSum (xIdx, yIdx, window_width, window_height);
+          IntegralImage2D<double, 3>::SecondOrderType sumSqr = integral_image3.getSecondOrderSum (xIdx, yIdx, window_width, window_height);
 
-          IntegralImage2D<float, 3>::SecondOrderType ground_truth;
+          IntegralImage2D<double, 3>::SecondOrderType ground_truth;
           ground_truth.setZero ();
           for (unsigned wy = yIdx; wy < yIdx + window_height; ++wy)
           {
             for (unsigned wx = xIdx; wx < xIdx + window_width; ++wx)
             {
-              float* val = data + (wy * row_stride + wx * element_stride);
+              double* val = data + (wy * row_stride + wx * element_stride);
               //ground_truth[0] += val[0] * val[0];
               ground_truth[1] += val[0] * val[1];
               ground_truth[2] += val[0] * val[2];
@@ -518,9 +518,9 @@ main (int argc, char** argv)
   {
     for (size_t u = 0; u < cloud.width; ++u)
     {
-      cloud (u, v).x = static_cast<float> (u);
-      cloud (u, v).y = static_cast<float> (v);
-      cloud (u, v).z = 10.0f;
+      cloud (u, v).x = static_cast<double> (u);
+      cloud (u, v).y = static_cast<double> (v);
+      cloud (u, v).z = 10.0;
     }
   }
 

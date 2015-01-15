@@ -97,7 +97,7 @@ namespace pcl
       FPFHEstimation () : 
         nr_bins_f1_ (11), nr_bins_f2_ (11), nr_bins_f3_ (11), 
         hist_f1_ (), hist_f2_ (), hist_f3_ (), fpfh_histogram_ (),
-        d_pi_ (1.0f / (2.0f * static_cast<float> (M_PI)))
+        d_pi_ (1.0 / (2.0 * static_cast<double> (M_PI)))
       {
         feature_name_ = "FPFHEstimation";
       };
@@ -117,7 +117,7 @@ namespace pcl
         */
       bool 
       computePairFeatures (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, 
-                           int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4);
+                           int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4);
 
       /** \brief Estimate the SPFH (Simple Point Feature Histograms) individual signatures of the three angular
         * (f1, f2, f3) features for a given point based on its spatial neighborhood of 3D points with normals
@@ -134,7 +134,7 @@ namespace pcl
       computePointSPFHSignature (const pcl::PointCloud<PointInT> &cloud, 
                                  const pcl::PointCloud<PointNT> &normals, int p_idx, int row, 
                                  const std::vector<int> &indices, 
-                                 Eigen::MatrixXf &hist_f1, Eigen::MatrixXf &hist_f2, Eigen::MatrixXf &hist_f3);
+                                 Eigen::MatrixXd &hist_f1, Eigen::MatrixXd &hist_f2, Eigen::MatrixXd &hist_f3);
 
       /** \brief Weight the SPFH (Simple Point Feature Histograms) individual histograms to create the final FPFH
         * (Fast Point Feature Histogram) for a given point based on its 3D spatial neighborhood
@@ -146,12 +146,12 @@ namespace pcl
         * \param[out] fpfh_histogram the resultant FPFH histogram representing the feature at the query point
         */
       void 
-      weightPointSPFHSignature (const Eigen::MatrixXf &hist_f1, 
-                                const Eigen::MatrixXf &hist_f2, 
-                                const Eigen::MatrixXf &hist_f3, 
+      weightPointSPFHSignature (const Eigen::MatrixXd &hist_f1, 
+                                const Eigen::MatrixXd &hist_f2, 
+                                const Eigen::MatrixXd &hist_f3, 
                                 const std::vector<int> &indices, 
-                                const std::vector<float> &dists, 
-                                Eigen::VectorXf &fpfh_histogram);
+                                const std::vector<double> &dists, 
+                                Eigen::VectorXd &fpfh_histogram);
 
       /** \brief Set the number of subdivisions for each angular feature interval.
         * \param[in] nr_bins_f1 number of subdivisions for the first angular feature
@@ -189,7 +189,7 @@ namespace pcl
         */
       void 
       computeSPFHSignatures (std::vector<int> &spf_hist_lookup, 
-                             Eigen::MatrixXf &hist_f1, Eigen::MatrixXf &hist_f2, Eigen::MatrixXf &hist_f3);
+                             Eigen::MatrixXd &hist_f1, Eigen::MatrixXd &hist_f2, Eigen::MatrixXd &hist_f3);
 
       /** \brief Estimate the Fast Point Feature Histograms (FPFH) descriptors at a set of points given by
         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
@@ -203,19 +203,19 @@ namespace pcl
       int nr_bins_f1_, nr_bins_f2_, nr_bins_f3_;
 
       /** \brief Placeholder for the f1 histogram. */
-      Eigen::MatrixXf hist_f1_;
+      Eigen::MatrixXd hist_f1_;
 
       /** \brief Placeholder for the f2 histogram. */
-      Eigen::MatrixXf hist_f2_;
+      Eigen::MatrixXd hist_f2_;
 
       /** \brief Placeholder for the f3 histogram. */
-      Eigen::MatrixXf hist_f3_;
+      Eigen::MatrixXd hist_f3_;
 
       /** \brief Placeholder for a point's FPFH signature. */
-      Eigen::VectorXf fpfh_histogram_;
+      Eigen::VectorXd fpfh_histogram_;
 
       /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-      float d_pi_; 
+      double d_pi_; 
   };
 }
 

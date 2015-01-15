@@ -122,7 +122,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
   mls.setUpsamplingRadius (0.025);
   mls.setUpsamplingStepSize (0.015);
   mls.setDilationIterations (2);
-  mls.setDilationVoxelSize (0.01f);
+  mls.setDilationVoxelSize (0.01);
 
   search::KdTree<PointXYZ>::Ptr tree (new search::KdTree<PointXYZ> ());
   mls.setSearchMethod (tree);
@@ -146,8 +146,8 @@ saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output)
 
   print_highlight ("Saving "); print_value ("%s ", filename.c_str ());
 
-  pcl::io::savePCDFile (filename, output,  Eigen::Vector4f::Zero (),
-                        Eigen::Quaternionf::Identity (), true);
+  pcl::io::savePCDFile (filename, output,  Eigen::Vector4d::Zero (),
+                        Eigen::Quaterniond::Identity (), true);
 
   print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms : "); print_value ("%d", output.width * output.height); print_info (" points]\n");
 }

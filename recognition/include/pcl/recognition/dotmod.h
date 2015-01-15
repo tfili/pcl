@@ -55,7 +55,7 @@ namespace pcl
     size_t bin_x;
     size_t bin_y;
     size_t template_id;
-    float score;
+    double score;
   };
 
   /**
@@ -88,7 +88,7 @@ namespace pcl
 
       void
       detectTemplates (const std::vector<DOTModality*> & modalities,
-                       float template_response_threshold,
+                       double template_response_threshold,
                        std::vector<DOTMODDetection> & detections,
                        const size_t bin_size) const;
 

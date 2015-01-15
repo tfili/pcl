@@ -80,7 +80,7 @@ pcl::TrajkovicKeypoint2D<PointInT, PointOutT, IntensityT>::initCompute ()
 template <typename PointInT, typename PointOutT, typename IntensityT> void
 pcl::TrajkovicKeypoint2D<PointInT, PointOutT, IntensityT>::detectKeypoints (PointCloudOut &output)
 {
-  response_.reset (new pcl::PointCloud<float> (input_->width, input_->height));
+  response_.reset (new pcl::PointCloud<double> (input_->width, input_->height));
   int w = static_cast<int> (input_->width) - half_window_size_;
   int h = static_cast<int> (input_->height) - half_window_size_;
 
@@ -93,33 +93,33 @@ pcl::TrajkovicKeypoint2D<PointInT, PointOutT, IntensityT>::detectKeypoints (Poin
     {
       for(int i = half_window_size_; i < w; ++i)
       {
-        float center = intensity_ ((*input_) (i,j));
-        float up = intensity_ ((*input_) (i, j-half_window_size_));
-        float down = intensity_ ((*input_) (i, j+half_window_size_));
-        float left = intensity_ ((*input_) (i-half_window_size_, j));
-        float right = intensity_ ((*input_) (i+half_window_size_, j));
+        double center = intensity_ ((*input_) (i,j));
+        double up = intensity_ ((*input_) (i, j-half_window_size_));
+        double down = intensity_ ((*input_) (i, j+half_window_size_));
+        double left = intensity_ ((*input_) (i-half_window_size_, j));
+        double right = intensity_ ((*input_) (i+half_window_size_, j));
 
-        float up_center = up - center;
-        float r1 = up_center * up_center;
-        float down_center = down - center;
+        double up_center = up - center;
+        double r1 = up_center * up_center;
+        double down_center = down - center;
         r1+= down_center * down_center;
 
-        float right_center = right - center;
-        float r2 = right_center * right_center;
-        float left_center = left - center;
+        double right_center = right - center;
+        double r2 = right_center * right_center;
+        double left_center = left - center;
         r2+= left_center * left_center;
 
-        float d = std::min (r1, r2);
+        double d = std::min (r1, r2);
 
         if (d < first_threshold_)
           continue;
 
-        float b1 = (right - up) * up_center;
+        double b1 = (right - up) * up_center;
         b1+= (left - down) * down_center;
-        float b2 = (right - down) * down_center;
+        double b2 = (right - down) * down_center;
         b2+= (left - up) * up_center;
-        float B = std::min (b1, b2);
-        float A = r2 - r1 - 2*B;
+        double B = std::min (b1, b2);
+        double A = r2 - r1 - 2*B;
 
         (*response_) (i,j) = ((B < 0) && ((B + A) > 0)) ? r1 - ((B*B)/A) : d;
       }
@@ -134,45 +134,45 @@ pcl::TrajkovicKeypoint2D<PointInT, PointOutT, IntensityT>::detectKeypoints (Poin
     {
       for(int i = half_window_size_; i < w; ++i)
       {
-        float center = intensity_ ((*input_) (i,j));
-        float up = intensity_ ((*input_) (i, j-half_window_size_));
-        float down = intensity_ ((*input_) (i, j+half_window_size_));
-        float left = intensity_ ((*input_) (i-half_window_size_, j));
-        float right = intensity_ ((*input_) (i+half_window_size_, j));
-        float upleft = intensity_ ((*input_) (i-half_window_size_, j-half_window_size_));
-        float upright = intensity_ ((*input_) (i+half_window_size_, j-half_window_size_));
-        float downleft = intensity_ ((*input_) (i-half_window_size_, j+half_window_size_));
-        float downright = intensity_ ((*input_) (i+half_window_size_, j+half_window_size_));
-        std::vector<float> r (4,0);
+        double center = intensity_ ((*input_) (i,j));
+        double up = intensity_ ((*input_) (i, j-half_window_size_));
+        double down = intensity_ ((*input_) (i, j+half_window_size_));
+        double left = intensity_ ((*input_) (i-half_window_size_, j));
+        double right = intensity_ ((*input_) (i+half_window_size_, j));
+        double upleft = intensity_ ((*input_) (i-half_window_size_, j-half_window_size_));
+        double upright = intensity_ ((*input_) (i+half_window_size_, j-half_window_size_));
+        double downleft = intensity_ ((*input_) (i-half_window_size_, j+half_window_size_));
+        double downright = intensity_ ((*input_) (i+half_window_size_, j+half_window_size_));
+        std::vector<double> r (4,0);
 
-        float up_center = up - center;
+        double up_center = up - center;
         r[0] = up_center * up_center;
-        float down_center = down - center;
+        double down_center = down - center;
         r[0]+= down_center * down_center;
 
-        float upright_center = upright - center;
+        double upright_center = upright - center;
         r[1] = upright_center * upright_center;
-        float downleft_center = downleft - center;
+        double downleft_center = downleft - center;
         r[1]+= downleft_center * downleft_center;
 
-        float right_center = right - center;
+        double right_center = right - center;
         r[2] = right_center * right_center;
-        float left_center = left - center;
+        double left_center = left - center;
         r[2]+= left_center * left_center;
 
-        float downright_center = downright - center;
+        double downright_center = downright - center;
         r[3] = downright_center * downright_center;
-        float upleft_center = upleft - center;
+        double upleft_center = upleft - center;
         r[3]+= upleft_center * upleft_center;
 
-        float d = *(std::min_element (r.begin (), r.end ()));
+        double d = *(std::min_element (r.begin (), r.end ()));
 
         if (d < first_threshold_)
           continue;
 
-        std::vector<float> B (4,0);
-        std::vector<float> A (4,0);
-        std::vector<float> sumAB (4,0);
+        std::vector<double> B (4,0);
+        std::vector<double> A (4,0);
+        std::vector<double> sumAB (4,0);
         B[0] = (upright - up) * up_center;
         B[0]+= (downleft - down) * down_center;
         B[1] = (right - upright) * upright_center;
@@ -192,7 +192,7 @@ pcl::TrajkovicKeypoint2D<PointInT, PointOutT, IntensityT>::detectKeypoints (Poin
         if ((*std::max_element (B.begin (), B.end ()) < 0) &&
             (*std::min_element (sumAB.begin (), sumAB.end ()) > 0))
         {
-          std::vector<float> D (4,0);
+          std::vector<double> D (4,0);
           D[0] = B[0] * B[0] / A[0];
           D[1] = B[1] * B[1] / A[1];
           D[2] = B[2] * B[2] / A[2];
@@ -227,7 +227,7 @@ pcl::TrajkovicKeypoint2D<PointInT, PointOutT, IntensityT>::detectKeypoints (Poin
       continue;
 
     PointOutT p;
-    p.getVector3fMap () = input_->points[idx].getVector3fMap ();
+    p.getVector3dMap () = input_->points[idx].getVector3dMap ();
     p.intensity = response_->points [idx];
 
 #ifdef _OPENMP

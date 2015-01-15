@@ -102,7 +102,7 @@ namespace pcl
   {
     namespace kinfuLS
     {
-      void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, float colors_weight = 0.5f);
+      void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5);
       void mergePointNormal (const DeviceArray<PointXYZ>& cloud, const DeviceArray<Normal>& normals, DeviceArray<PointNormal>& output);
     }
   }
@@ -152,8 +152,8 @@ struct SampledScopeTime : public StopWatch
     if (i_ % EACH == 0 && i_)
     {
       boost::posix_time::ptime endtime_ = boost::posix_time::microsec_clock::local_time();
-      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000.f * EACH / time_ms_ << "fps )"
-           << "( real: " << 1000.f * EACH / (endtime_-starttime_).total_milliseconds() << "fps )"  << endl;
+      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000. * EACH / time_ms_ << "fps )"
+           << "( real: " << 1000. * EACH / (endtime_-starttime_).total_milliseconds() << "fps )"  << endl;
       time_ms_ = 0;
       starttime_ = endtime_;
     }
@@ -166,11 +166,11 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-setViewerPose (visualization::PCLVisualizer& viewer, const Eigen::Affine3f& viewer_pose)
+setViewerPose (visualization::PCLVisualizer& viewer, const Eigen::Affine3d& viewer_pose)
 {
-  Eigen::Vector3f pos_vector = viewer_pose * Eigen::Vector3f (0, 0, 0);
-  Eigen::Vector3f look_at_vector = viewer_pose.rotation () * Eigen::Vector3f (0, 0, 1) + pos_vector;
-  Eigen::Vector3f up_vector = viewer_pose.rotation () * Eigen::Vector3f (0, -1, 0);
+  Eigen::Vector3d pos_vector = viewer_pose * Eigen::Vector3d (0, 0, 0);
+  Eigen::Vector3d look_at_vector = viewer_pose.rotation () * Eigen::Vector3d (0, 0, 1) + pos_vector;
+  Eigen::Vector3d up_vector = viewer_pose.rotation () * Eigen::Vector3d (0, -1, 0);
   viewer.setCameraPosition (pos_vector[0], pos_vector[1], pos_vector[2],
                             look_at_vector[0], look_at_vector[1], look_at_vector[2],
                             up_vector[0], up_vector[1], up_vector[2]);
@@ -178,13 +178,13 @@ setViewerPose (visualization::PCLVisualizer& viewer, const Eigen::Affine3f& view
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Eigen::Affine3f 
+Eigen::Affine3d 
 getViewerPose (visualization::PCLVisualizer& viewer)
 {
-  Eigen::Affine3f pose = viewer.getViewerPose();
-  Eigen::Matrix3f rotation = pose.linear();
+  Eigen::Affine3d pose = viewer.getViewerPose();
+  Eigen::Matrix3d rotation = pose.linear();
 
-  Matrix3f axis_reorder;  
+  Matrix3d axis_reorder;  
   axis_reorder << 0,  0,  1,
           -1,  0,  0,
           0, -1,  0;
@@ -280,7 +280,7 @@ struct CurrentFrameCloudView
   }
 
   void
-  setViewerPose (const Eigen::Affine3f& viewer_pose) {
+  setViewerPose (const Eigen::Affine3d& viewer_pose) {
     ::setViewerPose (cloud_viewer_, viewer_pose);
   }
 
@@ -303,7 +303,7 @@ struct ImageView
   }
 
   void
-  showScene (KinfuTracker& kinfu, const PtrStepSz<const pcl::gpu::kinfuLS::PixelRGB>& rgb24, bool registration, Eigen::Affine3f* pose_ptr = 0)
+  showScene (KinfuTracker& kinfu, const PtrStepSz<const pcl::gpu::kinfuLS::PixelRGB>& rgb24, bool registration, Eigen::Affine3d* pose_ptr = 0)
   {
     if (pose_ptr)
     {
@@ -343,7 +343,7 @@ struct ImageView
   }
 
   void
-  showGeneratedDepth (KinfuTracker& kinfu, const Eigen::Affine3f& pose)
+  showGeneratedDepth (KinfuTracker& kinfu, const Eigen::Affine3d& pose)
   {            
     raycaster_ptr_->run(kinfu.volume(), pose, kinfu.getCyclicalBufferStructure ());
     raycaster_ptr_->generateDepthImage(generated_depth_);    
@@ -410,7 +410,7 @@ struct SceneCloudView
   }
   
   inline void 
-  drawCamera (Eigen::Affine3f& pose, const string& name, double r, double g, double b)
+  drawCamera (Eigen::Affine3d& pose, const string& name, double r, double g, double b)
   {
     double focal = 575;
     double height = 480;
@@ -511,7 +511,7 @@ struct SceneCloudView
     else if (!was_lost_ && kinfu.icpIsLost()) //execute only when we just lost ourselves (i.e. was_lost_ = false && icpIsLost == true)
     { 
       // draw position of the last good track
-      Eigen::Affine3f last_pose = kinfu.getCameraPose();
+      Eigen::Affine3d last_pose = kinfu.getCameraPose();
       drawCamera(last_pose, name, 0.0, 1.0, 0.0);
       
      
@@ -526,7 +526,7 @@ struct SceneCloudView
     {
       removeCamera(name_estimate);
        // draw current camera estimate
-      Eigen::Affine3f last_pose_estimate = kinfu.getLastEstimatedPose();
+      Eigen::Affine3d last_pose_estimate = kinfu.getLastEstimatedPose();
       drawCamera(last_pose_estimate, name_estimate, 1.0, 0.0, 0.0);      
     }
       
@@ -599,12 +599,12 @@ struct SceneCloudView
   }
 
   void
-  toggleCube(const Eigen::Vector3f& size)
+  toggleCube(const Eigen::Vector3d& size)
   {
     if (cube_added_)
       cloud_viewer_.removeShape("cube");
     else
-      cloud_viewer_.addCube(size*0.5, Eigen::Quaternionf::Identity(), size(0), size(1), size(2));
+      cloud_viewer_.addCube(size*0.5, Eigen::Quaterniond::Identity(), size(0), size(1), size(2));
 
     cube_added_ = !cube_added_;
   }
@@ -662,7 +662,7 @@ struct SceneCloudView
   bool valid_combined_;
   bool cube_added_;
 
-  Eigen::Affine3f viewer_pose_;
+  Eigen::Affine3d viewer_pose_;
 
   visualization::PCLVisualizer cloud_viewer_;
 
@@ -694,11 +694,11 @@ struct KinFuLSApp
 {
   enum { PCD_BIN = 1, PCD_ASCII = 2, PLY = 3, MESH_PLY = 7, MESH_VTK = 8 };
 
-  KinFuLSApp(pcl::Grabber& source, float vsz, float shiftDistance, int snapshotRate) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
-          registration_ (false), integrate_colors_ (false), pcd_source_ (false), focal_length_(-1.f), capture_ (source), was_lost_(false), time_ms_ (0)
+  KinFuLSApp(pcl::Grabber& source, double vsz, double shiftDistance, int snapshotRate) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
+          registration_ (false), integrate_colors_ (false), pcd_source_ (false), focal_length_(-1.), capture_ (source), was_lost_(false), time_ms_ (0)
   {    
     //Init Kinfu Tracker
-    Eigen::Vector3f volume_size = Vector3f::Constant (vsz/*meters*/);    
+    Eigen::Vector3d volume_size = Vector3d::Constant (vsz/*meters*/);    
 
     PCL_WARN ("--- CURRENT SETTINGS ---\n");
     PCL_INFO ("Volume size is set to %.2f meters\n", vsz);
@@ -712,16 +712,16 @@ struct KinFuLSApp
 
     kinfu_ = new pcl::gpu::kinfuLS::KinfuTracker(volume_size, shiftDistance);
 
-    Eigen::Matrix3f R = Eigen::Matrix3f::Identity ();   // * AngleAxisf( pcl::deg2rad(-30.f), Vector3f::UnitX());
-    Eigen::Vector3f t = volume_size * 0.5f - Vector3f (0, 0, volume_size (2) / 2 * 1.2f);
+    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.), Vector3d::UnitX());
+    Eigen::Vector3d t = volume_size * 0.5 - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
-    Eigen::Affine3f pose = Eigen::Translation3f (t) * Eigen::AngleAxisf (R);
+    Eigen::Affine3d pose = Eigen::Translation3d (t) * Eigen::AngleAxisd (R);
 
     kinfu_->setInitialCameraPose (pose);
-    kinfu_->volume().setTsdfTruncDist (0.030f/*meters*/);
-    kinfu_->setIcpCorespFilteringParams (0.1f/*meters*/, sin ( pcl::deg2rad(20.f) ));
-    //kinfu_->setDepthTruncationForICP(3.f/*meters*/);
-    kinfu_->setCameraMovementThreshold(0.001f);
+    kinfu_->volume().setTsdfTruncDist (0.030/*meters*/);
+    kinfu_->setIcpCorespFilteringParams (0.1/*meters*/, sin ( pcl::deg2rad(20.) ));
+    //kinfu_->setDepthTruncationForICP(3./*meters*/);
+    kinfu_->setCameraMovementThreshold(0.001);
 
     //Init KinFuLSApp            
     tsdf_cloud_ptr_ = pcl::PointCloud<pcl::PointXYZI>::Ptr (new pcl::PointCloud<pcl::PointXYZI>);
@@ -735,18 +735,18 @@ struct KinFuLSApp
     frame_counter_ = 0;
     enable_texture_extraction_ = false;
 
-    //~ float fx, fy, cx, cy;
+    //~ double fx, fy, cx, cy;
     //~ boost::shared_ptr<openni_wrapper::OpenNIDevice> d = ((pcl::OpenNIGrabber)source).getDevice ();
     //~ kinfu_->getDepthIntrinsics (fx, fy, cx, cy);
 
-    float height = 480.0f;
-    float width = 640.0f;
+    double height = 480.0;
+    double width = 640.0;
     screenshot_manager_.setCameraIntrinsics (pcl::device::kinfuLS::FOCAL_LENGTH, height, width);
     snapshot_rate_ = snapshotRate;
     
-    Eigen::Matrix3f Rid = Eigen::Matrix3f::Identity ();   // * AngleAxisf( pcl::deg2rad(-30.f), Vector3f::UnitX());
-    Eigen::Vector3f T = Vector3f (0, 0, -volume_size(0)*1.5f);
-    delta_lost_pose_ = Eigen::Translation3f (T) * Eigen::AngleAxisf (Rid); 
+    Eigen::Matrix3d Rid = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.), Vector3d::UnitX());
+    Eigen::Vector3d T = Vector3d (0, 0, -volume_size(0)*1.5);
+    delta_lost_pose_ = Eigen::Translation3d (T) * Eigen::AngleAxisd (Rid); 
     
   }
 
@@ -863,7 +863,7 @@ struct KinFuLSApp
 
     if (has_image)
     {
-      Eigen::Affine3f viewer_pose = getViewerPose(scene_cloud_view_.cloud_viewer_);
+      Eigen::Affine3d viewer_pose = getViewerPose(scene_cloud_view_.cloud_viewer_);
       image_view_.showScene (*kinfu_, rgb24, registration_, independent_camera_ ? &viewer_pose : 0);
     }    
 
@@ -909,7 +909,7 @@ struct KinFuLSApp
     data_ready_cond_.notify_one();
   }
 
-  void source_cb2(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, float)
+  void source_cb2(const boost::shared_ptr<openni_wrapper::Image>& image_wrapper, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_wrapper, double)
   {
     {
       boost::mutex::scoped_try_lock lock(data_ready_mutex_);
@@ -985,7 +985,7 @@ struct KinFuLSApp
     typedef boost::shared_ptr<DepthImage> DepthImagePtr;
     typedef boost::shared_ptr<Image>      ImagePtr;
 
-    boost::function<void (const ImagePtr&, const DepthImagePtr&, float constant)> func1 = boost::bind (&KinFuLSApp::source_cb2, this, _1, _2, _3);
+    boost::function<void (const ImagePtr&, const DepthImagePtr&, double constant)> func1 = boost::bind (&KinFuLSApp::source_cb2, this, _1, _2, _3);
     boost::function<void (const DepthImagePtr&)> func2 = boost::bind (&KinFuLSApp::source_cb1, this, _1);
     boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&) > func3 = boost::bind (&KinFuLSApp::source_cb3, this, _1);
 
@@ -1098,7 +1098,7 @@ struct KinFuLSApp
   bool registration_;
   bool integrate_colors_;
   bool pcd_source_;
-  float focal_length_;
+  double focal_length_;
 
   pcl::Grabber& capture_;
   KinfuTracker *kinfu_;
@@ -1121,7 +1121,7 @@ struct KinFuLSApp
   PtrStepSz<const unsigned short> depth_;
   PtrStepSz<const pcl::gpu::kinfuLS::PixelRGB> rgb24_;  
   
-  Eigen::Affine3f delta_lost_pose_;
+  Eigen::Affine3d delta_lost_pose_;
   
   bool was_lost_;
 
@@ -1279,7 +1279,7 @@ main (int argc, char* argv[])
     }
     else if (pc::parse_argument (argc, argv, "-pcd", pcd_dir) > 0)
     {
-      float fps_pcd = 15.0f;
+      double fps_pcd = 15.0;
       pc::parse_argument (argc, argv, "-pcd_fps", fps_pcd);
 
       vector<string> pcd_files = getPcdFilesInDir(pcd_dir);    
@@ -1307,11 +1307,11 @@ main (int argc, char* argv[])
   }
   catch (const pcl::PCLException& /*e*/) { return cout << "Can't open depth source" << endl, -1; }
 
-  float volume_size = pcl::device::kinfuLS::VOLUME_SIZE;
+  double volume_size = pcl::device::kinfuLS::VOLUME_SIZE;
   pc::parse_argument (argc, argv, "--volume_size", volume_size);
   pc::parse_argument (argc, argv, "-vs", volume_size);
 
-  float shift_distance = pcl::device::kinfuLS::DISTANCE_THRESHOLD;
+  double shift_distance = pcl::device::kinfuLS::DISTANCE_THRESHOLD;
   pc::parse_argument (argc, argv, "--shifting_distance", shift_distance);
   pc::parse_argument (argc, argv, "-sd", shift_distance);
 

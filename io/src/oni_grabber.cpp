@@ -57,7 +57,7 @@ namespace pcl
       unsigned char Red;
       unsigned char Alpha;
     };
-    float float_value;
+    double float_value;
     long long_value;
   } RGBValue;
 
@@ -238,11 +238,11 @@ ONIGrabber::getName () const
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float 
+double 
 ONIGrabber::getFramesPerSecond () const
 {
   if (device_->isStreaming())
-    return (static_cast<float> (device_->getDepthOutputMode ().nFPS));
+    return (static_cast<double> (device_->getDepthOutputMode ().nFPS));
   else
     return (0);
 }
@@ -314,7 +314,7 @@ ONIGrabber::imageDepthImageCallback(const boost::shared_ptr<openni_wrapper::Imag
 
   if (image_depth_image_signal_->num_slots() > 0)
   {
-    float constant = 1.0f / device_->getDepthFocalLength(depth_width_);
+    double constant = 1.0 / device_->getDepthFocalLength(depth_width_);
     image_depth_image_signal_->operator()(image, depth_image, constant);
   }
 }
@@ -329,7 +329,7 @@ ONIGrabber::irDepthImageCallback(const boost::shared_ptr<openni_wrapper::IRImage
 
   if (ir_depth_image_signal_->num_slots() > 0)
   {
-    float constant = 1.0f / device_->getDepthFocalLength(depth_width_);
+    double constant = 1.0 / device_->getDepthFocalLength(depth_width_);
     ir_depth_image_signal_->operator()(ir_image, depth_image, constant);
   }
 }
@@ -347,7 +347,7 @@ ONIGrabber::convertToXYZPointCloud(const boost::shared_ptr<openni_wrapper::Depth
 
   cloud->points.resize (cloud->height * cloud->width);
 
-  register float constant = 1.0f / device_->getDepthFocalLength (depth_width_);
+  register double constant = 1.0 / device_->getDepthFocalLength (depth_width_);
 
   if (device_->isDepthRegistered ())
     cloud->header.frame_id = rgb_frame_id_;
@@ -357,7 +357,7 @@ ONIGrabber::convertToXYZPointCloud(const boost::shared_ptr<openni_wrapper::Depth
   register int centerX = (cloud->width >> 1);
   int centerY = (cloud->height >> 1);
 
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   // we have to use Data, since operator[] uses assert -> Debug-mode very slow!
   register const unsigned short* depth_map = depth_image->getDepthMetaData ().Data ();
@@ -390,9 +390,9 @@ ONIGrabber::convertToXYZPointCloud(const boost::shared_ptr<openni_wrapper::Depth
         pt.x = pt.y = pt.z = bad_point;
         continue;
       }
-      pt.z = depth_map[depth_idx] * 0.001f;
-      pt.x = static_cast<float> (u) * pt.z * constant;
-      pt.y = static_cast<float> (v) * pt.z * constant;
+      pt.z = depth_map[depth_idx] * 0.001;
+      pt.x = static_cast<double> (u) * pt.z * constant;
+      pt.y = static_cast<double> (v) * pt.z * constant;
     }
   }
   return (cloud);
@@ -416,7 +416,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr ONIGrabber::convertToXYZRGBPointCloud (
 
   cloud->points.resize(cloud->height * cloud->width);
 
-  float constant = 1.0f / device_->getImageFocalLength(cloud->width);
+  double constant = 1.0 / device_->getImageFocalLength(cloud->width);
   register int centerX = (cloud->width >> 1);
   int centerY = (cloud->height >> 1);
 
@@ -450,7 +450,7 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr ONIGrabber::convertToXYZRGBPointCloud (
   RGBValue color;
   color.Alpha = 0;
 
-  float bad_point = std::numeric_limits<float>::quiet_NaN();
+  double bad_point = std::numeric_limits<double>::quiet_NaN();
 
   for (int v = -centerY; v < centerY; ++v)
   {
@@ -467,9 +467,9 @@ pcl::PointCloud<pcl::PointXYZRGB>::Ptr ONIGrabber::convertToXYZRGBPointCloud (
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f;
-        pt.x = static_cast<float> (u) * pt.z * constant;
-        pt.y = static_cast<float> (v) * pt.z * constant;
+        pt.z = depth_map[depth_idx] * 0.001;
+        pt.x = static_cast<double> (u) * pt.z * constant;
+        pt.y = static_cast<double> (v) * pt.z * constant;
       }
 
       // Fill in color
@@ -500,7 +500,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr ONIGrabber::convertToXYZRGBAPointCloud (
 
   cloud->points.resize(cloud->height * cloud->width);
 
-  float constant = 1.0f / device_->getImageFocalLength(cloud->width);
+  double constant = 1.0 / device_->getImageFocalLength(cloud->width);
   register int centerX = (cloud->width >> 1);
   int centerY = (cloud->height >> 1);
 
@@ -534,7 +534,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr ONIGrabber::convertToXYZRGBAPointCloud (
   RGBValue color;
   color.Alpha = 0;
 
-  float bad_point = std::numeric_limits<float>::quiet_NaN();
+  double bad_point = std::numeric_limits<double>::quiet_NaN();
 
   for (int v = -centerY; v < centerY; ++v)
   {
@@ -551,9 +551,9 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr ONIGrabber::convertToXYZRGBAPointCloud (
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f;
-        pt.x = static_cast<float> (u) * pt.z * constant;
-        pt.y = static_cast<float> (v) * pt.z * constant;
+        pt.z = depth_map[depth_idx] * 0.001;
+        pt.x = static_cast<double> (u) * pt.z * constant;
+        pt.y = static_cast<double> (v) * pt.z * constant;
       }
 
       // Fill in color
@@ -579,7 +579,7 @@ pcl::PointCloud<pcl::PointXYZI>::Ptr ONIGrabber::convertToXYZIPointCloud(const b
 
   cloud->points.resize(cloud->height * cloud->width);
 
-  float constant = 1.0f / device_->getImageFocalLength(cloud->width);
+  double constant = 1.0 / device_->getImageFocalLength(cloud->width);
   register int centerX = (cloud->width >> 1);
   int centerY = (cloud->height >> 1);
 
@@ -607,7 +607,7 @@ pcl::PointCloud<pcl::PointXYZI>::Ptr ONIGrabber::convertToXYZIPointCloud(const b
   }
 
   register int depth_idx = 0;
-  float bad_point = std::numeric_limits<float>::quiet_NaN();
+  double bad_point = std::numeric_limits<double>::quiet_NaN();
 
   for (int v = -centerY; v < centerY; ++v)
   {
@@ -624,13 +624,13 @@ pcl::PointCloud<pcl::PointXYZI>::Ptr ONIGrabber::convertToXYZIPointCloud(const b
       }
       else
       {
-        pt.z = depth_map[depth_idx] * 0.001f;
-        pt.x = static_cast<float> (u) * pt.z * constant;
-        pt.y = static_cast<float> (v) * pt.z * constant;
+        pt.z = depth_map[depth_idx] * 0.001;
+        pt.x = static_cast<double> (u) * pt.z * constant;
+        pt.y = static_cast<double> (v) * pt.z * constant;
       }
 
       pt.data_c[0] = pt.data_c[1] = pt.data_c[2] = pt.data_c[3] = 0;
-      pt.intensity = static_cast<float> (ir_map[depth_idx]);
+      pt.intensity = static_cast<double> (ir_map[depth_idx]);
     }
   }
   return (cloud);

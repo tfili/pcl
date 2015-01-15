@@ -76,7 +76,7 @@ class OpenNI3DConcaveHull
     {
       grid.setFilterFieldName ("z");
       grid.setFilterLimits (0.0, 1.0);
-      grid.setLeafSize (0.01f, 0.01f, 0.01f);
+      grid.setLeafSize (0.01, 0.01, 0.01);
     }
     
     void 

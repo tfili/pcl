@@ -314,7 +314,7 @@ namespace pcl
   struct PCL_EXPORTS LINEMODDetection
   {
     /** \brief Constructor. */
-    LINEMODDetection () : x (0), y (0), template_id (0), score (0.0f), scale (1.0f) {}
+    LINEMODDetection () : x (0), y (0), template_id (0), score (0.0), scale (1.0) {}
 
     /** \brief x-position of the detection. */
     int x;
@@ -323,9 +323,9 @@ namespace pcl
     /** \brief ID of the detected template. */
     int template_id;
     /** \brief score of the detection. */
-    float score;
+    double score;
     /** \brief scale at which the template was detected. */
-    float scale;
+    double scale;
   };
 
   /**
@@ -376,9 +376,9 @@ namespace pcl
       void
       detectTemplatesSemiScaleInvariant (const std::vector<QuantizableModality*> & modalities,
                                          std::vector<LINEMODDetection> & detections,
-                                         float min_scale = 0.6944444f,
-                                         float max_scale = 1.44f,
-                                         float scale_multiplier = 1.2f) const;
+                                         double min_scale = 0.6944444f,
+                                         double max_scale = 1.44f,
+                                         double scale_multiplier = 1.2f) const;
 
       /** \brief Matches the stored templates to the supplied modality data.
         * \param[in] modalities the modalities that will be used for matching.
@@ -392,7 +392,7 @@ namespace pcl
         * \param[in] threshold the detection threshold.
         */
       inline void
-      setDetectionThreshold (float threshold)
+      setDetectionThreshold (double threshold)
       {
         template_threshold_ = threshold;
       }
@@ -465,7 +465,7 @@ namespace pcl
 
     private:
       /** template response threshold */
-      float template_threshold_;
+      double template_threshold_;
       /** states whether non-max-suppression on detections is enabled or not */
       bool use_non_max_suppression_;
       /** states whether to return an averaged detection */

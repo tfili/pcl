@@ -57,13 +57,13 @@ namespace pcl
       }
       
       void 
-      harrisCorner  (ImageType &output, ImageType &input, const float sigma_d, const float sigma_i, const float alpha, const float thresh);
+      harrisCorner  (ImageType &output, ImageType &input, const double sigma_d, const double sigma_i, const double alpha, const double thresh);
       
       void 
-      hessianBlob  (ImageType &output, ImageType &input, const float sigma, bool SCALE);
+      hessianBlob  (ImageType &output, ImageType &input, const double sigma, bool SCALE);
       
       void 
-      hessianBlob  (ImageType &output, ImageType &input, const float start_scale, const float scaling_factor, const int num_scales);
+      hessianBlob  (ImageType &output, ImageType &input, const double start_scale, const double scaling_factor, const int num_scales);
 
       void 
       imageElementMultiply  (ImageType &output, ImageType &input1, ImageType &input2);

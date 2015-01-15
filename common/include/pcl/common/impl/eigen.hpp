@@ -52,8 +52,8 @@ pcl::computeRoots2 (const Scalar& b, const Scalar& c, Roots& roots)
 
   Scalar sd = ::std::sqrt (d);
 
-  roots (2) = 0.5f * (b + sd);
-  roots (1) = 0.5f * (b - sd);
+  roots (2) = 0.5 * (b + sd);
+  roots (1) = 0.5 * (b - sd);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -579,83 +579,83 @@ pcl::determinant3x3Matrix (const Matrix& matrix)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, 
-                                const Eigen::Vector3f& y_direction, 
-                                Eigen::Affine3f& transformation)
+pcl::getTransFromUnitVectorsZY (const Eigen::Vector3d& z_axis, 
+                                const Eigen::Vector3d& y_direction, 
+                                Eigen::Affine3d& transformation)
 {
-  Eigen::Vector3f tmp0 = (y_direction.cross(z_axis)).normalized();
-  Eigen::Vector3f tmp1 = (z_axis.cross(tmp0)).normalized();
-  Eigen::Vector3f tmp2 = z_axis.normalized();
+  Eigen::Vector3d tmp0 = (y_direction.cross(z_axis)).normalized();
+  Eigen::Vector3d tmp1 = (z_axis.cross(tmp0)).normalized();
+  Eigen::Vector3d tmp2 = z_axis.normalized();
   
-  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0f;
-  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0f;
-  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0f;
-  transformation(3,0)=0.0f;    transformation(3,1)=0.0f;    transformation(3,2)=0.0f;    transformation(3,3)=1.0f;
+  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0;
+  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0;
+  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0;
+  transformation(3,0)=0.0;    transformation(3,1)=0.0;    transformation(3,2)=0.0;    transformation(3,3)=1.0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-Eigen::Affine3f 
-pcl::getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, 
-                                const Eigen::Vector3f& y_direction)
+Eigen::Affine3d 
+pcl::getTransFromUnitVectorsZY (const Eigen::Vector3d& z_axis, 
+                                const Eigen::Vector3d& y_direction)
 {
-  Eigen::Affine3f transformation;
+  Eigen::Affine3d transformation;
   getTransFromUnitVectorsZY (z_axis, y_direction, transformation);
   return (transformation);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, 
-                                const Eigen::Vector3f& y_direction, 
-                                Eigen::Affine3f& transformation)
+pcl::getTransFromUnitVectorsXY (const Eigen::Vector3d& x_axis, 
+                                const Eigen::Vector3d& y_direction, 
+                                Eigen::Affine3d& transformation)
 {
-  Eigen::Vector3f tmp2 = (x_axis.cross(y_direction)).normalized();
-  Eigen::Vector3f tmp1 = (tmp2.cross(x_axis)).normalized();
-  Eigen::Vector3f tmp0 = x_axis.normalized();
+  Eigen::Vector3d tmp2 = (x_axis.cross(y_direction)).normalized();
+  Eigen::Vector3d tmp1 = (tmp2.cross(x_axis)).normalized();
+  Eigen::Vector3d tmp0 = x_axis.normalized();
   
-  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0f;
-  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0f;
-  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0f;
-  transformation(3,0)=0.0f;    transformation(3,1)=0.0f;    transformation(3,2)=0.0f;    transformation(3,3)=1.0f;
+  transformation(0,0)=tmp0[0]; transformation(0,1)=tmp0[1]; transformation(0,2)=tmp0[2]; transformation(0,3)=0.0;
+  transformation(1,0)=tmp1[0]; transformation(1,1)=tmp1[1]; transformation(1,2)=tmp1[2]; transformation(1,3)=0.0;
+  transformation(2,0)=tmp2[0]; transformation(2,1)=tmp2[1]; transformation(2,2)=tmp2[2]; transformation(2,3)=0.0;
+  transformation(3,0)=0.0;    transformation(3,1)=0.0;    transformation(3,2)=0.0;    transformation(3,3)=1.0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-Eigen::Affine3f 
-pcl::getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, 
-                                const Eigen::Vector3f& y_direction)
+Eigen::Affine3d 
+pcl::getTransFromUnitVectorsXY (const Eigen::Vector3d& x_axis, 
+                                const Eigen::Vector3d& y_direction)
 {
-  Eigen::Affine3f transformation;
+  Eigen::Affine3d transformation;
   getTransFromUnitVectorsXY (x_axis, y_direction, transformation);
   return (transformation);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, 
-                                          const Eigen::Vector3f& z_axis, 
-                                          Eigen::Affine3f& transformation)
+pcl::getTransformationFromTwoUnitVectors (const Eigen::Vector3d& y_direction, 
+                                          const Eigen::Vector3d& z_axis, 
+                                          Eigen::Affine3d& transformation)
 {
   getTransFromUnitVectorsZY (z_axis, y_direction, transformation);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-Eigen::Affine3f 
-pcl::getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, 
-                                          const Eigen::Vector3f& z_axis)
+Eigen::Affine3d 
+pcl::getTransformationFromTwoUnitVectors (const Eigen::Vector3d& y_direction, 
+                                          const Eigen::Vector3d& z_axis)
 {
-  Eigen::Affine3f transformation;
+  Eigen::Affine3d transformation;
   getTransformationFromTwoUnitVectors (y_direction, z_axis, transformation);
   return (transformation);
 }
 
 void 
-pcl::getTransformationFromTwoUnitVectorsAndOrigin (const Eigen::Vector3f& y_direction, 
-                                                   const Eigen::Vector3f& z_axis,
-                                                   const Eigen::Vector3f& origin, 
-                                                   Eigen::Affine3f& transformation)
+pcl::getTransformationFromTwoUnitVectorsAndOrigin (const Eigen::Vector3d& y_direction, 
+                                                   const Eigen::Vector3d& z_axis,
+                                                   const Eigen::Vector3d& origin, 
+                                                   Eigen::Affine3d& transformation)
 {
   getTransformationFromTwoUnitVectors(y_direction, z_axis, transformation);
-  Eigen::Vector3f translation = transformation*origin;
+  Eigen::Vector3d translation = transformation*origin;
   transformation(0,3)=-translation[0];  transformation(1,3)=-translation[1];  transformation(2,3)=-translation[2];
 }
 

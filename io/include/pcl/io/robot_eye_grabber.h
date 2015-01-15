@@ -92,7 +92,7 @@ namespace pcl
 
       /** \brief Returns the number of frames per second.
        */
-      virtual float getFramesPerSecond () const;
+      virtual double getFramesPerSecond () const;
 
       /** \brief Set/get ip address of the sensor that sends the data.
        * The default is address_v4::any ().

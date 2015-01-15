@@ -74,10 +74,10 @@ namespace pcl
             typedef PointArray PointCloud;
             typedef PointArray Queries;
                        
-            typedef DeviceArray<float> Radiuses;
+            typedef DeviceArray<double> Radiuses;
             typedef DeviceArray<int> BatchResult;            
             typedef DeviceArray<int> BatchResultSizes;
-            typedef DeviceArray<float> BatchResultSqrDists;
+            typedef DeviceArray<double> BatchResultSqrDists;
             typedef DeviceArray<int> Indices;
 
             typedef pcl::gpu::NeighborIndices NeighborIndices;
@@ -89,13 +89,13 @@ namespace pcl
 
             void setCloud(const PointCloud& input_points);           
             void build();
-            void radiusSearchHost(const PointType& center, float radius, std::vector<int>& out, int max_nn) const;
-            void approxNearestSearchHost(const PointType& query, int& out_index, float& sqr_dist) const;
+            void radiusSearchHost(const PointType& center, double radius, std::vector<int>& out, int max_nn) const;
+            void approxNearestSearchHost(const PointType& query, int& out_index, double& sqr_dist) const;
             
-            void radiusSearch(const Queries& queries, float radius, NeighborIndices& results);
+            void radiusSearch(const Queries& queries, double radius, NeighborIndices& results);
             void radiusSearch(const Queries& queries, const Radiuses& radiuses, NeighborIndices& results);
 
-            void radiusSearch(const Queries& queries, const Indices& indices, float radius, NeighborIndices& results);
+            void radiusSearch(const Queries& queries, const Indices& indices, double radius, NeighborIndices& results);
 
             void approxNearestSearch(const Queries& queries, NeighborIndices& results) const;
             
@@ -105,7 +105,7 @@ namespace pcl
             PointCloud points;
 
             // data
-            DeviceArray2D<float> points_sorted;
+            DeviceArray2D<double> points_sorted;
             DeviceArray<int> codes;
             DeviceArray<int> indices;
                         
@@ -125,7 +125,7 @@ namespace pcl
 
                 std::vector<int> indices;	
                 
-                std::vector<float> points_sorted;
+                std::vector<double> points_sorted;
                 int points_sorted_step;
 
                 int downloaded;
@@ -139,7 +139,7 @@ namespace pcl
             void radiusSearchEx(BatchType& batch, const Queries& queries, NeighborIndices& results);
         };
 
-        void bruteForceRadiusSearch(const OctreeImpl::PointCloud& cloud, const OctreeImpl::PointType& query, float radius, DeviceArray<int>& result, DeviceArray<int>& buffer);
+        void bruteForceRadiusSearch(const OctreeImpl::PointCloud& cloud, const OctreeImpl::PointType& query, double radius, DeviceArray<int>& result, DeviceArray<int>& buffer);
 
     }
 }

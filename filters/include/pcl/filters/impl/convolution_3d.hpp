@@ -55,7 +55,7 @@ namespace pcl
       void
       makeInfinite (pcl::Normal& n)
       {
-        n.normal_x = n.normal_y = n.normal_z = std::numeric_limits<float>::quiet_NaN ();
+        n.normal_x = n.normal_y = n.normal_z = std::numeric_limits<double>::quiet_NaN ();
       }
     };
 
@@ -65,7 +65,7 @@ namespace pcl
       void
       makeInfinite (pcl::PointXY& p)
       {
-        p.x = p.y = std::numeric_limits<float>::quiet_NaN ();
+        p.x = p.y = std::numeric_limits<double>::quiet_NaN ();
       }
     };
   }
@@ -99,12 +99,12 @@ pcl::filters::GaussianKernel<PointInT, PointOutT>::initCompute ()
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointOutT> PointOutT
 pcl::filters::GaussianKernel<PointInT, PointOutT>::operator() (const std::vector<int>& indices,
-                                                               const std::vector<float>& distances)
+                                                               const std::vector<double>& distances)
 {
   using namespace pcl::common;
   PointOutT result;
-  float total_weight = 0;
-  std::vector<float>::const_iterator dist_it = distances.begin ();
+  double total_weight = 0;
+  std::vector<double>::const_iterator dist_it = distances.begin ();
 
   for (std::vector<int>::const_iterator idx_it = indices.begin ();
        idx_it != indices.end ();
@@ -112,7 +112,7 @@ pcl::filters::GaussianKernel<PointInT, PointOutT>::operator() (const std::vector
   {
     if (*dist_it <= threshold_ && isFinite ((*input_) [*idx_it]))
     {
-      float weight = expf (-0.5f * (*dist_it) / sigma_sqr_);
+      double weight = exp (-0.5 * (*dist_it) / sigma_sqr_);
       result += weight * (*input_) [*idx_it];
       total_weight += weight;
     }
@@ -127,13 +127,13 @@ pcl::filters::GaussianKernel<PointInT, PointOutT>::operator() (const std::vector
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointOutT> PointOutT
-pcl::filters::GaussianKernelRGB<PointInT, PointOutT>::operator() (const std::vector<int>& indices, const std::vector<float>& distances)
+pcl::filters::GaussianKernelRGB<PointInT, PointOutT>::operator() (const std::vector<int>& indices, const std::vector<double>& distances)
 {
   using namespace pcl::common;
   PointOutT result;
-  float total_weight = 0;
-  float r = 0, g = 0, b = 0;
-  std::vector<float>::const_iterator dist_it = distances.begin ();
+  double total_weight = 0;
+  double r = 0, g = 0, b = 0;
+  std::vector<double>::const_iterator dist_it = distances.begin ();
 
   for (std::vector<int>::const_iterator idx_it = indices.begin ();
        idx_it != indices.end ();
@@ -141,19 +141,19 @@ pcl::filters::GaussianKernelRGB<PointInT, PointOutT>::operator() (const std::vec
   {
     if (*dist_it <= threshold_ && isFinite ((*input_) [*idx_it]))
     {
-      float weight = expf (-0.5f * (*dist_it) / sigma_sqr_);
+      double weight = exp (-0.5 * (*dist_it) / sigma_sqr_);
       result.x += weight * (*input_) [*idx_it].x;
       result.y += weight * (*input_) [*idx_it].y;
       result.z += weight * (*input_) [*idx_it].z;
-      r += weight * static_cast<float> ((*input_) [*idx_it].r);
-      g += weight * static_cast<float> ((*input_) [*idx_it].g);
-      b += weight * static_cast<float> ((*input_) [*idx_it].b);
+      r += weight * static_cast<double> ((*input_) [*idx_it].r);
+      g += weight * static_cast<double> ((*input_) [*idx_it].g);
+      b += weight * static_cast<double> ((*input_) [*idx_it].b);
       total_weight += weight;
     }
   }
   if (total_weight != 0)
   {
-    total_weight = 1.f/total_weight;
+    total_weight = 1./total_weight;
     r*= total_weight; g*= total_weight; b*= total_weight;
     result.x*= total_weight; result.y*= total_weight; result.z*= total_weight;
     result.r = static_cast<pcl::uint8_t> (r);
@@ -235,7 +235,7 @@ pcl::filters::Convolution3D<PointInT, PointOutT, KernelT>::convolve (PointCloudO
   output.height = surface_->height;
   output.is_dense = surface_->is_dense;
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
 
 #ifdef _OPENMP
 #pragma omp parallel for shared (output) private (nn_indices, nn_distances) num_threads (threads_)

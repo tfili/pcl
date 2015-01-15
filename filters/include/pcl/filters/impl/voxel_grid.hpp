@@ -45,10 +45,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
-                  const std::string &distance_field_name, float min_distance, float max_distance,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative)
+                  const std::string &distance_field_name, double min_distance, double max_distance,
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt, bool limit_negative)
 {
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -56,7 +56,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
   std::vector<pcl::PCLPointField> fields;
   int distance_idx = pcl::getFieldIndex (*cloud, distance_field_name, fields);
 
-  float distance_value;
+  double distance_value;
   // If dense, no need to check for NaNs
   if (cloud->is_dense)
   {
@@ -64,7 +64,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
     {
       // Get the distance value
       const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&cloud->points[i]);
-      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (float));
+      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (double));
 
       if (limit_negative)
       {
@@ -79,7 +79,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           continue;
       }
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -90,7 +90,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
     {
       // Get the distance value
       const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&cloud->points[i]);
-      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (float));
+      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (double));
 
       if (limit_negative)
       {
@@ -111,7 +111,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           !pcl_isfinite (cloud->points[i].z))
         continue;
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[i].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[i].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -124,10 +124,10 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
 template <typename PointT> void
 pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
                   const std::vector<int> &indices,
-                  const std::string &distance_field_name, float min_distance, float max_distance,
-                  Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative)
+                  const std::string &distance_field_name, double min_distance, double max_distance,
+                  Eigen::Vector4d &min_pt, Eigen::Vector4d &max_pt, bool limit_negative)
 {
-  Eigen::Array4f min_p, max_p;
+  Eigen::Array4d min_p, max_p;
   min_p.setConstant (FLT_MAX);
   max_p.setConstant (-FLT_MAX);
 
@@ -135,7 +135,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
   std::vector<pcl::PCLPointField> fields;
   int distance_idx = pcl::getFieldIndex (*cloud, distance_field_name, fields);
 
-  float distance_value;
+  double distance_value;
   // If dense, no need to check for NaNs
   if (cloud->is_dense)
   {
@@ -143,7 +143,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
     {
       // Get the distance value
       const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&cloud->points[*it]);
-      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (float));
+      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (double));
 
       if (limit_negative)
       {
@@ -158,7 +158,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           continue;
       }
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[*it].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[*it].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -169,7 +169,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
     {
       // Get the distance value
       const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&cloud->points[*it]);
-      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (float));
+      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (double));
 
       if (limit_negative)
       {
@@ -190,7 +190,7 @@ pcl::getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
           !pcl_isfinite (cloud->points[*it].z))
         continue;
       // Create the point structure and get the min/max
-      pcl::Array4fMapConst pt = cloud->points[*it].getArray4fMap ();
+      pcl::Array4dMapConst pt = cloud->points[*it].getArray4dMap ();
       min_p = min_p.min (pt);
       max_p = max_p.max (pt);
     }
@@ -225,10 +225,10 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
   output.height       = 1;                    // downsampling breaks the organized structure
   output.is_dense     = true;                 // we filter out invalid points
 
-  Eigen::Vector4f min_p, max_p;
+  Eigen::Vector4d min_p, max_p;
   // Get the minimum and maximum dimensions
   if (!filter_field_name_.empty ()) // If we don't want to process the entire cloud...
-    getMinMax3D<PointT> (input_, *indices_, filter_field_name_, static_cast<float> (filter_limit_min_), static_cast<float> (filter_limit_max_), min_p, max_p, filter_limit_negative_);
+    getMinMax3D<PointT> (input_, *indices_, filter_field_name_, static_cast<double> (filter_limit_min_), static_cast<double> (filter_limit_max_), min_p, max_p, filter_limit_negative_);
   else
     getMinMax3D<PointT> (*input_, *indices_, min_p, max_p);
 
@@ -301,8 +301,8 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
 
       // Get the distance value
       const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&input_->points[*it]);
-      float distance_value = 0;
-      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (float));
+      double distance_value = 0;
+      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (double));
 
       if (filter_limit_negative_)
       {
@@ -317,9 +317,9 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
           continue;
       }
       
-      int ijk0 = static_cast<int> (floor (input_->points[*it].x * inverse_leaf_size_[0]) - static_cast<float> (min_b_[0]));
-      int ijk1 = static_cast<int> (floor (input_->points[*it].y * inverse_leaf_size_[1]) - static_cast<float> (min_b_[1]));
-      int ijk2 = static_cast<int> (floor (input_->points[*it].z * inverse_leaf_size_[2]) - static_cast<float> (min_b_[2]));
+      int ijk0 = static_cast<int> (floor (input_->points[*it].x * inverse_leaf_size_[0]) - static_cast<double> (min_b_[0]));
+      int ijk1 = static_cast<int> (floor (input_->points[*it].y * inverse_leaf_size_[1]) - static_cast<double> (min_b_[1]));
+      int ijk2 = static_cast<int> (floor (input_->points[*it].z * inverse_leaf_size_[2]) - static_cast<double> (min_b_[2]));
 
       // Compute the centroid leaf index
       int idx = ijk0 * divb_mul_[0] + ijk1 * divb_mul_[1] + ijk2 * divb_mul_[2];
@@ -341,9 +341,9 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
             !pcl_isfinite (input_->points[*it].z))
           continue;
 
-      int ijk0 = static_cast<int> (floor (input_->points[*it].x * inverse_leaf_size_[0]) - static_cast<float> (min_b_[0]));
-      int ijk1 = static_cast<int> (floor (input_->points[*it].y * inverse_leaf_size_[1]) - static_cast<float> (min_b_[1]));
-      int ijk2 = static_cast<int> (floor (input_->points[*it].z * inverse_leaf_size_[2]) - static_cast<float> (min_b_[2]));
+      int ijk0 = static_cast<int> (floor (input_->points[*it].x * inverse_leaf_size_[0]) - static_cast<double> (min_b_[0]));
+      int ijk1 = static_cast<int> (floor (input_->points[*it].y * inverse_leaf_size_[1]) - static_cast<double> (min_b_[1]));
+      int ijk2 = static_cast<int> (floor (input_->points[*it].z * inverse_leaf_size_[2]) - static_cast<double> (min_b_[2]));
 
       // Compute the centroid leaf index
       int idx = ijk0 * divb_mul_[0] + ijk1 * divb_mul_[1] + ijk2 * divb_mul_[2];
@@ -407,8 +407,8 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
   }
   
   index = 0;
-  Eigen::VectorXf centroid = Eigen::VectorXf::Zero (centroid_size);
-  Eigen::VectorXf temporary = Eigen::VectorXf::Zero (centroid_size);
+  Eigen::VectorXd centroid = Eigen::VectorXd::Zero (centroid_size);
+  Eigen::VectorXd temporary = Eigen::VectorXd::Zero (centroid_size);
 
   for (unsigned int cp = 0; cp < first_and_last_indices_vector.size (); ++cp)
   {
@@ -465,7 +465,7 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
     if (save_leaf_layout_)
       leaf_layout_[index_vector[first_index].idx] = index;
 
-    centroid /= static_cast<float> (last_index - first_index);
+    centroid /= static_cast<double> (last_index - first_index);
 
     // store centroid
     // Do we need to process all the fields?
@@ -482,9 +482,9 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
       if (rgba_index >= 0) 
       {
         // pack r/g/b into rgb
-        float r = centroid[centroid_size-3], g = centroid[centroid_size-2], b = centroid[centroid_size-1];
+        double r = centroid[centroid_size-3], g = centroid[centroid_size-2], b = centroid[centroid_size-1];
         int rgb = (static_cast<int> (r) << 16) | (static_cast<int> (g) << 8) | static_cast<int> (b);
-        memcpy (reinterpret_cast<char*> (&output.points[index]) + rgba_index, &rgb, sizeof (float));
+        memcpy (reinterpret_cast<char*> (&output.points[index]) + rgba_index, &rgb, sizeof (double));
       }
     }
     ++index;
@@ -493,7 +493,7 @@ pcl::VoxelGrid<PointT>::applyFilter (PointCloud &output)
 }
 
 #define PCL_INSTANTIATE_VoxelGrid(T) template class PCL_EXPORTS pcl::VoxelGrid<T>;
-#define PCL_INSTANTIATE_getMinMax3D(T) template PCL_EXPORTS void pcl::getMinMax3D<T> (const pcl::PointCloud<T>::ConstPtr &, const std::string &, float, float, Eigen::Vector4f &, Eigen::Vector4f &, bool);
+#define PCL_INSTANTIATE_getMinMax3D(T) template PCL_EXPORTS void pcl::getMinMax3D<T> (const pcl::PointCloud<T>::ConstPtr &, const std::string &, double, double, Eigen::Vector4d &, Eigen::Vector4d &, bool);
 
 #endif    // PCL_FILTERS_IMPL_VOXEL_GRID_H_
 

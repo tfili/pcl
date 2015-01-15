@@ -105,14 +105,14 @@ namespace pcl
         */
       bool 
       computeModelCoefficients (const std::vector<int> &samples, 
-                                Eigen::VectorXf &model_coefficients);
+                                Eigen::VectorXd &model_coefficients);
 
       /** \brief Compute all squared distances from the cloud data to a given stick model.
         * \param[in] model_coefficients the coefficients of a stick model that we need to compute distances to
         * \param[out] distances the resultant estimated squared distances
         */
       void 
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients, 
                            std::vector<double> &distances);
 
       /** \brief Select all the points which respect the given model coefficients as inliers.
@@ -121,7 +121,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void 
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients, 
                             const double threshold, 
                             std::vector<int> &inliers);
 
@@ -132,7 +132,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      countWithinDistance (const Eigen::VectorXd &model_coefficients, 
                            const double threshold);
 
       /** \brief Recompute the stick coefficients using the given inlier set and return them to the user.
@@ -143,8 +143,8 @@ namespace pcl
         */
       void 
       optimizeModelCoefficients (const std::vector<int> &inliers, 
-                                 const Eigen::VectorXf &model_coefficients, 
-                                 Eigen::VectorXf &optimized_coefficients);
+                                 const Eigen::VectorXd &model_coefficients, 
+                                 Eigen::VectorXd &optimized_coefficients);
 
       /** \brief Create a new point cloud with inliers projected onto the stick model.
         * \param[in] inliers the data inliers that we want to project on the stick model
@@ -154,7 +154,7 @@ namespace pcl
         */
       void 
       projectPoints (const std::vector<int> &inliers, 
-                     const Eigen::VectorXf &model_coefficients, 
+                     const Eigen::VectorXd &model_coefficients, 
                      PointCloud &projected_points, 
                      bool copy_data_fields = true);
 
@@ -165,7 +165,7 @@ namespace pcl
         */
       bool 
       doSamplesVerifyModel (const std::set<int> &indices, 
-                            const Eigen::VectorXf &model_coefficients, 
+                            const Eigen::VectorXd &model_coefficients, 
                             const double threshold);
 
       /** \brief Return an unique id for this model (SACMODEL_STACK). */
@@ -177,7 +177,7 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       inline bool 
-      isModelValid (const Eigen::VectorXf &model_coefficients)
+      isModelValid (const Eigen::VectorXd &model_coefficients)
       {
         if (model_coefficients.size () != 7)
         {

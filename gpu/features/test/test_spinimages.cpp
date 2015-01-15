@@ -131,7 +131,7 @@ TEST(PCL_FeaturesGPU, spinImages_rectangular)
         
         size_t FSize = sizeof(SpinImage)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -141,7 +141,7 @@ TEST(PCL_FeaturesGPU, spinImages_rectangular)
         }        
 
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -221,7 +221,7 @@ TEST(PCL_FeaturesGPU, spinImages_radial)
         
         size_t FSize = sizeof(SpinImage)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -231,7 +231,7 @@ TEST(PCL_FeaturesGPU, spinImages_radial)
         }        
 
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }
 
@@ -311,7 +311,7 @@ TEST(PCL_FeaturesGPU, spinImages_rectangular_angular)
         
         size_t FSize = sizeof(SpinImage)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -401,7 +401,7 @@ TEST(PCL_FeaturesGPU, spinImages_radial_angular)
         
         size_t FSize = sizeof(SpinImage)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -411,6 +411,6 @@ TEST(PCL_FeaturesGPU, spinImages_radial_angular)
         }        
 
         if (norm != 0)
-            ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+            ASSERT_LE(norm_diff/norm, 0.01/FSize);
     }
 }

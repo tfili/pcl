@@ -118,7 +118,7 @@ namespace pcl
         const LeafNodeIterator leaf_end () { return LeafNodeIterator (); }
 
         // BGL graph
-        typedef boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, PointT, float> VoxelAdjacencyList;
+        typedef boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, PointT, double> VoxelAdjacencyList;
         typedef typename VoxelAdjacencyList::vertex_descriptor VoxelID;
         typedef typename VoxelAdjacencyList::edge_descriptor EdgeID;
 

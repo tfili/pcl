@@ -52,9 +52,9 @@ namespace pcl
   };
 
   template <>
-  struct IntegralImageTypeTraits<float>
+  struct IntegralImageTypeTraits<double>
   {
-    typedef float Type;
+    typedef double Type;
     typedef double IntegralType;
   };
 

@@ -60,7 +60,7 @@ namespace pcl
       public:
 
         static const int num_directions = 31;
-        typedef Eigen::Matrix <float, 4, num_directions> Vertices;
+        typedef Eigen::Matrix <double, 4, num_directions> Vertices;
 
         Dome ();
 
@@ -77,8 +77,8 @@ namespace pcl
     };
 
     PCL_EXPORTS void
-    addDirection (const Eigen::Vector4f& normal,
-                  const Eigen::Vector4f& direction,
+    addDirection (const Eigen::Vector4d& normal,
+                  const Eigen::Vector4d& direction,
                   uint32_t&              directions);
 
     PCL_EXPORTS unsigned int

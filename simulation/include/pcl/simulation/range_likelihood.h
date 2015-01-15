@@ -75,9 +75,9 @@ namespace pcl
          *
          */
         void
-        computeLikelihoods (float* reference,
+        computeLikelihoods (double* reference,
                             std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > poses,
-                            std::vector<float> & scores);
+                            std::vector<double> & scores);
 
         /**
          * Set the basic camera intrinsic parameters
@@ -85,10 +85,10 @@ namespace pcl
         void
         setCameraIntrinsicsParameters (int camera_width_in,
                                       int camera_height_in,
-                                      float camera_fx_in,
-                                      float camera_fy_in,
-                                      float camera_cx_in,
-                                      float camera_cy_in)
+                                      double camera_fx_in,
+                                      double camera_fy_in,
+                                      double camera_cx_in,
+                                      double camera_cy_in)
         {
           camera_width_ = camera_width_in;
           camera_height_ = camera_height_in;
@@ -139,10 +139,10 @@ namespace pcl
         const uint8_t*
         getColorBuffer ();
 
-        const float*
+        const double*
         getDepthBuffer ();
 
-        const float*
+        const double*
         getScoreBuffer ();
 
       private:
@@ -153,11 +153,11 @@ namespace pcl
          * @param[out] scores - output score
          */
         void
-        computeScores (float* reference,
-                       std::vector<float> & scores);
+        computeScores (double* reference,
+                       std::vector<double> & scores);
 
         void
-        computeScoresShader (float* reference);
+        computeScoresShader (double* reference);
 
         void
         render (const std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > & poses);
@@ -181,21 +181,21 @@ namespace pcl
         int col_width_;
         int width_;
         int height_;
-        float* depth_buffer_;
+        double* depth_buffer_;
         uint8_t* color_buffer_;
 
         // Camera Intrinsic Parameters
         int camera_width_;
         int camera_height_;
-        float camera_fx_;
-        float camera_fy_;
-        float camera_cx_;
-        float camera_cy_;
+        double camera_fx_;
+        double camera_fy_;
+        double camera_cx_;
+        double camera_cy_;
 
         // min and max range of the rgbd sensor
         // everything outside this doesnt appear in depth images
-        float z_near_;
-        float z_far_;
+        double z_near_;
+        double z_far_;
 
         bool depth_buffer_dirty_;
         bool color_buffer_dirty_;
@@ -225,8 +225,8 @@ namespace pcl
 
         gllib::Program::Ptr likelihood_program_;
         GLuint quad_vbo_;
-        std::vector<Eigen::Vector3f> vertices_;
-        float* score_buffer_;
+        std::vector<Eigen::Vector3d> vertices_;
+        double* score_buffer_;
         Quad quad_;
         SumReduce sum_reduce_;
     };

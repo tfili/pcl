@@ -122,8 +122,8 @@ class SelectionTransformTool : public ToolInterface
     /// implementing rotation along y or z-axis, which depens on which the mouse
     /// button that is being pressed during the rotation operation.
     void
-    getRotateMatrix (int dx, int dy, float* rotation_matrix_a,
-                     float* rotation_matrix_b, BitMask buttons) const;
+    getRotateMatrix (int dx, int dy, double* rotation_matrix_a,
+                     double* rotation_matrix_b, BitMask buttons) const;
 
     /// @brief Computes the centroid of the selected points
     void
@@ -145,18 +145,18 @@ class SelectionTransformTool : public ToolInterface
     int x_, y_;
 
     /// The centroid of the selected points.
-    float center_xyz_[XYZ_SIZE];
+    double center_xyz_[XYZ_SIZE];
 
     /// the transform matrix to be used for updating the coordinates of the
     /// selected points in the cloud
-    float transform_matrix_[MATRIX_SIZE];
+    double transform_matrix_[MATRIX_SIZE];
 
     /// scaling factor used to control the speed which the display translates
     /// the point cloud
-    float translate_factor_;
+    double translate_factor_;
 
     /// default translation factor
-    static const float DEFAULT_TRANSLATE_FACTOR_;
+    static const double DEFAULT_TRANSLATE_FACTOR_;
 
     /// the copy of the modifiers passed in the start function.
     BitMask modifiers_;

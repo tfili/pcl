@@ -227,13 +227,13 @@ pp_callback (const pcl::visualization::PointPickingEvent& event, void* cookie)
 
 
 /*
-void write_score_image(const float* score_buffer)
+void write_score_image(const double* score_buffer)
 {
   int npixels = range_likelihood_->getWidth() * range_likelihood_->getHeight();
   uint8_t* score_img = new uint8_t[npixels * 3];
 
-  float min_score = score_buffer[0];
-  float max_score = score_buffer[0];
+  double min_score = score_buffer[0];
+  double max_score = score_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (score_buffer[i] < min_score) min_score = score_buffer[i];
@@ -247,7 +247,7 @@ void write_score_image(const float* score_buffer)
       int i = y*640 + x ;
       int i_in= (480-1 -y) *640 + x ; // flip up
 
-      float d = (score_buffer[i_in]-min_score)/(max_score-min_score);
+      double d = (score_buffer[i_in]-min_score)/(max_score-min_score);
       score_img[3*i+0] = 0;
       score_img[3*i+1] = d*255;
       score_img[3*i+2] = 0;
@@ -263,13 +263,13 @@ void write_score_image(const float* score_buffer)
   delete [] score_img;
 }
 
-void write_depth_image(const float* depth_buffer)
+void write_depth_image(const double* depth_buffer)
 {
   int npixels = range_likelihood_->getWidth() * range_likelihood_->getHeight();
   uint8_t* depth_img = new uint8_t[npixels * 3];
 
-  float min_depth = depth_buffer[0];
-  float max_depth = depth_buffer[0];
+  double min_depth = depth_buffer[0];
+  double max_depth = depth_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (depth_buffer[i] < min_depth) min_depth = depth_buffer[i];
@@ -284,12 +284,12 @@ void write_depth_image(const float* depth_buffer)
       int i_in= (480-1 -y) *640 + x ; // flip up down
     
     
-      float zn = 0.7;
-      float zf = 20.0;
-      float d = depth_buffer[i_in];
-      float z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
-      float b = 0.075;
-      float f = 580.0;
+      double zn = 0.7;
+      double zf = 20.0;
+      double d = depth_buffer[i_in];
+      double z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
+      double b = 0.075;
+      double f = 580.0;
       uint16_t kd = static_cast<uint16_t>(1090 - b*f/z*8);
       if (kd < 0) kd = 0;
       else if (kd>2047) kd = 2047;
@@ -393,8 +393,8 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> simpleVis (pcl::PointCloud<
 void capture (Eigen::Isometry3d pose_in, string point_cloud_fname)
 {
   // No reference image - but this is kept for compatability with range_test_v2:
-  float* reference = new float[range_likelihood_->getRowHeight() * range_likelihood_->getColWidth()];
-  const float* depth_buffer = range_likelihood_->getDepthBuffer();
+  double* reference = new double[range_likelihood_->getRowHeight() * range_likelihood_->getColWidth()];
+  const double* depth_buffer = range_likelihood_->getDepthBuffer();
   // Copy one image from our last as a reference.
   for (int i=0, n=0; i<range_likelihood_->getRowHeight(); ++i)
   {
@@ -405,7 +405,7 @@ void capture (Eigen::Isometry3d pose_in, string point_cloud_fname)
   }
 
   std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > poses;
-  std::vector<float> scores;
+  std::vector<double> scores;
   poses.push_back (pose_in);
 
   range_likelihood_->computeLikelihoods (reference, poses, scores);
@@ -519,7 +519,7 @@ double standardRad(double t) {
   return t;
 }
 
-void wRo_to_euler(const Eigen::Matrix3f& wRo, double& yaw, double& pitch, double& roll) {
+void wRo_to_euler(const Eigen::Matrix3d& wRo, double& yaw, double& pitch, double& roll) {
   yaw = standardRad(atan2(wRo(1,0), wRo(0,0)));
   double c = cos(yaw);
   double s = sin(yaw);
@@ -559,7 +559,7 @@ void simulate_callback (const pcl::visualization::KeyboardEvent &event,
 
 
 	      
-	      Eigen::Affine3f pose;
+	      Eigen::Affine3d pose;
 	      pose = viewer->getViewerPose() ;
 	      
 	      
@@ -567,7 +567,7 @@ void simulate_callback (const pcl::visualization::KeyboardEvent &event,
                << cam.pos[1] << " " 
                << cam.pos[2] << " p\n";	      
 	      
-	     Eigen::Matrix3f m;
+	     Eigen::Matrix3d m;
 	     m =pose.rotation();
 	     //All axies use right hand rule. x=red axis, y=green axis, z=blue axis z direction is point into the screen. z \ \ \ -----------> x | | | | | | y 
 	      
@@ -586,8 +586,8 @@ void simulate_callback (const pcl::visualization::KeyboardEvent &event,
  cout << m(1,0) << " " << m(1,1) << " " << m(1,2) << " "  << " x1\n";
   cout << m(2,0) << " " << m(2,1)  << " " << m(2,2) << " "<< "x2\n\n";
   
-  Eigen::Quaternionf rf;
-  rf = Eigen::Quaternionf(m);
+  Eigen::Quaterniond rf;
+  rf = Eigen::Quaterniond(m);
   
   
    Eigen::Quaterniond r(rf.w(),rf.x(),rf.y(),rf.z());
@@ -745,13 +745,13 @@ main (int argc, char** argv)
 
     if (p_file_indices.size () != 0)
     {
-      y_s = static_cast<int>(floor (sqrt (static_cast<float>(p_file_indices.size ()))));
+      y_s = static_cast<int>(floor (sqrt (static_cast<double>(p_file_indices.size ()))));
       x_s = y_s + static_cast<int>(ceil ((p_file_indices.size () / static_cast<double>(y_s)) - y_s));
       print_highlight ("Preparing to load "); print_value ("%d", p_file_indices.size ());
     }
     else if (vtk_file_indices.size () != 0)
     {
-      y_s = static_cast<int>(floor (sqrt (static_cast<float>(vtk_file_indices.size ()))));
+      y_s = static_cast<int>(floor (sqrt (static_cast<double>(vtk_file_indices.size ()))));
       x_s = y_s + static_cast<int>(ceil ((vtk_file_indices.size () / static_cast<double>(y_s)) - y_s));
       print_highlight ("Preparing to load "); print_value ("%d", vtk_file_indices.size ());
     }
@@ -775,7 +775,7 @@ main (int argc, char** argv)
   boost::shared_ptr<pcl::visualization::PCLHistogramVisualizer> ph;
 
   // Using min_p, max_p to set the global Y min/max range for the histogram
-  float min_p = FLT_MAX; float max_p = -FLT_MAX;
+  double min_p = FLT_MAX; double max_p = -FLT_MAX;
 
   int k = 0, l = 0, viewport = 0;
   // Load the data files
@@ -837,8 +837,8 @@ main (int argc, char** argv)
   for (size_t i = 0; i < p_file_indices.size (); ++i)
   {
     cloud.reset (new pcl::PCLPointCloud2);
-    Eigen::Vector4f origin;
-    Eigen::Quaternionf orientation;
+    Eigen::Vector4d origin;
+    Eigen::Quaterniond orientation;
     int version;
 
     print_highlight (stderr, "Loading "); print_value (stderr, "%s ", argv[p_file_indices.at (i)]);
@@ -870,7 +870,7 @@ main (int argc, char** argv)
     {
       p.reset (new pcl::visualization::PCLVisualizer (argc, argv, "PCD viewer"));
       p->registerPointPickingCallback (&pp_callback, (void*)&cloud);
-      Eigen::Matrix3f rotation;
+      Eigen::Matrix3d rotation;
       rotation = orientation;
       p->setCameraPosition (origin [0]                  , origin [1]                  , origin [2],
                         origin [0] + rotation (0, 2), origin [1] + rotation (1, 2), origin [2] + rotation (2, 2),
@@ -1037,8 +1037,8 @@ main (int argc, char** argv)
 
   for (int i=0; i<2048; i++)
   {
-    float v = i/2048.0;
-    v = powf(v, 3)* 6;
+    double v = i/2048.0;
+    v = pow(v, 3)* 6;
     t_gamma[i] = v*6*256;
   }    
 

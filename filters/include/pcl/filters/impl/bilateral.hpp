@@ -46,7 +46,7 @@
 template <typename PointT> double
 pcl::BilateralFilter<PointT>::computePointWeight (const int pid, 
                                                   const std::vector<int> &indices,
-                                                  const std::vector<float> &distances)
+                                                  const std::vector<double> &distances)
 {
   double BF = 0, W = 0;
 
@@ -91,7 +91,7 @@ pcl::BilateralFilter<PointT>::applyFilter (PointCloud &output)
   tree_->setInputCloud (input_);
 
   std::vector<int> k_indices;
-  std::vector<float> k_distances;
+  std::vector<double> k_distances;
 
   // Copy the input data into the output
   output = *input_;
@@ -103,7 +103,7 @@ pcl::BilateralFilter<PointT>::applyFilter (PointCloud &output)
     tree_->radiusSearch ((*indices_)[i], sigma_s_ * 2, k_indices, k_distances);
 
     // Overwrite the intensity value with the computed average
-    output.points[(*indices_)[i]].intensity = static_cast<float> (computePointWeight ((*indices_)[i], k_indices, k_distances));
+    output.points[(*indices_)[i]].intensity = static_cast<double> (computePointWeight ((*indices_)[i], k_indices, k_distances));
   }
 }
  

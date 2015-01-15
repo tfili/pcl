@@ -106,7 +106,7 @@ namespace pcl
       SampleConsensusModelNormalParallelPlane (const PointCloudConstPtr &cloud,
                                                bool random = false) 
         : SampleConsensusModelNormalPlane<PointT, PointNT> (cloud, random)
-        , axis_ (Eigen::Vector4f::Zero ())
+        , axis_ (Eigen::Vector4d::Zero ())
         , distance_from_origin_ (0)
         , eps_angle_ (-1.0)
         , cos_angle_ (-1.0)
@@ -123,7 +123,7 @@ namespace pcl
                                                const std::vector<int> &indices,
                                                bool random = false) 
         : SampleConsensusModelNormalPlane<PointT, PointNT> (cloud, indices, random)
-        , axis_ (Eigen::Vector4f::Zero ())
+        , axis_ (Eigen::Vector4d::Zero ())
         , distance_from_origin_ (0)
         , eps_angle_ (-1.0)
         , cos_angle_ (-1.0)
@@ -138,10 +138,10 @@ namespace pcl
         * \param[in] ax the axis along which we need to search for a plane perpendicular to
         */
       inline void
-      setAxis (const Eigen::Vector3f &ax) { axis_.head<3> () = ax; axis_.normalize ();}
+      setAxis (const Eigen::Vector3d &ax) { axis_.head<3> () = ax; axis_.normalize ();}
 
       /** \brief Get the axis along which we need to search for a plane perpendicular to. */
-      inline Eigen::Vector3f
+      inline Eigen::Vector3d
       getAxis () { return (axis_.head<3> ()); }
 
       /** \brief Set the angle epsilon (delta) threshold.
@@ -186,11 +186,11 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       bool
-      isModelValid (const Eigen::VectorXf &model_coefficients);
+      isModelValid (const Eigen::VectorXd &model_coefficients);
 
    private:
       /** \brief The axis along which we need to search for a plane perpendicular to. */
-      Eigen::Vector4f axis_;
+      Eigen::Vector4d axis_;
 
       /** \brief The distance from the template plane to the origin. */
       double distance_from_origin_;

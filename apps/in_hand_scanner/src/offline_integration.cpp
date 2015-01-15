@@ -74,14 +74,14 @@ pcl::ihs::OfflineIntegration::OfflineIntegration (Base* parent)
     destructor_called_ (false)
 {
   normal_estimation_->setNormalEstimationMethod (NormalEstimation::AVERAGE_3D_GRADIENT);
-  normal_estimation_->setMaxDepthChangeFactor (0.02f); // in meters
-  normal_estimation_->setNormalSmoothingSize (10.0f);
+  normal_estimation_->setMaxDepthChangeFactor (0.02); // in meters
+  normal_estimation_->setNormalSmoothingSize (10.0);
 
   integration_->setMaxSquaredDistance (1e-4); // in m^2
   integration_->setMinDirections (2);
 
 
-  Base::setVisibilityConfidenceNormalization (static_cast <float> (integration_->getMinDirections ()));
+  Base::setVisibilityConfidenceNormalization (static_cast <double> (integration_->getMinDirections ()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ pcl::ihs::OfflineIntegration::computationThread ()
   // First cloud is reference model
   std::cerr << "Processing file " << std::setw (5) << 1 << " / " << filenames.size () << std::endl;
   CloudXYZRGBNormalPtr cloud_model (new CloudXYZRGBNormal ());
-  Eigen::Matrix4f T = Eigen::Matrix4f::Identity ();
+  Eigen::Matrix4d T = Eigen::Matrix4d::Identity ();
   if (!this->load (filenames [0], cloud_model, T))
   {
     std::cerr << "ERROR in offline_integration.cpp: Could not load the model cloud.\n";
@@ -223,7 +223,7 @@ pcl::ihs::OfflineIntegration::getFilesFromDirectory (const std::string          
 
 bool
 pcl::ihs::OfflineIntegration::loadTransform (const std::string& filename,
-                                             Eigen::Matrix4f&   transform) const
+                                             Eigen::Matrix4d&   transform) const
 {
  Eigen::Matrix4d tr;
  std::ifstream file;
@@ -249,7 +249,7 @@ pcl::ihs::OfflineIntegration::loadTransform (const std::string& filename,
    }
  }
 
- transform = tr.cast<float> ();
+ transform = tr.cast<double> ();
 
  return (true);
 }
@@ -259,7 +259,7 @@ pcl::ihs::OfflineIntegration::loadTransform (const std::string& filename,
 bool
 pcl::ihs::OfflineIntegration::load (const std::string&    filename,
                                     CloudXYZRGBNormalPtr& cloud,
-                                    Eigen::Matrix4f&      T) const
+                                    Eigen::Matrix4d&      T) const
 {
   if (!cloud)
   {

@@ -55,7 +55,7 @@ namespace pcl
 
     typedef DeviceArray2D<unsigned short> Depth;
     typedef DeviceArray2D<unsigned char>  Labels;      
-    typedef DeviceArray2D<float>          HueImage;
+    typedef DeviceArray2D<double>          HueImage;
     typedef DeviceArray2D<unsigned char>  Mask;  
 
     typedef DeviceArray2D<char4> MultiLabels;
@@ -63,14 +63,14 @@ namespace pcl
     /** \brief The intrinsic camera calibration **/
     struct Intr
     {
-        float fx, fy, cx, cy;
+        double fx, fy, cx, cy;
         Intr () {}
-        Intr (float fx_, float fy_, float cx_, float cy_) : fx(fx_), fy(fy_), cx(cx_), cy(cy_) {}
+        Intr (double fx_, double fy_, double cx_, double cy_) : fx(fx_), fy(fy_), cx(cx_), cy(cy_) {}
 
         void setDefaultPPIfIncorrect(int cols, int rows)
         {
-          cx = cx > 0 ? cx : cols/2 - 0.5f;
-          cy = cy > 0 ? cy : rows/2 - 0.5f;
+          cx = cx > 0 ? cx : cols/2 - 0.5;
+          cy = cy > 0 ? cy : rows/2 - 0.5;
         }
     };
 
@@ -83,8 +83,8 @@ namespace pcl
     struct ConnectedComponents
     {
         static void initEdges(int rows, int cols, DeviceArray2D<unsigned char>& edges);
-        //static void computeEdges(const Labels& labels, const Cloud& cloud, int num_parts, float sq_radius, DeviceArray2D<unsigned char>& edges);
-        static void computeEdges(const Labels& labels, const Depth& depth, int num_parts, float sq_radius, DeviceArray2D<unsigned char>& edges);
+        //static void computeEdges(const Labels& labels, const Cloud& cloud, int num_parts, double sq_radius, DeviceArray2D<unsigned char>& edges);
+        static void computeEdges(const Labels& labels, const Depth& depth, int num_parts, double sq_radius, DeviceArray2D<unsigned char>& edges);
         static void labelComponents(const DeviceArray2D<unsigned char>& edges, DeviceArray2D<int>& comps);
     };
 
@@ -93,10 +93,10 @@ namespace pcl
     void setZero(Mask& mask);
     void prepareForeGroundDepth(const Depth& depth1, Mask& inverse_mask, Depth& depth2);
 
-    float computeHue(int rgba);
+    double computeHue(int rgba);
     void  computeHueWithNans(const Image& image, const Depth& depth, HueImage& hue);
 
-    //void shs(const DeviceArray2D<float4> &cloud, float tolerance, const std::vector<int>& indices_in, float delta_hue, Mask& indices_out);
+    //void shs(const DeviceArray2D<float4> &cloud, double tolerance, const std::vector<int>& indices_in, double delta_hue, Mask& indices_out);
 
     struct Dilatation
     {
@@ -172,24 +172,24 @@ namespace pcl
 
         /** \brief This will combine two probabilities according their weight **/
         void
-        CUDA_CombineProb ( const Depth& depth, LabelProbability& probIn1, float weight1,
-                           LabelProbability& probIn2, float weight2, LabelProbability& probOut);
+        CUDA_CombineProb ( const Depth& depth, LabelProbability& probIn1, double weight1,
+                           LabelProbability& probIn2, double weight2, LabelProbability& probOut);
 
         /** \brief This will sum a probability multiplied with it's weight **/
         void
-        CUDA_WeightedSumProb ( const Depth& depth, LabelProbability& probIn, float weight, LabelProbability& probOut);
+        CUDA_WeightedSumProb ( const Depth& depth, LabelProbability& probIn, double weight, LabelProbability& probOut);
 
         /** \brief This will blur the input labelprobability with the given kernel **/
         int
         CUDA_GaussianBlur( const Depth& depth,
                            LabelProbability& probIn,
-                           DeviceArray<float>& kernel,
+                           DeviceArray<double>& kernel,
                            LabelProbability& probOut);
         /** \brief This will blur the input labelprobability with the given kernel, this version avoids extended allocation **/
         int
         CUDA_GaussianBlur( const Depth& depth,
                            LabelProbability& probIn,
-                           DeviceArray<float>& kernel,
+                           DeviceArray<double>& kernel,
                            LabelProbability& probTemp,
                            LabelProbability& probOut);
     };

@@ -115,7 +115,7 @@ TEST(PCL_FeaturesGPU, vfh1)
         
     size_t FSize = sizeof(VFHSignature308)/sizeof(gpu.histogram[0]);                                
         
-    float norm = 0, norm_diff = 0;
+    double norm = 0, norm_diff = 0;
     for(size_t j = 0; j < FSize; ++j)
     {
         norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -124,7 +124,7 @@ TEST(PCL_FeaturesGPU, vfh1)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }
@@ -182,7 +182,7 @@ TEST(PCL_FeaturesGPU, vfh_norm_bins_false)
         
     size_t FSize = sizeof(VFHSignature308)/sizeof(gpu.histogram[0]);                                
         
-    float norm = 0, norm_diff = 0;
+    double norm = 0, norm_diff = 0;
     for(size_t j = 0; j < FSize; ++j)
     {
         norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -191,7 +191,7 @@ TEST(PCL_FeaturesGPU, vfh_norm_bins_false)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }
@@ -249,7 +249,7 @@ TEST(PCL_FeaturesGPU, vfh_norm_distance_true)
         
     size_t FSize = sizeof(VFHSignature308)/sizeof(gpu.histogram[0]);                                
         
-    float norm = 0, norm_diff = 0;
+    double norm = 0, norm_diff = 0;
     for(size_t j = 0; j < FSize; ++j)
     {
         norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -258,7 +258,7 @@ TEST(PCL_FeaturesGPU, vfh_norm_distance_true)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }
@@ -317,7 +317,7 @@ TEST(PCL_FeaturesGPU, vfh_fill_size_component_true)
         
     size_t FSize = sizeof(VFHSignature308)/sizeof(gpu.histogram[0]);                                
         
-    float norm = 0, norm_diff = 0;
+    double norm = 0, norm_diff = 0;
     for(size_t j = 0; j < FSize; ++j)
     {
         norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -326,7 +326,7 @@ TEST(PCL_FeaturesGPU, vfh_fill_size_component_true)
         //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
     }
     if (norm != 0)
-        ASSERT_LE(norm_diff/norm, 0.01f/FSize);
+        ASSERT_LE(norm_diff/norm, 0.01/FSize);
     else
         FAIL();
 }

@@ -257,16 +257,16 @@ namespace pcl
         return (lhs);                                          \
       }                                                        \
       inline const name&                                       \
-      operator+= (name& p, const float& scalar)                \
+      operator+= (name& p, const double& scalar)                \
       {                                                        \
         BOOST_PP_SEQ_FOR_EACH(PCL_PLUSEQSC_POINT_TAG, _, seq)  \
         return (p);                                            \
       }                                                        \
       inline const name operator+ (const name& lhs, const name& rhs)   \
       { name result = lhs; result += rhs; return (result); }           \
-      inline const name operator+ (const float& scalar, const name& p) \
+      inline const name operator+ (const double& scalar, const name& p) \
       { name result = p; result += scalar; return (result); }          \
-      inline const name operator+ (const name& p, const float& scalar) \
+      inline const name operator+ (const name& p, const double& scalar) \
       { name result = p; result += scalar; return (result); }          \
       inline const name&                                       \
       operator-= (name& lhs, const name& rhs)                  \
@@ -275,36 +275,36 @@ namespace pcl
         return (lhs);                                          \
       }                                                        \
       inline const name&                                       \
-      operator-= (name& p, const float& scalar)                \
+      operator-= (name& p, const double& scalar)                \
       {                                                        \
         BOOST_PP_SEQ_FOR_EACH(PCL_MINUSEQSC_POINT_TAG, _, seq) \
         return (p);                                            \
       }                                                        \
       inline const name operator- (const name& lhs, const name& rhs)   \
       { name result = lhs; result -= rhs; return (result); }           \
-      inline const name operator- (const float& scalar, const name& p) \
+      inline const name operator- (const double& scalar, const name& p) \
       { name result = p; result -= scalar; return (result); }          \
-      inline const name operator- (const name& p, const float& scalar) \
+      inline const name operator- (const name& p, const double& scalar) \
       { name result = p; result -= scalar; return (result); }          \
       inline const name&                                       \
-      operator*= (name& p, const float& scalar)                \
+      operator*= (name& p, const double& scalar)                \
       {                                                        \
         BOOST_PP_SEQ_FOR_EACH(PCL_MULEQSC_POINT_TAG, _, seq)   \
         return (p);                                            \
       }                                                        \
-      inline const name operator* (const float& scalar, const name& p) \
+      inline const name operator* (const double& scalar, const name& p) \
       { name result = p; result *= scalar; return (result); }          \
-      inline const name operator* (const name& p, const float& scalar) \
+      inline const name operator* (const name& p, const double& scalar) \
       { name result = p; result *= scalar; return (result); }          \
       inline const name&                                       \
-      operator/= (name& p, const float& scalar)                \
+      operator/= (name& p, const double& scalar)                \
       {                                                        \
         BOOST_PP_SEQ_FOR_EACH(PCL_DIVEQSC_POINT_TAG, _, seq)   \
         return (p);                                            \
       }                                                        \
-      inline const name operator/ (const float& scalar, const name& p) \
+      inline const name operator/ (const double& scalar, const name& p) \
       { name result = p; result /= scalar; return (result); }          \
-      inline const name operator/ (const name& p, const float& scalar) \
+      inline const name operator/ (const name& p, const double& scalar) \
       { name result = p; result /= scalar; return (result); }          \
     }                                                          \
   }                                                            \
@@ -337,8 +337,8 @@ namespace pcl
 
 // \note: the mpl::identity weirdness is to support array types without requiring the
 // user to wrap them. The basic problem is:
-// typedef float[81] type; // SYNTAX ERROR!
-// typedef float type[81]; // OK, can now use "type" as a synonym for float[81]
+// typedef double[81] type; // SYNTAX ERROR!
+// typedef double type[81]; // OK, can now use "type" as a synonym for double[81]
 #define POINT_CLOUD_REGISTER_FIELD_DATATYPE(r, name, elem)              \
   template<> struct datatype<name, pcl::fields::BOOST_PP_TUPLE_ELEM(3, 2, elem)> \
   {                                                                     \

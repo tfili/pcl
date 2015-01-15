@@ -93,7 +93,7 @@ class SimpleOpenNIViewer
 
     void
     image_callback (const boost::shared_ptr<openni_wrapper::Image> &image, 
-                    const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image, float)
+                    const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image, double)
     {
       FPS_CALC ("image callback");
       boost::mutex::scoped_lock lock (image_mutex_);
@@ -104,7 +104,7 @@ class SimpleOpenNIViewer
     void
     run ()
     {
-      boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float) > image_cb = boost::bind (&SimpleOpenNIViewer::image_callback, this, _1, _2, _3);
+      boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double) > image_cb = boost::bind (&SimpleOpenNIViewer::image_callback, this, _1, _2, _3);
       boost::signals2::connection image_connection = grabber_.registerCallback (image_cb);
       
       grabber_.start ();

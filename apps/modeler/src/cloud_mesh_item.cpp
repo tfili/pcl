@@ -212,7 +212,7 @@ pcl::modeler::CloudMeshItem::prepareProperties(ParameterDialog* parameter_dialog
   parameter_dialog->addParameter(rotation_y_);
   parameter_dialog->addParameter(rotation_z_);
 
-  Eigen::Vector4f min_pt, max_pt;
+  Eigen::Vector4d min_pt, max_pt;
   pcl::getMinMax3D(*(cloud_mesh_->getCloud()), min_pt, max_pt);
   double x_range = max_pt.x() - min_pt.x();
   double y_range = max_pt.y() - min_pt.y();

@@ -999,9 +999,9 @@ namespace pcl
       {
         PointT voxel_center;
         Eigen::Vector3d mid_xyz = node_metadata_->getVoxelCenter ();
-        voxel_center.x = static_cast<float>(mid_xyz[0]);
-        voxel_center.y = static_cast<float>(mid_xyz[1]);
-        voxel_center.z = static_cast<float>(mid_xyz[2]);
+        voxel_center.x = static_cast<double>(mid_xyz[0]);
+        voxel_center.y = static_cast<double>(mid_xyz[1]);
+        voxel_center.z = static_cast<double>(mid_xyz[2]);
 
         voxel_centers.push_back(voxel_center);
       }
@@ -1293,8 +1293,8 @@ namespace pcl
       int width = 500;
       int height = 500;
 
-      float coverage = pcl::visualization::viewScreenArea(eye, min_bb, max_bb, view_projection_matrix, width, height);
-      //float coverage = pcl::visualization::viewScreenArea(eye, bounding_box, view_projection_matrix);
+      double coverage = pcl::visualization::viewScreenArea(eye, min_bb, max_bb, view_projection_matrix, width, height);
+      //double coverage = pcl::visualization::viewScreenArea(eye, bounding_box, view_projection_matrix);
 
 //      for (int i=0; i < this->depth_; i++) std::cout << " ";
 //      std::cout << this->depth_ << ": " << coverage << std::endl;
@@ -1470,8 +1470,8 @@ namespace pcl
             pcl::fromPCLPointCloud2 ( *tmp_blob, *tmp_cloud );
             assert (tmp_blob->width*tmp_blob->height == tmp_cloud->width*tmp_cloud->height );
 
-            Eigen::Vector4f min_pt ( static_cast<float> ( min_bb[0] ), static_cast<float> ( min_bb[1] ), static_cast<float> ( min_bb[2] ), 1.0f);
-            Eigen::Vector4f max_pt ( static_cast<float> ( max_bb[0] ), static_cast<float> ( max_bb[1] ) , static_cast<float>( max_bb[2] ), 1.0f );
+            Eigen::Vector4d min_pt ( static_cast<double> ( min_bb[0] ), static_cast<double> ( min_bb[1] ), static_cast<double> ( min_bb[2] ), 1.0);
+            Eigen::Vector4d max_pt ( static_cast<double> ( max_bb[0] ), static_cast<double> ( max_bb[1] ) , static_cast<double>( max_bb[2] ), 1.0 );
                 
             std::vector<int> indices;
 
@@ -2021,9 +2021,9 @@ namespace pcl
       {
         PointT local_pt;
 
-        local_pt.x = * (reinterpret_cast<float*>(&input_cloud->data[point_idx + x_offset]));
-        local_pt.y = * (reinterpret_cast<float*>(&input_cloud->data[point_idx + y_offset]));
-        local_pt.z = * (reinterpret_cast<float*>(&input_cloud->data[point_idx + z_offset]));
+        local_pt.x = * (reinterpret_cast<double*>(&input_cloud->data[point_idx + x_offset]));
+        local_pt.y = * (reinterpret_cast<double*>(&input_cloud->data[point_idx + y_offset]));
+        local_pt.z = * (reinterpret_cast<double*>(&input_cloud->data[point_idx + z_offset]));
 
         if (!pcl_isfinite (local_pt.x) || !pcl_isfinite (local_pt.y) || !pcl_isfinite (local_pt.z))
           continue;

@@ -122,7 +122,7 @@ typedef              short Ncv16s;
 typedef     unsigned short Ncv16u;
 typedef               char Ncv8s;
 typedef      unsigned char Ncv8u;
-typedef              float Ncv32f;
+typedef              double Ncv32f;
 typedef             double Ncv64f;
 
 struct NcvRect8u

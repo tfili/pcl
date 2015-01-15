@@ -33,15 +33,15 @@ namespace pcl
       {
         public:
           std::vector<int> explained_; //indices vector referencing explained_by_RM_
-          std::vector<float> explained_distances_; //closest distances to the scene for point i
+          std::vector<double> explained_distances_; //closest distances to the scene for point i
           std::vector<int> unexplained_in_neighborhood; //indices vector referencing unexplained_by_RM_neighboorhods
-          std::vector<float> unexplained_in_neighborhood_weights; //weights for the points not being explained in the neighborhood of a hypothesis
+          std::vector<double> unexplained_in_neighborhood_weights; //weights for the points not being explained in the neighborhood of a hypothesis
           std::vector<int> outlier_indices_; //outlier indices of this model
           std::vector<int> complete_cloud_occupancy_indices_;
           typename pcl::PointCloud<ModelT>::Ptr cloud_;
           typename pcl::PointCloud<ModelT>::Ptr complete_cloud_;
           int bad_information_;
-          float outliers_weight_;
+          double outliers_weight_;
           pcl::PointCloud<pcl::Normal>::Ptr normals_;
           int id_;
       };
@@ -191,45 +191,45 @@ namespace pcl
       pcl::PointCloud<pcl::PointXYZI>::Ptr clusters_cloud_;
 
       std::vector<int> complete_cloud_occupancy_by_RM_;
-      float res_occupancy_grid_;
-      float w_occupied_multiple_cm_;
+      double res_occupancy_grid_;
+      double w_occupied_multiple_cm_;
 
       std::vector<int> explained_by_RM_; //represents the points of scene_cloud_ that are explained by the recognition models
-      std::vector<float> explained_by_RM_distance_weighted; //represents the points of scene_cloud_ that are explained by the recognition models
-      std::vector<float> unexplained_by_RM_neighboorhods; //represents the points of scene_cloud_ that are not explained by the active hypotheses in the neighboorhod of the recognition models
+      std::vector<double> explained_by_RM_distance_weighted; //represents the points of scene_cloud_ that are explained by the recognition models
+      std::vector<double> unexplained_by_RM_neighboorhods; //represents the points of scene_cloud_ that are not explained by the active hypotheses in the neighboorhod of the recognition models
       std::vector<boost::shared_ptr<RecognitionModel> > recognition_models_;
       std::vector<size_t> indices_;
 
-      float regularizer_;
-      float clutter_regularizer_;
+      double regularizer_;
+      double clutter_regularizer_;
       bool detect_clutter_;
-      float radius_neighborhood_GO_;
-      float radius_normals_;
+      double radius_neighborhood_GO_;
+      double radius_normals_;
 
-      float previous_explained_value;
+      double previous_explained_value;
       int previous_duplicity_;
       int previous_duplicity_complete_models_;
-      float previous_bad_info_;
-      float previous_unexplained_;
+      double previous_bad_info_;
+      double previous_unexplained_;
 
       int max_iterations_; //max iterations without improvement
       SAModel best_seen_;
-      float initial_temp_;
+      double initial_temp_;
 
       int n_cc_;
       std::vector<std::vector<int> > cc_;
 
-      void setPreviousBadInfo(float f)
+      void setPreviousBadInfo(double f)
       {
         previous_bad_info_ = f;
       }
 
-      float getPreviousBadInfo()
+      double getPreviousBadInfo()
       {
         return previous_bad_info_;
       }
 
-      void setPreviousExplainedValue(float v)
+      void setPreviousExplainedValue(double v)
       {
         previous_explained_value = v;
       }
@@ -244,17 +244,17 @@ namespace pcl
         previous_duplicity_complete_models_ = v;
       }
 
-      void setPreviousUnexplainedValue(float v)
+      void setPreviousUnexplainedValue(double v)
       {
         previous_unexplained_ = v;
       }
 
-      float getPreviousUnexplainedValue()
+      double getPreviousUnexplainedValue()
       {
         return previous_unexplained_;
       }
 
-      float getExplainedValue()
+      double getExplainedValue()
       {
         return previous_explained_value;
       }
@@ -269,12 +269,12 @@ namespace pcl
         return previous_duplicity_complete_models_;
       }
 
-      void updateUnexplainedVector(std::vector<int> & unexplained_, std::vector<float> & unexplained_distances, std::vector<float> & unexplained_by_RM,
-          std::vector<int> & explained, std::vector<int> & explained_by_RM, float val)
+      void updateUnexplainedVector(std::vector<int> & unexplained_, std::vector<double> & unexplained_distances, std::vector<double> & unexplained_by_RM,
+          std::vector<int> & explained, std::vector<int> & explained_by_RM, double val)
       {
         {
 
-          float add_to_unexplained = 0.f;
+          double add_to_unexplained = 0.;
 
           for (size_t i = 0; i < unexplained_.size (); i++)
           {
@@ -320,10 +320,10 @@ namespace pcl
         }
       }
 
-      void updateExplainedVector(std::vector<int> & vec, std::vector<float> & vec_float, std::vector<int> & explained_,
-          std::vector<float> & explained_by_RM_distance_weighted, float sign)
+      void updateExplainedVector(std::vector<int> & vec, std::vector<double> & vec_float, std::vector<int> & explained_,
+          std::vector<double> & explained_by_RM_distance_weighted, double sign)
       {
-        float add_to_explained = 0.f;
+        double add_to_explained = 0.;
         int add_to_duplicity_ = 0;
 
         for (size_t i = 0; i < vec.size (); i++)
@@ -352,7 +352,7 @@ namespace pcl
         previous_duplicity_ += add_to_duplicity_;
       }
 
-      void updateCMDuplicity(std::vector<int> & vec, std::vector<int> & occupancy_vec, float sign) {
+      void updateCMDuplicity(std::vector<int> & vec, std::vector<int> & occupancy_vec, double sign) {
         int add_to_duplicity_ = 0;
         for (size_t i = 0; i < vec.size (); i++)
         {
@@ -373,9 +373,9 @@ namespace pcl
         previous_duplicity_complete_models_ += add_to_duplicity_;
       }
 
-      float getTotalExplainedInformation(std::vector<int> & explained_, std::vector<float> & explained_by_RM_distance_weighted, int * duplicity_)
+      double getTotalExplainedInformation(std::vector<int> & explained_, std::vector<double> & explained_by_RM_distance_weighted, int * duplicity_)
       {
-        float explained_info = 0;
+        double explained_info = 0;
         int duplicity = 0;
 
         for (size_t i = 0; i < explained_.size (); i++)
@@ -392,18 +392,18 @@ namespace pcl
         return explained_info;
       }
 
-      float getTotalBadInformation(std::vector<boost::shared_ptr<RecognitionModel> > & recog_models)
+      double getTotalBadInformation(std::vector<boost::shared_ptr<RecognitionModel> > & recog_models)
       {
-        float bad_info = 0;
+        double bad_info = 0;
         for (size_t i = 0; i < recog_models.size (); i++)
-          bad_info += recog_models[i]->outliers_weight_ * static_cast<float> (recog_models[i]->bad_information_);
+          bad_info += recog_models[i]->outliers_weight_ * static_cast<double> (recog_models[i]->bad_information_);
 
         return bad_info;
       }
 
-      float getUnexplainedInformationInNeighborhood(std::vector<float> & unexplained, std::vector<int> & explained)
+      double getUnexplainedInformationInNeighborhood(std::vector<double> & unexplained, std::vector<int> & explained)
       {
-        float unexplained_sum = 0.f;
+        double unexplained_sum = 0.;
         for (size_t i = 0; i < unexplained.size (); i++)
         {
           if (unexplained[i] > 0 && explained[i] == 0)
@@ -433,22 +433,22 @@ namespace pcl
     public:
       GlobalHypothesesVerification() : HypothesisVerification<ModelT, SceneT>()
       {
-        resolution_ = 0.005f;
+        resolution_ = 0.005;
         max_iterations_ = 5000;
-        regularizer_ = 1.f;
-        radius_normals_ = 0.01f;
+        regularizer_ = 1.;
+        radius_normals_ = 0.01;
         initial_temp_ = 1000;
         detect_clutter_ = true;
         radius_neighborhood_GO_ = 0.03f;
-        clutter_regularizer_ = 5.f;
-        res_occupancy_grid_ = 0.01f;
-        w_occupied_multiple_cm_ = 4.f;
+        clutter_regularizer_ = 5.;
+        res_occupancy_grid_ = 0.01;
+        w_occupied_multiple_cm_ = 4.;
       }
 
       void
       verify();
 
-      void setRadiusNormals(float r)
+      void setRadiusNormals(double r)
       {
         radius_normals_ = r;
       }
@@ -458,22 +458,22 @@ namespace pcl
         max_iterations_ = i;
       }
 
-      void setInitialTemp(float t)
+      void setInitialTemp(double t)
       {
         initial_temp_ = t;
       }
 
-      void setRegularizer(float r)
+      void setRegularizer(double r)
       {
         regularizer_ = r;
       }
 
-      void setRadiusClutter(float r)
+      void setRadiusClutter(double r)
       {
         radius_neighborhood_GO_ = r;
       }
 
-      void setClutterRegularizer(float cr)
+      void setClutterRegularizer(double cr)
       {
         clutter_regularizer_ = cr;
       }

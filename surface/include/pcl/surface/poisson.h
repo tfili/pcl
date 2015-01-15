@@ -111,9 +111,9 @@ namespace pcl
       getMinDepth () { return min_depth_; }
 
       inline void
-      setPointWeight (float point_weight) { point_weight_ = point_weight; }
+      setPointWeight (double point_weight) { point_weight_ = point_weight; }
 
-      inline float
+      inline double
       getPointWeight () { return point_weight_; }
 
       /** \brief Set the ratio between the diameter of the cube used for reconstruction and the diameter of the
@@ -121,12 +121,12 @@ namespace pcl
         * \param[in] scale the given parameter value
         */
       inline void
-      setScale (float scale) { scale_ = scale; }
+      setScale (double scale) { scale_ = scale; }
 
       /** Get the ratio between the diameter of the cube used for reconstruction and the diameter of the
         * samples' bounding cube.
         */
-      inline float
+      inline double
       getScale () { return scale_; }
 
       /** \brief Set the the depth at which a block Gauss-Seidel solver is used to solve the Laplacian equation
@@ -162,12 +162,12 @@ namespace pcl
         * \param[in] samples_per_node the given parameter value
         */
       inline void
-      setSamplesPerNode (float samples_per_node) { samples_per_node_ = samples_per_node; }
+      setSamplesPerNode (double samples_per_node) { samples_per_node_ = samples_per_node; }
 
       /** \brief Get the minimum number of sample points that should fall within an octree node as the octree
         * construction is adapted to sampling density
         */
-      inline float
+      inline double
       getSamplesPerNode () { return samples_per_node_; }
 
       /** \brief Set the confidence flag
@@ -223,11 +223,11 @@ namespace pcl
     private:
       int depth_;
       int min_depth_;
-      float point_weight_;
-      float scale_;
+      double point_weight_;
+      double scale_;
       int solver_divide_;
       int iso_divide_;
-      float samples_per_node_;
+      double samples_per_node_;
       bool confidence_;
       bool output_polygons_;
 
@@ -241,12 +241,12 @@ namespace pcl
       bool non_adaptive_weights_;
       bool show_residual_;
       int min_iterations_;
-      float solver_accuracy_;
+      double solver_accuracy_;
 
       template<int Degree> void
       execute (poisson::CoredVectorMeshData &mesh,
-               poisson::Point3D<float> &translate,
-               float &scale);
+               poisson::Point3D<double> &translate,
+               double &scale);
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

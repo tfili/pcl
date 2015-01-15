@@ -65,16 +65,16 @@ main (int, char ** argv)
   pcl::fromPCLPointCloud2 (cloud, xyz);
   
   pcl::visualization::ImageViewer depth_image_viewer_;
-  float* img = new float[cloud.width * cloud.height];
+  double* img = new double[cloud.width * cloud.height];
 
   for (int i = 0; i < static_cast<int> (xyz.points.size ()); ++i)
     img[i] = xyz.points[i].z;
   
   depth_image_viewer_.showFloatImage (img, 
                                       cloud.width, cloud.height,
-                                      std::numeric_limits<float>::min (), 
+                                      std::numeric_limits<double>::min (), 
                                       // Scale so that the colors look brigher on screen
-                                      std::numeric_limits<float>::max () / 10, 
+                                      std::numeric_limits<double>::max () / 10, 
                                       true);
   depth_image_viewer_.spin ();
   return (0);

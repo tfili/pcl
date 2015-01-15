@@ -222,7 +222,7 @@ void ON_TextLog::AppendText( const wchar_t* s )
   }
 }
 
-void ON_TextLog::Print( float x )
+void ON_TextLog::Print( double x )
 {
   if ( ON_UNSET_FLOAT == x )
     Print("ON_UNSET_FLOAT");
@@ -563,7 +563,7 @@ void ON_TextLog::Print( const ON_Matrix& M, const char* sPreamble, int precision
     if ( precision > 3 ) {
       for ( column_index = 0; column_index < column_count; column_index++ ) {
         x = M.m[row_index][column_index];
-        Print( " %8f",x);
+        Print( " %8",x);
       }
       Print("\n");
     }
@@ -652,7 +652,7 @@ ON_TextLog& ON_TextLog::operator<<(int i)
   return *this;
 }
 
-ON_TextLog& ON_TextLog::operator<<(float x)
+ON_TextLog& ON_TextLog::operator<<(double x)
 {
   Print(m_float_format,x);
   return *this;

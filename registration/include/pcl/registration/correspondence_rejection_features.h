@@ -68,7 +68,7 @@ namespace pcl
         typedef boost::shared_ptr<const CorrespondenceRejectorFeatures> ConstPtr;
 
         /** \brief Empty constructor. */
-        CorrespondenceRejectorFeatures () : max_distance_ (std::numeric_limits<float>::max ()), features_map_ ()
+        CorrespondenceRejectorFeatures () : max_distance_ (std::numeric_limits<double>::max ()), features_map_ ()
         {
           rejection_name_ = "CorrespondenceRejectorFeatures";
         }
@@ -149,7 +149,7 @@ namespace pcl
         /** \brief The maximum distance threshold between two correspondent points in source <-> target. If the
           * distance is larger than this threshold, the points will not be ignored in the alignment process.
           */
-        float max_distance_;
+        double max_distance_;
 
         class FeatureContainerInterface
         {
@@ -178,7 +178,7 @@ namespace pcl
           public:
             typedef typename pcl::PointCloud<FeatureT>::ConstPtr FeatureCloudConstPtr;
             typedef boost::function<int (const pcl::PointCloud<FeatureT> &, int, std::vector<int> &, 
-                                          std::vector<float> &)> SearchMethod;
+                                          std::vector<double> &)> SearchMethod;
             
             typedef typename pcl::PointRepresentation<FeatureT>::ConstPtr PointRepresentationConstPtr;
 
@@ -261,9 +261,9 @@ namespace pcl
               }
 
               // Set the internal feature point representation of choice
-              Eigen::VectorXf feat_src_ptr = Eigen::VectorXf::Zero (feature_representation_->getNumberOfDimensions ());
+              Eigen::VectorXd feat_src_ptr = Eigen::VectorXd::Zero (feature_representation_->getNumberOfDimensions ());
               feature_representation_->vectorize (FeatureT (feat_src), feat_src_ptr);
-              Eigen::VectorXf feat_tgt_ptr = Eigen::VectorXf::Zero (feature_representation_->getNumberOfDimensions ());
+              Eigen::VectorXd feat_tgt_ptr = Eigen::VectorXd::Zero (feature_representation_->getNumberOfDimensions ());
               feature_representation_->vectorize (FeatureT (feat_tgt), feat_tgt_ptr);
 
               // Compute the L2 norm

@@ -78,7 +78,7 @@ namespace pcl
           * \return the convolved point
           */
         virtual PointOutT
-        operator() (const std::vector<int>& indices, const std::vector<float>& distances) = 0;
+        operator() (const std::vector<int>& indices, const std::vector<double>& distances) = 0;
 
         /** \brief Must call this methode before doing any computation
           * \note make sure to override this with at least
@@ -99,7 +99,7 @@ namespace pcl
         static void
         makeInfinite (PointOutT& p)
         {
-          p.x = p.y = p.z = std::numeric_limits<float>::quiet_NaN ();
+          p.x = p.y = p.z = std::numeric_limits<double>::quiet_NaN ();
         }
 
       protected:
@@ -126,7 +126,7 @@ namespace pcl
         GaussianKernel ()
           : ConvolvingKernel <PointInT, PointOutT> ()
           , sigma_ (0)
-          , threshold_ (std::numeric_limits<float>::infinity ())
+          , threshold_ (std::numeric_limits<double>::infinity ())
         {}
 
         virtual ~GaussianKernel () {}
@@ -135,32 +135,32 @@ namespace pcl
           * \param[in] sigma
           */
         inline void
-        setSigma (float sigma) { sigma_ = sigma; }
+        setSigma (double sigma) { sigma_ = sigma; }
 
         /** Set the distance threshold relative to a sigma factor i.e. points such as
           * ||pi - q|| > sigma_coefficient^2 * sigma^2 are not considered.
           */
         inline void
-        setThresholdRelativeToSigma (float sigma_coefficient)
+        setThresholdRelativeToSigma (double sigma_coefficient)
         {
           sigma_coefficient_.reset (sigma_coefficient);
         }
 
         /** Set the distance threshold such as pi, ||pi - q|| > threshold are not considered. */
         inline void
-        setThreshold (float threshold) { threshold_ = threshold; }
+        setThreshold (double threshold) { threshold_ = threshold; }
 
         /** Must call this methode before doing any computation */
         bool initCompute ();
 
         virtual PointOutT
-        operator() (const std::vector<int>& indices, const std::vector<float>& distances);
+        operator() (const std::vector<int>& indices, const std::vector<double>& distances);
 
       protected:
-        float sigma_;
-        float sigma_sqr_;
-        float threshold_;
-        boost::optional<float> sigma_coefficient_;
+        double sigma_;
+        double sigma_sqr_;
+        double threshold_;
+        boost::optional<double> sigma_coefficient_;
     };
 
     /** \brief Gaussian kernel implementation interface with RGB channel handling
@@ -188,7 +188,7 @@ namespace pcl
         ~GaussianKernelRGB () {}
 
         PointOutT
-        operator() (const std::vector<int>& indices, const std::vector<float>& distances);
+        operator() (const std::vector<int>& indices, const std::vector<double>& distances);
     };
 
     /** Convolution3D handles the non organized case where width and height are unknown or if you

@@ -128,7 +128,7 @@ namespace pcl
         * \param[in] limit_max The maximum allowed field value (default = FLT_MAX).
         */
       inline void
-      setFilterLimits (const float &limit_min, const float &limit_max)
+      setFilterLimits (const double &limit_min, const double &limit_max)
       {
         filter_limit_min_ = limit_min;
         filter_limit_max_ = limit_max;
@@ -139,7 +139,7 @@ namespace pcl
         * \param[out] limit_max The maximum allowed field value (default = FLT_MAX).
         */
       inline void
-      getFilterLimits (float &limit_min, float &limit_max)
+      getFilterLimits (double &limit_min, double &limit_max)
       {
         limit_min = filter_limit_min_;
         limit_max = filter_limit_max_;
@@ -213,10 +213,10 @@ namespace pcl
       std::string filter_field_name_;
 
       /** \brief The minimum allowed field value (default = FLT_MIN). */
-      float filter_limit_min_;
+      double filter_limit_min_;
 
       /** \brief The maximum allowed field value (default = FLT_MIN). */
-      float filter_limit_max_;
+      double filter_limit_max_;
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ namespace pcl
       /** \brief Constructor. */
       PassThrough (bool extract_removed_indices = false) :
         Filter<pcl::PCLPointCloud2>::Filter (extract_removed_indices), keep_organized_ (false),
-        user_filter_value_ (std::numeric_limits<float>::quiet_NaN ()),
+        user_filter_value_ (std::numeric_limits<double>::quiet_NaN ()),
         filter_field_name_ (""), filter_limit_min_ (-FLT_MAX), filter_limit_max_ (FLT_MAX),
         filter_limit_negative_ (false)
       {
@@ -273,7 +273,7 @@ namespace pcl
         * \param[in] val the user given value that the filtered point dimensions should be set to
         */
       inline void
-      setUserFilterValue (float val)
+      setUserFilterValue (double val)
       {
         user_filter_value_ = val;
       }
@@ -358,7 +358,7 @@ namespace pcl
       /** \brief User given value to be set to any filtered point. Casted to
         * the correct field type. 
         */
-      float user_filter_value_;
+      double user_filter_value_;
 
       /** \brief The desired user filter field name. */
       std::string filter_field_name_;

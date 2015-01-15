@@ -113,7 +113,7 @@ namespace pcl
         * \param[in] resolution side length of voxels
         */
       inline void
-      setResolution (float resolution)
+      setResolution (double resolution)
       {
         // Prevents unnessary voxel initiations
         if (resolution_ != resolution)
@@ -127,7 +127,7 @@ namespace pcl
       /** \brief Get voxel grid resolution.
         * \return side length of voxels
         */
-      inline float
+      inline double
       getResolution () const
       {
         return (resolution_);
@@ -192,12 +192,12 @@ namespace pcl
         * \param[out] trans affine transform corresponding to given transfomation vector
         */
       static void
-      convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Affine3f &trans)
+      convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Affine3d &trans)
       {
-        trans = Eigen::Translation<float, 3>(float (x (0)), float (x (1)), float (x (2))) *
-                Eigen::AngleAxis<float>(float (x (3)), Eigen::Vector3f::UnitX ()) *
-                Eigen::AngleAxis<float>(float (x (4)), Eigen::Vector3f::UnitY ()) *
-                Eigen::AngleAxis<float>(float (x (5)), Eigen::Vector3f::UnitZ ());
+        trans = Eigen::Translation<double, 3>(double (x (0)), double (x (1)), double (x (2))) *
+                Eigen::AngleAxis<double>(double (x (3)), Eigen::Vector3d::UnitX ()) *
+                Eigen::AngleAxis<double>(double (x (4)), Eigen::Vector3d::UnitY ()) *
+                Eigen::AngleAxis<double>(double (x (5)), Eigen::Vector3d::UnitZ ());
       }
 
       /** \brief Convert 6 element transformation vector to transformation matrix.
@@ -205,9 +205,9 @@ namespace pcl
         * \param[out] trans 4x4 transformation matrix corresponding to given transfomation vector
         */
       static void
-      convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Matrix4f &trans)
+      convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Matrix4d &trans)
       {
-        Eigen::Affine3f _affine;
+        Eigen::Affine3d _affine;
         convertTransform (x, _affine);
         trans = _affine.matrix ();
       }
@@ -237,7 +237,7 @@ namespace pcl
       virtual void
       computeTransformation (PointCloudSource &output)
       {
-        computeTransformation (output, Eigen::Matrix4f::Identity ());
+        computeTransformation (output, Eigen::Matrix4d::Identity ());
       }
 
       /** \brief Estimate the transformation and returns the transformed source (input) as output.
@@ -245,7 +245,7 @@ namespace pcl
         * \param[in] guess the initial gross estimation of the transformation
         */
       virtual void
-      computeTransformation (PointCloudSource &output, const Eigen::Matrix4f &guess);
+      computeTransformation (PointCloudSource &output, const Eigen::Matrix4d &guess);
 
       /** \brief Initiate covariance voxel structure. */
       void inline
@@ -420,7 +420,7 @@ namespace pcl
       //double fitness_epsilon_;
 
       /** \brief The side length of voxels. */
-      float resolution_;
+      double resolution_;
 
       /** \brief The maximum step length. */
       double step_size_;

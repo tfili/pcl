@@ -43,22 +43,22 @@
 
 
 bool
-pcl::gpu::kinfuLS::CyclicalBuffer::checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3f &cam_pose, const double distance_camera_target, const bool perform_shift, const bool last_shift, const bool force_shift)
+pcl::gpu::kinfuLS::CyclicalBuffer::checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3d &cam_pose, const double distance_camera_target, const bool perform_shift, const bool last_shift, const bool force_shift)
 {
   bool result = false;
 
   // project the target point in the cube
   pcl::PointXYZ targetPoint;
-  targetPoint.x = 0.0f;
-  targetPoint.y = 0.0f;
+  targetPoint.x = 0.0;
+  targetPoint.y = 0.0;
   targetPoint.z = distance_camera_target; // place the point at camera position + distance_camera_target on Z
   targetPoint = pcl::transformPoint (targetPoint, cam_pose);
 
   // check distance from the cube's center
   pcl::PointXYZ center_cube;
-  center_cube.x = buffer_.origin_metric.x + buffer_.volume_size.x/2.0f;
-  center_cube.y = buffer_.origin_metric.y + buffer_.volume_size.y/2.0f;
-  center_cube.z = buffer_.origin_metric.z + buffer_.volume_size.z/2.0f;
+  center_cube.x = buffer_.origin_metric.x + buffer_.volume_size.x/2.0;
+  center_cube.y = buffer_.origin_metric.y + buffer_.volume_size.y/2.0;
+  center_cube.z = buffer_.origin_metric.z + buffer_.volume_size.z/2.0;
 
   if (pcl::euclideanDistance (targetPoint, center_cube) > distance_threshold_)
     result = true;
@@ -83,7 +83,7 @@ pcl::gpu::kinfuLS::CyclicalBuffer::performShift (const TsdfVolume::Ptr volume, c
 
   // extract current slice from the TSDF volume (coordinates are in indices! (see fetchSliceAsCloud() )
   DeviceArray<PointXYZ> points;
-  DeviceArray<float> intensities;
+  DeviceArray<double> intensities;
   int size;
   if(!last_shift)
   {
@@ -94,7 +94,7 @@ pcl::gpu::kinfuLS::CyclicalBuffer::performShift (const TsdfVolume::Ptr volume, c
     size = volume->fetchSliceAsCloud (cloud_buffer_device_xyz_, cloud_buffer_device_intensities_, &buffer_, buffer_.voxels_size.x - 1, buffer_.voxels_size.y - 1, buffer_.voxels_size.z - 1);
   }
   points = DeviceArray<PointXYZ> (cloud_buffer_device_xyz_.ptr (), size);
-  intensities = DeviceArray<float> (cloud_buffer_device_intensities_.ptr(), size);
+  intensities = DeviceArray<double> (cloud_buffer_device_intensities_.ptr(), size);
 
   PointCloud<PointXYZI>::Ptr current_slice (new PointCloud<PointXYZI>);
   PointCloud<PointXYZ>::Ptr current_slice_xyz (new PointCloud<PointXYZ>);
@@ -106,9 +106,9 @@ pcl::gpu::kinfuLS::CyclicalBuffer::performShift (const TsdfVolume::Ptr volume, c
   current_slice_xyz->height = 1;
 
   // Retrieving intensities
-  // TODO change this mechanism by using PointIntensity directly (in spite of float)
+  // TODO change this mechanism by using PointIntensity directly (in spite of double)
   // when tried, this lead to wrong intenisty values being extracted by fetchSliceAsCloud () (padding pbls?)
-  std::vector<float , Eigen::aligned_allocator<float> > intensities_vector;
+  std::vector<double , Eigen::aligned_allocator<double> > intensities_vector;
   intensities.download (intensities_vector);
   current_slice_intensities->points.resize (current_slice_xyz->points.size ());
   for(int i = 0 ; i < current_slice_intensities->points.size () ; ++i)
@@ -123,11 +123,11 @@ pcl::gpu::kinfuLS::CyclicalBuffer::performShift (const TsdfVolume::Ptr volume, c
   current_slice->height = 1;
 
   // transform the slice from local to global coordinates
-  Eigen::Affine3f global_cloud_transformation;
+  Eigen::Affine3d global_cloud_transformation;
   global_cloud_transformation.translation ()[0] = buffer_.origin_GRID_global.x;
   global_cloud_transformation.translation ()[1] = buffer_.origin_GRID_global.y;
   global_cloud_transformation.translation ()[2] = buffer_.origin_GRID_global.z;
-  global_cloud_transformation.linear () = Eigen::Matrix3f::Identity ();
+  global_cloud_transformation.linear () = Eigen::Matrix3d::Identity ();
   transformPointCloud (*current_slice, *current_slice, global_cloud_transformation);
 
   // retrieve existing data from the world model
@@ -174,16 +174,16 @@ pcl::gpu::kinfuLS::CyclicalBuffer::computeAndSetNewCubeMetricOrigin (const pcl::
 {
   // compute new origin for the cube, based on the target point
   float3 new_cube_origin_meters;
-  new_cube_origin_meters.x = target_point.x - buffer_.volume_size.x/2.0f;
-  new_cube_origin_meters.y = target_point.y - buffer_.volume_size.y/2.0f;
-  new_cube_origin_meters.z = target_point.z - buffer_.volume_size.z/2.0f;
+  new_cube_origin_meters.x = target_point.x - buffer_.volume_size.x/2.0;
+  new_cube_origin_meters.y = target_point.y - buffer_.volume_size.y/2.0;
+  new_cube_origin_meters.z = target_point.z - buffer_.volume_size.z/2.0;
   PCL_INFO ("The old cube's metric origin was    (%f, %f, %f).\n", buffer_.origin_metric.x, buffer_.origin_metric.y, buffer_.origin_metric.z);
   PCL_INFO ("The new cube's metric origin is now (%f, %f, %f).\n", new_cube_origin_meters.x, new_cube_origin_meters.y, new_cube_origin_meters.z);
 
   // deduce each shift in indices
-  shiftX = (int)( (new_cube_origin_meters.x - buffer_.origin_metric.x) * ( buffer_.voxels_size.x / (float) (buffer_.volume_size.x) ) );
-  shiftY = (int)( (new_cube_origin_meters.y - buffer_.origin_metric.y) * ( buffer_.voxels_size.y / (float) (buffer_.volume_size.y) ) );
-  shiftZ = (int)( (new_cube_origin_meters.z - buffer_.origin_metric.z) * ( buffer_.voxels_size.z / (float) (buffer_.volume_size.z) ) );
+  shiftX = (int)( (new_cube_origin_meters.x - buffer_.origin_metric.x) * ( buffer_.voxels_size.x / (double) (buffer_.volume_size.x) ) );
+  shiftY = (int)( (new_cube_origin_meters.y - buffer_.origin_metric.y) * ( buffer_.voxels_size.y / (double) (buffer_.volume_size.y) ) );
+  shiftZ = (int)( (new_cube_origin_meters.z - buffer_.origin_metric.z) * ( buffer_.voxels_size.z / (double) (buffer_.volume_size.z) ) );
 
   // update the cube's metric origin
   buffer_.origin_metric = new_cube_origin_meters;

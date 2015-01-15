@@ -20,7 +20,7 @@ main (int argc, char** argv)
   // Create the filtering object
   pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
   sor.setInputCloud (cloud);
-  sor.setLeafSize (0.01f, 0.01f, 0.01f);
+  sor.setLeafSize (0.01, 0.01, 0.01);
   sor.filter (*cloud_filtered);
 
   std::cerr << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height 
@@ -28,7 +28,7 @@ main (int argc, char** argv)
 
   pcl::PCDWriter writer;
   writer.write ("table_scene_lms400_downsampled.pcd", *cloud_filtered, 
-         Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), false);
+         Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), false);
 
   return (0);
 }

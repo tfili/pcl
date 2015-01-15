@@ -54,7 +54,7 @@ pcl::getApproximateIndices (
   tree.setInputCloud (cloud_ref);
 
   std::vector<int> nn_idx (1);
-  std::vector<float> nn_dists (1);
+  std::vector<double> nn_dists (1);
   indices.resize (cloud_in->points.size ());
   for (size_t i = 0; i < cloud_in->points.size (); ++i)
   {
@@ -74,7 +74,7 @@ pcl::getApproximateIndices (
   tree.setInputCloud (cloud_ref);
 
   std::vector<int> nn_idx (1);
-  std::vector<float> nn_dists (1);
+  std::vector<double> nn_dists (1);
   indices.resize (cloud_in->points.size ());
   for (size_t i = 0; i < cloud_in->points.size (); ++i)
   {

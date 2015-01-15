@@ -47,31 +47,31 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointNT, typename PointOutT> void
 pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::directedOrthogonalAxis (
-                                                                                               Eigen::Vector3f const &axis,
-                                                                                               Eigen::Vector3f const &axis_origin,
-                                                                                               Eigen::Vector3f const &point,
-                                                                                               Eigen::Vector3f &directed_ortho_axis)
+                                                                                               Eigen::Vector3d const &axis,
+                                                                                               Eigen::Vector3d const &axis_origin,
+                                                                                               Eigen::Vector3d const &point,
+                                                                                               Eigen::Vector3d &directed_ortho_axis)
 {
-  Eigen::Vector3f projection;
+  Eigen::Vector3d projection;
   projectPointOnPlane (point, axis_origin, axis, projection);
   directed_ortho_axis = projection - axis_origin;
 
   directed_ortho_axis.normalize ();
 
   // check if the computed x axis is orthogonal to the normal
-  //assert(areEquals((float)(directed_ortho_axis.dot(axis)), 0.0f, 1E-3f));
+  //assert(areEquals((double)(directed_ortho_axis.dot(axis)), 0.0, 1E-3f));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointNT, typename PointOutT> void
 pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::projectPointOnPlane (
-                                                                                            Eigen::Vector3f const &point,
-                                                                                            Eigen::Vector3f const &origin_point,
-                                                                                            Eigen::Vector3f const &plane_normal,
-                                                                                            Eigen::Vector3f &projected_point)
+                                                                                            Eigen::Vector3d const &point,
+                                                                                            Eigen::Vector3d const &origin_point,
+                                                                                            Eigen::Vector3d const &plane_normal,
+                                                                                            Eigen::Vector3d &projected_point)
 {
-  float t;
-  Eigen::Vector3f xo;
+  double t;
+  Eigen::Vector3d xo;
 
   xo = point - origin_point;
   t = plane_normal.dot (xo);
@@ -80,17 +80,17 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::projectPo
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointInT, typename PointNT, typename PointOutT> float
+template<typename PointInT, typename PointNT, typename PointOutT> double
 pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::getAngleBetweenUnitVectors (
-                                                                                                   Eigen::Vector3f const &v1,
-                                                                                                   Eigen::Vector3f const &v2,
-                                                                                                   Eigen::Vector3f const &axis)
+                                                                                                   Eigen::Vector3d const &v1,
+                                                                                                   Eigen::Vector3d const &v2,
+                                                                                                   Eigen::Vector3d const &axis)
 {
-  Eigen::Vector3f angle_orientation;
+  Eigen::Vector3d angle_orientation;
   angle_orientation = v1.cross (v2);
-  float angle_radians = acosf (std::max (-1.0f, std::min (1.0f, v1.dot (v2))));
+  double angle_radians = acos (std::max (-1.0, std::min (1.0, v1.dot (v2))));
 
-  angle_radians = angle_orientation.dot (axis) < 0.f ? (2 * static_cast<float> (M_PI) - angle_radians) : angle_radians;
+  angle_radians = angle_orientation.dot (axis) < 0. ? (2 * static_cast<double> (M_PI) - angle_radians) : angle_radians;
 
   return (angle_radians);
 }
@@ -98,41 +98,41 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::getAngleB
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointNT, typename PointOutT> void
 pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::randomOrthogonalAxis (
-                                                                                             Eigen::Vector3f const &axis,
-                                                                                             Eigen::Vector3f &rand_ortho_axis)
+                                                                                             Eigen::Vector3d const &axis,
+                                                                                             Eigen::Vector3d &rand_ortho_axis)
 {
-  if (!areEquals (axis.z (), 0.0f))
+  if (!areEquals (axis.z (), 0.0))
   {
-    rand_ortho_axis.x () = (static_cast<float> (rand ()) / static_cast<float> (RAND_MAX)) * 2.0f - 1.0f;
-    rand_ortho_axis.y () = (static_cast<float> (rand ()) / static_cast<float> (RAND_MAX)) * 2.0f - 1.0f;
+    rand_ortho_axis.x () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
+    rand_ortho_axis.y () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
     rand_ortho_axis.z () = -(axis.x () * rand_ortho_axis.x () + axis.y () * rand_ortho_axis.y ()) / axis.z ();
   }
-  else if (!areEquals (axis.y (), 0.0f))
+  else if (!areEquals (axis.y (), 0.0))
   {
-    rand_ortho_axis.x () = (static_cast<float> (rand ()) / static_cast<float> (RAND_MAX)) * 2.0f - 1.0f;
-    rand_ortho_axis.z () = (static_cast<float> (rand ()) / static_cast<float> (RAND_MAX)) * 2.0f - 1.0f;
+    rand_ortho_axis.x () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
+    rand_ortho_axis.z () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
     rand_ortho_axis.y () = -(axis.x () * rand_ortho_axis.x () + axis.z () * rand_ortho_axis.z ()) / axis.y ();
   }
-  else if (!areEquals (axis.x (), 0.0f))
+  else if (!areEquals (axis.x (), 0.0))
   {
-    rand_ortho_axis.y () = (static_cast<float> (rand ()) / static_cast<float> (RAND_MAX)) * 2.0f - 1.0f;
-    rand_ortho_axis.z () = (static_cast<float> (rand ()) / static_cast<float> (RAND_MAX)) * 2.0f - 1.0f;
+    rand_ortho_axis.y () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
+    rand_ortho_axis.z () = (static_cast<double> (rand ()) / static_cast<double> (RAND_MAX)) * 2.0 - 1.0;
     rand_ortho_axis.x () = -(axis.y () * rand_ortho_axis.y () + axis.z () * rand_ortho_axis.z ()) / axis.x ();
   }
 
   rand_ortho_axis.normalize ();
 
   // check if the computed x axis is orthogonal to the normal
-  //assert(areEquals(rand_ortho_axis.dot(axis), 0.0f, 1E-6f));
+  //assert(areEquals(rand_ortho_axis.dot(axis), 0.0, 1E-6));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointInT, typename PointNT, typename PointOutT> void
 pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::planeFitting (
-                                                                                     Eigen::Matrix<float,
+                                                                                     Eigen::Matrix<double,
                                                                                          Eigen::Dynamic, 3> const &points,
-                                                                                     Eigen::Vector3f &center,
-                                                                                     Eigen::Vector3f &norm)
+                                                                                     Eigen::Vector3d &center,
+                                                                                     Eigen::Vector3d &norm)
 {
   // -----------------------------------------------------
   // Plane Fitting using Singular Value Decomposition (SVD)
@@ -152,10 +152,10 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::planeFitt
     center += points.row (i);
   }
 
-  center /= static_cast<float> (n_points);
+  center /= static_cast<double> (n_points);
 
   //copy points - average (center)
-  Eigen::Matrix<float, Eigen::Dynamic, 3> A (n_points, 3); //PointData
+  Eigen::Matrix<double, Eigen::Dynamic, 3> A (n_points, 3); //PointData
   for (int i = 0; i < n_points; ++i)
   {
     A (i, 0) = points (i, 0) - center.x ();
@@ -163,7 +163,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::planeFitt
     A (i, 2) = points (i, 2) - center.z ();
   }
 
-  Eigen::JacobiSVD<Eigen::MatrixXf> svd (A, Eigen::ComputeFullV);
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd (A, Eigen::ComputeFullV);
   norm = svd.matrixV ().col (2);
 }
 
@@ -172,16 +172,16 @@ template<typename PointInT, typename PointNT, typename PointOutT> void
 pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::normalDisambiguation (
                                                                                              pcl::PointCloud<PointNT> const &normal_cloud,
                                                                                              std::vector<int> const &normal_indices,
-                                                                                             Eigen::Vector3f &normal)
+                                                                                             Eigen::Vector3d &normal)
 {
-  Eigen::Vector3f normal_mean;
+  Eigen::Vector3d normal_mean;
   normal_mean.setZero ();
 
   for (size_t i = 0; i < normal_indices.size (); ++i)
   {
     const PointNT& curPt = normal_cloud[normal_indices[i]];
 
-    normal_mean += curPt.getNormalVector3fMap ();
+    normal_mean += curPt.getNormalVector3dMap ();
   }
 
   normal_mean.normalize ();
@@ -193,15 +193,15 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::normalDis
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointInT, typename PointNT, typename PointOutT> float
+template<typename PointInT, typename PointNT, typename PointOutT> double
 pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePointLRF (const int &index,
-                                                                                        Eigen::Matrix3f &lrf)
+                                                                                        Eigen::Matrix3d &lrf)
 {
   //find Z axis
 
   //extract support points for Rz radius
   std::vector<int> neighbours_indices;
-  std::vector<float> neighbours_distances;
+  std::vector<double> neighbours_distances;
   int n_neighbours = this->searchForNeighbors (index, search_parameter_, neighbours_indices, neighbours_distances);
 
   //check if there are enough neighbor points, otherwise compute a random X axis and use normal as Z axis
@@ -212,22 +212,22 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     //    getClassName().c_str(), index);
 
     //setting lrf to NaN
-    lrf.setConstant (std::numeric_limits<float>::quiet_NaN ());
+    lrf.setConstant (std::numeric_limits<double>::quiet_NaN ());
 
-    return (std::numeric_limits<float>::max ());
+    return (std::numeric_limits<double>::max ());
   }
 
   //copy neighbours coordinates into eigen matrix
-  Eigen::Matrix<float, Eigen::Dynamic, 3> neigh_points_mat (n_neighbours, 3);
+  Eigen::Matrix<double, Eigen::Dynamic, 3> neigh_points_mat (n_neighbours, 3);
   for (int i = 0; i < n_neighbours; ++i)
   {
-    neigh_points_mat.row (i) = (*surface_)[neighbours_indices[i]].getVector3fMap ();
+    neigh_points_mat.row (i) = (*surface_)[neighbours_indices[i]].getVector3dMap ();
   }
 
-  Eigen::Vector3f x_axis, y_axis;
+  Eigen::Vector3d x_axis, y_axis;
   //plane fitting to find direction of Z axis
-  Eigen::Vector3f fitted_normal; //z_axis
-  Eigen::Vector3f centroid;
+  Eigen::Vector3d fitted_normal; //z_axis
+  Eigen::Vector3d centroid;
   planeFitting (neigh_points_mat, centroid, fitted_normal);
 
   //disambiguate Z axis with normal mean
@@ -240,25 +240,25 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
   //find X axis
 
   //extract support points for Rx radius
-  if (tangent_radius_ != 0.0f && search_parameter_ != tangent_radius_)
+  if (tangent_radius_ != 0.0 && search_parameter_ != tangent_radius_)
   {
     n_neighbours = this->searchForNeighbors (index, tangent_radius_, neighbours_indices, neighbours_distances);
   }
 
   //find point with the "most different" normal (with respect to fittedNormal)
 
-  float min_normal_cos = std::numeric_limits<float>::max ();
+  double min_normal_cos = std::numeric_limits<double>::max ();
   int min_normal_index = -1;
 
   bool margin_point_found = false;
-  Eigen::Vector3f best_margin_point;
+  Eigen::Vector3d best_margin_point;
   bool best_point_found_on_margins = false;
 
-  float radius2 = tangent_radius_ * tangent_radius_;
+  double radius2 = tangent_radius_ * tangent_radius_;
 
-  float margin_distance2 = margin_thresh_ * margin_thresh_ * radius2;
+  double margin_distance2 = margin_thresh_ * margin_thresh_ * radius2;
 
-  float max_boundary_angle = 0;
+  double max_boundary_angle = 0;
 
   if (find_holes_)
   {
@@ -269,18 +269,18 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     for (int i = 0; i < check_margin_array_size_; i++)
     {
       check_margin_array_[i] = false;
-      margin_array_min_angle_[i] = std::numeric_limits<float>::max ();
-      margin_array_max_angle_[i] = -std::numeric_limits<float>::max ();
+      margin_array_min_angle_[i] = std::numeric_limits<double>::max ();
+      margin_array_max_angle_[i] = -std::numeric_limits<double>::max ();
       margin_array_min_angle_normal_[i] = -1.0;
       margin_array_max_angle_normal_[i] = -1.0;
     }
-    max_boundary_angle = (2 * static_cast<float> (M_PI)) / static_cast<float> (check_margin_array_size_);
+    max_boundary_angle = (2 * static_cast<double> (M_PI)) / static_cast<double> (check_margin_array_size_);
   }
 
   for (int curr_neigh = 0; curr_neigh < n_neighbours; ++curr_neigh)
   {
     const int& curr_neigh_idx = neighbours_indices[curr_neigh];
-    const float& neigh_distance_sqr = neighbours_distances[curr_neigh];
+    const double& neigh_distance_sqr = neighbours_distances[curr_neigh];
     if (neigh_distance_sqr <= margin_distance2)
     {
       continue;
@@ -289,9 +289,9 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     //point normalIndex is inside the ring between marginThresh and Radius
     margin_point_found = true;
 
-    Eigen::Vector3f normal_mean = normals_->at (curr_neigh_idx).getNormalVector3fMap ();
+    Eigen::Vector3d normal_mean = normals_->at (curr_neigh_idx).getNormalVector3dMap ();
 
-    float normal_cos = fitted_normal.dot (normal_mean);
+    double normal_cos = fitted_normal.dot (normal_mean);
     if (normal_cos < min_normal_cos)
     {
       min_normal_index = curr_neigh_idx;
@@ -302,10 +302,10 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     if (find_holes_)
     {
       //find angle with respect to random axis previously calculated
-      Eigen::Vector3f indicating_normal_vect;
-      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (),
-                              surface_->at (curr_neigh_idx).getVector3fMap (), indicating_normal_vect);
-      float angle = getAngleBetweenUnitVectors (x_axis, indicating_normal_vect, fitted_normal);
+      Eigen::Vector3d indicating_normal_vect;
+      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (),
+                              surface_->at (curr_neigh_idx).getVector3dMap (), indicating_normal_vect);
+      double angle = getAngleBetweenUnitVectors (x_axis, indicating_normal_vect, fitted_normal);
 
       int check_margin_array_idx = std::min (static_cast<int> (floor (angle / max_boundary_angle)), check_margin_array_size_ - 1);
       check_margin_array_[check_margin_array_idx] = true;
@@ -330,14 +330,14 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     for (int curr_neigh = 0; curr_neigh < n_neighbours; curr_neigh++)
     {
       const int& curr_neigh_idx = neighbours_indices[curr_neigh];
-      const float& neigh_distance_sqr = neighbours_distances[curr_neigh];
+      const double& neigh_distance_sqr = neighbours_distances[curr_neigh];
 
       if (neigh_distance_sqr > margin_distance2)
         continue;
 
-      Eigen::Vector3f normal_mean = normals_->at (curr_neigh_idx).getNormalVector3fMap ();
+      Eigen::Vector3d normal_mean = normals_->at (curr_neigh_idx).getNormalVector3dMap ();
 
-      float normal_cos = fitted_normal.dot (normal_mean);
+      double normal_cos = fitted_normal.dot (normal_mean);
 
       if (normal_cos < min_normal_cos)
       {
@@ -349,12 +349,12 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     // Check if we are not in a degenerate case (all the neighboring normals are NaNs)
     if (min_normal_index == -1)
     {
-      lrf.setConstant (std::numeric_limits<float>::quiet_NaN ());
-      return (std::numeric_limits<float>::max ());
+      lrf.setConstant (std::numeric_limits<double>::quiet_NaN ());
+      return (std::numeric_limits<double>::max ());
     }
     //find orthogonal axis directed to minNormalIndex point projection on plane with fittedNormal as axis
-    directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (),
-                            surface_->at (min_normal_index).getVector3fMap (), x_axis);
+    directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (),
+                            surface_->at (min_normal_index).getVector3dMap (), x_axis);
     y_axis = fitted_normal.cross (x_axis);
 
     lrf.row (0).matrix () = x_axis;
@@ -370,7 +370,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     if (best_point_found_on_margins)
     {
       //if most inclined normal is on support margin
-      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (), best_margin_point, x_axis);
+      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (), best_margin_point, x_axis);
       y_axis = fitted_normal.cross (x_axis);
 
       lrf.row (0).matrix () = x_axis;
@@ -383,12 +383,12 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     // Check if we are not in a degenerate case (all the neighboring normals are NaNs)
     if (min_normal_index == -1)
     {
-      lrf.setConstant (std::numeric_limits<float>::quiet_NaN ());
-      return (std::numeric_limits<float>::max ());
+      lrf.setConstant (std::numeric_limits<double>::quiet_NaN ());
+      return (std::numeric_limits<double>::max ());
     }
 
-    directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (),
-                            surface_->at (min_normal_index).getVector3fMap (), x_axis);
+    directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (),
+                            surface_->at (min_normal_index).getVector3dMap (), x_axis);
     y_axis = fitted_normal.cross (x_axis);
 
     lrf.row (0).matrix () = x_axis;
@@ -414,7 +414,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     if (best_point_found_on_margins)
     {
       //if most inclined normal is on support margin
-      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (), best_margin_point, x_axis);
+      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (), best_margin_point, x_axis);
       y_axis = fitted_normal.cross (x_axis);
 
       lrf.row (0).matrix () = x_axis;
@@ -427,13 +427,13 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     // Check if we are not in a degenerate case (all the neighboring normals are NaNs)
     if (min_normal_index == -1)
     {
-      lrf.setConstant (std::numeric_limits<float>::quiet_NaN ());
-      return (std::numeric_limits<float>::max ());
+      lrf.setConstant (std::numeric_limits<double>::quiet_NaN ());
+      return (std::numeric_limits<double>::max ());
     }
 
     //find orthogonal axis directed to minNormalIndex point projection on plane with fittedNormal as axis
-    directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (),
-                            surface_->at (min_normal_index).getVector3fMap (), x_axis);
+    directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (),
+                            surface_->at (min_normal_index).getVector3dMap (), x_axis);
     y_axis = fitted_normal.cross (x_axis);
 
     lrf.row (0).matrix () = x_axis;
@@ -445,7 +445,7 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
 
   //case hole found
   //find missing region
-  float angle = 0.0;
+  double angle = 0.0;
   int hole_end;
   int hole_first;
 
@@ -467,8 +467,8 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     }
   }
 
-  //float steep_prob = 0.0;
-  float max_hole_prob = -std::numeric_limits<float>::max ();
+  //double steep_prob = 0.0;
+  double max_hole_prob = -std::numeric_limits<double>::max ();
 
   //find holes
   for (int ch = first_no_border; ch < check_margin_array_size_; ch++)
@@ -490,30 +490,30 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
         int previous_hole = (((hole_first - 1) < 0) ? (hole_first - 1) + check_margin_array_size_ : (hole_first - 1))
             % check_margin_array_size_;
         int following_hole = (hole_end) % check_margin_array_size_;
-        float normal_begin = margin_array_max_angle_normal_[previous_hole];
-        float normal_end = margin_array_min_angle_normal_[following_hole];
+        double normal_begin = margin_array_max_angle_normal_[previous_hole];
+        double normal_end = margin_array_min_angle_normal_[following_hole];
         normal_begin -= min_normal_cos;
         normal_end -= min_normal_cos;
-        normal_begin = normal_begin / (1.0f - min_normal_cos);
-        normal_end = normal_end / (1.0f - min_normal_cos);
-        normal_begin = 1.0f - normal_begin;
-        normal_end = 1.0f - normal_end;
+        normal_begin = normal_begin / (1.0 - min_normal_cos);
+        normal_end = normal_end / (1.0 - min_normal_cos);
+        normal_begin = 1.0 - normal_begin;
+        normal_end = 1.0 - normal_end;
 
         //evaluate P(Hole);
-        float hole_width = 0.0f;
+        double hole_width = 0.0;
         if (following_hole < previous_hole)
         {
-          hole_width = margin_array_min_angle_[following_hole] + 2 * static_cast<float> (M_PI)
+          hole_width = margin_array_min_angle_[following_hole] + 2 * static_cast<double> (M_PI)
               - margin_array_max_angle_[previous_hole];
         }
         else
         {
           hole_width = margin_array_min_angle_[following_hole] - margin_array_max_angle_[previous_hole];
         }
-        float hole_prob = hole_width / (2 * static_cast<float> (M_PI));
+        double hole_prob = hole_width / (2 * static_cast<double> (M_PI));
 
         //evaluate P(zmin|Hole)
-        float steep_prob = (normal_end + normal_begin) / 2.0f;
+        double steep_prob = (normal_end + normal_begin) / 2.0;
 
         //check hole prob and after that, check steepThresh
 
@@ -525,11 +525,11 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
             {
               max_hole_prob = hole_prob;
 
-              float angle_weight = ((normal_end - normal_begin) + 1.0f) / 2.0f;
+              double angle_weight = ((normal_end - normal_begin) + 1.0) / 2.0;
               if (following_hole < previous_hole)
               {
                 angle = margin_array_max_angle_[previous_hole] + (margin_array_min_angle_[following_hole] + 2
-                    * static_cast<float> (M_PI) - margin_array_max_angle_[previous_hole]) * angle_weight;
+                    * static_cast<double> (M_PI) - margin_array_max_angle_[previous_hole]) * angle_weight;
               }
               else
               {
@@ -552,33 +552,33 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computePo
     }
   }
 
-  if (max_hole_prob > -std::numeric_limits<float>::max ())
+  if (max_hole_prob > -std::numeric_limits<double>::max ())
   {
     //hole found
-    Eigen::AngleAxisf rotation = Eigen::AngleAxisf (angle, fitted_normal);
+    Eigen::AngleAxisd rotation = Eigen::AngleAxisd (angle, fitted_normal);
     x_axis = rotation * x_axis;
 
-    min_normal_cos -= 10.0f;
+    min_normal_cos -= 10.0;
   }
   else
   {
     if (best_point_found_on_margins)
     {
       //if most inclined normal is on support margin
-      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (), best_margin_point, x_axis);
+      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (), best_margin_point, x_axis);
     }
     else
     {
       // Check if we are not in a degenerate case (all the neighboring normals are NaNs)
       if (min_normal_index == -1)
       {
-        lrf.setConstant (std::numeric_limits<float>::quiet_NaN ());
-        return (std::numeric_limits<float>::max ());
+        lrf.setConstant (std::numeric_limits<double>::quiet_NaN ());
+        return (std::numeric_limits<double>::max ());
       }
 
       //find orthogonal axis directed to minNormalIndex point projection on plane with fittedNormal as axis
-      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3fMap (),
-                              surface_->at (min_normal_index).getVector3fMap (), x_axis);
+      directedOrthogonalAxis (fitted_normal, input_->at (index).getVector3dMap (),
+                              surface_->at (min_normal_index).getVector3dMap (), x_axis);
     }
   }
 
@@ -607,12 +607,12 @@ pcl::BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT>::computeFe
   this->resetData ();
   for (size_t point_idx = 0; point_idx < indices_->size (); ++point_idx)
   {
-    Eigen::Matrix3f currentLrf;
+    Eigen::Matrix3d currentLrf;
     PointOutT &rf = output[point_idx];
 
     //rf.confidence = computePointLRF (*indices_[point_idx], currentLrf);
-    //if (rf.confidence == std::numeric_limits<float>::max ())
-    if (computePointLRF ((*indices_)[point_idx], currentLrf) == std::numeric_limits<float>::max ())
+    //if (rf.confidence == std::numeric_limits<double>::max ())
+    if (computePointLRF ((*indices_)[point_idx], currentLrf) == std::numeric_limits<double>::max ())
     {
       output.is_dense = false;
     }

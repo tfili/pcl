@@ -403,7 +403,7 @@ TEST (PCL, PointCloudImageExtractorBlackNaNs)
   cloud.points[1].curvature = 2.0;
   cloud.points[2].curvature = 1.0;
   cloud.points[3].curvature = 2.0;
-  cloud.points[3].z = std::numeric_limits<float>::quiet_NaN ();
+  cloud.points[3].z = std::numeric_limits<double>::quiet_NaN ();
 
   pcl::PCLImage image;
 

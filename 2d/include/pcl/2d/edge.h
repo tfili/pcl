@@ -81,7 +81,7 @@ namespace pcl
         */
       void
       suppressNonMaxima (const pcl::PointCloud<PointXYZIEdge> &edges, 
-                         pcl::PointCloud<pcl::PointXYZI> &maxima, float tLow);
+                         pcl::PointCloud<pcl::PointXYZI> &maxima, double tLow);
 
     public:
       typedef boost::shared_ptr<Edge> Ptr;
@@ -116,10 +116,10 @@ namespace pcl
       bool non_maximal_suppression_;
       bool hysteresis_thresholding_;
 
-      float hysteresis_threshold_low_;
-      float hysteresis_threshold_high_;
-      float non_max_suppression_radius_x_;
-      float non_max_suppression_radius_y_;
+      double hysteresis_threshold_low_;
+      double hysteresis_threshold_high_;
+      double non_max_suppression_radius_x_;
+      double non_max_suppression_radius_y_;
 
     public:
       Edge () :
@@ -144,13 +144,13 @@ namespace pcl
       }
 
       void
-      setHysteresisThresholdLow (float threshold)
+      setHysteresisThresholdLow (double threshold)
       {
         hysteresis_threshold_low_ = threshold;
       }
 
       void
-      setHysteresisThresholdHigh (float threshold)
+      setHysteresisThresholdHigh (double threshold)
       {
         hysteresis_threshold_high_ = threshold;
       }
@@ -234,7 +234,7 @@ namespace pcl
         * \param[out] output Output point cloud passed by reference.
         */
       void 
-      detectEdgeLoG (const float kernel_sigma, const float kernel_size,
+      detectEdgeLoG (const double kernel_sigma, const double kernel_size,
                      pcl::PointCloud<PointOutT> &output);
 
       /** \brief Computes the image derivatives in X direction using the kernel kernel::derivativeYCentralKernel.

@@ -135,8 +135,8 @@ namespace pcl
           filelen_ = len / sizeof(PointT);
 
           pcl::PCLPointCloud2 cloud_info;
-          Eigen::Vector4f origin;
-          Eigen::Quaternionf orientation;
+          Eigen::Vector4d origin;
+          Eigen::Quaterniond orientation;
           int pcd_version;
           int data_type;
           unsigned int data_index;
@@ -554,8 +554,8 @@ namespace pcl
     {
       pcl::PCDReader reader;
 
-      Eigen::Vector4f  origin;
-      Eigen::Quaternionf  orientation;
+      Eigen::Vector4d  origin;
+      Eigen::Quaterniond  orientation;
       int  pcd_version;
           
       if (boost::filesystem::exists (*disk_storage_filename_))
@@ -673,8 +673,8 @@ namespace pcl
     OutofcoreOctreeDiskContainer<PointT>::getDataSize () const
     {
       pcl::PCLPointCloud2 cloud_info;
-      Eigen::Vector4f origin;
-      Eigen::Quaternionf orientation;
+      Eigen::Vector4d origin;
+      Eigen::Quaterniond orientation;
       int pcd_version;
       int data_type;
       unsigned int data_index;

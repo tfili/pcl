@@ -50,12 +50,12 @@ namespace pcl
       * The two datasets should already be transformed so that the reference plane 
       * equals z = 0.
       *
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       *
       * \author Suat Gedikli
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class TransformationEstimation2D : public TransformationEstimation<PointSource, PointTarget, Scalar>
     {
       public:

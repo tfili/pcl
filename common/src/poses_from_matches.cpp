@@ -80,16 +80,16 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
                                                            int max_no_of_tested_combinations, int max_no_of_results,
                                                            pcl::PosesFromMatches::PoseEstimatesVector& pose_estimates) const
 {
-  const Eigen::Vector3f x_direction (1.0f, 0.0f, 0.0f),
-                        y_direction (0.0f, 1.0f, 0.0f),
-                        z_direction (0.0f, 0.0f, 1.0f);
+  const Eigen::Vector3d x_direction (1.0, 0.0, 0.0),
+                        y_direction (0.0, 1.0, 0.0),
+                        z_direction (0.0, 0.0, 1.0);
   
   int max_correspondence_idx = static_cast<int> (correspondences.size ());
   int counter_for_tested_combinations = 0,
       counter_for_added_pose_estimates = 0;
-  float max_distance_quotient = 1.0f+parameters_.max_correspondence_distance_error,
-        max_distance_quotient_squared=powf (max_distance_quotient, 2),
-        min_distance_quotient = 1.0f / (max_distance_quotient),
+  double max_distance_quotient = 1.0+parameters_.max_correspondence_distance_error,
+        max_distance_quotient_squared=pow (max_distance_quotient, 2),
+        min_distance_quotient = 1.0 / (max_distance_quotient),
         min_distance_quotient_squared = std::pow (min_distance_quotient, 2);
 
   pcl::TransformationFromCorrespondences transformation_from_correspondeces;
@@ -112,25 +112,25 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
       const pcl::PointCorrespondence6D& correspondence1 = correspondences[correspondence1_idx];
       ++counter_for_tested_combinations;
       
-      const Eigen::Vector3f& point1 = correspondence1.point1, & point2 = correspondence2.point1,
+      const Eigen::Vector3d& point1 = correspondence1.point1, & point2 = correspondence2.point1,
                            & corr1  = correspondence1.point2, & corr2  = correspondence2.point2;
       
-      float distance_squared = (point2-point1).squaredNorm (),
+      double distance_squared = (point2-point1).squaredNorm (),
             distance_corr_squared = (corr2-corr1).squaredNorm (),
             distance_quotient_squared = distance_squared/distance_corr_squared;
       if (   distance_quotient_squared < min_distance_quotient_squared
           || distance_quotient_squared > max_distance_quotient_squared)
       {
-        //std::cout << "Skipping because of mismatching distances "<<sqrtf (distance1_squared)
-        //          << " and "<<sqrtf (distance1_corr_squared)<<".\n";
+        //std::cout << "Skipping because of mismatching distances "<<sqrt (distance1_squared)
+        //          << " and "<<sqrt (distance1_corr_squared)<<".\n";
         continue;
       }
       
-      float distance = sqrtf (distance_squared);
+      double distance = sqrt (distance_squared);
       
-      Eigen::Vector3f corr3=corr1, corr4=corr2;
+      Eigen::Vector3d corr3=corr1, corr4=corr2;
       corr3[0]+=distance; corr4[0]+=distance;
-      Eigen::Vector3f point3=correspondence1.transformation*corr3, point4=correspondence2.transformation*corr4;
+      Eigen::Vector3d point3=correspondence1.transformation*corr3, point4=correspondence2.transformation*corr4;
       
       distance_squared = (point4-point3).squaredNorm (),
       distance_corr_squared = (corr4-corr3).squaredNorm (),
@@ -139,9 +139,9 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
           || distance_quotient_squared > max_distance_quotient_squared)
         continue;
       
-      Eigen::Vector3f corr5=corr1, corr6=corr2;
+      Eigen::Vector3d corr5=corr1, corr6=corr2;
       corr5[1]+=distance; corr6[1]+=distance;
-      Eigen::Vector3f point5=correspondence1.transformation*corr5, point6=correspondence2.transformation*corr6;
+      Eigen::Vector3d point5=correspondence1.transformation*corr5, point6=correspondence2.transformation*corr6;
       
       distance_squared = (point6-point5).squaredNorm (),
       distance_corr_squared = (corr6-corr5).squaredNorm (),
@@ -150,9 +150,9 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
           || distance_quotient_squared > max_distance_quotient_squared)
         continue;
       
-      Eigen::Vector3f corr7=corr1, corr8=corr2;
+      Eigen::Vector3d corr7=corr1, corr8=corr2;
       corr7[2]+=distance; corr8[2]+=distance;
-      Eigen::Vector3f point7=correspondence1.transformation*corr7, point8=correspondence2.transformation*corr8;
+      Eigen::Vector3d point7=correspondence1.transformation*corr7, point8=correspondence2.transformation*corr8;
       
       distance_squared = (point8-point7).squaredNorm (),
       distance_corr_squared = (corr8-corr7).squaredNorm (),
@@ -174,7 +174,7 @@ pcl::PosesFromMatches::estimatePosesUsing2Correspondences (const pcl::PointCorre
       ++counter_for_added_pose_estimates;
       PoseEstimate pose_estimate;
       pose_estimate.transformation = transformation_from_correspondeces.getTransformation ();
-      pose_estimate.score = 0.5f * (correspondence1.distance + correspondence2.distance); // TODO: based
+      pose_estimate.score = 0.5 * (correspondence1.distance + correspondence2.distance); // TODO: based
                                                                                 // on the measured distance_errors?
       pose_estimate.correspondence_indices.push_back (correspondence1_idx);
       pose_estimate.correspondence_indices.push_back (correspondence2_idx);
@@ -194,16 +194,16 @@ pcl::PosesFromMatches::estimatePosesUsing3Correspondences (const PointCorrespond
                                                            int max_no_of_tested_combinations, int max_no_of_results,
                                                            PosesFromMatches::PoseEstimatesVector& pose_estimates) const
 {
-  const Eigen::Vector3f x_direction (1.0f, 0.0f, 0.0f),
-                        y_direction (0.0f, 1.0f, 0.0f),
-                        z_direction (0.0f, 0.0f, 1.0f);
+  const Eigen::Vector3d x_direction (1.0, 0.0, 0.0),
+                        y_direction (0.0, 1.0, 0.0),
+                        z_direction (0.0, 0.0, 1.0);
   
   int max_correspondence_idx = static_cast<int> (correspondences.size ());
   int counter_for_tested_combinations = 0,
       counter_for_added_pose_estimates = 0;
-  float max_distance_quotient = 1.0f+parameters_.max_correspondence_distance_error,
+  double max_distance_quotient = 1.0+parameters_.max_correspondence_distance_error,
         max_distance_quotient_squared = std::pow (max_distance_quotient, 2),
-        min_distance_quotient = 1.0f / (max_distance_quotient),
+        min_distance_quotient = 1.0 / (max_distance_quotient),
         min_distance_quotient_squared = std::pow (min_distance_quotient, 2);
 
   pcl::TransformationFromCorrespondences transformation_from_correspondeces;
@@ -215,15 +215,15 @@ pcl::PosesFromMatches::estimatePosesUsing3Correspondences (const PointCorrespond
   for (int correspondence3_idx = 0; correspondence3_idx < max_correspondence_idx && !done; ++correspondence3_idx)
   {
     const pcl::PointCorrespondence6D& correspondence3 = correspondences[correspondence3_idx];
-    const Eigen::Vector3f& point3 = correspondence3.point1,
+    const Eigen::Vector3d& point3 = correspondence3.point1,
                   & corr3  = correspondence3.point2;
     for (int correspondence2_idx = 0; correspondence2_idx < correspondence3_idx && !done; ++correspondence2_idx)
     {
       const pcl::PointCorrespondence6D& correspondence2 = correspondences[correspondence2_idx];
-      const Eigen::Vector3f& point2 = correspondence2.point1,
+      const Eigen::Vector3d& point2 = correspondence2.point1,
                     & corr2  = correspondence2.point2;
       
-      float distance23_squared = (point3-point2).squaredNorm (),
+      double distance23_squared = (point3-point2).squaredNorm (),
             distance23_corr_squared = (corr3-corr2).squaredNorm (),
             distance23_quotient_squared = distance23_squared/distance23_corr_squared;
       if (   distance23_quotient_squared < min_distance_quotient_squared 
@@ -239,15 +239,15 @@ pcl::PosesFromMatches::estimatePosesUsing3Correspondences (const PointCorrespond
         }
         ++counter_for_tested_combinations;
         const pcl::PointCorrespondence6D& correspondence1 = correspondences[correspondence1_idx];
-        const Eigen::Vector3f& point1 = correspondence1.point1,
+        const Eigen::Vector3d& point1 = correspondence1.point1,
                              & corr1  = correspondence1.point2;
-        float distance12_squared = (point2-point1).squaredNorm (),
+        double distance12_squared = (point2-point1).squaredNorm (),
               distance12_corr_squared = (corr2-corr1).squaredNorm (),
               distance12_quotient_squared = distance12_squared/distance12_corr_squared;
         if (   distance12_quotient_squared < min_distance_quotient_squared
             || distance12_quotient_squared > max_distance_quotient_squared)
           continue;
-        float distance13_squared = (point3-point1).squaredNorm (),
+        double distance13_squared = (point3-point1).squaredNorm (),
               distance13_corr_squared = (corr3-corr1).squaredNorm (),
               distance13_quotient_squared = distance13_squared/distance13_corr_squared;
         if (   distance13_quotient_squared < min_distance_quotient_squared
@@ -262,7 +262,7 @@ pcl::PosesFromMatches::estimatePosesUsing3Correspondences (const PointCorrespond
         ++counter_for_added_pose_estimates;
         PoseEstimate pose_estimate;
         pose_estimate.transformation = transformation_from_correspondeces.getTransformation ();
-        pose_estimate.score = (correspondence1.distance + correspondence2.distance + correspondence3.distance) / 3.0f; // TODO: based
+        pose_estimate.score = (correspondence1.distance + correspondence2.distance + correspondence3.distance) / 3.0; // TODO: based
                                                                                   // on the measured distance_errors?
         pose_estimate.correspondence_indices.push_back (correspondence1_idx);
         pose_estimate.correspondence_indices.push_back (correspondence2_idx);

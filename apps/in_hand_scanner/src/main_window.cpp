@@ -107,10 +107,10 @@ pcl::ihs::MainWindow::MainWindow (QWidget* parent)
 
   ui_->spinBox_h_min->setValue (static_cast <int> (idp.getHMin ()));
   ui_->spinBox_h_max->setValue (static_cast <int> (idp.getHMax ()));
-  ui_->spinBox_s_min->setValue (static_cast <int> (idp.getSMin () * 100.f));
-  ui_->spinBox_s_max->setValue (static_cast <int> (idp.getSMax () * 100.f));
-  ui_->spinBox_v_min->setValue (static_cast <int> (idp.getVMin () * 100.f));
-  ui_->spinBox_v_max->setValue (static_cast <int> (idp.getVMax () * 100.f));
+  ui_->spinBox_s_min->setValue (static_cast <int> (idp.getSMin () * 100.));
+  ui_->spinBox_s_max->setValue (static_cast <int> (idp.getSMax () * 100.));
+  ui_->spinBox_v_min->setValue (static_cast <int> (idp.getVMin () * 100.));
+  ui_->spinBox_v_max->setValue (static_cast <int> (idp.getVMax () * 100.));
 
   ui_->checkBox_color_segmentation_inverted->setChecked (idp.getColorSegmentationInverted ());
   ui_->checkBox_color_segmentation_enabled->setChecked (idp.getColorSegmentationEnabled ());
@@ -124,7 +124,7 @@ pcl::ihs::MainWindow::MainWindow (QWidget* parent)
 
   ui_->lineEdit_epsilon->setText (QString ().setNum (ihs_->getICP ().getEpsilon ()));
   ui_->spinBox_max_iterations->setValue (static_cast <int> (ihs_->getICP ().getMaxIterations ()));
-  ui_->spinBox_min_overlap->setValue (static_cast <int> (100.f * ihs_->getICP ().getMinOverlap ()));
+  ui_->spinBox_min_overlap->setValue (static_cast <int> (100. * ihs_->getICP ().getMinOverlap ()));
   ui_->lineEdit_max_fitness->setText (QString ().setNum (ihs_->getICP ().getMaxFitness ()));
 
   ui_->doubleSpinBox_correspondence_rejection_factor->setValue (ihs_->getICP ().getCorrespondenceRejectionFactor ());
@@ -200,42 +200,42 @@ pcl::ihs::MainWindow::keyPressEvent (QKeyEvent* event)
 void
 pcl::ihs::MainWindow::setXMin (const int x_min)
 {
-  ihs_->getInputDataProcessing ().setXMin (static_cast <float> (x_min));
+  ihs_->getInputDataProcessing ().setXMin (static_cast <double> (x_min));
   ui_->spinBox_x_min->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getXMin ()));
 }
 
 void
 pcl::ihs::MainWindow::setXMax (const int x_max)
 {
-  ihs_->getInputDataProcessing ().setXMax (static_cast <float> (x_max));
+  ihs_->getInputDataProcessing ().setXMax (static_cast <double> (x_max));
   ui_->spinBox_x_max->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getXMax ()));
 }
 
 void
 pcl::ihs::MainWindow::setYMin (const int y_min)
 {
-  ihs_->getInputDataProcessing ().setYMin (static_cast <float> (y_min));
+  ihs_->getInputDataProcessing ().setYMin (static_cast <double> (y_min));
   ui_->spinBox_y_min->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getYMin ()));
 }
 
 void
 pcl::ihs::MainWindow::setYMax (const int y_max)
 {
-  ihs_->getInputDataProcessing ().setYMax (static_cast <float> (y_max));
+  ihs_->getInputDataProcessing ().setYMax (static_cast <double> (y_max));
   ui_->spinBox_y_max->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getYMax ()));
 }
 
 void
 pcl::ihs::MainWindow::setZMin (const int z_min)
 {
-  ihs_->getInputDataProcessing ().setZMin (static_cast <float> (z_min));
+  ihs_->getInputDataProcessing ().setZMin (static_cast <double> (z_min));
   ui_->spinBox_z_min->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getZMin ()));
 }
 
 void
 pcl::ihs::MainWindow::setZMax (const int z_max)
 {
-  ihs_->getInputDataProcessing ().setZMax (static_cast <float> (z_max));
+  ihs_->getInputDataProcessing ().setZMax (static_cast <double> (z_max));
   ui_->spinBox_z_max->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getZMax ()));
 }
 
@@ -244,43 +244,43 @@ pcl::ihs::MainWindow::setZMax (const int z_max)
 void
 pcl::ihs::MainWindow::setHMin (const int h_min)
 {
-  ihs_->getInputDataProcessing ().setHMin (static_cast <float> (h_min));
+  ihs_->getInputDataProcessing ().setHMin (static_cast <double> (h_min));
   ui_->spinBox_h_min->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getHMin ()));
 }
 
 void
 pcl::ihs::MainWindow::setHMax (const int h_max)
 {
-  ihs_->getInputDataProcessing ().setHMax (static_cast <float> (h_max));
+  ihs_->getInputDataProcessing ().setHMax (static_cast <double> (h_max));
   ui_->spinBox_h_max->setValue (static_cast <int> (ihs_->getInputDataProcessing ().getHMax ()));
 }
 
 void
 pcl::ihs::MainWindow::setSMin (const int s_min)
 {
-  ihs_->getInputDataProcessing ().setSMin (.01f * static_cast <float> (s_min));
-  ui_->spinBox_s_min->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getSMin () + 0.5f));
+  ihs_->getInputDataProcessing ().setSMin (.01 * static_cast <double> (s_min));
+  ui_->spinBox_s_min->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getSMin () + 0.5));
 }
 
 void
 pcl::ihs::MainWindow::setSMax (const int s_max)
 {
-  ihs_->getInputDataProcessing ().setSMax (.01f * static_cast <float> (s_max));
-  ui_->spinBox_s_max->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getSMax () + 0.5f));
+  ihs_->getInputDataProcessing ().setSMax (.01 * static_cast <double> (s_max));
+  ui_->spinBox_s_max->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getSMax () + 0.5));
 }
 
 void
 pcl::ihs::MainWindow::setVMin (const int v_min)
 {
-  ihs_->getInputDataProcessing ().setVMin (.01f * static_cast <float> (v_min));
-  ui_->spinBox_v_min->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getVMin () + 0.5f));
+  ihs_->getInputDataProcessing ().setVMin (.01 * static_cast <double> (v_min));
+  ui_->spinBox_v_min->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getVMin () + 0.5));
 }
 
 void
 pcl::ihs::MainWindow::setVMax (const int v_max)
 {
-  ihs_->getInputDataProcessing ().setVMax (.01f * static_cast <float> (v_max));
-  ui_->spinBox_v_max->setValue (static_cast <int> (100.f * ihs_->getInputDataProcessing ().getVMax () + 0.5f));
+  ihs_->getInputDataProcessing ().setVMax (.01 * static_cast <double> (v_max));
+  ui_->spinBox_v_max->setValue (static_cast <int> (100. * ihs_->getInputDataProcessing ().getVMax () + 0.5));
 }
 
 void
@@ -330,8 +330,8 @@ pcl::ihs::MainWindow::setMaxIterations (const int iterations)
 void
 pcl::ihs::MainWindow::setMinOverlap (const int overlap)
 {
-  ihs_->getICP ().setMinOverlap (.01f * static_cast <float> (overlap));
-  ui_->spinBox_min_overlap->setValue (static_cast <int> (100.f * ihs_->getICP ().getMinOverlap () + 0.5f));
+  ihs_->getICP ().setMinOverlap (.01 * static_cast <double> (overlap));
+  ui_->spinBox_min_overlap->setValue (static_cast <int> (100. * ihs_->getICP ().getMinOverlap () + 0.5));
 }
 
 void
@@ -344,14 +344,14 @@ pcl::ihs::MainWindow::setMaxFitness ()
 void
 pcl::ihs::MainWindow::setCorrespondenceRejectionFactor (const double factor)
 {
-  ihs_->getICP ().setCorrespondenceRejectionFactor (static_cast <float> (factor));
+  ihs_->getICP ().setCorrespondenceRejectionFactor (static_cast <double> (factor));
   ui_->doubleSpinBox_correspondence_rejection_factor->setValue (static_cast <double> (ihs_->getICP ().getCorrespondenceRejectionFactor ()));
 }
 
 void
 pcl::ihs::MainWindow::setCorrespondenceRejectionMaxAngle (const int angle)
 {
-  ihs_->getICP ().setMaxAngle (static_cast <float> (angle));
+  ihs_->getICP ().setMaxAngle (static_cast <double> (angle));
   ui_->spinBox_correspondence_rejection_max_angle->setValue (static_cast <int> (ihs_->getICP ().getMaxAngle ()));
 }
 
@@ -367,7 +367,7 @@ pcl::ihs::MainWindow::setMaxSquaredDistance ()
 void
 pcl::ihs::MainWindow::setAveragingMaxAngle (const int angle)
 {
-  ihs_->getIntegration ().setMaxAngle (static_cast <float> (angle));
+  ihs_->getIntegration ().setMaxAngle (static_cast <double> (angle));
   ui_->spinBox_averaging_max_angle->setValue (static_cast <int> (ihs_->getIntegration ().getMaxAngle ()));
 }
 

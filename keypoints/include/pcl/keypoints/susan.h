@@ -86,10 +86,10 @@ namespace pcl
         * \param[in] angular_threshold to test if normals are parallel
         * \param[in] intensity_threshold to test if points are of same color
         */
-      SUSANKeypoint (float radius = 0.01f, 
-                     float distance_threshold = 0.001f, 
-                     float angular_threshold = 0.0001f, 
-                     float intensity_threshold = 7.0f)
+      SUSANKeypoint (double radius = 0.01, 
+                     double distance_threshold = 0.001, 
+                     double angular_threshold = 0.0001, 
+                     double intensity_threshold = 7.0)
         : distance_threshold_ (distance_threshold)
         , angular_threshold_ (angular_threshold)
         , intensity_threshold_ (intensity_threshold)
@@ -111,23 +111,23 @@ namespace pcl
         * \param[in] radius
         */
       void 
-      setRadius (float radius);
+      setRadius (double radius);
 
       void 
-      setDistanceThreshold (float distance_threshold);
+      setDistanceThreshold (double distance_threshold);
 
       /** \brief set the angular_threshold value for detecting corners. Normals are considered as 
         * parallel if 1 - angular_threshold <= (Ni.Nj) <= 1
         * \param[in] angular_threshold
         */
       void 
-      setAngularThreshold (float angular_threshold);
+      setAngularThreshold (double angular_threshold);
 
       /** \brief set the intensity_threshold value for detecting corners. 
         * \param[in] intensity_threshold
         */
       void 
-      setIntensityThreshold (float intensity_threshold);
+      setIntensityThreshold (double intensity_threshold);
 
       /**
         * \brief set normals if precalculated normals are available.
@@ -174,15 +174,15 @@ namespace pcl
         * \return true if the point lies within [nucleus centroid]
         */
       bool
-      isWithinNucleusCentroid (const Eigen::Vector3f& nucleus,
-                               const Eigen::Vector3f& centroid,
-                               const Eigen::Vector3f& nc,
+      isWithinNucleusCentroid (const Eigen::Vector3d& nucleus,
+                               const Eigen::Vector3d& centroid,
+                               const Eigen::Vector3d& nc,
                                const PointInT& point) const;
     private:
-      float distance_threshold_;
-      float angular_threshold_;
-      float intensity_threshold_;
-      float tolerance_;
+      double distance_threshold_;
+      double angular_threshold_;
+      double intensity_threshold_;
+      double tolerance_;
       PointCloudNConstPtr normals_;
       unsigned int threads_;
       bool geometric_validation_;

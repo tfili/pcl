@@ -43,9 +43,9 @@
 #include <pcl/common/eigen.h>
 #include <pcl/point_types.h>
 
-#define AUX_PI_FLOAT            3.14159265358979323846f
+#define AUX_PI_FLOAT            3.14159265358979323846
 #define AUX_HALF_PI             1.57079632679489661923f
-#define AUX_DEG_TO_RADIANS     (3.14159265358979323846f/180.0f)
+#define AUX_DEG_TO_RADIANS     (3.14159265358979323846/180.0)
 
 namespace pcl
 {
@@ -347,14 +347,14 @@ namespace pcl
       pointsAreCoplanar (const T p1[3], const T n1[3], const T p2[3], const T n2[3], T max_angle)
       {
         // Compute the angle between 'n1' and 'n2' and compare it with 'max_angle'
-        if ( std::acos (aux::clamp (aux::dot3 (n1, n2), -1.0f, 1.0f)) > max_angle )
+        if ( std::acos (aux::clamp (aux::dot3 (n1, n2), -1.0, 1.0)) > max_angle )
           return (false);
 
         T cl[3] = {p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]};
         aux::normalize3 (cl);
 
         // Compute the angle between 'cl' and 'n1'
-        T tmp_angle = std::acos (aux::clamp (aux::dot3 (n1, cl), -1.0f, 1.0f));
+        T tmp_angle = std::acos (aux::clamp (aux::dot3 (n1, cl), -1.0, 1.0));
 
         // 'tmp_angle' should not deviate too much from 90 degrees
         if ( std::fabs (tmp_angle - AUX_HALF_PI) > max_angle )
@@ -456,7 +456,7 @@ namespace pcl
         // Make sure that 'angle' is in the range [0, pi]
         if ( angle > AUX_PI_FLOAT )
         {
-          angle = 2.0f*AUX_PI_FLOAT - angle;
+          angle = 2.0*AUX_PI_FLOAT - angle;
           aux::flip3 (axis);
         }
       }

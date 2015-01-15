@@ -39,7 +39,7 @@ int main (int argc, char** argv)
     triangles.push_back (triangle);
   }
 
-  float support_radius = 0.0285f;
+  double support_radius = 0.0285;
   unsigned int number_of_partition_bins = 5;
   unsigned int number_of_rotations = 3;
 

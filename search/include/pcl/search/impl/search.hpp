@@ -85,7 +85,7 @@ pcl::search::Search<PointT>::setInputCloud (
 template <typename PointT> int
 pcl::search::Search<PointT>::nearestKSearch (
     const PointCloud &cloud, int index, int k,
-    std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+    std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const
 {
   assert (index >= 0 && index < static_cast<int> (cloud.points.size ()) && "Out-of-bounds error in nearestKSearch!");
   return (nearestKSearch (cloud.points[index], k, k_indices, k_sqr_distances));
@@ -96,7 +96,7 @@ template <typename PointT> int
 pcl::search::Search<PointT>::nearestKSearch (
     int index, int k, 
     std::vector<int> &k_indices, 
-    std::vector<float> &k_sqr_distances) const
+    std::vector<double> &k_sqr_distances) const
 {
   if (indices_ == NULL)
   {
@@ -117,7 +117,7 @@ template <typename PointT> void
 pcl::search::Search<PointT>::nearestKSearch (
     const PointCloud& cloud, const std::vector<int>& indices, 
     int k, std::vector< std::vector<int> >& k_indices,
-    std::vector< std::vector<float> >& k_sqr_distances) const
+    std::vector< std::vector<double> >& k_sqr_distances) const
 {
   if (indices.empty ())
   {
@@ -139,7 +139,7 @@ pcl::search::Search<PointT>::nearestKSearch (
 template <typename PointT> int
 pcl::search::Search<PointT>::radiusSearch (
     const PointCloud &cloud, int index, double radius,
-    std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
+    std::vector<int> &k_indices, std::vector<double> &k_sqr_distances,
     unsigned int max_nn) const
 {
   assert (index >= 0 && index < static_cast<int> (cloud.points.size ()) && "Out-of-bounds error in radiusSearch!");
@@ -150,7 +150,7 @@ pcl::search::Search<PointT>::radiusSearch (
 template <typename PointT> int
 pcl::search::Search<PointT>::radiusSearch (
     int index, double radius, std::vector<int> &k_indices,
-    std::vector<float> &k_sqr_distances, unsigned int max_nn ) const
+    std::vector<double> &k_sqr_distances, unsigned int max_nn ) const
 {
   if (indices_ == NULL)
   {
@@ -171,7 +171,7 @@ pcl::search::Search<PointT>::radiusSearch (
     const std::vector<int>& indices,
     double radius,
     std::vector< std::vector<int> >& k_indices,
-    std::vector< std::vector<float> > &k_sqr_distances,
+    std::vector< std::vector<double> > &k_sqr_distances,
     unsigned int max_nn) const
 {
   if (indices.empty ())
@@ -193,7 +193,7 @@ pcl::search::Search<PointT>::radiusSearch (
 ///////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::search::Search<PointT>::sortResults (
-    std::vector<int>& indices, std::vector<float>& distances) const
+    std::vector<int>& indices, std::vector<double>& distances) const
 {
   std::vector<int> order (indices.size ());
   for (size_t idx = 0; idx < order.size (); ++idx)

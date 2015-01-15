@@ -148,9 +148,9 @@ namespace pcl
             {
             }
 
-            BoxCoefficients (const float x_min, const float x_max,
-                             const float y_min, const float y_max,
-                             const float z_min, const float z_max,
+            BoxCoefficients (const double x_min, const double x_max,
+                             const double y_min, const double y_max,
+                             const double z_min, const double z_max,
                              const Eigen::Isometry3d& T)
               : x_min (x_min), x_max (x_max),
                 y_min (y_min), y_max (y_max),
@@ -159,9 +159,9 @@ namespace pcl
             {
             }
 
-            float x_min; float x_max;
-            float y_min; float y_max;
-            float z_min; float z_max;
+            double x_min; double x_max;
+            double y_min; double y_max;
+            double z_min; double z_max;
             Eigen::Isometry3d transformation;
 
           public:
@@ -234,7 +234,7 @@ namespace pcl
 
         /** \brief The visibility confidence is normalized with this value (must be greater than 1). */
         void
-        setVisibilityConfidenceNormalization (const float vis_conf_norm);
+        setVisibilityConfidenceNormalization (const double vis_conf_norm);
 
         /** \see http://doc.qt.digia.com/qt/qwidget.html#minimumSizeHint-prop */
         virtual QSize
@@ -401,7 +401,7 @@ namespace pcl
         Colormap colormap_;
 
         /** \brief The visibility confidence is normalized with this value. */
-        float vis_conf_norm_;
+        double vis_conf_norm_;
 
         /** \brief Meshes stored for visualization. */
         FaceVertexMeshMap drawn_meshes_;

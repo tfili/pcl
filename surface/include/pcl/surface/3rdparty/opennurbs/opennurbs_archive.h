@@ -974,10 +974,10 @@ public:
 
 	bool ReadFloat(   // Read an array of floats
 			size_t,       // number of floats
-			float*
+			double*
 			);
-	bool ReadFloat(   // Read a single float
-			float*
+	bool ReadFloat(   // Read a single double
+			double*
 			);
 	bool ReadDouble(  // Read an array of IEEE doubles
 			size_t,       // number of doubles
@@ -1140,7 +1140,7 @@ public:
   bool ReadArray( ON_SimpleArray<char>& );
   bool ReadArray( ON_SimpleArray<short>& );
   bool ReadArray( ON_SimpleArray<int>& );
-  bool ReadArray( ON_SimpleArray<float>& );
+  bool ReadArray( ON_SimpleArray<double>& );
   bool ReadArray( ON_SimpleArray<double>& );
   bool ReadArray( ON_SimpleArray<ON_Color>& );
   bool ReadArray( ON_SimpleArray<ON_2dPoint>& );
@@ -1256,10 +1256,10 @@ public:
 
 	bool WriteFloat(   // Write a number of IEEE floats
 			size_t,       // number of doubles
-			const float*
+			const double*
 			);
-	bool WriteFloat(   // Write a single float
-			float
+	bool WriteFloat(   // Write a single double
+			double
 			);
 	bool WriteDouble(  // Write a single double
       size_t,
@@ -1391,7 +1391,7 @@ public:
   bool WriteArray( const ON_SimpleArray<char>& );
   bool WriteArray( const ON_SimpleArray<short>& );
   bool WriteArray( const ON_SimpleArray<int>& );
-  bool WriteArray( const ON_SimpleArray<float>& );
+  bool WriteArray( const ON_SimpleArray<double>& );
   bool WriteArray( const ON_SimpleArray<double>& );
 
   bool WriteArray( const ON_SimpleArray<ON_Color>& );

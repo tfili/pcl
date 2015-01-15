@@ -126,8 +126,8 @@ namespace pcl
         void
         validateTree ();
 
-        Eigen::Vector3f
-        shiftMean (const Eigen::Vector3f& snapPt, const double in_dSigmaDist);
+        Eigen::Vector3d
+        shiftMean (const Eigen::Vector3d& snapPt, const double in_dSigmaDist);
 
       protected:
 
@@ -150,7 +150,7 @@ namespace pcl
         std::vector<int> k_ind_;
 
         /** \brief Stores square distances to the corresponding neighbours. */
-        std::vector<float> k_sqr_dist_;
+        std::vector<double> k_sqr_dist_;
     };
  
     /** \brief The assignment of this structure is to store the statistical/learned weights and other information
@@ -188,22 +188,22 @@ namespace pcl
       ISMModel & operator = (const ISMModel& other);
 
       /** \brief Stores statistical weights. */
-      std::vector<std::vector<float> > statistical_weights_;
+      std::vector<std::vector<double> > statistical_weights_;
 
       /** \brief Stores learned weights. */
-      std::vector<float> learned_weights_;
+      std::vector<double> learned_weights_;
 
       /** \brief Stores the class label for every direction. */
       std::vector<unsigned int> classes_;
 
       /** \brief Stores the sigma value for each class. This values were used to compute the learned weights. */
-      std::vector<float> sigmas_;
+      std::vector<double> sigmas_;
 
       /** \brief Stores the directions to objects center for each visual word. */
-      Eigen::MatrixXf directions_to_center_;
+      Eigen::MatrixXd directions_to_center_;
 
       /** \brief Stores the centers of the clusters that were obtained during the visual words clusterization. */
-      Eigen::MatrixXf clusters_centers_;
+      Eigen::MatrixXd clusters_centers_;
 
       /** \brief This is an array of clusters. Each cluster stores the indices of the visual words that it contains. */
       std::vector<std::vector<unsigned int> > clusters_;
@@ -289,7 +289,7 @@ namespace pcl
             * \param[in] max_count defines the max number of iterations
             * \param[in] epsilon defines the desired accuracy
             */
-          TC(int type, int max_count, float epsilon) :
+          TC(int type, int max_count, double epsilon) :
             type_ (type),
             max_count_ (max_count),
             epsilon_ (epsilon) {};
@@ -306,7 +306,7 @@ namespace pcl
           int max_count_;
 
           /** \brief Defines the accuracy for k-means clustering. */
-          float epsilon_;
+          double epsilon_;
         } TermCriteria;
 
         /** \brief Structure for storing the visual word. */
@@ -315,14 +315,14 @@ namespace pcl
           /** \brief Empty constructor with member variables initialization. */
           VisualWordStat () :
             class_ (-1),
-            learned_weight_ (0.0f),
-            dir_to_center_ (0.0f, 0.0f, 0.0f) {};
+            learned_weight_ (0.0),
+            dir_to_center_ (0.0, 0.0, 0.0) {};
 
           /** \brief Which class this vote belongs. */
           int class_;
 
           /** \brief Weight of the vote. */
-          float learned_weight_;
+          double learned_weight_;
 
           /** \brief Expected direction to center. */
           pcl::PointXYZ dir_to_center_;
@@ -368,14 +368,14 @@ namespace pcl
         setTrainingNormals (const std::vector< typename pcl::PointCloud<NormalT>::Ptr >& training_normals);
 
         /** \brief Returns the sampling size used for cloud simplification. */
-        float
+        double
         getSamplingSize ();
 
         /** \brief Changes the sampling size used for cloud simplification.
           * \param[in] sampling_size desired size of grid bin
           */
         void
-        setSamplingSize (float sampling_size);
+        setSamplingSize (double sampling_size);
 
         /** \brief Returns the current feature estimator used for extraction of the descriptors. */
         boost::shared_ptr<pcl::Feature<PointT, pcl::Histogram<FeatureSize> > >
@@ -399,7 +399,7 @@ namespace pcl
         setNumberOfClusters (unsigned int num_of_clusters);
 
         /** \brief Returns the array of sigma values. */
-        std::vector<float>
+        std::vector<double>
         getSigmaDists ();
 
         /** \brief This method allows to set the value of sigma used for calculating the learned weights for every single class.
@@ -409,7 +409,7 @@ namespace pcl
           * then it computes the average maximum distance and takes 10%. Note that each class has its own sigma value.
           */
         void
-        setSigmaDists (const std::vector<float>& training_sigmas);
+        setSigmaDists (const std::vector<double>& training_sigmas);
 
         /** \brief Returns the state of Nvot coeff from [Knopp et al., 2010, (4)],
           * if set to false then coeff is taken as 1.0. It is just a kind of heuristic.
@@ -458,13 +458,13 @@ namespace pcl
           * \param[out] clusters_centers stores the centers of clusters
           */
         bool
-        clusterDescriptors (std::vector< pcl::Histogram<FeatureSize> >& histograms, Eigen::MatrixXi& labels, Eigen::MatrixXf& clusters_centers);
+        clusterDescriptors (std::vector< pcl::Histogram<FeatureSize> >& histograms, Eigen::MatrixXi& labels, Eigen::MatrixXd& clusters_centers);
 
         /** \brief This method calculates the value of sigma used for calculating the learned weights for every single class.
           * \param[out] sigmas computed sigmas.
           */
         void
-        calculateSigmas (std::vector<float>& sigmas);
+        calculateSigmas (std::vector<double>& sigmas);
 
         /** \brief This function forms a visual vocabulary and evaluates weights
           * described in [Knopp et al., 2010, (5)].
@@ -479,10 +479,10 @@ namespace pcl
         void
         calculateWeights (const std::vector< LocationInfo, Eigen::aligned_allocator<LocationInfo> >& locations,
                           const Eigen::MatrixXi &labels,
-                          std::vector<float>& sigmas,
+                          std::vector<double>& sigmas,
                           std::vector<std::vector<unsigned int> >& clusters,
-                          std::vector<std::vector<float> >& statistical_weights,
-                          std::vector<float>& learned_weights);
+                          std::vector<std::vector<double> >& statistical_weights,
+                          std::vector<double>& learned_weights);
 
         /** \brief Simplifies the cloud using voxel grid principles.
           * \param[in] in_point_cloud cloud that need to be simplified
@@ -501,14 +501,14 @@ namespace pcl
           * \param[in] shift_point point relative to which the cloud will be shifted
           */
         void
-        shiftCloud (typename pcl::PointCloud<PointT>::Ptr in_cloud, Eigen::Vector3f shift_point);
+        shiftCloud (typename pcl::PointCloud<PointT>::Ptr in_cloud, Eigen::Vector3d shift_point);
 
         /** \brief This method simply computes the rotation matrix, so that the given normal
           * would match the Y axis after the transformation. This is done because the algorithm needs to be invariant
           * to the affine transformations.
           * \param[in] in_normal normal for which the rotation matrix need to be computed
           */
-        Eigen::Matrix3f
+        Eigen::Matrix3d
         alignYCoordWithNormal (const NormalT& in_normal);
 
         /** \brief This method applies transform set in in_transform to vector io_vector.
@@ -516,7 +516,7 @@ namespace pcl
           * \param[in] in_transform matrix that contains the transformation
           */
         void
-        applyTransform (Eigen::Vector3f& io_vec, const Eigen::Matrix3f& in_transform);
+        applyTransform (Eigen::Vector3d& io_vec, const Eigen::Matrix3d& in_transform);
 
         /** \brief This method estimates features for the given point cloud.
           * \param[in] sampled_point_cloud sampled point cloud for which the features must be computed
@@ -539,13 +539,13 @@ namespace pcl
           * \param[out] cluster_centers it will store the cluster centers
           */
         double
-        computeKMeansClustering (const Eigen::MatrixXf& points_to_cluster,
+        computeKMeansClustering (const Eigen::MatrixXd& points_to_cluster,
                                  int number_of_clusters,
                                  Eigen::MatrixXi& io_labels,
                                  TermCriteria criteria,
                                  int attempts,
                                  int flags,
-                                 Eigen::MatrixXf& cluster_centers);
+                                 Eigen::MatrixXd& cluster_centers);
 
         /** \brief Generates centers for clusters as described in 
           * Arthur, David and Sergei Vassilvitski (2007) k-means++: The Advantages of Careful Seeding.
@@ -555,8 +555,8 @@ namespace pcl
           * \param[in] trials number of trials to generate a center
           */
         void
-        generateCentersPP (const Eigen::MatrixXf& data,
-                           Eigen::MatrixXf& out_centers,
+        generateCentersPP (const Eigen::MatrixXd& data,
+                           Eigen::MatrixXd& out_centers,
                            int number_of_clusters,
                            int trials);
 
@@ -565,14 +565,14 @@ namespace pcl
           * \param[out] center it will the contain generated center
           */
         void
-        generateRandomCenter (const std::vector<Eigen::Vector2f>& boxes, Eigen::VectorXf& center);
+        generateRandomCenter (const std::vector<Eigen::Vector2d>& boxes, Eigen::VectorXd& center);
 
         /** \brief Computes the square distance beetween two vectors.
           * \param[in] vec_1 first vector
           * \param[in] vec_2 second vector
           */
-        float
-        computeDistance (Eigen::VectorXf& vec_1, Eigen::VectorXf& vec_2);
+        double
+        computeDistance (Eigen::VectorXd& vec_1, Eigen::VectorXd& vec_2);
 
         /** \brief Forbids the assignment operator. */
         ImplicitShapeModelEstimation&
@@ -592,10 +592,10 @@ namespace pcl
         /** \brief This array stores the sigma values for each training class. If this array has a size equals 0, then
           * sigma values will be calculated automatically.
           */
-        std::vector<float> training_sigmas_;
+        std::vector<double> training_sigmas_;
 
         /** \brief This value is used for the simplification. It sets the size of grid bin. */
-        float sampling_size_;
+        double sampling_size_;
 
         /** \brief Stores the feature estimator. */
         boost::shared_ptr<pcl::Feature<PointT, pcl::Histogram<FeatureSize> > > feature_estimator_;
@@ -619,11 +619,11 @@ namespace pcl
 }
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::ISMPeak,
-  (float, x, x)
-  (float, y, y)
-  (float, z, z)
-  (float, density, ism_density)
-  (float, class_id, ism_class_id)
+  (double, x, x)
+  (double, y, y)
+  (double, z, z)
+  (double, density, ism_density)
+  (double, class_id, ism_class_id)
 )
 
 #endif  //#ifndef PCL_IMPLICIT_SHAPE_MODEL_H_

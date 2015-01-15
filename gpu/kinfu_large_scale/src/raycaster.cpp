@@ -46,7 +46,7 @@ using namespace Eigen;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-pcl::gpu::kinfuLS::RayCaster::RayCaster(int rows_arg, int cols_arg, float fx, float fy, float cx, float cy)
+pcl::gpu::kinfuLS::RayCaster::RayCaster(int rows_arg, int cols_arg, double fx, double fy, double cx, double cy)
    : cols(cols_arg), rows(rows_arg), fx_(fx), fy_(fy), cx_(cx < 0 ? cols/2 : cx), cy_(cy < 0 ? rows/2 : cy)
 { 
   vertex_map_.create(rows * 3, cols);
@@ -62,7 +62,7 @@ pcl::gpu::kinfuLS::RayCaster::~RayCaster()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::kinfuLS::RayCaster::setIntrinsics(float fx, float fy, float cx, float cy)
+pcl::gpu::kinfuLS::RayCaster::setIntrinsics(double fx, double fy, double cx, double cy)
 {
   fx_ = fx;
   fy_ = fy;
@@ -72,7 +72,7 @@ pcl::gpu::kinfuLS::RayCaster::setIntrinsics(float fx, float fy, float cx, float 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void 
-pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& camera_pose, tsdf_buffer* buffer)
+pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3d& camera_pose, tsdf_buffer* buffer)
 {  
   camera_pose_.linear() = camera_pose.linear();
   camera_pose_.translation() = camera_pose.translation();
@@ -82,10 +82,10 @@ pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& came
   vertex_map_.create(rows * 3, cols);
   normal_map_.create(rows * 3, cols);
 
-  typedef Matrix<float, 3, 3, RowMajor> Matrix3f;
+  typedef Matrix<double, 3, 3, RowMajor> Matrix3d;
     
-  Matrix3f R = camera_pose_.linear();
-  Vector3f t = camera_pose_.translation();
+  Matrix3d R = camera_pose_.linear();
+  Vector3d t = camera_pose_.translation();
 
   const  pcl::device::kinfuLS::Mat33& device_R   = pcl::device::kinfuLS::device_cast<const pcl::device::kinfuLS::Mat33>(R);
   // const float3& device_t   = device_cast<const float3>(t);
@@ -96,7 +96,7 @@ pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& came
   device_t.y -= buffer->origin_metric.y;
   device_t.z -= buffer->origin_metric.z;
   
-  float tranc_dist = volume.getTsdfTruncDist();  
+  double tranc_dist = volume.getTsdfTruncDist();  
   pcl::device::kinfuLS::raycast (intr, device_R, device_t, tranc_dist, pcl::device::kinfuLS::device_cast<const float3>(volume_size_), volume.data(), buffer, vertex_map_, normal_map_);  
 }
 
@@ -104,12 +104,12 @@ pcl::gpu::kinfuLS::RayCaster::run(const TsdfVolume& volume, const Affine3f& came
 void
 pcl::gpu::kinfuLS::RayCaster::generateSceneView(View& view) const
 {
-  generateSceneView(view, volume_size_ * (-3.f));
+  generateSceneView(view, volume_size_ * (-3.));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::gpu::kinfuLS::RayCaster::generateSceneView(View& view, const Vector3f& light_source_pose) const
+pcl::gpu::kinfuLS::RayCaster::generateSceneView(View& view, const Vector3d& light_source_pose) const
 {
   pcl::device::kinfuLS::LightSource light;
   light.number = 1;  
@@ -127,8 +127,8 @@ pcl::gpu::kinfuLS::RayCaster::generateDepthImage(Depth& depth) const
   
   depth.create(rows, cols);    
   
-  Matrix<float, 3, 3, RowMajor> R_inv = camera_pose_.linear().inverse();
-  Vector3f t = camera_pose_.translation();
+  Matrix<double, 3, 3, RowMajor> R_inv = camera_pose_.linear().inverse();
+  Vector3d t = camera_pose_.translation();
   
   pcl::device::kinfuLS::generateDepth(pcl::device::kinfuLS::device_cast<pcl::device::kinfuLS::Mat33>(R_inv), pcl::device::kinfuLS::device_cast<const float3>(t), vertex_map_, depth);
 }

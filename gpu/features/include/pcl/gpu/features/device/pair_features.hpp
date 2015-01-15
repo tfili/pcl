@@ -45,21 +45,21 @@ namespace pcl
     namespace device
     {
         __device__ __host__ __forceinline__ 
-        bool computePairFeatures (const float3& p1, const float3& n1, const float3& p2, const float3& n2, float &f1, float &f2, float &f3, float &f4)
+        bool computePairFeatures (const float3& p1, const float3& n1, const float3& p2, const float3& n2, double &f1, double &f2, double &f3, double &f4)
         {
-            f1 = f2 = f3 = f4 = 0.0f;
+            f1 = f2 = f3 = f4 = 0.0;
 
             float3 dp2p1 = p2 - p1;            
             f4 = norm(dp2p1);
 
-            if (f4 == 0.f)
+            if (f4 == 0.)
                 return false;           
 
             float3 n1_copy = n1, n2_copy = n2;
-            float angle1 = dot(n1_copy, dp2p1) / f4;
+            double angle1 = dot(n1_copy, dp2p1) / f4;
             
 
-            float angle2 = dot(n2_copy, dp2p1) / f4;
+            double angle2 = dot(n2_copy, dp2p1) / f4;
             if (acos (fabs (angle1)) > acos (fabs (angle2)))
             {
               // switch p1 and p2
@@ -74,52 +74,52 @@ namespace pcl
             // Create a Darboux frame coordinate system u-v-w
             // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
             float3 v = cross(dp2p1, n1_copy);            
-            float v_norm = norm(v);
-            if (v_norm == 0.0f)
+            double v_norm = norm(v);
+            if (v_norm == 0.0)
                 return false;
             
             // Normalize v
-            v *= 1.f/v_norm;            
+            v *= 1./v_norm;            
                         
             // Do not have to normalize w - it is a unit vector by construction            
             f2 = dot(v, n2_copy);
             
             float3 w = cross(n1_copy, v);
             // Compute f1 = arctan (w * n2, u * n2) i.e. angle of n2 in the x=u, y=w coordinate system            
-            f1 = atan2f (dot(w, n2_copy), dot(n1_copy, n2_copy)); // @todo optimize this
+            f1 = atan2 (dot(w, n2_copy), dot(n1_copy, n2_copy)); // @todo optimize this
 
             return true;
         }
 
         __device__ __host__ __forceinline__ 
         bool computeRGBPairFeatures (const float3& p1, const float3& n1, const int& colors1, const float3& p2, const float3& n2, const int& colors2,
-            float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7)
+            double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7)
         {
             float3 dp2p1 = p2 - p1;            
             f4 = norm(dp2p1);
 
-            if (f4 == 0.0f)
+            if (f4 == 0.0)
             {
-                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0f;
+                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0;
                 return false;
             }
 
             float3 n1_copy = n1, n2_copy = n2;            
-            float angle1 = dot(n1_copy, dp2p1) / f4;
+            double angle1 = dot(n1_copy, dp2p1) / f4;
 
             f3 = angle1;
 
             // Create a Darboux frame coordinate system u-v-w
             // u = n1; v = (p_idx - q_idx) x u / || (p_idx - q_idx) x u ||; w = u x v
             float3 v = cross(dp2p1, n1_copy);            
-            float v_norm = norm(v);
-            if (v_norm == 0.0f)
+            double v_norm = norm(v);
+            if (v_norm == 0.0)
             {
-                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0f;
+                f1 = f2 = f3 = f4 = f5 = f6 = f7 = 0.0;
                 return false;
             }
             // Normalize v
-            v *= 1.f/v_norm;
+            v *= 1./v_norm;
 
             float3 w = cross(n1_copy, v);
             // Do not have to normalize w - it is a unit vector by construction
@@ -127,38 +127,38 @@ namespace pcl
             f2 = dot(v, n2_copy);
 
             // Compute f1 = arctan (w * n2, u * n2) i.e. angle of n2 in the x=u, y=w coordinate system
-            f1 = atan2f (dot(w, n2_copy), dot (n1_copy, n2_copy)); 
+            f1 = atan2 (dot(w, n2_copy), dot (n1_copy, n2_copy)); 
 
             // everything before was standard 4D-Darboux frame feature pair
             // now, for the experimental color stuff            
             
-            f5 = ((float) ((colors1      ) & 0xFF)) / ((colors2      ) & 0xFF);
-            f6 = ((float) ((colors1 >>  8) & 0xFF)) / ((colors2 >>  8) & 0xFF);
-            f7 = ((float) ((colors1 >> 16) & 0xFF)) / ((colors2 >> 16) & 0xFF);
+            f5 = ((double) ((colors1      ) & 0xFF)) / ((colors2      ) & 0xFF);
+            f6 = ((double) ((colors1 >>  8) & 0xFF)) / ((colors2 >>  8) & 0xFF);
+            f7 = ((double) ((colors1 >> 16) & 0xFF)) / ((colors2 >> 16) & 0xFF);
 
             // make sure the ratios are in the [-1, 1] interval
-            if (f5 > 1.f) f5 = - 1.f / f5;
-            if (f6 > 1.f) f6 = - 1.f / f6;
-            if (f7 > 1.f) f7 = - 1.f / f7;
+            if (f5 > 1.) f5 = - 1. / f5;
+            if (f6 > 1.) f6 = - 1. / f6;
+            if (f7 > 1.) f7 = - 1. / f7;
 
             return true;
         }
 
         __device__ __host__ __forceinline__ 
-        void computeRGBPairFeatures_RGBOnly (const int& colors1, const int& colors2, float &f5, float &f6, float &f7)
+        void computeRGBPairFeatures_RGBOnly (const int& colors1, const int& colors2, double &f5, double &f6, double &f7)
         {
-            f5 = ((float) ((colors1      ) & 0xFF)) / ((colors2      ) & 0xFF);
-            f6 = ((float) ((colors1 >>  8) & 0xFF)) / ((colors2 >>  8) & 0xFF);
-            f7 = ((float) ((colors1 >> 16) & 0xFF)) / ((colors2 >> 16) & 0xFF);
+            f5 = ((double) ((colors1      ) & 0xFF)) / ((colors2      ) & 0xFF);
+            f6 = ((double) ((colors1 >>  8) & 0xFF)) / ((colors2 >>  8) & 0xFF);
+            f7 = ((double) ((colors1 >> 16) & 0xFF)) / ((colors2 >> 16) & 0xFF);
 
             // make sure the ratios are in the [-1, 1] interval
-            if (f5 > 1.f) f5 = - 1.f / f5;
-            if (f6 > 1.f) f6 = - 1.f / f6;
-            if (f7 > 1.f) f7 = - 1.f / f7;
+            if (f5 > 1.) f5 = - 1. / f5;
+            if (f6 > 1.) f6 = - 1. / f6;
+            if (f7 > 1.) f7 = - 1. / f7;
         }
 
          __device__ __host__ __forceinline__ bool computePPFPairFeature(const float3& p1, const float3& n1, const float3& p2, const float3& n2,
-            float& f1, float& f2, float& f3, float& f4)
+            double& f1, double& f2, double& f3, double& f4)
         {
             float3 delta = p2 - p1;
             
@@ -177,19 +177,19 @@ namespace pcl
 
 
          __device__ __host__ __forceinline__ void computeAlfaM(const float3& model_reference_point, const float3& model_reference_normal, 
-            const float3& model_point, float& alpha_m)
+            const float3& model_point, double& alpha_m)
         {
-            float acos_value = acos (model_reference_normal.x);
+            double acos_value = acos (model_reference_normal.x);
 
-            //float3 cross_vector = cross(model_reference_normal, Eigen::Vector3f::UnitX);
+            //float3 cross_vector = cross(model_reference_normal, Eigen::Vector3d::UnitX);
             float3 cross_vector = make_float3(0, model_reference_normal.z, - model_reference_normal.y);
             float3 cross_vector_norm = normalized(cross_vector);
 
-            //Eigen::AngleAxisf rotation_mg (acos_value, cross_vector_norm);
-            //Eigen::Affine3f transform_mg = Eigen::Translation3f ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
+            //Eigen::AngleAxisd rotation_mg (acos_value, cross_vector_norm);
+            //Eigen::Affine3d transform_mg = Eigen::Translation3d ( rotation_mg * ((-1) * model_reference_point)) * rotation_mg;
 
             float3 row1, row2, row3; // == rotation_mg
-            AngleAxisf(acos_value, cross_vector_norm, row1, row2, row3);
+            AngleAxisd(acos_value, cross_vector_norm, row1, row2, row3);
 
             float3 traslation;
             //traslation.x = row1.x * -model_reference_point.x + row1.y * -model_reference_point.y + row1.z * -model_reference_point.z;
@@ -202,10 +202,10 @@ namespace pcl
             model_point_transformed.z = traslation.z + row3.x * model_point.x + row3.y * model_point.y + row3.z * model_point.z;
 
 
-            float angle = atan2f ( -model_point_transformed.z, model_point_transformed.y);
+            double angle = atan2 ( -model_point_transformed.z, model_point_transformed.y);
 
-            if (sinf(angle) * model_point_transformed.z < 0.0f)
-                //if (angle * model_point_transformed.z < 0.ff)
+            if (sin(angle) * model_point_transformed.z < 0.0)
+                //if (angle * model_point_transformed.z < 0.f)
                 angle *= -1;
             alpha_m = -angle;
         }     

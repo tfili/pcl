@@ -11,7 +11,7 @@
 #include <flann/io/hdf5.h>
 #include <boost/filesystem.hpp>
 
-typedef std::pair<std::string, std::vector<float> > vfh_model;
+typedef std::pair<std::string, std::vector<double> > vfh_model;
 
 /** \brief Loads an n-D histogram file as a VFH signature
   * \param path the input file name
@@ -26,8 +26,8 @@ loadHist (const boost::filesystem::path &path, vfh_model &vfh)
   {
     pcl::PCLPointCloud2 cloud;
     int version;
-    Eigen::Vector4f origin;
-    Eigen::Quaternionf orientation;
+    Eigen::Vector4d origin;
+    Eigen::Quaterniond orientation;
     pcl::PCDReader r;
     int type; unsigned int idx;
     r.readHeader (path.string (), cloud, origin, orientation, version, type, idx);
@@ -68,15 +68,15 @@ loadHist (const boost::filesystem::path &path, vfh_model &vfh)
   * \param distances the resultant neighbor distances
   */
 inline void
-nearestKSearch (flann::Index<flann::ChiSquareDistance<float> > &index, const vfh_model &model, 
-                int k, flann::Matrix<int> &indices, flann::Matrix<float> &distances)
+nearestKSearch (flann::Index<flann::ChiSquareDistance<double> > &index, const vfh_model &model, 
+                int k, flann::Matrix<int> &indices, flann::Matrix<double> &distances)
 {
   // Query point
-  flann::Matrix<float> p = flann::Matrix<float>(new float[model.second.size ()], 1, model.second.size ());
-  memcpy (&p.ptr ()[0], &model.second[0], p.cols * p.rows * sizeof (float));
+  flann::Matrix<double> p = flann::Matrix<double>(new double[model.second.size ()], 1, model.second.size ());
+  memcpy (&p.ptr ()[0], &model.second[0], p.cols * p.rows * sizeof (double));
 
   indices = flann::Matrix<int>(new int[k], 1, k);
-  distances = flann::Matrix<float>(new float[k], 1, k);
+  distances = flann::Matrix<double>(new double[k], 1, k);
   index.knnSearch (p, indices, distances, k, flann::SearchParams (512));
   delete[] p.ptr ();
 }
@@ -148,8 +148,8 @@ main (int argc, char** argv)
 
   std::vector<vfh_model> models;
   flann::Matrix<int> k_indices;
-  flann::Matrix<float> k_distances;
-  flann::Matrix<float> data;
+  flann::Matrix<double> k_distances;
+  flann::Matrix<double> data;
   // Check if the data has already been saved to disk
   if (!boost::filesystem::exists ("training_data.h5") || !boost::filesystem::exists ("training_data.list"))
   {
@@ -173,7 +173,7 @@ main (int argc, char** argv)
   }
   else
   {
-    flann::Index<flann::ChiSquareDistance<float> > index (data, flann::SavedIndexParams ("kdtree.idx"));
+    flann::Index<flann::ChiSquareDistance<double> > index (data, flann::SavedIndexParams ("kdtree.idx"));
     index.buildIndex ();
     nearestKSearch (index, histogram, k, k_indices, k_distances);
   }
@@ -235,7 +235,7 @@ main (int argc, char** argv)
     pcl::console::print_value ("%s\n", pcl::getFieldsList (cloud).c_str ());
 
     // Demean the cloud
-    Eigen::Vector4f centroid;
+    Eigen::Vector4d centroid;
     pcl::compute3DCentroid (cloud_xyz, centroid);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_xyz_demean (new pcl::PointCloud<pcl::PointXYZ>);
     pcl::demeanPointCloud<pcl::PointXYZ> (cloud_xyz, centroid, *cloud_xyz_demean);

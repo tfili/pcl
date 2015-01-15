@@ -163,7 +163,7 @@ TEST (PCL, MovingLeastSquares)
 
   mls_upsampling.setUpsamplingMethod (MovingLeastSquares<PointXYZ, PointNormal>::VOXEL_GRID_DILATION);
   mls_upsampling.setDilationIterations (5);
-  mls_upsampling.setDilationVoxelSize (0.005f);
+  mls_upsampling.setDilationVoxelSize (0.005);
   mls_normals->clear ();
   mls_upsampling.process (*mls_normals);
   EXPECT_NEAR (mls_normals->points[10].x, -0.070005938410758972, 2e-3);

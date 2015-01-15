@@ -111,7 +111,7 @@ createAndAddTemplate (const std::vector<pcl::DOTModality*> & modalities,
 void
 pcl::DOTMOD::
 detectTemplates (const std::vector<DOTModality*> & modalities, 
-                 const float template_response_threshold,
+                 const double template_response_threshold,
                  std::vector<DOTMODDetection> & detections,
                  const size_t bin_size ) const
 {
@@ -149,12 +149,12 @@ detectTemplates (const std::vector<DOTModality*> & modalities,
 
   //std::cerr << "2" << std::endl;
 
-  float best_response = 0.0f;
+  double best_response = 0.0;
   for (size_t row_index = 0; row_index < (height - nr_template_vertical_bins); ++row_index)
   {
     for (size_t col_index = 0; col_index < (width - nr_template_horizontal_bins); ++col_index)
     {
-      std::vector<float> responses (nr_templates, 0.0f);
+      std::vector<double> responses (nr_templates, 0.0);
 
       for (size_t modality_index = 0; modality_index < nr_modalities; ++modality_index)
       {
@@ -167,16 +167,16 @@ detectTemplates (const std::vector<DOTModality*> & modalities,
           for (size_t data_index = 0; data_index < (nr_template_horizontal_bins*nr_template_vertical_bins); ++data_index)
           {
             if ((image_data[data_index] & template_data[data_index]) != 0)
-              responses[template_index] += 1.0f;
+              responses[template_index] += 1.0;
           }
         }
       }
 
       // find templates with response over threshold
-      const float scaling_factor = 1.0f / float (nr_template_horizontal_bins * nr_template_vertical_bins);
+      const double scaling_factor = 1.0 / double (nr_template_horizontal_bins * nr_template_vertical_bins);
       for (size_t template_index = 0; template_index < nr_templates; ++template_index)
       {
-        const float response = responses[template_index] * scaling_factor;
+        const double response = responses[template_index] * scaling_factor;
 
         if (response > template_response_threshold)
         {

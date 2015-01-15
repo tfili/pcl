@@ -84,13 +84,13 @@ pcl::ConvexHull<PointInT>::performReconstruction2D (PointCloud &hull, std::vecto
   PointInT p0 = input_->points[(*indices_)[0]];
   PointInT p1 = input_->points[(*indices_)[indices_->size () - 1]];
   PointInT p2 = input_->points[(*indices_)[indices_->size () / 2]];
-  Eigen::Array4f dy1dy2 = (p1.getArray4fMap () - p0.getArray4fMap ()) / (p2.getArray4fMap () - p0.getArray4fMap ());
+  Eigen::Array4d dy1dy2 = (p1.getArray4dMap () - p0.getArray4dMap ()) / (p2.getArray4dMap () - p0.getArray4dMap ());
   while (!( (dy1dy2[0] != dy1dy2[1]) || (dy1dy2[2] != dy1dy2[1]) ) )
   {
     p0 = input_->points[(*indices_)[rand () % indices_->size ()]];
     p1 = input_->points[(*indices_)[rand () % indices_->size ()]];
     p2 = input_->points[(*indices_)[rand () % indices_->size ()]];
-    dy1dy2 = (p1.getArray4fMap () - p0.getArray4fMap ()) / (p2.getArray4fMap () - p0.getArray4fMap ());
+    dy1dy2 = (p1.getArray4dMap () - p0.getArray4dMap ()) / (p2.getArray4dMap () - p0.getArray4dMap ());
   }
     
   pcl::PointCloud<PointInT> normal_calc_cloud;
@@ -106,9 +106,9 @@ pcl::ConvexHull<PointInT>::performReconstruction2D (PointCloud &hull, std::vecto
   Eigen::Vector3d::Scalar eigen_value;
   Eigen::Vector3d plane_params;
   pcl::eigen33 (normal_calc_covariance, eigen_value, plane_params);
-  float theta_x = fabsf (static_cast<float> (plane_params.dot (x_axis_)));
-  float theta_y = fabsf (static_cast<float> (plane_params.dot (y_axis_)));
-  float theta_z = fabsf (static_cast<float> (plane_params.dot (z_axis_)));
+  double theta_x = fabsf (static_cast<double> (plane_params.dot (x_axis_)));
+  double theta_y = fabsf (static_cast<double> (plane_params.dot (y_axis_)));
+  double theta_z = fabsf (static_cast<double> (plane_params.dot (z_axis_)));
 
   // Check for degenerate cases of each projection
   // We must avoid projections in which the plane projects as a line
@@ -217,9 +217,9 @@ pcl::ConvexHull<PointInT>::performReconstruction2D (PointCloud &hull, std::vecto
   vertexT * vertex;
   int i = 0;
 
-  std::vector<std::pair<int, Eigen::Vector4f>, Eigen::aligned_allocator<std::pair<int, Eigen::Vector4f> > > idx_points (num_vertices);
+  std::vector<std::pair<int, Eigen::Vector4d>, Eigen::aligned_allocator<std::pair<int, Eigen::Vector4d> > > idx_points (num_vertices);
   idx_points.resize (hull.points.size ());
-  memset (&idx_points[0], static_cast<int> (hull.points.size ()), sizeof (std::pair<int, Eigen::Vector4f>));
+  memset (&idx_points[0], static_cast<int> (hull.points.size ()), sizeof (std::pair<int, Eigen::Vector4d>));
 
   FORALLvertices
   {
@@ -229,7 +229,7 @@ pcl::ConvexHull<PointInT>::performReconstruction2D (PointCloud &hull, std::vecto
   }
 
   // Sort
-  Eigen::Vector4f centroid;
+  Eigen::Vector4d centroid;
   pcl::compute3DCentroid (hull, centroid);
   if (xy_proj_safe)
   {

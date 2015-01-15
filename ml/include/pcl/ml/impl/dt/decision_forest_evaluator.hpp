@@ -80,7 +80,7 @@ pcl::DecisionForestEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, Node
     tree_evaluator_.evaluateAndAdd (forest[forest_index], feature_handler, stats_estimator, data_set, examples, label_data);
   }
 
-  const float inv_num_of_trees = 1.0f / static_cast<float> (forest.size ());
+  const double inv_num_of_trees = 1.0 / static_cast<double> (forest.size ());
   for (size_t label_index = 0; label_index < label_data.size (); ++label_index)
   {
     label_data[label_index] *= inv_num_of_trees;

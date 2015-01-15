@@ -81,7 +81,7 @@ pcl::io::openni2::OpenNI2Device::OpenNI2Device (const std::string& device_URI) :
   {
     double baseline;
     getDepthVideoStream ()->getProperty (XN_STREAM_PROPERTY_EMITTER_DCMOS_DISTANCE, &baseline); // Device specific -- from PS1080.h
-    baseline_ = static_cast<float> (baseline * 0.01f);  // baseline from cm -> meters
+    baseline_ = static_cast<double> (baseline * 0.01);  // baseline from cm -> meters
   }
   shadow_value_ = 0;     // This does not exist in OpenNI 2, and is maintained for compatibility with the OpenNI 1.x grabber
   no_sample_value_ = 0;  // This does not exist in OpenNI 2, and is maintained for compatibility with the OpenNI 1.x grabber
@@ -96,7 +96,7 @@ pcl::io::openni2::OpenNI2Device::OpenNI2Device (const std::string& device_URI) :
 
   if (openni_device_->isFile ())
   {
-    openni_device_->getPlaybackControl ()->setSpeed (1.0f);
+    openni_device_->getPlaybackControl ()->setSpeed (1.0);
   }
 
   device_info_ = boost::make_shared<openni::DeviceInfo>();
@@ -164,40 +164,40 @@ pcl::io::openni2::OpenNI2Device::isValid () const
   return (openni_device_.get () != 0) && openni_device_->isValid ();
 }
 
-float
+double
 pcl::io::openni2::OpenNI2Device::getIRFocalLength () const
 {
   boost::shared_ptr<openni::VideoStream> stream = getIRVideoStream ();
 
   int frameWidth = stream->getVideoMode ().getResolutionX ();
-  float hFov = stream->getHorizontalFieldOfView ();
-  float calculatedFocalLengthX = frameWidth / (2.0f * tan (hFov / 2.0f));
+  double hFov = stream->getHorizontalFieldOfView ();
+  double calculatedFocalLengthX = frameWidth / (2.0 * tan (hFov / 2.0));
   return (calculatedFocalLengthX);
 }
 
-float
+double
 pcl::io::openni2::OpenNI2Device::getColorFocalLength () const
 {
   boost::shared_ptr<openni::VideoStream> stream = getColorVideoStream ();
 
   int frameWidth = stream->getVideoMode ().getResolutionX ();
-  float hFov = stream->getHorizontalFieldOfView ();
-  float calculatedFocalLengthX = frameWidth / (2.0f * tan (hFov / 2.0f));
+  double hFov = stream->getHorizontalFieldOfView ();
+  double calculatedFocalLengthX = frameWidth / (2.0 * tan (hFov / 2.0));
   return (calculatedFocalLengthX);
 }
 
-float
+double
 pcl::io::openni2::OpenNI2Device::getDepthFocalLength () const
 {
   boost::shared_ptr<openni::VideoStream> stream = getDepthVideoStream ();
 
   int frameWidth = stream->getVideoMode ().getResolutionX ();
-  float hFov = stream->getHorizontalFieldOfView ();
-  float calculatedFocalLengthX = frameWidth / (2.0f * tan (hFov / 2.0f));
+  double hFov = stream->getHorizontalFieldOfView ();
+  double calculatedFocalLengthX = frameWidth / (2.0 * tan (hFov / 2.0));
   return (calculatedFocalLengthX);
 }
 
-float
+double
 pcl::io::openni2::OpenNI2Device::getBaseline()
 {
   return (baseline_);

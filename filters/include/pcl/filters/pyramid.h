@@ -110,14 +110,14 @@ namespace pcl
       
         /** Only points such us distance (center,point) < threshold are accounted for to prevent
           * ghost points.
-          * Default value is 0.01, to disable set to std::numeric<float>::infinity ().
+          * Default value is 0.01, to disable set to std::numeric<double>::infinity ().
           * \param[in] threshold maximum allowed distance between center and neighbor.
           */
         inline void
-        setDistanceThreshold (float threshold) { threshold_ = threshold; }
+        setDistanceThreshold (double threshold) { threshold_ = threshold; }
 
         /// \return the distance threshold
-        inline float
+        inline double
         getDistanceThreshold () const { return (threshold_); }
 
         /** \brief compute the pyramid levels.
@@ -142,7 +142,7 @@ namespace pcl
         inline void
         nullify (PointT& p) const
         {
-          p.x = p.y = p.z = std::numeric_limits<float>::quiet_NaN ();
+          p.x = p.y = p.z = std::numeric_limits<double>::quiet_NaN ();
         }
 
         /// \brief The input point cloud dataset.
@@ -154,9 +154,9 @@ namespace pcl
         /// \brief filter name
         std::string name_;
         /// \brief smoothing kernel
-        Eigen::MatrixXf kernel_;
+        Eigen::MatrixXd kernel_;
         /// Threshold distance between adjacent points
-        float threshold_;
+        double threshold_;
         /// \brief number of threads
         unsigned int threads_;
 

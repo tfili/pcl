@@ -213,7 +213,7 @@ void vtkVertexBufferObjectMapper::createVBOs(vtkRenderWindow* win)
 //  vtkDataArray *scalars = input->GetPointData()->GetScalars();
 //  cout << "Number of tuples:" << scalars->GetNumberOfTuples() << endl;
 //  cout << "Number of components:" << scalars->GetNumberOfComponents() << endl;
-//  float rgb[3];
+//  double rgb[3];
 //  scalars->GetTuple(0, rgb);
 //  cout << "r: " << rgb[0] << "\tg: " << rgb[1] << "\tb: " << rgb[2] << endl;
 
@@ -221,9 +221,9 @@ void vtkVertexBufferObjectMapper::createVBOs(vtkRenderWindow* win)
 //    colorVbo->SetContext(win);
 //
 //    int rgb = scalars->GetTuple1(0);
-//      uint8_t r = (rgb >> 16) & 0x0000ff;
-//      uint8_t g = (rgb >> 8)  & 0x0000ff;
-//      uint8_t b = (rgb)     & 0x0000ff;
+//      uint8_t r = (rgb >> 16) & 0x0000f;
+//      uint8_t g = (rgb >> 8)  & 0x0000f;
+//      uint8_t b = (rgb)     & 0x0000f;
 //    cout << "r: " << r << "\tg: " << g<< "\tb: " << b << endl;
 //
 //    colorVbo->SetAttributeNormalized(true);

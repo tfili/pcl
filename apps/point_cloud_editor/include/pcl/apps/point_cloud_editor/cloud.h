@@ -116,7 +116,7 @@ class Cloud : public Statistics
     /// @param z The z coordinate of the center (computed as the average point).
     inline
     void
-    getCenter (float &x, float &y, float &z) const
+    getCenter (double &x, double &y, double &z) const
     {
       x = center_xyz_[X]; y = center_xyz_[Y]; z = center_xyz_[Z];
     }
@@ -124,7 +124,7 @@ class Cloud : public Statistics
     /// @brief Returns the scaling factor for the point cloud
     /// @return The scaling factor
     inline
-    float
+    double
     getScalingFactor() const
     {
       return (display_scale_);
@@ -136,7 +136,7 @@ class Cloud : public Statistics
     /// @return A 1-D array representing (4 x 4) matrix in
     /// using OpenGL's column-major format.
     inline
-    const float*
+    const double*
     getMatrix () const
     {
       return (cloud_matrix_);
@@ -150,7 +150,7 @@ class Cloud : public Statistics
     /// @param matrix a 1-D array representing (4 x 4) matrix in
     /// using OpenGL's column-major format.
     void
-    loadMatrix (const float* matrix);
+    loadMatrix (const double* matrix);
 
     /// @brief Right multiplies the cloud matrix with the passed matrix
     /// @details The application of this matrix effectively transforms the
@@ -161,7 +161,7 @@ class Cloud : public Statistics
     /// @param matrix a 1-D array representing (4 x 4) matrix in
     /// using OpenGL's column-major format.
     void
-    multMatrix (const float* matrix);
+    multMatrix (const double* matrix);
 
     /// @brief Sets the selection transform matrix to the one passed.
     /// @details The selection matrix represents the local transformations
@@ -174,10 +174,10 @@ class Cloud : public Statistics
     /// using OpenGL's column-major format.
     /// @sa loadMatrix multMatrix
     void
-    setSelectionRotation (const float* matrix);
+    setSelectionRotation (const double* matrix);
 
     void
-    setSelectionTranslation (float dx, float dy, float dz);
+    setSelectionTranslation (double dx, double dy, double dz);
 
     /// @brief Sets the selected points.
     /// @details The cloud object is responsible for its display. As we have
@@ -201,14 +201,14 @@ class Cloud : public Statistics
     /// @param g the value for the green color
     /// @param b the value for the blue color
     void
-    setRGB (float r, float g, float b);
+    setRGB (double r, double g, double b);
 
     /// @brief Sets the RGB values used for highlighting the selected points.
     /// @param r the value for red color
     /// @param g the value for the green color
     /// @param b the value for the blue color
     void
-    setHighlightColor (float r, float g, float b);
+    setHighlightColor (double r, double g, double b);
 
     /// @brief Renders the cloud and highlights any selected points.
     /// @param disableHighlight Defaults to false.  If true the selected points
@@ -365,21 +365,21 @@ class Cloud : public Statistics
     getStat () const;
 
     /// Default Point Size
-    static const float DEFAULT_POINT_DISPLAY_SIZE_;
+    static const double DEFAULT_POINT_DISPLAY_SIZE_;
     /// Default Highlight Point Size
-    static const float DEFAULT_POINT_HIGHLIGHT_SIZE_;
+    static const double DEFAULT_POINT_HIGHLIGHT_SIZE_;
     /// Default Point Color - Red componenet
-    static const float DEFAULT_POINT_DISPLAY_COLOR_RED_;
+    static const double DEFAULT_POINT_DISPLAY_COLOR_RED_;
     /// Default Point Color - Green componenet
-    static const float DEFAULT_POINT_DISPLAY_COLOR_GREEN_;
+    static const double DEFAULT_POINT_DISPLAY_COLOR_GREEN_;
     /// Default Point Color - Blue componenet
-    static const float DEFAULT_POINT_DISPLAY_COLOR_BLUE_;
+    static const double DEFAULT_POINT_DISPLAY_COLOR_BLUE_;
     /// Default Point Highlight Color - Red componenet
-    static const float DEFAULT_POINT_HIGHLIGHT_COLOR_RED_;
+    static const double DEFAULT_POINT_HIGHLIGHT_COLOR_RED_;
     /// Default Point Highlight Color - Green componenet
-    static const float DEFAULT_POINT_HIGHLIGHT_COLOR_GREEN_;
+    static const double DEFAULT_POINT_HIGHLIGHT_COLOR_GREEN_;
     /// Default Point Highlight Color - Blue componenet
-    static const float DEFAULT_POINT_HIGHLIGHT_COLOR_BLUE_;
+    static const double DEFAULT_POINT_HIGHLIGHT_COLOR_BLUE_;
 
   private:
     /// @brief Computes the point cloud related members.
@@ -420,27 +420,27 @@ class Cloud : public Statistics
 
     /// A scale value used to normalize the display of clouds.  This is simply
     /// one over the maximum of the range in each coordinate direction
-    float display_scale_;
+    double display_scale_;
 
     /// The center coordinate values in the point cloud.  This is used for
     /// display.
-    float center_xyz_[XYZ_SIZE];
+    double center_xyz_[XYZ_SIZE];
 
     /// The minimum coordinate values in the point cloud.  This is used for
     /// display.
-    float min_xyz_[XYZ_SIZE];
+    double min_xyz_[XYZ_SIZE];
 
     /// The maximum coordinate values in the point cloud.  This is used for
     /// display.
-    float max_xyz_[XYZ_SIZE];
+    double max_xyz_[XYZ_SIZE];
 
     /// A (4x4) OpenGL transform matrix for rendering the cloud
-    float cloud_matrix_[MATRIX_SIZE];
+    double cloud_matrix_[MATRIX_SIZE];
 
     /// A (4x4) OpenGL transform matrix specifying the relative transformations
     /// that are applied to the selected points in the cloud when drawing them
     /// as highlighted.
-    float select_matrix_[MATRIX_SIZE];
+    double select_matrix_[MATRIX_SIZE];
 
     /// A vector of indices for every point in the cloud.  This vector is used
     /// when a selection is set and sorted such that the selected indices
@@ -450,20 +450,20 @@ class Cloud : public Statistics
     IndexVector partitioned_indices_;
 
     /// The size used for rendering the unselected points in the cloud
-    float point_size_;
+    double point_size_;
 
     /// The size used for rendering the selected points in the cloud
-    float selected_point_size_;
+    double selected_point_size_;
 
     /// The R, G, B values used for coloring each points when the current
     /// color scheme is COLOR_BY_PURE.
-    float color_[RGB];
+    double color_[RGB];
 
     /// The R, G, B values used for highlighting the selected points.
-    float highlight_color_[RGB];
+    double highlight_color_[RGB];
 
     /// The translations on x, y, and z axis on the selected points.
-    float select_translate_x_, select_translate_y_, select_translate_z_;
+    double select_translate_x_, select_translate_y_, select_translate_z_;
 };
 #endif // CLOUD_H_
 

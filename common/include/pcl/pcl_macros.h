@@ -93,7 +93,7 @@ namespace pcl
 
 # define pcl_isnan(x)    _isnan(x)
 # define pcl_isfinite(x) (_finite(x) != 0)
-# define pcl_isinf(x)    (_finite(x) == 0)
+# define pcl_isin(x)    (_finite(x) == 0)
 
 # define __PRETTY_FUNCTION__ __FUNCTION__
 # define __func__ __FUNCTION__
@@ -103,14 +103,14 @@ namespace pcl
 # include <math.h>
 # define pcl_isnan(x)    std::isnan(x)
 # define pcl_isfinite(x) std::isfinite(x)
-# define pcl_isinf(x)    std::isinf(x)
+# define pcl_isin(x)    std::isin(x)
 
 #elif _GLIBCXX_USE_C99_MATH
 // Are the C++ cmath functions enabled?
 # include <cmath>
 # define pcl_isnan(x)    std::isnan(x)
 # define pcl_isfinite(x) std::isfinite(x)
-# define pcl_isinf(x)    std::isinf(x)
+# define pcl_isin(x)    std::isin(x)
 
 #elif __PATHCC__
 # include <cmath>
@@ -122,14 +122,14 @@ pcl_isnan (T &val)
 }
 //# define pcl_isnan(x)    std::isnan(x)
 # define pcl_isfinite(x) std::isfinite(x)
-# define pcl_isinf(x)    std::isinf(x)
+# define pcl_isin(x)    std::isin(x)
 
 #else
 // Use the math.h macros
 # include <math.h>
 # define pcl_isnan(x)    isnan(x)
 # define pcl_isfinite(x) isfinite(x)
-# define pcl_isinf(x)    isinf(x)
+# define pcl_isin(x)    isin(x)
 
 #endif
 
@@ -157,12 +157,12 @@ pcl_round (double number)
 __inline float
 pcl_round (float number)
 {
-  return (number < 0.0f ? ceilf (number - 0.5f) : floorf (number + 0.5f));
+  return (number < 0.0 ? ceilf (number - 0.5) : floorf (number + 0.5));
 }
 
 #ifdef __GNUC__
 #define pcl_lrint(x) (lrint(static_cast<double> (x)))
-#define pcl_lrintf(x) (lrintf(static_cast<float> (x)))
+#define pcl_lrintf(x) (lrintf(static_cast<double> (x)))
 #else
 #define pcl_lrint(x) (static_cast<long int>(pcl_round(x)))
 #define pcl_lrintf(x) (static_cast<long int>(pcl_round(x)))
@@ -170,10 +170,10 @@ pcl_round (float number)
 
 
 #ifdef _WIN32
-__inline float
-log2f (float x)
+__inline double
+log2f (double x)
 {
-  return (static_cast<float> (logf (x) * M_LOG2E));
+  return (static_cast<double> (logf (x) * M_LOG2E));
 }
 #endif
 
@@ -291,7 +291,7 @@ log2f (float x)
 //
 // Usage:
 // don't use me any more
-// PCL_DEPRECATED(void OldFunc(int a, float b), "Use newFunc instead, this functions will be gone in the next major release");
+// PCL_DEPRECATED(void OldFunc(int a, double b), "Use newFunc instead, this functions will be gone in the next major release");
 // use me instead
 // void NewFunc(int a, double b);
 

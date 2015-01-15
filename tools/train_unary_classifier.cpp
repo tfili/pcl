@@ -103,8 +103,8 @@ loadCloud (const std::string &filename, CloudLT::Ptr &cloud)
 void
 compute (const CloudT::Ptr &input, std::vector<FeatureT, Eigen::aligned_allocator<FeatureT> > &output,
          unsigned int k,
-         float normal_radius_search,
-         float fpfh_radius_search,
+         double normal_radius_search,
+         double fpfh_radius_search,
          bool label)
 {
   TicToc tt;
@@ -132,8 +132,8 @@ compute (const CloudT::Ptr &input, std::vector<FeatureT, Eigen::aligned_allocato
 void
 compute (const CloudLT::Ptr &input, std::vector<FeatureT, Eigen::aligned_allocator<FeatureT> > &output,
          unsigned int k,
-         float normal_radius_search,
-         float fpfh_radius_search,
+         double normal_radius_search,
+         double fpfh_radius_search,
          bool label)
 {
   TicToc tt;
@@ -235,8 +235,8 @@ main (int argc, char** argv)
   
   // parse optional input arguments from the command line
   unsigned int k = default_cluster_size;
-  float normal_radius_search = static_cast<float> (default_normal_radius_search);
-  float fpfh_radius_search = static_cast<float> (default_fpfh_radius_search);
+  double normal_radius_search = static_cast<double> (default_normal_radius_search);
+  double fpfh_radius_search = static_cast<double> (default_fpfh_radius_search);
 
   parse_argument (argc, argv, "-k", k);
   parse_argument (argc, argv, "-normal-radius-search", normal_radius_search);

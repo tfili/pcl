@@ -77,7 +77,7 @@ namespace pcl
       evaluateFeature (const FeatureType & feature,
                        DataSet & data_set,
                        std::vector<ExampleIndex> & examples,
-                       std::vector<float> & results,
+                       std::vector<double> & results,
                        std::vector<unsigned char> & flags) const = 0;
 
       /** \brief Evaluates a feature on the specified data. 
@@ -91,7 +91,7 @@ namespace pcl
       evaluateFeature (const FeatureType & feature,
                        DataSet & data_set,
                        const ExampleIndex & example,
-                       float & result,
+                       double & result,
                        unsigned char & flag) const = 0;
 
       /** \brief Generates evaluation code for the specified feature and writes it to the specified stream.

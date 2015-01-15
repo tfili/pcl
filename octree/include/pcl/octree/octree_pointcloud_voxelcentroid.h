@@ -108,11 +108,11 @@ namespace pcl
           if (point_counter_)
           {
             centroid_arg = point_sum_;
-            centroid_arg /= static_cast<float> (point_counter_);
+            centroid_arg /= static_cast<double> (point_counter_);
           }
           else
           {
-            centroid_arg *= 0.0f;
+            centroid_arg *= 0.0;
           }
         }
 
@@ -123,7 +123,7 @@ namespace pcl
           using namespace pcl::common;
 
           point_counter_ = 0;
-          point_sum_ *= 0.0f;
+          point_sum_ *= 0.0;
         }
 
       private:

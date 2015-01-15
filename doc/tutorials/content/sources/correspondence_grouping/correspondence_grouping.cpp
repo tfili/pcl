@@ -26,12 +26,12 @@ bool show_keypoints_ (false);
 bool show_correspondences_ (false);
 bool use_cloud_resolution_ (false);
 bool use_hough_ (true);
-float model_ss_ (0.01f);
-float scene_ss_ (0.03f);
-float rf_rad_ (0.015f);
-float descr_rad_ (0.02f);
-float cg_size_ (0.01f);
-float cg_thresh_ (5.0f);
+double model_ss_ (0.01);
+double scene_ss_ (0.03f);
+double rf_rad_ (0.015);
+double descr_rad_ (0.02f);
+double cg_size_ (0.01);
+double cg_thresh_ (5.0);
 
 void
 showHelp (char *filename)
@@ -129,7 +129,7 @@ computeCloudResolution (const pcl::PointCloud<PointType>::ConstPtr &cloud)
   int n_points = 0;
   int nres;
   std::vector<int> indices (2);
-  std::vector<float> sqr_distances (2);
+  std::vector<double> sqr_distances (2);
   pcl::search::KdTree<PointType> tree;
   tree.setInputCloud (cloud);
 
@@ -189,8 +189,8 @@ main (int argc, char *argv[])
   //
   if (use_cloud_resolution_)
   {
-    float resolution = static_cast<float> (computeCloudResolution (model));
-    if (resolution != 0.0f)
+    double resolution = static_cast<double> (computeCloudResolution (model));
+    if (resolution != 0.0)
     {
       model_ss_   *= resolution;
       scene_ss_   *= resolution;
@@ -265,13 +265,13 @@ main (int argc, char *argv[])
   for (size_t i = 0; i < scene_descriptors->size (); ++i)
   {
     std::vector<int> neigh_indices (1);
-    std::vector<float> neigh_sqr_dists (1);
+    std::vector<double> neigh_sqr_dists (1);
     if (!pcl_isfinite (scene_descriptors->at (i).descriptor[0])) //skipping NaNs
     {
       continue;
     }
     int found_neighs = match_search.nearestKSearch (scene_descriptors->at (i), 1, neigh_indices, neigh_sqr_dists);
-    if(found_neighs == 1 && neigh_sqr_dists[0] < 0.25f) //  add match only if the squared descriptor distance is less than 0.25 (SHOT descriptor distances are between 0 and 1 by design)
+    if(found_neighs == 1 && neigh_sqr_dists[0] < 0.25) //  add match only if the squared descriptor distance is less than 0.25 (SHOT descriptor distances are between 0 and 1 by design)
     {
       pcl::Correspondence corr (neigh_indices[0], static_cast<int> (i), neigh_sqr_dists[0]);
       model_scene_corrs->push_back (corr);
@@ -282,7 +282,7 @@ main (int argc, char *argv[])
   //
   //  Actual Clustering
   //
-  std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
+  std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > rototranslations;
   std::vector<pcl::Correspondences> clustered_corrs;
 
   //  Using Hough3D
@@ -348,8 +348,8 @@ main (int argc, char *argv[])
     std::cout << "        Correspondences belonging to this instance: " << clustered_corrs[i].size () << std::endl;
 
     // Print the rotation matrix and translation vector
-    Eigen::Matrix3f rotation = rototranslations[i].block<3,3>(0, 0);
-    Eigen::Vector3f translation = rototranslations[i].block<3,1>(0, 3);
+    Eigen::Matrix3d rotation = rototranslations[i].block<3,3>(0, 0);
+    Eigen::Vector3d translation = rototranslations[i].block<3,1>(0, 3);
 
     printf ("\n");
     printf ("            | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));
@@ -371,8 +371,8 @@ main (int argc, char *argv[])
   if (show_correspondences_ || show_keypoints_)
   {
     //  We are translating the model so that it doesn't end in the middle of the scene representation
-    pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
-    pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1,0,0), Eigen::Quaternionf (1, 0, 0, 0));
+    pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3d (-1,0,0), Eigen::Quaterniond (1, 0, 0, 0));
+    pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3d (-1,0,0), Eigen::Quaterniond (1, 0, 0, 0));
 
     pcl::visualization::PointCloudColorHandlerCustom<PointType> off_scene_model_color_handler (off_scene_model, 255, 255, 128);
     viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");

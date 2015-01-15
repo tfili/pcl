@@ -75,7 +75,7 @@ pcl::ihs::InHandScanner::InHandScanner (Base* parent)
     new_data_connection_   (),
     input_data_processing_ (new InputDataProcessing ()),
     icp_                   (new ICP ()),
-    transformation_        (Eigen::Matrix4f::Identity ()),
+    transformation_        (Eigen::Matrix4d::Identity ()),
     integration_           (new Integration ()),
     mesh_processing_       (new MeshProcessing ()),
     mesh_model_            (new Mesh ()),
@@ -87,12 +87,12 @@ pcl::ihs::InHandScanner::InHandScanner (Base* parent)
   Base::setScalingFactor (0.01);
 
   // Initialize the pivot
-  const float x_min = input_data_processing_->getXMin ();
-  const float x_max = input_data_processing_->getXMax ();
-  const float y_min = input_data_processing_->getYMin ();
-  const float y_max = input_data_processing_->getYMax ();
-  const float z_min = input_data_processing_->getZMin ();
-  const float z_max = input_data_processing_->getZMax ();
+  const double x_min = input_data_processing_->getXMin ();
+  const double x_max = input_data_processing_->getXMax ();
+  const double y_min = input_data_processing_->getYMin ();
+  const double y_max = input_data_processing_->getYMax ();
+  const double z_min = input_data_processing_->getZMin ();
+  const double z_max = input_data_processing_->getZMax ();
 
   Base::setPivot (Eigen::Vector3d ((x_min + x_max) / 2., (y_min + y_max) / 2., (z_min + z_max) / 2.));
 }
@@ -232,7 +232,7 @@ pcl::ihs::InHandScanner::reset ()
   Base::removeAllMeshes ();
 
   iteration_      = 0;
-  transformation_ = Eigen::Matrix4f::Identity ();
+  transformation_ = Eigen::Matrix4d::Identity ();
 
   lock.unlock ();
   this->showUnprocessedData ();
@@ -324,7 +324,7 @@ pcl::ihs::InHandScanner::newDataCallback (const CloudXYZRGBAConstPtr& cloud_in)
 
     if (iteration_ == 0)
     {
-      transformation_ = Eigen::Matrix4f::Identity ();
+      transformation_ = Eigen::Matrix4d::Identity ();
 
       sw.reset ();
       integration_->reconstructMesh (cloud_data, mesh_model_);
@@ -337,7 +337,7 @@ pcl::ihs::InHandScanner::newDataCallback (const CloudXYZRGBAConstPtr& cloud_in)
     }
     else
     {
-      Eigen::Matrix4f T_final = Eigen::Matrix4f::Identity ();
+      Eigen::Matrix4d T_final = Eigen::Matrix4d::Identity ();
       if (icp_->findTransformation (mesh_model_, cloud_data, transformation_, T_final))
       {
         transformation_ = T_final;
@@ -428,7 +428,7 @@ pcl::ihs::InHandScanner::paintEvent (QPaintEvent* event)
                                 Eigen::Isometry3d::Identity ());
   Base::setBoxCoefficients (coeffs);
 
-  Base::setVisibilityConfidenceNormalization (static_cast <float> (integration_->getMinDirections ()));
+  Base::setVisibilityConfidenceNormalization (static_cast <double> (integration_->getMinDirections ()));
   // lock.unlock ();
 
   Base::paintEvent (event);

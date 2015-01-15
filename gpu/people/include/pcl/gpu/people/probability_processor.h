@@ -74,32 +74,32 @@ namespace pcl
           void
           CombineProb ( const Depth& depth,
                         pcl::device::LabelProbability& probIn1,
-                        float weight1,
+                        double weight1,
                         pcl::device::LabelProbability& probIn2,
-                        float weight2,
+                        double weight2,
                         pcl::device::LabelProbability& probOut);
 
           /** \brief This will sum a probability multiplied with it's weight **/
           void
-          WeightedSumProb ( const Depth& depth, pcl::device::LabelProbability& probIn, float weight, pcl::device::LabelProbability& probOut);
+          WeightedSumProb ( const Depth& depth, pcl::device::LabelProbability& probIn, double weight, pcl::device::LabelProbability& probOut);
 
           /** \brief This will create a Gaussian Kernel **/
-          float*
-          CreateGaussianKernel ( float sigma,
+          double*
+          CreateGaussianKernel ( double sigma,
                                  int kernelSize);
 
           /** \brief This will do a GaussianBlur over the LabelProbability **/
           int
           GaussianBlur( const Depth&                    depth,
                         pcl::device::LabelProbability&  probIn,
-                        DeviceArray<float>&             kernel,
+                        DeviceArray<double>&             kernel,
                         pcl::device::LabelProbability&  probOut);
 
           /** \brief This will do a GaussianBlur over the LabelProbability **/
           int
           GaussianBlur( const Depth&                    depth,
                         pcl::device::LabelProbability&  probIn,
-                        DeviceArray<float>&             kernel,
+                        DeviceArray<double>&             kernel,
                         pcl::device::LabelProbability&  probTemp,
                         pcl::device::LabelProbability&  probOut);
 

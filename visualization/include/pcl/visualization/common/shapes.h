@@ -79,16 +79,16 @@ namespace pcl
       * \ingroup visualization
       */
     PCL_EXPORTS vtkSmartPointer<vtkDataSet> 
-    createLine (const Eigen::Vector4f &pt1, const Eigen::Vector4f &pt2);
+    createLine (const Eigen::Vector4d &pt1, const Eigen::Vector4d &pt2);
 
     /** \brief Create a sphere shape from a point and a radius
-      * \param[in] center the center of the sphere (as an Eigen Vector4f, with only the first 3 coordinates used)
+      * \param[in] center the center of the sphere (as an Eigen Vector4d, with only the first 3 coordinates used)
       * \param[in] radius the radius of the sphere
       * \param[in] res (optional) the resolution used for rendering the model
       * \ingroup visualization
       */
     PCL_EXPORTS vtkSmartPointer<vtkDataSet>
-    createSphere (const Eigen::Vector4f &center, double radius, int res = 10);
+    createSphere (const Eigen::Vector4d &center, double radius, int res = 10);
 
     /** \brief Create a cylinder shape from a set of model coefficients.
       * \param[in] coefficients the model coefficients (point_on_axis, axis_direction, radius)
@@ -96,8 +96,8 @@ namespace pcl
       *
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelCylinder)
-      * // Eigen::Vector3f pt_on_axis, axis_direction;
-      * // float radius;
+      * // Eigen::Vector3d pt_on_axis, axis_direction;
+      * // double radius;
       *
       * pcl::ModelCoefficients cylinder_coeff;
       * cylinder_coeff.values.resize (7);    // We need 7 values
@@ -125,8 +125,8 @@ namespace pcl
       *
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelSphere)
-      * // Eigen::Vector3f sphere_center;
-      * // float radius;
+      * // Eigen::Vector3d sphere_center;
+      * // double radius;
       *
       * pcl::ModelCoefficients sphere_coeff;
       * sphere_coeff.values.resize (4);    // We need 4 values
@@ -149,7 +149,7 @@ namespace pcl
       * 
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelLine)
-      * // Eigen::Vector3f point_on_line, line_direction;
+      * // Eigen::Vector3d point_on_line, line_direction;
       *
       * pcl::ModelCoefficients line_coeff;
       * line_coeff.values.resize (6);    // We need 6 values
@@ -174,7 +174,7 @@ namespace pcl
       *
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelPlane)
-      * // Eigen::Vector4f plane_parameters;
+      * // Eigen::Vector4d plane_parameters;
       *
       * pcl::ModelCoefficients plane_coeff;
       * plane_coeff.values.resize (4);    // We need 4 values
@@ -205,7 +205,7 @@ namespace pcl
       *
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelCircle2D)
-      * // float x, y, radius;
+      * // double x, y, radius;
       *
       * pcl::ModelCoefficients circle_coeff;
       * circle_coeff.values.resize (3);    // We need 3 values
@@ -226,8 +226,8 @@ namespace pcl
       *
       * \code
       * // The following are given (or computed using sample consensus techniques -- see SampleConsensusModelCone)
-      * // Eigen::Vector3f cone_apex, axis_direction;
-      * // float angle;
+      * // Eigen::Vector3d cone_apex, axis_direction;
+      * // double angle;
       * // Note: The height of the cone is set using the magnitude of the axis_direction vector.
       *
       * pcl::ModelCoefficients cone_coeff;
@@ -265,7 +265,7 @@ namespace pcl
       * \ingroup visualization 
       */
     PCL_EXPORTS vtkSmartPointer<vtkDataSet> 
-    createCube (const Eigen::Vector3f &translation, const Eigen::Quaternionf &rotation,
+    createCube (const Eigen::Vector3d &translation, const Eigen::Quaterniond &rotation,
                 double width, double height, double depth);
     
     /** \brief Create a cube from a set of bounding points

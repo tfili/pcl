@@ -92,13 +92,13 @@ pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOu
   std::vector< std::vector<int> > line_histograms;
   for (size_t i = 0; i < occupied_cells.size (); ++i)
   {
-    Eigen::Vector3f origin = occupied_cells[i].getVector3fMap ();
+    Eigen::Vector3d origin = occupied_cells[i].getVector3dMap ();
 
     for (size_t j = i+1; j < occupied_cells.size (); ++j)
     {
       typename pcl::PointCloud<PointInT>::VectorType intersected_cells;
-      Eigen::Vector3f end = occupied_cells[j].getVector3fMap ();
-      octree.getApproxIntersectedVoxelCentersBySegment (origin, end, intersected_cells, 0.5f);
+      Eigen::Vector3d end = occupied_cells[j].getVector3dMap ();
+      octree.getApproxIntersectedVoxelCentersBySegment (origin, end, intersected_cells, 0.5);
 
       // Intersected cells are ordered from closest to furthest w.r.t. the origin.
       std::vector<int> histogram;
@@ -121,10 +121,10 @@ pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOu
   std::vector< std::vector<int> > transition_histograms;
   computeTransitionHistograms (line_histograms, transition_histograms);
 
-  std::vector<float> distances;
+  std::vector<double> distances;
   computeDistancesToMean (transition_histograms, distances);
 
-  std::vector<float> gfpfh_histogram;
+  std::vector<double> gfpfh_histogram;
   computeDistanceHistogram (distances, gfpfh_histogram);
 
   output.clear ();
@@ -178,40 +178,40 @@ pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeTransitionHistograms 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeDistancesToMean (const std::vector< std::vector<int> >& transition_histograms,
-                                                                            std::vector<float>& distances)
+                                                                            std::vector<double>& distances)
 {
   distances.resize (transition_histograms.size ());
 
-  std::vector<float> mean_histogram;
+  std::vector<double> mean_histogram;
   computeMeanHistogram (transition_histograms, mean_histogram);
 
   for (size_t i = 0; i < transition_histograms.size (); ++i)
   {
-    float d = computeHIKDistance (transition_histograms[i], mean_histogram);
+    double d = computeHIKDistance (transition_histograms[i], mean_histogram);
     distances[i] = d;
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT> void
-pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeDistanceHistogram (const std::vector<float>& distances,
-                                                                              std::vector<float>& histogram)
+pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeDistanceHistogram (const std::vector<double>& distances,
+                                                                              std::vector<double>& histogram)
 {
-  std::vector<float>::const_iterator min_it = std::min_element (distances.begin (), distances.end ());
+  std::vector<double>::const_iterator min_it = std::min_element (distances.begin (), distances.end ());
   assert (min_it != distances.end ());
-  const float min_value = *min_it;
+  const double min_value = *min_it;
 
-  std::vector<float>::const_iterator max_it = std::max_element (distances.begin (), distances.end ());
+  std::vector<double>::const_iterator max_it = std::max_element (distances.begin (), distances.end ());
   assert (max_it != distances.end());
-  const float max_value = *max_it;
+  const double max_value = *max_it;
 
   histogram.resize (descriptorSize (), 0);
 
-  const float range = max_value - min_value;
+  const double range = max_value - min_value;
   const int max_bin = descriptorSize () - 1;
   for (size_t i = 0; i < distances.size (); ++i)
   {
-    const float raw_bin = static_cast<float> (descriptorSize ()) * (distances[i] - min_value) / range;
+    const double raw_bin = static_cast<double> (descriptorSize ()) * (distances[i] - min_value) / range;
     int bin = std::min (max_bin, static_cast<int> (floor (raw_bin)));
     histogram[bin] += 1;
   }
@@ -220,31 +220,31 @@ pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeDistanceHistogram (co
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT> void
 pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeMeanHistogram (const std::vector< std::vector<int> >& histograms,
-                                                                          std::vector<float>& mean_histogram)
+                                                                          std::vector<double>& mean_histogram)
 {
   assert (histograms.size () > 0);
 
   mean_histogram.resize (histograms[0].size (), 0);
   for (size_t i = 0; i < histograms.size (); ++i)
     for (size_t j = 0; j < histograms[i].size (); ++j)
-      mean_histogram[j] += static_cast<float> (histograms[i][j]);
+      mean_histogram[j] += static_cast<double> (histograms[i][j]);
 
   for (size_t i = 0; i < mean_histogram.size (); ++i)
-    mean_histogram[i] /= static_cast<float> (histograms.size ());
+    mean_histogram[i] /= static_cast<double> (histograms.size ());
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointInT, typename PointNT, typename PointOutT> float
+template <typename PointInT, typename PointNT, typename PointOutT> double
 pcl::GFPFHEstimation<PointInT, PointNT, PointOutT>::computeHIKDistance (const std::vector<int>& histogram,
-                                                                        const std::vector<float>& mean_histogram)
+                                                                        const std::vector<double>& mean_histogram)
 {
   assert (histogram.size () == mean_histogram.size ());
 
-  float norm = 0.f;
+  double norm = 0.;
   for (size_t i = 0; i < histogram.size (); ++i)
-    norm += std::min (static_cast<float> (histogram[i]), mean_histogram[i]);
+    norm += std::min (static_cast<double> (histogram[i]), mean_histogram[i]);
 
-  norm /= static_cast<float> (histogram.size ());
+  norm /= static_cast<double> (histogram.size ());
   return (norm);
 }
 

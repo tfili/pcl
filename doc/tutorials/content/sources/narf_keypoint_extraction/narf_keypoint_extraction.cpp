@@ -16,8 +16,8 @@ typedef pcl::PointXYZ PointType;
 // --------------------
 // -----Parameters-----
 // --------------------
-float angular_resolution = 0.5f;
-float support_size = 0.2f;
+double angular_resolution = 0.5;
+double support_size = 0.2f;
 pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 bool setUnseenToMaxRange = false;
 
@@ -30,21 +30,21 @@ printUsage (const char* progName)
   std::cout << "\n\nUsage: "<<progName<<" [options] <scene.pcd>\n\n"
             << "Options:\n"
             << "-------------------------------------------\n"
-            << "-r <float>   angular resolution in degrees (default "<<angular_resolution<<")\n"
+            << "-r <double>   angular resolution in degrees (default "<<angular_resolution<<")\n"
             << "-c <int>     coordinate frame (default "<< (int)coordinate_frame<<")\n"
             << "-m           Treat all unseen points as maximum range readings\n"
-            << "-s <float>   support size for the interest points (diameter of the used sphere - "
+            << "-s <double>   support size for the interest points (diameter of the used sphere - "
             <<                                                     "default "<<support_size<<")\n"
             << "-h           this help\n"
             << "\n\n";
 }
 
 //void 
-//setViewerPose (pcl::visualization::PCLVisualizer& viewer, const Eigen::Affine3f& viewer_pose)
+//setViewerPose (pcl::visualization::PCLVisualizer& viewer, const Eigen::Affine3d& viewer_pose)
 //{
-  //Eigen::Vector3f pos_vector = viewer_pose * Eigen::Vector3f (0, 0, 0);
-  //Eigen::Vector3f look_at_vector = viewer_pose.rotation () * Eigen::Vector3f (0, 0, 1) + pos_vector;
-  //Eigen::Vector3f up_vector = viewer_pose.rotation () * Eigen::Vector3f (0, -1, 0);
+  //Eigen::Vector3d pos_vector = viewer_pose * Eigen::Vector3d (0, 0, 0);
+  //Eigen::Vector3d look_at_vector = viewer_pose.rotation () * Eigen::Vector3d (0, 0, 1) + pos_vector;
+  //Eigen::Vector3d up_vector = viewer_pose.rotation () * Eigen::Vector3d (0, -1, 0);
   //viewer.setCameraPosition (pos_vector[0], pos_vector[1], pos_vector[2],
                             //look_at_vector[0], look_at_vector[1], look_at_vector[2],
                             //up_vector[0], up_vector[1], up_vector[2]);
@@ -87,7 +87,7 @@ main (int argc, char** argv)
   pcl::PointCloud<PointType>::Ptr point_cloud_ptr (new pcl::PointCloud<PointType>);
   pcl::PointCloud<PointType>& point_cloud = *point_cloud_ptr;
   pcl::PointCloud<pcl::PointWithViewpoint> far_ranges;
-  Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ());
+  Eigen::Affine3d scene_sensor_pose (Eigen::Affine3d::Identity ());
   std::vector<int> pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, "pcd");
   if (!pcd_filename_indices.empty ())
   {
@@ -98,10 +98,10 @@ main (int argc, char** argv)
       printUsage (argv[0]);
       return 0;
     }
-    scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
+    scene_sensor_pose = Eigen::Affine3d (Eigen::Translation3d (point_cloud.sensor_origin_[0],
                                                                point_cloud.sensor_origin_[1],
                                                                point_cloud.sensor_origin_[2])) *
-                        Eigen::Affine3f (point_cloud.sensor_orientation_);
+                        Eigen::Affine3d (point_cloud.sensor_orientation_);
     std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+"_far_ranges.pcd";
     if (pcl::io::loadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
       std::cout << "Far ranges file \""<<far_ranges_filename<<"\" does not exists.\n";
@@ -110,11 +110,11 @@ main (int argc, char** argv)
   {
     setUnseenToMaxRange = true;
     cout << "\nNo *.pcd file given => Genarating example point cloud.\n\n";
-    for (float x=-0.5f; x<=0.5f; x+=0.01f)
+    for (double x=-0.5; x<=0.5; x+=0.01)
     {
-      for (float y=-0.5f; y<=0.5f; y+=0.01f)
+      for (double y=-0.5; y<=0.5; y+=0.01)
       {
-        PointType point;  point.x = x;  point.y = y;  point.z = 2.0f - y;
+        PointType point;  point.x = x;  point.y = y;  point.z = 2.0 - y;
         point_cloud.points.push_back (point);
       }
     }
@@ -124,12 +124,12 @@ main (int argc, char** argv)
   // -----------------------------------------------
   // -----Create RangeImage from the PointCloud-----
   // -----------------------------------------------
-  float noise_level = 0.0;
-  float min_range = 0.0f;
+  double noise_level = 0.0;
+  double min_range = 0.0;
   int border_size = 1;
   boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
   pcl::RangeImage& range_image = *range_image_ptr;   
-  range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
+  range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0), pcl::deg2rad (180.0),
                                    scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
   range_image.integrateFarRanges (far_ranges);
   if (setUnseenToMaxRange)
@@ -143,7 +143,7 @@ main (int argc, char** argv)
   pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 0, 0, 0);
   viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
   viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "range image");
-  //viewer.addCoordinateSystem (1.0f, "global");
+  //viewer.addCoordinateSystem (1.0, "global");
   //PointCloudColorHandlerCustom<PointType> point_cloud_color_handler (point_cloud_ptr, 150, 150, 150);
   //viewer.addPointCloud (point_cloud_ptr, point_cloud_color_handler, "original point cloud");
   viewer.initCameraParameters ();
@@ -183,7 +183,7 @@ main (int argc, char** argv)
   pcl::PointCloud<pcl::PointXYZ>& keypoints = *keypoints_ptr;
   keypoints.points.resize (keypoint_indices.points.size ());
   for (size_t i=0; i<keypoint_indices.points.size (); ++i)
-    keypoints.points[i].getVector3fMap () = range_image.points[keypoint_indices.points[i]].getVector3fMap ();
+    keypoints.points[i].getVector3dMap () = range_image.points[keypoint_indices.points[i]].getVector3dMap ();
 
   pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> keypoints_color_handler (keypoints_ptr, 0, 255, 0);
   viewer.addPointCloud<pcl::PointXYZ> (keypoints_ptr, keypoints_color_handler, "keypoints");

@@ -106,7 +106,7 @@ pcl::gpu::people::PersonAttribs::readPersonXMLConfig (std::istream& is)
   {
     std::stringstream path;
     path << "person.max_part_size.value_" << i;
-    max_part_size_[i] = pt.get<float>(path.str());
+    max_part_size_[i] = pt.get<double>(path.str());
   }
 
   // Get part_ideal_length
@@ -116,7 +116,7 @@ pcl::gpu::people::PersonAttribs::readPersonXMLConfig (std::istream& is)
     {
       std::stringstream path;
       path << "person.part_ideal_length.value_" << i << ".child_" << j;
-      part_ideal_length_[i][j] = pt.get<float>(path.str());
+      part_ideal_length_[i][j] = pt.get<double>(path.str());
     }
   }
 
@@ -127,7 +127,7 @@ pcl::gpu::people::PersonAttribs::readPersonXMLConfig (std::istream& is)
     {
       std::stringstream path;
       path << "person.max_length_offset.value_" << i << ".child_" << j;
-      max_length_offset_[i][j] = pt.get<float>(path.str());
+      max_length_offset_[i][j] = pt.get<double>(path.str());
     }
   }
 
@@ -136,7 +136,7 @@ pcl::gpu::people::PersonAttribs::readPersonXMLConfig (std::istream& is)
   {
     std::stringstream path;
     path << "person.nr_of_children.value_" << i;
-    nr_of_children_[i] = pt.get<float>(path.str());
+    nr_of_children_[i] = pt.get<double>(path.str());
   }
 
   return 0;

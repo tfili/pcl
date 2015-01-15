@@ -65,7 +65,7 @@ namespace pcl
       {
       public:
         typedef boost::shared_ptr<RayCaster> Ptr;
-        typedef pcl::gpu::DeviceArray2D<float> MapArr;
+        typedef pcl::gpu::DeviceArray2D<double> MapArr;
         typedef pcl::gpu::DeviceArray2D<PixelRGB> View;
         typedef pcl::gpu::DeviceArray2D<unsigned short> Depth;     
 
@@ -80,13 +80,13 @@ namespace pcl
           * \param[in] cx principal point x
           * \param[in] cy principal point y
           */
-        RayCaster(int rows = 480, int cols = 640, float fx = 525.f, float fy = 525.f, float cx = -1, float cy = -1);
+        RayCaster(int rows = 480, int cols = 640, double fx = 525., double fy = 525., double cx = -1, double cy = -1);
         
         ~RayCaster();
 
         /** \brief Sets camera intrinsics */ 
         void
-        setIntrinsics(float fx = 525.f, float fy = 525.f, float cx = -1, float cy = -1);
+        setIntrinsics(double fx = 525., double fy = 525., double cx = -1, double cy = -1);
         
         /** \brief Runs raycasting algorithm from given camera pose. It writes results to internal fiels.
           * \param[in] volume tsdf volume container
@@ -94,7 +94,7 @@ namespace pcl
           * \param buffer
           */ 
         void 
-        run(const TsdfVolume& volume, const Eigen::Affine3f& camera_pose, tsdf_buffer* buffer);
+        run(const TsdfVolume& volume, const Eigen::Affine3d& camera_pose, tsdf_buffer* buffer);
 
         /** \brief Generates scene view using data raycasted by run method. So call it before.
           * \param[out] view output array for RGB image        
@@ -107,7 +107,7 @@ namespace pcl
           * \param[in] light_source_pose pose of light source
           */
         void
-        generateSceneView(View& view, const Eigen::Vector3f& light_source_pose) const;
+        generateSceneView(View& view, const Eigen::Vector3d& light_source_pose) const;
 
         /** \brief Generates depth image using data raycasted by run method. So call it before.
           * \param[out] depth output array for depth image        
@@ -125,7 +125,7 @@ namespace pcl
 
       private:
         /** \brief Camera intrinsics. */ 
-        float fx_, fy_, cx_, cy_;
+        double fx_, fy_, cx_, cy_;
               
         /* Vertext/normal map internal representation example for rows=2 and cols=4
         *  X X X X
@@ -143,10 +143,10 @@ namespace pcl
         MapArr normal_map_;
 
         /** \brief camera pose from which raycasting was done */
-        Eigen::Affine3f camera_pose_;
+        Eigen::Affine3d camera_pose_;
 
         /** \brief Last passed volume size */
-        Eigen::Vector3f volume_size_;
+        Eigen::Vector3d volume_size_;
 
 public:
 EIGEN_MAKE_ALIGNED_OPERATOR_NEW

@@ -136,8 +136,8 @@ namespace pcl
       void 
       getMinMax (const PointCloudConstPtr &cloud, 
                  const boost::shared_ptr <std::vector<int> > &indices, 
-                 Eigen::Vector4f &min_p, 
-                 Eigen::Vector4f &max_p);
+                 Eigen::Vector4d &min_p, 
+                 Eigen::Vector4d &max_p);
 
       /** \brief Compute the median value of a 3D point cloud using a given set point indices and return it as a Point32.
         * \param[in] cloud the point cloud data message
@@ -147,7 +147,7 @@ namespace pcl
       void 
       computeMedian (const PointCloudConstPtr &cloud, 
                      const boost::shared_ptr <std::vector<int> > &indices, 
-                     Eigen::Vector4f &median);
+                     Eigen::Vector4d &median);
 
     private:
       /** \brief Maximum number of EM (Expectation Maximization) iterations. */

@@ -79,8 +79,8 @@ class HRCSSegmentation
     pcl::PointCloud<pcl::PointXYZ>::ConstPtr prev_ground_cloud;
     pcl::PointCloud<PointT>::ConstPtr prev_ground_image;
     pcl::PointCloud<PointT>::ConstPtr prev_label_image;
-    Eigen::Vector4f prev_ground_normal;
-    Eigen::Vector4f prev_ground_centroid;
+    Eigen::Vector4d prev_ground_normal;
+    Eigen::Vector4d prev_ground_centroid;
     boost::mutex cloud_mutex;
 
     pcl::IntegralImageNormalEstimation<PointT, pcl::Normal> ne;
@@ -150,16 +150,16 @@ class HRCSSegmentation
       // Set up the normal estimation
       ne.setNormalEstimationMethod (ne.COVARIANCE_MATRIX);
       ne.setMaxDepthChangeFactor (0.03f);
-      ne.setNormalSmoothingSize (40.0f);//20.0f
+      ne.setNormalSmoothingSize (40.0);//20.0
 
       // Set up the groundplane comparator
       // If the camera was pointing straight out, the normal would be:
-      Eigen::Vector3f nominal_road_normal (0.0, -1.0, 0.0);
+      Eigen::Vector3d nominal_road_normal (0.0, -1.0, 0.0);
       // Adjust for camera tilt:
-      Eigen::Vector3f tilt_road_normal = Eigen::AngleAxisf (pcl::deg2rad (5.0f), Eigen::Vector3f::UnitX ()) * nominal_road_normal;
+      Eigen::Vector3d tilt_road_normal = Eigen::AngleAxisd (pcl::deg2rad (5.0), Eigen::Vector3d::UnitX ()) * nominal_road_normal;
       road_comparator->setExpectedGroundNormal (tilt_road_normal);
-      road_comparator->setGroundAngularThreshold (pcl::deg2rad (10.0f));   
-      road_comparator->setAngularThreshold (pcl::deg2rad (3.0f));
+      road_comparator->setGroundAngularThreshold (pcl::deg2rad (10.0));   
+      road_comparator->setAngularThreshold (pcl::deg2rad (3.0));
     }
     
     ~HRCSSegmentation ()
@@ -226,7 +226,7 @@ class HRCSSegmentation
     {
       stereo.compute (*left_image, *right_image);
       stereo.medianFilter (4);
-      stereo.getPointCloud(318.112200f, 224.334900f, 368.534700f, 0.8387445f, out_cloud, left_image);
+      stereo.getPointCloud(318.112200, 224.334900, 368.534700, 0.8387445, out_cloud, left_image);
     }
     
 
@@ -255,15 +255,15 @@ class HRCSSegmentation
       *ground_image = *cloud;
       *label_image = *cloud;
 
-      Eigen::Vector4f clust_centroid = Eigen::Vector4f::Zero ();
-      Eigen::Vector4f vp = Eigen::Vector4f::Zero ();
-      Eigen::Matrix3f clust_cov;
+      Eigen::Vector4d clust_centroid = Eigen::Vector4d::Zero ();
+      Eigen::Vector4d vp = Eigen::Vector4d::Zero ();
+      Eigen::Matrix3d clust_cov;
       pcl::ModelCoefficients model;
       model.values.resize (4);
 
       std::vector<pcl::ModelCoefficients> model_coefficients;
-      std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > centroids;
-      std::vector<Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> > covariances;
+      std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> > centroids;
+      std::vector<Eigen::Matrix3d, Eigen::aligned_allocator<Eigen::Matrix3d> > covariances;
       std::vector<pcl::PointIndices> inlier_indices;
 
       for (int i = 0; i < region_indices.size (); i++)
@@ -285,10 +285,10 @@ class HRCSSegmentation
           
           // Compute plane info
           pcl::computeMeanAndCovarianceMatrix (*cloud, region_indices[i].indices, clust_cov, clust_centroid);
-          Eigen::Vector4f plane_params;
+          Eigen::Vector4d plane_params;
           
-          EIGEN_ALIGN16 Eigen::Vector3f::Scalar eigen_value;
-          EIGEN_ALIGN16 Eigen::Vector3f eigen_vector;
+          EIGEN_ALIGN16 Eigen::Vector3d::Scalar eigen_value;
+          EIGEN_ALIGN16 Eigen::Vector3d eigen_vector;
           pcl::eigen33 (clust_cov, eigen_value, eigen_vector);
           plane_params[0] = eigen_vector[0];
           plane_params[1] = eigen_vector[1];
@@ -297,7 +297,7 @@ class HRCSSegmentation
           plane_params[3] = -1 * plane_params.dot (clust_centroid);
           
           vp -= clust_centroid;
-          float cos_theta = vp.dot (plane_params);
+          double cos_theta = vp.dot (plane_params);
           if (cos_theta < 0)
           {
             plane_params *= -1;
@@ -334,7 +334,7 @@ class HRCSSegmentation
       pcl::OrganizedMultiPlaneSegmentation<PointT, pcl::Normal, pcl::Label> mps;
       pcl::PlaneRefinementComparator<PointT, pcl::Normal, pcl::Label>::Ptr refinement_compare (new pcl::PlaneRefinementComparator<PointT, pcl::Normal, pcl::Label>());
       refinement_compare->setInputCloud (cloud);
-      refinement_compare->setDistanceThreshold (0.15f);
+      refinement_compare->setDistanceThreshold (0.15);
       refinement_compare->setLabels (labels_ptr);
       refinement_compare->setModelCoefficients (model_coefficients);
       refinement_compare->setRefineLabels (grow_labels);
@@ -379,13 +379,13 @@ class HRCSSegmentation
       }
 
       // Segment Obstacles (Disabled by default)
-      Eigen::Vector4f ground_plane_params (1.0, 0.0, 0.0, 1.0);
-      Eigen::Vector4f ground_centroid (0.0, 0.0, 0.0, 0.0);
+      Eigen::Vector4d ground_plane_params (1.0, 0.0, 0.0, 1.0);
+      Eigen::Vector4d ground_centroid (0.0, 0.0, 0.0, 0.0);
       
       if (ground_cloud->points.size () > 0)
       {
         ground_centroid = centroids[0];
-        ground_plane_params = Eigen::Vector4f (model_coefficients[0].values[0], model_coefficients[0].values[1], model_coefficients[0].values[2], model_coefficients[0].values[3]);
+        ground_plane_params = Eigen::Vector4d (model_coefficients[0].values[0], model_coefficients[0].values[1], model_coefficients[0].values[2], model_coefficients[0].values[3]);
       }
 
       if (detect_obstacles)
@@ -408,7 +408,7 @@ class HRCSSegmentation
           euclidean_cluster_comparator_->setInputCloud (cloud);
           euclidean_cluster_comparator_->setLabels (labels_ptr);
           euclidean_cluster_comparator_->setExcludeLabels (plane_labels);
-          euclidean_cluster_comparator_->setDistanceThreshold (0.05f, false);
+          euclidean_cluster_comparator_->setDistanceThreshold (0.05, false);
         
           pcl::PointCloud<pcl::Label> euclidean_labels;
           std::vector<pcl::PointIndices> euclidean_label_indices;
@@ -424,8 +424,8 @@ class HRCSSegmentation
               pcl::copyPointCloud (*cloud, euclidean_label_indices[i].indices, cluster);
               clusters.push_back (cluster);
 
-              Eigen::Vector4f cluster_centroid;
-              Eigen::Matrix3f cluster_cov;
+              Eigen::Vector4d cluster_centroid;
+              Eigen::Matrix3d cluster_cov;
               pcl::computeMeanAndCovarianceMatrix (*cloud, euclidean_label_indices[i].indices, cluster_cov, cluster_centroid);
 
               pcl::PointXYZ centroid_pt (cluster_centroid[0], cluster_centroid[1], cluster_centroid[2]);
@@ -507,7 +507,7 @@ class HRCSSegmentation
           if (prev_normal_cloud->points.size () > 1000 && display_normals)
           {  
             viewer->removePointCloud ("normals");
-            viewer->addPointCloudNormals<PointT, pcl::Normal>(prev_ground_image, prev_normal_cloud, 10, 0.15f, "normals");
+            viewer->addPointCloudNormals<PointT, pcl::Normal>(prev_ground_image, prev_normal_cloud, 10, 0.15, "normals");
             viewer->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_OPACITY, 0.5, "normals");
           }
           
@@ -517,9 +517,9 @@ class HRCSSegmentation
           }
           
           // Show the groundplane normal
-          Eigen::Vector3f nominal_road_normal (0.0, -1.0, 0.0);
+          Eigen::Vector3d nominal_road_normal (0.0, -1.0, 0.0);
           // Adjust for camera tilt
-          Eigen::Vector3f tilt_road_normal = Eigen::AngleAxisf (pcl::deg2rad (5.0f), Eigen::Vector3f::UnitX ()) * nominal_road_normal;
+          Eigen::Vector3d tilt_road_normal = Eigen::AngleAxisd (pcl::deg2rad (5.0), Eigen::Vector3d::UnitX ()) * nominal_road_normal;
           
           // Show the groundplane normal
           pcl::PointXYZ np1 (prev_ground_centroid[0], prev_ground_centroid[1], prev_ground_centroid[2]);

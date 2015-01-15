@@ -64,7 +64,7 @@ namespace pcl
     * \author Radu B. Rusu, Michael Dixon
     * \ingroup registration
     */
-  template <typename PointSource, typename PointTarget, typename Scalar = float>
+  template <typename PointSource, typename PointTarget, typename Scalar = double>
   class IterativeClosestPointNonLinear : public IterativeClosestPoint<PointSource, PointTarget, Scalar>
   {
     using IterativeClosestPoint<PointSource, PointTarget, Scalar>::min_number_correspondences_;

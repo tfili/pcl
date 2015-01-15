@@ -71,12 +71,12 @@ namespace pcl
      */
     struct Figure2D
     {
-      std::vector<float> info_;     //information stored in a general form for every object
+      std::vector<double> info_;     //information stored in a general form for every object
       vtkPen *pen_;                 //the corresponding pen and brush for the figure
       vtkBrush *brush_;
       vtkTransform2D *transform_;
       
-      Figure2D (std::vector<float> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t)
+      Figure2D (std::vector<double> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t)
       {
         this->pen_ = vtkPen::New ();
         this->brush_ = vtkBrush::New ();
@@ -114,7 +114,7 @@ namespace pcl
     struct FPolyLine2D : public Figure2D
     {
 
-      FPolyLine2D (std::vector<float> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t){}
+      FPolyLine2D (std::vector<double> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t){}
 
       void draw (vtkContext2D * painter)
       {
@@ -128,7 +128,7 @@ namespace pcl
     struct FPoints2D : public Figure2D
     {
 
-      FPoints2D (std::vector<float> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t) {}
+      FPoints2D (std::vector<double> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t) {}
 
       void draw (vtkContext2D * painter)
       {
@@ -142,7 +142,7 @@ namespace pcl
     struct FQuad2D : public Figure2D
     {
 
-      FQuad2D (std::vector<float> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t) {}
+      FQuad2D (std::vector<double> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t) {}
 
       void draw (vtkContext2D * painter)
       {
@@ -156,7 +156,7 @@ namespace pcl
     struct FPolygon2D : public Figure2D
     {
 
-      FPolygon2D (std::vector<float> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t){}
+      FPolygon2D (std::vector<double> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t){}
 
       void draw (vtkContext2D * painter)
       {
@@ -170,9 +170,9 @@ namespace pcl
     struct FEllipticArc2D : public Figure2D
     {
 
-      FEllipticArc2D (std::vector<float> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t) {}
+      FEllipticArc2D (std::vector<double> info, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (info, p, b, t) {}
 
-      FEllipticArc2D (float x, float y, float rx, float ry, float sa, float ea, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (p, b, t)
+      FEllipticArc2D (double x, double y, double rx, double ry, double sa, double ea, vtkPen *p, vtkBrush * b, vtkTransform2D *t) : Figure2D (p, b, t)
       {
         info_.resize (6);
         info_[0] = x;
@@ -220,13 +220,13 @@ namespace pcl
        * \param[in] y2 Y coordinate of the ending point of the line
        */
       void 
-      addLine (float x1, float y1, float x2, float y2);
+      addLine (double x1, double y1, double x2, double y2);
       
       /** \brief Draw line(s) between the specified points 
        *  \param[in] p a vector of size 2*n and the points are packed x1, y1, x2, y2 etc.
        */
       void 
-      addLine (std::vector<float> p);
+      addLine (std::vector<double> p);
 
       
       /** \brief Draw specified point(s).
@@ -234,13 +234,13 @@ namespace pcl
        * \param[in] y Y coordinate of the point
        */      
       void 
-      addPoint (float x, float y);
+      addPoint (double x, double y);
       /** \brief Draw specified point(s).
        * \param[in] points a vector of size 2*n and the points are packed x1, y1, x2, y2 etc.
        */
       
       void 
-      addPoints (std::vector<float> points);
+      addPoints (std::vector<double> points);
       
       
       /** \brief Draw a rectangle based on the given points
@@ -250,19 +250,19 @@ namespace pcl
        * \param[in] height height of the rectangle
        */
       void 
-      addRect (float x, float y, float width, float height);
+      addRect (double x, double y, double width, double height);
       
       /** \brief Draw a quadrilateral based on the given points
        * \param[in] p a vector of size 8 and the points are packed x1, y1, x2, y2, x3, y3 and x4, y4.
        */
       void 
-      addQuad (std::vector<float> p);
+      addQuad (std::vector<double> p);
       
         /** \brief Draw a polygon between the specified points 
        *  \param[in] p a vector of size 2*n and the points are packed x1, y1, x2, y2 etc.
        */
       void 
-      addPolygon (std::vector<float> p);
+      addPolygon (std::vector<double> p);
 
       
       /** \brief Draw an ellipse based on the inputs
@@ -272,7 +272,7 @@ namespace pcl
        * \param[in] ry Y radius of the ellipse
        */
       void 
-      addEllipse (float x, float y, float rx, float ry);
+      addEllipse (double x, double y, double rx, double ry);
       
       /** \brief Draw a circle based on the inputs
        * \param[in] x X coordinate of the origin
@@ -280,7 +280,7 @@ namespace pcl
        * \param[in] r radius of the circle
        */
       void 
-      addCircle (float x, float y, float r);
+      addCircle (double x, double y, double r);
       
       /** \brief Draw an elliptic arc based on the inputs
        * \param[in] x X coordinate of the origin
@@ -291,7 +291,7 @@ namespace pcl
        * \param[in] end_angle the ending angle of the arc expressed in degrees
        */
       void 
-      addEllipticArc (float x, float y, float rx, float ry, float start_angle, float end_angle);
+      addEllipticArc (double x, double y, double rx, double ry, double start_angle, double end_angle);
       
       /** \brief Draw an arc based on the inputs
        * \param[in] x X coordinate of the origin
@@ -301,7 +301,7 @@ namespace pcl
        * \param[in] end_angle the ending angle of the arc expressed in degrees
        */
       void 
-      addArc (float x, float y, float r, float start_angle, float end_angle);
+      addArc (double x, double y, double r, double start_angle, double end_angle);
 
 
       /** \brief Create a translation matrix and concatenate it with the current transformation.
@@ -348,13 +348,13 @@ namespace pcl
       /** \brief set/get methods for current working vtkPen
        */
       void setPenColor (unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-      void setPenWidth (float w);
+      void setPenWidth (double w);
       void setPenType (int type);
 
       /** \brief set/get methods for current working vtkPen
        */
       unsigned char* getPenColor ();
-      float getPenWidth ();
+      double getPenWidth ();
       int getPenType ();
       void setPen (vtkPen *pen);
       vtkPen* getPen ();
@@ -414,7 +414,7 @@ namespace pcl
       void spin ();
 
     private:
-      //std::map< int, std::vector< std::vector<float> > > figures_; //FIG_TYPE -> vector<array>
+      //std::map< int, std::vector< std::vector<double> > > figures_; //FIG_TYPE -> vector<array>
 
       //All the figures drawn till now gets stored here
       std::vector<Figure2D *> figures_;

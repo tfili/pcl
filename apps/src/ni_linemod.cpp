@@ -88,12 +88,12 @@ class NILinemod
 
       // Set the parameters for normal estimation
       ne_.setNormalEstimationMethod (ne_.COVARIANCE_MATRIX);
-      ne_.setMaxDepthChangeFactor (0.02f);
-      ne_.setNormalSmoothingSize (20.0f);
+      ne_.setMaxDepthChangeFactor (0.02);
+      ne_.setNormalSmoothingSize (20.0);
 
       // Set the parameters for planar segmentation
       plane_comparator_.reset (new EdgeAwarePlaneComparator<PointT, Normal>);
-        plane_comparator_->setDistanceThreshold (0.01f, false);
+        plane_comparator_->setDistanceThreshold (0.01, false);
       mps_.setMinInliers (5000);
       mps_.setAngularThreshold (pcl::deg2rad (3.0)); // 3 degrees
       mps_.setDistanceThreshold (0.02); // 2 cm
@@ -374,7 +374,7 @@ class NILinemod
         return;
 
       vector<int> indices (1);
-      vector<float> distances (1);
+      vector<double> distances (1);
 
       // Use mutices to make sure we get the right cloud
       boost::mutex::scoped_lock lock1 (cloud_mutex_);

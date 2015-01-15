@@ -103,7 +103,7 @@ namespace pcl
        * \param[in] ground_coeffs The ground plane coefficients.
        */
       void
-      setGround (Eigen::VectorXf& ground_coeffs);
+      setGround (Eigen::VectorXd& ground_coeffs);
 
       /**
        * \brief Set bin size for the height map. 
@@ -111,7 +111,7 @@ namespace pcl
        * \param[in] bin_size Bin size for the height map (default = 0.06).
        */
       void
-      setBinSize (float bin_size);
+      setBinSize (double bin_size);
 
       /**
        * \brief Set minimum distance between maxima. 
@@ -119,7 +119,7 @@ namespace pcl
        * \param[in] minimum_distance_between_maxima Minimum allowed distance between maxima (default = 0.3).
        */
       void
-      setMinimumDistanceBetweenMaxima (float minimum_distance_between_maxima);
+      setMinimumDistanceBetweenMaxima (double minimum_distance_between_maxima);
 
       /**
        * \brief Set sensor orientation to landscape mode (false) or portrait mode (true).
@@ -138,13 +138,13 @@ namespace pcl
       /**
        * \brief Get bin size for the height map. 
        */
-      float
+      double
       getBinSize ();
 
       /**
        * \brief Get minimum distance between maxima of the height map. 
        */
-      float
+      double
       getMinimumDistanceBetweenMaxima ();
 
       /**
@@ -161,10 +161,10 @@ namespace pcl
 
     protected:
       /** \brief ground plane coefficients */
-      Eigen::VectorXf ground_coeffs_;            
+      Eigen::VectorXd ground_coeffs_;            
       
       /** \brief ground plane normalization factor */
-      float sqrt_ground_coeffs_;              
+      double sqrt_ground_coeffs_;              
       
       /** \brief pointer to the input cloud */
       PointCloudPtr cloud_;                
@@ -179,7 +179,7 @@ namespace pcl
       std::vector<int> buckets_cloud_indices_;      
       
       /** \brief bin dimension */
-      float bin_size_;                  
+      double bin_size_;                  
       
       /** \brief number of local maxima in the height map */
       int maxima_number_;                  
@@ -200,7 +200,7 @@ namespace pcl
       std::vector<int> maxima_cloud_indices_filtered_;  
       
       /** \brief minimum allowed distance between maxima */
-      float min_dist_between_maxima_;            
+      double min_dist_between_maxima_;            
     };
 
   } /* namespace people */

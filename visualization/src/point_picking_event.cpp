@@ -63,7 +63,7 @@ pcl::visualization::PointPickingCallback::Execute (vtkObject *caller, unsigned l
   {
     if ((eventid == vtkCommand::LeftButtonPressEvent) && (iren->GetShiftKey () > 0))
     {
-      float x = 0, y = 0, z = 0;
+      double x = 0, y = 0, z = 0;
       int idx = performSinglePick (iren, x, y, z);
       // Create a PointPickingEvent if a point was selected
       if (idx != -1)
@@ -75,7 +75,7 @@ pcl::visualization::PointPickingCallback::Execute (vtkObject *caller, unsigned l
     else if ((eventid == vtkCommand::LeftButtonPressEvent) && (iren->GetAltKey () == 1))
     {
       pick_first_ = !pick_first_;
-      float x = 0, y = 0, z = 0;
+      double x = 0, y = 0, z = 0;
       int idx = -1;
       if (pick_first_)
         idx_ = performSinglePick (iren, x_, y_, z_);
@@ -96,8 +96,8 @@ pcl::visualization::PointPickingCallback::Execute (vtkObject *caller, unsigned l
     if (eventid == vtkCommand::LeftButtonPressEvent)
     {
       style->OnLeftButtonDown ();
-      x_ = static_cast<float> (iren->GetEventPosition ()[0]);
-      y_ = static_cast<float> (iren->GetEventPosition ()[1]);
+      x_ = static_cast<double> (iren->GetEventPosition ()[0]);
+      y_ = static_cast<double> (iren->GetEventPosition ()[1]);
     }
     else if (eventid == vtkCommand::LeftButtonReleaseEvent)
     {
@@ -136,7 +136,7 @@ pcl::visualization::PointPickingCallback::performSinglePick (vtkRenderWindowInte
 int
 pcl::visualization::PointPickingCallback::performSinglePick (
     vtkRenderWindowInteractor *iren,
-    float &x, float &y, float &z)
+    double &x, double &y, double &z)
 {
   vtkPointPicker* point_picker = vtkPointPicker::SafeDownCast (iren->GetPicker ());
 
@@ -158,7 +158,7 @@ pcl::visualization::PointPickingCallback::performSinglePick (
   {
     double p[3];
     point_picker->GetDataSet ()->GetPoint (idx, p);
-    x = float (p[0]); y = float (p[1]); z = float (p[2]);
+    x = double (p[0]); y = double (p[1]); z = double (p[2]);
   }
 
   return (idx);

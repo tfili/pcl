@@ -65,9 +65,9 @@ TEST (PCL_GPU, bruteForceRadiusSeachGPU)
     DataGenerator data;
     data.data_size = 871000;
     data.tests_num = 100;
-    data.cube_size = 1024.f;
-    data.max_radius    = data.cube_size/15.f;
-    data.shared_radius = data.cube_size/20.f;
+    data.cube_size = 1024.;
+    data.max_radius    = data.cube_size/15.;
+    data.shared_radius = data.cube_size/20.;
     data.printParams();  
 
     //generate
@@ -95,7 +95,7 @@ TEST (PCL_GPU, bruteForceRadiusSeachGPU)
         sizes.push_back(results_device.size());      
     }
         
-    float avg_size = std::accumulate(sizes.begin(), sizes.end(), (size_t)0) * (1.f/sizes.size());;
+    double avg_size = std::accumulate(sizes.begin(), sizes.end(), (size_t)0) * (1./sizes.size());;
 
     cout << "avg_result_size = " << avg_size << endl;
     ASSERT_GT(avg_size, 5);    

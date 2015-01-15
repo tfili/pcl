@@ -155,14 +155,14 @@ pcl::io::save (const std::string& file_name, const pcl::PCLPointCloud2& blob, un
   int result = -1;
   if (extension == ".pcd")
   {
-    Eigen::Vector4f origin = Eigen::Vector4f::Zero ();
-    Eigen::Quaternionf orientation = Eigen::Quaternionf::Identity ();
+    Eigen::Vector4d origin = Eigen::Vector4d::Zero ();
+    Eigen::Quaterniond orientation = Eigen::Quaterniond::Identity ();
     result = pcl::io::savePCDFile (file_name, blob, origin, orientation, true);
   }
   else if (extension == ".ply")
   {
-    Eigen::Vector4f origin = Eigen::Vector4f::Zero ();
-    Eigen::Quaternionf orientation = Eigen::Quaternionf::Identity ();
+    Eigen::Vector4d origin = Eigen::Vector4d::Zero ();
+    Eigen::Quaterniond orientation = Eigen::Quaterniond::Identity ();
     result = pcl::io::savePLYFile (file_name, blob, origin, orientation, true);
   }
   else if (extension == ".ifs")

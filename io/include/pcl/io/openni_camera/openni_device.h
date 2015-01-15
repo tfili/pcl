@@ -215,17 +215,17 @@ namespace openni_wrapper
       /** \brief returns the focal length for the color camera in pixels. The pixels are assumed to be square.
         *        Result depends on the output resolution of the image.
         */
-      inline float 
+      inline double 
       getImageFocalLength (int output_x_resolution = 0) const throw ();
 
       /** \brief returns the focal length for the IR camera in pixels. The pixels are assumed to be square.
         *        Result depends on the output resolution of the depth image.
         */
-      inline float 
+      inline double 
       getDepthFocalLength (int output_x_resolution = 0) const throw ();
 
       /** \return Baseline of the "stereo" frame. i.e. for PSDK compatible devices its the distance between the Projector and the IR camera. */
-      inline float 
+      inline double 
       getBaseline () const throw ();
 
       /** \brief starts the image stream. */
@@ -396,7 +396,7 @@ namespace openni_wrapper
         * \param[in] focal_length the RGB image focal length
         */
       inline void
-      setRGBFocalLength (float focal_length)
+      setRGBFocalLength (double focal_length)
       {
         rgb_focal_length_SXGA_ = focal_length;
       }
@@ -405,7 +405,7 @@ namespace openni_wrapper
         * \param[in] focal_length the depth image focal length
         */
       inline void
-      setDepthFocalLength (float focal_length)
+      setDepthFocalLength (double focal_length)
       {
         depth_focal_length_SXGA_ = focal_length;
       }
@@ -526,11 +526,11 @@ namespace openni_wrapper
       XnCallbackHandle ir_callback_handle_;
 
       /** \brief focal length for IR camera producing depth information in native SXGA mode */
-      float depth_focal_length_SXGA_;
+      double depth_focal_length_SXGA_;
       /** \brief distance between the projector and the IR camera*/
-      float baseline_;
+      double baseline_;
       /** \brief focal length for regular camera producing color images in native SXGA mode */
-      float rgb_focal_length_SXGA_;
+      double rgb_focal_length_SXGA_;
 
       /** the value for shadow (occluded pixels) */
       XnUInt64 shadow_value_;
@@ -554,24 +554,24 @@ namespace openni_wrapper
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  float
+  double
   OpenNIDevice::getImageFocalLength (int output_x_resolution) const throw ()
   {
     if (output_x_resolution == 0)
       output_x_resolution = getImageOutputMode ().nXRes;
 
-    float scale = static_cast<float> (output_x_resolution) / static_cast<float> (XN_SXGA_X_RES);
+    double scale = static_cast<double> (output_x_resolution) / static_cast<double> (XN_SXGA_X_RES);
     return (rgb_focal_length_SXGA_ * scale);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  float
+  double
   OpenNIDevice::getDepthFocalLength (int output_x_resolution) const throw ()
   {
     if (output_x_resolution == 0)
       output_x_resolution = getDepthOutputMode ().nXRes;
 
-    float scale = static_cast<float> (output_x_resolution) / static_cast<float> (XN_SXGA_X_RES);
+    double scale = static_cast<double> (output_x_resolution) / static_cast<double> (XN_SXGA_X_RES);
     if (isDepthRegistered ())
       return (rgb_focal_length_SXGA_ * scale);
     else
@@ -579,7 +579,7 @@ namespace openni_wrapper
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  float
+  double
   OpenNIDevice::getBaseline () const throw ()
   {
     return (baseline_);

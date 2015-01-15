@@ -96,12 +96,12 @@ main (int argc, char** argv)
     }
   }
 
-  float frames_per_second = 0; // 0 means only if triggered!
+  double frames_per_second = 0; // 0 means only if triggered!
   pcl::console::parse (argc, argv, "-fps", frames_per_second);
   if (frames_per_second < 0)
     frames_per_second = 0.0;
 
-  float focal_length = 525.0;
+  double focal_length = 525.0;
   pcl::console::parse (argc, argv, "-focal", focal_length);
 
   std::string depth_path = "";
@@ -130,7 +130,7 @@ main (int argc, char** argv)
     printHelp (argc, argv);
     return (-1);
   }
-  grabber->setDepthImageUnits (float (1E-3));
+  grabber->setDepthImageUnits (double (1E-3));
   //grabber->setFocalLength(focal_length); // FIXME
 
   EventHelper h;

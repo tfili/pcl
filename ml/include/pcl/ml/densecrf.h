@@ -73,63 +73,63 @@ namespace pcl
       setColorVector (const std::vector<Eigen::Vector3i> color);
 
       void
-      setUnaryEnergy (const std::vector<float> unary);
+      setUnaryEnergy (const std::vector<double> unary);
  
       /** \brief      */
       void
-      addPairwiseEnergy (const std::vector<float> &feature, const int feature_dimension, const float w);
+      addPairwiseEnergy (const std::vector<double> &feature, const int feature_dimension, const double w);
       
       
       /** \brief Add a pairwise gaussian kernel
        * 
        */
       void
-      addPairwiseGaussian (float sx, float sy, float sz, float w);
+      addPairwiseGaussian (double sx, double sy, double sz, double w);
       
       /** \brief Add a bilateral gaussian kernel
        * 
        */
       void
-      addPairwiseBilateral (float sx, float sy, float sz, 
-                            float sr, float sg, float sb,
-                            float w);
+      addPairwiseBilateral (double sx, double sy, double sz, 
+                            double sr, double sg, double sb,
+                            double w);
 
 
       void
       addPairwiseNormals (std::vector<Eigen::Vector3i> &coord,
-                          std::vector<Eigen::Vector3f> &normals,
-                          float sx, float sy, float sz, 
-                          float snx, float sny, float snz,
-                          float w);
+                          std::vector<Eigen::Vector3d> &normals,
+                          double sx, double sy, double sz, 
+                          double snx, double sny, double snz,
+                          double w);
       
 
       void
-      inference (int n_iterations, std::vector<float> &result, float relax = 1.0f);
+      inference (int n_iterations, std::vector<double> &result, double relax = 1.0);
  
       void
-      mapInference (int n_iterations, std::vector<int> &result, float relax = 1.0f);
+      mapInference (int n_iterations, std::vector<int> &result, double relax = 1.0);
       
       void
-      expAndNormalize (std::vector<float> &out, const std::vector<float> &in,
-                       float scale, float relax = 1.0f);
+      expAndNormalize (std::vector<double> &out, const std::vector<double> &in,
+                       double scale, double relax = 1.0);
  
       void
-      expAndNormalizeORI ( float* out, const float* in, float scale=1.0f, float relax=1.0f );
-      void map ( int n_iterations, std::vector<int> result, float relax=1.0f );
-      std::vector<float> runInference( int n_iterations, float relax );
+      expAndNormalizeORI ( double* out, const double* in, double scale=1.0, double relax=1.0 );
+      void map ( int n_iterations, std::vector<int> result, double relax=1.0 );
+      std::vector<double> runInference( int n_iterations, double relax );
       void startInference();
-      void stepInference( float relax );
+      void stepInference( double relax );
       
 
       void
-      runInference (float relax);
+      runInference (double relax);
 
 
       void
-      getBarycentric (int idx, std::vector<float> &bary);
+      getBarycentric (int idx, std::vector<double> &bary);
 
       void
-      getFeatures (int idx, std::vector<float> &features);
+      getFeatures (int idx, std::vector<double> &features);
       
 
 
@@ -146,11 +146,11 @@ namespace pcl
 
       /** TODO: double might use to much memory */
       /** \brief CRF unary potentials */
-      std::vector<float> unary_;
+      std::vector<double> unary_;
 
-      std::vector<float> current_;
-      std::vector<float> next_;
-      std::vector<float> tmp_;
+      std::vector<double> current_;
+      std::vector<double> next_;
+      std::vector<double> tmp_;
 
       /** \brief pairwise potentials */
       std::vector<PairwisePotential*> pairwise_potential_;

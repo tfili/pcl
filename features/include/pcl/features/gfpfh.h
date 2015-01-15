@@ -143,22 +143,22 @@ namespace pcl
       /** \brief Compute the distance of each transition histogram to the mean. */
       void
       computeDistancesToMean (const std::vector< std::vector<int> >& transition_histograms,
-                              std::vector<float>& distances);
+                              std::vector<double>& distances);
 
       /** \brief Return the Intersection Kernel distance between two histograms. */
-      float
+      double
       computeHIKDistance (const std::vector<int>& histogram,
-                          const std::vector<float>& mean_histogram);
+                          const std::vector<double>& mean_histogram);
 
       /** \brief Compute the binned histogram of distance values. */
       void
-      computeDistanceHistogram (const std::vector<float>& distances,
-                                std::vector<float>& histogram);
+      computeDistanceHistogram (const std::vector<double>& distances,
+                                std::vector<double>& histogram);
 
       /** \brief Compute the mean histogram of the given set of histograms. */
       void
       computeMeanHistogram (const std::vector< std::vector<int> >& histograms,
-                            std::vector<float>& mean_histogram);
+                            std::vector<double>& mean_histogram);
 
     private:
       /** \brief Size of octree leaves. */

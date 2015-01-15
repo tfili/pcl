@@ -51,7 +51,7 @@ using namespace pcl::console;
 
 int default_tesselated_sphere_level = 2;
 int default_resolution = 100;
-float default_leaf_size = 0.01f;
+double default_leaf_size = 0.01;
 
 void
 printHelp (int, char **argv)
@@ -88,7 +88,7 @@ main (int argc, char **argv)
   parse_argument (argc, argv, "-level", tesselated_sphere_level);
   int resolution = default_resolution;
   parse_argument (argc, argv, "-resolution", resolution);
-  float leaf_size = default_leaf_size;
+  double leaf_size = default_leaf_size;
   parse_argument (argc, argv, "-leaf_size", leaf_size);
 
   // Parse the command line arguments for .ply and PCD files
@@ -130,8 +130,8 @@ main (int argc, char **argv)
   vis.setRepresentationToSurfaceForAllActors ();
 
   PointCloud<PointXYZ>::CloudVectorType views_xyz;
-  std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > poses;
-  std::vector<float> enthropies;
+  std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > poses;
+  std::vector<double> enthropies;
   vis.renderViewTesselatedSphere (resolution, resolution, views_xyz, poses, enthropies, tesselated_sphere_level);
 
   //take views and fuse them together
@@ -140,7 +140,7 @@ main (int argc, char **argv)
   for (size_t i = 0; i < views_xyz.size (); i++)
   {
     PointCloud<PointXYZ>::Ptr cloud (new PointCloud<PointXYZ> ());
-    Eigen::Matrix4f pose_inverse;
+    Eigen::Matrix4d pose_inverse;
     pose_inverse = poses[i].inverse ();
     transformPointCloud (views_xyz[i], *cloud, pose_inverse);
     aligned_clouds.push_back (cloud);

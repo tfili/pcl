@@ -62,7 +62,7 @@ namespace pcl
    * fc.setNearPlaneDistance (5.0);
    * fc.setFarPlaneDistance (15);
    *
-   * Eigen::Matrix4f camera_pose;
+   * Eigen::Matrix4d camera_pose;
    * // .. read or input the camera pose from a registration algorithm.
    * fc.setCameraPose (camera_pose);
    *
@@ -91,11 +91,11 @@ namespace pcl
 
       FrustumCulling (bool extract_removed_indices = false) 
         : FilterIndices<PointT>::FilterIndices (extract_removed_indices)
-        , camera_pose_ (Eigen::Matrix4f::Identity ())
-        , hfov_ (60.0f)
-        , vfov_ (60.0f)
-        , np_dist_ (0.1f)
-        , fp_dist_ (5.0f)
+        , camera_pose_ (Eigen::Matrix4d::Identity ())
+        , hfov_ (60.0)
+        , vfov_ (60.0)
+        , np_dist_ (0.1)
+        , fp_dist_ (5.0)
       {
         filter_name_ = "FrustumCulling";
       }
@@ -108,24 +108,24 @@ namespace pcl
         * coordinate system (X right, Y down, Z forward), one can use:
         *
         * \code
-        * Eigen::Matrix4f pose_orig = //pose in camera coordinates
-        * Eigen::Matrix4f cam2robot;
+        * Eigen::Matrix4d pose_orig = //pose in camera coordinates
+        * Eigen::Matrix4d cam2robot;
         * cam2robot << 0, 0, 1, 0
         *              0,-1, 0, 0
         *              1, 0, 0, 0
         *              0, 0, 0, 1;
-        * Eigen::Matrix4f pose_new = pose_orig * cam2robot;
+        * Eigen::Matrix4d pose_new = pose_orig * cam2robot;
         * fc.setCameraPose (pose_new);
         * \endcode
         */
       void 
-      setCameraPose (const Eigen::Matrix4f& camera_pose)
+      setCameraPose (const Eigen::Matrix4d& camera_pose)
       {
         camera_pose_ = camera_pose;
       }
 
       /** \brief Get the pose of the camera w.r.t the origin */
-      Eigen::Matrix4f
+      Eigen::Matrix4d
       getCameraPose () const
       {
         return (camera_pose_);
@@ -135,13 +135,13 @@ namespace pcl
         * \param[in] hfov the field of view
         */
       void 
-      setHorizontalFOV (float hfov)
+      setHorizontalFOV (double hfov)
       {
         hfov_ = hfov;
       }
 
       /** \brief Get the horizontal field of view for the camera in degrees */
-      float 
+      double 
       getHorizontalFOV () const
       {
         return (hfov_);
@@ -151,13 +151,13 @@ namespace pcl
         * \param[in] vfov the field of view
         */
       void 
-      setVerticalFOV (float vfov)
+      setVerticalFOV (double vfov)
       {
         vfov_ = vfov;
       }
 
       /** \brief Get the vertical field of view for the camera in degrees */
-      float 
+      double 
       getVerticalFOV () const
       {
         return (vfov_);
@@ -167,13 +167,13 @@ namespace pcl
         * \param[in] np_dist the near plane distance
         */
       void 
-      setNearPlaneDistance (float np_dist)
+      setNearPlaneDistance (double np_dist)
       {
         np_dist_ = np_dist;
       }
 
       /** \brief Get the near plane distance. */
-      float
+      double
       getNearPlaneDistance () const
       {
         return (np_dist_);
@@ -183,13 +183,13 @@ namespace pcl
         * \param[in] fp_dist the far plane distance
         */
       void 
-      setFarPlaneDistance (float fp_dist)
+      setFarPlaneDistance (double fp_dist)
       {
         fp_dist_ = fp_dist;
       }
 
       /** \brief Get the far plane distance */
-      float 
+      double 
       getFarPlaneDistance () const
       {
         return (fp_dist_);
@@ -220,15 +220,15 @@ namespace pcl
     private:
 
       /** \brief The camera pose */
-      Eigen::Matrix4f camera_pose_;
+      Eigen::Matrix4d camera_pose_;
       /** \brief Horizontal field of view */
-      float hfov_;
+      double hfov_;
       /** \brief Vertical field of view */
-      float vfov_;
+      double vfov_;
       /** \brief Near plane distance */
-      float np_dist_;
+      double np_dist_;
       /** \brief Far plane distance */
-      float fp_dist_;
+      double fp_dist_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

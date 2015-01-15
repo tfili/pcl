@@ -135,7 +135,7 @@ rejectBadCorrespondences (const CorrespondencesPtr &all_correspondences,
 void
 computeTransformation (const PointCloud<PointXYZ>::Ptr &src, 
                        const PointCloud<PointXYZ>::Ptr &tgt,
-                       Eigen::Matrix4f &transform)
+                       Eigen::Matrix4d &transform)
 {
   // Get an uniform grid of keypoints
   PointCloud<PointXYZ>::Ptr keypoints_src (new PointCloud<PointXYZ>), 
@@ -202,7 +202,7 @@ main (int argc, char** argv)
   }
 
   // Compute the best transformtion
-  Eigen::Matrix4f transform;
+  Eigen::Matrix4d transform;
   computeTransformation (src, tgt, transform);
 
   std::cerr << transform << std::endl;

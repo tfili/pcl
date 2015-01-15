@@ -60,7 +60,7 @@ namespace pcl
 
   template <typename real, int dimension>
   inline void VectorAverage<real, dimension>::add(const Eigen::Matrix<real, dimension, 1>& sample, real weight) {
-    if (weight == 0.0f)
+    if (weight == 0.0)
       return;
 
     ++noOfSamples_;
@@ -68,7 +68,7 @@ namespace pcl
     real alpha = weight/accumulatedWeight_;
 
     Eigen::Matrix<real, dimension, 1> diff = sample - mean_;
-    covariance_ = (covariance_ + (diff * diff.transpose())*alpha)*(1.0f-alpha);
+    covariance_ = (covariance_ + (diff * diff.transpose())*alpha)*(1.0-alpha);
 
     mean_ += (diff)*alpha;
 
@@ -84,7 +84,7 @@ namespace pcl
                                                     Eigen::Matrix<real, dimension, 1>& eigen_vector2, Eigen::Matrix<real, dimension, 1>& eigen_vector3) const
   {
     // The following step is necessary for cases where the values in the covariance matrix are small
-    // In this case float accuracy is nor enough to calculate the eigenvalues and eigenvectors.
+    // In this case double accuracy is nor enough to calculate the eigenvalues and eigenvectors.
     //Eigen::Matrix<double, dimension, dimension> tmp_covariance = covariance_.template cast<double>();
     //Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, dimension, dimension> > ei_symm(tmp_covariance);
     //eigen_values = ei_symm.eigenvalues().template cast<real>();
@@ -107,7 +107,7 @@ namespace pcl
   inline void VectorAverage<real, dimension>::doPCA(Eigen::Matrix<real, dimension, 1>& eigen_values) const
   {
     // The following step is necessary for cases where the values in the covariance matrix are small
-    // In this case float accuracy is nor enough to calculate the eigenvalues and eigenvectors.
+    // In this case double accuracy is nor enough to calculate the eigenvalues and eigenvectors.
     //Eigen::Matrix<double, dimension, dimension> tmp_covariance = covariance_.template cast<double>();
     //Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, dimension, dimension> > ei_symm(tmp_covariance, false);
     //eigen_values = ei_symm.eigenvalues().template cast<real>();
@@ -120,7 +120,7 @@ namespace pcl
   inline void VectorAverage<real, dimension>::getEigenVector1(Eigen::Matrix<real, dimension, 1>& eigen_vector1) const
   {
     // The following step is necessary for cases where the values in the covariance matrix are small
-    // In this case float accuracy is nor enough to calculate the eigenvalues and eigenvectors.
+    // In this case double accuracy is nor enough to calculate the eigenvalues and eigenvectors.
     //Eigen::Matrix<double, dimension, dimension> tmp_covariance = covariance_.template cast<double>();
     //Eigen::SelfAdjointEigenSolver<Eigen::Matrix<double, dimension, dimension> > ei_symm(tmp_covariance);
     //eigen_values = ei_symm.eigenvalues().template cast<real>();
@@ -137,7 +137,7 @@ namespace pcl
 
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Special cases for real=float & dimension=3 -> Partial specialization does not work with class templates. :( //
+  // Special cases for real=double & dimension=3 -> Partial specialization does not work with class templates. :( //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////
   // float //

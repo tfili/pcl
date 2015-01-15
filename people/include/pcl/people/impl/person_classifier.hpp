@@ -92,7 +92,7 @@ pcl::people::PersonClassifier<PointT>::loadSVMFromFile (std::string svm_filename
 }
 
 template <typename PointT> void
-pcl::people::PersonClassifier<PointT>::setSVM (int window_height, int window_width, std::vector<float> SVM_weights, float SVM_offset)
+pcl::people::PersonClassifier<PointT>::setSVM (int window_height, int window_width, std::vector<double> SVM_weights, double SVM_offset)
 {
   window_height_ = window_height;
   window_width_ = window_width;
@@ -101,7 +101,7 @@ pcl::people::PersonClassifier<PointT>::setSVM (int window_height, int window_wid
 }
 
 template <typename PointT> void
-pcl::people::PersonClassifier<PointT>::getSVM (int& window_height, int& window_width, std::vector<float>& SVM_weights, float& SVM_offset)
+pcl::people::PersonClassifier<PointT>::getSVM (int& window_height, int& window_width, std::vector<double>& SVM_weights, double& SVM_offset)
 {
   window_height = window_height_;
   window_width = window_width_;
@@ -126,23 +126,23 @@ pcl::people::PersonClassifier<PointT>::resize (PointCloudPtr& input_image,
   output_image->width = width;
 
   // Compute scale factor:
-  float scale1 = float(height) / float(input_image->height);
-  float scale2 = float(width) / float(input_image->width);
+  double scale1 = double(height) / double(input_image->height);
+  double scale2 = double(width) / double(input_image->width);
 
-  Eigen::Matrix3f T_inv;
+  Eigen::Matrix3d T_inv;
   T_inv << 1/scale1, 0, 0,
        0, 1/scale2, 0,
        0,   0,   1;
 
-  Eigen::Vector3f A;
+  Eigen::Vector3d A;
   int c1, c2, f1, f2;
   PointT g1, g2, g3, g4;
-  float w1, w2;
+  double w1, w2;
   for (int i = 0; i < height; i++)    // for every row
   {
   for (int j = 0; j < width; j++)  // for every column
   {
-    A = T_inv * Eigen::Vector3f(i, j, 1);
+    A = T_inv * Eigen::Vector3d(i, j, 1);
     c1 = ceil(A(0));
     f1 = floor(A(0));
     c2 = ceil(A(1));
@@ -213,9 +213,9 @@ pcl::people::PersonClassifier<PointT>::copyMakeBorder (PointCloudPtr& input_imag
 }
 
 template <typename PointT> double
-pcl::people::PersonClassifier<PointT>::evaluate (float height_person,
-              float xc,
-              float yc,
+pcl::people::PersonClassifier<PointT>::evaluate (double height_person,
+              double xc,
+              double yc,
               PointCloudPtr& image)
 {
   if (SVM_weights_.size() == 0)
@@ -240,22 +240,22 @@ pcl::people::PersonClassifier<PointT>::evaluate (float height_person,
     PointCloudPtr sample(new PointCloud);
     resize(box, sample, window_width_, window_height_);
 
-    // Convert the image to array of float:
-    float* sample_float = new float[sample->width * sample->height * 3]; 
+    // Convert the image to array of double:
+    double* sample_float = new double[sample->width * sample->height * 3]; 
     int delta = sample->height * sample->width;
     for (uint32_t row = 0; row < sample->height; row++)
     {
       for (uint32_t col = 0; col < sample->width; col++)
       {
-        sample_float[row + sample->height * col] = ((float) ((*sample)(col, row).r))/255; //ptr[col * 3 + 2];
-        sample_float[row + sample->height * col + delta] = ((float) ((*sample)(col, row).g))/255; //ptr[col * 3 + 1];
-        sample_float[row + sample->height * col + delta * 2] = (float) (((*sample)(col, row).b))/255; //ptr[col * 3];
+        sample_float[row + sample->height * col] = ((double) ((*sample)(col, row).r))/255; //ptr[col * 3 + 2];
+        sample_float[row + sample->height * col + delta] = ((double) ((*sample)(col, row).g))/255; //ptr[col * 3 + 1];
+        sample_float[row + sample->height * col + delta * 2] = (double) (((*sample)(col, row).b))/255; //ptr[col * 3];
       }
     }
 
     // Calculate HOG descriptor:
     pcl::people::HOG hog;
-    float *descriptor = (float*) calloc(SVM_weights_.size(), sizeof(float));
+    double *descriptor = (double*) calloc(SVM_weights_.size(), sizeof(double));
     hog.compute(sample_float, descriptor);
  
     // Calculate confidence value by dot product:
@@ -280,26 +280,26 @@ pcl::people::PersonClassifier<PointT>::evaluate (float height_person,
 
 template <typename PointT> double
 pcl::people::PersonClassifier<PointT>::evaluate (PointCloudPtr& image,
-              Eigen::Vector3f& bottom,
-              Eigen::Vector3f& top,
-              Eigen::Vector3f& centroid,
+              Eigen::Vector3d& bottom,
+              Eigen::Vector3d& top,
+              Eigen::Vector3d& centroid,
               bool vertical)
 {
-  float pixel_height;
-  float pixel_width;
+  double pixel_height;
+  double pixel_width;
 
   if (!vertical)
   {
     pixel_height = bottom(1) - top(1);
-    pixel_width = pixel_height / 2.0f;
+    pixel_width = pixel_height / 2.0;
   }
   else
   {
     pixel_width = top(0) - bottom(0);
-    pixel_height = pixel_width / 2.0f;
+    pixel_height = pixel_width / 2.0;
   }
-  float pixel_xc = centroid(0);
-  float pixel_yc = centroid(1);
+  double pixel_xc = centroid(0);
+  double pixel_yc = centroid(1);
 
   if (!vertical)
   {

@@ -65,20 +65,20 @@ pcl::MarchingCubesHoppe<PointNT>::voxelizeData ()
       for (int z = 0; z < res_z_; ++z)
       {
         std::vector<int> nn_indices;
-        std::vector<float> nn_sqr_dists;
+        std::vector<double> nn_sqr_dists;
 
-        Eigen::Vector3f point;
-        point[0] = min_p_[0] + (max_p_[0] - min_p_[0]) * float (x) / float (res_x_);
-        point[1] = min_p_[1] + (max_p_[1] - min_p_[1]) * float (y) / float (res_y_);
-        point[2] = min_p_[2] + (max_p_[2] - min_p_[2]) * float (z) / float (res_z_);
+        Eigen::Vector3d point;
+        point[0] = min_p_[0] + (max_p_[0] - min_p_[0]) * double (x) / double (res_x_);
+        point[1] = min_p_[1] + (max_p_[1] - min_p_[1]) * double (y) / double (res_y_);
+        point[2] = min_p_[2] + (max_p_[2] - min_p_[2]) * double (z) / double (res_z_);
 
         PointNT p;
-        p.getVector3fMap () = point;
+        p.getVector3dMap () = point;
 
         tree_->nearestKSearch (p, 1, nn_indices, nn_sqr_dists);
 
-        grid_[x * res_y_*res_z_ + y * res_z_ + z] = input_->points[nn_indices[0]].getNormalVector3fMap ().dot (
-            point - input_->points[nn_indices[0]].getVector3fMap ());
+        grid_[x * res_y_*res_z_ + y * res_z_ + z] = input_->points[nn_indices[0]].getNormalVector3dMap ().dot (
+            point - input_->points[nn_indices[0]].getVector3dMap ());
       }
 }
 

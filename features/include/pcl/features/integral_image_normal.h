@@ -122,15 +122,15 @@ namespace pcl
         , depth_data_ (NULL)
         , distance_map_ (NULL)
         , use_depth_dependent_smoothing_ (false)
-        , max_depth_change_factor_ (20.0f*0.001f)
-        , normal_smoothing_size_ (10.0f)
+        , max_depth_change_factor_ (20.0*0.001)
+        , normal_smoothing_size_ (10.0)
         , init_covariance_matrix_ (false)
         , init_average_3d_gradient_ (false)
         , init_simple_3d_gradient_ (false)
         , init_depth_change_ (false)
-        , vpx_ (0.0f)
-        , vpy_ (0.0f)
-        , vpz_ (0.0f)
+        , vpx_ (0.0)
+        , vpy_ (0.0)
+        , vpz_ (0.0)
         , use_sensor_origin_ (true)
       {
         feature_name_ = "IntegralImagesNormalEstimation";
@@ -180,7 +180,7 @@ namespace pcl
         * depth changes
         */
       void
-      setMaxDepthChangeFactor (float max_depth_change_factor)
+      setMaxDepthChangeFactor (double max_depth_change_factor)
       {
         max_depth_change_factor_ = max_depth_change_factor;
       }
@@ -190,7 +190,7 @@ namespace pcl
         * (depth dependent if useDepthDependentSmoothing is true)
         */
       void
-      setNormalSmoothingSize (float normal_smoothing_size)
+      setNormalSmoothingSize (double normal_smoothing_size)
       {
         if (normal_smoothing_size <= 0)
         {
@@ -256,7 +256,7 @@ namespace pcl
 
       /** \brief Returns a pointer to the distance map which was computed internally
         */
-      inline float*
+      inline double*
       getDistanceMap ()
       {
         return (distance_map_);
@@ -268,7 +268,7 @@ namespace pcl
         * \param vpz the Z coordinate of the viewpoint
         */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -285,7 +285,7 @@ namespace pcl
         * If an input cloud is set, it will return the sensor origin otherwise it will return the origin (0, 0, 0)
         */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz)
+      getViewPoint (double &vpx, double &vpy, double &vpz)
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -328,7 +328,7 @@ namespace pcl
         * \param[out] output the resultant normals
         */
       void
-      computeFeatureFull (const float* distance_map, const float& bad_point, PointCloudOut& output);
+      computeFeatureFull (const double* distance_map, const double& bad_point, PointCloudOut& output);
 
       /** \brief Computes the normal for part of the cloud specified by \a indices_
         * \param[in] distance_map distance map
@@ -336,7 +336,7 @@ namespace pcl
         * \param[out] output the resultant normals
         */
       void
-      computeFeaturePart (const float* distance_map, const float& bad_point, PointCloudOut& output);
+      computeFeaturePart (const double* distance_map, const double& bad_point, PointCloudOut& output);
 
       /** \brief Initialize the data structures, based on the normal estimation method chosen. */
       void
@@ -356,8 +356,8 @@ namespace pcl
         */
       inline void
       flipNormalTowardsViewpoint (const PointInT &point, 
-                                  float vp_x, float vp_y, float vp_z,
-                                  float &nx, float &ny, float &nz)
+                                  double vp_x, double vp_y, double vp_z,
+                                  double &nx, double &ny, double &nz)
       {
         // See if we need to flip any plane normals
         vp_x -= point.x;
@@ -365,7 +365,7 @@ namespace pcl
         vp_z -= point.z;
 
         // Dot product between the (viewpoint - point) and the plane normal
-        float cos_theta = (vp_x * nx + vp_y * ny + vp_z * nz);
+        double cos_theta = (vp_x * nx + vp_y * ny + vp_z * nz);
 
         // Flip the plane normal
         if (cos_theta < 0)
@@ -397,36 +397,36 @@ namespace pcl
       int rect_height_4_;
 
       /** the threshold used to detect depth discontinuities */
-      float distance_threshold_;
+      double distance_threshold_;
 
       /** integral image in x-direction */
-      IntegralImage2D<float, 3> integral_image_DX_;
+      IntegralImage2D<double, 3> integral_image_DX_;
       /** integral image in y-direction */
-      IntegralImage2D<float, 3> integral_image_DY_;
+      IntegralImage2D<double, 3> integral_image_DY_;
       /** integral image */
-      IntegralImage2D<float, 1> integral_image_depth_;
+      IntegralImage2D<double, 1> integral_image_depth_;
       /** integral image xyz */
-      IntegralImage2D<float, 3> integral_image_XYZ_;
+      IntegralImage2D<double, 3> integral_image_XYZ_;
 
       /** derivatives in x-direction */
-      float *diff_x_;
+      double *diff_x_;
       /** derivatives in y-direction */
-      float *diff_y_;
+      double *diff_y_;
 
       /** depth data */
-      float *depth_data_;
+      double *depth_data_;
 
       /** distance map */
-      float *distance_map_;
+      double *distance_map_;
 
       /** \brief Smooth data based on depth (true/false). */
       bool use_depth_dependent_smoothing_;
 
       /** \brief Threshold for detecting depth discontinuities */
-      float max_depth_change_factor_;
+      double max_depth_change_factor_;
 
       /** \brief */
-      float normal_smoothing_size_;
+      double normal_smoothing_size_;
 
       /** \brief True when a dataset has been received and the covariance_matrix data has been initialized. */
       bool init_covariance_matrix_;
@@ -442,7 +442,7 @@ namespace pcl
 
       /** \brief Values describing the viewpoint ("pinhole" camera model assumed). For per point viewpoints, inherit
         * from NormalEstimation and provide your own computeFeature (). By default, the viewpoint is set to 0,0,0. */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** whether the sensor origin of the input cloud or a user given viewpoint should be used.*/
       bool use_sensor_origin_;

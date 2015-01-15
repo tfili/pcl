@@ -69,15 +69,15 @@ namespace pcl
       typedef pcl::traits::has_xyz<boost::mpl::_1> IsCompatible;
 
       // Storage
-      Eigen::Vector3f xyz;
+      Eigen::Vector3d xyz;
 
-      AccumulatorXYZ () : xyz (Eigen::Vector3f::Zero ()) { }
-
-      template <typename PointT> void
-      add (const PointT& t) { xyz += t.getVector3fMap (); }
+      AccumulatorXYZ () : xyz (Eigen::Vector3d::Zero ()) { }
 
       template <typename PointT> void
-      get (PointT& t, size_t n) const { t.getVector3fMap () = xyz / n; }
+      add (const PointT& t) { xyz += t.getVector3dMap (); }
+
+      template <typename PointT> void
+      get (PointT& t, size_t n) const { t.getVector3dMap () = xyz / n; }
 
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -90,20 +90,20 @@ namespace pcl
       typedef pcl::traits::has_normal<boost::mpl::_1> IsCompatible;
 
       // Storage
-      Eigen::Vector4f normal;
+      Eigen::Vector4d normal;
 
-      AccumulatorNormal () : normal (Eigen::Vector4f::Zero ()) { }
+      AccumulatorNormal () : normal (Eigen::Vector4d::Zero ()) { }
 
       // Requires that the normal of the given point is normalized, otherwise it
       // does not make sense to sum it up with the accumulated value.
       template <typename PointT> void
-      add (const PointT& t) { normal += t.getNormalVector4fMap (); }
+      add (const PointT& t) { normal += t.getNormalVector4dMap (); }
 
       template <typename PointT> void
       get (PointT& t, size_t) const
       {
-        t.getNormalVector4fMap () = normal;
-        t.getNormalVector4fMap ().normalize ();
+        t.getNormalVector4dMap () = normal;
+        t.getNormalVector4dMap ().normalize ();
       }
 
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -117,7 +117,7 @@ namespace pcl
       typedef pcl::traits::has_curvature<boost::mpl::_1> IsCompatible;
 
       // Storage
-      float curvature;
+      double curvature;
 
       AccumulatorCurvature () : curvature (0) { }
 
@@ -136,17 +136,17 @@ namespace pcl
       typedef pcl::traits::has_color<boost::mpl::_1> IsCompatible;
 
       // Storage
-      float r, g, b, a;
+      double r, g, b, a;
 
       AccumulatorRGBA () : r (0), g (0), b (0), a (0) { }
 
       template <typename PointT> void
       add (const PointT& t)
       {
-        r += static_cast<float> (t.r);
-        g += static_cast<float> (t.g);
-        b += static_cast<float> (t.b);
-        a += static_cast<float> (t.a);
+        r += static_cast<double> (t.r);
+        g += static_cast<double> (t.g);
+        b += static_cast<double> (t.b);
+        a += static_cast<double> (t.a);
       }
 
       template <typename PointT> void
@@ -167,7 +167,7 @@ namespace pcl
       typedef pcl::traits::has_intensity<boost::mpl::_1> IsCompatible;
 
       // Storage
-      float intensity;
+      double intensity;
 
       AccumulatorIntensity () : intensity (0) { }
 

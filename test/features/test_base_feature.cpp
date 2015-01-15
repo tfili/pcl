@@ -57,7 +57,7 @@ KdTreePtr tree;
 TEST (PCL, BaseFeature)
 {
   // compute3DCentroid (indices)
-  Eigen::Vector4f centroid3;
+  Eigen::Vector4d centroid3;
   compute3DCentroid (cloud, indices, centroid3);
   EXPECT_NEAR (centroid3[0], -0.0290809, 1e-4);
   EXPECT_NEAR (centroid3[1], 0.102653, 1e-4);
@@ -72,7 +72,7 @@ TEST (PCL, BaseFeature)
   EXPECT_NEAR (centroid3[3], 1, 1e-4);
 
   // computeNDCentroid (indices)
-  Eigen::VectorXf centroidn;
+  Eigen::VectorXd centroidn;
   computeNDCentroid (cloud, indices, centroidn);
   EXPECT_NEAR (centroidn[0], -0.0290809, 1e-4);
   EXPECT_NEAR (centroidn[1], 0.102653, 1e-4);
@@ -85,7 +85,7 @@ TEST (PCL, BaseFeature)
   EXPECT_NEAR (centroidn[2], 0.027302, 1e-4);
 
   // computeCovarianceMatrix (indices)
-  Eigen::Matrix3f covariance_matrix;
+  Eigen::Matrix3d covariance_matrix;
   computeCovarianceMatrix (cloud, indices, centroid3, covariance_matrix);
   EXPECT_NEAR (covariance_matrix (0, 0), 0.710046, 1e-4);
   EXPECT_NEAR (covariance_matrix (0, 1), -0.234843, 1e-4);
@@ -134,8 +134,8 @@ TEST (PCL, BaseFeature)
   EXPECT_NEAR (covariance_matrix (2, 2), 4.9356e-04, 1e-5);
 
   // solvePlaneParameters (Vector)
-  Eigen::Vector4f plane_parameters;
-  float curvature;
+  Eigen::Vector4d plane_parameters;
+  double curvature;
   solvePlaneParameters (covariance_matrix, centroid3, plane_parameters, curvature);
   EXPECT_NEAR (fabs (plane_parameters[0]), 0.035592, 1e-4);
   EXPECT_NEAR (fabs (plane_parameters[1]), 0.369596, 1e-4);
@@ -144,7 +144,7 @@ TEST (PCL, BaseFeature)
   EXPECT_NEAR (curvature, 0.0693136, 1e-4);
 
   // solvePlaneParameters
-  float nx, ny, nz;
+  double nx, ny, nz;
   solvePlaneParameters (covariance_matrix, nx, ny, nz, curvature);
   EXPECT_NEAR (fabs (nx), 0.035592, 1e-4);
   EXPECT_NEAR (fabs (ny), 0.369596, 1e-4);

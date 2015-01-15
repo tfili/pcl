@@ -504,11 +504,11 @@ pcl::PLYReader::objInfoCallback (const std::string& line)
       else if (st[1] == "num_rows")
         cloudHeightCallback (atoi (st[2].c_str ()));
       else if (st[1] == "echo_rgb_offset_x")
-        originXCallback (static_cast<float> (atof (st[2].c_str ())));
+        originXCallback (static_cast<double> (atof (st[2].c_str ())));
       else if (st[1] == "echo_rgb_offset_y")
-        originYCallback (static_cast<float> (atof (st[2].c_str ())));
+        originYCallback (static_cast<double> (atof (st[2].c_str ())));
       else if (st[1] == "echo_rgb_offset_z")
-        originZCallback (static_cast<float> (atof (st[2].c_str ())));
+        originZCallback (static_cast<double> (atof (st[2].c_str ())));
     }
   }
 }
@@ -559,15 +559,15 @@ pcl::PLYReader::parse (const std::string& istream_filename)
 ////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PLYReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                             int &, int &, unsigned int &, const int)
 {
   // Silence compiler warnings
   cloud_ = &cloud;
   range_grid_ = new std::vector<std::vector<int> >;
   cloud_->width = cloud_->height = 0;
-  origin = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  origin = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
   if (!parse (file_name))
   {
     PCL_ERROR ("[pcl::PLYReader::read] problem parsing header!\n");
@@ -580,7 +580,7 @@ pcl::PLYReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
 ////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &ply_version, const int)
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation, int &ply_version, const int)
 {
   // kept only for backward compatibility
   int data_type;
@@ -598,7 +598,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
   {
     //cloud.header = cloud_->header;
     std::vector<pcl::uint8_t> data ((*range_grid_).size () * cloud.point_step);
-    const static float f_nan = std::numeric_limits <float>::quiet_NaN ();
+    const static double f_nan = std::numeric_limits <double>::quiet_NaN ();
     const static double d_nan = std::numeric_limits <double>::quiet_NaN ();
     for (size_t r = 0; r < r_size; ++r)
     {
@@ -607,7 +607,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
         for (size_t f = 0; f < cloud_->fields.size (); ++f)
           if (cloud_->fields[f].datatype == ::pcl::PCLPointField::FLOAT32)
             memcpy (&data[r * cloud_->point_step + cloud_->fields[f].offset],
-                    reinterpret_cast<const char*> (&f_nan), sizeof (float));
+                    reinterpret_cast<const char*> (&f_nan), sizeof (double));
           else if (cloud_->fields[f].datatype == ::pcl::PCLPointField::FLOAT64)
             memcpy (&data[r * cloud_->point_step + cloud_->fields[f].offset],
                     reinterpret_cast<const char*> (&d_nan), sizeof (double));
@@ -621,7 +621,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
     cloud_->data.swap (data);
   }
 
-  orientation_ = Eigen::Quaternionf (orientation);
+  orientation_ = Eigen::Quaterniond (orientation);
   origin_ = origin;
 
   for (size_t i = 0; i < cloud_->fields.size (); ++i)
@@ -639,7 +639,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
 ////////////////////////////////////////////////////////////////////////////////////////
 int
 pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &ply_version, const int offset)
 {
   // kept only for backward compatibility
@@ -658,7 +658,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
   {
     //cloud.header = cloud_->header;
     std::vector<pcl::uint8_t> data ((*range_grid_).size () * mesh.cloud.point_step);
-    const static float f_nan = std::numeric_limits <float>::quiet_NaN ();
+    const static double f_nan = std::numeric_limits <double>::quiet_NaN ();
     const static double d_nan = std::numeric_limits <double>::quiet_NaN ();
     for (size_t r = 0; r < r_size; ++r)
     {
@@ -667,7 +667,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
         for (size_t f = 0; f < cloud_->fields.size (); ++f)
           if (cloud_->fields[f].datatype == ::pcl::PCLPointField::FLOAT32)
             memcpy (&data[r * cloud_->point_step + cloud_->fields[f].offset],
-                    reinterpret_cast<const char*> (&f_nan), sizeof (float));
+                    reinterpret_cast<const char*> (&f_nan), sizeof (double));
           else if (cloud_->fields[f].datatype == ::pcl::PCLPointField::FLOAT64)
             memcpy (&data[r * cloud_->point_step + cloud_->fields[f].offset],
                     reinterpret_cast<const char*> (&d_nan), sizeof (double));
@@ -681,7 +681,7 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
     cloud_->data.swap (data);
   }
 
-  orientation_ = Eigen::Quaternionf (orientation);
+  orientation_ = Eigen::Quaterniond (orientation);
   origin_ = origin;
 
   for (size_t i = 0; i < cloud_->fields.size (); ++i)
@@ -700,8 +700,8 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
 int
 pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh, const int offset)
 {
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   int ply_version;
   return read (file_name, mesh, origin, orientation, ply_version, offset);
 }
@@ -709,8 +709,8 @@ pcl::PLYReader::read (const std::string &file_name, pcl::PolygonMesh &mesh, cons
 ////////////////////////////////////////////////////////////////////////////////////////
 std::string
 pcl::PLYWriter::generateHeader (const pcl::PCLPointCloud2 &cloud,
-                                const Eigen::Vector4f &origin,
-                                const Eigen::Quaternionf &,
+                                const Eigen::Vector4d &origin,
+                                const Eigen::Quaterniond &,
                                 bool binary,
                                 bool use_camera,
                                 int valid_points)
@@ -754,15 +754,15 @@ pcl::PLYWriter::generateHeader (const pcl::PCLPointCloud2 &cloud,
   {
     if (cloud.fields[i].name == "normal_x")
     {
-      oss << "\nproperty float nx";
+      oss << "\nproperty double nx";
     }
     else if (cloud.fields[i].name == "normal_y")
     {
-      oss << "\nproperty float ny";
+      oss << "\nproperty double ny";
     }
     else if (cloud.fields[i].name == "normal_z")
     {
-      oss << "\nproperty float nz";
+      oss << "\nproperty double nz";
     }
     else if (cloud.fields[i].name == "rgb")
     {
@@ -790,7 +790,7 @@ pcl::PLYWriter::generateHeader (const pcl::PCLPointCloud2 &cloud,
         case pcl::PCLPointField::UINT16 : oss << " ushort "; break;
         case pcl::PCLPointField::INT32 : oss << " int "; break;
         case pcl::PCLPointField::UINT32 : oss << " uint "; break;
-        case pcl::PCLPointField::FLOAT32 : oss << " float "; break;
+        case pcl::PCLPointField::FLOAT32 : oss << " double "; break;
         case pcl::PCLPointField::FLOAT64 : oss << " double "; break;
         default :
         {
@@ -805,27 +805,27 @@ pcl::PLYWriter::generateHeader (const pcl::PCLPointCloud2 &cloud,
   if (use_camera)
   {
     oss << "\nelement camera 1"
-      "\nproperty float view_px"
-      "\nproperty float view_py"
-      "\nproperty float view_pz"
-      "\nproperty float x_axisx"
-      "\nproperty float x_axisy"
-      "\nproperty float x_axisz"
-      "\nproperty float y_axisx"
-      "\nproperty float y_axisy"
-      "\nproperty float y_axisz"
-      "\nproperty float z_axisx"
-      "\nproperty float z_axisy"
-      "\nproperty float z_axisz"
-      "\nproperty float focal"
-      "\nproperty float scalex"
-      "\nproperty float scaley"
-      "\nproperty float centerx"
-      "\nproperty float centery"
+      "\nproperty double view_px"
+      "\nproperty double view_py"
+      "\nproperty double view_pz"
+      "\nproperty double x_axisx"
+      "\nproperty double x_axisy"
+      "\nproperty double x_axisz"
+      "\nproperty double y_axisx"
+      "\nproperty double y_axisy"
+      "\nproperty double y_axisz"
+      "\nproperty double z_axisx"
+      "\nproperty double z_axisy"
+      "\nproperty double z_axisz"
+      "\nproperty double focal"
+      "\nproperty double scalex"
+      "\nproperty double scaley"
+      "\nproperty double centerx"
+      "\nproperty double centery"
       "\nproperty int viewportx"
       "\nproperty int viewporty"
-      "\nproperty float k1"
-      "\nproperty float k2";
+      "\nproperty double k1"
+      "\nproperty double k2";
   }
   else if (cloud.height > 1)
   {
@@ -843,8 +843,8 @@ pcl::PLYWriter::generateHeader (const pcl::PCLPointCloud2 &cloud,
 int
 pcl::PLYWriter::writeASCII (const std::string &file_name,
                             const pcl::PCLPointCloud2 &cloud,
-                            const Eigen::Vector4f &origin,
-                            const Eigen::Quaternionf &orientation,
+                            const Eigen::Vector4d &origin,
+                            const Eigen::Quaterniond &orientation,
                             int precision,
                             bool use_camera)
 {
@@ -891,8 +891,8 @@ void
 pcl::PLYWriter::writeContentWithCameraASCII (int nr_points,
                                              int point_size,
                                              const pcl::PCLPointCloud2 &cloud,
-                                             const Eigen::Vector4f &origin,
-                                             const Eigen::Quaternionf &orientation,
+                                             const Eigen::Vector4d &origin,
+                                             const Eigen::Quaterniond &orientation,
                                              std::ofstream& fs)
 {
   // Iterate through the points
@@ -969,14 +969,14 @@ pcl::PLYWriter::writeContentWithCameraASCII (int nr_points,
           {
             if (cloud.fields[d].name.find ("rgb") == std::string::npos)
             {
-              float value;
-              memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+              double value;
+              memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
               fs << value;
             }
             else
             {
               pcl::RGB color;
-              memcpy (&color, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (float)], sizeof (pcl::RGB));
+              memcpy (&color, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (double)], sizeof (pcl::RGB));
               int r = color.r;
               int g = color.g;
               int b = color.b;
@@ -1008,7 +1008,7 @@ pcl::PLYWriter::writeContentWithCameraASCII (int nr_points,
   else
     fs << origin[0] << " " << origin[1] << " " << origin[2] << " ";
 
-  Eigen::Matrix3f R = orientation.toRotationMatrix ();
+  Eigen::Matrix3d R = orientation.toRotationMatrix ();
   fs << R (0,0) << " " << R (0,1) << " " << R (0,2) << " ";
   fs << R (1,0) << " " << R (1,1) << " " << R (1,2) << " ";
   fs << R (2,0) << " " << R (2,1) << " " << R (2,2) << " ";
@@ -1110,8 +1110,8 @@ pcl::PLYWriter::writeContentWithRangeGridASCII (int nr_points,
           {
             if (cloud.fields[d].name.find ("rgb") == std::string::npos)
             {
-              float value;
-              memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+              double value;
+              memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
               // Test if x-coordinate is NaN, thus an invalid point
               if ("x" == cloud.fields[d].name)
               {
@@ -1123,7 +1123,7 @@ pcl::PLYWriter::writeContentWithRangeGridASCII (int nr_points,
             else
             {
               pcl::RGB color;
-              memcpy (&color, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (float)], sizeof (pcl::RGB));
+              memcpy (&color, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (double)], sizeof (pcl::RGB));
               int r = color.r;
               int g = color.g;
               int b = color.b;
@@ -1177,8 +1177,8 @@ pcl::PLYWriter::writeContentWithRangeGridASCII (int nr_points,
 int
 pcl::PLYWriter::writeBinary (const std::string &file_name,
                              const pcl::PCLPointCloud2 &cloud,
-                             const Eigen::Vector4f &origin,
-                             const Eigen::Quaternionf &orientation,
+                             const Eigen::Vector4d &origin,
+                             const Eigen::Quaterniond &orientation,
                              bool use_camera)
 {
   if (cloud.data.empty ())
@@ -1222,8 +1222,8 @@ pcl::PLYWriter::writeBinary (const std::string &file_name,
     {
       for (size_t i=0; i < nr_points; ++i)
       {
-        float value;
-        memcpy(&value, &cloud.data[i * point_size + cloud.fields[xfield].offset], sizeof(float));
+        double value;
+        memcpy(&value, &cloud.data[i * point_size + cloud.fields[xfield].offset], sizeof(double));
         if (pcl_isfinite(value))
         {
           rangegrid[i] = valid_points;
@@ -1341,14 +1341,14 @@ pcl::PLYWriter::writeBinary (const std::string &file_name,
           {
             if (cloud.fields[d].name.find ("rgb") == std::string::npos)
             {
-              float value;
-              memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + (total + c) * sizeof (float)], sizeof (float));
-              fpout.write (reinterpret_cast<const char*> (&value), sizeof (float));
+              double value;
+              memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + (total + c) * sizeof (double)], sizeof (double));
+              fpout.write (reinterpret_cast<const char*> (&value), sizeof (double));
             }
             else
             {
               pcl::RGB color;
-              memcpy (&color, &cloud.data[i * point_size + cloud.fields[d].offset + (total + c) * sizeof (float)], sizeof (pcl::RGB));
+              memcpy (&color, &cloud.data[i * point_size + cloud.fields[d].offset + (total + c) * sizeof (double)], sizeof (pcl::RGB));
               unsigned char r = color.r;
               unsigned char g = color.g;
               unsigned char b = color.b;
@@ -1376,39 +1376,39 @@ pcl::PLYWriter::writeBinary (const std::string &file_name,
   if (use_camera)
   {
     // Append sensor information
-    float t;
+    double t;
     for (int i = 0; i < 3; ++i)
     {
       if (origin[3] != 0)
         t = origin[i]/origin[3];
       else
         t = origin[i];
-      fpout.write (reinterpret_cast<const char*> (&t), sizeof (float));
+      fpout.write (reinterpret_cast<const char*> (&t), sizeof (double));
     }
-    Eigen::Matrix3f R = orientation.toRotationMatrix ();
+    Eigen::Matrix3d R = orientation.toRotationMatrix ();
     for (int i = 0; i < 3; ++i)
       for (int j = 0; j < 3; ++j)
     {
-      fpout.write (reinterpret_cast<const char*> (&R (i, j)),sizeof (float));
+      fpout.write (reinterpret_cast<const char*> (&R (i, j)),sizeof (double));
     }
 
     /////////////////////////////////////////////////////
     // Append those properties directly.               //
     // They are for perspective cameras so just put 0  //
     //                                                 //
-    // property float focal                            //
-    // property float scalex                           //
-    // property float scaley                           //
-    // property float centerx                          //
-    // property float centery                          //
+    // property double focal                            //
+    // property double scalex                           //
+    // property double scaley                           //
+    // property double centerx                          //
+    // property double centery                          //
     // and later on                                    //
-    // property float k1                               //
-    // property float k2                               //
+    // property double k1                               //
+    // property double k2                               //
     /////////////////////////////////////////////////////
 
-    const float zerof = 0;
+    const double zerof = 0;
     for (int i = 0; i < 5; ++i)
-      fpout.write (reinterpret_cast<const char*> (&zerof), sizeof (float));
+      fpout.write (reinterpret_cast<const char*> (&zerof), sizeof (double));
 
     // width and height
     int width = cloud.width;
@@ -1418,7 +1418,7 @@ pcl::PLYWriter::writeBinary (const std::string &file_name,
     fpout.write (reinterpret_cast<const char*> (&height), sizeof (int));
 
     for (int i = 0; i < 2; ++i)
-      fpout.write (reinterpret_cast<const char*> (&zerof), sizeof (float));
+      fpout.write (reinterpret_cast<const char*> (&zerof), sizeof (double));
   }
   else if (doRangeGrid)
   {
@@ -1478,9 +1478,9 @@ pcl::io::savePLYFile (const std::string &file_name, const pcl::PolygonMesh &mesh
   fs << "\ncomment PCL generated";
   // Vertices
   fs << "\nelement vertex "<< mesh.cloud.width * mesh.cloud.height;
-  fs << "\nproperty float x"
-        "\nproperty float y"
-        "\nproperty float z";
+  fs << "\nproperty double x"
+        "\nproperty double y"
+        "\nproperty double z";
   // Check if we have color on vertices
   int rgba_index = getFieldIndex (mesh.cloud, "rgba"),
   rgb_index = getFieldIndex (mesh.cloud, "rgb");
@@ -1519,8 +1519,8 @@ pcl::io::savePLYFile (const std::string &file_name, const pcl::PolygonMesh &mesh
           mesh.cloud.fields[d].name == "y" ||
           mesh.cloud.fields[d].name == "z"))
       {
-        float value;
-        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         // if (++xyz == 3)
         //   break;
@@ -1531,7 +1531,7 @@ pcl::io::savePLYFile (const std::string &file_name, const pcl::PolygonMesh &mesh
 
       {
         pcl::RGB color;
-        memcpy (&color, &mesh.cloud.data[i * point_size + mesh.cloud.fields[rgb_index].offset + c * sizeof (float)], sizeof (RGB));
+        memcpy (&color, &mesh.cloud.data[i * point_size + mesh.cloud.fields[rgb_index].offset + c * sizeof (double)], sizeof (RGB));
         fs << int (color.r) << " " << int (color.g) << " " << int (color.b);
       }
       else if ((mesh.cloud.fields[d].datatype == pcl::PCLPointField::UINT32) &&
@@ -1597,9 +1597,9 @@ pcl::io::savePLYFileBinary (const std::string &file_name, const pcl::PolygonMesh
   fs << "\ncomment PCL generated";
   // Vertices
   fs << "\nelement vertex "<< mesh.cloud.width * mesh.cloud.height;
-  fs << "\nproperty float x"
-        "\nproperty float y"
-        "\nproperty float z";
+  fs << "\nproperty double x"
+        "\nproperty double y"
+        "\nproperty double z";
   // Check if we have color on vertices
   int rgba_index = getFieldIndex (mesh.cloud, "rgba"),
   rgb_index = getFieldIndex (mesh.cloud, "rgb");
@@ -1648,9 +1648,9 @@ pcl::io::savePLYFileBinary (const std::string &file_name, const pcl::PolygonMesh
           mesh.cloud.fields[d].name == "y" ||
           mesh.cloud.fields[d].name == "z"))
       {
-        float value;
-        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
-        fpout.write (reinterpret_cast<const char*> (&value), sizeof (float));
+        double value;
+        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
+        fpout.write (reinterpret_cast<const char*> (&value), sizeof (double));
         // if (++xyz == 3)
         //   break;
         ++xyz;
@@ -1660,7 +1660,7 @@ pcl::io::savePLYFileBinary (const std::string &file_name, const pcl::PolygonMesh
 
       {
         pcl::RGB color;
-        memcpy (&color, &mesh.cloud.data[i * point_size + mesh.cloud.fields[rgb_index].offset + c * sizeof (float)], sizeof (RGB));
+        memcpy (&color, &mesh.cloud.data[i * point_size + mesh.cloud.fields[rgb_index].offset + c * sizeof (double)], sizeof (RGB));
         fpout.write (reinterpret_cast<const char*> (&color.r), sizeof (unsigned char));
         fpout.write (reinterpret_cast<const char*> (&color.g), sizeof (unsigned char));
         fpout.write (reinterpret_cast<const char*> (&color.b), sizeof (unsigned char));

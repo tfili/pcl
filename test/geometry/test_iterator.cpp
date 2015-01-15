@@ -46,15 +46,15 @@ template <typename PointT>
 void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsigned y_end, PointCloud<PointT>& cloud)
 {
   PointXYZ point;
-  point.x = point.y = point.z = 0.0f;
+  point.x = point.y = point.z = 0.0;
   for (unsigned yIdx = 0; yIdx < cloud.height; ++yIdx)
   {
     for (unsigned xIdx = 0; xIdx < cloud.width; ++xIdx)
     {
       PointT& point = cloud.points [yIdx * cloud.width + xIdx];
-      point.x = float(xIdx);
-      point.y = float(yIdx);
-      point.z = 0.0f;
+      point.x = double(xIdx);
+      point.y = double(yIdx);
+      point.z = 0.0;
     }
   }
 
@@ -67,7 +67,7 @@ void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsig
     PointT& point = cloud[*iterator];
     EXPECT_EQ (point.x, iterator.getColumnIndex ());
     EXPECT_EQ (point.y, iterator.getRowIndex ());
-    point.z = 1.0f;
+    point.z = 1.0;
     ++iterator;
     ++idx;
   }
@@ -106,7 +106,7 @@ void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsig
   for (unsigned idx = 0; idx < dmax; ++idx, xIdx += x_step, yIdx += y_step)
   {
     PointT& point = cloud.points [yIdx * cloud.width + xIdx];
-    EXPECT_EQ (point.z, 1.0f);
+    EXPECT_EQ (point.z, 1.0);
     point.z = 0.0;
   }
   // now all z-values should be 0 again!
@@ -116,9 +116,9 @@ void checkSimpleLine8 (unsigned x_start, unsigned y_start, unsigned x_end, unsig
     {
       //std::cout << "testing  point: " << xIdx << " , " << yIdx << std::endl;
       PointT& point = cloud.points [yIdx * cloud.width + xIdx];
-//      if (point.z != 0.0f)
-//        std::cout << "point.z != 0.0f at: " << xIdx << " , " << yIdx << std::endl;
-      EXPECT_EQ (point.z, 0.0f);
+//      if (point.z != 0.0)
+//        std::cout << "point.z != 0.0 at: " << xIdx << " , " << yIdx << std::endl;
+      EXPECT_EQ (point.z, 0.0);
     }
   }
 }
@@ -127,15 +127,15 @@ template <typename PointT>
 void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsigned y_end, PointCloud<PointT>& cloud, bool neighorhood)
 {
   PointXYZ point;
-  point.x = point.y = point.z = 0.0f;
+  point.x = point.y = point.z = 0.0;
   for (unsigned yIdx = 0; yIdx < cloud.height; ++yIdx)
   {
     for (unsigned xIdx = 0; xIdx < cloud.width; ++xIdx)
     {
       PointT& point = cloud.points [yIdx * cloud.width + xIdx];
-      point.x = float(xIdx);
-      point.y = float(yIdx);
-      point.z = 0.0f;
+      point.x = double(xIdx);
+      point.y = double(yIdx);
+      point.z = 0.0;
     }
   }
 
@@ -155,7 +155,7 @@ void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsig
     EXPECT_EQ (point.x, iterator.getColumnIndex ());
     EXPECT_EQ (point.y, iterator.getRowIndex ());
     //std::cout << idx << " :: " << iterator.getPointIndex () << " :: " << iterator.getColumnIndex () << " , " << iterator.getRowIndex () << std::endl;
-    point.z = 1.0f;
+    point.z = 1.0;
     ++iterator;
     ++idx;
   }
@@ -169,9 +169,9 @@ void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsig
   else
     EXPECT_EQ (abs(dx) + abs(dy), idx);
   
-  float length = sqrtf (float (dx * dx + dy * dy));
-  float dir_x = float (dx) / length;
-  float dir_y = float (dy) / length;
+  double length = sqrt (double (dx * dx + dy * dy));
+  double dir_x = double (dx) / length;
+  double dir_y = double (dy) / length;
   
   // now all z-values should be 0 again!
   for (int yIdx = 0; yIdx < int(cloud.height); ++yIdx)
@@ -182,16 +182,16 @@ void checkGeneralLine (unsigned x_start, unsigned y_start, unsigned x_end, unsig
       if (point.z != 0)
       {
         // point need to be close to line
-        float distance = dir_x * float(yIdx - int(y_start)) - dir_y * float(xIdx - int(x_start));
+        double distance = dir_x * double(yIdx - int(y_start)) - dir_y * double(xIdx - int(x_start));
         if (neighorhood)        
-          EXPECT_LE (fabs(distance), 0.5f);
+          EXPECT_LE (fabs(distance), 0.5);
         else
-          EXPECT_LE (fabs(distance), 0.70711f);
+          EXPECT_LE (fabs(distance), 0.70711);
         
         // and within the endpoints
-        float lambda = dir_y * float(yIdx - int(y_start)) + dir_x * float(xIdx - int(x_start));
+        double lambda = dir_y * double(yIdx - int(y_start)) + dir_x * double(xIdx - int(x_start));
         EXPECT_LE (lambda, length);
-        EXPECT_GE (lambda, 0.0f);
+        EXPECT_GE (lambda, 0.0);
       }
     }
   }
@@ -247,11 +247,11 @@ TEST (PCL, LineIterator8NeighborsGeneral)
   unsigned length = 45;
   
   const unsigned angular_resolution = 180;
-  float d_alpha = float(M_PI / angular_resolution);
+  double d_alpha = double(M_PI / angular_resolution);
   for (unsigned idx = 0; idx < angular_resolution; ++idx)
   {
-    unsigned x_end = unsigned (length * cos (float(idx) * d_alpha) + center_x + 0.5);
-    unsigned y_end = unsigned (length * sin (float(idx) * d_alpha) + center_y + 0.5);
+    unsigned x_end = unsigned (length * cos (double(idx) * d_alpha) + center_x + 0.5);
+    unsigned y_end = unsigned (length * sin (double(idx) * d_alpha) + center_y + 0.5);
     
     // right
     checkGeneralLine (center_x, center_y, x_end, y_end, cloud, true);
@@ -271,11 +271,11 @@ TEST (PCL, LineIterator4NeighborsGeneral)
   unsigned length = 45;
   
   const unsigned angular_resolution = 360;
-  float d_alpha = float(2.0 * M_PI / angular_resolution);
+  double d_alpha = double(2.0 * M_PI / angular_resolution);
   for (unsigned idx = 0; idx < angular_resolution; ++idx)
   {
-    unsigned x_end = unsigned (length * cos (float(idx) * d_alpha) + center_x + 0.5);
-    unsigned y_end = unsigned (length * sin (float(idx) * d_alpha) + center_y + 0.5);
+    unsigned x_end = unsigned (length * cos (double(idx) * d_alpha) + center_x + 0.5);
+    unsigned y_end = unsigned (length * sin (double(idx) * d_alpha) + center_y + 0.5);
     
     // right
     checkGeneralLine (center_x, center_y, x_end, y_end, cloud, false);

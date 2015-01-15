@@ -21,7 +21,7 @@ pcl::cloud_composer::NormalsItem*
 pcl::cloud_composer::NormalsItem::clone () const
 {
   pcl::PointCloud<pcl::Normal>::Ptr normals_copy (new pcl::PointCloud<pcl::Normal> (*normals_ptr_));
-  //Vector4f and Quaternionf do deep copies using copy constructor
+  //Vector4d and Quaterniond do deep copies using copy constructor
   NormalsItem* new_item = new NormalsItem (this->text (), normals_copy, 0);
   
   PropertiesModel* new_item_properties = new_item->getPropertiesModel ();

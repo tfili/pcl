@@ -57,11 +57,11 @@ namespace pcl
         : MeshProcessing ()
         , vtk_polygons_ ()
         , num_iter_ (20)
-        , convergence_ (0.0f)
-        , relaxation_factor_ (0.01f)
+        , convergence_ (0.0)
+        , relaxation_factor_ (0.01)
         , feature_edge_smoothing_ (false)
-        , feature_angle_ (45.f)
-        , edge_angle_ (15.f)
+        , feature_angle_ (45.)
+        , edge_angle_ (15.)
         , boundary_smoothing_ (true)
       {};
 
@@ -85,13 +85,13 @@ namespace pcl
        * \param[in] convergence convergence criterion for the Laplacian smoothing
        */
       inline void
-      setConvergence (float convergence)
+      setConvergence (double convergence)
       {
         convergence_ = convergence;
       };
 
       /** \brief Get the convergence criterion. */
-      inline float
+      inline double
       getConvergence ()
       {
         return convergence_;
@@ -104,13 +104,13 @@ namespace pcl
        * \param[in] relaxation_factor the relaxation factor of the Laplacian smoothing algorithm
        */
       inline void
-      setRelaxationFactor (float relaxation_factor)
+      setRelaxationFactor (double relaxation_factor)
       {
         relaxation_factor_ = relaxation_factor;
       };
 
       /** \brief Get the relaxation factor of the Laplacian smoothing */
-      inline float
+      inline double
       getRelaxationFactor ()
       {
         return relaxation_factor_;
@@ -136,13 +136,13 @@ namespace pcl
        * \param[in] feature_angle the angle threshold for considering an edge to be sharp
        */
       inline void
-      setFeatureAngle (float feature_angle)
+      setFeatureAngle (double feature_angle)
       {
         feature_angle_ = feature_angle;
       };
 
       /** \brief Get the angle threshold for considering an edge to be sharp */
-      inline float
+      inline double
       getFeatureAngle ()
       {
         return feature_angle_;
@@ -152,13 +152,13 @@ namespace pcl
        * \param[in] edge_angle the angle to control smoothing along edges
        */
       inline void
-      setEdgeAngle (float edge_angle)
+      setEdgeAngle (double edge_angle)
       {
         edge_angle_ = edge_angle;
       };
 
       /** \brief Get the edge angle to control smoothing along edges */
-      inline float
+      inline double
       getEdgeAngle ()
       {
         return edge_angle_;
@@ -189,11 +189,11 @@ namespace pcl
 
       /// Parameters
       int num_iter_;
-      float convergence_;
-      float relaxation_factor_;
+      double convergence_;
+      double relaxation_factor_;
       bool feature_edge_smoothing_;
-      float feature_angle_;
-      float edge_angle_;
+      double feature_angle_;
+      double edge_angle_;
       bool boundary_smoothing_;
   };
 }

@@ -114,7 +114,7 @@ namespace pcl
        * \param[in] ground_coeffs The ground plane coefficients.
        */
       void
-      setGround (Eigen::VectorXf& ground_coeffs);
+      setGround (Eigen::VectorXd& ground_coeffs);
 
       /**
        * \brief Set sensor orientation to landscape mode (false) or portrait mode (true).
@@ -147,7 +147,7 @@ namespace pcl
        * \param[in] max_height Maximum allowed height for a person cluster (default = 2.3).
        */
       void
-      setHeightLimits (float min_height, float max_height);
+      setHeightLimits (double min_height, double max_height);
 
       /**
        * \brief Set minimum and maximum allowed number of points for a person cluster.
@@ -164,7 +164,7 @@ namespace pcl
        * \param[in] heads_minimum_distance Minimum allowed distance between persons' heads (default = 0.3).
        */
       void
-      setMinimumDistanceBetweenHeads (float heads_minimum_distance);
+      setMinimumDistanceBetweenHeads (double heads_minimum_distance);
 
       /**
        * \brief Get minimum and maximum allowed height for a person cluster.
@@ -173,7 +173,7 @@ namespace pcl
        * \param[out] max_height Maximum allowed height for a person cluster.
        */
       void
-      getHeightLimits (float& min_height, float& max_height);
+      getHeightLimits (double& min_height, double& max_height);
 
       /**
        * \brief Get minimum and maximum allowed number of points for a person cluster.
@@ -187,15 +187,15 @@ namespace pcl
       /**
        * \brief Get minimum distance between persons' heads.
        */
-      float
+      double
       getMinimumDistanceBetweenHeads ();
 
     protected:
       /** \brief ground plane coefficients */
-      Eigen::VectorXf ground_coeffs_;            
+      Eigen::VectorXd ground_coeffs_;            
       
       /** \brief ground plane normalization factor */
-      float sqrt_ground_coeffs_;              
+      double sqrt_ground_coeffs_;              
       
       /** \brief initial clusters indices */
       std::vector<pcl::PointIndices> cluster_indices_;   
@@ -204,10 +204,10 @@ namespace pcl
       PointCloudPtr cloud_;                
       
       /** \brief person clusters maximum height from the ground plane */
-      float max_height_;                  
+      double max_height_;                  
       
       /** \brief person clusters minimum height from the ground plane */
-      float min_height_;                  
+      double min_height_;                  
       
       /** \brief if true, the sensor is considered to be vertically placed (portrait mode) */
       bool vertical_;                   
@@ -223,7 +223,7 @@ namespace pcl
       int min_points_;                  
       
       /** \brief minimum distance between persons' heads */
-      float heads_minimum_distance_;           
+      double heads_minimum_distance_;           
     };
   } /* namespace people */
 } /* namespace pcl */

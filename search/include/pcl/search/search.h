@@ -144,7 +144,7 @@ namespace pcl
           */
         virtual int
         nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices,
-                        std::vector<float> &k_sqr_distances) const = 0;
+                        std::vector<double> &k_sqr_distances) const = 0;
 
         /** \brief Search for k-nearest neighbors for the given query point.
           * This method accepts a different template parameter for the point type.
@@ -157,7 +157,7 @@ namespace pcl
           */
         template <typename PointTDiff> inline int
         nearestKSearchT (const PointTDiff &point, int k,
-                         std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+                         std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const
         {
           PointT p;
           copyPoint (point, p);
@@ -183,7 +183,7 @@ namespace pcl
         virtual int
         nearestKSearch (const PointCloud &cloud, int index, int k,
                         std::vector<int> &k_indices, 
-                        std::vector<float> &k_sqr_distances) const;
+                        std::vector<double> &k_sqr_distances) const;
 
         /** \brief Search for k-nearest neighbors for the given query point (zero-copy).
           *
@@ -205,7 +205,7 @@ namespace pcl
         virtual int
         nearestKSearch (int index, int k,
                         std::vector<int> &k_indices, 
-                        std::vector<float> &k_sqr_distances) const;
+                        std::vector<double> &k_sqr_distances) const;
 
         /** \brief Search for the k-nearest neighbors for the given query point.
           * \param[in] cloud the point cloud data
@@ -217,7 +217,7 @@ namespace pcl
         virtual void
         nearestKSearch (const PointCloud& cloud, const std::vector<int>& indices, 
                         int k, std::vector< std::vector<int> >& k_indices,
-                        std::vector< std::vector<float> >& k_sqr_distances) const;
+                        std::vector< std::vector<double> >& k_sqr_distances) const;
 
         /** \brief Search for the k-nearest neighbors for the given query point. Use this method if the query points are of a different type than the points in the data set (e.g. PointXYZRGBA instead of PointXYZ).
           * \param[in] cloud the point cloud data
@@ -229,7 +229,7 @@ namespace pcl
           */
         template <typename PointTDiff> void
         nearestKSearchT (const pcl::PointCloud<PointTDiff> &cloud, const std::vector<int>& indices, int k, std::vector< std::vector<int> > &k_indices,
-                         std::vector< std::vector<float> > &k_sqr_distances) const
+                         std::vector< std::vector<double> > &k_sqr_distances) const
         {
           // Copy all the data fields from the input cloud to the output one
           typedef typename pcl::traits::fieldList<PointT>::type FieldListInT;
@@ -271,7 +271,7 @@ namespace pcl
           */
         virtual int
         radiusSearch (const PointT& point, double radius, std::vector<int>& k_indices,
-                      std::vector<float>& k_sqr_distances, unsigned int max_nn = 0) const = 0;
+                      std::vector<double>& k_sqr_distances, unsigned int max_nn = 0) const = 0;
 
         /** \brief Search for all the nearest neighbors of the query point in a given radius.
           * \param[in] point the given query point
@@ -285,7 +285,7 @@ namespace pcl
           */
         template <typename PointTDiff> inline int
         radiusSearchT (const PointTDiff &point, double radius, std::vector<int> &k_indices,
-                       std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+                       std::vector<double> &k_sqr_distances, unsigned int max_nn = 0) const
         {
           PointT p;
           copyPoint (point, p);
@@ -311,7 +311,7 @@ namespace pcl
           */
         virtual int
         radiusSearch (const PointCloud &cloud, int index, double radius,
-                      std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
+                      std::vector<int> &k_indices, std::vector<double> &k_sqr_distances,
                       unsigned int max_nn = 0) const;
 
         /** \brief Search for all the nearest neighbors of the query point in a given radius (zero-copy).
@@ -335,7 +335,7 @@ namespace pcl
           */
         virtual int
         radiusSearch (int index, double radius, std::vector<int> &k_indices,
-                      std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const;
+                      std::vector<double> &k_sqr_distances, unsigned int max_nn = 0) const;
 
         /** \brief Search for all the nearest neighbors of the query point in a given radius.
           * \param[in] cloud the point cloud data
@@ -352,7 +352,7 @@ namespace pcl
                       const std::vector<int>& indices,
                       double radius,
                       std::vector< std::vector<int> >& k_indices,
-                      std::vector< std::vector<float> > &k_sqr_distances,
+                      std::vector< std::vector<double> > &k_sqr_distances,
                       unsigned int max_nn = 0) const;
 
         /** \brief Search for all the nearest neighbors of the query points in a given radius.
@@ -371,7 +371,7 @@ namespace pcl
                        const std::vector<int>& indices,
                        double radius,
                        std::vector< std::vector<int> > &k_indices,
-                       std::vector< std::vector<float> > &k_sqr_distances,
+                       std::vector< std::vector<double> > &k_sqr_distances,
                        unsigned int max_nn = 0) const
         {
           // Copy all the data fields from the input cloud to the output one
@@ -398,7 +398,7 @@ namespace pcl
 
       protected:
         void 
-        sortResults (std::vector<int>& indices, std::vector<float>& distances) const;
+        sortResults (std::vector<int>& indices, std::vector<double>& distances) const;
 
         PointCloudConstPtr input_;
         IndicesConstPtr indices_;
@@ -408,7 +408,7 @@ namespace pcl
       private:
         struct Compare
         {
-          Compare (const std::vector<float>& distances)
+          Compare (const std::vector<double>& distances)
           : distances_ (distances)
           {
           }
@@ -419,7 +419,7 @@ namespace pcl
             return (distances_ [first] < distances_[second]);
           }
 
-          const std::vector<float>& distances_;
+          const std::vector<double>& distances_;
         };
     }; // class Search    
   } // namespace search

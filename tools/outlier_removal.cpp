@@ -80,7 +80,7 @@ printHelp (int, char **argv)
 
 bool
 loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud,
-           Eigen::Vector4f &translation, Eigen::Quaternionf &orientation)
+           Eigen::Vector4d &translation, Eigen::Quaterniond &orientation)
 {
   TicToc tt;
   print_highlight ("Loading "); print_value ("%s ", filename.c_str ());
@@ -177,7 +177,7 @@ compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output
 
 void
 saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output,
-           const Eigen::Vector4f &translation, const Eigen::Quaternionf &rotation)
+           const Eigen::Vector4d &translation, const Eigen::Quaterniond &rotation)
 {
   TicToc tt;
   tt.tic ();
@@ -229,8 +229,8 @@ main (int argc, char** argv)
   bool keep_organized = find_switch (argc, argv, "-keep_organized");
 
   // Load the first file
-  Eigen::Vector4f translation;
-  Eigen::Quaternionf rotation;
+  Eigen::Vector4d translation;
+  Eigen::Quaterniond rotation;
   pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
   if (!loadCloud (argv[p_file_indices[0]], *cloud, translation, rotation))
     return (-1);

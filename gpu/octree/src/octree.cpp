@@ -105,7 +105,7 @@ void pcl::gpu::Octree::internalDownload()
     static_cast<OctreeImpl*>(impl)->internalDownload();
 }
 
-void pcl::gpu::Octree::radiusSearchHost(const PointType& center, float radius, std::vector<int>& out, int max_nn)
+void pcl::gpu::Octree::radiusSearchHost(const PointType& center, double radius, std::vector<int>& out, int max_nn)
 {
     if (!static_cast<OctreeImpl*>(impl)->host_octree.downloaded)
         internalDownload();
@@ -118,7 +118,7 @@ void pcl::gpu::Octree::radiusSearchHost(const PointType& center, float radius, s
     static_cast<OctreeImpl*>(impl)->radiusSearchHost(query, radius, out, max_nn);
 }
 
-void  pcl::gpu::Octree::approxNearestSearchHost(const PointType& query, int& out_index, float& sqr_dist)
+void  pcl::gpu::Octree::approxNearestSearchHost(const PointType& query, int& out_index, double& sqr_dist)
 {
     if (!static_cast<OctreeImpl*>(impl)->host_octree.downloaded)
         internalDownload();
@@ -132,7 +132,7 @@ void  pcl::gpu::Octree::approxNearestSearchHost(const PointType& query, int& out
 
 }
                         
-void pcl::gpu::Octree::radiusSearch(const Queries& queries, float radius, int max_results, NeighborIndices& results) const
+void pcl::gpu::Octree::radiusSearch(const Queries& queries, double radius, int max_results, NeighborIndices& results) const
 {
     assert(queries.size() > 0);
     results.create(static_cast<int> (queries.size()), max_results);
@@ -153,7 +153,7 @@ void pcl::gpu::Octree::radiusSearch(const Queries& queries, const Radiuses& radi
     static_cast<OctreeImpl*>(impl)->radiusSearch(q, radiuses, results);
 }
 
-void pcl::gpu::Octree::radiusSearch(const Queries& queries, const Indices& indices, float radius, int max_results, NeighborIndices& results) const
+void pcl::gpu::Octree::radiusSearch(const Queries& queries, const Indices& indices, double radius, int max_results, NeighborIndices& results) const
 {
     assert(queries.size() > 0 && indices.size() > 0);
     results.create(static_cast<int> (indices.size()), max_results);
@@ -188,7 +188,7 @@ void pcl::gpu::Octree::nearestKSearchBatch(const Queries& queries, int k, Neighb
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////// Brute Force Radius Search Mediator //////////////////////////////////
 
-void pcl::gpu::bruteForceRadiusSearchGPU(const Octree::PointCloud& cloud, const PointXYZ& query,  float radius,  DeviceArray<int>& result,  DeviceArray<int>& buffer)
+void pcl::gpu::bruteForceRadiusSearchGPU(const Octree::PointCloud& cloud, const PointXYZ& query,  double radius,  DeviceArray<int>& result,  DeviceArray<int>& buffer)
 {
     typedef OctreeImpl::PointType PointType;
     typedef OctreeImpl::PointCloud PointCloud;    

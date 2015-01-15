@@ -77,7 +77,7 @@ saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &cloud, bool b
   print_highlight ("Saving "); print_value ("%s ", filename.c_str ());
   
   pcl::PLYWriter writer;
-  writer.write (filename, cloud, Eigen::Vector4f::Zero (), Eigen::Quaternionf::Identity (), binary, use_camera);
+  writer.write (filename, cloud, Eigen::Vector4d::Zero (), Eigen::Quaterniond::Identity (), binary, use_camera);
   
   print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms : "); print_value ("%d", cloud.width * cloud.height); print_info (" points]\n");
 }

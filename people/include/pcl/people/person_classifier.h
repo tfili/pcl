@@ -62,10 +62,10 @@ namespace pcl
       int window_width_;          
       
       /** \brief SVM offset. */
-      float SVM_offset_;          
+      double SVM_offset_;          
       
       /** \brief SVM weights vector. */
-      std::vector<float> SVM_weights_;  
+      std::vector<double> SVM_weights_;  
 
     public:
 
@@ -96,7 +96,7 @@ namespace pcl
        * \param[in] SVM_offset SVM offset.
        */
       void
-      setSVM (int window_height, int window_width, std::vector<float> SVM_weights, float SVM_offset);
+      setSVM (int window_height, int window_width, std::vector<double> SVM_weights, double SVM_offset);
 
       /**
        * \brief Get trained SVM for person confidence estimation.
@@ -107,7 +107,7 @@ namespace pcl
        * \param[out] SVM_offset SVM offset.
        */
       void
-      getSVM (int& window_height, int& window_width, std::vector<float>& SVM_weights, float& SVM_offset);
+      getSVM (int& window_height, int& window_width, std::vector<double>& SVM_weights, double& SVM_offset);
 
       /**
        * \brief Resize an image represented by a pointcloud containing RGB information.
@@ -145,7 +145,7 @@ namespace pcl
        * \return The classification score given by the SVM.
        */
       double
-      evaluate (float height, float xc, float yc, PointCloudPtr& image);
+      evaluate (double height, double xc, double yc, PointCloudPtr& image);
 
       /**
        * \brief Compute person confidence for a given PersonCluster.
@@ -158,7 +158,7 @@ namespace pcl
        * \return The person confidence.
        */
       double
-      evaluate (PointCloudPtr& image, Eigen::Vector3f& bottom, Eigen::Vector3f& top, Eigen::Vector3f& centroid,
+      evaluate (PointCloudPtr& image, Eigen::Vector3d& bottom, Eigen::Vector3d& top, Eigen::Vector3d& centroid,
          bool vertical);
     };
   } /* namespace people */

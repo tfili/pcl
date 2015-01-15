@@ -70,7 +70,7 @@ namespace pcl
         int bad_information_;
         int good_information_;
         int id_;
-        float regularizer_;
+        double regularizer_;
       };
 
       /*
@@ -81,8 +81,8 @@ namespace pcl
         bool
         operator() (const boost::shared_ptr<RecognitionModel> & n1, const boost::shared_ptr<RecognitionModel> & n2)
         {
-          float val1 = static_cast<float>(n1->good_information_) - static_cast<float>(n1->bad_information_) * n1->regularizer_;
-          float val2 = static_cast<float>(n2->good_information_) - static_cast<float>(n2->bad_information_) * n2->regularizer_;
+          double val1 = static_cast<double>(n1->good_information_) - static_cast<double>(n1->bad_information_) * n1->regularizer_;
+          double val2 = static_cast<double>(n2->good_information_) - static_cast<double>(n2->bad_information_) * n2->regularizer_;
           return val1 > val2;
         }
       } sortModelsOp;
@@ -105,8 +105,8 @@ namespace pcl
         bool
         operator() (const modelIndices & n1, const modelIndices & n2)
         {
-          float val1 = static_cast<float>(n1.model_->good_information_) - static_cast<float>(n1.model_->bad_information_) * n1.model_->regularizer_;
-          float val2 = static_cast<float>(n2.model_->good_information_) - static_cast<float>(n2.model_->bad_information_) * n2.model_->regularizer_;
+          double val1 = static_cast<double>(n1.model_->good_information_) - static_cast<double>(n1.model_->bad_information_) * n1.model_->regularizer_;
+          double val2 = static_cast<double>(n2.model_->good_information_) - static_cast<double>(n2.model_->bad_information_) * n2.model_->regularizer_;
           return val1 > val2;
         }
       } sortModelsIndicesOp;
@@ -121,7 +121,7 @@ namespace pcl
       std::vector<std::vector<boost::shared_ptr<RecognitionModel> > > points_explained_by_rm_;
 
       /** \brief Weighting for outliers */
-      float regularizer_;
+      double regularizer_;
 
       /** \brief Initialize the data structures */
       void
@@ -165,7 +165,7 @@ namespace pcl
       /** \brief Constructor
        * \param[in] reg Regularizer value
        **/
-      GreedyVerification (float reg = 1.5f) :
+      GreedyVerification (double reg = 1.5) :
         HypothesisVerification<ModelT, SceneT> ()
       {
         regularizer_ = reg;

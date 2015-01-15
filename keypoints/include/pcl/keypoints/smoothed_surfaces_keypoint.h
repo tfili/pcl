@@ -73,13 +73,13 @@ namespace pcl
 
       SmoothedSurfacesKeypoint ()
         : Keypoint<PointT, PointT> (),
-          neighborhood_constant_ (0.5f),
+          neighborhood_constant_ (0.5),
           clouds_ (),
           cloud_normals_ (),
           cloud_trees_ (),
           normals_ (),
           scales_ (),
-          input_scale_ (0.0f),
+          input_scale_ (0.0),
           input_index_ ()
       {
         name_ = "SmoothedSurfacesKeypoint";
@@ -92,23 +92,23 @@ namespace pcl
       addSmoothedPointCloud (const PointCloudTConstPtr &cloud,
                              const PointCloudNTConstPtr &normals,
                              KdTreePtr &kdtree,
-                             float &scale);
+                             double &scale);
 
 
       void
       resetClouds ();
 
       inline void
-      setNeighborhoodConstant (float neighborhood_constant) { neighborhood_constant_ = neighborhood_constant; }
+      setNeighborhoodConstant (double neighborhood_constant) { neighborhood_constant_ = neighborhood_constant; }
 
-      inline float
+      inline double
       getNeighborhoodConstant () { return neighborhood_constant_; }
 
       inline void
       setInputNormals (const PointCloudNTConstPtr &normals) { normals_ = normals; }
 
       inline void
-      setInputScale (float input_scale) { input_scale_ = input_scale; }
+      setInputScale (double input_scale) { input_scale_ = input_scale; }
 
       void
       detectKeypoints (PointCloudT &output);
@@ -118,18 +118,18 @@ namespace pcl
       initCompute ();
 
     private:
-      float neighborhood_constant_;
+      double neighborhood_constant_;
       std::vector<PointCloudTConstPtr> clouds_;
       std::vector<PointCloudNTConstPtr> cloud_normals_;
       std::vector<KdTreePtr> cloud_trees_;
       PointCloudNTConstPtr normals_;
-      std::vector<std::pair<float, size_t> > scales_;
-      float input_scale_;
+      std::vector<std::pair<double, size_t> > scales_;
+      double input_scale_;
       size_t input_index_;
 
       static bool
-      compareScalesFunction (const std::pair<float, size_t> &a,
-                             const std::pair<float, size_t> &b) { return a.first < b.first; }
+      compareScalesFunction (const std::pair<double, size_t> &a,
+                             const std::pair<double, size_t> &b) { return a.first < b.first; }
   };
 }
 

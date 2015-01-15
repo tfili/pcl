@@ -57,7 +57,7 @@ printHelp (int, char **argv)
   print_error ("Syntax is: %s input.pcd output.pcd <options>\n", argv[0]);
   print_info ("  where options are:\n");
   print_info ("           -trans dx,dy,dz           = the translation (default: "); 
-  print_value ("%0.1f, %0.1f, %0.1f", 0, 0, 0); print_info (")\n");
+  print_value ("%0.1, %0.1, %0.1", 0, 0, 0); print_info (")\n");
   print_info ("           -quat w,x,y,z             = rotation as quaternion\n"); 
   print_info ("           -axisangle ax,ay,az,theta = rotation in axis-angle form\n"); 
   print_info ("           -scale x,y,z              = scale each dimension with these values\n"); 
@@ -97,14 +97,14 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 
 template <typename PointT> void
 transformPointCloudHelper (PointCloud<PointT> & input, PointCloud<PointT> & output,
-                           Eigen::Matrix4f &tform)
+                           Eigen::Matrix4d &tform)
 {
   transformPointCloud (input, output, tform);
 }
 
 template <> void
 transformPointCloudHelper (PointCloud<PointNormal> & input, PointCloud<PointNormal> & output, 
-                           Eigen::Matrix4f &tform)
+                           Eigen::Matrix4d &tform)
 {
   transformPointCloudWithNormals (input, output, tform);
 }
@@ -112,7 +112,7 @@ transformPointCloudHelper (PointCloud<PointNormal> & input, PointCloud<PointNorm
 template <> void
 transformPointCloudHelper<PointXYZRGBNormal> (PointCloud<PointXYZRGBNormal> & input, 
                                               PointCloud<PointXYZRGBNormal> & output, 
-                                              Eigen::Matrix4f &tform)
+                                              Eigen::Matrix4d &tform)
 {
   transformPointCloudWithNormals (input, output, tform);
 }
@@ -120,7 +120,7 @@ transformPointCloudHelper<PointXYZRGBNormal> (PointCloud<PointXYZRGBNormal> & in
 
 template <typename PointT> void
 transformPointCloud2AsType (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud2 &output,
-                            Eigen::Matrix4f &tform)
+                            Eigen::Matrix4d &tform)
 {
   PointCloud<PointT> cloud;
   fromPCLPointCloud2 (input, cloud);
@@ -130,7 +130,7 @@ transformPointCloud2AsType (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud
 
 void
 transformPointCloud2 (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud2 &output,
-                      Eigen::Matrix4f &tform)
+                      Eigen::Matrix4d &tform)
 {
   // Check for 'rgb' and 'normals' fields
   bool has_rgb = false;
@@ -156,7 +156,7 @@ transformPointCloud2 (const pcl::PCLPointCloud2 &input, pcl::PCLPointCloud2 &out
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         Eigen::Matrix4f &tform)
+         Eigen::Matrix4d &tform)
 {
   TicToc tt;
   tt.tic ();
@@ -226,7 +226,7 @@ scaleInPlace (pcl::PCLPointCloud2 &cloud, double* multiplier)
         for (int i = 0; i < 3; ++i) multiply<uint32_t> (cloud, xyz_offset[i], multiplier[i]);
         break;
       case pcl::PCLPointField::FLOAT32:
-        for (int i = 0; i < 3; ++i) multiply<float> (cloud, xyz_offset[i], multiplier[i]);
+        for (int i = 0; i < 3; ++i) multiply<double> (cloud, xyz_offset[i], multiplier[i]);
         break;
       case pcl::PCLPointField::FLOAT64:
         for (int i = 0; i < 3; ++i) multiply<double> (cloud, xyz_offset[i], multiplier[i]);
@@ -261,12 +261,12 @@ main (int argc, char** argv)
   }
 
   // Initialize the transformation matrix
-  Eigen::Matrix4f tform; 
+  Eigen::Matrix4d tform; 
   tform.setIdentity ();
 
   // Command line parsing
-  float dx, dy, dz;
-  std::vector<float> values;
+  double dx, dy, dz;
+  std::vector<double> values;
 
   if (parse_3x_arguments (argc, argv, "-trans", dx, dy, dz) > -1)
   {
@@ -279,11 +279,11 @@ main (int argc, char** argv)
   {
     if (values.size () == 4)
     {
-      const float& x = values[0];
-      const float& y = values[1];
-      const float& z = values[2];
-      const float& w = values[3];
-      tform.topLeftCorner (3, 3) = Eigen::Matrix3f (Eigen::Quaternionf (w, x, y, z));
+      const double& x = values[0];
+      const double& y = values[1];
+      const double& z = values[2];
+      const double& w = values[3];
+      tform.topLeftCorner (3, 3) = Eigen::Matrix3d (Eigen::Quaterniond (w, x, y, z));
     }
     else
     {
@@ -296,11 +296,11 @@ main (int argc, char** argv)
   {
     if (values.size () == 4)
     {
-      const float& ax = values[0];
-      const float& ay = values[1];
-      const float& az = values[2];
-      const float& theta = values[3];
-      tform.topLeftCorner (3, 3) = Eigen::Matrix3f (Eigen::AngleAxisf (theta, Eigen::Vector3f (ax, ay, az)));
+      const double& ax = values[0];
+      const double& ay = values[1];
+      const double& az = values[2];
+      const double& theta = values[3];
+      tform.topLeftCorner (3, 3) = Eigen::Matrix3d (Eigen::AngleAxisd (theta, Eigen::Vector3d (ax, ay, az)));
     }
     else
     {

@@ -180,9 +180,9 @@ namespace pcl
     * \ingroup common
     */
   inline void
-  getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, 
-                             const Eigen::Vector3f& y_direction,
-                             Eigen::Affine3f& transformation);
+  getTransFromUnitVectorsZY (const Eigen::Vector3d& z_axis, 
+                             const Eigen::Vector3d& y_direction,
+                             Eigen::Affine3d& transformation);
 
   /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
     * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
@@ -191,9 +191,9 @@ namespace pcl
     * \return the resultant 3D rotation
     * \ingroup common
     */
-  inline Eigen::Affine3f
-  getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, 
-                             const Eigen::Vector3f& y_direction);
+  inline Eigen::Affine3d
+  getTransFromUnitVectorsZY (const Eigen::Vector3d& z_axis, 
+                             const Eigen::Vector3d& y_direction);
 
   /** \brief Get the unique 3D rotation that will rotate \a x_axis into (1,0,0) and \a y_direction into a vector
     * with z=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
@@ -203,9 +203,9 @@ namespace pcl
     * \ingroup common
     */
   inline void
-  getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, 
-                             const Eigen::Vector3f& y_direction,
-                             Eigen::Affine3f& transformation);
+  getTransFromUnitVectorsXY (const Eigen::Vector3d& x_axis, 
+                             const Eigen::Vector3d& y_direction,
+                             Eigen::Affine3d& transformation);
 
   /** \brief Get the unique 3D rotation that will rotate \a x_axis into (1,0,0) and \a y_direction into a vector
     * with z=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
@@ -214,9 +214,9 @@ namespace pcl
     * \return the resulting 3D rotation
     * \ingroup common
     */
-  inline Eigen::Affine3f
-  getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, 
-                             const Eigen::Vector3f& y_direction);
+  inline Eigen::Affine3d
+  getTransFromUnitVectorsXY (const Eigen::Vector3d& x_axis, 
+                             const Eigen::Vector3d& y_direction);
 
   /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
     * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
@@ -226,9 +226,9 @@ namespace pcl
     * \ingroup common
     */
   inline void
-  getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, 
-                                       const Eigen::Vector3f& z_axis,
-                                       Eigen::Affine3f& transformation);
+  getTransformationFromTwoUnitVectors (const Eigen::Vector3d& y_direction, 
+                                       const Eigen::Vector3d& z_axis,
+                                       Eigen::Affine3d& transformation);
 
   /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
     * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
@@ -237,9 +237,9 @@ namespace pcl
     * \return transformation the resultant 3D rotation
     * \ingroup common
     */
-  inline Eigen::Affine3f
-  getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, 
-                                       const Eigen::Vector3f& z_axis);
+  inline Eigen::Affine3d
+  getTransformationFromTwoUnitVectors (const Eigen::Vector3d& y_direction, 
+                                       const Eigen::Vector3d& z_axis);
 
   /** \brief Get the transformation that will translate \a orign to (0,0,0) and rotate \a z_axis into (0,0,1)
     * and \a y_direction into a vector with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
@@ -250,10 +250,10 @@ namespace pcl
     * \ingroup common
     */
   inline void
-  getTransformationFromTwoUnitVectorsAndOrigin (const Eigen::Vector3f& y_direction, 
-                                                const Eigen::Vector3f& z_axis,
-                                                const Eigen::Vector3f& origin, 
-                                                Eigen::Affine3f& transformation);
+  getTransformationFromTwoUnitVectorsAndOrigin (const Eigen::Vector3d& y_direction, 
+                                                const Eigen::Vector3d& z_axis,
+                                                const Eigen::Vector3d& origin, 
+                                                Eigen::Affine3d& transformation);
 
   /** \brief Extract the Euler angles (XYZ-convention) from the given transformation
     * \param[in] t the input transformation matrix
@@ -297,7 +297,7 @@ namespace pcl
                                 float &x, float &y, float &z,
                                 float &roll, float &pitch, float &yaw)
   {
-    getTranslationAndEulerAngles<float> (t, x, y, z, roll, pitch, yaw);
+      getTranslationAndEulerAngles<float>(t, x, y, z, roll, pitch, yaw);
   }
 
   inline void
@@ -323,10 +323,10 @@ namespace pcl
                      Eigen::Transform<Scalar, 3, Eigen::Affine> &t);
 
   inline void
-  getTransformation (float x, float y, float z, float roll, float pitch, float yaw, 
+      getTransformation(float x, float y, float z, float roll, float pitch, float yaw,
                      Eigen::Affine3f &t)
   {
-    return (getTransformation<float> (x, y, z, roll, pitch, yaw, t));
+      return (getTransformation<float>(x, y, z, roll, pitch, yaw, t));
   }
 
   inline void
@@ -346,11 +346,11 @@ namespace pcl
     * \return the resulting transformation matrix
     * \ingroup common
     */
-  inline Eigen::Affine3f
-  getTransformation (float x, float y, float z, float roll, float pitch, float yaw)
+  inline Eigen::Affine3d
+  getTransformation (double x, double y, double z, double roll, double pitch, double yaw)
   {
-    Eigen::Affine3f t;
-    getTransformation<float> (x, y, z, roll, pitch, yaw, t);
+    Eigen::Affine3d t;
+    getTransformation<double> (x, y, z, roll, pitch, yaw, t);
     return (t);
   }
 
@@ -522,20 +522,20 @@ namespace pcl
                         Eigen::Matrix<Scalar, 4, 1> &plane_out,
                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
 
+  //inline void
+  //transformPlane (const Eigen::Matrix<float, 4, 1> &plane_in,
+  //                      Eigen::Matrix<float, 4, 1> &plane_out,
+  //                const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
+  //{
+  //  transformPlane<float> (plane_in, plane_out, transformation);
+  //}
+
   inline void
   transformPlane (const Eigen::Matrix<double, 4, 1> &plane_in,
                         Eigen::Matrix<double, 4, 1> &plane_out,
                   const Eigen::Transform<double, 3, Eigen::Affine> &transformation)
   {
     transformPlane<double> (plane_in, plane_out, transformation);
-  }
-
-  inline void
-  transformPlane (const Eigen::Matrix<float, 4, 1> &plane_in,
-                        Eigen::Matrix<float, 4, 1> &plane_out,
-                  const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
-  {
-    transformPlane<float> (plane_in, plane_out, transformation);
   }
 
 /** \brief Transform plane vectors using an affine matrix
@@ -553,20 +553,20 @@ namespace pcl
                         pcl::ModelCoefficients::Ptr plane_out,
                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
 
+  //inline void
+  //transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
+  //                      pcl::ModelCoefficients::Ptr plane_out,
+  //                const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
+  //{
+  //  transformPlane<float> (plane_in, plane_out, transformation);
+  //}
+
   inline void
   transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
                         pcl::ModelCoefficients::Ptr plane_out,
                   const Eigen::Transform<double, 3, Eigen::Affine> &transformation)
   {
     transformPlane<double> (plane_in, plane_out, transformation);
-  }
-
-  inline void
-  transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
-                        pcl::ModelCoefficients::Ptr plane_out,
-                  const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
-  {
-    transformPlane<float> (plane_in, plane_out, transformation);
   }
 
 /** \brief Check coordinate system integrity
@@ -599,21 +599,21 @@ namespace pcl
                          const Scalar dot_limit = 1e-3);
 
   inline bool
-  checkCoordinateSystem (const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_x,
-                         const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_y,
-                         const double norm_limit = 1e-3,
-                         const double dot_limit = 1e-3)
-  {
-    return (checkCoordinateSystem<double> (line_x, line_y, norm_limit, dot_limit));
-  }
-
-  inline bool
   checkCoordinateSystem (const Eigen::Matrix<float, Eigen::Dynamic, 1> &line_x,
                          const Eigen::Matrix<float, Eigen::Dynamic, 1> &line_y,
                          const float norm_limit = 1e-3,
                          const float dot_limit = 1e-3)
   {
     return (checkCoordinateSystem<float> (line_x, line_y, norm_limit, dot_limit));
+  }
+
+  inline bool
+  checkCoordinateSystem (const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_x,
+                         const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_y,
+                         const double norm_limit = 1e-3,
+                         const double dot_limit = 1e-3)
+  {
+    return (checkCoordinateSystem<double> (line_x, line_y, norm_limit, dot_limit));
   }
 
 /** \brief Check coordinate system integrity
@@ -641,22 +641,6 @@ namespace pcl
   }
 
   inline bool
-  checkCoordinateSystem (const Eigen::Matrix<double, 3, 1> &origin,
-                         const Eigen::Matrix<double, 3, 1> &x_direction,
-                         const Eigen::Matrix<double, 3, 1> &y_direction,
-                         const double norm_limit = 1e-3,
-                         const double dot_limit = 1e-3)
-  {
-    Eigen::Matrix<double, Eigen::Dynamic, 1> line_x;
-    Eigen::Matrix<double, Eigen::Dynamic, 1> line_y;
-    line_x.resize (6);
-    line_y.resize (6);
-    line_x << origin, x_direction;
-    line_y << origin, y_direction;
-    return (checkCoordinateSystem<double> (line_x, line_y, norm_limit, dot_limit));
-  }
-
-  inline bool
   checkCoordinateSystem (const Eigen::Matrix<float, 3, 1> &origin,
                          const Eigen::Matrix<float, 3, 1> &x_direction,
                          const Eigen::Matrix<float, 3, 1> &y_direction,
@@ -670,6 +654,22 @@ namespace pcl
     line_x << origin, x_direction;
     line_y << origin, y_direction;
     return (checkCoordinateSystem<float> (line_x, line_y, norm_limit, dot_limit));
+  }
+
+  inline bool
+  checkCoordinateSystem (const Eigen::Matrix<double, 3, 1> &origin,
+                         const Eigen::Matrix<double, 3, 1> &x_direction,
+                         const Eigen::Matrix<double, 3, 1> &y_direction,
+                         const double norm_limit = 1e-3,
+                         const double dot_limit = 1e-3)
+  {
+    Eigen::Matrix<double, Eigen::Dynamic, 1> line_x;
+    Eigen::Matrix<double, Eigen::Dynamic, 1> line_y;
+    line_x.resize (6);
+    line_y.resize (6);
+    line_x << origin, x_direction;
+    line_y << origin, y_direction;
+    return (checkCoordinateSystem<double> (line_x, line_y, norm_limit, dot_limit));
   }
 
 /** \brief Compute the transformation between two coordinate systems
@@ -692,16 +692,6 @@ namespace pcl
                                       Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
 
   inline bool
-  transformBetween2CoordinateSystems (const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_x,
-                                      const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_y,
-                                      const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_x,
-                                      const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_y,
-                                      Eigen::Transform<double, 3, Eigen::Affine> &transformation)
-  {
-    return (transformBetween2CoordinateSystems<double> (from_line_x, from_line_y, to_line_x, to_line_y, transformation));
-  }
-
-  inline bool
   transformBetween2CoordinateSystems (const Eigen::Matrix<float, Eigen::Dynamic, 1> from_line_x,
                                       const Eigen::Matrix<float, Eigen::Dynamic, 1> from_line_y,
                                       const Eigen::Matrix<float, Eigen::Dynamic, 1> to_line_x,
@@ -709,6 +699,16 @@ namespace pcl
                                       Eigen::Transform<float, 3, Eigen::Affine> &transformation)
   {
     return (transformBetween2CoordinateSystems<float> (from_line_x, from_line_y, to_line_x, to_line_y, transformation));
+  }
+
+  inline bool
+  transformBetween2CoordinateSystems (const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_x,
+                                      const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_y,
+                                      const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_x,
+                                      const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_y,
+                                      Eigen::Transform<double, 3, Eigen::Affine> &transformation)
+  {
+    return (transformBetween2CoordinateSystems<double> (from_line_x, from_line_y, to_line_x, to_line_y, transformation));
   }
 
 }

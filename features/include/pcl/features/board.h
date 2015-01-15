@@ -64,12 +64,12 @@ namespace pcl
 
       /** \brief Constructor. */
       BOARDLocalReferenceFrameEstimation () :
-        tangent_radius_ (0.0f),
+        tangent_radius_ (0.0),
         find_holes_ (false),
-        margin_thresh_ (0.85f),
+        margin_thresh_ (0.85),
         check_margin_array_size_ (24),
-        hole_size_prob_thresh_ (0.2f),
-        steep_thresh_ (0.1f),
+        hole_size_prob_thresh_ (0.2),
+        steep_thresh_ (0.1),
         check_margin_array_ (),
         margin_array_min_angle_ (),
         margin_array_max_angle_ (),
@@ -90,7 +90,7 @@ namespace pcl
         * \param[in] radius The search radius for x and y axes. If not set or set to 0 the parameter given with setRadiusSearch is used.
         */
       inline void
-      setTangentRadius (float radius)
+      setTangentRadius (double radius)
       {
         tangent_radius_ = radius;
       }
@@ -99,7 +99,7 @@ namespace pcl
         *
         * \return The search radius for x and y axes. If set to 0 the parameter given with setRadiusSearch is used.
         */
-      inline float
+      inline double
       getTangentRadius () const
       {
         return (tangent_radius_);
@@ -132,7 +132,7 @@ namespace pcl
         * \param[in] margin_thresh the percentage of the search radius after which a point is considered a margin point.
         */
       inline void
-      setMarginThresh (float margin_thresh)
+      setMarginThresh (double margin_thresh)
       {
         margin_thresh_ = margin_thresh;
       }
@@ -141,7 +141,7 @@ namespace pcl
         *
         * \return The percentage of the search radius after which a point is considered a margin point.
         */
-      inline float
+      inline double
       getMarginThresh () const
       {
         return (margin_thresh_);
@@ -188,7 +188,7 @@ namespace pcl
         * \param[in] prob_thresh the minimum percentage of a circumference after which a hole is considered in the calculation
         */
       inline void
-      setHoleSizeProbThresh (float prob_thresh)
+      setHoleSizeProbThresh (double prob_thresh)
       {
         hole_size_prob_thresh_ = prob_thresh;
       }
@@ -198,7 +198,7 @@ namespace pcl
         *
         * \return the minimum percentage of a circumference after which a hole is considered in the calculation
         */
-      inline float
+      inline double
       getHoleSizeProbThresh () const
       {
         return (hole_size_prob_thresh_);
@@ -210,7 +210,7 @@ namespace pcl
         * \param[in] steep_thresh threshold that defines if a missing region contains a point with the most different normal.
         */
       inline void
-      setSteepThresh (float steep_thresh)
+      setSteepThresh (double steep_thresh)
       {
         steep_thresh_ = steep_thresh;
       }
@@ -220,7 +220,7 @@ namespace pcl
         *
         * \return threshold that defines if a missing region contains a point with the most different normal.
         */
-      inline float
+      inline double
       getSteepThresh () const
       {
         return (steep_thresh_);
@@ -249,8 +249,8 @@ namespace pcl
         * \param[in] index the index of the point in input_
         * \param[out] lrf the resultant local reference frame
         */
-      float
-      computePointLRF (const int &index, Eigen::Matrix3f &lrf);
+      double
+      computePointLRF (const int &index, Eigen::Matrix3d &lrf);
 
       /** \brief Abstract feature estimation method.
         * \param[out] output the resultant features
@@ -268,8 +268,8 @@ namespace pcl
         * \param[out] directed_ortho_axis the directed orthogonal axis calculated
         */
       void
-      directedOrthogonalAxis (Eigen::Vector3f const &axis, Eigen::Vector3f const &axis_origin,
-                              Eigen::Vector3f const &point, Eigen::Vector3f &directed_ortho_axis);
+      directedOrthogonalAxis (Eigen::Vector3d const &axis, Eigen::Vector3d const &axis_origin,
+                              Eigen::Vector3d const &point, Eigen::Vector3d &directed_ortho_axis);
 
       /** \brief return the angle (in radians) that rotate v1 to v2 with respect to axis .
         *
@@ -278,8 +278,8 @@ namespace pcl
         * \param[in] axis the rotation axis. Axis must be normalized and orthogonal to plane defined by v1 and v2.
         * \return angle
         */
-      float
-      getAngleBetweenUnitVectors (Eigen::Vector3f const &v1, Eigen::Vector3f const &v2, Eigen::Vector3f const &axis);
+      double
+      getAngleBetweenUnitVectors (Eigen::Vector3d const &v1, Eigen::Vector3d const &v2, Eigen::Vector3d const &axis);
 
       /** \brief Disambiguates a normal direction using adjacent normals
         * 
@@ -289,7 +289,7 @@ namespace pcl
         */
       void
       normalDisambiguation (pcl::PointCloud<PointNT> const &normals_cloud, std::vector<int> const &normal_indices,
-                            Eigen::Vector3f &normal);
+                            Eigen::Vector3d &normal);
 
       /** \brief Compute Least Square Plane Fitting in a set of 3D points
         *
@@ -298,8 +298,8 @@ namespace pcl
         * \param[out] norm normal to the fitted plane
         */
       void
-      planeFitting (Eigen::Matrix<float, Eigen::Dynamic, 3> const &points, Eigen::Vector3f &center,
-                    Eigen::Vector3f &norm);
+      planeFitting (Eigen::Matrix<double, Eigen::Dynamic, 3> const &points, Eigen::Vector3d &center,
+                    Eigen::Vector3d &norm);
 
       /** \brief Given a plane (origin and normal) and a point, return the projection of x on plane
         *
@@ -311,8 +311,8 @@ namespace pcl
         * \param[out] projected_point the projection of the point on the plane
         */
       void
-      projectPointOnPlane (Eigen::Vector3f const &point, Eigen::Vector3f const &origin_point,
-                           Eigen::Vector3f const &plane_normal, Eigen::Vector3f &projected_point);
+      projectPointOnPlane (Eigen::Vector3d const &point, Eigen::Vector3d const &origin_point,
+                           Eigen::Vector3d const &plane_normal, Eigen::Vector3d &projected_point);
 
       /** \brief Given an axis, return a random orthogonal axis
         *
@@ -320,7 +320,7 @@ namespace pcl
         * \param[out] rand_ortho_axis an axis orthogonal to the input axis and whose direction is random
         */
       void
-      randomOrthogonalAxis (Eigen::Vector3f const &axis, Eigen::Vector3f &rand_ortho_axis);
+      randomOrthogonalAxis (Eigen::Vector3d const &axis, Eigen::Vector3d &rand_ortho_axis);
 
       /** \brief Check if val1 and val2 are equals.
         *
@@ -330,35 +330,35 @@ namespace pcl
         * \return true if val1 is equal to val2, false otherwise.
         */
       inline bool
-      areEquals (float val1, float val2, float zero_float_eps = 1E-8f) const
+      areEquals (double val1, double val2, double zero_float_eps = 1E-8) const
       {
         return (std::abs (val1 - val2) < zero_float_eps);
       }
 
     private:
       /** \brief Radius used to find tangent axis. */
-      float tangent_radius_;
+      double tangent_radius_;
 
       /** \brief If true, check if support is complete or has missing regions because it is too near to mesh borders. */
       bool find_holes_;
 
       /** \brief Threshold that define if a support point is near the margins. */
-      float margin_thresh_; 
+      double margin_thresh_; 
 
       /** \brief Number of slices that divide the support in order to determine if a missing region is present. */
       int check_margin_array_size_; 
 
       /** \brief Threshold used to determine a missing region */
-      float hole_size_prob_thresh_; 
+      double hole_size_prob_thresh_; 
 
       /** \brief Threshold that defines if a missing region contains a point with the most different normal. */
-      float steep_thresh_; 
+      double steep_thresh_; 
 
       std::vector<bool> check_margin_array_;
-      std::vector<float> margin_array_min_angle_;
-      std::vector<float> margin_array_max_angle_;
-      std::vector<float> margin_array_min_angle_normal_;
-      std::vector<float> margin_array_max_angle_normal_;
+      std::vector<double> margin_array_min_angle_;
+      std::vector<double> margin_array_max_angle_;
+      std::vector<double> margin_array_min_angle_normal_;
+      std::vector<double> margin_array_max_angle_normal_;
   };
 }
 

@@ -60,14 +60,14 @@ namespace pcl
       * \author Nizar Sallem
       */
     template<typename PointInT, typename IntensityT = pcl::common::IntensityFieldAccessor<PointInT> >
-    class PyramidalKLTTracker : public Tracker<PointInT, Eigen::Affine3f>
+    class PyramidalKLTTracker : public Tracker<PointInT, Eigen::Affine3d>
     {
       public:
-        typedef pcl::tracking::Tracker<PointInT, Eigen::Affine3f> TrackerBase;
+        typedef pcl::tracking::Tracker<PointInT, Eigen::Affine3d> TrackerBase;
         typedef typename TrackerBase::PointCloudIn PointCloudIn;
         typedef typename PointCloudIn::Ptr PointCloudInPtr;
         typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-        typedef pcl::PointCloud<float> FloatImage;
+        typedef pcl::PointCloud<double> FloatImage;
         typedef FloatImage::Ptr FloatImagePtr;
         typedef FloatImage::ConstPtr FloatImageConstPtr;
 
@@ -90,7 +90,7 @@ namespace pcl
           max_iterations_ = 10;
           keypoints_nbr_ = 100;
           min_eigenvalue_threshold_ = 1e-4;
-          kernel_ << 1.f/16 ,1.f/4 ,3.f/8 ,1.f/4 ,1.f/16;
+          kernel_ << 1./16 ,1./4 ,3./8 ,1./4 ,1./16;
           kernel_size_2_ = kernel_.size () / 2;
           kernel_last_ = kernel_.size () -1;
         }
@@ -112,20 +112,20 @@ namespace pcl
           * \param[in] accuracy desired accuracy.
           */
         inline void
-        setAccuracy (float accuracy) { accuracy_ = accuracy; }
+        setAccuracy (double accuracy) { accuracy_ = accuracy; }
 
         /// \return the accuracy
-        inline float
+        inline double
         getAccuracy () const { return (accuracy_); }
 
         /** Set epsilon
           * \param[in] epsilon desired epsilon.
           */
         inline void
-        setEpsilon (float epsilon) { epsilon_ = epsilon; }
+        setEpsilon (double epsilon) { epsilon_ = epsilon; }
 
         /// \return the epsilon
-        inline float
+        inline double
         getEpsilon () const { return (epsilon_); }
 
         /** \brief Set the maximum number of points to track. Only the first keypoints_nbr_
@@ -210,7 +210,7 @@ namespace pcl
         getPointsToTrackStatus () const { return (keypoints_status_); }
 
         /** \brief Return the computed transfromation from tracked points. */
-        Eigen::Affine3f
+        Eigen::Affine3d
         getResult () const { return (motion_); }
 
         /// \brief \return initialization state
@@ -286,18 +286,18 @@ namespace pcl
                          const FloatImage& grad_x,
                          const FloatImage& grad_y,
                          const Eigen::Array2i& location,
-                         const Eigen::Array4f& weights,
+                         const Eigen::Array4d& weights,
                          Eigen::ArrayXXf& win,
                          Eigen::ArrayXXf& grad_x_win,
                          Eigen::ArrayXXf& grad_y_win,
-                         Eigen::Array3f & covariance) const;
+                         Eigen::Array3d & covariance) const;
         void
         mismatchVector (const Eigen::ArrayXXf& prev,
                         const Eigen::ArrayXXf& prev_grad_x,
                         const Eigen::ArrayXXf& prev_grad_y,
                         const FloatImage& next,
                         const Eigen::Array2i& location,
-                        const Eigen::Array4f& weights,
+                        const Eigen::Array4d& weights,
                         Eigen::Array2f &b) const;
 
         /** \brief Compute the pyramidal representation of an image.
@@ -318,7 +318,7 @@ namespace pcl
                const pcl::PointCloud<pcl::PointUV>::ConstPtr& previous_keypoints,
                pcl::PointCloud<pcl::PointUV>::Ptr& current_keypoints,
                std::vector<int>& status,
-               Eigen::Affine3f& motion) const;
+               Eigen::Affine3d& motion) const;
 
         virtual void
         computeTracking ();
@@ -346,11 +346,11 @@ namespace pcl
         /// \brief maximum number of iterations
         unsigned int max_iterations_;
         /// \brief accuracy criterion to stop iterating
-        float accuracy_;
-        float min_eigenvalue_threshold_;
+        double accuracy_;
+        double min_eigenvalue_threshold_;
         /// \brief epsilon for subpixel computation
-        float epsilon_;
-        float max_residue_;
+        double epsilon_;
+        double max_residue_;
         /// \brief number of hardware threads
         unsigned int threads_;
         /// \brief intensity accessor
@@ -360,9 +360,9 @@ namespace pcl
         /// \brief compute transformation from successfully tracked points
         pcl::TransformationFromCorrespondences transformation_computer_;
         /// \brief computed transformation between tracked points
-        Eigen::Affine3f motion_;
+        Eigen::Affine3d motion_;
         /// \brief smoothing kernel
-        Eigen::Array<float, 5, 1> kernel_;
+        Eigen::Array<double, 5, 1> kernel_;
         /// \brief smoothing kernel half size
         int kernel_size_2_;
         /// \brief index of last element in kernel

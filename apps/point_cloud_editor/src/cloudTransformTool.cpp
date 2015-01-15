@@ -43,10 +43,10 @@
 #include <pcl/apps/point_cloud_editor/cloudTransformTool.h>
 #include <pcl/apps/point_cloud_editor/cloud.h>
 
-const float DEG_2_RADS = M_PI / 180.0f;
+const double DEG_2_RADS = M_PI / 180.0;
 
-const float CloudTransformTool::DEFAULT_SCALE_FACTOR_ = 1.14;
-const float CloudTransformTool::DEFAULT_TRANSLATE_FACTOR_ = 0.001f;
+const double CloudTransformTool::DEFAULT_SCALE_FACTOR_ = 1.14;
+const double CloudTransformTool::DEFAULT_TRANSLATE_FACTOR_ = 0.001;
 
 
 CloudTransformTool::CloudTransformTool (CloudPtr cloud_ptr)
@@ -77,7 +77,7 @@ CloudTransformTool::update (int x, int y, BitMask modifiers, BitMask buttons)
   if (!(buttons & LEFT))
     return;
     
-  float transform[MATRIX_SIZE];
+  double transform[MATRIX_SIZE];
     
   int dx = (x - x_);
   int dy = (y - y_);
@@ -100,26 +100,26 @@ CloudTransformTool::update (int x, int y, BitMask modifiers, BitMask buttons)
 }
 
 void
-CloudTransformTool::getTranslateMatrix (int dx, int dy, float* matrix)
+CloudTransformTool::getTranslateMatrix (int dx, int dy, double* matrix)
 {
   setIdentity(matrix);
-  float scale = 1.0f / cloud_ptr_-> getScalingFactor();
-  matrix[12] = float(dx) * translate_factor_ * scale;
-  matrix[13] = float(-dy) * translate_factor_ * scale;
+  double scale = 1.0 / cloud_ptr_-> getScalingFactor();
+  matrix[12] = double(dx) * translate_factor_ * scale;
+  matrix[13] = double(-dy) * translate_factor_ * scale;
 }
 
 void
-CloudTransformTool::getZTranslateMatrix (int dy, float* matrix)
+CloudTransformTool::getZTranslateMatrix (int dy, double* matrix)
 {
   setIdentity(matrix);
-  matrix[14] = float(dy) * translate_factor_ / cloud_ptr_-> getScalingFactor();
+  matrix[14] = double(dy) * translate_factor_ / cloud_ptr_-> getScalingFactor();
 }
 
 void
-CloudTransformTool::getScaleMatrix (int dy, float* matrix)
+CloudTransformTool::getScaleMatrix (int dy, double* matrix)
 {
   setIdentity(matrix);
-  float scale = dy > 0 ? scale_factor_ : 1.0 / scale_factor_;
+  double scale = dy > 0 ? scale_factor_ : 1.0 / scale_factor_;
   for (unsigned int i = 0; i < MATRIX_SIZE-1; i+=MATRIX_SIZE_DIM+1)
     matrix[i] = scale;
 }

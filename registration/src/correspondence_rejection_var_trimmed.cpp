@@ -78,7 +78,7 @@ pcl::registration::CorrespondenceRejectorVarTrimmed::getRemainingCorrespondences
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::registration::CorrespondenceRejectorVarTrimmed::optimizeInlierRatio (std::vector <double>&  dists)
 {
   unsigned int points_nbr = static_cast<unsigned int> (dists.size ());
@@ -99,6 +99,6 @@ pcl::registration::CorrespondenceRejectorVarTrimmed::optimizeInlierRatio (std::v
   int min_index (0);
   FRMS.minCoeff (&min_index);
 
-  const float opt_ratio = float (min_index + min_el) / float (points_nbr);
+  const double opt_ratio = double (min_index + min_el) / double (points_nbr);
   return (opt_ratio);
 }

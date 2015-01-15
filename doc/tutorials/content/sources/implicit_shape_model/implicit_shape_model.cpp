@@ -50,7 +50,7 @@ main (int argc, char** argv)
   ism.setTrainingClouds (training_clouds);
   ism.setTrainingNormals (training_normals);
   ism.setTrainingClasses (training_classes);
-  ism.setSamplingSize (2.0f);
+  ism.setSamplingSize (2.0);
 
   pcl::ism::ImplicitShapeModelEstimation<153, pcl::PointXYZ, pcl::Normal>::ISMModelPtr model = boost::shared_ptr<pcl::features::ISMModel>
     (new pcl::features::ISMModel);

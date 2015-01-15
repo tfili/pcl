@@ -62,15 +62,15 @@ pcl::PairwiseGraphRegistration<GraphT, PointT>::computeRegistration ()
   {
     registration_method_->setInputCloud (boost::get_cloud<PointT> (*last_vx_it, *(graph_handler_->getGraph ())));
 
-    const Eigen::Matrix4f last_aligned_vertex_pose = boost::get_pose (last_aligned_vertex_, *(graph_handler_->getGraph ()));
+    const Eigen::Matrix4d last_aligned_vertex_pose = boost::get_pose (last_aligned_vertex_, *(graph_handler_->getGraph ()));
     if (!incremental_)
     {
-      const Eigen::Matrix4f guess = last_aligned_vertex_pose.transpose () * boost::get_pose (*last_vx_it, *(graph_handler_->getGraph ()));
+      const Eigen::Matrix4d guess = last_aligned_vertex_pose.transpose () * boost::get_pose (*last_vx_it, *(graph_handler_->getGraph ()));
       registration_method_->align (fake_cloud, guess);
     } else
       registration_method_->align (fake_cloud);
 
-    const Eigen::Matrix4f global_ref_final_tr = last_aligned_vertex_pose * registration_method_->getFinalTransformation ();
+    const Eigen::Matrix4d global_ref_final_tr = last_aligned_vertex_pose * registration_method_->getFinalTransformation ();
     boost::set_estimate<PointT> (*last_vx_it, global_ref_final_tr, *(graph_handler_->getGraph ()));
     last_aligned_vertex_ = *last_vx_it;
     registration_method_->setInputTarget (boost::get_cloud<PointT> (last_aligned_vertex_, *(graph_handler_->getGraph ())));

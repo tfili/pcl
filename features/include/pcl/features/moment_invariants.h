@@ -84,7 +84,7 @@ namespace pcl
       void 
       computePointMomentInvariants (const pcl::PointCloud<PointInT> &cloud, 
                                     const std::vector<int> &indices, 
-                                    float &j1, float &j2, float &j3);
+                                    double &j1, double &j2, double &j3);
 
       /** \brief Compute the 3 moment invariants (j1, j2, j3) for a given set of points, using their indices.
         * \param[in] cloud the input point cloud
@@ -94,7 +94,7 @@ namespace pcl
         */
       void 
       computePointMomentInvariants (const pcl::PointCloud<PointInT> &cloud, 
-                                    float &j1, float &j2, float &j3);
+                                    double &j1, double &j2, double &j3);
 
     protected:
 
@@ -107,10 +107,10 @@ namespace pcl
 
     private:
       /** \brief 16-bytes aligned placeholder for the XYZ centroid of a surface patch. */
-      Eigen::Vector4f xyz_centroid_;
+      Eigen::Vector4d xyz_centroid_;
 
       /** \brief Internal data vector. */
-      Eigen::Vector4f temp_pt_;
+      Eigen::Vector4d temp_pt_;
   };
 }
 

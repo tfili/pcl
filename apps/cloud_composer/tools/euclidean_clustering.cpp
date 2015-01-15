@@ -65,8 +65,8 @@ pcl::cloud_composer::EuclideanClusteringTool::performAction (ConstItemList input
       ec.extract (cluster_indices);
       //////////////////////////////////////////////////////////////////
       //Get copies of the original origin and orientation
-      Eigen::Vector4f source_origin = input_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4f> ();
-      Eigen::Quaternionf source_orientation =  input_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaternionf> ();
+      Eigen::Vector4d source_origin = input_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4d> ();
+      Eigen::Quaterniond source_orientation =  input_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaterniond> ();
       //Vector to accumulate the extracted indices
       pcl::IndicesPtr extracted_indices (new std::vector<int> ());
       //Put found clusters into new cloud_items!

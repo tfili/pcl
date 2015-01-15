@@ -145,7 +145,7 @@ namespace pcl
 {
   namespace gpu
   {
-    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, float colors_weight = 0.5f);
+    void paint3DView (const KinfuTracker::View& rgb24, KinfuTracker::View& view, double colors_weight = 0.5);
     void mergePointNormal (const DeviceArray<PointXYZ>& cloud, const DeviceArray<Normal>& normals, DeviceArray<PointNormal>& output);
   }
 }
@@ -161,7 +161,7 @@ struct SampledScopeTime : public StopWatch
     time_ms_ += stopWatch_.getTime ();        
     if (i_ % EACH == 0 && i_)
     {
-      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000.f * EACH / time_ms_ << "fps )" << endl;
+      cout << "Average frame time = " << time_ms_ / EACH << "ms ( " << 1000. * EACH / time_ms_ << "fps )" << endl;
       time_ms_ = 0;        
     }
   }
@@ -174,11 +174,11 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void
-setViewerPose (visualization::PCLVisualizer& viewer, const Eigen::Affine3f& viewer_pose)
+setViewerPose (visualization::PCLVisualizer& viewer, const Eigen::Affine3d& viewer_pose)
 {
-  Eigen::Vector3f pos_vector = viewer_pose * Eigen::Vector3f (0, 0, 0);
-  Eigen::Vector3f look_at_vector = viewer_pose.rotation () * Eigen::Vector3f (0, 0, 1) + pos_vector;
-  Eigen::Vector3f up_vector = viewer_pose.rotation () * Eigen::Vector3f (0, -1, 0);
+  Eigen::Vector3d pos_vector = viewer_pose * Eigen::Vector3d (0, 0, 0);
+  Eigen::Vector3d look_at_vector = viewer_pose.rotation () * Eigen::Vector3d (0, 0, 1) + pos_vector;
+  Eigen::Vector3d up_vector = viewer_pose.rotation () * Eigen::Vector3d (0, -1, 0);
   viewer.setCameraPosition (pos_vector[0], pos_vector[1], pos_vector[2],
                             look_at_vector[0], look_at_vector[1], look_at_vector[2],
                             up_vector[0], up_vector[1], up_vector[2]);
@@ -186,13 +186,13 @@ setViewerPose (visualization::PCLVisualizer& viewer, const Eigen::Affine3f& view
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Eigen::Affine3f 
+Eigen::Affine3d 
 getViewerPose (visualization::PCLVisualizer& viewer)
 {
-  Eigen::Affine3f pose = viewer.getViewerPose();
-  Eigen::Matrix3f rotation = pose.linear();
+  Eigen::Affine3d pose = viewer.getViewerPose();
+  Eigen::Matrix3d rotation = pose.linear();
 
-  Matrix3f axis_reorder;  
+  Matrix3d axis_reorder;  
   axis_reorder << 0,  0,  1,
                  -1,  0,  0,
                   0, -1,  0;
@@ -205,13 +205,13 @@ getViewerPose (visualization::PCLVisualizer& viewer)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //SIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTARTSIMSTART
 void
-write_depth_image(const float* depth_buffer)
+write_depth_image(const double* depth_buffer)
 {
   int npixels = range_likelihood_->getWidth() * range_likelihood_->getHeight();
   uint8_t* depth_img = new uint8_t[npixels * 3];
 
-  float min_depth = depth_buffer[0];
-  float max_depth = depth_buffer[0];
+  double min_depth = depth_buffer[0];
+  double max_depth = depth_buffer[0];
   for (int i=1; i<npixels; i++)
   {
     if (depth_buffer[i] < min_depth) min_depth = depth_buffer[i];
@@ -226,12 +226,12 @@ write_depth_image(const float* depth_buffer)
       int i_in= (480-1 -y) *640 + x ; // flip up down
     
     
-      float zn = 0.7;
-      float zf = 20.0;
-      float d = depth_buffer[i_in];
-      float z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
-      float b = 0.075;
-      float f = 580.0;
+      double zn = 0.7;
+      double zf = 20.0;
+      double d = depth_buffer[i_in];
+      double z = -zf*zn/((zf-zn)*(d - zf/(zf-zn)));
+      double b = 0.075;
+      double f = 580.0;
       uint16_t kd = static_cast<uint16_t>(1090 - b*f/z*8);
       if (kd < 0) kd = 0;
       else if (kd>2047) kd = 2047;
@@ -324,7 +324,7 @@ write_rgb_image(const uint8_t* rgb_buffer)
 
 
 void
-depthBufferToMM(const float* depth_buffer,unsigned short* depth_img)
+depthBufferToMM(const double* depth_buffer,unsigned short* depth_img)
 {
   int npixels = range_likelihood_->getWidth() * range_likelihood_->getHeight();
  // unsigned short * depth_img = new unsigned short[npixels ];
@@ -334,9 +334,9 @@ depthBufferToMM(const float* depth_buffer,unsigned short* depth_img)
     {
       int i= y*640 + x ;
       int i_in= (480-1 -y) *640 + x ; // flip up down
-      float zn = 0.7;
-      float zf = 20.0;
-      float d = depth_buffer[i_in];
+      double zn = 0.7;
+      double zf = 20.0;
+      double d = depth_buffer[i_in];
       unsigned short z_new = (unsigned short)  floor( 1000*( -zf*zn/((zf-zn)*(d - zf/(zf-zn)))));
 
       if (z_new < 0) z_new = 0;
@@ -395,8 +395,8 @@ void
 capture (Eigen::Isometry3d pose_in,unsigned short* depth_buffer_mm,const uint8_t* color_buffer)//, string point_cloud_fname)
 {
   // No reference image - but this is kept for compatability with range_test_v2:
-  float* reference = new float[range_likelihood_->getRowHeight() * range_likelihood_->getColWidth()];
-  //const float* depth_buffer = range_likelihood_->getDepthBuffer();
+  double* reference = new double[range_likelihood_->getRowHeight() * range_likelihood_->getColWidth()];
+  //const double* depth_buffer = range_likelihood_->getDepthBuffer();
   // Copy one image from our last as a reference.
   /*
   for (int i=0, n=0; i<range_likelihood_->getRowHeight(); ++i)
@@ -409,7 +409,7 @@ capture (Eigen::Isometry3d pose_in,unsigned short* depth_buffer_mm,const uint8_t
   */
 
   std::vector<Eigen::Isometry3d, Eigen::aligned_allocator<Eigen::Isometry3d> > poses;
-  std::vector<float> scores;
+  std::vector<double> scores;
   int n = 1;
   poses.push_back (pose_in);
   // HACK: mfallon modified computeLikelihoods to only call render()  (which is currently private)
@@ -418,7 +418,7 @@ capture (Eigen::Isometry3d pose_in,unsigned short* depth_buffer_mm,const uint8_t
   range_likelihood_->computeLikelihoods (reference, poses, scores);
 
   color_buffer =range_likelihood_->getColorBuffer();
-  const float*  db_ptr= range_likelihood_->getDepthBuffer ();
+  const double*  db_ptr= range_likelihood_->getDepthBuffer ();
   range_likelihood_->addNoise ();
   depthBufferToMM (db_ptr,depth_buffer_mm);
 
@@ -603,7 +603,7 @@ struct CurrentFrameCloudView
   }
 
   void
-  setViewerPose (const Eigen::Affine3f& viewer_pose) {
+  setViewerPose (const Eigen::Affine3d& viewer_pose) {
     ::setViewerPose (cloud_viewer_, viewer_pose);
   }
 
@@ -626,7 +626,7 @@ struct ImageView
   }
 
   void
-  showScene (KinfuTracker& kinfu, const PtrStepSz<const KinfuTracker::PixelRGB>& rgb24, bool registration, Eigen::Affine3f* pose_ptr = 0)
+  showScene (KinfuTracker& kinfu, const PtrStepSz<const KinfuTracker::PixelRGB>& rgb24, bool registration, Eigen::Affine3d* pose_ptr = 0)
   {
     if (pose_ptr)
     {
@@ -665,7 +665,7 @@ struct ImageView
   }
   
   void
-  showGeneratedDepth (KinfuTracker& kinfu, const Eigen::Affine3f& pose)
+  showGeneratedDepth (KinfuTracker& kinfu, const Eigen::Affine3d& pose)
   {            
     raycaster_ptr_->run(kinfu.volume(), pose);
     raycaster_ptr_->generateDepthImage(generated_depth_);    
@@ -791,12 +791,12 @@ struct SceneCloudView
   }
 
   void
-  toggleCube(const Eigen::Vector3f& size)
+  toggleCube(const Eigen::Vector3d& size)
   {
       if (cube_added_)
           cloud_viewer_.removeShape("cube");
       else
-        cloud_viewer_.addCube(size*0.5, Eigen::Quaternionf::Identity(), size(0), size(1), size(2));
+        cloud_viewer_.addCube(size*0.5, Eigen::Quaterniond::Identity(), size(0), size(1), size(2));
 
       cube_added_ = !cube_added_;
   }
@@ -860,7 +860,7 @@ struct SceneCloudView
   bool valid_combined_;
   bool cube_added_;
 
-  Eigen::Affine3f viewer_pose_;
+  Eigen::Affine3d viewer_pose_;
 
   visualization::PCLVisualizer cloud_viewer_;
 
@@ -888,26 +888,26 @@ struct KinFuApp
 {
   enum { PCD_BIN = 1, PCD_ASCII = 2, PLY = 3, MESH_PLY = 7, MESH_VTK = 8 };
   
-  KinFuApp(CaptureOpenNI& source, float vsz) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
+  KinFuApp(CaptureOpenNI& source, double vsz) : exit_ (false), scan_ (false), scan_mesh_(false), scan_volume_ (false), independent_camera_ (false),
     registration_ (false), integrate_colors_ (false), capture_ (source)
   {    
     //Init Kinfu Tracker
-    Eigen::Vector3f volume_size = Vector3f::Constant (vsz/*meters*/);
+    Eigen::Vector3d volume_size = Vector3d::Constant (vsz/*meters*/);
 
-    float f = capture_.depth_focal_length_VGA;
+    double f = capture_.depth_focal_length_VGA;
     kinfu_.setDepthIntrinsics (f, f);
     kinfu_.volume().setSize (volume_size);
 
-    Eigen::Matrix3f R = Eigen::Matrix3f::Identity ();   // * AngleAxisf( pcl::deg2rad(-30.f), Vector3f::UnitX());
-    Eigen::Vector3f t = volume_size * 0.5f - Vector3f (0, 0, volume_size (2) / 2 * 1.2f);
+    Eigen::Matrix3d R = Eigen::Matrix3d::Identity ();   // * AngleAxisd( pcl::deg2rad(-30.), Vector3d::UnitX());
+    Eigen::Vector3d t = volume_size * 0.5 - Vector3d (0, 0, volume_size (2) / 2 * 1.2f);
 
-    Eigen::Affine3f pose = Eigen::Translation3f (t) * Eigen::AngleAxisf (R);
+    Eigen::Affine3d pose = Eigen::Translation3d (t) * Eigen::AngleAxisd (R);
 
     kinfu_.setInitalCameraPose (pose);
-    kinfu_.volume().setTsdfTruncDist (0.030f/*meters*/);    
-    kinfu_.setIcpCorespFilteringParams (0.1f/*meters*/, sin ( pcl::deg2rad(20.f) ));
-    //kinfu_.setDepthTruncationForICP(5.f/*meters*/);
-    kinfu_.setCameraMovementThreshold(0.001f);
+    kinfu_.volume().setTsdfTruncDist (0.030/*meters*/);    
+    kinfu_.setIcpCorespFilteringParams (0.1/*meters*/, sin ( pcl::deg2rad(20.) ));
+    //kinfu_.setDepthTruncationForICP(5./*meters*/);
+    kinfu_.setCameraMovementThreshold(0.001);
     
     //Init KinfuApp            
     tsdf_cloud_ptr_ = pcl::PointCloud<pcl::PointXYZI>::Ptr (new pcl::PointCloud<pcl::PointXYZI>);
@@ -917,7 +917,7 @@ struct KinFuApp
     image_view_.viewerScene_.registerKeyboardCallback (keyboard_callback, (void*)this);
     image_view_.viewerDepth_.registerKeyboardCallback (keyboard_callback, (void*)this);
 
-    float diag = sqrt ((float)kinfu_.cols () * kinfu_.cols () + kinfu_.rows () * kinfu_.rows ());
+    double diag = sqrt ((double)kinfu_.cols () * kinfu_.cols () + kinfu_.rows () * kinfu_.rows ());
     scene_cloud_view_.cloud_viewer_.setCameraFieldOfView (2 * atan (diag / (2 * f)) * 1.5);
     
     scene_cloud_view_.toggleCube(volume_size);    
@@ -988,8 +988,8 @@ struct KinFuApp
     int height = 480;
     for (int i=0; i<2048; i++)
     {
-      float v = i/2048.0;
-      v = powf(v, 3)* 6;
+      double v = i/2048.0;
+      v = pow(v, 3)* 6;
       t_gamma[i] = v*6*256;
     }  
 
@@ -1120,11 +1120,11 @@ struct KinFuApp
       
       tic_toc.push_back (getTime ());
       
-      Eigen::Affine3f k_aff = kinfu_.getCameraPose();
-      Eigen::Matrix3f k_m;
+      Eigen::Affine3d k_aff = kinfu_.getCameraPose();
+      Eigen::Matrix3d k_m;
       k_m =k_aff.rotation();
-      Eigen::Quaternionf k_r;
-      k_r = Eigen::Quaternionf(k_m);
+      Eigen::Quaterniond k_r;
+      k_r = Eigen::Quaterniond(k_m);
       std::stringstream ss_k;      
       ss_k << k_aff(0,3) <<", "<< k_aff(1,3)<<", "<< k_aff(2,3)<<" | " 
           <<k_r.w()<<", "<<k_r.x()<<", "<<k_r.y()<<", "<<k_r.z() ;       
@@ -1178,7 +1178,7 @@ struct KinFuApp
 	
 	if (has_image)
 	{
-	  Eigen::Affine3f viewer_pose = getViewerPose(scene_cloud_view_.cloud_viewer_);
+	  Eigen::Affine3d viewer_pose = getViewerPose(scene_cloud_view_.cloud_viewer_);
 //	  image_view_.showScene (kinfu_, rgb24, registration_, independent_camera_ ? &viewer_pose : 0);
 	  image_view_.showScene (kinfu_, rgb24_sim, registration_, independent_camera_ ? &viewer_pose : 0);
 	}
@@ -1279,7 +1279,7 @@ struct KinFuApp
 
   KinfuTracker::DepthMap depth_device_;
 
-  // pcl::TSDFVolume<float, short> tsdf_volume_;
+  // pcl::TSDFVolume<double, short> tsdf_volume_;
   pcl::PointCloud<pcl::PointXYZI>::Ptr tsdf_cloud_ptr_;
 
   Evaluation::Ptr evaluation_ptr_;
@@ -1451,7 +1451,7 @@ main (int argc, char* argv[])
   pc::parse_argument (argc, argv, "-plyfile", plyfile);
   //SIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIMSIM
   
-  float volume_size = 3.f;
+  double volume_size = 3.;
   pc::parse_argument (argc, argv, "-volume_size", volume_size);
           
   KinFuApp app (capture, volume_size);

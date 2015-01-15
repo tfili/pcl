@@ -51,14 +51,14 @@ using namespace std;
 
 struct KeypointT
 {
-  float x, y, z, scale;
+  double x, y, z, scale;
 };
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (KeypointT,
-    (float, x, x)
-    (float, y, y)
-    (float, z, z)
-    (float, scale, scale)
+    (double, x, x)
+    (double, y, y)
+    (double, z, z)
+    (double, scale, scale)
 )
 
 PointCloud<PointXYZI>::Ptr cloud_xyzi (new PointCloud<PointXYZI>);
@@ -83,8 +83,8 @@ TEST (PCL, SIFTKeypoint)
   EXPECT_EQ (keypoints.points.size (), static_cast<size_t> (169));
 
   // Change the values and re-compute
-  sift_detector.setScales (0.05f, 5, 3);
-  sift_detector.setMinimumContrast (0.06f);
+  sift_detector.setScales (0.05, 5, 3);
+  sift_detector.setMinimumContrast (0.06);
   sift_detector.compute (keypoints);
 
   ASSERT_EQ (keypoints.width, keypoints.points.size ());
@@ -92,14 +92,14 @@ TEST (PCL, SIFTKeypoint)
 
   // Compare to previously validated output
   const size_t correct_nr_keypoints = 5;
-  const float correct_keypoints[correct_nr_keypoints][4] = 
+  const double correct_keypoints[correct_nr_keypoints][4] = 
     { 
       // { x,  y,  z,  scale }
-      {-0.9425f, -0.6381f,  1.6445f,  0.0794f},
-      {-0.5083f, -0.5587f,  1.8519f,  0.0500f},
-      { 1.0265f,  0.0500f,  1.7154f,  0.1000f},
-      { 0.3005f, -0.3007f,  1.9526f,  0.2000f},
-      {-0.1002f, -0.1002f,  1.9933f,  0.3175f}
+      {-0.9425, -0.6381,  1.6445,  0.0794f},
+      {-0.5083f, -0.5587,  1.8519,  0.0500},
+      { 1.0265,  0.0500,  1.7154f,  0.1000},
+      { 0.3005, -0.3007,  1.9526,  0.2000},
+      {-0.1002f, -0.1002f,  1.9933f,  0.3175}
     };
 
   ASSERT_EQ (keypoints.points.size (), correct_nr_keypoints);
@@ -116,13 +116,13 @@ TEST (PCL, SIFTKeypoint)
 TEST (PCL, SIFTKeypoint_radiusSearch)
 {
   const int nr_scales_per_octave = 3;
-  const float scale = 0.02f;
+  const double scale = 0.02f;
 
   KdTreeFLANN<PointXYZI>::Ptr tree_ (new KdTreeFLANN<PointXYZI>);
   boost::shared_ptr<pcl::PointCloud<PointXYZI> > cloud = cloud_xyzi->makeShared ();
 
   ApproximateVoxelGrid<PointXYZI> voxel_grid;
-  const float s = 1.0 * scale;
+  const double s = 1.0 * scale;
   voxel_grid.setLeafSize (s, s, s);
   voxel_grid.setInputCloud (cloud);
   voxel_grid.filter (*cloud);
@@ -130,20 +130,20 @@ TEST (PCL, SIFTKeypoint_radiusSearch)
   
   const PointCloud<PointXYZI> & input = *cloud;
   KdTreeFLANN<PointXYZI> & tree = *tree_;
-  const float base_scale = scale;
+  const double base_scale = scale;
 
-  std::vector<float> scales (nr_scales_per_octave + 3);
+  std::vector<double> scales (nr_scales_per_octave + 3);
   for (int i_scale = 0; i_scale <= nr_scales_per_octave + 2; ++i_scale)
   {
-    scales[i_scale] = base_scale * pow (2.0f, static_cast<float> (i_scale-1) / nr_scales_per_octave);
+    scales[i_scale] = base_scale * pow (2.0, static_cast<double> (i_scale-1) / nr_scales_per_octave);
   }
-  Eigen::MatrixXf diff_of_gauss;
+  Eigen::MatrixXd diff_of_gauss;
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_dist;
+  std::vector<double> nn_dist;
   diff_of_gauss.resize (input.size (), scales.size () - 1);
 
-  const float max_radius = 0.10f;
+  const double max_radius = 0.10;
 
   const size_t i_point = 500;
   tree.radiusSearch (i_point, max_radius, nn_indices, nn_dist);

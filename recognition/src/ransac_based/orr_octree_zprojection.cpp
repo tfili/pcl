@@ -92,14 +92,14 @@ pcl::recognition::ORROctreeZProjection::clear ()
 //=========================================================================================================================================
 
 void
-pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, float eps_front, float eps_back)
+pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, double eps_front, double eps_back)
 {
   this->clear();
 
   // Compute the bounding box of the full leaves
   const vector<ORROctree::Node*>& full_leaves = input.getFullLeaves ();
   vector<ORROctree::Node*>::const_iterator fl_it = full_leaves.begin ();
-  float full_leaves_bounds[4];
+  double full_leaves_bounds[4];
 
   if ( full_leaves.empty() )
     return;
@@ -120,7 +120,7 @@ pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, float eps
 
   // Make some initializations
   pixel_size_ = input.getVoxelSize();
-  inv_pixel_size_ = 1.0f/pixel_size_;
+  inv_pixel_size_ = 1.0/pixel_size_;
 
   bounds_[0] = full_leaves_bounds[0]; bounds_[1] = full_leaves_bounds[1];
   bounds_[2] = full_leaves_bounds[2]; bounds_[3] = full_leaves_bounds[3];
@@ -128,8 +128,8 @@ pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, float eps
   extent_x_ = full_leaves_bounds[1] - full_leaves_bounds[0];
   extent_y_ = full_leaves_bounds[3] - full_leaves_bounds[2];
 
-  num_pixels_x_ = static_cast<int> (extent_x_/pixel_size_ + 0.5f); // we do not need to round, but it's safer due to numerical errors
-  num_pixels_y_ = static_cast<int> (extent_y_/pixel_size_ + 0.5f);
+  num_pixels_x_ = static_cast<int> (extent_x_/pixel_size_ + 0.5); // we do not need to round, but it's safer due to numerical errors
+  num_pixels_y_ = static_cast<int> (extent_y_/pixel_size_ + 0.5);
   num_pixels_   = num_pixels_x_*num_pixels_y_;
 
   int i, j;
@@ -170,7 +170,7 @@ pcl::recognition::ORROctreeZProjection::build (const ORROctree& input, float eps
   }
 
   int len, maxlen, id_z1, id_z2;
-  float cur_min, best_min, cur_max, best_max;
+  double cur_min, best_min, cur_max, best_max;
 
   // Now, at each occupied (i, j) position, get the longest connected component consisting of neighboring full leaves
   for ( list<Set*>::iterator current_set = full_sets_.begin () ; current_set != full_sets_.end () ; ++current_set )

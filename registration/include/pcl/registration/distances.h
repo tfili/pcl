@@ -69,9 +69,9 @@ namespace pcl
       * \param[in] sigma the sigma value
       */
     inline double
-    huber (const Eigen::Vector4f &p_src, const Eigen::Vector4f &p_tgt, double sigma) 
+    huber (const Eigen::Vector4d &p_src, const Eigen::Vector4d &p_tgt, double sigma) 
     {
-      Eigen::Array4f diff = (p_tgt.array () - p_src.array ()).abs ();
+      Eigen::Array4d diff = (p_tgt.array () - p_src.array ()).abs ();
       double norm = 0.0;
       for (int i = 0; i < 3; ++i)
       {
@@ -115,7 +115,7 @@ namespace pcl
       * \param[in] p_tgt the second eigen vector
       */
     inline double
-    l1 (const Eigen::Vector4f &p_src, const Eigen::Vector4f &p_tgt) 
+    l1 (const Eigen::Vector4d &p_src, const Eigen::Vector4d &p_tgt) 
     {
       return ((p_src.array () - p_tgt.array ()).abs ().sum ());
     }
@@ -125,7 +125,7 @@ namespace pcl
       * \param[in] p_tgt the second eigen vector
       */
     inline double
-    l2 (const Eigen::Vector4f &p_src, const Eigen::Vector4f &p_tgt) 
+    l2 (const Eigen::Vector4d &p_src, const Eigen::Vector4d &p_tgt) 
     {
       return ((p_src - p_tgt).norm ());
     }
@@ -135,7 +135,7 @@ namespace pcl
       * \param[in] p_tgt the second eigen vector
       */
     inline double
-    l2Sqr (const Eigen::Vector4f &p_src, const Eigen::Vector4f &p_tgt) 
+    l2Sqr (const Eigen::Vector4d &p_src, const Eigen::Vector4d &p_tgt) 
     {
       return ((p_src - p_tgt).squaredNorm ());
     }

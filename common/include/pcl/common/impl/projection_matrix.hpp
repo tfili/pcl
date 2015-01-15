@@ -77,10 +77,10 @@ namespace pcl
 template <typename PointT> double 
 pcl::estimateProjectionMatrix (
     typename pcl::PointCloud<PointT>::ConstPtr cloud, 
-    Eigen::Matrix<float, 3, 4, Eigen::RowMajor>& projection_matrix, 
+    Eigen::Matrix<double, 3, 4, Eigen::RowMajor>& projection_matrix, 
     const std::vector<int>& indices)
 {
-  // internally we calculate with double but store the result into float matrices.
+  // internally we calculate with double but store the result into double matrices.
   typedef double Scalar;
   projection_matrix.setZero ();
   if (cloud->height == 1 || cloud->width == 1)
@@ -193,18 +193,18 @@ pcl::estimateProjectionMatrix (
   
   double residual = residual_sqr.coeff (0);
 
-  projection_matrix.coeffRef (0) = static_cast <float> (eigen_vectors.coeff (0));
-  projection_matrix.coeffRef (1) = static_cast <float> (eigen_vectors.coeff (12));
-  projection_matrix.coeffRef (2) = static_cast <float> (eigen_vectors.coeff (24));
-  projection_matrix.coeffRef (3) = static_cast <float> (eigen_vectors.coeff (36));
-  projection_matrix.coeffRef (4) = static_cast <float> (eigen_vectors.coeff (48));
-  projection_matrix.coeffRef (5) = static_cast <float> (eigen_vectors.coeff (60));
-  projection_matrix.coeffRef (6) = static_cast <float> (eigen_vectors.coeff (72));
-  projection_matrix.coeffRef (7) = static_cast <float> (eigen_vectors.coeff (84));
-  projection_matrix.coeffRef (8) = static_cast <float> (eigen_vectors.coeff (96));
-  projection_matrix.coeffRef (9) = static_cast <float> (eigen_vectors.coeff (108));
-  projection_matrix.coeffRef (10) = static_cast <float> (eigen_vectors.coeff (120));
-  projection_matrix.coeffRef (11) = static_cast <float> (eigen_vectors.coeff (132));
+  projection_matrix.coeffRef (0) = static_cast <double> (eigen_vectors.coeff (0));
+  projection_matrix.coeffRef (1) = static_cast <double> (eigen_vectors.coeff (12));
+  projection_matrix.coeffRef (2) = static_cast <double> (eigen_vectors.coeff (24));
+  projection_matrix.coeffRef (3) = static_cast <double> (eigen_vectors.coeff (36));
+  projection_matrix.coeffRef (4) = static_cast <double> (eigen_vectors.coeff (48));
+  projection_matrix.coeffRef (5) = static_cast <double> (eigen_vectors.coeff (60));
+  projection_matrix.coeffRef (6) = static_cast <double> (eigen_vectors.coeff (72));
+  projection_matrix.coeffRef (7) = static_cast <double> (eigen_vectors.coeff (84));
+  projection_matrix.coeffRef (8) = static_cast <double> (eigen_vectors.coeff (96));
+  projection_matrix.coeffRef (9) = static_cast <double> (eigen_vectors.coeff (108));
+  projection_matrix.coeffRef (10) = static_cast <double> (eigen_vectors.coeff (120));
+  projection_matrix.coeffRef (11) = static_cast <double> (eigen_vectors.coeff (132));
 
   if (projection_matrix.coeff (0) < 0)
     projection_matrix *= -1.0;

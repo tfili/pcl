@@ -123,8 +123,8 @@ pcl::modeler::PoissonReconstructionWorker::processImpl(CloudMeshItem* cloud_mesh
   poisson.setSolverDivide(*solver_divide_);
   poisson.setIsoDivide(*iso_divide_);
   poisson.setDegree(*degree_);
-  poisson.setScale (float (*scale_));
-  poisson.setScale (float (*samples_per_node_));
+  poisson.setScale (double (*scale_));
+  poisson.setScale (double (*samples_per_node_));
 
   poisson.setConfidence(true);
   poisson.setManifold(true);

@@ -75,15 +75,15 @@ TEST (PCL, ISSKeypoint3D_WBE)
   // Compare to previously validated output
   //
   const size_t correct_nr_keypoints = 6;
-  const float correct_keypoints[correct_nr_keypoints][3] =
+  const double correct_keypoints[correct_nr_keypoints][3] =
     {
       // { x,  y,  z}
-      {-0.071112f,  0.137670f,  0.047518f},
-      {-0.041733f,  0.127960f,  0.016650f},
-      {-0.011943f,  0.086771f,  0.057009f},
-      { 0.031733f,  0.099372f,  0.038505f},
-      {-0.062116f,  0.045145f,  0.037802f},
-      {-0.048250f,  0.167480f, -0.000152f}
+      {-0.071112f,  0.137670,  0.047518},
+      {-0.041733f,  0.127960,  0.016650},
+      {-0.011943f,  0.086771,  0.057009},
+      { 0.031733f,  0.099372f,  0.038505},
+      {-0.062116,  0.045145,  0.037802f},
+      {-0.048250,  0.167480, -0.000152f}
     };
 
 
@@ -120,7 +120,7 @@ TEST (PCL, ISSKeypoint3D_BE)
   iss_detector.setThreshold21 (0.975);
   iss_detector.setThreshold32 (0.975);
   iss_detector.setMinNeighbors (5);
-  iss_detector.setAngleThreshold (static_cast<float> (M_PI) / 3.0);
+  iss_detector.setAngleThreshold (static_cast<double> (M_PI) / 3.0);
   iss_detector.setNumberOfThreads (1);
 
   iss_detector.setInputCloud (cloud);
@@ -131,14 +131,14 @@ TEST (PCL, ISSKeypoint3D_BE)
   // Compare to previously validated output
   //
   const size_t correct_nr_keypoints = 5;
-  const float correct_keypoints[correct_nr_keypoints][3] =
+  const double correct_keypoints[correct_nr_keypoints][3] =
     {
       // { x,  y,  z}
-      {-0.052037f,  0.116800f,  0.034582f},
-      { 0.027420f,  0.096386f,  0.043312f},
-      {-0.011943f,  0.086771f,  0.057009f},
-      {-0.070344f,  0.087352f,  0.041908f},
-      {-0.030035f,  0.066130f,  0.038942f}
+      {-0.052037,  0.116800,  0.034582f},
+      { 0.027420,  0.096386,  0.043312f},
+      {-0.011943f,  0.086771,  0.057009},
+      {-0.070344f,  0.087352f,  0.041908},
+      {-0.030035,  0.066130,  0.038942f}
     };
 
   ASSERT_EQ (keypoints.points.size (), correct_nr_keypoints);

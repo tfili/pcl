@@ -109,7 +109,7 @@ namespace pcl
          *  If it is not possible to find enough planes, it will stop according to the regular ransac criteria
          */
         void
-        setMinimumCoverage (float percent)
+        setMinimumCoverage (double percent)
         {
           min_coverage_percent_ = percent;
         }
@@ -159,7 +159,7 @@ namespace pcl
         }
 
       private:
-        float min_coverage_percent_;
+        double min_coverage_percent_;
         unsigned int max_batches_;
         unsigned int iterations_per_batch_;
 

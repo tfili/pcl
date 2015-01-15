@@ -65,12 +65,12 @@ namespace pcl
             void setInputCloud(const PointCloud& cloud);
             void setSearchSurface(const PointCloud& surface);
             void setIndices(const Indices& indices);
-            void setRadiusSearch(float radius, int max_results);
+            void setRadiusSearch(double radius, int max_results);
         protected:
             PointCloud cloud_;
             PointCloud surface_;
             Indices indices_;
-            float radius_;
+            double radius_;
             int max_results_;
 
             Octree octree_;
@@ -93,19 +93,19 @@ namespace pcl
         class PCL_EXPORTS NormalEstimation : public Feature
         {
         public:
-            // float x, y, z, curvature; -> sizeof(PointXYZ) = 4 * sizeof(float)            
+            // double x, y, z, curvature; -> sizeof(PointXYZ) = 4 * sizeof(double)            
             typedef Feature::NormalType NormalType; 
 
             NormalEstimation();
             void compute(Normals& normals);
-            void setViewPoint(float  vpx, float  vpy, float  vpz);  
-            void getViewPoint(float& vpx, float& vpy, float& vpz);      
+            void setViewPoint(double  vpx, double  vpy, double  vpz);  
+            void getViewPoint(double& vpx, double& vpy, double& vpz);      
 
             static void computeNormals(const PointCloud& cloud, const NeighborIndices& nn_indices, Normals& normals);
-            static void flipNormalTowardsViewpoint(const PointCloud& cloud, float vp_x, float vp_y, float vp_z, Normals& normals);            
-            static void flipNormalTowardsViewpoint(const PointCloud& cloud, const Indices& indices, float vp_x, float vp_y, float vp_z, Normals& normals);
+            static void flipNormalTowardsViewpoint(const PointCloud& cloud, double vp_x, double vp_y, double vp_z, Normals& normals);            
+            static void flipNormalTowardsViewpoint(const PointCloud& cloud, const Indices& indices, double vp_x, double vp_y, double vp_z, Normals& normals);
         private:              
-            float vpx_, vpy_, vpz_;
+            double vpx_, vpy_, vpz_;
             NeighborIndices nn_indices_;
         };        
 
@@ -118,7 +118,7 @@ namespace pcl
             void compute(DeviceArray2D<PFHSignature125>& features);
         private:
             NeighborIndices nn_indices_;
-            DeviceArray2D<float> data_rpk;
+            DeviceArray2D<double> data_rpk;
             int max_elems_rpk;
         };
 
@@ -132,7 +132,7 @@ namespace pcl
             void compute(DeviceArray2D<PFHRGBSignature250>& features);
         private:
             NeighborIndices nn_indices_;
-            DeviceArray2D<float> data_rpk;
+            DeviceArray2D<double> data_rpk;
             int max_elems_rpk;
         };
 
@@ -200,7 +200,7 @@ namespace pcl
             void compute(DeviceArray<PrincipalCurvatures>& features);                    
         private:
             NeighborIndices nn_indices_;
-            DeviceArray2D<float> proj_normals_buf;
+            DeviceArray2D<double> proj_normals_buf;
         }; 
 
 
@@ -222,8 +222,8 @@ namespace pcl
 
             VFHEstimation();
 
-            void setViewPoint(float  vpx, float  vpy, float  vpz);  
-            void getViewPoint(float& vpx, float& vpy, float& vpz);      
+            void setViewPoint(double  vpx, double  vpy, double  vpz);  
+            void getViewPoint(double& vpx, double& vpy, double& vpz);      
 
             void setUseGivenNormal (bool use);
             void setNormalToUse (const NormalType& normal);
@@ -237,7 +237,7 @@ namespace pcl
             void compute(DeviceArray<VFHSignature308>& feature);
         private:
 
-            float vpx_, vpy_, vpz_;
+            double vpx_, vpy_, vpz_;
 
             bool use_given_normal_;
             bool use_given_centroid_;
@@ -263,7 +263,7 @@ namespace pcl
                 unsigned int min_pts_neighb = 0);
             
             void setImageWidth (unsigned int bin_count);            
-            void setSupportAngle (float support_angle_cos);                        
+            void setSupportAngle (double support_angle_cos);                        
             void setMinPointCountInNeighbourhood (unsigned int min_pts_neighb);            
             void setInputWithNormals (const PointCloud& input, const Normals& normals);                        
             void setSearchSurfaceWithNormals (const PointCloud& surface, const Normals& normals);
@@ -291,7 +291,7 @@ namespace pcl
             bool is_radial_;
 
             unsigned int image_width_;
-            float support_angle_cos_;
+            double support_angle_cos_;
             unsigned int min_pts_neighb_;
 
             bool fake_surface_;

@@ -324,7 +324,7 @@ pcl::HDLGrabber::toPointClouds (HDLDataPacket *dataPacket)
 
   time_t  time_;
   time(&time_);
-  time_t velodyneTime = (time_ & 0x00000000ffffffffl) << 32 | dataPacket->gpsTimestamp;
+  time_t velodyneTime = (time_ & 0x00000000fffffffl) << 32 | dataPacket->gpsTimestamp;
 
   current_scan_xyz_->header.stamp = velodyneTime;
   current_scan_xyzrgb_->header.stamp = velodyneTime;
@@ -406,8 +406,8 @@ pcl::HDLGrabber::computeXYZI (pcl::PointXYZI& point, int azimuth,
   double distanceM = laserReturn.distance * 0.002;
 
   if (distanceM < min_distance_threshold_ || distanceM > max_distance_threshold_) {
-    point.x = point.y = point.z = std::numeric_limits<float>::quiet_NaN();
-    point.intensity = static_cast<float> (laserReturn.intensity);
+    point.x = point.y = point.z = std::numeric_limits<double>::quiet_NaN();
+    point.intensity = static_cast<double> (laserReturn.intensity);
     return;
   }
 
@@ -427,10 +427,10 @@ pcl::HDLGrabber::computeXYZI (pcl::PointXYZI& point, int azimuth,
 
   double xyDistance = distanceM * correction.cosVertCorrection - correction.sinVertOffsetCorrection;
 
-  point.x = static_cast<float> (xyDistance * sinAzimuth - correction.horizontalOffsetCorrection * cosAzimuth);
-  point.y = static_cast<float> (xyDistance * cosAzimuth + correction.horizontalOffsetCorrection * sinAzimuth);
-  point.z = static_cast<float> (distanceM * correction.sinVertCorrection + correction.cosVertOffsetCorrection);
-  point.intensity = static_cast<float> (laserReturn.intensity);
+  point.x = static_cast<double> (xyDistance * sinAzimuth - correction.horizontalOffsetCorrection * cosAzimuth);
+  point.y = static_cast<double> (xyDistance * cosAzimuth + correction.horizontalOffsetCorrection * sinAzimuth);
+  point.z = static_cast<double> (distanceM * correction.sinVertCorrection + correction.cosVertOffsetCorrection);
+  point.intensity = static_cast<double> (laserReturn.intensity);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -452,8 +452,8 @@ void
 pcl::HDLGrabber::fireCurrentScan (const unsigned short startAngle,
     const unsigned short endAngle)
 {
-  const float start = static_cast<float> (startAngle) / 100.0f;
-  const float end = static_cast<float> (endAngle) / 100.0f;
+  const double start = static_cast<double> (startAngle) / 100.0;
+  const double end = static_cast<double> (endAngle) / 100.0;
 
   if (scan_xyz_signal_->num_slots () > 0)
     scan_xyz_signal_->operator () (current_scan_xyz_, start, end);
@@ -562,10 +562,10 @@ pcl::HDLGrabber::getName () const
 }
 
 /////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::HDLGrabber::getFramesPerSecond () const
 {
-  return (0.0f);
+  return (0.0);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -604,24 +604,24 @@ pcl::HDLGrabber::isAddressUnspecified (const boost::asio::ip::address& ipAddress
 
 /////////////////////////////////////////////////////////////////////////////
 void
-pcl::HDLGrabber::setMaximumDistanceThreshold(float &maxThreshold) {
+pcl::HDLGrabber::setMaximumDistanceThreshold(double &maxThreshold) {
   max_distance_threshold_ = maxThreshold;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 void
-pcl::HDLGrabber::setMinimumDistanceThreshold(float &minThreshold) {
+pcl::HDLGrabber::setMinimumDistanceThreshold(double &minThreshold) {
   min_distance_threshold_ = minThreshold;
 }
 
 /////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::HDLGrabber::getMaximumDistanceThreshold() {
   return(max_distance_threshold_);
 }
 
 /////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::HDLGrabber::getMinimumDistanceThreshold() {
   return(min_distance_threshold_);
 }

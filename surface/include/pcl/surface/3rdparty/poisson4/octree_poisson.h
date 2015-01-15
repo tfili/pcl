@@ -44,7 +44,7 @@ namespace pcl
   namespace poisson
   {
 
-    template< class NodeData , class Real=float >
+    template< class NodeData , class Real=double >
     class OctNode
     {
       private:

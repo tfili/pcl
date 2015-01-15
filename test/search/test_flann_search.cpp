@@ -54,10 +54,10 @@ PointCloud<PointXYZ> cloud, cloud_big;
 void
 init ()
 {
-  float resolution = 0.1f;
-  for (float z = -0.5f; z <= 0.5f; z += resolution)
-    for (float y = -0.5f; y <= 0.5f; y += resolution)
-      for (float x = -0.5f; x <= 0.5f; x += resolution)
+  double resolution = 0.1;
+  for (double z = -0.5; z <= 0.5; z += resolution)
+    for (double y = -0.5; y <= 0.5; y += resolution)
+      for (double x = -0.5; x <= 0.5; x += resolution)
         cloud.points.push_back (PointXYZ (x, y, z));
   cloud.width = int (cloud.points.size ());
   cloud.height = 1;
@@ -69,9 +69,9 @@ init ()
   for (size_t i = 0; i < cloud_big.width * cloud_big.height; ++i)
     cloud_big.points.push_back (
                                 PointXYZ (
-                                  float (1024 * rand () / (RAND_MAX + 1.0)),
-                                  float (1024 * rand () / (RAND_MAX + 1.0)),
-                                  float (1024 * rand () / (RAND_MAX + 1.0))));
+                                  double (1024 * rand () / (RAND_MAX + 1.0)),
+                                  double (1024 * rand () / (RAND_MAX + 1.0)),
+                                  double (1024 * rand () / (RAND_MAX + 1.0))));
 }
 
 
@@ -80,17 +80,17 @@ TEST (PCL, FlannSearch_nearestKSearch)
 {
   pcl::search::Search<PointXYZ>* FlannSearch = new pcl::search::FlannSearch<PointXYZ> (new search::FlannSearch<PointXYZ>::KdTreeIndexCreator);
   FlannSearch->setInputCloud (cloud.makeShared ());
-  PointXYZ test_point (0.01f, 0.01f, 0.01f);
+  PointXYZ test_point (0.01, 0.01, 0.01);
   unsigned int no_of_neighbors = 20;
-  multimap<float, int> sorted_brute_force_result;
+  multimap<double, int> sorted_brute_force_result;
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {
-    float distance = euclideanDistance (cloud.points[i], test_point);
+    double distance = euclideanDistance (cloud.points[i], test_point);
     sorted_brute_force_result.insert (make_pair (distance, int (i)));
   }
-  float max_dist = 0.0f;
+  double max_dist = 0.0;
   unsigned int counter = 0;
-  for (multimap<float, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end ()
+  for (multimap<double, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end ()
       && counter < no_of_neighbors; ++it)
   {
     max_dist = max (max_dist, it->first);
@@ -99,7 +99,7 @@ TEST (PCL, FlannSearch_nearestKSearch)
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   FlannSearch->nearestKSearch (test_point, no_of_neighbors, k_indices, k_distances);
@@ -145,18 +145,18 @@ TEST (PCL, FlannSearch_differentPointT)
 
 
 
-  std::vector< std::vector< float > > dists;
+  std::vector< std::vector< double > > dists;
   std::vector< std::vector< int > > indices;
   FlannSearch->nearestKSearchT (cloud_rgb, std::vector<int> (),no_of_neighbors,indices,dists);
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   //vector<int> k_indices_t;
   //k_indices_t.resize (no_of_neighbors);
-  //vector<float> k_distances_t;
+  //vector<double> k_distances_t;
   //k_distances_t.resize (no_of_neighbors);
 
   for (size_t i = 0; i < cloud_rgb.points.size (); ++i)
@@ -186,13 +186,13 @@ TEST (PCL, FlannSearch_multipointKnnSearch)
   //FlannSearch->initSearchDS ();
   FlannSearch->setInputCloud (cloud_big.makeShared ());
 
-  std::vector< std::vector< float > > dists;
+  std::vector< std::vector< double > > dists;
   std::vector< std::vector< int > > indices;
   FlannSearch->nearestKSearch (cloud_big, std::vector<int>(),no_of_neighbors,indices,dists);
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   for (size_t i = 0; i < cloud_big.points.size (); ++i)
@@ -219,7 +219,7 @@ TEST (PCL, FlannSearch_knnByIndex)
   //FlannSearch->initSearchDS ();
   flann_search->setInputCloud (cloud_big.makeShared ());
 
-  std::vector< std::vector< float > > dists;
+  std::vector< std::vector< double > > dists;
   std::vector< std::vector< int > > indices;
   std::vector< int > query_indices;
   for (size_t i = 0; i<cloud_big.size (); i+=2)
@@ -230,7 +230,7 @@ TEST (PCL, FlannSearch_knnByIndex)
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   for (size_t i = 0; i < query_indices.size (); ++i)
@@ -261,7 +261,7 @@ TEST (PCL, FlannSearch_compareToKdTreeFlann)
   int no_of_neighbors=3;
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   pcl::search::Search<PointXYZ> *flann_search, *kdtree_search;
@@ -293,9 +293,9 @@ TEST (PCL, FlannSearch_compareToKdTreeFlann)
   }
 
   vector<vector<int> > indices_flann;
-  vector<vector<float> > dists_flann;
+  vector<vector<double> > dists_flann;
   vector<vector<int> > indices_tree;
-  vector<vector<float> > dists_tree;
+  vector<vector<double> > dists_tree;
   indices_flann.resize (cloud_big.size ());
   dists_flann.resize (cloud_big.size ());
   indices_tree.resize (cloud_big.size ());

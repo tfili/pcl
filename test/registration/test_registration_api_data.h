@@ -461,7 +461,7 @@ const int correspondences_reciprocal[53][2] = {
 };
 
 const int nr_correspondences_result_rej_dist = 97;
-const float rej_dist_max_dist = 0.01f;
+const double rej_dist_max_dist = 0.01;
 const int correspondences_dist[97][2] = {
   { 1, 50 },
   { 2, 51 },
@@ -563,8 +563,8 @@ const int correspondences_dist[97][2] = {
 };
 
 const int nr_correspondences_result_rej_median_dist = 139;
-const float rej_median_factor = 0.5f;
-const float rej_median_distance = 0.000465391f;
+const double rej_median_factor = 0.5;
+const double rej_median_distance = 0.000465391;
 const int correspondences_median_dist[139][2] = {
   { 0, 61 },
   { 1, 50 },
@@ -918,7 +918,7 @@ const int correspondences_sac[97][2] = {
 };
 
 const int nr_correspondences_result_rej_trimmed = 198;
-const float rej_trimmed_overlap = 0.5;
+const double rej_trimmed_overlap = 0.5;
 const int correspondences_trimmed[198][2] = {
   { 260, 286 },
   { 271, 299 },
@@ -1121,29 +1121,29 @@ const int correspondences_trimmed[198][2] = {
 };
 
 // Reference transformation for the transformation estimation (some arbitrary values)
-const Eigen::Quaternionf   R_ref = Eigen::Quaternionf (.9f, .1f, -.25f, .15f).normalized ();
-const Eigen::Translation3f t_ref = Eigen::Translation3f (.5f, -2.f, 1.f);
-const Eigen::Affine3f      T_ref = Eigen::Affine3f (t_ref * R_ref);
+const Eigen::Quaterniond   R_ref = Eigen::Quaterniond (.9, .1, -.25, .15).normalized ();
+const Eigen::Translation3d t_ref = Eigen::Translation3d (.5, -2., 1.);
+const Eigen::Affine3d      T_ref = Eigen::Affine3d (t_ref * R_ref);
 
-const float transform_from_SAC[4][4] = {
-  { 0.948507f, -0.0486455f, -0.312997f, 0.0176326f },
-  { 0.0276543f, 0.997081f, -0.0711611f, 0.00672534f },
-  { 0.315546f, 0.0588411f, 0.947084f, 0.00613246f },
-  { 0.0f, 0.0f, 0.0f, 1.0f }
+const double transform_from_SAC[4][4] = {
+  { 0.948507, -0.0486455, -0.312997, 0.0176326 },
+  { 0.0276543f, 0.997081, -0.0711611, 0.00672534f },
+  { 0.315546, 0.0588411, 0.947084f, 0.00613246 },
+  { 0.0, 0.0, 0.0, 1.0 }
 };
 
-//const float transform_from_SVD[4][4] = {
-//  { 0.973177f, -0.0808924f, -0.215366f, 0.0155407f },
-//  { 0.0824616f, 0.996593f, -0.0017039f, 0.00217915f },
-//  { 0.21477f, -0.0161013f, 0.976532f, 0.00908635f },
-//  { 0.0f, 0.0f, 0.0f, 1.0f }
+//const double transform_from_SVD[4][4] = {
+//  { 0.973177, -0.0808924f, -0.215366, 0.0155407 },
+//  { 0.0824616, 0.996593f, -0.0017039, 0.00217915 },
+//  { 0.21477, -0.0161013f, 0.976532f, 0.00908635 },
+//  { 0.0, 0.0, 0.0, 1.0 }
 //};
 
-//const float transform_from_LM[4][4] = {
-//  { 0.973034f, -0.00984137f, -0.230452f, 0.0102057f },
-//  { 0.0343427f, 0.994135f, 0.10255f, -0.00631323f },
-//  { 0.228091f, -0.107699f, 0.967665f, 0.0183277f },
-//  { 0.0f, 0.0f, 0.0f, 1.0f }
+//const double transform_from_LM[4][4] = {
+//  { 0.973034f, -0.00984137, -0.230452f, 0.0102057 },
+//  { 0.0343427, 0.994135, 0.10255, -0.00631323f },
+//  { 0.228091, -0.107699, 0.967665, 0.0183277 },
+//  { 0.0, 0.0, 0.0, 1.0 }
 //};
 
 #endif /* REGISTRATION_API_DATA_H_ */

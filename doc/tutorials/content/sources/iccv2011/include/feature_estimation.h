@@ -18,7 +18,7 @@
  * Return: A pointer to a SurfaceNormals point cloud
  */
 SurfaceNormalsPtr
-estimateSurfaceNormals (const PointCloudPtr & input, float radius)
+estimateSurfaceNormals (const PointCloudPtr & input, double radius)
 {
   pcl::NormalEstimation<PointT, NormalT> normal_estimation;
   normal_estimation.setSearchMethod (pcl::search::Search<PointT>::Ptr (new pcl::search::KdTree<PointT>));
@@ -48,7 +48,7 @@ estimateSurfaceNormals (const PointCloudPtr & input, float radius)
  */
 PointCloudPtr
 detectKeypoints (const PointCloudPtr & points, const SurfaceNormalsPtr & normals,
-                 float min_scale, int nr_octaves, int nr_scales_per_octave, float min_contrast)
+                 double min_scale, int nr_octaves, int nr_scales_per_octave, double min_contrast)
 {
   pcl::SIFTKeypoint<PointT, pcl::PointWithScale> sift_detect;
   sift_detect.setSearchMethod (pcl::search::Search<PointT>::Ptr (new pcl::search::KdTree<PointT>));
@@ -77,7 +77,7 @@ detectKeypoints (const PointCloudPtr & points, const SurfaceNormalsPtr & normals
  */
 LocalDescriptorsPtr
 computeLocalDescriptors (const PointCloudPtr & points, const SurfaceNormalsPtr & normals, 
-                         const PointCloudPtr & keypoints, float feature_radius)
+                         const PointCloudPtr & keypoints, double feature_radius)
 {
   pcl::FPFHEstimation<PointT, NormalT, LocalDescriptorT> fpfh_estimation;
   fpfh_estimation.setSearchMethod (pcl::search::Search<PointT>::Ptr (new pcl::search::KdTree<PointT>));

@@ -62,7 +62,7 @@ using namespace pcl;
 void processAndSave( vtkSmartPointer<vtkImageData>  depth_data,
                      vtkSmartPointer<vtkImageData>  rgb_data,
                      std::string                    time,
-                     float                          focal_length,
+                     double                          focal_length,
                      bool                           format,
                      bool                           color,
                      bool                           depth,
@@ -112,8 +112,8 @@ void processAndSave( vtkSmartPointer<vtkImageData>  depth_data,
   pc_image.width = pc_depth.width = pc_xyzrgba.width = rgb_dimensions[0];
   pc_image.height = pc_depth.height = pc_xyzrgba.height = rgb_dimensions[1];
 
-  float constant = 1.0f / focal_length;
-  float bad_point = std::numeric_limits<float>::quiet_NaN ();
+  double constant = 1.0 / focal_length;
+  double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
   for(int v = 0; v < rgb_dimensions[1]; v++)
   {
@@ -131,14 +131,14 @@ void processAndSave( vtkSmartPointer<vtkImageData>  depth_data,
       pc_image.points.push_back(color_point);
       pc_depth.points.push_back(depth_point);
 
-      float d =  depth_data->GetScalarComponentAsFloat(u,v,0,0);
+      double d =  depth_data->GetScalarComponentAsFloat(u,v,0,0);
       depth_point.intensity = d;
 
       if(d != 0 && !pcl_isnan(d) && !pcl_isnan(d))
       {
-        xyzrgba_point.z = d * 0.001f;
-        xyzrgba_point.x = static_cast<float> (u) * d * 0.001f * constant;
-        xyzrgba_point.y = static_cast<float> (v) * d * 0.001f * constant;
+        xyzrgba_point.z = d * 0.001;
+        xyzrgba_point.x = static_cast<double> (u) * d * 0.001 * constant;
+        xyzrgba_point.y = static_cast<double> (v) * d * 0.001 * constant;
       }
       else
       {
@@ -241,7 +241,7 @@ int main(int argc, char ** argv)
     use_output_path = true;
   }
 
-  float focal_length = 525.0;
+  double focal_length = 525.0;
   pcl::console::parse_argument (argc, argv, "-f", focal_length);
 
   if(verbose)

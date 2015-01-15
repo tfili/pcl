@@ -50,7 +50,7 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float default_leaf_size = 0.005f;
+double default_leaf_size = 0.005;
 double default_feature_threshold = 5.0;
 double default_normal_radius_search = 0.03;
 
@@ -100,8 +100,8 @@ loadCloud (const std::string &filename, CloudLT::Ptr &cloud)
 void
 compute (const CloudT::Ptr &cloud, 
          const CloudLT::Ptr &anno,
-         float normal_radius_search,
-         float leaf_x, float leaf_y, float leaf_z,
+         double normal_radius_search,
+         double leaf_x, double leaf_y, double leaf_z,
          CloudLT::Ptr &out)
 {
   TicToc tt;
@@ -199,10 +199,10 @@ main (int argc, char** argv)
   pcl::removeNaNFromPointCloud (*cloud, *cloud, tmp_indices);
   
   // parse optional input arguments from the command line
-  float normal_radius_search = static_cast<float> (default_normal_radius_search);
+  double normal_radius_search = static_cast<double> (default_normal_radius_search);
 
   // Command line parsing
-  float leaf_x = default_leaf_size,
+  double leaf_x = default_leaf_size,
         leaf_y = default_leaf_size,
         leaf_z = default_leaf_size;
 
@@ -210,15 +210,15 @@ main (int argc, char** argv)
   parse_x_arguments (argc, argv, "-leaf", values);
   if (values.size () == 1)
   {
-    leaf_x = static_cast<float> (values[0]);
-    leaf_y = static_cast<float> (values[0]);
-    leaf_z = static_cast<float> (values[0]);
+    leaf_x = static_cast<double> (values[0]);
+    leaf_y = static_cast<double> (values[0]);
+    leaf_z = static_cast<double> (values[0]);
   }
   else if (values.size () == 3)
   {
-    leaf_x = static_cast<float> (values[0]);
-    leaf_y = static_cast<float> (values[1]);
-    leaf_z = static_cast<float> (values[2]);
+    leaf_x = static_cast<double> (values[0]);
+    leaf_y = static_cast<double> (values[1]);
+    leaf_z = static_cast<double> (values[2]);
   }
   else
   {

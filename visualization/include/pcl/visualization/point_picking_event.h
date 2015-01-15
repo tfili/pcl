@@ -69,13 +69,13 @@ namespace pcl
         performSinglePick (vtkRenderWindowInteractor *iren);
 
         int
-        performSinglePick (vtkRenderWindowInteractor *iren, float &x, float &y, float &z);
+        performSinglePick (vtkRenderWindowInteractor *iren, double &x, double &y, double &z);
 
         int
         performAreaPick (vtkRenderWindowInteractor *iren, std::vector<int> &indices);
 
       private:
-        float x_, y_, z_;
+        double x_, y_, z_;
         int idx_;
         bool pick_first_;
      };
@@ -85,9 +85,9 @@ namespace pcl
     {
       public:
         PointPickingEvent (int idx) : idx_ (idx), idx2_ (-1), x_ (), y_ (), z_ (), x2_ (), y2_ (), z2_ () {}
-        PointPickingEvent (int idx, float x, float y, float z) : idx_ (idx), idx2_ (-1), x_ (x), y_ (y), z_ (z), x2_ (), y2_ (), z2_ () {}
+        PointPickingEvent (int idx, double x, double y, double z) : idx_ (idx), idx2_ (-1), x_ (x), y_ (y), z_ (z), x2_ (), y2_ (), z2_ () {}
 
-        PointPickingEvent (int idx1, int idx2, float x1, float y1, float z1, float x2, float y2, float z2) :
+        PointPickingEvent (int idx1, int idx2, double x1, double y1, double z1, double x2, double y2, double z2) :
           idx_ (idx1), idx2_ (idx2), x_ (x1), y_ (y1), z_ (z1), x2_ (x2), y2_ (y2), z2_ (z2) 
         {}
 
@@ -110,7 +110,7 @@ namespace pcl
           * \param[out] z the z coordinate of the point that got selected by the user
           */
         inline void
-        getPoint (float &x, float &y, float &z) const
+        getPoint (double &x, double &y, double &z) const
         {
           x = x_; y = y_; z = z_;
         }
@@ -125,7 +125,7 @@ namespace pcl
           * \return true, if two points are available and have been clicked by the user, false otherwise
           */
         inline bool
-        getPoints (float &x1, float &y1, float &z1, float &x2, float &y2, float &z2) const
+        getPoints (double &x1, double &y1, double &z1, double &x2, double &y2, double &z2) const
         {
           if (idx2_ == -1)
             return (false);
@@ -157,8 +157,8 @@ namespace pcl
       private:
         int idx_, idx2_;
 
-        float x_, y_, z_;
-        float x2_, y2_, z2_;
+        double x_, y_, z_;
+        double x2_, y2_, z2_;
     };
   } //namespace visualization
 } //namespace pcl

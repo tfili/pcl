@@ -325,7 +325,7 @@ pcl::concatenatePointCloud (const pcl::PCLPointCloud2 &cloud1,
 
 //////////////////////////////////////////////////////////////////////////
 bool
-pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out)
+pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXd &out)
 {
   // Get X-Y-Z indices
   int x_idx = getFieldIndex (in, "x");
@@ -347,7 +347,7 @@ pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out)
   }
 
   size_t npts = in.width * in.height;
-  out = Eigen::MatrixXf::Ones (4, npts);
+  out = Eigen::MatrixXd::Ones (4, npts);
 
   Eigen::Array4i xyz_offset (in.fields[x_idx].offset, in.fields[y_idx].offset, in.fields[z_idx].offset, 0);
 
@@ -355,9 +355,9 @@ pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out)
   for (size_t i = 0; i < npts; ++i)
   {
      // Unoptimized memcpys: assume fields x, y, z are in random order
-     memcpy (&out (0, i), &in.data[xyz_offset[0]], sizeof (float));
-     memcpy (&out (1, i), &in.data[xyz_offset[1]], sizeof (float));
-     memcpy (&out (2, i), &in.data[xyz_offset[2]], sizeof (float));
+     memcpy (&out (0, i), &in.data[xyz_offset[0]], sizeof (double));
+     memcpy (&out (1, i), &in.data[xyz_offset[1]], sizeof (double));
+     memcpy (&out (2, i), &in.data[xyz_offset[2]], sizeof (double));
 
      xyz_offset += in.point_step;
   }
@@ -367,7 +367,7 @@ pcl::getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out)
 
 //////////////////////////////////////////////////////////////////////////
 bool 
-pcl::getEigenAsPointCloud (Eigen::MatrixXf &in, pcl::PCLPointCloud2 &out)
+pcl::getEigenAsPointCloud (Eigen::MatrixXd &in, pcl::PCLPointCloud2 &out)
 {
   // Get X-Y-Z indices
   int x_idx = getFieldIndex (out, "x");
@@ -402,9 +402,9 @@ pcl::getEigenAsPointCloud (Eigen::MatrixXf &in, pcl::PCLPointCloud2 &out)
   for (size_t i = 0; i < npts; ++i)
   {
      // Unoptimized memcpys: assume fields x, y, z are in random order
-     memcpy (&out.data[xyz_offset[0]], &in (0, i), sizeof (float));
-     memcpy (&out.data[xyz_offset[1]], &in (1, i), sizeof (float));
-     memcpy (&out.data[xyz_offset[2]], &in (2, i), sizeof (float));
+     memcpy (&out.data[xyz_offset[0]], &in (0, i), sizeof (double));
+     memcpy (&out.data[xyz_offset[1]], &in (1, i), sizeof (double));
+     memcpy (&out.data[xyz_offset[2]], &in (2, i), sizeof (double));
 
      xyz_offset += out.point_step;
   }

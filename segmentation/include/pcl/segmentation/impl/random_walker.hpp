@@ -117,7 +117,7 @@ namespace pcl
           {
             using namespace boost;
 
-            typedef Eigen::Triplet<float> T;
+            typedef Eigen::Triplet<double> T;
             typedef std::vector<T> Triplets;
             Triplets L_triplets;
             Triplets B_triplets;

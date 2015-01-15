@@ -19,12 +19,12 @@ main (int argc, char** argv)
 
   for (size_t i = 0; i < cloud->points.size (); ++i)
   {
-    cloud->points[i].x = 1024.0f * rand () / (RAND_MAX + 1.0f);
-    cloud->points[i].y = 1024.0f * rand () / (RAND_MAX + 1.0f);
-    cloud->points[i].z = 1024.0f * rand () / (RAND_MAX + 1.0f);
+    cloud->points[i].x = 1024.0 * rand () / (RAND_MAX + 1.0);
+    cloud->points[i].y = 1024.0 * rand () / (RAND_MAX + 1.0);
+    cloud->points[i].z = 1024.0 * rand () / (RAND_MAX + 1.0);
   }
 
-  float resolution = 128.0f;
+  double resolution = 128.0;
 
   pcl::octree::OctreePointCloudSearch<pcl::PointXYZ> octree (resolution);
 
@@ -33,9 +33,9 @@ main (int argc, char** argv)
 
   pcl::PointXYZ searchPoint;
 
-  searchPoint.x = 1024.0f * rand () / (RAND_MAX + 1.0f);
-  searchPoint.y = 1024.0f * rand () / (RAND_MAX + 1.0f);
-  searchPoint.z = 1024.0f * rand () / (RAND_MAX + 1.0f);
+  searchPoint.x = 1024.0 * rand () / (RAND_MAX + 1.0);
+  searchPoint.y = 1024.0 * rand () / (RAND_MAX + 1.0);
+  searchPoint.z = 1024.0 * rand () / (RAND_MAX + 1.0);
 
   // Neighbors within voxel search
 
@@ -59,7 +59,7 @@ main (int argc, char** argv)
   int K = 10;
 
   std::vector<int> pointIdxNKNSearch;
-  std::vector<float> pointNKNSquaredDistance;
+  std::vector<double> pointNKNSquaredDistance;
 
   std::cout << "K nearest neighbor search at (" << searchPoint.x 
             << " " << searchPoint.y 
@@ -78,9 +78,9 @@ main (int argc, char** argv)
   // Neighbors within radius search
 
   std::vector<int> pointIdxRadiusSearch;
-  std::vector<float> pointRadiusSquaredDistance;
+  std::vector<double> pointRadiusSquaredDistance;
 
-  float radius = 256.0f * rand () / (RAND_MAX + 1.0f);
+  double radius = 256.0 * rand () / (RAND_MAX + 1.0);
 
   std::cout << "Neighbors within radius search at (" << searchPoint.x 
       << " " << searchPoint.y 

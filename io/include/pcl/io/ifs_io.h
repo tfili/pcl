@@ -126,8 +126,8 @@ namespace pcl
       {
         pcl::PCLPointCloud2 blob;
         int ifs_version;
-        cloud.sensor_origin_ = Eigen::Vector4f::Zero ();
-        cloud.sensor_orientation_ = Eigen::Quaternionf::Identity ();
+        cloud.sensor_origin_ = Eigen::Vector4d::Zero ();
+        cloud.sensor_orientation_ = Eigen::Quaterniond::Identity ();
         int res = read (file_name, blob, ifs_version);
 
         // If no error, convert the data

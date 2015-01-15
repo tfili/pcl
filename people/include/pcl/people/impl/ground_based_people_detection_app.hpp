@@ -63,7 +63,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::GroundBasedPeopleDetectionAp
   heads_minimum_distance_ = 0.3;
 
   // set flag values for mandatory parameters:
-  sqrt_ground_coeffs_ = std::numeric_limits<float>::quiet_NaN();
+  sqrt_ground_coeffs_ = std::numeric_limits<double>::quiet_NaN();
   ground_coeffs_set_ = false;
   intrinsics_matrix_set_ = false;
   person_classifier_set_flag_ = false;
@@ -79,7 +79,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setInputCloud (PointCloudPtr
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setTransformation (const Eigen::Matrix3f& transformation)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setTransformation (const Eigen::Matrix3d& transformation)
 {
   if (!transformation.isUnitary())
   {
@@ -93,11 +93,11 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setTransformation (const Eig
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setGround (Eigen::VectorXf& ground_coeffs)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setGround (Eigen::VectorXd& ground_coeffs)
 {
   ground_coeffs_ = ground_coeffs;
   ground_coeffs_set_ = true;
-  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4f(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
+  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0, 0.0, 0.0, ground_coeffs(3))).norm();
   applyTransformationGround();
 }
 
@@ -108,14 +108,14 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setSamplingFactor (int sampl
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setVoxelSize (float voxel_size)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setVoxelSize (double voxel_size)
 {
   voxel_size_ = voxel_size;
   updateMinMaxPoints ();
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setIntrinsics (Eigen::Matrix3f intrinsics_matrix)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setIntrinsics (Eigen::Matrix3d intrinsics_matrix)
 {
   intrinsics_matrix_ = intrinsics_matrix;
   intrinsics_matrix_set_ = true;
@@ -130,7 +130,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setClassifier (pcl::people::
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setFOV (float min_fov, float max_fov)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setFOV (double min_fov, double max_fov)
 {
   min_fov_ = min_fov;
   max_fov_ = max_fov;
@@ -150,7 +150,7 @@ void pcl::people::GroundBasedPeopleDetectionApp<PointT>::updateMinMaxPoints ()
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setPersonClusterLimits (float min_height, float max_height, float min_width, float max_width)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setPersonClusterLimits (double min_height, double max_height, double min_width, double max_width)
 {
   min_height_ = min_height;
   max_height_ = max_height;
@@ -160,7 +160,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setPersonClusterLimits (floa
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::setMinimumDistanceBetweenHeads (float heads_minimum_distance)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::setMinimumDistanceBetweenHeads (double heads_minimum_distance)
 {
   heads_minimum_distance_= heads_minimum_distance;
 }
@@ -172,7 +172,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::setHeadCentroid (bool head_c
 }
 
 template <typename PointT> void
-pcl::people::GroundBasedPeopleDetectionApp<PointT>::getPersonClusterLimits (float& min_height, float& max_height, float& min_width, float& max_width)
+pcl::people::GroundBasedPeopleDetectionApp<PointT>::getPersonClusterLimits (double& min_height, double& max_height, double& min_width, double& max_width)
 {
   min_height = min_height_;
   max_height = max_height_;
@@ -187,13 +187,13 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::getDimensionLimits (int& min
   max_points = max_points_;
 }
 
-template <typename PointT> float
+template <typename PointT> double
 pcl::people::GroundBasedPeopleDetectionApp<PointT>::getMinimumDistanceBetweenHeads ()
 {
   return (heads_minimum_distance_);
 }
 
-template <typename PointT> Eigen::VectorXf
+template <typename PointT> Eigen::VectorXd
 pcl::people::GroundBasedPeopleDetectionApp<PointT>::getGround ()
 {
   if (!ground_coeffs_set_)
@@ -258,7 +258,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::applyTransformationPointClou
 {
   if (transformation_set_)
   {
-    Eigen::Transform<float, 3, Eigen::Affine> transform;
+    Eigen::Transform<double, 3, Eigen::Affine> transform;
     transform = transformation_;
     pcl::transformPointCloud(*cloud_, *cloud_, transform);
   }
@@ -269,7 +269,7 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::applyTransformationGround ()
 {
   if (transformation_set_ && ground_coeffs_set_)
   {
-    Eigen::Transform<float, 3, Eigen::Affine> transform;
+    Eigen::Transform<double, 3, Eigen::Affine> transform;
     transform = transformation_;
     ground_coeffs_transformed_ = transform.matrix() * ground_coeffs_;
   }
@@ -400,11 +400,11 @@ pcl::people::GroundBasedPeopleDetectionApp<PointT>::compute (std::vector<pcl::pe
   for(typename std::vector<pcl::people::PersonCluster<PointT> >::iterator it = clusters.begin(); it != clusters.end(); ++it)
   {
     //Evaluate confidence for the current PersonCluster:
-    Eigen::Vector3f centroid = intrinsics_matrix_transformed_ * (it->getTCenter());
+    Eigen::Vector3d centroid = intrinsics_matrix_transformed_ * (it->getTCenter());
     centroid /= centroid(2);
-    Eigen::Vector3f top = intrinsics_matrix_transformed_ * (it->getTTop());
+    Eigen::Vector3d top = intrinsics_matrix_transformed_ * (it->getTTop());
     top /= top(2);
-    Eigen::Vector3f bottom = intrinsics_matrix_transformed_ * (it->getTBottom());
+    Eigen::Vector3d bottom = intrinsics_matrix_transformed_ * (it->getTBottom());
     bottom /= bottom(2);
     it->setPersonConfidence(person_classifier_.evaluate(rgb_image_, bottom, top, centroid, vertical_));
   }

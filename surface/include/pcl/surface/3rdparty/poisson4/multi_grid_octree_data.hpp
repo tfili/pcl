@@ -842,7 +842,7 @@ namespace pcl
         if( !useConfidence ) normal /= l;
 
         l = Real(1.);
-        Real pointWeight = Real(1.f);
+        Real pointWeight = Real(1.);
         if( samplesPerNode>0 && splatDepth )
         {
           pointWeight = NonLinearSplatOrientedPoint( position , normal , splatDepth , samplesPerNode , _minDepth , maxDepth );
@@ -1121,12 +1121,12 @@ namespace pcl
       return count;
     }
     template< int Degree >
-    int Octree< Degree >::SetMatrixRow( const OctNode< TreeNodeData , Real >::Neighbors5& neighbors5 , MatrixEntry< float >* row , int offset , const double stencil[5][5][5] ) const
+    int Octree< Degree >::SetMatrixRow( const OctNode< TreeNodeData , Real >::Neighbors5& neighbors5 , MatrixEntry< double >* row , int offset , const double stencil[5][5][5] ) const
     {
       return SetMatrixRow( neighbors5 , row , offset , stencil , 0 , 5 , 0 , 5 , 0 , 5 );
     }
     template< int Degree >
-    int Octree< Degree >::SetMatrixRow( const OctNode< TreeNodeData , Real >::Neighbors5& neighbors5 , MatrixEntry< float >* row , int offset , const double stencil[5][5][5] , int xStart , int xEnd , int yStart , int yEnd , int zStart , int zEnd ) const
+    int Octree< Degree >::SetMatrixRow( const OctNode< TreeNodeData , Real >::Neighbors5& neighbors5 , MatrixEntry< double >* row , int offset , const double stencil[5][5][5] , int xStart , int xEnd , int yStart , int yEnd , int zStart , int zEnd ) const
     {
       bool hasPoints[3][3];
       Real diagonal = 0;
@@ -1157,11 +1157,11 @@ namespace pcl
               Point3D< Real > p = pData.position;
               for( int s=0 ; s<3 ; s++ )
               {
-                pointInfo.splineValues[0][s] = float( fData.baseBSplines[ idx[0]+j-s][s]( p[0] ) );
-                pointInfo.splineValues[1][s] = float( fData.baseBSplines[ idx[1]+k-s][s]( p[1] ) );
-                pointInfo.splineValues[2][s] = float( fData.baseBSplines[ idx[2]+l-s][s]( p[2] ) );
+                pointInfo.splineValues[0][s] = double( fData.baseBSplines[ idx[0]+j-s][s]( p[0] ) );
+                pointInfo.splineValues[1][s] = double( fData.baseBSplines[ idx[1]+k-s][s]( p[1] ) );
+                pointInfo.splineValues[2][s] = double( fData.baseBSplines[ idx[2]+l-s][s]( p[2] ) );
               }
-              float value = pointInfo.splineValues[0][j] * pointInfo.splineValues[1][k] * pointInfo.splineValues[2][l];
+              double value = pointInfo.splineValues[0][j] * pointInfo.splineValues[1][k] * pointInfo.splineValues[2][l];
               diagonal += value * value * weight;
               pointInfo.weightedValue  = value * weight;
               for( int s=0 ; s<3 ; s++ ) pointInfo.splineValues[0][s] *= pointInfo.weightedValue;
@@ -1868,7 +1868,7 @@ namespace pcl
       double t = 0;
       fData.setDotTables( fData.DD_DOT_FLAG | fData.DV_DOT_FLAG );
 
-      SparseMatrix< float >::SetAllocator( MEMORY_ALLOCATOR_BLOCK_SIZE );
+      SparseMatrix< double >::SetAllocator( MEMORY_ALLOCATOR_BLOCK_SIZE );
       _sNodes.treeNodes[0]->nodeData.solution = 0;
 
       std::vector< Real > metSolution( _sNodes.nodeCount[ _sNodes.maxDepth ] , 0 );
@@ -1878,7 +1878,7 @@ namespace pcl
         if( subdivideDepth>0 ) iter += SolveFixedDepthMatrix( i , _sNodes , &metSolution[0] , subdivideDepth , showResidual , minIters , accuracy );
         else                   iter += SolveFixedDepthMatrix( i , _sNodes , &metSolution[0] ,                  showResidual , minIters , accuracy );
       }
-      SparseMatrix< float >::internalAllocator.reset();
+      SparseMatrix< double >::internalAllocator.reset();
       fData.clearDotTables( fData.VV_DOT_FLAG | fData.DV_DOT_FLAG | fData.DD_DOT_FLAG );
 
       return iter;
@@ -2412,7 +2412,7 @@ namespace pcl
       RefineBoundary( subdivideDepth );
 
       RootData rootData , coarseRootData;
-      std::vector< Point3D< float > >* interiorPoints;
+      std::vector< Point3D< double > >* interiorPoints;
       int maxDepth = tree.maxDepth();
 
       int sDepth = subdivideDepth<=0 ? 0 : std::max< int >( 0 , maxDepth-subdivideDepth );
@@ -2464,7 +2464,7 @@ namespace pcl
         memset( rootData.cornerValuesSet  , 0 , sizeof( char ) * rootData.cCount );
         memset( rootData.cornerNormalsSet , 0 , sizeof( char ) * rootData.cCount );
         memset( rootData.edgesSet         , 0 , sizeof( char ) * rootData.eCount );
-        interiorPoints = new std::vector< Point3D< float > >();
+        interiorPoints = new std::vector< Point3D< double > >();
         for( int d=maxDepth ; d>sDepth ; d-- )
         {
           int leafNodeCount = 0;
@@ -2507,8 +2507,8 @@ namespace pcl
           // the SetMCRootPositions writes to interiorPoints (with lockupdateing)
           // while GetMCIsoTriangles reads from interiorPoints (without locking)
 #if MISHA_DEBUG
-          std::vector< Point3D< float > > barycenters;
-          std::vector< Point3D< float > >* barycenterPtr = addBarycenter ? & barycenters : NULL;
+          std::vector< Point3D< double > > barycenters;
+          std::vector< Point3D< double > >* barycenterPtr = addBarycenter ? & barycenters : NULL;
 #endif // MISHA_DEBUG
 #pragma omp parallel for num_threads( threads )
           for( int t=0 ; t<threads ; t++ ) for( int i=(leafNodeCount*t)/threads ; i<(leafNodeCount*(t+1))/threads ; i++ )
@@ -2545,8 +2545,8 @@ namespace pcl
         Stencil< double , 3 > stencil1[8] , stencil2[8][8];
         SetEvaluationStencils( d , stencil1 , stencil2 );
 #if MISHA_DEBUG
-        std::vector< Point3D< float > > barycenters;
-        std::vector< Point3D< float > >* barycenterPtr = addBarycenter ? &barycenters : NULL;
+        std::vector< Point3D< double > > barycenters;
+        std::vector< Point3D< double > >* barycenterPtr = addBarycenter ? &barycenters : NULL;
 #endif // MISHA_DEBUG
         for( int i=_sNodes.nodeCount[d] ; i<_sNodes.nodeCount[d+1] ; i++ )
         {
@@ -2973,7 +2973,7 @@ namespace pcl
       return !(idx1%(mask)) || !(idx2%(mask));
     }
     template< int Degree >
-    void Octree< Degree >::GetRootSpan( const RootInfo& ri , Point3D< float >& start , Point3D< float >& end )
+    void Octree< Degree >::GetRootSpan( const RootInfo& ri , Point3D< double >& start , Point3D< double >& end )
     {
       int o , i1 , i2;
       Real width;
@@ -3338,7 +3338,7 @@ namespace pcl
     }
     template< int Degree >
     int Octree< Degree >::SetMCRootPositions( TreeOctNode* node , int sDepth , Real isoValue , TreeOctNode::ConstNeighborKey5& neighborKey5 , RootData& rootData ,
-                                              std::vector< Point3D< float > >* interiorPositions , CoredMeshData* mesh , const Real* metSolution , int nonLinearFit )
+                                              std::vector< Point3D< double > >* interiorPositions , CoredMeshData* mesh , const Real* metSolution , int nonLinearFit )
     {
       Point3D< Real > position;
       int eIndex;
@@ -3550,9 +3550,9 @@ namespace pcl
     }
     template<int Degree>
 #if MISHA_DEBUG
-    int Octree< Degree >::GetMCIsoTriangles( TreeOctNode* node , CoredMeshData* mesh , RootData& rootData , std::vector< Point3D< float > >* interiorPositions , int offSet , int sDepth , bool polygonMesh , std::vector< Point3D< float > >* barycenters )
+    int Octree< Degree >::GetMCIsoTriangles( TreeOctNode* node , CoredMeshData* mesh , RootData& rootData , std::vector< Point3D< double > >* interiorPositions , int offSet , int sDepth , bool polygonMesh , std::vector< Point3D< double > >* barycenters )
 #else // !MISHA_DEBUG
-    int Octree< Degree >::GetMCIsoTriangles( TreeOctNode* node , CoredMeshData* mesh , RootData& rootData , std::vector< Point3D< float > >* interiorPositions , int offSet , int sDepth , bool addBarycenter , bool polygonMesh )
+    int Octree< Degree >::GetMCIsoTriangles( TreeOctNode* node , CoredMeshData* mesh , RootData& rootData , std::vector< Point3D< double > >* interiorPositions , int offSet , int sDepth , bool addBarycenter , bool polygonMesh )
 #endif // MISHA_DEBUG
     {
       int tris=0;
@@ -3628,13 +3628,13 @@ namespace pcl
     }
     template<int Degree>
 #if MISHA_DEBUG
-    int Octree<Degree>::AddTriangles( CoredMeshData* mesh , std::vector<CoredPointIndex>& edges , std::vector<Point3D<float> >* interiorPositions , int offSet , bool polygonMesh , std::vector< Point3D< float > >* barycenters )
+    int Octree<Degree>::AddTriangles( CoredMeshData* mesh , std::vector<CoredPointIndex>& edges , std::vector<Point3D<double> >* interiorPositions , int offSet , bool polygonMesh , std::vector< Point3D< double > >* barycenters )
 #else // !MISHA_DEBUG
-    int Octree<Degree>::AddTriangles( CoredMeshData* mesh , std::vector<CoredPointIndex>& edges , std::vector<Point3D<float> >* interiorPositions , int offSet , bool addBarycenter , bool polygonMesh )
+    int Octree<Degree>::AddTriangles( CoredMeshData* mesh , std::vector<CoredPointIndex>& edges , std::vector<Point3D<double> >* interiorPositions , int offSet , bool addBarycenter , bool polygonMesh )
 #endif // MISHA_DEBUG
     {
-      MinimalAreaTriangulation< float > MAT;
-      std::vector< Point3D< float > > vertices;
+      MinimalAreaTriangulation< double > MAT;
+      std::vector< Point3D< double > > vertices;
       std::vector< TriangleIndex > triangles;
       if( polygonMesh )
       {
@@ -3749,15 +3749,15 @@ namespace pcl
       return int(edges.size())-2;
     }
     template< int Degree >
-    Real* Octree< Degree >::GetSolutionGrid( int& res , float isoValue , int depth )
+    Real* Octree< Degree >::GetSolutionGrid( int& res , double isoValue , int depth )
     {
       if( depth<=0 || depth>tree.maxDepth() ) depth = tree.maxDepth();
       BSplineData< Degree , Real > fData;
       fData.set( depth );
       fData.setValueTables( fData.VALUE_FLAG );
       res = 1<<depth;
-      Real* values = new float[ res * res * res ];
-      memset( values , 0 , sizeof( float ) * res  * res * res );
+      Real* values = new double[ res * res * res ];
+      memset( values , 0 , sizeof( double ) * res  * res * res );
 
       for( TreeOctNode* n=tree.nextNode() ; n ; n=tree.nextNode( n ) )
       {
@@ -3797,8 +3797,8 @@ namespace pcl
     {
       if( depth<=0 || depth>tree.maxDepth() ) depth = tree.maxDepth();
       res = 1<<tree.maxDepth();
-      Real* values = new float[ res * res * res ];
-      memset( values , 0 , sizeof( float ) * res  * res * res );
+      Real* values = new double[ res * res * res ];
+      memset( values , 0 , sizeof( double ) * res  * res * res );
 
       for( TreeOctNode* n=tree.nextNode() ; n ; n=tree.nextNode( n ) )
       {

@@ -108,17 +108,17 @@ namespace pcl
     /*
      * \brief The resolution of models and scene used to verify hypotheses (in meters)
      */
-    float resolution_;
+    double resolution_;
 
     /*
      * \brief Threshold for inliers
      */
-    float inliers_threshold_;
+    double inliers_threshold_;
 
     /*
      * \brief Threshold to consider a point being occluded
      */
-    float occlusion_thres_;
+    double occlusion_thres_;
 
     /*
      * \brief Whether the HV method requires normals or not, by default = false
@@ -135,10 +135,10 @@ namespace pcl
     {
       zbuffer_scene_resolution_ = 100;
       zbuffer_self_occlusion_resolution_ = 150;
-      resolution_ = 0.005f;
-      inliers_threshold_ = static_cast<float>(resolution_);
+      resolution_ = 0.005;
+      inliers_threshold_ = static_cast<double>(resolution_);
       occlusion_cloud_set_ = false;
-      occlusion_thres_ = 0.005f;
+      occlusion_thres_ = 0.005;
       normals_set_ = false;
       requires_normals_ = false;
     }
@@ -152,7 +152,7 @@ namespace pcl
      *  mask r resolution
      */
     void
-    setResolution(float r) {
+    setResolution(double r) {
       resolution_ = r;
     }
 
@@ -161,7 +161,7 @@ namespace pcl
      *  mask t threshold
      */
     void
-    setOcclusionThreshold(float t) {
+    setOcclusionThreshold(double t) {
       occlusion_thres_ = t;
     }
 
@@ -170,7 +170,7 @@ namespace pcl
      *  mask r resolution
      */
     void
-    setInlierThreshold(float r) {
+    setInlierThreshold(double r) {
       inliers_threshold_ = r;
     }
 
@@ -238,7 +238,7 @@ namespace pcl
           PCL_WARN("Scene not organized... filtering using computed depth buffer\n");
         }
 
-        pcl::occlusion_reasoning::ZBuffering<ModelT, SceneT> zbuffer_scene (zbuffer_scene_resolution_, zbuffer_scene_resolution_, 1.f);
+        pcl::occlusion_reasoning::ZBuffering<ModelT, SceneT> zbuffer_scene (zbuffer_scene_resolution_, zbuffer_scene_resolution_, 1.);
         if (!occlusion_cloud_->isOrganized ())
         {
           zbuffer_scene.computeDepthMap (occlusion_cloud_, true);
@@ -249,10 +249,10 @@ namespace pcl
 
           //self-occlusions
           typename pcl::PointCloud<ModelT>::Ptr filtered (new pcl::PointCloud<ModelT> ());
-          typename pcl::occlusion_reasoning::ZBuffering<ModelT, SceneT> zbuffer_self_occlusion (75, 75, 1.f);
+          typename pcl::occlusion_reasoning::ZBuffering<ModelT, SceneT> zbuffer_self_occlusion (75, 75, 1.);
           zbuffer_self_occlusion.computeDepthMap (models[i], true);
           std::vector<int> indices;
-          zbuffer_self_occlusion.filter (models[i], indices, 0.005f);
+          zbuffer_self_occlusion.filter (models[i], indices, 0.005);
           pcl::copyPointCloud (*models[i], indices, *filtered);
 
           if(normals_set_ && requires_normals_) {
@@ -266,7 +266,7 @@ namespace pcl
           //scene-occlusions
           if (occlusion_cloud_->isOrganized ())
           {
-            filtered = pcl::occlusion_reasoning::filter<ModelT,SceneT> (occlusion_cloud_, const_filtered, 525.f, occlusion_thres_);
+            filtered = pcl::occlusion_reasoning::filter<ModelT,SceneT> (occlusion_cloud_, const_filtered, 525., occlusion_thres_);
           }
           else
           {

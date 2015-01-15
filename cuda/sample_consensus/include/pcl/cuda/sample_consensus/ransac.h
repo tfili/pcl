@@ -85,7 +85,7 @@ namespace pcl
           * \param model a Sample Consensus model
           * \param threshold distance to model threshold
           */
-        RandomSampleConsensus (const SampleConsensusModelPtr &model, float threshold) : 
+        RandomSampleConsensus (const SampleConsensusModelPtr &model, double threshold) : 
           SampleConsensus<Storage> (model, threshold)
         {
           // Maximum number of trials before we give up.

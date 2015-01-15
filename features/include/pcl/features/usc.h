@@ -143,7 +143,7 @@ namespace pcl
         * \param[out] desc descriptor to compute
         */
       void
-      computePointDescriptor (size_t index, std::vector<float> &desc);
+      computePointDescriptor (size_t index, std::vector<double> &desc);
 
       /** \brief Initialize computation by allocating all the intervals and the volume lookup table. */
       virtual bool
@@ -156,16 +156,16 @@ namespace pcl
       computeFeature (PointCloudOut &output);
 
       /** \brief values of the radii interval. */
-      std::vector<float> radii_interval_;
+      std::vector<double> radii_interval_;
 
       /** \brief Theta divisions interval. */
-      std::vector<float> theta_divisions_;
+      std::vector<double> theta_divisions_;
 
       /** \brief Phi divisions interval. */
-      std::vector<float> phi_divisions_;
+      std::vector<double> phi_divisions_;
 
       /** \brief Volumes look up table. */
-      std::vector<float> volume_lut_;
+      std::vector<double> volume_lut_;
 
       /** \brief Bins along the azimuth dimension. */
       size_t azimuth_bins_;

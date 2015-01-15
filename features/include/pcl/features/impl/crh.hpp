@@ -68,40 +68,40 @@ pcl::CRHEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
     return;
   }
 
-  Eigen::Vector3f plane_normal;
+  Eigen::Vector3d plane_normal;
   plane_normal[0] = -centroid_[0];
   plane_normal[1] = -centroid_[1];
   plane_normal[2] = -centroid_[2];
-  Eigen::Vector3f z_vector = Eigen::Vector3f::UnitZ ();
+  Eigen::Vector3d z_vector = Eigen::Vector3d::UnitZ ();
   plane_normal.normalize ();
-  Eigen::Vector3f axis = plane_normal.cross (z_vector);
+  Eigen::Vector3d axis = plane_normal.cross (z_vector);
   double rotation = -asin (axis.norm ());
   axis.normalize ();
 
   int nbins = nbins_;
   int bin_angle = 360 / nbins;
 
-  Eigen::Affine3f transformPC (Eigen::AngleAxisf (static_cast<float> (rotation), axis));
+  Eigen::Affine3d transformPC (Eigen::AngleAxisd (static_cast<double> (rotation), axis));
 
   pcl::PointCloud<pcl::PointNormal> grid;
   grid.points.resize (indices_->size ());
 
   for (size_t i = 0; i < indices_->size (); i++)
   {
-    grid.points[i].getVector4fMap () = surface_->points[(*indices_)[i]].getVector4fMap ();
-    grid.points[i].getNormalVector4fMap () = normals_->points[(*indices_)[i]].getNormalVector4fMap ();
+    grid.points[i].getVector4dMap () = surface_->points[(*indices_)[i]].getVector4dMap ();
+    grid.points[i].getNormalVector4dMap () = normals_->points[(*indices_)[i]].getNormalVector4dMap ();
   }
 
   pcl::transformPointCloudWithNormals (grid, grid, transformPC);
 
   //fill spatial data vector
   kiss_fft_scalar * spatial_data = new kiss_fft_scalar[nbins];
-  float sum_w = 0, w = 0;
+  double sum_w = 0, w = 0;
   int bin = 0;
   for (size_t i = 0; i < grid.points.size (); ++i)
   {
     bin = static_cast<int> ((((atan2 (grid.points[i].normal_y, grid.points[i].normal_x) + M_PI) * 180 / M_PI) / bin_angle)) % nbins;
-    w = sqrtf (grid.points[i].normal_y * grid.points[i].normal_y + grid.points[i].normal_x * grid.points[i].normal_x);
+    w = sqrt (grid.points[i].normal_y * grid.points[i].normal_y + grid.points[i].normal_x * grid.points[i].normal_x);
     sum_w += w;
     spatial_data[bin] += w;
   }

@@ -168,7 +168,7 @@ namespace pcl
   }
 
   /** \brief Compute the 3x3 covariance matrix of a given set of points.
-    * The result is returned as a Eigen::Matrix3f.
+    * The result is returned as a Eigen::Matrix3d.
     * Note: the covariance matrix is not normalized with the number of
     * points. For a normalized covariance, please use
     * computeNormalizedCovarianceMatrix.
@@ -202,7 +202,7 @@ namespace pcl
   }
 
   /** \brief Compute normalized the 3x3 covariance matrix of a given set of points.
-    * The result is returned as a Eigen::Matrix3f.
+    * The result is returned as a Eigen::Matrix3d.
     * Normalized means that every entry has been divided by the number of points in the point cloud.
     * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
     * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
@@ -236,7 +236,7 @@ namespace pcl
   }
 
   /** \brief Compute the 3x3 covariance matrix of a given set of points using their indices.
-    * The result is returned as a Eigen::Matrix3f.
+    * The result is returned as a Eigen::Matrix3d.
     * Note: the covariance matrix is not normalized with the number of
     * points. For a normalized covariance, please use
     * computeNormalizedCovarianceMatrix.
@@ -258,7 +258,7 @@ namespace pcl
   computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
                            const std::vector<int> &indices,
                            const Eigen::Vector4f &centroid,
-                           Eigen::Matrix3f &covariance_matrix)
+                           Eigen::Matrix3d &covariance_matrix)
   {
     return (computeCovarianceMatrix<PointT, float> (cloud, indices, centroid, covariance_matrix));
   }
@@ -273,7 +273,7 @@ namespace pcl
   }
 
   /** \brief Compute the 3x3 covariance matrix of a given set of points using their indices.
-    * The result is returned as a Eigen::Matrix3f.
+    * The result is returned as a Eigen::Matrix3d.
     * Note: the covariance matrix is not normalized with the number of
     * points. For a normalized covariance, please use
     * computeNormalizedCovarianceMatrix.
@@ -311,7 +311,7 @@ namespace pcl
 
   /** \brief Compute the normalized 3x3 covariance matrix of a given set of points using
     * their indices.
-    * The result is returned as a Eigen::Matrix3f.
+    * The result is returned as a Eigen::Matrix3d.
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
     * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
@@ -349,7 +349,7 @@ namespace pcl
   }
 
   /** \brief Compute the normalized 3x3 covariance matrix of a given set of points using
-    * their indices. The result is returned as a Eigen::Matrix3f.
+    * their indices. The result is returned as a Eigen::Matrix3d.
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
     * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
@@ -390,7 +390,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
     * \param[out] centroid the centroid of the set of points in the cloud
@@ -423,7 +423,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
@@ -460,7 +460,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] centroid the centroid of the set of points in the cloud
@@ -497,7 +497,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
     * \return number of valid point used to determine the covariance matrix.
@@ -526,7 +526,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix
@@ -559,7 +559,7 @@ namespace pcl
     * Normalized means that every entry has been divided by the number of entries in indices.
     * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
     * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-    * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+    * \note This method is theoretically exact. However using double for internal calculations reduces the accuracy but increases the efficiency.
     * \param[in] cloud the input point cloud
     * \param[in] indices subset of points given by their indices
     * \param[out] covariance_matrix the resultant 3x3 covariance matrix

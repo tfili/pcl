@@ -60,9 +60,9 @@ pcl::visualization::getCorrespondingPointCloud (vtkPolyData *src,
   {
     double p[3];
     src->GetPoint (i, p);
-    cloud.points[i].x = static_cast<float> (p[0]); 
-    cloud.points[i].y = static_cast<float> (p[1]); 
-    cloud.points[i].z = static_cast<float> (p[2]);
+    cloud.points[i].x = static_cast<double> (p[0]); 
+    cloud.points[i].y = static_cast<double> (p[1]); 
+    cloud.points[i].z = static_cast<double> (p[2]);
   }
 
   // Compute a kd-tree for tgt
@@ -71,7 +71,7 @@ pcl::visualization::getCorrespondingPointCloud (vtkPolyData *src,
   kdtree.setInputCloud (tgt_ptr);
 
   std::vector<int> nn_indices (1);
-  std::vector<float> nn_dists (1);
+  std::vector<double> nn_dists (1);
   // For each point on screen, find its correspondent in the target
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {
@@ -146,8 +146,8 @@ pcl::visualization::savePointData (vtkPolyData* data, const std::string &out_fil
     std::stringstream ss;
     ss << out_file << i++ << ".pcd";
     pcl::console::print_debug ("  Save: %s ... ", ss.str ().c_str ());
-    if (pcl::io::savePCDFile (ss.str (), cloud_out, Eigen::Vector4f::Zero (),
-                              Eigen::Quaternionf::Identity (), true) == -1)
+    if (pcl::io::savePCDFile (ss.str (), cloud_out, Eigen::Vector4d::Zero (),
+                              Eigen::Quaterniond::Identity (), true) == -1)
     {
       pcl::console::print_error (stdout, "[failed]\n");
       return (false);

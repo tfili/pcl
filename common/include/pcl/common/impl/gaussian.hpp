@@ -44,9 +44,9 @@
 
 template <typename PointT> void 
 pcl::GaussianKernel::convolveRows(const pcl::PointCloud<PointT> &input,
-                                  boost::function <float (const PointT& p)> field_accessor,
-                                  const Eigen::VectorXf& kernel,
-                                  pcl::PointCloud<float> &output) const
+                                  boost::function <double (const PointT& p)> field_accessor,
+                                  const Eigen::VectorXd& kernel,
+                                  pcl::PointCloud<double> &output) const
 {
   assert(kernel.size () % 2 == 1);
   int kernel_width = kernel.size () -1;
@@ -77,9 +77,9 @@ pcl::GaussianKernel::convolveRows(const pcl::PointCloud<PointT> &input,
 
 template <typename PointT> void 
 pcl::GaussianKernel::convolveCols(const pcl::PointCloud<PointT> &input,
-                                  boost::function <float (const PointT& p)> field_accessor,
-                                  const Eigen::VectorXf& kernel,
-                                  pcl::PointCloud<float> &output) const
+                                  boost::function <double (const PointT& p)> field_accessor,
+                                  const Eigen::VectorXd& kernel,
+                                  pcl::PointCloud<double> &output) const
 {
   assert(kernel.size () % 2 == 1);
   int kernel_width = kernel.size () -1;

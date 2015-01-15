@@ -50,8 +50,8 @@
 
 namespace Eigen
 {
-  typedef Eigen::Matrix<float, 6, 1> Vector6f;
-  typedef Eigen::Matrix<float, 6, 6> Matrix6f;
+  typedef Eigen::Matrix<double, 6, 1> Vector6;
+  typedef Eigen::Matrix<double, 6, 6> Matrix6;
 }
 
 namespace pcl
@@ -120,14 +120,14 @@ namespace pcl
         struct VertexProperties
         {
           PointCloudPtr cloud_;
-          Eigen::Vector6f pose_;
+          Eigen::Vector6 pose_;
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
         struct EdgeProperties
         {
           pcl::CorrespondencesPtr corrs_;
-          Eigen::Matrix6f cinv_;
-          Eigen::Vector6f cinvd_;
+          Eigen::Matrix6 cinv_;
+          Eigen::Vector6 cinvd_;
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW
         };
 
@@ -189,14 +189,14 @@ namespace pcl
           * \param[in] convergence_threshold The new convergence threshold (default = 0.0).
           */
         void
-        setConvergenceThreshold (float convergence_threshold);
+        setConvergenceThreshold (double convergence_threshold);
 
         /** \brief Get the convergence threshold for the compute() method.
           * \details When the compute() method computes the new poses relative to the old poses, it will determine the length of the difference vector.
           * When the average length of all difference vectors becomes less than the convergence_threshold the convergence is assumed to be met.
           * \return The current convergence threshold (default = 0.0).
           */
-        inline float
+        inline double
         getConvergenceThreshold () const;
 
         /** \brief Add a new point cloud to the SLAM graph.
@@ -211,7 +211,7 @@ namespace pcl
           * \return The vertex descriptor of the newly created vertex.
           */
         Vertex
-        addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6f &pose = Eigen::Vector6f::Zero ());
+        addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6 &pose = Eigen::Vector6::Zero ());
 
         /** \brief Change a point cloud on one of the SLAM graph's vertices.
           * \details This method will change the point cloud attached to an existing vertex and will not alter the SLAM graph structure.
@@ -240,14 +240,14 @@ namespace pcl
           * \param[in] pose The new pose estimate for that vertex.
           */
         inline void
-        setPose (const Vertex &vertex, const Eigen::Vector6f &pose);
+        setPose (const Vertex &vertex, const Eigen::Vector6 &pose);
 
         /** \brief Return a pose estimate from one of the SLAM graph's vertices.
           * \note Vertex descriptors are typecastable to int.
           * \param[in] vertex The vertex descriptor of which to return the pose estimate.
           * \return The current pose estimate of that vertex.
           */
-        inline Eigen::Vector6f
+        inline Eigen::Vector6
         getPose (const Vertex &vertex) const;
 
         /** \brief Return a pose estimate from one of the SLAM graph's vertices as an affine transformation matrix.
@@ -255,7 +255,7 @@ namespace pcl
           * \param[in] vertex The vertex descriptor of which to return the transformation matrix.
           * \return The current transformation matrix of that vertex.
           */
-        inline Eigen::Affine3f
+        inline Eigen::Affine3d
         getTransformation (const Vertex &vertex) const;
 
         /** \brief Add/change a set of correspondences for one of the SLAM graph's edges.
@@ -323,8 +323,8 @@ namespace pcl
         computeEdge (const Edge &e);
 
         /** \brief Returns a pose corrected 6DoF incidence matrix. */
-        inline Eigen::Matrix6f
-        incidenceCorrection (const Eigen::Vector6f &pose);
+        inline Eigen::Matrix6
+        incidenceCorrection (const Eigen::Vector6 &pose);
 
       private:
         /** \brief The internal SLAM graph structure. */
@@ -334,7 +334,7 @@ namespace pcl
         int max_iterations_;
 
         /** \brief The convergence threshold for the summed vector lengths of all poses. */
-        float convergence_threshold_;
+        double convergence_threshold_;
     };
   }
 }

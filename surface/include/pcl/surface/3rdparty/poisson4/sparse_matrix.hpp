@@ -614,7 +614,7 @@ namespace pcl
             const MatrixEntry< T >* temp = A[i];
             const MatrixEntry< T >* end = temp + A.rowSizes[i];
             const float& in_i = in[i];
-            float out_i = 0.;
+            double out_i = 0.;
             for( ; temp!=end ; temp++ )
             {
               int j = temp->N;
@@ -631,7 +631,7 @@ namespace pcl
           const MatrixEntry< T >* temp = A[i];
           const MatrixEntry< T >* end = temp + A.rowSizes[i];
           const float& in_i = in[i];
-          float out_i = 0.f;
+          double out_i = 0.;
           for( ; temp!=end ; temp++ )
           {
             int j = temp->N;

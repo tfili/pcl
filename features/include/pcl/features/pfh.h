@@ -103,11 +103,11 @@ namespace pcl
         nr_subdiv_ (5), 
         pfh_histogram_ (),
         pfh_tuple_ (),
-        d_pi_ (1.0f / (2.0f * static_cast<float> (M_PI))), 
+        d_pi_ (1.0 / (2.0 * static_cast<double> (M_PI))), 
         feature_map_ (),
         key_list_ (),
         // Default 1GB memory size. Need to set it to something more conservative.
-        max_cache_size_ ((1ul*1024ul*1024ul*1024ul) / sizeof (std::pair<std::pair<int, int>, Eigen::Vector4f>)),
+        max_cache_size_ ((1ul*1024ul*1024ul*1024ul) / sizeof (std::pair<std::pair<int, int>, Eigen::Vector4d>)),
         use_cache_ (false)
       {
         feature_name_ = "PFHEstimation";
@@ -169,7 +169,7 @@ namespace pcl
         */
       bool 
       computePairFeatures (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, 
-                           int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4);
+                           int p_idx, int q_idx, double &f1, double &f2, double &f3, double &f4);
 
       /** \brief Estimate the PFH (Point Feature Histograms) individual signatures of the three angular (f1, f2, f3)
         * features for a given point based on its spatial neighborhood of 3D points with normals
@@ -181,7 +181,7 @@ namespace pcl
         */
       void 
       computePointPFHSignature (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, 
-                                const std::vector<int> &indices, int nr_split, Eigen::VectorXf &pfh_histogram);
+                                const std::vector<int> &indices, int nr_split, Eigen::VectorXd &pfh_histogram);
 
     protected:
       /** \brief Estimate the Point Feature Histograms (PFH) descriptors at a set of points given by
@@ -196,19 +196,19 @@ namespace pcl
       int nr_subdiv_;
 
       /** \brief Placeholder for a point's PFH signature. */
-      Eigen::VectorXf pfh_histogram_;
+      Eigen::VectorXd pfh_histogram_;
 
       /** \brief Placeholder for a PFH 4-tuple. */
-      Eigen::Vector4f pfh_tuple_;
+      Eigen::Vector4d pfh_tuple_;
 
       /** \brief Placeholder for a histogram index. */
       int f_index_[3];
 
       /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-      float d_pi_; 
+      double d_pi_; 
 
       /** \brief Internal hashmap, used to optimize efficiency of redundant computations. */
-      std::map<std::pair<int, int>, Eigen::Vector4f, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4f> > feature_map_;
+      std::map<std::pair<int, int>, Eigen::Vector4d, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4d> > feature_map_;
 
       /** \brief Queue of pairs saved, used to constrain memory usage. */
       std::queue<std::pair<int, int> > key_list_;

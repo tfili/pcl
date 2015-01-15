@@ -115,9 +115,9 @@ pcl::visualization::ImageViewer::addMask (
   // Construct a search object to get the camera parameters
   pcl::search::OrganizedNeighbor<T> search;
   search.setInputCloud (image);
-  std::vector<float> xy;
+  std::vector<double> xy;
   xy.reserve (mask.size () * 2);
-  const float image_height_f = static_cast<float> (image->height);
+  const double image_height_f = static_cast<double> (image->height);
   for (size_t i = 0; i < mask.size (); ++i)
   {
     pcl::PointXY p_projected;
@@ -173,8 +173,8 @@ pcl::visualization::ImageViewer::addPlanarPolygon (
   // Construct a search object to get the camera parameters and fill points
   pcl::search::OrganizedNeighbor<T> search;
   search.setInputCloud (image);
-  const float image_height_f = static_cast<float> (image->height);
-  std::vector<float> xy;
+  const double image_height_f = static_cast<double> (image->height);
+  std::vector<double> xy;
   xy.reserve ((polygon.getContour ().size () + 1) * 2);
   for (size_t i = 0; i < polygon.getContour ().size (); ++i)
   {
@@ -258,8 +258,8 @@ pcl::visualization::ImageViewer::addRectangle (
   search.projectPoint (p8, pp_2d[7]);
 
   pcl::PointXY min_pt_2d, max_pt_2d;
-  min_pt_2d.x = min_pt_2d.y = std::numeric_limits<float>::max ();
-  max_pt_2d.x = max_pt_2d.y = -std::numeric_limits<float>::max ();
+  min_pt_2d.x = min_pt_2d.y = std::numeric_limits<double>::max ();
+  max_pt_2d.x = max_pt_2d.y = -std::numeric_limits<double>::max ();
   // Search for the two extrema
   for (size_t i = 0; i < pp_2d.size (); ++i)
   {
@@ -269,8 +269,8 @@ pcl::visualization::ImageViewer::addRectangle (
     if (pp_2d[i].y > max_pt_2d.y) max_pt_2d.y = pp_2d[i].y;
   }
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION <= 7))
-  min_pt_2d.y = float (image->height) - min_pt_2d.y;
-  max_pt_2d.y = float (image->height) - max_pt_2d.y;
+  min_pt_2d.y = double (image->height) - min_pt_2d.y;
+  max_pt_2d.y = double (image->height) - max_pt_2d.y;
 #endif
 
   vtkSmartPointer<context_items::Rectangle> rect = vtkSmartPointer<context_items::Rectangle>::New ();
@@ -323,8 +323,8 @@ pcl::visualization::ImageViewer::addRectangle (
     search.projectPoint (mask.points[i], pp_2d[i]);
 
   pcl::PointXY min_pt_2d, max_pt_2d;
-  min_pt_2d.x = min_pt_2d.y = std::numeric_limits<float>::max ();
-  max_pt_2d.x = max_pt_2d.y = -std::numeric_limits<float>::max ();
+  min_pt_2d.x = min_pt_2d.y = std::numeric_limits<double>::max ();
+  max_pt_2d.x = max_pt_2d.y = -std::numeric_limits<double>::max ();
   // Search for the two extrema
   for (size_t i = 0; i < pp_2d.size (); ++i)
   {
@@ -334,8 +334,8 @@ pcl::visualization::ImageViewer::addRectangle (
     if (pp_2d[i].y > max_pt_2d.y) max_pt_2d.y = pp_2d[i].y;
   }
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION <= 7))
-  min_pt_2d.y = float (image->height) - min_pt_2d.y;
-  max_pt_2d.y = float (image->height) - max_pt_2d.y;
+  min_pt_2d.y = double (image->height) - min_pt_2d.y;
+  max_pt_2d.y = double (image->height) - max_pt_2d.y;
 #endif
 
   vtkSmartPointer<context_items::Rectangle> rect = vtkSmartPointer<context_items::Rectangle>::New ();
@@ -472,14 +472,14 @@ pcl::visualization::ImageViewer::showCorrespondences (
     vtkSmartPointer<context_items::Line> line = vtkSmartPointer<context_items::Line>::New ();
     line->setColors (u_r, u_g, u_b);
 
-    float query_x = correspondences[i].index_query % source_img.width;
-    float match_x = correspondences[i].index_match % target_img.width + source_img.width;
+    double query_x = correspondences[i].index_query % source_img.width;
+    double match_x = correspondences[i].index_match % target_img.width + source_img.width;
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION > 10))
-    float query_y = correspondences[i].index_query / source_img.width;
-    float match_y = correspondences[i].index_match / target_img.width;
+    double query_y = correspondences[i].index_query / source_img.width;
+    double match_y = correspondences[i].index_match / target_img.width;
 #else
-    float query_y = getSize ()[1] - correspondences[i].index_query / source_img.width;
-    float match_y = getSize ()[1] - correspondences[i].index_match / target_img.width;
+    double query_y = getSize ()[1] - correspondences[i].index_query / source_img.width;
+    double match_y = getSize ()[1] - correspondences[i].index_match / target_img.width;
 #endif
 
     query_circle->set (query_x, query_y, 3.0);

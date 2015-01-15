@@ -221,7 +221,7 @@ namespace pcl
     template<class T>
     void Vector<T>::Normalize()
     {
-      T N = 1.0f/Norm(2);
+      T N = 1.0/Norm(2);
       for (size_t i = 0; i<m_N; i++)
         m_pV[i] *= N;
     }
@@ -465,7 +465,7 @@ namespace pcl
     template<class T,int Dim>
     void NVector<T,Dim>::Normalize()
     {
-      T N = 1.0f/Norm(2);
+      T N = 1.0/Norm(2);
       for (size_t i = 0; i<m_N*3; i++)
         m_pV[i] *= N;
     }

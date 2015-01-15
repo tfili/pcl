@@ -108,11 +108,11 @@ namespace pcl
       int
       lci (const int x1, const int y1, const int z1, 
            const int x2, const int y2, const int z2, 
-           float &ratio, int &incnt, int &pointcount);
+           double &ratio, int &incnt, int &pointcount);
      
       /** \brief ... */
       void
-      computeESF (PointCloudIn &pc, std::vector<float> &hist);
+      computeESF (PointCloudIn &pc, std::vector<double> &hist);
       
       /** \brief ... */
       void
@@ -124,7 +124,7 @@ namespace pcl
 
       /** \brief ... */
       void
-      scale_points_unit_sphere (const pcl::PointCloud<PointInT> &pc, float scalefactor, Eigen::Vector4f& centroid);
+      scale_points_unit_sphere (const pcl::PointCloud<PointInT> &pc, double scalefactor, Eigen::Vector4d& centroid);
 
     private:
 

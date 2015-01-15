@@ -64,19 +64,19 @@ namespace pcl
     /** \brief Distance between the corresponding points, or the weight denoting the confidence in correspondence estimation */
     union
     {
-      float distance;
-      float weight;
+      double distance;
+      double weight;
     };
     
     /** \brief Standard constructor. 
       * Sets \ref index_query to 0, \ref index_match to -1, and \ref distance to FLT_MAX.
       */
     inline Correspondence () : index_query (0), index_match (-1), 
-                               distance (std::numeric_limits<float>::max ())
+                               distance (std::numeric_limits<double>::max ())
     {}
 
     /** \brief Constructor. */
-    inline Correspondence (int _index_query, int _index_match, float _distance) : 
+    inline Correspondence (int _index_query, int _index_match, double _distance) : 
       index_query (_index_query), index_match (_index_match), distance (_distance)
     {}
 
@@ -119,8 +119,8 @@ namespace pcl
     */
   struct PointCorrespondence3D : public Correspondence
   {
-    Eigen::Vector3f point1;  //!< The 3D position of the point in the first coordinate frame
-    Eigen::Vector3f point2;  //!< The 3D position of the point in the second coordinate frame
+    Eigen::Vector3d point1;  //!< The 3D position of the point in the first coordinate frame
+    Eigen::Vector3d point2;  //!< The 3D position of the point in the second coordinate frame
 
     /** \brief Empty constructor. */
     PointCorrespondence3D () : point1 (), point2 () {}
@@ -139,7 +139,7 @@ namespace pcl
     */
   struct PointCorrespondence6D : public PointCorrespondence3D
   {
-    Eigen::Affine3f transformation;  //!< The transformation to go from the coordinate system
+    Eigen::Affine3d transformation;  //!< The transformation to go from the coordinate system
                                         //!< of point2 to the coordinate system of point1
     /** \brief Empty destructor. */
     virtual ~PointCorrespondence6D () {}

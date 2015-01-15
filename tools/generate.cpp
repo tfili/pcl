@@ -57,18 +57,18 @@ typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
 std::string default_distribution = "uniform";
-float default_xmin = 0.0f;
-float default_xmax = 1.0f;
-float default_xmean = 0.0f;
-float default_xstddev = 1.0f;
-float default_ymin = 0.0f;
-float default_ymax = 1.0f;
-float default_ymean = 0.0f;
-float default_ystddev = 1.0f;
-float default_zmin = 0.0f;
-float default_zmax = 1.0f;
-float default_zmean = 0.0f;
-float default_zstddev = 1.0f;
+double default_xmin = 0.0;
+double default_xmax = 1.0;
+double default_xmean = 0.0;
+double default_xstddev = 1.0;
+double default_ymin = 0.0;
+double default_ymax = 1.0;
+double default_ymean = 0.0;
+double default_ystddev = 1.0;
+double default_zmin = 0.0;
+double default_zmax = 1.0;
+double default_zmean = 0.0;
+double default_zstddev = 1.0;
 int default_size = 10000;
 
 void
@@ -126,18 +126,18 @@ main (int argc, char** argv)
 
   // Command line parsing
   std::string distribution = default_distribution;
-  float xmin = default_xmin;
-  float xmax = default_xmax;
-  float xmean = default_xmean;
-  float xstddev = default_xstddev;
-  float ymin = default_ymin;
-  float ymax = default_ymax;
-  float ymean = default_ymean;
-  float ystddev = default_ystddev;
-  float zmin = default_zmin;
-  float zmax = default_zmax;
-  float zmean = default_zmean;
-  float zstddev = default_zstddev;
+  double xmin = default_xmin;
+  double xmax = default_xmax;
+  double xmean = default_xmean;
+  double xstddev = default_xstddev;
+  double ymin = default_ymin;
+  double ymax = default_ymax;
+  double ymean = default_ymean;
+  double ystddev = default_ystddev;
+  double zmin = default_zmin;
+  double zmax = default_zmax;
+  double zmean = default_zmean;
+  double zstddev = default_zstddev;
   int size = default_size;
   parse_argument (argc, argv, "-distribution", distribution);
   parse_argument (argc, argv, "-xmin", xmin);
@@ -174,26 +174,26 @@ main (int argc, char** argv)
 
   if (distribution == "uniform")
   {
-    CloudGenerator<pcl::PointXYZ, UniformGenerator<float> > generator;
+    CloudGenerator<pcl::PointXYZ, UniformGenerator<double> > generator;
     uint32_t seed = static_cast<uint32_t> (time (NULL));
-    UniformGenerator<float>::Parameters x_params (xmin, xmax, seed++);
+    UniformGenerator<double>::Parameters x_params (xmin, xmax, seed++);
     generator.setParametersForX (x_params);
-    UniformGenerator<float>::Parameters y_params (ymin, ymax, seed++);
+    UniformGenerator<double>::Parameters y_params (ymin, ymax, seed++);
     generator.setParametersForY (y_params);
-    UniformGenerator<float>::Parameters z_params (zmin, zmax, seed++);
+    UniformGenerator<double>::Parameters z_params (zmin, zmax, seed++);
     generator.setParametersForZ (z_params);
 
     generator.fill (size, 1, output);
   }
   else if (distribution == "normal")
   {
-    CloudGenerator<pcl::PointXYZ, NormalGenerator<float> > generator;
+    CloudGenerator<pcl::PointXYZ, NormalGenerator<double> > generator;
     uint32_t seed = static_cast<uint32_t> (time (NULL));
-    NormalGenerator<float>::Parameters x_params (xmean, xstddev, seed++);
+    NormalGenerator<double>::Parameters x_params (xmean, xstddev, seed++);
     generator.setParametersForX (x_params);
-    NormalGenerator<float>::Parameters y_params (ymean, ystddev, seed++);
+    NormalGenerator<double>::Parameters y_params (ymean, ystddev, seed++);
     generator.setParametersForY (y_params);
-    NormalGenerator<float>::Parameters z_params (zmean, zstddev, seed++);
+    NormalGenerator<double>::Parameters z_params (zmean, zstddev, seed++);
     generator.setParametersForZ (z_params);
 
     generator.fill (size, 1, output);

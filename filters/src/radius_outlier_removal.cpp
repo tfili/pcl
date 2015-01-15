@@ -78,7 +78,7 @@ pcl::RadiusOutlierRemoval<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &out
 
   // Allocate enough space to hold the results
   std::vector<int> nn_indices (indices_->size ());
-  std::vector<float> nn_dists (indices_->size ());
+  std::vector<double> nn_dists (indices_->size ());
 
   // Copy the common fields
   output.is_bigendian = input_->is_bigendian;

@@ -181,15 +181,15 @@ namespace pcl
           OpenNI2VideoMode
           getDefaultDepthMode () const;
 
-          float
+          double
           getIRFocalLength () const;
-          float
+          double
           getColorFocalLength () const;
-          float
+          double
           getDepthFocalLength () const;
 
           // Baseline between sensors. Returns 0 if this value does not exist.
-          float
+          double
           getBaseline();
 
           // Value of pixels in shadow or that have no valid measurement
@@ -318,7 +318,7 @@ namespace pcl
           bool depth_video_started_;
 
           /** \brief distance between the projector and the IR camera in meters*/
-          float baseline_;
+          double baseline_;
           /** the value for shadow (occluded pixels) */
           uint64_t shadow_value_;
           /** the value for pixels without a valid disparity measurement */

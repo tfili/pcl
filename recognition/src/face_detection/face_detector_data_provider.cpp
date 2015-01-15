@@ -17,22 +17,22 @@ namespace pcl
   namespace face_detection
   {
     inline
-    void showBining(int num_pitch, float res_pitch, int min_pitch, int num_yaw, float res_yaw, int min_yaw, std::vector<std::vector<int> > & yaw_pitch_bins)
+    void showBining(int num_pitch, double res_pitch, int min_pitch, int num_yaw, double res_yaw, int min_yaw, std::vector<std::vector<int> > & yaw_pitch_bins)
     {
       std::cout << "\t\t";
       for (int j = 0; j < num_pitch; j++)
       {
-        std::cout << pcl_round (static_cast<float>(min_pitch) + res_pitch * static_cast<float>(j)) << "\t";
+        std::cout << pcl_round (static_cast<double>(min_pitch) + res_pitch * static_cast<double>(j)) << "\t";
       }
 
       std::cout << std::endl;
 
       for (int i = 0; i < num_yaw; i++)
       {
-        std::cout << pcl_round (static_cast<float>(min_yaw) + res_yaw * static_cast<float>(i)) << " => \t\t";
+        std::cout << pcl_round (static_cast<double>(min_yaw) + res_yaw * static_cast<double>(i)) << " => \t\t";
         for (int j = 0; j < num_pitch; j++)
         {
-          //std::cout <<  std::setprecision(3) << yaw_pitch_bins[i][j] / static_cast<float>(max_elems) << "\t";
+          //std::cout <<  std::setprecision(3) << yaw_pitch_bins[i][j] / static_cast<double>(max_elems) << "\t";
           std::cout << yaw_pitch_bins[i][j] << "\t";
         }
 
@@ -56,13 +56,13 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
   std::vector < std::vector<int> > yaw_pitch_bins;
   std::vector < std::vector<std::vector<std::string> > > image_files_per_bin;
 
-  float res_yaw = 15.f;
-  float res_pitch = res_yaw;
+  double res_yaw = 15.;
+  double res_pitch = res_yaw;
   int min_yaw = -75;
   int min_pitch = -60;
 
-  int num_yaw = static_cast<int>((std::abs (min_yaw) * 2) / static_cast<int>(res_yaw + 1.f));
-  int num_pitch = static_cast<int>((std::abs (min_pitch) * 2) / static_cast<int>(res_pitch + 1.f));
+  int num_yaw = static_cast<int>((std::abs (min_yaw) * 2) / static_cast<int>(res_yaw + 1.));
+  int num_pitch = static_cast<int>((std::abs (min_pitch) * 2) / static_cast<int>(res_pitch + 1.));
 
   yaw_pitch_bins.resize (num_yaw);
   image_files_per_bin.resize (num_yaw);
@@ -85,7 +85,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     std::string pose_file (files[i]);
     boost::replace_all (pose_file, ".pcd", "_pose.txt");
 
-    Eigen::Matrix4f pose_mat;
+    Eigen::Matrix4d pose_mat;
     pose_mat.setIdentity (4, 4);
 
     std::stringstream filestream_pose;
@@ -95,10 +95,10 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     bool result = readMatrixFromFile (pose_file, pose_mat);
     if (result)
     {
-      Eigen::Vector3f ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
-      ea *= 57.2957795f; //transform it to degrees to do the binning
-      int y = static_cast<int>(pcl_round ((ea[0] + static_cast<float>(std::abs (min_yaw))) / res_yaw));
-      int p = static_cast<int>(pcl_round ((ea[1] + static_cast<float>(std::abs (min_pitch))) / res_pitch));
+      Eigen::Vector3d ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
+      ea *= 57.2957795; //transform it to degrees to do the binning
+      int y = static_cast<int>(pcl_round ((ea[0] + static_cast<double>(std::abs (min_yaw))) / res_yaw));
+      int p = static_cast<int>(pcl_round ((ea[1] + static_cast<double>(std::abs (min_pitch))) / res_pitch));
 
       if (y < 0)
         y = 0;
@@ -133,7 +133,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     }
   }
 
-  float average = static_cast<float> (total_elems) / (static_cast<float> (num_pitch + num_yaw));
+  double average = static_cast<double> (total_elems) / (static_cast<double> (num_pitch + num_yaw));
   std::cout << "The average number of image per bin is:" << average << std::endl;
 
   std::cout << "Total number of images in the dataset:" << total_elems << std::endl;
@@ -179,7 +179,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
   files.resize (std::min (num_images_, static_cast<int> (files.size ())));
 
   std::vector < TrainingExample > training_examples;
-  std::vector<float> labels;
+  std::vector<double> labels;
 
   int total_neg, total_pos;
   total_neg = total_pos = 0;
@@ -250,12 +250,12 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     }
 
     //Compute integral image over depth
-    boost::shared_ptr < pcl::IntegralImage2D<float, 1> > integral_image_depth;
-    integral_image_depth.reset (new pcl::IntegralImage2D<float, 1> (false));
+    boost::shared_ptr < pcl::IntegralImage2D<double, 1> > integral_image_depth;
+    integral_image_depth.reset (new pcl::IntegralImage2D<double, 1> (false));
 
-    int element_stride = sizeof(pcl::PointXYZ) / sizeof(float);
+    int element_stride = sizeof(pcl::PointXYZ) / sizeof(double);
     int row_stride = element_stride * cloud->width;
-    const float *data = reinterpret_cast<const float*> (&cloud->points[0]);
+    const double *data = reinterpret_cast<const double*> (&cloud->points[0]);
     integral_image_depth->setInput (data + 2, cloud->width, cloud->height, element_stride, row_stride);
 
     //Compute normals and normal integral images
@@ -275,24 +275,24 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
       }
     }
 
-    int element_stride_normal = sizeof(pcl::Normal) / sizeof(float);
+    int element_stride_normal = sizeof(pcl::Normal) / sizeof(double);
     int row_stride_normal = element_stride_normal * normals->width;
-    boost::shared_ptr < pcl::IntegralImage2D<float, 1> > integral_image_normal_x;
-    boost::shared_ptr < pcl::IntegralImage2D<float, 1> > integral_image_normal_y;
-    boost::shared_ptr < pcl::IntegralImage2D<float, 1> > integral_image_normal_z;
+    boost::shared_ptr < pcl::IntegralImage2D<double, 1> > integral_image_normal_x;
+    boost::shared_ptr < pcl::IntegralImage2D<double, 1> > integral_image_normal_y;
+    boost::shared_ptr < pcl::IntegralImage2D<double, 1> > integral_image_normal_z;
 
     if (USE_NORMALS_)
     {
-      integral_image_normal_x.reset (new pcl::IntegralImage2D<float, 1> (false));
-      const float *data_nx = reinterpret_cast<const float*> (&normals->points[0]);
+      integral_image_normal_x.reset (new pcl::IntegralImage2D<double, 1> (false));
+      const double *data_nx = reinterpret_cast<const double*> (&normals->points[0]);
       integral_image_normal_x->setInput (data_nx, normals->width, normals->height, element_stride_normal, row_stride_normal);
 
-      integral_image_normal_y.reset (new pcl::IntegralImage2D<float, 1> (false));
-      const float *data_ny = reinterpret_cast<const float*> (&normals->points[0]);
+      integral_image_normal_y.reset (new pcl::IntegralImage2D<double, 1> (false));
+      const double *data_ny = reinterpret_cast<const double*> (&normals->points[0]);
       integral_image_normal_y->setInput (data_ny + 1, normals->width, normals->height, element_stride_normal, row_stride_normal);
 
-      integral_image_normal_z.reset (new pcl::IntegralImage2D<float, 1> (false));
-      const float *data_nz = reinterpret_cast<const float*> (&normals->points[0]);
+      integral_image_normal_z.reset (new pcl::IntegralImage2D<double, 1> (false));
+      const double *data_nz = reinterpret_cast<const double*> (&normals->points[0]);
       integral_image_normal_z->setInput (data_nz + 2, normals->width, normals->height, element_stride_normal, row_stride_normal);
     }
 
@@ -335,15 +335,15 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
 
     for (int jjj = 0; jjj < static_cast<int>(cloud->points.size()); jjj++)
     {
-      cloud_intensity->points[jjj].getVector4fMap() = cloud->points[jjj].getVector4fMap();
-      cloud_intensity->points[jjj].intensity = 0.f;
+      cloud_intensity->points[jjj].getVector4dMap() = cloud->points[jjj].getVector4dMap();
+      cloud_intensity->points[jjj].intensity = 0.;
       int row, col;
       col = jjj % cloud->width;
       row = jjj / cloud->width;
       //std::cout << row << " " << col << std::endl;
       if (check_inside(col, row, min_col, max_col, min_row, max_row))
       {
-        cloud_intensity->points[jjj].intensity = 1.f;
+        cloud_intensity->points[jjj].intensity = 1.;
       }
     }
 
@@ -354,12 +354,12 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
     std::string pose_file (files[j]);
     boost::replace_all (pose_file, ".pcd", "_pose.txt");
 
-    Eigen::Matrix4f pose_mat;
+    Eigen::Matrix4d pose_mat;
     pose_mat.setIdentity (4, 4);
     readMatrixFromFile (pose_file, pose_mat);
 
-    Eigen::Vector3f ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
-    Eigen::Vector3f trans_vector = Eigen::Vector3f (pose_mat (0, 3), pose_mat (1, 3), pose_mat (2, 3));
+    Eigen::Vector3d ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
+    Eigen::Vector3d trans_vector = Eigen::Vector3d (pose_mat (0, 3), pose_mat (1, 3), pose_mat (2, 3));
 
     pcl::PointXYZ center_point;
     center_point.x = trans_vector[0];
@@ -387,8 +387,8 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
             continue;
 
           //reject patches with more than percent invalid values
-          float percent = 0.5f;
-          if (static_cast<float>(integral_image_depth->getFiniteElementsCount (col, row, w_size_, w_size_)) < (percent * static_cast<float>(w_size_ * w_size_)))
+          double percent = 0.5;
+          if (static_cast<double>(integral_image_depth->getFiniteElementsCount (col, row, w_size_, w_size_)) < (percent * static_cast<double>(w_size_ * w_size_)))
             continue;
 
           pixelpair pp = std::make_pair (col, row);
@@ -430,10 +430,10 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
         te.col_ = col;
         te.wsize_ = w_size_;
 
-        te.trans_ = center_point.getVector3fMap () - patch_center_point.getVector3fMap ();
-        te.trans_ *= 1000.f; //transform it to milimiters
+        te.trans_ = center_point.getVector3dMap () - patch_center_point.getVector3dMap ();
+        te.trans_ *= 1000.; //transform it to milimiters
         te.rot_ = ea;
-        te.rot_ *= 57.2957795f; //transform it to degrees
+        te.rot_ *= 57.2957795; //transform it to degrees
 
         labels.push_back (1);
         pos_extracted++;
@@ -446,7 +446,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
         {
           for (int iii = row; iii < (row + w_size_); iii++)
           {
-            cloud_intensity2->at(jjj, iii).intensity = 2.f;
+            cloud_intensity2->at(jjj, iii).intensity = 2.;
           }
         }
 
@@ -495,7 +495,7 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
         {
           for (int iii = row; iii < (row + w_size_); iii++)
           {
-            cloud_intensity2->at(jjj, iii).intensity = 2.f;
+            cloud_intensity2->at(jjj, iii).intensity = 2.;
           }
         }
 
@@ -535,5 +535,5 @@ void pcl::face_detection::FaceDetectorDataProvider<FeatureType, DataSet, LabelTy
   examples = example_indices;
 }
 
-template class pcl::face_detection::FaceDetectorDataProvider<pcl::face_detection::FeatureType, std::vector<pcl::face_detection::TrainingExample>, float, int,
+template class pcl::face_detection::FaceDetectorDataProvider<pcl::face_detection::FeatureType, std::vector<pcl::face_detection::TrainingExample>, double, int,
     pcl::face_detection::RFTreeNode<pcl::face_detection::FeatureType> >;

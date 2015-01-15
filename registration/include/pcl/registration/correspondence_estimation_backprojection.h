@@ -52,7 +52,7 @@ namespace pcl
       * \author Suat Gedikli
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename NormalT, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename NormalT, typename Scalar = double>
     class CorrespondenceEstimationBackProjection : public CorrespondenceEstimationBase <PointSource, PointTarget, Scalar>
     {
       public:

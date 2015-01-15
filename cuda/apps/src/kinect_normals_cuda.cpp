@@ -109,8 +109,8 @@ class NormalEstimation
         pt.x = cloud->points[i].x;
         pt.y = cloud->points[i].y;
         pt.z = cloud->points[i].z;
-        // Pack RGB into a float
-        pt.rgb = *(float*)(&cloud->points[i].rgb);
+        // Pack RGB into a double
+        pt.rgb = *(double*)(&cloud->points[i].rgb);
         data_host.points[i] = pt;
       }
       data_host.width = cloud->width;
@@ -121,7 +121,7 @@ class NormalEstimation
       // we got a cloud in device..
 
       boost::shared_ptr<typename Storage<float4>::type> normals;
-      float focallength = 580/2.0;
+      double focallength = 580/2.0;
       {
         ScopeTimeCPU time ("Normal Estimation");
         normals = computePointNormals<Storage, typename PointIterator<Storage,PointXYZRGB>::type > (data->points.begin (), data->points.end (), focallength, data, 0.05, 30);
@@ -137,7 +137,7 @@ class NormalEstimation
     template <template <typename> class Storage> void 
     cloud_cb (const boost::shared_ptr<openni_wrapper::Image>& image,
               const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, 
-              float constant)
+              double constant)
     {
       static int smoothing_nr_iterations = 10;
       static int smoothing_filter_size = 2;
@@ -165,7 +165,7 @@ class NormalEstimation
       //d2c.compute<Storage> (depth_image, image, constant, data, true, 2);
 
       boost::shared_ptr<typename Storage<float4>::type> normals;
-      float focallength = 580/2.0;
+      double focallength = 580/2.0;
       {
         ScopeTimeCPU time ("Normal Estimation");
         normals = computeFastPointNormals<Storage> (data);
@@ -185,7 +185,7 @@ class NormalEstimation
       {
         pcl::Grabber* filegrabber = 0;
 
-        float frames_per_second = 1;
+        double frames_per_second = 1;
         bool repeat = false;
 
         std::string path = "./frame_0.pcd";
@@ -219,13 +219,13 @@ class NormalEstimation
         if (use_device)
         {
           std::cerr << "[NormalEstimation] Using GPU..." << std::endl;
-          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&NormalEstimation::cloud_cb<Device>, this, _1, _2, _3);
+          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&NormalEstimation::cloud_cb<Device>, this, _1, _2, _3);
           c = grabber->registerCallback (f);
         }
         else
         {
           std::cerr << "[NormalEstimation] Using CPU..." << std::endl;
-          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&NormalEstimation::cloud_cb<Host>, this, _1, _2, _3);
+          boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&NormalEstimation::cloud_cb<Host>, this, _1, _2, _3);
           c = grabber->registerCallback (f);
         }
 

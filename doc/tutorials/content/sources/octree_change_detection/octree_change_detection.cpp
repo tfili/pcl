@@ -11,7 +11,7 @@ main (int argc, char** argv)
   srand ((unsigned int) time (NULL));
 
   // Octree resolution - side length of octree voxels
-  float resolution = 32.0f;
+  double resolution = 32.0;
 
   // Instantiate octree-based point cloud change detection class
   pcl::octree::OctreePointCloudChangeDetector<pcl::PointXYZ> octree (resolution);
@@ -25,9 +25,9 @@ main (int argc, char** argv)
 
   for (size_t i = 0; i < cloudA->points.size (); ++i)
   {
-    cloudA->points[i].x = 64.0f * rand () / (RAND_MAX + 1.0f);
-    cloudA->points[i].y = 64.0f * rand () / (RAND_MAX + 1.0f);
-    cloudA->points[i].z = 64.0f * rand () / (RAND_MAX + 1.0f);
+    cloudA->points[i].x = 64.0 * rand () / (RAND_MAX + 1.0);
+    cloudA->points[i].y = 64.0 * rand () / (RAND_MAX + 1.0);
+    cloudA->points[i].z = 64.0 * rand () / (RAND_MAX + 1.0);
   }
 
   // Add points from cloudA to octree
@@ -46,9 +46,9 @@ main (int argc, char** argv)
 
   for (size_t i = 0; i < cloudB->points.size (); ++i)
   {
-    cloudB->points[i].x = 64.0f * rand () / (RAND_MAX + 1.0f);
-    cloudB->points[i].y = 64.0f * rand () / (RAND_MAX + 1.0f);
-    cloudB->points[i].z = 64.0f * rand () / (RAND_MAX + 1.0f);
+    cloudB->points[i].x = 64.0 * rand () / (RAND_MAX + 1.0);
+    cloudB->points[i].y = 64.0 * rand () / (RAND_MAX + 1.0);
+    cloudB->points[i].z = 64.0 * rand () / (RAND_MAX + 1.0);
   }
 
   // Add points from cloudB to octree

@@ -57,11 +57,11 @@ typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
 int default_max_window_size = 33;
-float default_slope = 0.7f;
-float default_max_distance = 10.0f;
-float default_initial_distance = 0.15f;
-float default_cell_size = 1.0f;
-float default_base = 2.0f;
+double default_slope = 0.7;
+double default_max_distance = 10.0;
+double default_initial_distance = 0.15;
+double default_cell_size = 1.0;
+double default_base = 2.0;
 bool default_exponential = true;
 int default_verbosity_level = 3;
 
@@ -107,7 +107,7 @@ loadCloud (const std::string &filename, Cloud &cloud)
 }
 
 void
-compute (ConstCloudPtr &input, Cloud &output, int max_window_size, float slope, float max_distance, float initial_distance, float cell_size, float base, bool exponential, bool approximate)
+compute (ConstCloudPtr &input, Cloud &output, int max_window_size, double slope, double max_distance, double initial_distance, double cell_size, double base, bool exponential, bool approximate)
 {
   // Estimate
   TicToc tt;
@@ -173,7 +173,7 @@ saveCloud (const std::string &filename, const Cloud &output)
 }
 
 int
-batchProcess (const vector<string> &pcd_files, string &output_dir, int max_window_size, float slope, float max_distance, float initial_distance, float cell_size, float base, bool exponential, bool approximate)
+batchProcess (const vector<string> &pcd_files, string &output_dir, int max_window_size, double slope, double max_distance, double initial_distance, double cell_size, double base, bool exponential, bool approximate)
 {
   vector<string> st;
   for (size_t i = 0; i < pcd_files.size (); ++i)
@@ -217,11 +217,11 @@ main (int argc, char** argv)
 
   // Command line parsing
   int max_window_size = default_max_window_size;
-  float slope = default_slope;
-  float max_distance = default_max_distance;
-  float initial_distance = default_initial_distance;
-  float cell_size = default_cell_size;
-  float base = default_base;
+  double slope = default_slope;
+  double max_distance = default_max_distance;
+  double initial_distance = default_initial_distance;
+  double cell_size = default_cell_size;
+  double base = default_base;
   bool exponential = default_exponential;
   bool approximate;
   int verbosity_level = default_verbosity_level;

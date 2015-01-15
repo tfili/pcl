@@ -85,8 +85,8 @@ pcl::ASCIIReader::~ASCIIReader ()
 //////////////////////////////////////////////////////////////////////////////
 int
 pcl::ASCIIReader::readHeader (const std::string& file_name,
-  pcl::PCLPointCloud2& cloud, Eigen::Vector4f& origin,
-  Eigen::Quaternionf& orientation, int& file_version, int& data_type,
+  pcl::PCLPointCloud2& cloud, Eigen::Vector4d& origin,
+  Eigen::Quaterniond& orientation, int& file_version, int& data_type,
   unsigned int& data_idx, const int offset)
 {
 	(void)offset; //offset is not used for ascii file implementation
@@ -115,8 +115,8 @@ pcl::ASCIIReader::readHeader (const std::string& file_name,
   while (std::getline (ifile, line))
     total++;
 
-  origin = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf ();
+  origin = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond ();
   cloud.width = total;
   cloud.height = 1;
   cloud.is_dense = true;
@@ -131,8 +131,8 @@ int
 pcl::ASCIIReader::read (
     const std::string& file_name,
     pcl::PCLPointCloud2& cloud,
-    Eigen::Vector4f& origin,
-    Eigen::Quaternionf& orientation, int& file_version, const int offset)
+    Eigen::Vector4d& origin,
+    Eigen::Quaterniond& orientation, int& file_version, const int offset)
 {
 
   int  data_type;
@@ -231,7 +231,7 @@ pcl::ASCIIReader::parse (
     }
     case pcl::PCLPointField::FLOAT32:
     {
-      *(reinterpret_cast<float*>(data_target)) = boost::lexical_cast<float> (token);
+      *(reinterpret_cast<double*>(data_target)) = boost::lexical_cast<double> (token);
       return 4;
     }
     case pcl::PCLPointField::FLOAT64:

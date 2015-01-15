@@ -54,7 +54,7 @@
 #define PST_RAD_PI_7_8 2.7488935718910690836548129603691
 
 const double zeroDoubleEps15 = 1E-15;
-const float zeroFloatEps8 = 1E-8f;
+const float zeroFloatEps8 = 1E-8;
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 /** \brief Check if val1 and val2 are equals.
@@ -85,72 +85,72 @@ areEquals (float val1, float val2, float zeroFloatEps = zeroFloatEps8)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> float
+template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> double
 pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::sRGB_LUT[256] = {- 1};
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> float
+template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> double
 pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::sXYZ_LUT[4000] = {- 1};
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::RGB2CIELAB (unsigned char R, unsigned char G,
-                                                                              unsigned char B, float &L, float &A,
-                                                                              float &B2)
+                                                                              unsigned char B, double &L, double &A,
+                                                                              double &B2)
 {
   if (sRGB_LUT[0] < 0)
   {
     for (int i = 0; i < 256; i++)
     {
-      float f = static_cast<float> (i) / 255.0f;
+      double f = static_cast<double> (i) / 255.0;
       if (f > 0.04045)
-        sRGB_LUT[i] = powf ((f + 0.055f) / 1.055f, 2.4f);
+        sRGB_LUT[i] = pow ((f + 0.055) / 1.055, 2.4);
       else
-        sRGB_LUT[i] = f / 12.92f;
+        sRGB_LUT[i] = f / 12.92;
     }
 
     for (int i = 0; i < 4000; i++)
     {
-      float f = static_cast<float> (i) / 4000.0f;
+      double f = static_cast<double> (i) / 4000.0;
       if (f > 0.008856)
-        sXYZ_LUT[i] = static_cast<float> (powf (f, 0.3333f));
+        sXYZ_LUT[i] = static_cast<double> (pow (f, 0.3333));
       else
-        sXYZ_LUT[i] = static_cast<float>((7.787 * f) + (16.0 / 116.0));
+        sXYZ_LUT[i] = static_cast<double>((7.787 * f) + (16.0 / 116.0));
     }
   }
 
-  float fr = sRGB_LUT[R];
-  float fg = sRGB_LUT[G];
-  float fb = sRGB_LUT[B];
+  double fr = sRGB_LUT[R];
+  double fg = sRGB_LUT[G];
+  double fb = sRGB_LUT[B];
 
   // Use white = D65
-  const float x = fr * 0.412453f + fg * 0.357580f + fb * 0.180423f;
-  const float y = fr * 0.212671f + fg * 0.715160f + fb * 0.072169f;
-  const float z = fr * 0.019334f + fg * 0.119193f + fb * 0.950227f;
+  const double x = fr * 0.412453f + fg * 0.357580 + fb * 0.180423f;
+  const double y = fr * 0.212671 + fg * 0.715160 + fb * 0.072169;
+  const double z = fr * 0.019334f + fg * 0.119193f + fb * 0.950227;
 
-  float vx = x / 0.95047f;
-  float vy = y;
-  float vz = z / 1.08883f;
+  double vx = x / 0.95047;
+  double vy = y;
+  double vz = z / 1.08883f;
 
   vx = sXYZ_LUT[int(vx*4000)];
   vy = sXYZ_LUT[int(vy*4000)];
   vz = sXYZ_LUT[int(vz*4000)];
 
-  L = 116.0f * vy - 16.0f;
+  L = 116.0 * vy - 16.0;
   if (L > 100)
-    L = 100.0f;
+    L = 100.0;
 
-  A = 500.0f * (vx - vy);
+  A = 500.0 * (vx - vy);
   if (A > 120)
-    A = 120.0f;
+    A = 120.0;
   else if (A <- 120)
-    A = -120.0f;
+    A = -120.0;
 
-  B2 = 200.0f * (vy - vz);
+  B2 = 200.0 * (vy - vz);
   if (B2 > 120)
-    B2 = 120.0f;
+    B2 = 120.0;
   else if (B2<- 120)
-    B2 = -120.0f;
+    B2 = -120.0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,13 +202,13 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::createBinDistan
   //if (!pcl_isfinite (current_frame.rf[0]) || !pcl_isfinite (current_frame.rf[4]) || !pcl_isfinite (current_frame.rf[11]))
     //return;
 
-  Eigen::Vector4f current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
+  Eigen::Vector4d current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
 
   unsigned nan_counter = 0;
   for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
   {
     // check NaN normal
-    const Eigen::Vector4f& normal_vec = normals_->points[indices[i_idx]].getNormalVector4fMap ();
+    const Eigen::Vector4d& normal_vec = normals_->points[indices[i_idx]].getNormalVector4dMap ();
     if (!pcl_isfinite (normal_vec[0]) ||
         !pcl_isfinite (normal_vec[1]) ||
         !pcl_isfinite (normal_vec[2]))
@@ -230,13 +230,13 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::createBinDistan
   }
   if (nan_counter > 0)
     PCL_WARN ("[pcl::%s::createBinDistanceShape] Point %d has %d (%f%%) NaN normals in its neighbourhood\n",
-      getClassName ().c_str (), index, nan_counter, (static_cast<float>(nan_counter)*100.f/static_cast<float>(indices.size ())));
+      getClassName ().c_str (), index, nan_counter, (static_cast<double>(nan_counter)*100./static_cast<double>(indices.size ())));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::normalizeHistogram (
-    Eigen::VectorXf &shot, int desc_length)
+    Eigen::VectorXd &shot, int desc_length)
 {
 	// Normalization is performed by considering the L2 norm
 	// and not the sum of bins, as reported in the ECCV paper.
@@ -247,32 +247,32 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::normalizeHistog
     acc_norm += shot[j] * shot[j];
   acc_norm = sqrt (acc_norm);
   for (int j = 0; j < desc_length; j++)
-    shot[j] /= static_cast<float> (acc_norm);
+    shot[j] /= static_cast<double> (acc_norm);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSingleChannel (
     const std::vector<int> &indices,
-    const std::vector<float> &sqr_dists,
+    const std::vector<double> &sqr_dists,
     const int index,
     std::vector<double> &binDistance,
     const int nr_bins,
-    Eigen::VectorXf &shot)
+    Eigen::VectorXd &shot)
 {
-  const Eigen::Vector4f& central_point = (*input_)[(*indices_)[index]].getVector4fMap ();
+  const Eigen::Vector4d& central_point = (*input_)[(*indices_)[index]].getVector4dMap ();
   const PointRFT& current_frame = (*frames_)[index];
 
-  Eigen::Vector4f current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
-  Eigen::Vector4f current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
-  Eigen::Vector4f current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
+  Eigen::Vector4d current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
+  Eigen::Vector4d current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
+  Eigen::Vector4d current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
 
   for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
   {
     if (!pcl_isfinite(binDistance[i_idx]))
       continue;
 
-    Eigen::Vector4f delta = surface_->points[indices[i_idx]].getVector4fMap () - central_point;
+    Eigen::Vector4d delta = surface_->points[indices[i_idx]].getVector4dMap () - central_point;
     delta[3] = 0;
 
     // Compute the Euclidean norm
@@ -321,9 +321,9 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
     double intWeight = (1- fabs (binDistance[i_idx]));
 
     if (binDistance[i_idx] > 0)
-      shot[volume_index + ((step_index+1) % nr_bins)] += static_cast<float> (binDistance[i_idx]);
+      shot[volume_index + ((step_index+1) % nr_bins)] += static_cast<double> (binDistance[i_idx]);
     else
-      shot[volume_index + ((step_index - 1 + nr_bins) % nr_bins)] += - static_cast<float> (binDistance[i_idx]);
+      shot[volume_index + ((step_index - 1 + nr_bins) % nr_bins)] += - static_cast<double> (binDistance[i_idx]);
 
     //Interpolation on the distance (adjacent husks)
 
@@ -336,7 +336,7 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
       else  //3/4 of radius, votes also for the internal sphere
       {
         intWeight += 1 + radiusDistance;
-        shot[(desc_index - 2) * (nr_bins+1) + step_index] -= static_cast<float> (radiusDistance);
+        shot[(desc_index - 2) * (nr_bins+1) + step_index] -= static_cast<double> (radiusDistance);
       }
     }
     else    //internal sphere
@@ -348,7 +348,7 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
       else  //3/4 of radius, votes also for the external sphere
       {
         intWeight += 1 - radiusDistance;
-        shot[(desc_index + 2) * (nr_bins+1) + step_index] += static_cast<float> (radiusDistance);
+        shot[(desc_index + 2) * (nr_bins+1) + step_index] += static_cast<double> (radiusDistance);
       }
     }
 
@@ -372,7 +372,7 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
       {
         intWeight += 1 + inclinationDistance;
         assert ((desc_index + 1) * (nr_bins+1) + step_index >= 0 && (desc_index + 1) * (nr_bins+1) + step_index < descLength_);
-        shot[(desc_index + 1) * (nr_bins+1) + step_index] -= static_cast<float> (inclinationDistance);
+        shot[(desc_index + 1) * (nr_bins+1) + step_index] -= static_cast<double> (inclinationDistance);
       }
     }
     else
@@ -384,7 +384,7 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
       {
         intWeight += 1 - inclinationDistance;
         assert ((desc_index - 1) * (nr_bins+1) + step_index >= 0 && (desc_index - 1) * (nr_bins+1) + step_index < descLength_);
-        shot[(desc_index - 1) * (nr_bins+1) + step_index] += static_cast<float> (inclinationDistance);
+        shot[(desc_index - 1) * (nr_bins+1) + step_index] += static_cast<double> (inclinationDistance);
       }
     }
 
@@ -408,20 +408,20 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
         intWeight += 1 - azimuthDistance;
         int interp_index = (desc_index + 4) % maxAngularSectors_;
         assert (interp_index * (nr_bins+1) + step_index >= 0 && interp_index * (nr_bins+1) + step_index < descLength_);
-        shot[interp_index * (nr_bins+1) + step_index] += static_cast<float> (azimuthDistance);
+        shot[interp_index * (nr_bins+1) + step_index] += static_cast<double> (azimuthDistance);
       }
       else
       {
         int interp_index = (desc_index - 4 + maxAngularSectors_) % maxAngularSectors_;
         assert (interp_index * (nr_bins+1) + step_index >= 0 && interp_index * (nr_bins+1) + step_index < descLength_);
         intWeight += 1 + azimuthDistance;
-        shot[interp_index * (nr_bins+1) + step_index] -= static_cast<float> (azimuthDistance);
+        shot[interp_index * (nr_bins+1) + step_index] -= static_cast<double> (azimuthDistance);
       }
 
     }
 
     assert (volume_index + step_index >= 0 &&  volume_index + step_index < descLength_);
-    shot[volume_index + step_index] += static_cast<float> (intWeight);
+    shot[volume_index + step_index] += static_cast<double> (intWeight);
   }
 }
 
@@ -429,29 +429,29 @@ pcl::SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>::interpolateSing
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDoubleChannel (
   const std::vector<int> &indices,
-  const std::vector<float> &sqr_dists,
+  const std::vector<double> &sqr_dists,
   const int index,
   std::vector<double> &binDistanceShape,
   std::vector<double> &binDistanceColor,
   const int nr_bins_shape,
   const int nr_bins_color,
-  Eigen::VectorXf &shot)
+  Eigen::VectorXd &shot)
 {
-  const Eigen::Vector4f &central_point = (*input_)[(*indices_)[index]].getVector4fMap ();
+  const Eigen::Vector4d &central_point = (*input_)[(*indices_)[index]].getVector4dMap ();
   const PointRFT& current_frame = (*frames_)[index];
 
   int shapeToColorStride = nr_grid_sector_*(nr_bins_shape+1);
 
-  Eigen::Vector4f current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
-  Eigen::Vector4f current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
-  Eigen::Vector4f current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
+  Eigen::Vector4d current_frame_x (current_frame.x_axis[0], current_frame.x_axis[1], current_frame.x_axis[2], 0);
+  Eigen::Vector4d current_frame_y (current_frame.y_axis[0], current_frame.y_axis[1], current_frame.y_axis[2], 0);
+  Eigen::Vector4d current_frame_z (current_frame.z_axis[0], current_frame.z_axis[1], current_frame.z_axis[2], 0);
 
   for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
   {
     if (!pcl_isfinite(binDistanceShape[i_idx]))
       continue;
 
-    Eigen::Vector4f delta = surface_->points[indices[i_idx]].getVector4fMap () - central_point;
+    Eigen::Vector4d delta = surface_->points[indices[i_idx]].getVector4dMap () - central_point;
     delta[3] = 0;
 
     // Compute the Euclidean norm
@@ -505,14 +505,14 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
     double intWeightColor = (1- fabs (binDistanceColor[i_idx]));
 
     if (binDistanceShape[i_idx] > 0)
-      shot[volume_index_shape + ((step_index_shape + 1) % nr_bins_shape)] += static_cast<float> (binDistanceShape[i_idx]);
+      shot[volume_index_shape + ((step_index_shape + 1) % nr_bins_shape)] += static_cast<double> (binDistanceShape[i_idx]);
     else
-      shot[volume_index_shape + ((step_index_shape - 1 + nr_bins_shape) % nr_bins_shape)] -= static_cast<float> (binDistanceShape[i_idx]);
+      shot[volume_index_shape + ((step_index_shape - 1 + nr_bins_shape) % nr_bins_shape)] -= static_cast<double> (binDistanceShape[i_idx]);
 
     if (binDistanceColor[i_idx] > 0)
-      shot[volume_index_color + ((step_index_color+1) % nr_bins_color)] += static_cast<float> (binDistanceColor[i_idx]);
+      shot[volume_index_color + ((step_index_color+1) % nr_bins_color)] += static_cast<double> (binDistanceColor[i_idx]);
     else
-      shot[volume_index_color + ((step_index_color - 1 + nr_bins_color) % nr_bins_color)] -= static_cast<float> (binDistanceColor[i_idx]);
+      shot[volume_index_color + ((step_index_color - 1 + nr_bins_color) % nr_bins_color)] -= static_cast<double> (binDistanceColor[i_idx]);
 
     //Interpolation on the distance (adjacent husks)
 
@@ -529,8 +529,8 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
       {
         intWeightShape += 1 + radiusDistance;
         intWeightColor += 1 + radiusDistance;
-        shot[(desc_index - 2) * (nr_bins_shape+1) + step_index_shape] -= static_cast<float> (radiusDistance);
-        shot[shapeToColorStride + (desc_index - 2) * (nr_bins_color+1) + step_index_color] -= static_cast<float> (radiusDistance);
+        shot[(desc_index - 2) * (nr_bins_shape+1) + step_index_shape] -= static_cast<double> (radiusDistance);
+        shot[shapeToColorStride + (desc_index - 2) * (nr_bins_color+1) + step_index_color] -= static_cast<double> (radiusDistance);
       }
     }
     else    //internal sphere
@@ -546,8 +546,8 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
       {
         intWeightShape += 1 - radiusDistance; //weight=1-d
         intWeightColor += 1 - radiusDistance; //weight=1-d
-        shot[(desc_index + 2) * (nr_bins_shape+1) + step_index_shape] += static_cast<float> (radiusDistance);
-        shot[shapeToColorStride + (desc_index + 2) * (nr_bins_color+1) + step_index_color] += static_cast<float> (radiusDistance);
+        shot[(desc_index + 2) * (nr_bins_shape+1) + step_index_shape] += static_cast<double> (radiusDistance);
+        shot[shapeToColorStride + (desc_index + 2) * (nr_bins_color+1) + step_index_color] += static_cast<double> (radiusDistance);
       }
     }
 
@@ -576,8 +576,8 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
         intWeightColor += 1 + inclinationDistance;
         assert ((desc_index + 1) * (nr_bins_shape+1) + step_index_shape >= 0 && (desc_index + 1) * (nr_bins_shape+1) + step_index_shape < descLength_);
         assert (shapeToColorStride + (desc_index + 1) * (nr_bins_color+ 1) + step_index_color >= 0 && shapeToColorStride + (desc_index + 1) * (nr_bins_color+1) + step_index_color < descLength_);
-        shot[(desc_index + 1) * (nr_bins_shape+1) + step_index_shape] -= static_cast<float> (inclinationDistance);
-        shot[shapeToColorStride + (desc_index + 1) * (nr_bins_color+1) + step_index_color] -= static_cast<float> (inclinationDistance);
+        shot[(desc_index + 1) * (nr_bins_shape+1) + step_index_shape] -= static_cast<double> (inclinationDistance);
+        shot[shapeToColorStride + (desc_index + 1) * (nr_bins_color+1) + step_index_color] -= static_cast<double> (inclinationDistance);
       }
     }
     else
@@ -594,8 +594,8 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
         intWeightColor += 1 - inclinationDistance;
         assert ((desc_index - 1) * (nr_bins_shape+1) + step_index_shape >= 0 && (desc_index - 1) * (nr_bins_shape+1) + step_index_shape < descLength_);
         assert (shapeToColorStride + (desc_index - 1) * (nr_bins_color+ 1) + step_index_color >= 0 && shapeToColorStride + (desc_index - 1) * (nr_bins_color+1) + step_index_color < descLength_);
-        shot[(desc_index - 1) * (nr_bins_shape+1) + step_index_shape] += static_cast<float> (inclinationDistance);
-        shot[shapeToColorStride + (desc_index - 1) * (nr_bins_color+1) + step_index_color] += static_cast<float> (inclinationDistance);
+        shot[(desc_index - 1) * (nr_bins_shape+1) + step_index_shape] += static_cast<double> (inclinationDistance);
+        shot[shapeToColorStride + (desc_index - 1) * (nr_bins_color+1) + step_index_color] += static_cast<double> (inclinationDistance);
       }
     }
 
@@ -619,8 +619,8 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
         int interp_index = (desc_index + 4) % maxAngularSectors_;
         assert (interp_index * (nr_bins_shape+1) + step_index_shape >= 0 && interp_index * (nr_bins_shape+1) + step_index_shape < descLength_);
         assert (shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color >= 0 && shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color < descLength_);
-        shot[interp_index * (nr_bins_shape+1) + step_index_shape] += static_cast<float> (azimuthDistance);
-        shot[shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color] += static_cast<float> (azimuthDistance);
+        shot[interp_index * (nr_bins_shape+1) + step_index_shape] += static_cast<double> (azimuthDistance);
+        shot[shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color] += static_cast<double> (azimuthDistance);
       }
       else
       {
@@ -629,22 +629,22 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::interpolateDou
         intWeightColor += 1 + azimuthDistance;
         assert (interp_index * (nr_bins_shape+1) + step_index_shape >= 0 && interp_index * (nr_bins_shape+1) + step_index_shape < descLength_);
         assert (shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color >= 0 && shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color < descLength_);
-        shot[interp_index * (nr_bins_shape+1) + step_index_shape] -= static_cast<float> (azimuthDistance);
-        shot[shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color] -= static_cast<float> (azimuthDistance);
+        shot[interp_index * (nr_bins_shape+1) + step_index_shape] -= static_cast<double> (azimuthDistance);
+        shot[shapeToColorStride + interp_index * (nr_bins_color+1) + step_index_color] -= static_cast<double> (azimuthDistance);
       }
     }
 
     assert (volume_index_shape + step_index_shape >= 0 &&  volume_index_shape + step_index_shape < descLength_);
     assert (volume_index_color + step_index_color >= 0 &&  volume_index_color + step_index_color < descLength_);
-    shot[volume_index_shape + step_index_shape] += static_cast<float> (intWeightShape);
-    shot[volume_index_color + step_index_color] += static_cast<float> (intWeightColor);
+    shot[volume_index_shape + step_index_shape] += static_cast<double> (intWeightShape);
+    shot[volume_index_color + step_index_color] += static_cast<double> (intWeightColor);
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSHOT (
-  const int index, const std::vector<int> &indices, const std::vector<float> &sqr_dists, Eigen::VectorXf &shot)
+  const int index, const std::vector<int> &indices, const std::vector<double> &sqr_dists, Eigen::VectorXd &shot)
 {
   // Clear the resultant shot
   shot.setZero ();
@@ -657,7 +657,7 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSH
     PCL_WARN ("[pcl::%s::computePointSHOT] Warning! Neighborhood has less than 5 vertexes. Aborting description of point with index %d\n",
                   getClassName ().c_str (), (*indices_)[index]);
 
-    shot.setConstant(descLength_, 1, std::numeric_limits<float>::quiet_NaN () );
+    shot.setConstant(descLength_, 1, std::numeric_limits<double>::quiet_NaN () );
 
     return;
   }
@@ -680,12 +680,12 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSH
     unsigned char greenRef = input_->points[(*indices_)[index]].g;
     unsigned char blueRef = input_->points[(*indices_)[index]].b;
 
-    float LRef, aRef, bRef;
+    double LRef, aRef, bRef;
 
     RGB2CIELAB (redRef, greenRef, blueRef, LRef, aRef, bRef);
-    LRef /= 100.0f;
-    aRef /= 120.0f;
-    bRef /= 120.0f;    //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
+    LRef /= 100.0;
+    aRef /= 120.0;
+    bRef /= 120.0;    //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
 
     for (size_t i_idx = 0; i_idx < indices.size (); ++i_idx)
     {
@@ -696,12 +696,12 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSH
       unsigned char green = surface_->points[indices[i_idx]].g;
       unsigned char blue = surface_->points[indices[i_idx]].b;
 
-      float L, a, b;
+      double L, a, b;
 
       RGB2CIELAB (red, green, blue, L, a, b);
-      L /= 100.0f;
-      a /= 120.0f;
-      b /= 120.0f;   //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
+      L /= 100.0;
+      a /= 120.0;
+      b /= 120.0;   //normalized LAB components (0<L<1, -1<a<1, -1<b<1)
 
       double colorDistance = (fabs (LRef - L) + ((fabs (aRef - a) + fabs (bRef - b)) / 2)) /3;
 
@@ -732,7 +732,7 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSH
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointNT, typename PointOutT, typename PointRFT> void
 pcl::SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSHOT (
-  const int index, const std::vector<int> &indices, const std::vector<float> &sqr_dists, Eigen::VectorXf &shot)
+  const int index, const std::vector<int> &indices, const std::vector<double> &sqr_dists, Eigen::VectorXd &shot)
 {
   //Skip the current feature if the number of its neighbors is not sufficient for its description
   if (indices.size () < 5)
@@ -740,7 +740,7 @@ pcl::SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::computePointSHOT (
     PCL_WARN ("[pcl::%s::computePointSHOT] Warning! Neighborhood has less than 5 vertexes. Aborting description of point with index %d\n",
                   getClassName ().c_str (), (*indices_)[index]);
 
-    shot.setConstant(descLength_, 1, std::numeric_limits<float>::quiet_NaN () );
+    shot.setConstant(descLength_, 1, std::numeric_limits<double>::quiet_NaN () );
 
     return;
   }
@@ -777,7 +777,7 @@ pcl::SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::computeFeature (pcl
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   output.is_dense = true;
   // Iterating over the entire index vector
@@ -800,9 +800,9 @@ pcl::SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::computeFeature (pcl
     {
       // Copy into the resultant cloud
       for (int d = 0; d < descLength_; ++d)
-        output.points[idx].descriptor[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].descriptor[d] = std::numeric_limits<double>::quiet_NaN ();
       for (int d = 0; d < 9; ++d)
-        output.points[idx].rf[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].rf[d] = std::numeric_limits<double>::quiet_NaN ();
 
       output.is_dense = false;
       continue;
@@ -849,7 +849,7 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computeFeature
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   output.is_dense = true;
   // Iterating over the entire index vector
@@ -872,9 +872,9 @@ pcl::SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>::computeFeature
     {
       // Copy into the resultant cloud
       for (int d = 0; d < descLength_; ++d)
-        output.points[idx].descriptor[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].descriptor[d] = std::numeric_limits<double>::quiet_NaN ();
       for (int d = 0; d < 9; ++d)
-        output.points[idx].rf[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].rf[d] = std::numeric_limits<double>::quiet_NaN ();
 
       output.is_dense = false;
       continue;

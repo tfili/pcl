@@ -1069,7 +1069,7 @@ ZEXTERN gzFile ZEXPORT gzopen  OF((const char *path, const char *mode));
 /*
      Opens a gzip (.gz) file for reading or writing. The mode parameter
    is as in fopen ("rb" or "wb") but can also include a compression level
-   ("wb9") or a strategy: 'f' for filtered data as in "wb6f", 'h' for
+   ("wb9") or a strategy: 'f' for filtered data as in "wb6", 'h' for
    Huffman only compression as in "wb1h", or 'R' for run-length encoding
    as in "wb1R". (See the description of deflateInit2 for more information
    about the strategy parameter.)

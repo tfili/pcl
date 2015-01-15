@@ -54,11 +54,11 @@ namespace pcl
       *   - a point cloud with a set of indices (source), and another point cloud (target)
       *   - two point clouds with two sets of indices (source and target) of the same size
       *
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Dirk Holz, Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class TransformationEstimation
     {
       public:

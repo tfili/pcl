@@ -59,14 +59,14 @@ enum { COLS = 640, ROWS = 480 };
 PointCloudT::Ptr cloud;
 pcl::people::PersonClassifier<pcl::RGB> person_classifier;
 std::string svm_filename;
-float min_confidence;
-float min_width;
-float max_width;
-float min_height;
-float max_height;
-float voxel_size;
-Eigen::Matrix3f rgb_intrinsics_matrix;
-Eigen::VectorXf ground_coeffs;
+double min_confidence;
+double min_width;
+double max_width;
+double min_height;
+double max_height;
+double voxel_size;
+Eigen::Matrix3d rgb_intrinsics_matrix;
+Eigen::VectorXd ground_coeffs;
 
 TEST (PCL, PersonClassifier)
 {

@@ -24,22 +24,22 @@ namespace pcl
       int ntrees_;
       std::string forest_filename_;
       int nfeatures_;
-      float thres_face_;
+      double thres_face_;
       int num_images_;
-      float trans_max_variance_;
+      double trans_max_variance_;
       size_t min_votes_size_;
       int used_for_pose_;
       bool use_normals_;
       std::string directory_;
-      float HEAD_ST_DIAMETER_;
-      float larger_radius_ratio_;
-      std::vector<Eigen::Vector3f> head_center_votes_;
-      std::vector<std::vector<Eigen::Vector3f> > head_center_votes_clustered_;
-      std::vector<std::vector<Eigen::Vector3f> > head_center_original_votes_clustered_;
-      std::vector<Eigen::Vector3f> angle_votes_;
-      std::vector<float> uncertainties_;
-      std::vector<Eigen::Vector3f> head_clusters_centers_;
-      std::vector<Eigen::Vector3f> head_clusters_rotation_;
+      double HEAD_ST_DIAMETER_;
+      double larger_radius_ratio_;
+      std::vector<Eigen::Vector3d> head_center_votes_;
+      std::vector<std::vector<Eigen::Vector3d> > head_center_votes_clustered_;
+      std::vector<std::vector<Eigen::Vector3d> > head_center_original_votes_clustered_;
+      std::vector<Eigen::Vector3d> angle_votes_;
+      std::vector<double> uncertainties_;
+      std::vector<Eigen::Vector3d> head_clusters_centers_;
+      std::vector<Eigen::Vector3d> head_clusters_rotation_;
 
       pcl::PointCloud<pcl::PointXYZ>::Ptr input_;
       pcl::PointCloud<pcl::PointXYZI>::Ptr face_heat_map_;
@@ -52,7 +52,7 @@ namespace pcl
       int icp_iterations_;
 
       pcl::PointCloud<pcl::PointXYZ>::Ptr model_original_;
-      float res_;
+      double res_;
 
     public:
 
@@ -64,18 +64,18 @@ namespace pcl
         ntrees_ = 10;
         forest_filename_ = std::string ("forest.txt");
         nfeatures_ = 10000;
-        thres_face_ = 1.f;
+        thres_face_ = 1.;
         num_images_ = 1000;
-        trans_max_variance_ = 1600.f;
+        trans_max_variance_ = 1600.;
         used_for_pose_ = std::numeric_limits<int>::max ();
         use_normals_ = false;
         directory_ = std::string ("");
         HEAD_ST_DIAMETER_ = 0.2364f;
-        larger_radius_ratio_ = 1.5f;
+        larger_radius_ratio_ = 1.5;
         face_heat_map_.reset ();
         model_path_ = std::string ("face_mesh.ply");
         pose_refinement_ = false;
-        res_ = 0.005f;
+        res_ = 0.005;
       }
 
       virtual ~RFFaceDetectorTrainer()
@@ -136,12 +136,12 @@ namespace pcl
         icp_iterations_ = iters;
       }
 
-      void setLeavesFaceThreshold(float p)
+      void setLeavesFaceThreshold(double p)
       {
         thres_face_ = p;
       }
 
-      void setLeavesFaceMaxVariance(float max)
+      void setLeavesFaceMaxVariance(double max)
       {
         trans_max_variance_ = max;
       }
@@ -184,7 +184,7 @@ namespace pcl
 
         for (size_t i = 0; i < head_center_votes_.size (); i++)
         {
-          votes_cloud->points[i].getVector3fMap () = head_center_votes_[i];
+          votes_cloud->points[i].getVector3dMap () = head_center_votes_[i];
         }
       }
 
@@ -199,8 +199,8 @@ namespace pcl
         {
           for (size_t j = 0; j < head_center_votes_clustered_[i].size (); j++, p++)
           {
-            votes_cloud->points[p].getVector3fMap () = head_center_votes_clustered_[i][j];
-            votes_cloud->points[p].intensity = 0.1f * static_cast<float> (i);
+            votes_cloud->points[p].getVector3dMap () = head_center_votes_clustered_[i][j];
+            votes_cloud->points[p].intensity = 0.1 * static_cast<double> (i);
           }
         }
 
@@ -218,8 +218,8 @@ namespace pcl
         {
           for (size_t j = 0; j < head_center_original_votes_clustered_[i].size (); j++, p++)
           {
-            votes_cloud->points[p].getVector3fMap () = head_center_original_votes_clustered_[i][j];
-            votes_cloud->points[p].intensity = 0.1f * static_cast<float> (i);
+            votes_cloud->points[p].getVector3dMap () = head_center_original_votes_clustered_[i][j];
+            votes_cloud->points[p].intensity = 0.1 * static_cast<double> (i);
           }
         }
 
@@ -227,11 +227,11 @@ namespace pcl
       }
 
       //get heads
-      void getDetectedFaces(std::vector<Eigen::VectorXf> & faces)
+      void getDetectedFaces(std::vector<Eigen::VectorXd> & faces)
       {
         for (size_t i = 0; i < head_clusters_centers_.size (); i++)
         {
-          Eigen::VectorXf head (6);
+          Eigen::VectorXd head (6);
           head[0] = head_clusters_centers_[i][0];
           head[1] = head_clusters_centers_[i][1];
           head[2] = head_clusters_centers_[i][2];

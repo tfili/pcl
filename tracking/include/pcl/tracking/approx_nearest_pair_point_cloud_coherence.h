@@ -40,7 +40,7 @@ namespace pcl
       
       /** \brief compute the nearest pairs and compute coherence using point_coherences_ */
       virtual void
-      computeCoherence (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, float &w_j);
+      computeCoherence (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, double &w_j);
 
       typename boost::shared_ptr<pcl::search::Octree<PointInT> > search_;
     };

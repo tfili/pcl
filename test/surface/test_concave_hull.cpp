@@ -130,9 +130,9 @@ TEST (PCL, ConcaveHull_planar_bunny)
 
   ModelCoefficients::Ptr plane_coefficients (new ModelCoefficients ());
   plane_coefficients->values.resize (4);
-  plane_coefficients->values[0] = -0.010666f;
-  plane_coefficients->values[1] = -0.793771f;
-  plane_coefficients->values[2] = -0.607779f;
+  plane_coefficients->values[0] = -0.010666;
+  plane_coefficients->values[1] = -0.793771;
+  plane_coefficients->values[2] = -0.607779;
   plane_coefficients->values[3] = 0.993252f;
 
   /// Project segmented object points onto plane
@@ -157,22 +157,22 @@ TEST (PCL, ConcaveHull_4points)
 {
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_4 (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PointXYZ p;
-  p.x = p.y = p.z = 0.f;
+  p.x = p.y = p.z = 0.;
   cloud_4->push_back (p);
 
-  p.x = 1.f;
-  p.y = 0.f;
-  p.z = 0.f;
+  p.x = 1.;
+  p.y = 0.;
+  p.z = 0.;
   cloud_4->push_back (p);
 
-  p.x = 0.f;
-  p.y = 1.f;
-  p.z = 0.f;
+  p.x = 0.;
+  p.y = 1.;
+  p.z = 0.;
   cloud_4->push_back (p);
 
-  p.x = 1.f;
-  p.y = 1.f;
-  p.z = 0.f;
+  p.x = 1.;
+  p.y = 1.;
+  p.z = 0.;
   cloud_4->push_back (p);
 
   cloud_4->height = 1;
@@ -190,21 +190,21 @@ TEST (PCL, ConcaveHull_4points)
   PointCloud<PointXYZ> mesh_cloud;
   fromPCLPointCloud2 (mesh.cloud, mesh_cloud);
 
-  EXPECT_NEAR (mesh_cloud[0].x, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[0].y, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[0].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[0].x, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[0].y, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[0].z, 0., 1e-6);
 
-  EXPECT_NEAR (mesh_cloud[1].x, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[1].y, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[1].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[1].x, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[1].y, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[1].z, 0., 1e-6);
 
-  EXPECT_NEAR (mesh_cloud[2].x, 0.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[2].y, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[2].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[2].x, 0., 1e-6);
+  EXPECT_NEAR (mesh_cloud[2].y, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[2].z, 0., 1e-6);
 
-  EXPECT_NEAR (mesh_cloud[3].x, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[3].y, 1.f, 1e-6);
-  EXPECT_NEAR (mesh_cloud[3].z, 0.f, 1e-6);
+  EXPECT_NEAR (mesh_cloud[3].x, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[3].y, 1., 1e-6);
+  EXPECT_NEAR (mesh_cloud[3].z, 0., 1e-6);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,9 +219,9 @@ TEST (PCL, ConcaveHull_LTable)
   {
     for (size_t j = 0; j <= 2; j++)
     {
-      cloud_out_ltable.points[npoints].x = float (i) * 0.5f;
-      cloud_out_ltable.points[npoints].y = -float (j) * 0.5f;
-      cloud_out_ltable.points[npoints].z = 0.f;
+      cloud_out_ltable.points[npoints].x = double (i) * 0.5;
+      cloud_out_ltable.points[npoints].y = -double (j) * 0.5;
+      cloud_out_ltable.points[npoints].z = 0.;
       npoints++;
     }
   }
@@ -230,9 +230,9 @@ TEST (PCL, ConcaveHull_LTable)
   {
     for(size_t j = 3; j < 8; j++)
     {
-      cloud_out_ltable.points[npoints].x = float (i) * 0.5f;
-      cloud_out_ltable.points[npoints].y = -float (j) * 0.5f;
-      cloud_out_ltable.points[npoints].z = 0.f;
+      cloud_out_ltable.points[npoints].x = double (i) * 0.5;
+      cloud_out_ltable.points[npoints].y = -double (j) * 0.5;
+      cloud_out_ltable.points[npoints].z = 0.;
       npoints++;
     }
   }

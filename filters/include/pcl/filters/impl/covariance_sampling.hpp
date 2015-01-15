@@ -61,21 +61,21 @@ pcl::CovarianceSampling<PointT, PointNT>::initCompute ()
 
   // Prepare the point cloud by centering at the origin and then scaling the points such that the average distance from
   // the origin is 1.0 => rotations and translations will have the same magnitude
-  Eigen::Vector3f centroid (0.f, 0.f, 0.f);
+  Eigen::Vector3d centroid (0., 0., 0.);
   for (size_t p_i = 0; p_i < indices_->size (); ++p_i)
-    centroid += (*input_)[(*indices_)[p_i]].getVector3fMap ();
-  centroid /= float (indices_->size ());
+    centroid += (*input_)[(*indices_)[p_i]].getVector3dMap ();
+  centroid /= double (indices_->size ());
 
   scaled_points_.resize (indices_->size ());
   double average_norm = 0.0;
   for (size_t p_i = 0; p_i < indices_->size (); ++p_i)
   {
-    scaled_points_[p_i] = (*input_)[(*indices_)[p_i]].getVector3fMap () - centroid;
+    scaled_points_[p_i] = (*input_)[(*indices_)[p_i]].getVector3dMap () - centroid;
     average_norm += scaled_points_[p_i].norm ();
   }
   average_norm /= double (scaled_points_.size ());
   for (size_t p_i = 0; p_i < scaled_points_.size (); ++p_i)
-    scaled_points_[p_i] /= float (average_norm);
+    scaled_points_[p_i] /= double (average_norm);
 
   return (true);
 }
@@ -145,8 +145,8 @@ pcl::CovarianceSampling<PointT, PointNT>::computeCovarianceMatrix (Eigen::Matrix
   for (size_t p_i = 0; p_i < scaled_points_.size (); ++p_i)
   {
     f_mat.block<3, 1> (0, p_i) = scaled_points_[p_i].cross (
-                                     (*input_normals_)[(*indices_)[p_i]].getNormalVector3fMap ()).template cast<double> ();
-    f_mat.block<3, 1> (3, p_i) = (*input_normals_)[(*indices_)[p_i]].getNormalVector3fMap ().template cast<double> ();
+                                     (*input_normals_)[(*indices_)[p_i]].getNormalVector3dMap ()).template cast<double> ();
+    f_mat.block<3, 1> (3, p_i) = (*input_normals_)[(*indices_)[p_i]].getNormalVector3dMap ().template cast<double> ();
   }
 
   // Compute the covariance matrix C and its 6 eigenvectors (initially complex, move them to a double matrix)
@@ -167,8 +167,8 @@ pcl::CovarianceSampling<PointT, PointNT>::applyFilter (std::vector<int> &sampled
   for (size_t p_i = 0; p_i < scaled_points_.size (); ++p_i)
   {
     f_mat.block<3, 1> (0, p_i) = scaled_points_[p_i].cross (
-                                     (*input_normals_)[(*indices_)[p_i]].getNormalVector3fMap ()).template cast<double> ();
-    f_mat.block<3, 1> (3, p_i) = (*input_normals_)[(*indices_)[p_i]].getNormalVector3fMap ().template cast<double> ();
+                                     (*input_normals_)[(*indices_)[p_i]].getNormalVector3dMap ()).template cast<double> ();
+    f_mat.block<3, 1> (3, p_i) = (*input_normals_)[(*indices_)[p_i]].getNormalVector3dMap ().template cast<double> ();
   }
 
   // Compute the covariance matrix C and its 6 eigenvectors (initially complex, move them to a double matrix)
@@ -198,8 +198,8 @@ pcl::CovarianceSampling<PointT, PointNT>::applyFilter (std::vector<int> &sampled
   for (size_t p_i = 0; p_i < candidate_indices.size (); ++p_i)
   {
     v[p_i].block<3, 1> (0, 0) = scaled_points_[p_i].cross (
-                                  (*input_normals_)[(*indices_)[candidate_indices[p_i]]].getNormalVector3fMap ()).template cast<double> ();
-    v[p_i].block<3, 1> (3, 0) = (*input_normals_)[(*indices_)[candidate_indices[p_i]]].getNormalVector3fMap ().template cast<double> ();
+                                  (*input_normals_)[(*indices_)[candidate_indices[p_i]]].getNormalVector3dMap ()).template cast<double> ();
+    v[p_i].block<3, 1> (3, 0) = (*input_normals_)[(*indices_)[candidate_indices[p_i]]].getNormalVector3dMap ().template cast<double> ();
   }
 
 
@@ -210,7 +210,7 @@ pcl::CovarianceSampling<PointT, PointNT>::applyFilter (std::vector<int> &sampled
   for (size_t i = 0; i < 6; ++i)
   {
     for (size_t p_i = 0; p_i < candidate_indices.size (); ++p_i)
-      L[i].push_back (std::make_pair (p_i, fabs (v[p_i].dot (x.block<6, 1> (0, i)))));
+      L[i].push_back (std::make_pair ((int)p_i, fabs (v[p_i].dot (x.block<6, 1> (0, i)))));
 
     // Sort in decreasing order
     L[i].sort (sort_dot_list_function);

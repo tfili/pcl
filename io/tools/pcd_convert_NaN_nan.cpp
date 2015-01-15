@@ -55,7 +55,7 @@ main (int argc, char **argv)
   }
 
   std::ostringstream ss;
-  ss << std::numeric_limits<float>::quiet_NaN ();
+  ss << std::numeric_limits<double>::quiet_NaN ();
   std::string nanStr (ss.str ());
 
   std::cout << "converting \"" << nanStr << "\" to \"nan\"" << std::endl;

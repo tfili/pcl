@@ -37,11 +37,11 @@ namespace pcl
 
       void
       setParameters (int width, int height,
-                     float fx, float fy,
-                     float cx, float cy,
-                     float z_near, float z_far);
+                     double fx, double fy,
+                     double cx, double cy,
+                     double z_near, double z_far);
 
-      Eigen::Matrix4f
+      Eigen::Matrix4d
       getProjectionMatrix () { return projection_matrix_; }
 
       double getX () const { return x_; }
@@ -105,16 +105,16 @@ namespace pcl
       // Camera Intrinsic Parameters
       int width_;
       int height_;
-      float fx_;
-      float fy_;
-      float cx_;
-      float cy_;
+      double fx_;
+      double fy_;
+      double cx_;
+      double cy_;
 
       // min and max range of the camera
-      float z_near_;
-      float z_far_;
+      double z_near_;
+      double z_far_;
 
-      Eigen::Matrix4f projection_matrix_;
+      Eigen::Matrix4d projection_matrix_;
     };
   } // namespace - simulation
 } // namespace - pcl

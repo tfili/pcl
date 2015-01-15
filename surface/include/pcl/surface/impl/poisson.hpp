@@ -65,7 +65,7 @@ pcl::Poisson<PointNT>::Poisson ()
   : depth_ (8)
   , min_depth_ (5)
   , point_weight_ (4)
-  , scale_ (1.1f)
+  , scale_ (1.1)
   , solver_divide_ (8)
   , iso_divide_ (8)
   , samples_per_node_ (1.0)
@@ -93,8 +93,8 @@ pcl::Poisson<PointNT>::~Poisson ()
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointNT> template <int Degree> void
 pcl::Poisson<PointNT>::execute (poisson::CoredVectorMeshData &mesh,
-                                poisson::Point3D<float> &center,
-                                float &scale)
+                                poisson::Point3D<double> &center,
+                                double &scale)
 {
   pcl::poisson::Real iso_value = 0;
   poisson::TreeNodeData::UseIndex = 1;
@@ -152,8 +152,8 @@ template <typename PointNT> void
 pcl::Poisson<PointNT>::performReconstruction (PolygonMesh &output)
 {
   poisson::CoredVectorMeshData mesh;
-  poisson::Point3D<float> center;
-  float scale = 1.0f;
+  poisson::Point3D<double> center;
+  double scale = 1.0;
 
   switch (degree_)
   {
@@ -191,7 +191,7 @@ pcl::Poisson<PointNT>::performReconstruction (PolygonMesh &output)
   // Write output PolygonMesh
   pcl::PointCloud<pcl::PointXYZ> cloud;
   cloud.points.resize (int (mesh.outOfCorePointCount () + mesh.inCorePoints.size ()));
-  poisson::Point3D<float> p;
+  poisson::Point3D<double> p;
   for (int i = 0; i < int (mesh.inCorePoints.size ()); i++)
   {
     p = mesh.inCorePoints[i];
@@ -233,8 +233,8 @@ pcl::Poisson<PointNT>::performReconstruction (pcl::PointCloud<PointNT> &points,
                                               std::vector<pcl::Vertices> &polygons)
 {
   poisson::CoredVectorMeshData mesh;
-  poisson::Point3D<float> center;
-  float scale = 1.0f;
+  poisson::Point3D<double> center;
+  double scale = 1.0;
 
   switch (degree_)
   {
@@ -272,7 +272,7 @@ pcl::Poisson<PointNT>::performReconstruction (pcl::PointCloud<PointNT> &points,
   // Write output PolygonMesh
   // Write vertices
   points.resize (int (mesh.outOfCorePointCount () + mesh.inCorePoints.size ()));
-  poisson::Point3D<float> p;
+  poisson::Point3D<double> p;
   for (int i = 0; i < int(mesh.inCorePoints.size ()); i++)
   {
     p = mesh.inCorePoints[i];

@@ -84,7 +84,7 @@ namespace pcl
       /** \brief Empty constructor for PlaneCoefficientComparator. 
         * \param[in] distance_map the distance map to use
         */
-      EdgeAwarePlaneComparator (const float *distance_map) : 
+      EdgeAwarePlaneComparator (const double *distance_map) : 
         distance_map_ (distance_map),
         distance_map_threshold_ (5),
         curvature_threshold_ (0.04f),
@@ -103,13 +103,13 @@ namespace pcl
         * \param[in] distance_map the distance map to use
         */
       inline void
-      setDistanceMap (const float *distance_map)
+      setDistanceMap (const double *distance_map)
       {
         distance_map_ = distance_map;
       }
 
       /** \brief Return the distance map used. */
-      const float*
+      const double*
       getDistanceMap () const
       {
         return (distance_map_);
@@ -119,13 +119,13 @@ namespace pcl
         * \param[in] curvature_threshold a threshold for the curvature
         */
       void
-      setCurvatureThreshold (float curvature_threshold)
+      setCurvatureThreshold (double curvature_threshold)
       {
         curvature_threshold_ = curvature_threshold;
       }
 
       /** \brief Get the curvature threshold. */
-      inline float
+      inline double
       getCurvatureThreshold () const
       {
         return (curvature_threshold_);
@@ -135,13 +135,13 @@ namespace pcl
         * \param[in] distance_map_threshold the distance map threshold
         */
       void
-      setDistanceMapThreshold (float distance_map_threshold)
+      setDistanceMapThreshold (double distance_map_threshold)
       {
         distance_map_threshold_ = distance_map_threshold;
       }
 
       /** \brief Get the distance map threshold (in pixels). */
-      inline float
+      inline double
       getDistanceMapThreshold () const
       {
         return (distance_map_threshold_);
@@ -151,13 +151,13 @@ namespace pcl
         * \param[in] euclidean_distance_threshold the euclidean distance threshold in meters
         */
       void
-      setEuclideanDistanceThreshold (float euclidean_distance_threshold)
+      setEuclideanDistanceThreshold (double euclidean_distance_threshold)
       {
         euclidean_distance_threshold_ = euclidean_distance_threshold;
       }
 
       /** \brief Get the euclidean distance threshold. */
-      inline float
+      inline double
       getEuclideanDistanceThreshold () const
       {
         return (euclidean_distance_threshold_);
@@ -176,22 +176,22 @@ namespace pcl
         // We additionally check euclidean distance to ensure that we don't have neighboring coplanar points
         // that aren't close in euclidean space (think two tables separated by a meter, viewed from an angle
         // where the surfaces are adjacent in image space).
-        float dist_threshold = distance_threshold_;
-        float euclidean_dist_threshold = euclidean_distance_threshold_;
+        double dist_threshold = distance_threshold_;
+        double euclidean_dist_threshold = euclidean_distance_threshold_;
         if (depth_dependent_)
         {
-          Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();
-          float z = vec.dot (z_axis_);
+          Eigen::Vector3d vec = input_->points[idx1].getVector3dMap ();
+          double z = vec.dot (z_axis_);
           dist_threshold *= z * z;
           euclidean_dist_threshold *= z * z;
         }
         
-        float dx = input_->points[idx1].x - input_->points[idx2].x;
-        float dy = input_->points[idx1].y - input_->points[idx2].y;
-        float dz = input_->points[idx1].z - input_->points[idx2].z;
-        float dist = sqrtf (dx*dx + dy*dy + dz*dz);
+        double dx = input_->points[idx1].x - input_->points[idx2].x;
+        double dy = input_->points[idx1].y - input_->points[idx2].y;
+        double dz = input_->points[idx1].z - input_->points[idx2].z;
+        double dist = sqrt (dx*dx + dy*dy + dz*dz);
 
-        bool normal_ok = (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ );
+        bool normal_ok = (normals_->points[idx1].getNormalVector3dMap ().dot (normals_->points[idx2].getNormalVector3dMap () ) > angular_threshold_ );
         bool dist_ok = (dist < euclidean_dist_threshold);
 
         bool curvature_ok = normals_->points[idx1].curvature < curvature_threshold_;
@@ -204,10 +204,10 @@ namespace pcl
       }
 
     protected:
-      const float* distance_map_;
+      const double* distance_map_;
       int distance_map_threshold_;
-      float curvature_threshold_;
-      float euclidean_distance_threshold_;
+      double curvature_threshold_;
+      double euclidean_distance_threshold_;
   };
 }
 

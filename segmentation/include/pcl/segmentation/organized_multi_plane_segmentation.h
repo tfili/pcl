@@ -223,8 +223,8 @@ namespace pcl
       void
       segment (std::vector<ModelCoefficients>& model_coefficients, 
                std::vector<PointIndices>& inlier_indices,
-               std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& centroids,
-               std::vector <Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> >& covariances,
+               std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> >& centroids,
+               std::vector <Eigen::Matrix3d, Eigen::aligned_allocator<Eigen::Matrix3d> >& covariances,
                pcl::PointCloud<PointLT>& labels, 
                std::vector<pcl::PointIndices>& label_indices);
 
@@ -276,8 +276,8 @@ namespace pcl
       void
       refine (std::vector<ModelCoefficients>& model_coefficients, 
               std::vector<PointIndices>& inlier_indices,
-              std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& centroids,
-              std::vector <Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> >& covariances,
+              std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d> >& centroids,
+              std::vector <Eigen::Matrix3d, Eigen::aligned_allocator<Eigen::Matrix3d> >& covariances,
               PointCloudLPtr& labels,
               std::vector<pcl::PointIndices>& label_indices);
 

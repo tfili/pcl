@@ -69,7 +69,7 @@ namespace pcl
       {
         max_distance_ = std::numeric_limits<double>::max ();
 
-        focalLength_ = 1.0f;
+        focalLength_ = 1.0;
       }
 
       /** \brief Empty deconstructor. */
@@ -111,7 +111,7 @@ namespace pcl
        */
       int
       radiusSearch (const PointCloudConstPtr &cloud_arg, int index_arg, double radius_arg,
-                    std::vector<int> &k_indices_arg, std::vector<float> &k_sqr_distances_arg,
+                    std::vector<int> &k_indices_arg, std::vector<double> &k_sqr_distances_arg,
                     int max_nn_arg = INT_MAX);
 
       /** \brief Search for all neighbors of query point that are within a given radius.
@@ -125,7 +125,7 @@ namespace pcl
        */
       int
       radiusSearch (int index_arg, const double radius_arg, std::vector<int> &k_indices_arg,
-                    std::vector<float> &k_sqr_distances_arg, int max_nn_arg = INT_MAX) const;
+                    std::vector<double> &k_sqr_distances_arg, int max_nn_arg = INT_MAX) const;
 
       /** \brief Search for all neighbors of query point that are within a given radius.
        * \param p_q_arg the given query point
@@ -137,7 +137,7 @@ namespace pcl
        */
       int
       radiusSearch (const PointT &p_q_arg, const double radius_arg, std::vector<int> &k_indices_arg,
-                    std::vector<float> &k_sqr_distances_arg, int max_nn_arg = INT_MAX) const;
+                    std::vector<double> &k_sqr_distances_arg, int max_nn_arg = INT_MAX) const;
 
       /** \brief Search for k-nearest neighbors at the query point.
        * \param cloud_arg the point cloud data
@@ -150,7 +150,7 @@ namespace pcl
        */
       int
       nearestKSearch (const PointCloudConstPtr &cloud_arg, int index_arg, int k_arg, std::vector<int> &k_indices_arg,
-                      std::vector<float> &k_sqr_distances_arg);
+                      std::vector<double> &k_sqr_distances_arg);
 
       /** \brief Search for k-nearest neighbors at query point
        * \param index_arg index representing the query point in the dataset given by \a setInputCloud.
@@ -163,7 +163,7 @@ namespace pcl
        */
       int
       nearestKSearch (int index_arg, int k_arg, std::vector<int> &k_indices_arg,
-                      std::vector<float> &k_sqr_distances_arg);
+                      std::vector<double> &k_sqr_distances_arg);
 
       /** \brief Search for k-nearest neighbors at given query point.
        * @param p_q_arg the given query point
@@ -174,7 +174,7 @@ namespace pcl
        */
       int
       nearestKSearch (const PointT &p_q_arg, int k_arg, std::vector<int> &k_indices_arg,
-                      std::vector<float> &k_sqr_distances_arg);
+                      std::vector<double> &k_sqr_distances_arg);
 
       /** \brief Get the maximum allowed distance between the query point and its nearest neighbors. */
       inline double

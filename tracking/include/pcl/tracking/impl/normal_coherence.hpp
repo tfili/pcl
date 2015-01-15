@@ -8,8 +8,8 @@
 template <typename PointInT> double 
 pcl::tracking::NormalCoherence<PointInT>::computeCoherence (PointInT &source, PointInT &target)
 {
-    Eigen::Vector4f n = source.getNormalVector4fMap ();
-    Eigen::Vector4f n_dash = target.getNormalVector4fMap ();
+    Eigen::Vector4d n = source.getNormalVector4dMap ();
+    Eigen::Vector4d n_dash = target.getNormalVector4dMap ();
     if ( n.norm () <= 1e-5 || n_dash.norm () <= 1e-5 )
     {
         PCL_ERROR("norm might be ZERO!\n");

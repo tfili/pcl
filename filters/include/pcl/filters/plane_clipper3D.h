@@ -56,10 +56,10 @@ namespace pcl
 
       /**
        * @author Suat Gedikli <gedikli@willowgarage.com>
-       * @brief Constructor taking the homogeneous representation of the plane as a Eigen::Vector4f
+       * @brief Constructor taking the homogeneous representation of the plane as a Eigen::Vector4d
        * @param[in] plane_params plane parameters, need not necessarily be normalized
        */
-      PlaneClipper3D (const Eigen::Vector4f& plane_params);
+      PlaneClipper3D (const Eigen::Vector4d& plane_params);
 
       virtual ~PlaneClipper3D () throw ();
 
@@ -67,13 +67,13 @@ namespace pcl
         * \brief Set new plane parameters
         * \param plane_params
         */
-      void setPlaneParameters (const Eigen::Vector4f& plane_params);
+      void setPlaneParameters (const Eigen::Vector4d& plane_params);
 
       /**
         * \brief return the current plane parameters
         * \return the current plane parameters
         */
-      const Eigen::Vector4f& getPlaneParameters () const;
+      const Eigen::Vector4d& getPlaneParameters () const;
 
       virtual bool
       clipPoint3D (const PointT& point) const;
@@ -94,11 +94,11 @@ namespace pcl
       clone () const;
 
     protected:
-      float
+      double
       getDistance (const PointT& point) const;
 
     private:
-      Eigen::Vector4f plane_params_;
+      Eigen::Vector4d plane_params_;
   };
 }
 

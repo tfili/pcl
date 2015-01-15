@@ -89,7 +89,7 @@ namespace pcl
        * \param[in] vpz the Z coordinate of the viewpoint
        */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -102,7 +102,7 @@ namespace pcl
        * \param[out] vpz the Z coordinate of the viewpoint
        */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz)
+      getViewPoint (double &vpx, double &vpy, double &vpz)
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -110,7 +110,7 @@ namespace pcl
       }
 
       inline void
-      setCentroid (Eigen::Vector4f & centroid)
+      setCentroid (Eigen::Vector4d & centroid)
       {
         centroid_ = centroid;
       }
@@ -119,13 +119,13 @@ namespace pcl
       /** \brief Values describing the viewpoint ("pinhole" camera model assumed). 
        * By default, the viewpoint is set to 0,0,0.
        */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** \brief Number of bins, this should match the Output type */
       int nbins_;
 
       /** \brief Centroid to be used */
-      Eigen::Vector4f centroid_;
+      Eigen::Vector4d centroid_;
 
       /** \brief Estimate the CRH histogram at
        * a set of points given by <setInputCloud (), setIndices ()> using the surface in

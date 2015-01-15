@@ -56,7 +56,7 @@ pcl::FPFHEstimationOMP<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
       indices_->size () != surface_->points.size ())
   { 
     std::vector<int> nn_indices (k_); // \note These resizes are irrelevant for a radiusSearch ().
-    std::vector<float> nn_dists (k_); 
+    std::vector<double> nn_dists (k_); 
 
     std::set<int> spfh_indices_set;
     for (size_t idx = 0; idx < indices_->size (); ++idx)
@@ -85,7 +85,7 @@ pcl::FPFHEstimationOMP<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
   hist_f3_.setZero (data_size, nr_bins_f3_);
 
   std::vector<int> nn_indices (k_); // \note These resizes are irrelevant for a radiusSearch ().
-  std::vector<float> nn_dists (k_); 
+  std::vector<double> nn_dists (k_); 
 
   // Compute SPFH signatures for every point that needs them
 
@@ -125,7 +125,7 @@ pcl::FPFHEstimationOMP<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
         this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
     {
       for (int d = 0; d < nr_bins; ++d)
-        output.points[idx].histogram[d] = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].histogram[d] = std::numeric_limits<double>::quiet_NaN ();
   
       output.is_dense = false;
       continue;
@@ -138,7 +138,7 @@ pcl::FPFHEstimationOMP<PointInT, PointNT, PointOutT>::computeFeature (PointCloud
       nn_indices[i] = spfh_hist_lookup[nn_indices[i]];
 
     // Compute the FPFH signature (i.e. compute a weighted combination of local SPFH signatures) ...
-    Eigen::VectorXf fpfh_histogram = Eigen::VectorXf::Zero (nr_bins);
+    Eigen::VectorXd fpfh_histogram = Eigen::VectorXd::Zero (nr_bins);
     weightPointSPFHSignature (hist_f1_, hist_f2_, hist_f3_, nn_indices, nn_dists, fpfh_histogram);
 
     // ...and copy it into the output cloud

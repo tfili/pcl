@@ -56,8 +56,8 @@ pcl::cloud_composer::MergeSelection::performAction (ConstItemList input_data, Po
   pcl::ExtractIndices<pcl::PCLPointCloud2> filter;
   pcl::PCLPointCloud2::Ptr merged_cloud (new pcl::PCLPointCloud2);
   //To Save the pose of the first original item
-  Eigen::Vector4f source_origin;
-  Eigen::Quaternionf source_orientation;
+  Eigen::Vector4d source_origin;
+  Eigen::Quaterniond source_orientation;
   bool pose_found = false;
   foreach (const CloudItem* input_cloud_item, selected_item_index_map_.keys ())
   {
@@ -79,8 +79,8 @@ pcl::cloud_composer::MergeSelection::performAction (ConstItemList input_data, Po
 
       if (!pose_found)
       {
-        source_origin = input_cloud_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4f> ();
-        source_orientation =  input_cloud_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaternionf> ();
+        source_origin = input_cloud_item->data (ItemDataRole::ORIGIN).value<Eigen::Vector4d> ();
+        source_orientation =  input_cloud_item->data (ItemDataRole::ORIENTATION).value<Eigen::Quaterniond> ();
         pose_found = true;
       }
       CloudItem* new_cloud_item = new CloudItem (input_cloud_item->text ()

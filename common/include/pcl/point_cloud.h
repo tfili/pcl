@@ -75,7 +75,7 @@ namespace pcl
       * \param[in] p1 the input Eigen type
       * \param[out] p2 the output Point type
       */
-    NdCopyEigenPointFunctor (const Eigen::VectorXf &p1, PointOutT &p2)
+    NdCopyEigenPointFunctor (const Eigen::VectorXd &p1, PointOutT &p2)
       : p1_ (p1),
         p2_ (reinterpret_cast<Pod&>(p2)),
         f_idx_ (0) { }
@@ -91,7 +91,7 @@ namespace pcl
     }
 
     private:
-      const Eigen::VectorXf &p1_;
+      const Eigen::VectorXd &p1_;
       Pod &p2_;
       int f_idx_;
     public:
@@ -108,7 +108,7 @@ namespace pcl
       * \param[in] p1 the input Point type
       * \param[out] p2 the output Eigen type
       */
-     NdCopyPointEigenFunctor (const PointInT &p1, Eigen::VectorXf &p2)
+     NdCopyPointEigenFunctor (const PointInT &p1, Eigen::VectorXd &p2)
       : p1_ (reinterpret_cast<const Pod&>(p1)), p2_ (p2), f_idx_ (0) { }
 
     /** \brief Operator. Data copy happens here. */
@@ -118,12 +118,12 @@ namespace pcl
       //p2_[f_idx_++] = boost::fusion::at_key<Key> (p1_);
       typedef typename pcl::traits::datatype<PointInT, Key>::type T;
       const uint8_t* data_ptr = reinterpret_cast<const uint8_t*>(&p1_) + pcl::traits::offset<PointInT, Key>::value;
-      p2_[f_idx_++] = static_cast<float> (*reinterpret_cast<const T*>(data_ptr));
+      p2_[f_idx_++] = static_cast<double> (*reinterpret_cast<const T*>(data_ptr));
     }
 
     private:
       const Pod &p1_;
-      Eigen::VectorXf &p2_;
+      Eigen::VectorXd &p2_;
       int f_idx_;
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -178,7 +178,7 @@ namespace pcl
         */
       PointCloud () : 
         header (), points (), width (0), height (0), is_dense (true),
-        sensor_origin_ (Eigen::Vector4f::Zero ()), sensor_orientation_ (Eigen::Quaternionf::Identity ()),
+        sensor_origin_ (Eigen::Vector4d::Zero ()), sensor_orientation_ (Eigen::Quaterniond::Identity ()),
         mapping_ ()
       {}
 
@@ -187,7 +187,7 @@ namespace pcl
         */
       PointCloud (PointCloud<PointT> &pc) : 
         header (), points (), width (0), height (0), is_dense (true), 
-        sensor_origin_ (Eigen::Vector4f::Zero ()), sensor_orientation_ (Eigen::Quaternionf::Identity ()),
+        sensor_origin_ (Eigen::Vector4d::Zero ()), sensor_orientation_ (Eigen::Quaterniond::Identity ()),
         mapping_ ()
       {
         *this = pc;
@@ -198,7 +198,7 @@ namespace pcl
         */
       PointCloud (const PointCloud<PointT> &pc) : 
         header (), points (), width (0), height (0), is_dense (true), 
-        sensor_origin_ (Eigen::Vector4f::Zero ()), sensor_orientation_ (Eigen::Quaternionf::Identity ()),
+        sensor_origin_ (Eigen::Vector4d::Zero ()), sensor_orientation_ (Eigen::Quaterniond::Identity ()),
         mapping_ ()
       {
         *this = pc;
@@ -231,8 +231,8 @@ namespace pcl
         , width (width_)
         , height (height_)
         , is_dense (true)
-        , sensor_origin_ (Eigen::Vector4f::Zero ())
-        , sensor_orientation_ (Eigen::Quaternionf::Identity ())
+        , sensor_origin_ (Eigen::Vector4d::Zero ())
+        , sensor_orientation_ (Eigen::Quaterniond::Identity ())
         , mapping_ ()
       {}
 
@@ -333,12 +333,12 @@ namespace pcl
         return (height > 1);
       }
       
-      /** \brief Return an Eigen MatrixXf (assumes float values) mapped to the specified dimensions of the PointCloud.
-        * \anchor getMatrixXfMap
+      /** \brief Return an Eigen MatrixXd (assumes double values) mapped to the specified dimensions of the PointCloud.
+        * \anchor getMatrixXdMap
         * \note This method is for advanced users only! Use with care!
         * 
         * \attention Since 1.4.0, Eigen matrices are forced to Row Major to increase the efficiency of the algorithms in PCL
-        *   This means that the behavior of getMatrixXfMap changed, and is now correctly mapping 1-1 with a PointCloud structure, 
+        *   This means that the behavior of getMatrixXdMap changed, and is now correctly mapping 1-1 with a PointCloud structure, 
         *   that is: number of points in a cloud = rows in a matrix, number of point dimensions = columns in a matrix
         *
         * \param[in] dim the number of dimensions to consider for each point
@@ -348,21 +348,21 @@ namespace pcl
         * \note for getting only XYZ coordinates out of PointXYZ use dim=3, stride=4 and offset=0 due to the alignment.
         * \attention PointT types are most of the time aligned, so the offsets are not continuous! 
         */
-      inline Eigen::Map<Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> > 
-      getMatrixXfMap (int dim, int stride, int offset)
+      inline Eigen::Map<Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> > 
+      getMatrixXdMap (int dim, int stride, int offset)
       {
-        if (Eigen::MatrixXf::Flags & Eigen::RowMajorBit)
-          return (Eigen::Map<Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<float*>(&points[0])+offset, points.size (), dim, Eigen::OuterStride<> (stride)));
+        if (Eigen::MatrixXd::Flags & Eigen::RowMajorBit)
+          return (Eigen::Map<Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<double*>(&points[0])+offset, points.size (), dim, Eigen::OuterStride<> (stride)));
         else
-          return (Eigen::Map<Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<float*>(&points[0])+offset, dim, points.size (), Eigen::OuterStride<> (stride)));
+          return (Eigen::Map<Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<double*>(&points[0])+offset, dim, points.size (), Eigen::OuterStride<> (stride)));
       }
 
-      /** \brief Return an Eigen MatrixXf (assumes float values) mapped to the specified dimensions of the PointCloud.
-        * \anchor getMatrixXfMap
+      /** \brief Return an Eigen MatrixXd (assumes double values) mapped to the specified dimensions of the PointCloud.
+        * \anchor getMatrixXdMap
         * \note This method is for advanced users only! Use with care!
         * 
         * \attention Since 1.4.0, Eigen matrices are forced to Row Major to increase the efficiency of the algorithms in PCL
-        *   This means that the behavior of getMatrixXfMap changed, and is now correctly mapping 1-1 with a PointCloud structure, 
+        *   This means that the behavior of getMatrixXdMap changed, and is now correctly mapping 1-1 with a PointCloud structure, 
         *   that is: number of points in a cloud = rows in a matrix, number of point dimensions = columns in a matrix
         *
         * \param[in] dim the number of dimensions to consider for each point
@@ -372,35 +372,35 @@ namespace pcl
         * \note for getting only XYZ coordinates out of PointXYZ use dim=3, stride=4 and offset=0 due to the alignment.
         * \attention PointT types are most of the time aligned, so the offsets are not continuous! 
         */
-      inline const Eigen::Map<const Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> >
-      getMatrixXfMap (int dim, int stride, int offset) const
+      inline const Eigen::Map<const Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> >
+      getMatrixXdMap (int dim, int stride, int offset) const
       {
-        if (Eigen::MatrixXf::Flags & Eigen::RowMajorBit)
-          return (Eigen::Map<const Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<float*>(const_cast<PointT*>(&points[0]))+offset, points.size (), dim, Eigen::OuterStride<> (stride)));
+        if (Eigen::MatrixXd::Flags & Eigen::RowMajorBit)
+          return (Eigen::Map<const Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<double*>(const_cast<PointT*>(&points[0]))+offset, points.size (), dim, Eigen::OuterStride<> (stride)));
         else
-          return (Eigen::Map<const Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<float*>(const_cast<PointT*>(&points[0]))+offset, dim, points.size (), Eigen::OuterStride<> (stride)));                
+          return (Eigen::Map<const Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> >(reinterpret_cast<double*>(const_cast<PointT*>(&points[0]))+offset, dim, points.size (), Eigen::OuterStride<> (stride)));                
       }
 
-      /** \brief Return an Eigen MatrixXf (assumes float values) mapped to the PointCloud.
+      /** \brief Return an Eigen MatrixXd (assumes double values) mapped to the PointCloud.
         * \note This method is for advanced users only! Use with care!
         * \attention PointT types are most of the time aligned, so the offsets are not continuous! 
-        * See \ref getMatrixXfMap for more information.
+        * See \ref getMatrixXdMap for more information.
         */
-      inline Eigen::Map<Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> >
-      getMatrixXfMap () 
+      inline Eigen::Map<Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> >
+      getMatrixXdMap () 
       {
-        return (getMatrixXfMap (sizeof (PointT) / sizeof (float),  sizeof (PointT) / sizeof (float), 0));
+        return (getMatrixXdMap (sizeof (PointT) / sizeof (double),  sizeof (PointT) / sizeof (double), 0));
       }
 
-      /** \brief Return an Eigen MatrixXf (assumes float values) mapped to the PointCloud.
+      /** \brief Return an Eigen MatrixXd (assumes double values) mapped to the PointCloud.
         * \note This method is for advanced users only! Use with care!
         * \attention PointT types are most of the time aligned, so the offsets are not continuous! 
-        * See \ref getMatrixXfMap for more information.
+        * See \ref getMatrixXdMap for more information.
         */
-      inline const Eigen::Map<const Eigen::MatrixXf, Eigen::Aligned, Eigen::OuterStride<> >
-      getMatrixXfMap () const
+      inline const Eigen::Map<const Eigen::MatrixXd, Eigen::Aligned, Eigen::OuterStride<> >
+      getMatrixXdMap () const
       {
-        return (getMatrixXfMap (sizeof (PointT) / sizeof (float),  sizeof (PointT) / sizeof (float), 0));
+        return (getMatrixXdMap (sizeof (PointT) / sizeof (double),  sizeof (PointT) / sizeof (double), 0));
       }
 
       /** \brief The point cloud header. It contains information about the acquisition time. */
@@ -418,9 +418,9 @@ namespace pcl
       bool is_dense;
 
       /** \brief Sensor acquisition pose (origin/translation). */
-      Eigen::Vector4f    sensor_origin_;
+      Eigen::Vector4d    sensor_origin_;
       /** \brief Sensor acquisition pose (rotation). */
-      Eigen::Quaternionf sensor_orientation_;
+      Eigen::Quaterniond sensor_orientation_;
 
       typedef PointT PointType;  // Make the template class available from the outside
       typedef std::vector<PointT, Eigen::aligned_allocator<PointT> > VectorType;

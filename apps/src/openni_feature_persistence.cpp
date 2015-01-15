@@ -66,11 +66,11 @@ do \
     } \
 }while(false)
 
-const float default_subsampling_leaf_size = 0.02f;
-const float default_normal_search_radius = 0.041f;
+const double default_subsampling_leaf_size = 0.02;
+const double default_normal_search_radius = 0.041;
 const double aux [] = {0.21, 0.32};
 const std::vector<double> default_scales_vector (aux, aux + 2);
-const float default_alpha = 1.2f;
+const double default_alpha = 1.2;
 
 template <typename PointType>
 class OpenNIFeaturePersistence
@@ -80,10 +80,10 @@ class OpenNIFeaturePersistence
     typedef typename Cloud::Ptr CloudPtr;
     typedef typename Cloud::ConstPtr CloudConstPtr;
 
-    OpenNIFeaturePersistence (float &subsampling_leaf_size,
+    OpenNIFeaturePersistence (double &subsampling_leaf_size,
                               double &normal_search_radius,
-                              std::vector<float> &scales_vector,
-                              float &alpha,
+                              std::vector<double> &scales_vector,
+                              double &alpha,
                               const std::string& device_id = "")
       : viewer ("PCL OpenNI Feature Persistence Viewer")
     , device_id_(device_id)
@@ -263,16 +263,16 @@ main (int argc, char **argv)
   }
 
   // Parse arguments
-  float subsampling_leaf_size = default_subsampling_leaf_size;
+  double subsampling_leaf_size = default_subsampling_leaf_size;
   pcl::console::parse_argument (argc, argv, "-octree_leaf_size", subsampling_leaf_size);
   double normal_search_radius = default_normal_search_radius;
   pcl::console::parse_argument (argc, argv, "-normal_search_radius", normal_search_radius);
   std::vector<double> scales_vector_double = default_scales_vector;
   pcl::console::parse_multiple_arguments (argc, argv, "-scales", scales_vector_double);
-  std::vector<float> scales_vector (scales_vector_double.size ());
-  for (size_t i = 0; i < scales_vector_double.size (); ++i) scales_vector[i] = float (scales_vector_double[i]);
+  std::vector<double> scales_vector (scales_vector_double.size ());
+  for (size_t i = 0; i < scales_vector_double.size (); ++i) scales_vector[i] = double (scales_vector_double[i]);
 
-  float alpha = default_alpha;
+  double alpha = default_alpha;
   pcl::console::parse_argument (argc, argv, "-persistence_alpha", alpha);
 
 

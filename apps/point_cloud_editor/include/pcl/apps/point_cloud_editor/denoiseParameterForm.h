@@ -62,7 +62,7 @@ class DenoiseParameterForm : public QDialog
 
     /// @brief Returns the mean
     inline
-    float
+    double
     getMeanK () const
     {
       return (mean_k_);
@@ -70,7 +70,7 @@ class DenoiseParameterForm : public QDialog
 
     /// @brief Returns the standard deviation multiplier threshold
     inline
-    float
+    double
     getStdDevThresh () const
     {
       return (std_dev_thresh_);
@@ -106,9 +106,9 @@ class DenoiseParameterForm : public QDialog
     /// The main layout for the dialog
     QVBoxLayout* main_layout_;
     /// The mean
-    float mean_k_;
+    double mean_k_;
     /// The standard deviation multiplier threshold
-    float std_dev_thresh_;
+    double std_dev_thresh_;
     /// The flag indicating whether the OK button was pressed
     bool ok_;
 };

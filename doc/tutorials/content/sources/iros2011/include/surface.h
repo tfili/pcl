@@ -22,14 +22,14 @@ public:
 typedef boost::shared_ptr<Mesh> MeshPtr;
 
 PointCloudPtr
-smoothPointCloud (const PointCloudPtr & input, float radius, int polynomial_order)
+smoothPointCloud (const PointCloudPtr & input, double radius, int polynomial_order)
 {
   PointCloudPtr output (new PointCloud);
   return (output);
 }
 
 SurfaceElementsPtr
-computeSurfaceElements (const PointCloudPtr & input, float radius, int polynomial_order)
+computeSurfaceElements (const PointCloudPtr & input, double radius, int polynomial_order)
 {
   SurfaceElementsPtr surfels (new SurfaceElements);
   return (surfels);
@@ -44,15 +44,15 @@ computeConvexHull (const PointCloudPtr & input)
 
 
 MeshPtr
-computeConcaveHull (const PointCloudPtr & input, float alpha)
+computeConcaveHull (const PointCloudPtr & input, double alpha)
 {
   MeshPtr output (new Mesh);
   return (output);
 }
 
 pcl::PolygonMesh::Ptr
-greedyTriangulation (const SurfaceElementsPtr & surfels, float radius, float mu, int max_nearest_neighbors, 
-                     float max_surface_angle, float min_angle, float max_angle)
+greedyTriangulation (const SurfaceElementsPtr & surfels, double radius, double mu, int max_nearest_neighbors, 
+                     double max_surface_angle, double min_angle, double max_angle)
 
 {
   pcl::PolygonMesh::Ptr output (new pcl::PolygonMesh);
@@ -61,7 +61,7 @@ greedyTriangulation (const SurfaceElementsPtr & surfels, float radius, float mu,
 
 
 pcl::PolygonMesh::Ptr
-marchingCubesTriangulation (const SurfaceElementsPtr & surfels, float leaf_size, float iso_level)
+marchingCubesTriangulation (const SurfaceElementsPtr & surfels, double leaf_size, double iso_level)
 {
   pcl::PolygonMesh::Ptr output (new pcl::PolygonMesh);
   return (output);

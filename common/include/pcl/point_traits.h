@@ -217,9 +217,9 @@ namespace pcl
     * \code
     * PointInT p;
     * bool exists;
-    * float value;
+    * double value;
     * typedef typename pcl::traits::fieldList<PointInT>::type FieldList;
-    * pcl::for_each_type<FieldList> (pcl::CopyIfFieldExists<PointT, float> (p, "intensity", exists, value));
+    * pcl::for_each_type<FieldList> (pcl::CopyIfFieldExists<PointT, double> (p, "intensity", exists, value));
     * \endcode
     */
   template <typename PointInT, typename OutT>
@@ -284,7 +284,7 @@ namespace pcl
     * \code
     * PointT p;
     * typedef typename pcl::traits::fieldList<PointT>::type FieldList;
-    * pcl::for_each_type<FieldList> (pcl::SetIfFieldExists<PointT, float> (p, "intensity", 42.0f));
+    * pcl::for_each_type<FieldList> (pcl::SetIfFieldExists<PointT, double> (p, "intensity", 42.0));
     * \endcode
     */
   template <typename PointOutT, typename InT>

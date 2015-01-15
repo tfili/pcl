@@ -81,7 +81,7 @@ class ObjectSelection
       , rgb_data_ ()
     { 
       // Set the parameters for planar segmentation
-      plane_comparator_->setDistanceThreshold (0.01f, false);
+      plane_comparator_->setDistanceThreshold (0.01, false);
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -100,14 +100,14 @@ class ObjectSelection
         IntegralImageNormalEstimation<PointT, Normal> ne;
         // Set the parameters for normal estimation
         ne.setNormalEstimationMethod (ne.COVARIANCE_MATRIX);
-        ne.setMaxDepthChangeFactor (0.02f);
-        ne.setNormalSmoothingSize (20.0f);
+        ne.setMaxDepthChangeFactor (0.02);
+        ne.setNormalSmoothingSize (20.0);
         // Estimate normals in the cloud
         ne.setInputCloud (input);
         ne.compute (normals);
 
         // Save the distance map for the plane comparator
-        float *map=ne.getDistanceMap ();// This will be deallocated with the IntegralImageNormalEstimation object...
+        double *map=ne.getDistanceMap ();// This will be deallocated with the IntegralImageNormalEstimation object...
         distance_map_.assign(map, map+input->size() ); //...so we must copy the data out
         plane_comparator_->setDistanceMap(distance_map_.data());
       }
@@ -115,7 +115,7 @@ class ObjectSelection
       {
         NormalEstimation<PointT, Normal> ne;
         ne.setInputCloud (input);
-        ne.setRadiusSearch (0.02f);
+        ne.setRadiusSearch (0.02);
         ne.setSearchMethod (search_);
         ne.compute (normals);
       }
@@ -357,7 +357,7 @@ class ObjectSelection
 
         if (cloud_->isOrganized ())
         {
-          approximatePolygon (regions[idx], region, 0.01f, false, true);
+          approximatePolygon (regions[idx], region, 0.01, false, true);
           print_highlight ("Planar region: %lu points initial, %lu points after refinement.\n", regions[idx].getContour ().size (), region.getContour ().size ());
         }
         else
@@ -414,7 +414,7 @@ class ObjectSelection
         return;
 
       vector<int> indices (1);
-      vector<float> distances (1);
+      vector<double> distances (1);
 
       // Get the point that was picked
       PointT picked_pt;
@@ -619,7 +619,7 @@ class ObjectSelection
     typename EdgeAwarePlaneComparator<PointT, Normal>::Ptr plane_comparator_;
     PointIndices::Ptr plane_indices_;
     unsigned char* rgb_data_;
-    std::vector<float> distance_map_;
+    std::vector<double> distance_map_;
 
     // Results
     typename PointCloud<PointT>::Ptr plane_;

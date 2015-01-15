@@ -38,9 +38,9 @@ namespace pcl
           writePersonXMLConfig (std::ostream& os);
 
           std::string                                 name_;                  // Name of the person
-          std::vector<float>                          max_part_size_;         // Max primary eigenvalue for each body part
-          std::vector<std::vector<float> >            part_ideal_length_;     // Ideal length between two body parts
-          std::vector<std::vector<float> >            max_length_offset_;     // Max allowed length offset between two body parts
+          std::vector<double>                          max_part_size_;         // Max primary eigenvalue for each body part
+          std::vector<std::vector<double> >            part_ideal_length_;     // Ideal length between two body parts
+          std::vector<std::vector<double> >            max_length_offset_;     // Max allowed length offset between two body parts
           std::vector<int>                            nr_of_children_;        // The number of children for each part
       };
     }

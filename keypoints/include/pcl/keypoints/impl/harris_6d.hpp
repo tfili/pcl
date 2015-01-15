@@ -48,13 +48,13 @@
 #include <pcl/features/integral_image_normal.h>
 
 template <typename PointInT, typename PointOutT, typename NormalT> void
-pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::setThreshold (float threshold)
+pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::setThreshold (double threshold)
 {
   threshold_= threshold;
 }
 
 template <typename PointInT, typename PointOutT, typename NormalT> void
-pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::setRadius (float radius)
+pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::setRadius (double radius)
 {
   search_radius_ = radius;
 }
@@ -73,9 +73,9 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::setNonMaxSupression (bool n
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT, typename NormalT> void
-pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::calculateCombinedCovar (const std::vector<int>& neighbors, float* coefficients) const
+pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::calculateCombinedCovar (const std::vector<int>& neighbors, double* coefficients) const
 {
-  memset (coefficients, 0, sizeof (float) * 21);
+  memset (coefficients, 0, sizeof (double) * 21);
   unsigned count = 0;
   for (std::vector<int>::const_iterator iIt = neighbors.begin(); iIt != neighbors.end(); ++iIt)
   {
@@ -113,7 +113,7 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::calculateCombinedCovar (con
   }
   if (count > 0)
   {
-    float norm = 1.0 / float (count);
+    double norm = 1.0 / double (count);
     coefficients[ 0] *= norm;
     coefficients[ 1] *= norm;
     coefficients[ 2] *= norm;
@@ -174,7 +174,7 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloud
     cloud->points [idx].z = surface_->points [idx].z;
     //grayscale = 0.2989 * R + 0.5870 * G + 0.1140 * B
 
-    cloud->points [idx].intensity = 0.00390625 * (0.114 * float(surface_->points [idx].b) + 0.5870 * float(surface_->points [idx].g) + 0.2989 * float(surface_->points [idx].r));
+    cloud->points [idx].intensity = 0.00390625 * (0.114 * double(surface_->points [idx].b) + 0.5870 * double(surface_->points [idx].g) + 0.2989 * double(surface_->points [idx].r));
   }
   pcl::copyPointCloud (*surface_, *cloud);
 
@@ -189,7 +189,7 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloud
 #endif    
   for (unsigned idx = 0; idx < intensity_gradients_->size (); ++idx)
   {
-    float len = intensity_gradients_->points [idx].gradient_x * intensity_gradients_->points [idx].gradient_x +
+    double len = intensity_gradients_->points [idx].gradient_x * intensity_gradients_->points [idx].gradient_x +
                 intensity_gradients_->points [idx].gradient_y * intensity_gradients_->points [idx].gradient_y +
                 intensity_gradients_->points [idx].gradient_z * intensity_gradients_->points [idx].gradient_z ;
 
@@ -236,7 +236,7 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloud
         continue;
 
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (idx, search_radius_, nn_indices, nn_dists);
       bool is_maxima = true;
       for (std::vector<int>::const_iterator iIt = nn_indices.begin(); iIt != nn_indices.end(); ++iIt)
@@ -271,9 +271,9 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::responseTomasi (PointCloudO
 {
   // get the 6x6 covar-mat
   PointOutT pointOut;
-  PCL_ALIGN (16) float covar [21];
-  Eigen::SelfAdjointEigenSolver <Eigen::Matrix<float, 6, 6> > solver;
-  Eigen::Matrix<float, 6, 6> covariance;
+  PCL_ALIGN (16) double covar [21];
+  Eigen::SelfAdjointEigenSolver <Eigen::Matrix<double, 6, 6> > solver;
+  Eigen::Matrix<double, 6, 6> covariance;
 
 #ifdef _OPENMP
   #pragma omp parallel for default (shared) private (pointOut, covar, covariance, solver) num_threads(threads_)
@@ -281,15 +281,15 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::responseTomasi (PointCloudO
   for (unsigned pIdx = 0; pIdx < input_->size (); ++pIdx)
   {
     const PointInT& pointIn = input_->points [pIdx];
-    pointOut.intensity = 0.0; //std::numeric_limits<float>::quiet_NaN ();
+    pointOut.intensity = 0.0; //std::numeric_limits<double>::quiet_NaN ();
     if (isFinite (pointIn))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree_->radiusSearch (pointIn, search_radius_, nn_indices, nn_dists);
       calculateCombinedCovar (nn_indices, covar);
 
-      float trace = covar [0] + covar [6] + covar [11] + covar [15] + covar [18] + covar [20];
+      double trace = covar [0] + covar [6] + covar [11] + covar [15] + covar [18] + covar [20];
       if (trace != 0)
       {
         covariance.coeffRef ( 0) = covar [ 0];
@@ -363,12 +363,12 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOu
   pcl::search::KdTree<PointInT> search;
   search.setInputCloud(surface_);
 
-  Eigen::Matrix3f nnT;
-  Eigen::Matrix3f NNT;
-  Eigen::Vector3f NNTp;
-  const Eigen::Vector3f* normal;
-  const Eigen::Vector3f* point;
-  float diff;
+  Eigen::Matrix3d nnT;
+  Eigen::Matrix3d NNT;
+  Eigen::Vector3d NNTp;
+  const Eigen::Vector3d* normal;
+  const Eigen::Vector3d* point;
+  double diff;
   const unsigned max_iterations = 10;
   for (typename PointCloudOut::iterator cornerIt = corners.begin(); cornerIt != corners.end(); ++cornerIt)
   {
@@ -381,18 +381,18 @@ pcl::HarrisKeypoint6D<PointInT, PointOutT, NormalT>::refineCorners (PointCloudOu
       corner.y = cornerIt->y;
       corner.z = cornerIt->z;
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;      
+      std::vector<double> nn_dists;      
       search.radiusSearch (corner, search_radius_, nn_indices, nn_dists);
       for (std::vector<int>::const_iterator iIt = nn_indices.begin(); iIt != nn_indices.end(); ++iIt)
       {
-        normal = reinterpret_cast<const Eigen::Vector3f*> (&(normals_->points[*iIt].normal_x));
-        point = reinterpret_cast<const Eigen::Vector3f*> (&(surface_->points[*iIt].x));
+        normal = reinterpret_cast<const Eigen::Vector3d*> (&(normals_->points[*iIt].normal_x));
+        point = reinterpret_cast<const Eigen::Vector3d*> (&(surface_->points[*iIt].x));
         nnT = (*normal) * (normal->transpose());
         NNT += nnT;
         NNTp += nnT * (*point);
       }
       if (NNT.determinant() != 0)
-        *(reinterpret_cast<Eigen::Vector3f*>(&(cornerIt->x))) = NNT.inverse () * NNTp;
+        *(reinterpret_cast<Eigen::Vector3d*>(&(cornerIt->x))) = NNT.inverse () * NNTp;
 
       diff = (cornerIt->x - corner.x) * (cornerIt->x - corner.x) +
              (cornerIt->y - corner.y) * (cornerIt->y - corner.y) +

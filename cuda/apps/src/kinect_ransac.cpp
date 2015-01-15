@@ -72,8 +72,8 @@ class SimpleKinectTool
         pt.x = cloud->points[i].x;
         pt.y = cloud->points[i].y;
         pt.z = cloud->points[i].z;
-        // Pack RGB into a float
-        pt.rgb = *(float*)(&cloud->points[i].rgb);
+        // Pack RGB into a double
+        pt.rgb = *(double*)(&cloud->points[i].rgb);
         data_host.points[i] = pt;
       }
       data_host.width = cloud->width;
@@ -114,7 +114,7 @@ class SimpleKinectTool
     template <template <typename> class Storage> void 
     cloud_cb (const boost::shared_ptr<openni_wrapper::Image>& image,
               const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, 
-              float constant)
+              double constant)
     {
       pcl::PointCloud<pcl::PointXYZRGB>::Ptr output (new pcl::PointCloud<pcl::PointXYZRGB>);
       typename PointCloudAOS<Storage>::Ptr data;
@@ -156,7 +156,7 @@ class SimpleKinectTool
 #if 1
       pcl::Grabber* filegrabber = 0;
 
-      float frames_per_second = 1;
+      double frames_per_second = 1;
       bool repeat = false;
 
       std::string path = "./frame_0.pcd";
@@ -193,13 +193,13 @@ class SimpleKinectTool
       if (use_device)
       {
         std::cerr << "[RANSAC] Using GPU..." << std::endl;
-        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&SimpleKinectTool::cloud_cb<pcl_cuda::Device>, this, _1, _2, _3);
+        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&SimpleKinectTool::cloud_cb<pcl_cuda::Device>, this, _1, _2, _3);
         c = interface->registerCallback (f);
       }
       else
       {
         std::cerr << "[RANSAC] Using CPU..." << std::endl;
-        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&SimpleKinectTool::cloud_cb<pcl_cuda::Host>, this, _1, _2, _3);
+        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&SimpleKinectTool::cloud_cb<pcl_cuda::Host>, this, _1, _2, _3);
         c = interface->registerCallback (f);
       }
 

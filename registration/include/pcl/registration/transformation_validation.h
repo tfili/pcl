@@ -60,11 +60,11 @@ namespace pcl
       *
       * The output is in the form of a score or a confidence measure.
       *
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename Scalar = float>
+    template <typename PointSource, typename PointTarget, typename Scalar = double>
     class TransformationValidation
     {
       public:

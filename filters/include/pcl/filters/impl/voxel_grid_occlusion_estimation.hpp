@@ -53,12 +53,12 @@ pcl::VoxelGridOcclusionEstimation<PointT>::initializeVoxelGrid ()
   this->filter (filtered_cloud_);
 
   // Get the minimum and maximum bounding box dimensions
-  b_min_[0] = (static_cast<float> ( min_b_[0]) * leaf_size_[0]);
-  b_min_[1] = (static_cast<float> ( min_b_[1]) * leaf_size_[1]);
-  b_min_[2] = (static_cast<float> ( min_b_[2]) * leaf_size_[2]);
-  b_max_[0] = (static_cast<float> ( (max_b_[0]) + 1) * leaf_size_[0]);
-  b_max_[1] = (static_cast<float> ( (max_b_[1]) + 1) * leaf_size_[1]);
-  b_max_[2] = (static_cast<float> ( (max_b_[2]) + 1) * leaf_size_[2]);
+  b_min_[0] = (static_cast<double> ( min_b_[0]) * leaf_size_[0]);
+  b_min_[1] = (static_cast<double> ( min_b_[1]) * leaf_size_[1]);
+  b_min_[2] = (static_cast<double> ( min_b_[2]) * leaf_size_[2]);
+  b_max_[0] = (static_cast<double> ( (max_b_[0]) + 1) * leaf_size_[0]);
+  b_max_[1] = (static_cast<double> ( (max_b_[1]) + 1) * leaf_size_[1]);
+  b_max_[2] = (static_cast<double> ( (max_b_[2]) + 1) * leaf_size_[2]);
 
   // set the sensor origin and sensor orientation
   sensor_origin_ = filtered_cloud_.sensor_origin_;
@@ -77,12 +77,12 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimation (int& out_state,
   }
 
   // estimate direction to target voxel
-  Eigen::Vector4f p = getCentroidCoordinate (in_target_voxel);
-  Eigen::Vector4f direction = p - sensor_origin_;
+  Eigen::Vector4d p = getCentroidCoordinate (in_target_voxel);
+  Eigen::Vector4d direction = p - sensor_origin_;
   direction.normalize ();
 
   // estimate entry point into the voxel grid
-  float tmin = rayBoxIntersection (sensor_origin_, direction);
+  double tmin = rayBoxIntersection (sensor_origin_, direction);
 
   if (tmin == -1)
   {
@@ -109,12 +109,12 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimation (int& out_state,
   }
 
   // estimate direction to target voxel
-  Eigen::Vector4f p = getCentroidCoordinate (in_target_voxel);
-  Eigen::Vector4f direction = p - sensor_origin_;
+  Eigen::Vector4d p = getCentroidCoordinate (in_target_voxel);
+  Eigen::Vector4d direction = p - sensor_origin_;
   direction.normalize ();
 
   // estimate entry point into the voxel grid
-  float tmin = rayBoxIntersection (sensor_origin_, direction);
+  double tmin = rayBoxIntersection (sensor_origin_, direction);
 
   if (tmin == -1)
   {
@@ -153,12 +153,12 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimationAll (std::vector<E
         if (index == -1)
         {
           // estimate direction to target voxel
-          Eigen::Vector4f p = getCentroidCoordinate (ijk);
-          Eigen::Vector4f direction = p - sensor_origin_;
+          Eigen::Vector4d p = getCentroidCoordinate (ijk);
+          Eigen::Vector4d direction = p - sensor_origin_;
           direction.normalize ();
           
           // estimate entry point into the voxel grid
-          float tmin = rayBoxIntersection (sensor_origin_, direction);
+          double tmin = rayBoxIntersection (sensor_origin_, direction);
 
           // ray traversal
           int state = rayTraversal (ijk, sensor_origin_, direction, tmin);
@@ -172,11 +172,11 @@ pcl::VoxelGridOcclusionEstimation<PointT>::occlusionEstimationAll (std::vector<E
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT> float
-pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vector4f& origin, 
-                                                               const Eigen::Vector4f& direction)
+template <typename PointT> double
+pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vector4d& origin, 
+                                                               const Eigen::Vector4d& direction)
 {
-  float tmin, tmax, tymin, tymax, tzmin, tzmax;
+  double tmin, tmax, tymin, tymax, tzmin, tzmax;
 
   if (direction[0] >= 0)
   {
@@ -203,7 +203,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vect
   if ((tmin > tymax) || (tymin > tmax))
   {
     PCL_ERROR ("no intersection with the bounding box \n");
-    tmin = -1.0f;
+    tmin = -1.0;
     return tmin;
   }
 
@@ -226,7 +226,7 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vect
   if ((tmin > tzmax) || (tzmin > tmax))
   {
     PCL_ERROR ("no intersection with the bounding box \n");
-    tmin = -1.0f;
+    tmin = -1.0;
     return tmin;       
   }
 
@@ -241,12 +241,12 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayBoxIntersection (const Eigen::Vect
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> int
 pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& target_voxel,
-                                                         const Eigen::Vector4f& origin, 
-                                                         const Eigen::Vector4f& direction,
-                                                         const float t_min)
+                                                         const Eigen::Vector4d& origin, 
+                                                         const Eigen::Vector4d& direction,
+                                                         const double t_min)
 {
   // coordinate of the boundary of the voxel grid
-  Eigen::Vector4f start = origin + t_min * direction;
+  Eigen::Vector4d start = origin + t_min * direction;
 
   // i,j,k coordinate of the voxel were the ray enters the voxel grid
   Eigen::Vector3i ijk = getGridCoordinatesRound (start[0], start[1], start[2]);
@@ -255,46 +255,46 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& 
   int step_x, step_y, step_z;
 
   // centroid coordinate of the entry voxel
-  Eigen::Vector4f voxel_max = getCentroidCoordinate (ijk);
+  Eigen::Vector4d voxel_max = getCentroidCoordinate (ijk);
 
   if (direction[0] >= 0)
   {
-    voxel_max[0] += leaf_size_[0] * 0.5f;
+    voxel_max[0] += leaf_size_[0] * 0.5;
     step_x = 1;
   }
   else
   {
-    voxel_max[0] -= leaf_size_[0] * 0.5f;
+    voxel_max[0] -= leaf_size_[0] * 0.5;
     step_x = -1;
   }
   if (direction[1] >= 0)
   {
-    voxel_max[1] += leaf_size_[1] * 0.5f;
+    voxel_max[1] += leaf_size_[1] * 0.5;
     step_y = 1;
   }
   else
   {
-    voxel_max[1] -= leaf_size_[1] * 0.5f;
+    voxel_max[1] -= leaf_size_[1] * 0.5;
     step_y = -1;
   }
   if (direction[2] >= 0)
   {
-    voxel_max[2] += leaf_size_[2] * 0.5f;
+    voxel_max[2] += leaf_size_[2] * 0.5;
     step_z = 1;
   }
   else
   {
-    voxel_max[2] -= leaf_size_[2] * 0.5f;
+    voxel_max[2] -= leaf_size_[2] * 0.5;
     step_z = -1;
   }
 
-  float t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
-  float t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
-  float t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
+  double t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
+  double t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
+  double t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
      
-  float t_delta_x = leaf_size_[0] / static_cast<float> (fabs (direction[0]));
-  float t_delta_y = leaf_size_[1] / static_cast<float> (fabs (direction[1]));
-  float t_delta_z = leaf_size_[2] / static_cast<float> (fabs (direction[2]));
+  double t_delta_x = leaf_size_[0] / static_cast<double> (fabs (direction[0]));
+  double t_delta_y = leaf_size_[1] / static_cast<double> (fabs (direction[1]));
+  double t_delta_z = leaf_size_[2] / static_cast<double> (fabs (direction[2]));
 
   // index of the point in the point cloud
   int index;
@@ -336,16 +336,16 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (const Eigen::Vector3i& 
 template <typename PointT> int
 pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vector3i>& out_ray,
                                                          const Eigen::Vector3i& target_voxel,
-                                                         const Eigen::Vector4f& origin, 
-                                                         const Eigen::Vector4f& direction,
-                                                         const float t_min)
+                                                         const Eigen::Vector4d& origin, 
+                                                         const Eigen::Vector4d& direction,
+                                                         const double t_min)
 {
   // reserve space for the ray vector
   int reserve_size = div_b_.maxCoeff () * div_b_.maxCoeff ();
   out_ray.reserve (reserve_size);
 
   // coordinate of the boundary of the voxel grid
-  Eigen::Vector4f start = origin + t_min * direction;
+  Eigen::Vector4d start = origin + t_min * direction;
 
   // i,j,k coordinate of the voxel were the ray enters the voxel grid
   Eigen::Vector3i ijk = getGridCoordinatesRound (start[0], start[1], start[2]);
@@ -355,46 +355,46 @@ pcl::VoxelGridOcclusionEstimation<PointT>::rayTraversal (std::vector <Eigen::Vec
   int step_x, step_y, step_z;
 
   // centroid coordinate of the entry voxel
-  Eigen::Vector4f voxel_max = getCentroidCoordinate (ijk);
+  Eigen::Vector4d voxel_max = getCentroidCoordinate (ijk);
 
   if (direction[0] >= 0)
   {
-    voxel_max[0] += leaf_size_[0] * 0.5f;
+    voxel_max[0] += leaf_size_[0] * 0.5;
     step_x = 1;
   }
   else
   {
-    voxel_max[0] -= leaf_size_[0] * 0.5f;
+    voxel_max[0] -= leaf_size_[0] * 0.5;
     step_x = -1;
   }
   if (direction[1] >= 0)
   {
-    voxel_max[1] += leaf_size_[1] * 0.5f;
+    voxel_max[1] += leaf_size_[1] * 0.5;
     step_y = 1;
   }
   else
   {
-    voxel_max[1] -= leaf_size_[1] * 0.5f;
+    voxel_max[1] -= leaf_size_[1] * 0.5;
     step_y = -1;
   }
   if (direction[2] >= 0)
   {
-    voxel_max[2] += leaf_size_[2] * 0.5f;
+    voxel_max[2] += leaf_size_[2] * 0.5;
     step_z = 1;
   }
   else
   {
-    voxel_max[2] -= leaf_size_[2] * 0.5f;
+    voxel_max[2] -= leaf_size_[2] * 0.5;
     step_z = -1;
   }
 
-  float t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
-  float t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
-  float t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
+  double t_max_x = t_min + (voxel_max[0] - start[0]) / direction[0];
+  double t_max_y = t_min + (voxel_max[1] - start[1]) / direction[1];
+  double t_max_z = t_min + (voxel_max[2] - start[2]) / direction[2];
      
-  float t_delta_x = leaf_size_[0] / static_cast<float> (fabs (direction[0]));
-  float t_delta_y = leaf_size_[1] / static_cast<float> (fabs (direction[1]));
-  float t_delta_z = leaf_size_[2] / static_cast<float> (fabs (direction[2]));
+  double t_delta_x = leaf_size_[0] / static_cast<double> (fabs (direction[0]));
+  double t_delta_y = leaf_size_[1] / static_cast<double> (fabs (direction[1]));
+  double t_delta_z = leaf_size_[2] / static_cast<double> (fabs (direction[2]));
 
   // the index of the cloud (-1 if empty)
   int index = -1;

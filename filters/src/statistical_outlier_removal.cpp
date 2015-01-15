@@ -79,9 +79,9 @@ pcl::StatisticalOutlierRemoval<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2
 
   // Allocate enough space to hold the results
   std::vector<int> nn_indices (mean_k_);
-  std::vector<float> nn_dists (mean_k_);
+  std::vector<double> nn_dists (mean_k_);
 
-  std::vector<float> distances (indices_->size ());
+  std::vector<double> distances (indices_->size ());
   int valid_distances = 0;
   // Go over all the points and calculate the mean or smallest distance
   for (size_t cp = 0; cp < indices_->size (); ++cp)
@@ -105,7 +105,7 @@ pcl::StatisticalOutlierRemoval<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2
     double dist_sum = 0;
     for (int j = 1; j < mean_k_; ++j)
       dist_sum += sqrt (nn_dists[j]);
-    distances[cp] = static_cast<float> (dist_sum / (mean_k_ - 1));
+    distances[cp] = static_cast<double> (dist_sum / (mean_k_ - 1));
     valid_distances++;
   }
 

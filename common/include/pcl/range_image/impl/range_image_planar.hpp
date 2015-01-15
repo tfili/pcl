@@ -49,11 +49,11 @@ namespace pcl
 template <typename PointCloudType> void
 RangeImagePlanar::createFromPointCloudWithFixedSize (const PointCloudType& point_cloud,
                                                      int di_width, int di_height,
-                                                     float di_center_x, float di_center_y,
-                                                     float di_focal_length_x, float di_focal_length_y,
-                                                     const Eigen::Affine3f& sensor_pose,
-                                                     CoordinateFrame coordinate_frame, float noise_level,
-                                                     float min_range)
+                                                     double di_center_x, double di_center_y,
+                                                     double di_focal_length_x, double di_focal_length_y,
+                                                     const Eigen::Affine3d& sensor_pose,
+                                                     CoordinateFrame coordinate_frame, double noise_level,
+                                                     double min_range)
 {
   //std::cout << "Starting to create range image from "<<point_cloud.points.size ()<<" points.\n";
 
@@ -89,12 +89,12 @@ RangeImagePlanar::createFromPointCloudWithFixedSize (const PointCloudType& point
 
 /////////////////////////////////////////////////////////////////////////
 void
-RangeImagePlanar::calculate3DPoint (float image_x, float image_y, float range, Eigen::Vector3f& point) const
+RangeImagePlanar::calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3d& point) const
 {
   //cout << __PRETTY_FUNCTION__ << " called.\n";
-  float delta_x = (image_x+static_cast<float> (image_offset_x_)-center_x_)*focal_length_x_reciprocal_,
-        delta_y = (image_y+static_cast<float> (image_offset_y_)-center_y_)*focal_length_y_reciprocal_;
-  point[2] = range / (sqrtf (delta_x*delta_x + delta_y*delta_y + 1));
+  double delta_x = (image_x+static_cast<double> (image_offset_x_)-center_x_)*focal_length_x_reciprocal_,
+        delta_y = (image_y+static_cast<double> (image_offset_y_)-center_y_)*focal_length_y_reciprocal_;
+  point[2] = range / (sqrt (delta_x*delta_x + delta_y*delta_y + 1));
   point[0] = delta_x*point[2];
   point[1] = delta_y*point[2];
   point = to_world_system_ * point;
@@ -102,18 +102,18 @@ RangeImagePlanar::calculate3DPoint (float image_x, float image_y, float range, E
 
 /////////////////////////////////////////////////////////////////////////
 inline void 
-RangeImagePlanar::getImagePoint (const Eigen::Vector3f& point, float& image_x, float& image_y, float& range) const 
+RangeImagePlanar::getImagePoint (const Eigen::Vector3d& point, double& image_x, double& image_y, double& range) const 
 {
-  Eigen::Vector3f transformedPoint = to_range_image_system_ * point;
+  Eigen::Vector3d transformedPoint = to_range_image_system_ * point;
   if (transformedPoint[2]<=0)  // Behind the observer?
   {
-    image_x = image_y = range = -1.0f;
+    image_x = image_y = range = -1.0;
     return;
   }
   range = transformedPoint.norm ();
   
-  image_x = center_x_ + focal_length_x_*transformedPoint[0]/transformedPoint[2] - static_cast<float> (image_offset_x_);
-  image_y = center_y_ + focal_length_y_*transformedPoint[1]/transformedPoint[2] - static_cast<float> (image_offset_y_);
+  image_x = center_x_ + focal_length_x_*transformedPoint[0]/transformedPoint[2] - static_cast<double> (image_offset_x_);
+  image_y = center_y_ + focal_length_y_*transformedPoint[1]/transformedPoint[2] - static_cast<double> (image_offset_y_);
 }
 
 }  // namespace end

@@ -86,7 +86,7 @@ namespace pcl
       SampleConsensusModelCone (const PointCloudConstPtr &cloud, bool random = false) 
         : SampleConsensusModel<PointT> (cloud, random)
         , SampleConsensusModelFromNormals<PointT, PointNT> ()
-        , axis_ (Eigen::Vector3f::Zero ())
+        , axis_ (Eigen::Vector3d::Zero ())
         , eps_angle_ (0)
         , min_angle_ (-std::numeric_limits<double>::max ())
         , max_angle_ (std::numeric_limits<double>::max ())
@@ -104,7 +104,7 @@ namespace pcl
                                 bool random = false) 
         : SampleConsensusModel<PointT> (cloud, indices, random)
         , SampleConsensusModelFromNormals<PointT, PointNT> ()
-        , axis_ (Eigen::Vector3f::Zero ())
+        , axis_ (Eigen::Vector3d::Zero ())
         , eps_angle_ (0)
         , min_angle_ (-std::numeric_limits<double>::max ())
         , max_angle_ (std::numeric_limits<double>::max ())
@@ -155,10 +155,10 @@ namespace pcl
         * \param[in] ax the axis along which we need to search for a cone direction
         */
       inline void 
-      setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
+      setAxis (const Eigen::Vector3d &ax) { axis_ = ax; }
 
       /** \brief Get the axis along which we need to search for a cone direction. */
-      inline Eigen::Vector3f 
+      inline Eigen::Vector3d 
       getAxis () const { return (axis_); }
 
       /** \brief Set the minimum and maximum allowable opening angle for a cone model
@@ -192,14 +192,14 @@ namespace pcl
         */
       bool 
       computeModelCoefficients (const std::vector<int> &samples, 
-                                Eigen::VectorXf &model_coefficients);
+                                Eigen::VectorXd &model_coefficients);
 
       /** \brief Compute all distances from the cloud data to a given cone model.
         * \param[in] model_coefficients the coefficients of a cone model that we need to compute distances to
         * \param[out] distances the resultant estimated distances
         */
       void 
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients,  
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients,  
                            std::vector<double> &distances);
 
       /** \brief Select all the points which respect the given model coefficients as inliers.
@@ -208,7 +208,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void 
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients, 
                             const double threshold, 
                             std::vector<int> &inliers);
 
@@ -219,7 +219,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      countWithinDistance (const Eigen::VectorXd &model_coefficients, 
                            const double threshold);
 
 
@@ -231,8 +231,8 @@ namespace pcl
         */
       void 
       optimizeModelCoefficients (const std::vector<int> &inliers, 
-                                 const Eigen::VectorXf &model_coefficients, 
-                                 Eigen::VectorXf &optimized_coefficients);
+                                 const Eigen::VectorXd &model_coefficients, 
+                                 Eigen::VectorXd &optimized_coefficients);
 
 
       /** \brief Create a new point cloud with inliers projected onto the cone model.
@@ -243,7 +243,7 @@ namespace pcl
         */
       void 
       projectPoints (const std::vector<int> &inliers, 
-                     const Eigen::VectorXf &model_coefficients, 
+                     const Eigen::VectorXd &model_coefficients, 
                      PointCloud &projected_points, 
                      bool copy_data_fields = true);
 
@@ -254,7 +254,7 @@ namespace pcl
         */
       bool 
       doSamplesVerifyModel (const std::set<int> &indices, 
-                            const Eigen::VectorXf &model_coefficients, 
+                            const Eigen::VectorXd &model_coefficients, 
                             const double threshold);
 
       /** \brief Return an unique id for this model (SACMODEL_CONE). */
@@ -267,7 +267,7 @@ namespace pcl
         * \param[in] model_coefficients the line coefficients (a point on the line, line direction)
         */
       double 
-      pointToAxisDistance (const Eigen::Vector4f &pt, const Eigen::VectorXf &model_coefficients);
+      pointToAxisDistance (const Eigen::Vector4d &pt, const Eigen::VectorXd &model_coefficients);
 
       /** \brief Get a string representation of the name of this class. */
       std::string 
@@ -278,7 +278,7 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       bool 
-      isModelValid (const Eigen::VectorXf &model_coefficients);
+      isModelValid (const Eigen::VectorXd &model_coefficients);
 
       /** \brief Check if a sample of indices results in a good sample of points
         * indices. Pure virtual.
@@ -289,7 +289,7 @@ namespace pcl
 
     private:
       /** \brief The axis along which we need to search for a plane perpendicular to. */
-      Eigen::Vector3f axis_;
+      Eigen::Vector3d axis_;
     
       /** \brief The maximum allowed difference between the plane normal and the given axis. */
       double eps_angle_;
@@ -305,7 +305,7 @@ namespace pcl
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
       /** \brief Functor for the optimization function */
-      struct OptimizationFunctor : pcl::Functor<float>
+      struct OptimizationFunctor : pcl::Functor<double>
       {
         /** Functor constructor
           * \param[in] m_data_points the number of data points to evaluate
@@ -313,7 +313,7 @@ namespace pcl
           * \param[in] distance distance computation function pointer
           */
         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCone<PointT, PointNT> *model) : 
-          pcl::Functor<float> (m_data_points), model_ (model) {}
+          pcl::Functor<double> (m_data_points), model_ (model) {}
 
         /** Cost function to be minimized
           * \param[in] x variables array
@@ -321,31 +321,31 @@ namespace pcl
           * \return 0
           */
         int 
-        operator() (const Eigen::VectorXf &x, Eigen::VectorXf &fvec) const
+        operator() (const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
         {
-          Eigen::Vector4f apex  (x[0], x[1], x[2], 0);
-          Eigen::Vector4f axis_dir (x[3], x[4], x[5], 0);
-          float opening_angle = x[6];
+          Eigen::Vector4d apex  (x[0], x[1], x[2], 0);
+          Eigen::Vector4d axis_dir (x[3], x[4], x[5], 0);
+          double opening_angle = x[6];
 
-          float apexdotdir = apex.dot (axis_dir);
-          float dirdotdir = 1.0f / axis_dir.dot (axis_dir);
+          double apexdotdir = apex.dot (axis_dir);
+          double dirdotdir = 1.0 / axis_dir.dot (axis_dir);
 
           for (int i = 0; i < values (); ++i)
           {
             // dist = f - r
-            Eigen::Vector4f pt (model_->input_->points[(*model_->tmp_inliers_)[i]].x,
+            Eigen::Vector4d pt (model_->input_->points[(*model_->tmp_inliers_)[i]].x,
                                 model_->input_->points[(*model_->tmp_inliers_)[i]].y,
                                 model_->input_->points[(*model_->tmp_inliers_)[i]].z, 0);
 
             // Calculate the point's projection on the cone axis
-            float k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
-            Eigen::Vector4f pt_proj = apex + k * axis_dir;
+            double k = (pt.dot (axis_dir) - apexdotdir) * dirdotdir;
+            Eigen::Vector4d pt_proj = apex + k * axis_dir;
 
             // Calculate the actual radius of the cone at the level of the projected point
-            Eigen::Vector4f height = apex-pt_proj;
-            float actual_cone_radius = tanf (opening_angle) * height.norm ();
+            Eigen::Vector4d height = apex-pt_proj;
+            double actual_cone_radius = tan (opening_angle) * height.norm ();
 
-            fvec[i] = static_cast<float> (pcl::sqrPointToLineDistance (pt, apex, axis_dir) - actual_cone_radius * actual_cone_radius);
+            fvec[i] = static_cast<double> (pcl::sqrPointToLineDistance (pt, apex, axis_dir) - actual_cone_radius * actual_cone_radius);
           }
           return (0);
         }

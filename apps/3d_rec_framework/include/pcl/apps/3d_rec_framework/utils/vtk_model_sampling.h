@@ -31,13 +31,13 @@ namespace pcl
     }
 
     inline void
-    randomPointTriangle (double a1, double a2, double a3, double b1, double b2, double b3, double c1, double c2, double c3, Eigen::Vector4f& p)
+    randomPointTriangle (double a1, double a2, double a3, double b1, double b2, double b3, double c1, double c2, double c3, Eigen::Vector4d& p)
     {
-      float r1 = static_cast<float> (uniform_deviate (rand ()));
-      float r2 = static_cast<float> (uniform_deviate (rand ()));
-      float r1sqr = sqrtf (r1);
-      float OneMinR1Sqr = (1 - r1sqr);
-      float OneMinR2 = (1 - r2);
+      double r1 = static_cast<double> (uniform_deviate (rand ()));
+      double r2 = static_cast<double> (uniform_deviate (rand ()));
+      double r1sqr = sqrt (r1);
+      double OneMinR1Sqr = (1 - r1sqr);
+      double OneMinR2 = (1 - r2);
       a1 *= OneMinR1Sqr;
       a2 *= OneMinR1Sqr;
       a3 *= OneMinR1Sqr;
@@ -47,16 +47,16 @@ namespace pcl
       c1 = r1sqr * (r2 * c1 + b1) + a1;
       c2 = r1sqr * (r2 * c2 + b2) + a2;
       c3 = r1sqr * (r2 * c3 + b3) + a3;
-      p[0] = static_cast<float> (c1);
-      p[1] = static_cast<float> (c2);
-      p[2] = static_cast<float> (c3);
-      p[3] = 0.f;
+      p[0] = static_cast<double> (c1);
+      p[1] = static_cast<double> (c2);
+      p[2] = static_cast<double> (c3);
+      p[3] = 0.;
     }
 
     inline void
-    randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4f& p)
+    randPSurface (vtkPolyData * polydata, std::vector<double> * cumulativeAreas, double totalArea, Eigen::Vector4d& p)
     {
-      float r = static_cast<float> (uniform_deviate (rand ()) * totalArea);
+      double r = static_cast<double> (uniform_deviate (rand ()) * totalArea);
 
       std::vector<double>::iterator low = std::lower_bound (cumulativeAreas->begin (), cumulativeAreas->end (), r);
       vtkIdType el = static_cast<vtkIdType> (low - cumulativeAreas->begin ());
@@ -101,17 +101,17 @@ namespace pcl
 
         for (i = 0; i < n_samples; i++)
         {
-          Eigen::Vector4f p (0.f, 0.f, 0.f, 0.f);
+          Eigen::Vector4d p (0., 0., 0., 0.);
           randPSurface (polydata, &cumulativeAreas, totalArea, p);
-          cloud_out.points[i].x = static_cast<float> (p[0]);
-          cloud_out.points[i].y = static_cast<float> (p[1]);
-          cloud_out.points[i].z = static_cast<float> (p[2]);
+          cloud_out.points[i].x = static_cast<double> (p[0]);
+          cloud_out.points[i].y = static_cast<double> (p[1]);
+          cloud_out.points[i].z = static_cast<double> (p[2]);
         }
       }
 
     template<typename PointT>
       inline void
-      uniform_sampling (std::string & file, size_t n_samples, typename pcl::PointCloud<PointT> & cloud_out, float scale = 1.f)
+      uniform_sampling (std::string & file, size_t n_samples, typename pcl::PointCloud<PointT> & cloud_out, double scale = 1.)
       {
 
         vtkSmartPointer < vtkPLYReader > reader = vtkSmartPointer<vtkPLYReader>::New ();
@@ -119,7 +119,7 @@ namespace pcl
 
         vtkSmartPointer < vtkPolyDataMapper > mapper = vtkSmartPointer<vtkPolyDataMapper>::New ();
 
-        if (scale == 1.f)
+        if (scale == 1.)
         {
           mapper->SetInputConnection (reader->GetOutputPort ());
           mapper->Update ();
@@ -155,9 +155,9 @@ namespace pcl
       {
         double p[3];
         points->GetPoint (i, p);
-        cloud_out.points[i].x = static_cast<float> (p[0]);
-        cloud_out.points[i].y = static_cast<float> (p[1]);
-        cloud_out.points[i].z = static_cast<float> (p[2]);
+        cloud_out.points[i].x = static_cast<double> (p[0]);
+        cloud_out.points[i].y = static_cast<double> (p[1]);
+        cloud_out.points[i].z = static_cast<double> (p[2]);
       }
     }
   }

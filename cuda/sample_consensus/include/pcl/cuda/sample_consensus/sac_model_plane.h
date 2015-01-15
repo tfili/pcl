@@ -50,9 +50,9 @@ namespace pcl
     struct CountPlanarInlier
     {
       float4 coefficients;
-      float threshold;
+      double threshold;
 
-      CountPlanarInlier (float4 coeff, float thresh) : 
+      CountPlanarInlier (float4 coeff, double thresh) : 
         coefficients(coeff), threshold(thresh) 
       {}
 
@@ -64,9 +64,9 @@ namespace pcl
     struct CheckPlanarInlier
     {
       float4 coefficients;
-      float threshold;
+      double threshold;
 
-      CheckPlanarInlier (float4 coeff, float thresh) : 
+      CheckPlanarInlier (float4 coeff, double thresh) : 
         coefficients(coeff), threshold(thresh) 
       {}
 
@@ -142,7 +142,7 @@ namespace pcl
             * \param distances the resultant estimated distances
             */
   //      void 
-  //      getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<float> &distances);
+  //      getDistancesToModel (const Eigen::VectorXd &model_coefficients, std::vector<double> &distances);
 
         /** \brief Select all the points which respect the given model coefficients as inliers.
           * \param model_coefficients the coefficients of a plane model that we need to 
@@ -154,22 +154,22 @@ namespace pcl
           */
         int 
         selectWithinDistance (const Coefficients &model_coefficients, 
-                              float threshold, IndicesPtr &inliers, IndicesPtr &inliers_stencil);
+                              double threshold, IndicesPtr &inliers, IndicesPtr &inliers_stencil);
         int
         selectWithinDistance (const Hypotheses &h, int idx,
-                              float threshold,
+                              double threshold,
                               IndicesPtr &inliers, IndicesPtr &inliers_stencil);
         int
         selectWithinDistance (Hypotheses &h, int idx,
-                              float threshold,
+                              double threshold,
                               IndicesPtr &inliers_stencil,
                               float3 &centroid);
 
         int
-        countWithinDistance (const Coefficients &model_coefficients, float threshold);
+        countWithinDistance (const Coefficients &model_coefficients, double threshold);
 
         int
-        countWithinDistance (const Hypotheses &h, int idx, float threshold);
+        countWithinDistance (const Hypotheses &h, int idx, double threshold);
 
           /*  \brief Recompute the plane coefficients using the given inlier set and return them to the user.
             * @note: these are the coefficients of the plane model after refinement (eg. after SVD)
@@ -178,7 +178,7 @@ namespace pcl
             * \param optimized_coefficients the resultant recomputed coefficients after non-linear optimization
             */
   //      void 
-  //      optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients);
+  //      optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients, Eigen::VectorXd &optimized_coefficients);
 
           /*  \brief Create a new point cloud with inliers projected onto the plane model.
             * \param inliers the data inliers that we want to project on the plane model
@@ -187,7 +187,7 @@ namespace pcl
             * \param copy_data_fields set to true if we need to copy the other data fields
             */
   //      void 
-  //      projectPoints (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, PointCloud &projected_points, bool copy_data_fields = true);
+  //      projectPoints (const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients, PointCloud &projected_points, bool copy_data_fields = true);
 
           /*  \brief Verify whether a subset of indices verifies the given plane model coefficients.
             * \param indices the data indices that need to be tested against the plane model
@@ -195,7 +195,7 @@ namespace pcl
             * \param threshold a maximum admissible distance threshold for determining the inliers from the outliers
             */
   //      bool 
-  //      doSamplesVerifyModel (const std::set<int> &indices, const Eigen::VectorXf &model_coefficients, float threshold);
+  //      doSamplesVerifyModel (const std::set<int> &indices, const Eigen::VectorXd &model_coefficients, double threshold);
 
           /*  \brief Return an unique id for this model (SACMODEL_PLANE). */
   //      inline pcl::SacModel getModelType () const { return (SACMODEL_PLANE); }
@@ -205,7 +205,7 @@ namespace pcl
            * \param model_coefficients the set of model coefficients
            */
   //      inline bool 
-  //      isModelValid (const Eigen::VectorXf &model_coefficients)
+  //      isModelValid (const Eigen::VectorXd &model_coefficients)
   //      {
   //        // Needs a valid model coefficients
   //        if (model_coefficients.size () != 4)
@@ -235,9 +235,9 @@ namespace pcl
       const PointXYZRGB *input;
       const int *indices;
       int nr_indices;
-      float bad_value;
+      double bad_value;
 
-      CreatePlaneHypothesis (const PointXYZRGB *_input, const int *_indices, int _nr_indices, float bad) : 
+      CreatePlaneHypothesis (const PointXYZRGB *_input, const int *_indices, int _nr_indices, double bad) : 
         input(_input), indices(_indices), nr_indices(_nr_indices), bad_value(bad)
       {}
 

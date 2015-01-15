@@ -257,7 +257,7 @@ TEST (PassThrough, Filters)
   EXPECT_EQ (output.height, cloud->height);
 
   pt.setFilterFieldName ("z");
-  pt.setFilterLimits (0.05f, 0.1f);
+  pt.setFilterLimits (0.05, 0.1);
   pt.filter (output);
 
   EXPECT_EQ (int (output.points.size ()), 42);
@@ -300,7 +300,7 @@ TEST (PassThrough, Filters)
   EXPECT_EQ (output.height, cloud->height);
 
   pt_.setFilterFieldName ("z");
-  pt_.setFilterLimits (0.05f, 0.1f);
+  pt_.setFilterLimits (0.05, 0.1);
   pt_.filter (output);
 
   EXPECT_EQ (int (output.points.size ()), 42);
@@ -335,7 +335,7 @@ TEST (PassThrough, Filters)
   EXPECT_NEAR (output.points[354].z, -0.0444, 1e-5);
 
   // Test the keep organized structure
-  pt.setUserFilterValue (std::numeric_limits<float>::quiet_NaN ());
+  pt.setUserFilterValue (std::numeric_limits<double>::quiet_NaN ());
   pt.setFilterFieldName ("");
   pt.filter (output);
 
@@ -481,7 +481,7 @@ TEST (PassThrough, Filters)
   EXPECT_NEAR (output.points[354].z, -0.0444, 1e-5);
 
   // Test the keep organized structure
-  pt2.setUserFilterValue (std::numeric_limits<float>::quiet_NaN ());
+  pt2.setUserFilterValue (std::numeric_limits<double>::quiet_NaN ());
   pt2.setFilterFieldName ("");
   pt2.filter (output_blob);
   fromPCLPointCloud2 (output_blob, output);
@@ -668,7 +668,7 @@ TEST (VoxelGrid, Filters)
   //PCL_ERROR ("IGNORE PREVIOUS ERROR: testing it's functionality!\n");
 
   // input point 195 [0.04872199893, 0.07376000285, 0.01743399911]
-  int centroidIdx2 = grid2.getCentroidIndex (0.048722f, 0.073760f, 0.017434f);
+  int centroidIdx2 = grid2.getCentroidIndex (0.048722f, 0.073760, 0.017434f);
   EXPECT_NE (centroidIdx2, -1);
 
   // for arbitrary points, the centroid should be close
@@ -682,7 +682,7 @@ TEST (VoxelGrid, Filters)
 
   // neighboring centroid should be in the right position
   Eigen::MatrixXi directions2 = Eigen::Vector3i (0, 0, 1);
-  vector<int> neighbors2 = grid2.getNeighborCentroidIndices (0.048722f, 0.073760f, 0.017434f, directions2);
+  vector<int> neighbors2 = grid2.getNeighborCentroidIndices (0.048722f, 0.073760, 0.017434f, directions2);
   EXPECT_EQ (neighbors2.size (), size_t (directions2.cols ()));
   EXPECT_NE (neighbors2.at (0), -1);
   EXPECT_LE (fabs (output.points[neighbors2.at (0)].x - output.points[centroidIdx2].x), 0.02);
@@ -701,27 +701,27 @@ TEST (VoxelGrid_RGB, Filters)
   int col_r[] = {214, 193, 180, 164, 133, 119, 158, 179, 178, 212};
   int col_g[] = {10, 39, 219, 231, 142, 169, 84, 158, 139, 214};
   int col_b[] = {101, 26, 46, 189, 211, 154, 246, 16, 139, 153};
-  float ave_r = 0.0f;
-  float ave_b = 0.0f;
-  float ave_g = 0.0f;
+  double ave_r = 0.0;
+  double ave_b = 0.0;
+  double ave_g = 0.0;
   for (int i = 0; i < 10; ++i)
   {
-    ave_r += static_cast<float> (col_r[i]);
-    ave_g += static_cast<float> (col_g[i]);
-    ave_b += static_cast<float> (col_b[i]);
+    ave_r += static_cast<double> (col_r[i]);
+    ave_g += static_cast<double> (col_g[i]);
+    ave_b += static_cast<double> (col_b[i]);
   }
-  ave_r /= 10.0f;
-  ave_g /= 10.0f;
-  ave_b /= 10.0f;
+  ave_r /= 10.0;
+  ave_g /= 10.0;
+  ave_b /= 10.0;
 
   for (int i = 0; i < 10; ++i)
   {
     PointXYZRGB pt;
     int rgb = (col_r[i] << 16) | (col_g[i] << 8) | col_b[i];
-    pt.x = 0.0f;
-    pt.y = 0.0f;
-    pt.z = 0.0f;
-    pt.rgb = *reinterpret_cast<float*> (&rgb);
+    pt.x = 0.0;
+    pt.y = 0.0;
+    pt.z = 0.0;
+    pt.rgb = *reinterpret_cast<double*> (&rgb);
     cloud_rgb_.points.push_back (pt);
   }
 
@@ -782,9 +782,9 @@ TEST (VoxelGrid_RGB, Filters)
 
 #if 0
 ////////////////////////////////////////////////////////////////////////////////
-float getRandomNumber (float max = 1.0, float min = 0.0)
+double getRandomNumber (double max = 1.0, double min = 0.0)
 {
-  return (max - min) * float(rand ()) / float (RAND_MAX) + min;
+  return (max - min) * double(rand ()) / double (RAND_MAX) + min;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -820,7 +820,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
         point.normal_y = getRandomNumber (1.0, -1.0);
         point.normal_z = getRandomNumber (1.0, -1.0);
         
-        float norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
+        double norm = 1.0 / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
         point.normal_x *= norm;
         point.normal_y *= norm;
         point.normal_z *= norm;
@@ -833,9 +833,9 @@ TEST (VoxelGrid_XYZNormal, Filters)
         
         if (xIdx != 0)
         {
-          point.x = getRandomNumber (0.99) + float (xIdx);
-          point.y = getRandomNumber (0.99) + float (yIdx);
-          point.z = getRandomNumber (0.99) + float (zIdx);
+          point.x = getRandomNumber (0.99) + double (xIdx);
+          point.y = getRandomNumber (0.99) + double (yIdx);
+          point.z = getRandomNumber (0.99) + double (zIdx);
         }
         if (yIdx == 0 && zIdx == 0) // opposite normals
         {
@@ -845,9 +845,9 @@ TEST (VoxelGrid_XYZNormal, Filters)
         }
         else if (yIdx == 0 && zIdx == 1) // second normal is nan
         {
-          point.normal_x = std::numeric_limits<float>::quiet_NaN ();
-          point.normal_y = std::numeric_limits<float>::quiet_NaN ();
-          point.normal_z = std::numeric_limits<float>::quiet_NaN ();
+          point.normal_x = std::numeric_limits<double>::quiet_NaN ();
+          point.normal_y = std::numeric_limits<double>::quiet_NaN ();
+          point.normal_z = std::numeric_limits<double>::quiet_NaN ();
         }
         else if (yIdx == 1 && zIdx == 0) // orthogonal
         {
@@ -872,13 +872,13 @@ TEST (VoxelGrid_XYZNormal, Filters)
         
         if (yIdx == 0 && zIdx == 0)
         {
-          voxel.normal_x = std::numeric_limits<float>::quiet_NaN ();
-          voxel.normal_y = std::numeric_limits<float>::quiet_NaN ();
-          voxel.normal_z = std::numeric_limits<float>::quiet_NaN ();
+          voxel.normal_x = std::numeric_limits<double>::quiet_NaN ();
+          voxel.normal_y = std::numeric_limits<double>::quiet_NaN ();
+          voxel.normal_z = std::numeric_limits<double>::quiet_NaN ();
         }
         else if (pcl_isfinite (point.normal_x))
         {
-          float norm = 1.0f / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
+          double norm = 1.0 / sqrt (point.normal_x * point.normal_x + point.normal_y * point.normal_y + point.normal_z * point.normal_z );
           point.normal_x *= norm;
           point.normal_y *= norm;
           point.normal_z *= norm;
@@ -887,7 +887,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
           voxel.normal_y += point.normal_y;
           voxel.normal_z += point.normal_z;
           
-          norm = 1.0f / sqrt (voxel.normal_x * voxel.normal_x + voxel.normal_y * voxel.normal_y + voxel.normal_z * voxel.normal_z );
+          norm = 1.0 / sqrt (voxel.normal_x * voxel.normal_x + voxel.normal_y * voxel.normal_y + voxel.normal_z * voxel.normal_z );
           
           voxel.normal_x *= norm;
           voxel.normal_y *= norm;
@@ -904,7 +904,7 @@ TEST (VoxelGrid_XYZNormal, Filters)
   }
     
   VoxelGrid<PointNormal> grid;
-  grid.setLeafSize (1.0f, 1.0f, 1.0f);
+  grid.setLeafSize (1.0, 1.0, 1.0);
   grid.setFilterLimits (0.0, 2.0);
   grid.setInputCloud (input);
   grid.filter (output);
@@ -939,8 +939,8 @@ TEST (VoxelGrid_XYZNormal, Filters)
   VoxelGrid<PCLPointCloud2> grid2;
   PCLPointCloud2 output_blob;
 
-  grid2.setLeafSize (1.0f, 1.0f, 1.0f);
-  grid2.setFilterLimits (0.0f, 2.0f);
+  grid2.setLeafSize (1.0, 1.0, 1.0);
+  grid2.setFilterLimits (0.0, 2.0);
   grid2.setInputCloud (cloud_blob_ptr_);
   grid2.filter (output_blob);
 
@@ -1028,7 +1028,7 @@ TEST (VoxelGridCovariance, Filters)
 
   // testing k nearest neighbors search
   vector<VoxelGridCovariance<pcl::PointXYZ>::LeafConstPtr> leaves;
-  vector<float> distances;
+  vector<double> distances;
   grid.nearestKSearch (PointXYZ(0,1,0), 1, leaves, distances);
 
   EXPECT_EQ (int (leaves.size ()), 1);
@@ -1171,21 +1171,21 @@ TEST (CropBox, Filters)
   // Create cloud with center point and corner points
   PointCloud<PointXYZ>::Ptr input (new PointCloud<PointXYZ> ());
 
-  input->push_back (PointXYZ (0.0f, 0.0f, 0.0f));
-  input->push_back (PointXYZ (0.9f, 0.9f, 0.9f));
-  input->push_back (PointXYZ (0.9f, 0.9f, -0.9f));
-  input->push_back (PointXYZ (0.9f, -0.9f, 0.9f));
-  input->push_back (PointXYZ (-0.9f, 0.9f, 0.9f));
-  input->push_back (PointXYZ (0.9f, -0.9f, -0.9f));
-  input->push_back (PointXYZ (-0.9f, -0.9f, 0.9f));
-  input->push_back (PointXYZ (-0.9f, 0.9f, -0.9f));
-  input->push_back (PointXYZ (-0.9f, -0.9f, -0.9f));
+  input->push_back (PointXYZ (0.0, 0.0, 0.0));
+  input->push_back (PointXYZ (0.9, 0.9, 0.9));
+  input->push_back (PointXYZ (0.9, 0.9, -0.9));
+  input->push_back (PointXYZ (0.9, -0.9, 0.9));
+  input->push_back (PointXYZ (-0.9, 0.9, 0.9));
+  input->push_back (PointXYZ (0.9, -0.9, -0.9));
+  input->push_back (PointXYZ (-0.9, -0.9, 0.9));
+  input->push_back (PointXYZ (-0.9, 0.9, -0.9));
+  input->push_back (PointXYZ (-0.9, -0.9, -0.9));
 
   // Test the PointCloud<PointT> method
   CropBox<PointXYZ> cropBoxFilter (true);
   cropBoxFilter.setInputCloud (input);
-  Eigen::Vector4f min_pt (-1.0f, -1.0f, -1.0f, 1.0f);
-  Eigen::Vector4f max_pt (1.0f, 1.0f, 1.0f, 1.0f);
+  Eigen::Vector4d min_pt (-1.0, -1.0, -1.0, 1.0);
+  Eigen::Vector4d max_pt (1.0, 1.0, 1.0, 1.0);
 
   // Cropbox slighlty bigger then bounding box of points
   cropBoxFilter.setMin (min_pt);
@@ -1222,7 +1222,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Translate crop box up by 1
-  cropBoxFilter.setTranslation(Eigen::Vector3f(0, 1, 0));
+  cropBoxFilter.setTranslation(Eigen::Vector3d(0, 1, 0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1244,7 +1244,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Rotate crop box up by 45
-  cropBoxFilter.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter.setRotation (Eigen::Vector3d (0.0, 45.0 * double (M_PI) / 180.0, 0.0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1268,7 +1268,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Rotate point cloud by -45
-  cropBoxFilter.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f));
+  cropBoxFilter.setTransform (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1292,7 +1292,7 @@ TEST (CropBox, Filters)
   cropBoxFilter.filter (cloud_out);
 
   // Translate point cloud down by -1
-  cropBoxFilter.setTransform (getTransformation(0, -1, 0, 0, 0, -45.0 * float (M_PI) / 180.0));
+  cropBoxFilter.setTransform (getTransformation(0, -1, 0, 0, 0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter.filter (indices);
   cropBoxFilter.filter (cloud_out);
 
@@ -1380,7 +1380,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Translate crop box up by 1
-  cropBoxFilter2.setTranslation (Eigen::Vector3f(0, 1, 0));
+  cropBoxFilter2.setTranslation (Eigen::Vector3d(0, 1, 0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1402,7 +1402,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Rotate crop box up by 45
-  cropBoxFilter2.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f));
+  cropBoxFilter2.setRotation (Eigen::Vector3d (0.0, 45.0 * double (M_PI) / 180.0, 0.0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1410,7 +1410,7 @@ TEST (CropBox, Filters)
   EXPECT_EQ (int (indices2.size ()), int (cloud_out2.width * cloud_out2.height));
 
   // Rotate point cloud by -45
-  cropBoxFilter2.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f));
+  cropBoxFilter2.setTransform (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1432,7 +1432,7 @@ TEST (CropBox, Filters)
   cropBoxFilter2.filter (cloud_out2);
 
   // Translate point cloud down by -1
-  cropBoxFilter2.setTransform (getTransformation (0.0f, -1.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f));
+  cropBoxFilter2.setTransform (getTransformation (0.0, -1.0, 0.0, 0.0, 0.0, -45.0 * double (M_PI) / 180.0));
   cropBoxFilter2.filter (indices2);
   cropBoxFilter2.filter (cloud_out2);
 
@@ -1700,8 +1700,8 @@ TEST (ConditionalRemovalSetIndices, Filters)
 
   // build a condition which is always true
   ConditionAnd<PointXYZ>::Ptr true_cond (new ConditionAnd<PointXYZ> ());
-  true_cond->addComparison (TfQuadraticXYZComparison<PointXYZ>::ConstPtr (new TfQuadraticXYZComparison<PointXYZ> (ComparisonOps::EQ, Eigen::Matrix3f::Zero (),
-                                                                                                                  Eigen::Vector3f::Zero (), 0)));
+  true_cond->addComparison (TfQuadraticXYZComparison<PointXYZ>::ConstPtr (new TfQuadraticXYZComparison<PointXYZ> (ComparisonOps::EQ, Eigen::Matrix3d::Zero (),
+                                                                                                                  Eigen::Vector3d::Zero (), 0)));
 
   // build the filter
   ConditionalRemoval<PointXYZ> condrem2;
@@ -1811,9 +1811,9 @@ TEST (SamplingSurfaceNormal, Filters)
   PointCloud <PointNormal> outcloud;
 
   //Creating a point cloud on the XY plane
-  for (float i = 0.0f; i < 5.0f; i += 0.1f)
+  for (double i = 0.0; i < 5.0; i += 0.1)
   {
-    for (float j = 0.0f; j < 5.0f; j += 0.1f)
+    for (double j = 0.0; j < 5.0; j += 0.1)
     {
       PointNormal pt;
       pt.x = i;
@@ -1844,16 +1844,16 @@ TEST (ShadowPoints, Filters)
 {
   //Creating a point cloud on the XY plane
   PointCloud<PointXYZ>::Ptr input (new PointCloud<PointXYZ> ());
-  for (float i = 0.0f; i < 10.0f; i+=0.1f)
+  for (double i = 0.0; i < 10.0; i+=0.1)
   {
-    for (float j = 0.0f; j < 10.0f; j+=0.1f)
+    for (double j = 0.0; j < 10.0; j+=0.1)
     {
-      input->push_back (PointXYZ (i, j, 1.0f));
+      input->push_back (PointXYZ (i, j, 1.0));
     }
   }
 
   // Adding a shadow point
-  PointXYZ pt (.0f, .0f, .1f);
+  PointXYZ pt (.0, .0, .1);
   input->points.push_back (pt);
 
   input->width = 1;
@@ -1872,7 +1872,7 @@ TEST (ShadowPoints, Filters)
   PointCloud<PointXYZ> output;
   ShadowPoints <PointXYZ, PointNormal> spfilter (true); // Extract removed indices
   spfilter.setInputCloud (input);
-  spfilter.setThreshold (0.1f);
+  spfilter.setThreshold (0.1);
   spfilter.setNormals (input_normals);
 
   spfilter.filter (output);
@@ -1916,9 +1916,9 @@ TEST (FrustumCulling, Filters)
       for (int k = 0; k < 5; k++) 
       {
         pcl::PointXYZ pt;
-        pt.x = float (i);
-        pt.y = float (j);
-        pt.z = float (k);
+        pt.x = double (i);
+        pt.y = double (j);
+        pt.z = double (k);
         input->points.push_back (pt);
       }
     }
@@ -1933,17 +1933,17 @@ TEST (FrustumCulling, Filters)
   fc.setNearPlaneDistance (0.0);
   fc.setFarPlaneDistance (10);
 
-  Eigen::Matrix4f camera_pose;
+  Eigen::Matrix4d camera_pose;
   camera_pose.setZero ();
 
-  Eigen::Matrix3f R;
-  R = Eigen::AngleAxisf (0 * M_PI / 180, Eigen::Vector3f::UnitX ()) *
-    Eigen::AngleAxisf (0 * M_PI / 180, Eigen::Vector3f::UnitY ()) *
-    Eigen::AngleAxisf (0 * M_PI / 180, Eigen::Vector3f::UnitZ ());
+  Eigen::Matrix3d R;
+  R = Eigen::AngleAxisd (0 * M_PI / 180, Eigen::Vector3d::UnitX ()) *
+    Eigen::AngleAxisd (0 * M_PI / 180, Eigen::Vector3d::UnitY ()) *
+    Eigen::AngleAxisd (0 * M_PI / 180, Eigen::Vector3d::UnitZ ());
 
   camera_pose.block (0, 0, 3, 3) = R;
 
-  Eigen::Vector3f T;
+  Eigen::Vector3d T;
   T (0) = -5; T (1) = 0; T (2) = 0;
   camera_pose.block (0, 3, 3, 1) = T;
   camera_pose (3, 3) = 1;
@@ -2002,11 +2002,11 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
 
   // build a condition representing the inner of a cylinder including the edge located at the origin and pointing along the x-axis.
   ConditionAnd<PointXYZ>::Ptr cyl_cond (new ConditionAnd<PointXYZ> ());
-  Eigen::Matrix3f cylinderMatrix;
+  Eigen::Matrix3d cylinderMatrix;
   cylinderMatrix << 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0;
-  float cylinderScalar = -4; //radius² of cylinder
+  double cylinderScalar = -4; //radius² of cylinder
   TfQuadraticXYZComparison<PointXYZ>::Ptr cyl_comp (new TfQuadraticXYZComparison<PointXYZ> (ComparisonOps::LE, cylinderMatrix,
-                                                                                            Eigen::Vector3f::Zero (), cylinderScalar));
+                                                                                            Eigen::Vector3d::Zero (), cylinderScalar));
   cyl_cond->addComparison (cyl_comp);
 
   // build the filter
@@ -2029,7 +2029,7 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
   EXPECT_EQ (input->points[9].z, output.points[9].z);
 
   // rotate cylinder comparison along z-axis by PI/2
-  cyl_comp->transformComparison (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, float (M_PI) / 2.0f).inverse ());
+  cyl_comp->transformComparison (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, double (M_PI) / 2.0).inverse ());
 
   condrem.filter (output);
 
@@ -2044,9 +2044,9 @@ TEST (ConditionalRemovalTfQuadraticXYZComparison, Filters)
   EXPECT_EQ (input->points[3].z, output.points[3].z);
 
   // change comparison to a simple plane (x < 5)
-  Eigen::Vector3f planeVector;
+  Eigen::Vector3d planeVector;
   planeVector << 1.0, 0.0, 0.0;
-  Eigen::Matrix3f planeMatrix = Eigen::Matrix3f::Zero ();
+  Eigen::Matrix3d planeMatrix = Eigen::Matrix3d::Zero ();
   cyl_comp->setComparisonMatrix (planeMatrix);
   cyl_comp->setComparisonVector (planeVector);
   cyl_comp->setComparisonScalar (-2 * 5.0);
@@ -2084,11 +2084,11 @@ TEST (MedianFilter, Filters)
 
   for (size_t i = 0; i < 5; ++i)
   {
-    cloud_manual (i, 0).z = static_cast<float> (i + 1);
-    cloud_manual (i, 1).z = static_cast<float> (i + 6);
-    cloud_manual (i, 2).z = static_cast<float> (10 - i);
-    cloud_manual (i, 3).z = static_cast<float> (5 - i);
-    cloud_manual (i, 4).z = static_cast<float> (100);
+    cloud_manual (i, 0).z = static_cast<double> (i + 1);
+    cloud_manual (i, 1).z = static_cast<double> (i + 6);
+    cloud_manual (i, 2).z = static_cast<double> (10 - i);
+    cloud_manual (i, 3).z = static_cast<double> (5 - i);
+    cloud_manual (i, 4).z = static_cast<double> (100);
   }
   cloud_manual (2, 4).z = 500;
 
@@ -2112,35 +2112,35 @@ TEST (MedianFilter, Filters)
   out_1_correct.width = 5;
   out_1_correct.is_dense = false;
   out_1_correct.resize (5 * 5);
-  out_1_correct (0, 0).z = 6.f;
-  out_1_correct (1, 0).z = 6.f;
-  out_1_correct (2, 0).z = 7.f;
-  out_1_correct (3, 0).z = 8.f;
-  out_1_correct (4, 0).z = 9.f;
+  out_1_correct (0, 0).z = 6.;
+  out_1_correct (1, 0).z = 6.;
+  out_1_correct (2, 0).z = 7.;
+  out_1_correct (3, 0).z = 8.;
+  out_1_correct (4, 0).z = 9.;
 
-  out_1_correct (0, 1).z = 7.f;
-  out_1_correct (1, 1).z = 7.f;
-  out_1_correct (2, 1).z = 7.f;
-  out_1_correct (3, 1).z = 7.f;
-  out_1_correct (4, 1).z = 7.f;
+  out_1_correct (0, 1).z = 7.;
+  out_1_correct (1, 1).z = 7.;
+  out_1_correct (2, 1).z = 7.;
+  out_1_correct (3, 1).z = 7.;
+  out_1_correct (4, 1).z = 7.;
 
-  out_1_correct (0, 2).z = 7.f;
-  out_1_correct (1, 2).z = 7.f;
-  out_1_correct (2, 2).z = 7.f;
-  out_1_correct (3, 2).z = 7.f;
-  out_1_correct (4, 2).z = 7.f;
+  out_1_correct (0, 2).z = 7.;
+  out_1_correct (1, 2).z = 7.;
+  out_1_correct (2, 2).z = 7.;
+  out_1_correct (3, 2).z = 7.;
+  out_1_correct (4, 2).z = 7.;
 
-  out_1_correct (0, 3).z = 10.f;
-  out_1_correct (1, 3).z = 9.f;
-  out_1_correct (2, 3).z = 8.f;
-  out_1_correct (3, 3).z = 7.f;
-  out_1_correct (4, 3).z = 7.f;
+  out_1_correct (0, 3).z = 10.;
+  out_1_correct (1, 3).z = 9.;
+  out_1_correct (2, 3).z = 8.;
+  out_1_correct (3, 3).z = 7.;
+  out_1_correct (4, 3).z = 7.;
 
-  out_1_correct (0, 4).z = 100.f;
-  out_1_correct (1, 4).z = 100.f;
-  out_1_correct (2, 4).z = 100.f;
-  out_1_correct (3, 4).z = 100.f;
-  out_1_correct (4, 4).z = 100.f;
+  out_1_correct (0, 4).z = 100.;
+  out_1_correct (1, 4).z = 100.;
+  out_1_correct (2, 4).z = 100.;
+  out_1_correct (3, 4).z = 100.;
+  out_1_correct (4, 4).z = 100.;
 
   for (size_t i = 0; i < 5 * 5; ++i)
     EXPECT_NEAR (out_1_correct[i].z, out_1[i].z, 1e-5);
@@ -2148,7 +2148,7 @@ TEST (MedianFilter, Filters)
 
   // Now limit the maximum value a dexel can change
   PointCloud<PointXYZ> out_2;
-  median_filter.setMaxAllowedMovement (50.f);
+  median_filter.setMaxAllowedMovement (50.);
   median_filter.filter (out_2);
 
   // The result should look like this
@@ -2160,7 +2160,7 @@ TEST (MedianFilter, Filters)
    */
   PointCloud<PointXYZ> out_2_correct;
   out_2_correct = out_1_correct;
-  out_2_correct (2, 4).z = 450.f;
+  out_2_correct (2, 4).z = 450.;
 
   for (size_t i = 0; i < 5 * 5; ++i)
     EXPECT_NEAR (out_2_correct[i].z, out_2[i].z, 1e-5);
@@ -2170,19 +2170,19 @@ TEST (MedianFilter, Filters)
   MedianFilter<PointXYZRGB> median_filter_xyzrgb;
   median_filter_xyzrgb.setInputCloud (cloud_organized);
   median_filter_xyzrgb.setWindowSize (7);
-  median_filter_xyzrgb.setMaxAllowedMovement (0.01f);
+  median_filter_xyzrgb.setMaxAllowedMovement (0.01);
   PointCloud<PointXYZRGB> out_3;
   median_filter_xyzrgb.filter (out_3);
 
   // Check some positions for their values
-  EXPECT_NEAR (1.300999999f, out_3(30, 100).z, 1e-5);
-  EXPECT_NEAR (1.300999999f, out_3(50, 100).z, 1e-5);
+  EXPECT_NEAR (1.300999999, out_3(30, 100).z, 1e-5);
+  EXPECT_NEAR (1.300999999, out_3(50, 100).z, 1e-5);
   EXPECT_NEAR (1.305999994f, out_3(90, 100).z, 1e-5);
-  EXPECT_NEAR (0.908000111f, out_3(50, 200).z, 1e-5);
+  EXPECT_NEAR (0.908000111, out_3(50, 200).z, 1e-5);
   EXPECT_NEAR (0.695000112f, out_3(100, 300).z, 1e-5);
-  EXPECT_NEAR (1.177000045f, out_3(128, 128).z, 1e-5);
+  EXPECT_NEAR (1.177000045, out_3(128, 128).z, 1e-5);
   EXPECT_NEAR (0.778999984f, out_3(256, 256).z, 1e-5);
-  EXPECT_NEAR (0.703000009f, out_3(428, 300).z, 1e-5);
+  EXPECT_NEAR (0.703000009, out_3(428, 300).z, 1e-5);
 }
 
 
@@ -2200,14 +2200,14 @@ TEST (NormalRefinement, Filters)
   pcl::removeNaNFromPointCloud<pcl::PointXYZRGB> (*cloud_organized, cloud_organized_nonan, dummy);
   
   // Viewpoint
-  const float vp_x = cloud_organized_nonan.sensor_origin_[0];
-  const float vp_y = cloud_organized_nonan.sensor_origin_[1];
-  const float vp_z = cloud_organized_nonan.sensor_origin_[2];
+  const double vp_x = cloud_organized_nonan.sensor_origin_[0];
+  const double vp_y = cloud_organized_nonan.sensor_origin_[1];
+  const double vp_z = cloud_organized_nonan.sensor_origin_[2];
   
   // Search parameters
   const int k = 5;
   std::vector<std::vector<int> > k_indices;
-  std::vector<std::vector<float> > k_sqr_distances;
+  std::vector<std::vector<double> > k_sqr_distances;
   
   // Estimated and refined normal containers
   pcl::PointCloud<pcl::PointXYZRGBNormal> cloud_organized_normal;
@@ -2234,7 +2234,7 @@ TEST (NormalRefinement, Filters)
     // Output point
     pcl::PointXYZRGBNormal normali;
     // XYZ and RGB
-    std::memcpy (normali.data, cloud_organized_nonan[i].data, 3*sizeof (float));
+    std::memcpy (normali.data, cloud_organized_nonan[i].data, 3*sizeof (double));
     normali.rgba = cloud_organized_nonan[i].rgba;
     // Normal
     ne.computePointNormal (cloud_organized_nonan, k_indices[i], normali.normal_x, normali.normal_y, normali.normal_z, normali.curvature);
@@ -2251,7 +2251,7 @@ TEST (NormalRefinement, Filters)
   pcl::NormalRefinement<pcl::PointXYZRGBNormal> nr (k_indices, k_sqr_distances);
   nr.setInputCloud (cloud_organized_normal.makeShared());
   nr.setMaxIterations (15);
-  nr.setConvergenceThreshold (0.00001f);
+  nr.setConvergenceThreshold (0.00001);
   nr.filter (cloud_organized_normal_refined);
   
   /*
@@ -2271,15 +2271,15 @@ TEST (NormalRefinement, Filters)
   
   // Read out SAC model
   const std::vector<int>& idx_table = inliers->indices;
-  float a = coefficients->values[0];
-  float b = coefficients->values[1];
-  float c = coefficients->values[2];
-  const float d = coefficients->values[3];
+  double a = coefficients->values[0];
+  double b = coefficients->values[1];
+  double c = coefficients->values[2];
+  const double d = coefficients->values[3];
   
   // Find a point on the plane [0 0 z] => z = -d / c
   pcl::PointXYZ p_table;
-  p_table.x = 0.0f;
-  p_table.y = 0.0f;
+  p_table.x = 0.0;
+  p_table.y = 0.0;
   p_table.z = -d / c;
   
   // Use the point to orient the SAC normal correctly
@@ -2290,10 +2290,10 @@ TEST (NormalRefinement, Filters)
    */
   
   // Errors for the two normal sets and their means
-  std::vector<float> errs_est;
-  float err_est_mean = 0.0f;
-  std::vector<float> errs_refined;
-  float err_refined_mean = 0.0f;
+  std::vector<double> errs_est;
+  double err_est_mean = 0.0;
+  std::vector<double> errs_refined;
+  double err_refined_mean = 0.0;
   
   // Number of zero or NaN vectors produced by refinement
   int num_zeros = 0;
@@ -2302,13 +2302,13 @@ TEST (NormalRefinement, Filters)
   // Loop
   for (unsigned int i = 0; i < idx_table.size (); ++i)
   {
-    float tmp;
+    double tmp;
     
     // Estimated (need to avoid zeros and NaNs)
     const pcl::PointXYZRGBNormal& calci = cloud_organized_normal[idx_table[i]];
-    if ((fabsf (calci.normal_x) + fabsf (calci.normal_y) + fabsf (calci.normal_z)) > 0.0f)
+    if ((fabsf (calci.normal_x) + fabsf (calci.normal_y) + fabsf (calci.normal_z)) > 0.0)
     {
-      tmp = 1.0f - (calci.normal_x * a + calci.normal_y * b + calci.normal_z * c);
+      tmp = 1.0 - (calci.normal_x * a + calci.normal_y * b + calci.normal_z * c);
       if (pcl_isfinite (tmp))
       {
         errs_est.push_back (tmp);
@@ -2318,9 +2318,9 @@ TEST (NormalRefinement, Filters)
     
     // Refined
     const pcl::PointXYZRGBNormal& refinedi = cloud_organized_normal_refined[idx_table[i]];
-    if ((fabsf (refinedi.normal_x) + fabsf (refinedi.normal_y) + fabsf (refinedi.normal_z)) > 0.0f)
+    if ((fabsf (refinedi.normal_x) + fabsf (refinedi.normal_y) + fabsf (refinedi.normal_z)) > 0.0)
     {
-      tmp = 1.0f - (refinedi.normal_x * a + refinedi.normal_y * b + refinedi.normal_z * c);
+      tmp = 1.0 - (refinedi.normal_x * a + refinedi.normal_y * b + refinedi.normal_z * c);
       if (pcl_isfinite(tmp))
       {
         errs_refined.push_back (tmp);
@@ -2339,20 +2339,20 @@ TEST (NormalRefinement, Filters)
   }
   
   // Mean errors
-  err_est_mean /= static_cast<float> (errs_est.size ());
-  err_refined_mean /= static_cast<float> (errs_refined.size ());
+  err_est_mean /= static_cast<double> (errs_est.size ());
+  err_refined_mean /= static_cast<double> (errs_refined.size ());
   
   // Error variance of estimated
-  float err_est_var = 0.0f;
+  double err_est_var = 0.0;
   for (unsigned int i = 0; i < errs_est.size (); ++i)
     err_est_var = (errs_est[i] - err_est_mean) * (errs_est[i] - err_est_mean);
-  err_est_var /= static_cast<float> (errs_est.size () - 1);
+  err_est_var /= static_cast<double> (errs_est.size () - 1);
   
   // Error variance of refined
-  float err_refined_var = 0.0f;
+  double err_refined_var = 0.0;
   for (unsigned int i = 0; i < errs_refined.size (); ++i)
     err_refined_var = (errs_refined[i] - err_refined_mean) * (errs_refined[i] - err_refined_mean);
-  err_refined_var /= static_cast<float> (errs_refined.size () - 1);
+  err_refined_var /= static_cast<double> (errs_refined.size () - 1);
   
   // Refinement should not produce any zeros and NaNs
   EXPECT_EQ(num_zeros, 0);

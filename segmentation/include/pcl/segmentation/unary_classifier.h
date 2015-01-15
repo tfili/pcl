@@ -88,23 +88,23 @@ namespace pcl
       queryFeatureDistances (std::vector<pcl::PointCloud<pcl::FPFHSignature33>::Ptr> &trained_features,
                              pcl::PointCloud<pcl::FPFHSignature33>::Ptr query_features,
                              std::vector<int> &indi,
-                             std::vector<float> &dist);
+                             std::vector<double> &dist);
 
       void
       assignLabels (std::vector<int> &indi,
-                    std::vector<float> &dist,
+                    std::vector<double> &dist,
                     int n_feature_means,
-                    float feature_threshold,
+                    double feature_threshold,
                     pcl::PointCloud<pcl::PointXYZRGBL>::Ptr out);
 
       void
       setClusterSize (unsigned int k){cluster_size_ = k;};
       
       void
-      setNormalRadiusSearch (float param){normal_radius_search_ = param;};
+      setNormalRadiusSearch (double param){normal_radius_search_ = param;};
       
       void
-      setFPFHRadiusSearch (float param){fpfh_radius_search_ = param;};
+      setFPFHRadiusSearch (double param){fpfh_radius_search_ = param;};
       
       void
       setLabelField (bool l){label_field_ = l;};
@@ -113,7 +113,7 @@ namespace pcl
       setTrainedFeatures (std::vector<pcl::PointCloud<pcl::FPFHSignature33>::Ptr> &features){trained_features_ = features;};
 
       void
-      setFeatureThreshold (float threshold){feature_threshold_ = threshold;};
+      setFeatureThreshold (double threshold){feature_threshold_ = threshold;};
 
     protected:
 
@@ -137,8 +137,8 @@ namespace pcl
       void
       computeFPFH (pcl::PointCloud<pcl::PointXYZ>::Ptr in,
                    pcl::PointCloud<pcl::FPFHSignature33>::Ptr out,
-                   float normal_radius_search,
-                   float fpfh_radius_search);
+                   double normal_radius_search,
+                   double fpfh_radius_search);
       
       void
       kmeansClustering (pcl::PointCloud<pcl::FPFHSignature33>::Ptr in,
@@ -154,9 +154,9 @@ namespace pcl
       
       unsigned int cluster_size_;
 
-      float normal_radius_search_;
-      float fpfh_radius_search_;
-      float feature_threshold_;
+      double normal_radius_search_;
+      double fpfh_radius_search_;
+      double feature_threshold_;
       
       
       std::vector<pcl::PointCloud<pcl::FPFHSignature33>::Ptr> trained_features_;

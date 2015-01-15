@@ -9,11 +9,11 @@ using namespace pcl;
 #include <iostream>
 using namespace std;
 
-const Eigen::Vector4f subsampling_leaf_size (0.02f, 0.02f, 0.02f, 0.0f);
-const float normal_estimation_search_radius = 0.05f;
+const Eigen::Vector4d subsampling_leaf_size (0.02, 0.02, 0.02, 0.0);
+const double normal_estimation_search_radius = 0.05;
 
-//const Eigen::Vector4f subsampling_leaf_size (5, 5, 5, 0.0);
-//const float normal_estimation_search_radius = 11;
+//const Eigen::Vector4d subsampling_leaf_size (5, 5, 5, 0.0);
+//const double normal_estimation_search_radius = 11;
 
 void
 subsampleAndCalculateNormals (PointCloud<PointXYZ>::Ptr &cloud,
@@ -82,11 +82,11 @@ main (int argc, char **argv)
   PCL_INFO ("Feature cloud sizes: %u , %u\n", ppf_signature_a->points.size (), ppf_signature_b->points.size ());
 
   PCL_INFO ("Finished calculating the features ...\n");
-  vector<pair<float, float> > dim_range_input, dim_range_target;
-  for (size_t i = 0; i < 3; ++i) dim_range_input.push_back (pair<float, float> (float (-M_PI), float (M_PI)));
-  dim_range_input.push_back (pair<float, float> (0.0f, 1.0f));
-  for (size_t i = 0; i < 3; ++i) dim_range_target.push_back (pair<float, float> (float (-M_PI) * 10.0f, float (M_PI) * 10.0f));
-  dim_range_target.push_back (pair<float, float> (0.0f, 50.0f));
+  vector<pair<double, double> > dim_range_input, dim_range_target;
+  for (size_t i = 0; i < 3; ++i) dim_range_input.push_back (pair<double, double> (double (-M_PI), double (M_PI)));
+  dim_range_input.push_back (pair<double, double> (0.0, 1.0));
+  for (size_t i = 0; i < 3; ++i) dim_range_target.push_back (pair<double, double> (double (-M_PI) * 10.0, double (M_PI) * 10.0));
+  dim_range_target.push_back (pair<double, double> (0.0, 50.0));
 
 
   PyramidFeatureHistogram<PPFSignature>::Ptr pyramid_a (new PyramidFeatureHistogram<PPFSignature> ());
@@ -103,7 +103,7 @@ main (int argc, char **argv)
   pyramid_b->compute ();
   PCL_INFO ("Done with the second pyramid\n");
 
-  float value = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_a, pyramid_b);
+  double value = PyramidFeatureHistogram<PPFSignature>::comparePyramidFeatureHistograms (pyramid_a, pyramid_b);
   PCL_INFO ("Surface comparison value between %s and %s is: %f\n", argv[1], argv[2], value);
 
 

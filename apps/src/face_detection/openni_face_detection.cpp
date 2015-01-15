@@ -67,7 +67,7 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, bool heat_map = false, bool show_vot
       vis.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_OPACITY, 0.75, "votes_cloud");
     }
 
-    std::vector<Eigen::VectorXf> heads;
+    std::vector<Eigen::VectorXd> heads;
     fdrf.getDetectedFaces (heads);
 
     face_detection_apps_utils::displayHeads (heads, vis);
@@ -85,9 +85,9 @@ int main(int argc, char ** argv)
 {
   int STRIDE_SW = 4;
   int use_normals = 0;
-  float trans_max_variance = 1600.f;
+  double trans_max_variance = 1600.;
   int min_votes_size = 300;
-  float face_threshold = 0.99f;
+  double face_threshold = 0.99;
   int heat_map = 1;
   int show_votes = 0;
   int pose_refinement_ = 0;

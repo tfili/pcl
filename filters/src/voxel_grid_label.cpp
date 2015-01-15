@@ -58,10 +58,10 @@ pcl::VoxelGridLabel::applyFilter (PointCloud &output)
   output.height       = 1;                    // downsampling breaks the organized structure
   output.is_dense     = true;                 // we filter out invalid points
 
-  Eigen::Vector4f min_p, max_p;
+  Eigen::Vector4d min_p, max_p;
   // Get the minimum and maximum dimensions
   if (!filter_field_name_.empty ()) // If we don't want to process the entire cloud...
-    getMinMax3D<pcl::PointXYZRGBL>(input_, filter_field_name_, static_cast<float> (filter_limit_min_), static_cast<float> (filter_limit_max_), min_p, max_p, filter_limit_negative_);
+    getMinMax3D<pcl::PointXYZRGBL>(input_, filter_field_name_, static_cast<double> (filter_limit_min_), static_cast<double> (filter_limit_max_), min_p, max_p, filter_limit_negative_);
   else
     getMinMax3D<pcl::PointXYZRGBL>(*input_, min_p, max_p);
 
@@ -138,8 +138,8 @@ pcl::VoxelGridLabel::applyFilter (PointCloud &output)
 
       // Get the distance value
       const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&input_->points[cp]);
-      float distance_value = 0;
-      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (float));
+      double distance_value = 0;
+      memcpy (&distance_value, pt_data + fields[distance_idx].offset, sizeof (double));
 
       if (filter_limit_negative_)
       {
@@ -234,8 +234,8 @@ pcl::VoxelGridLabel::applyFilter (PointCloud &output)
   }
   
   index = 0;
-  Eigen::VectorXf centroid = Eigen::VectorXf::Zero (centroid_size);
-  Eigen::VectorXf temporary = Eigen::VectorXf::Zero (centroid_size);
+  Eigen::VectorXd centroid = Eigen::VectorXd::Zero (centroid_size);
+  Eigen::VectorXd temporary = Eigen::VectorXd::Zero (centroid_size);
 
   for (unsigned int cp = 0; cp < index_vector.size ();)
   {
@@ -307,7 +307,7 @@ pcl::VoxelGridLabel::applyFilter (PointCloud &output)
     if (save_leaf_layout_)
       leaf_layout_[index_vector[cp].idx] = index;
 
-    centroid /= static_cast<float> (i - cp);
+    centroid /= static_cast<double> (i - cp);
 
     // store centroid
     // Do we need to process all the fields?
@@ -324,9 +324,9 @@ pcl::VoxelGridLabel::applyFilter (PointCloud &output)
       if (rgba_index >= 0) 
       {
         // pack r/g/b into rgb
-        float r = centroid[centroid_size-3], g = centroid[centroid_size-2], b = centroid[centroid_size-1];
+        double r = centroid[centroid_size-3], g = centroid[centroid_size-2], b = centroid[centroid_size-1];
         int rgb = (static_cast<int> (r) << 16) | (static_cast<int> (g) << 8) | static_cast<int> (b);
-        memcpy (reinterpret_cast<char*> (&output.points[index]) + rgba_index, &rgb, sizeof (float));
+        memcpy (reinterpret_cast<char*> (&output.points[index]) + rgba_index, &rgb, sizeof (double));
       }
 
       if (label_index >= 0)

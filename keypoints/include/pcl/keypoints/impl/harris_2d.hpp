@@ -49,7 +49,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::setMethod (ResponseMetho
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT, typename IntensityT> void
-pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::setThreshold (float threshold)
+pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::setThreshold (double threshold)
 {
   threshold_= threshold;
 }
@@ -98,7 +98,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::setMinimalDistance (int 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointInT, typename PointOutT, typename IntensityT> void
-pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::computeSecondMomentMatrix (std::size_t index, float* coefficients) const
+pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::computeSecondMomentMatrix (std::size_t index, double* coefficients) const
 {
   static const int width = static_cast<int> (input_->width);
   static const int height = static_cast<int> (input_->height);
@@ -107,15 +107,15 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::computeSecondMomentMatri
   int y = static_cast<int> (index / input_->width);
   // indices        0   1   2
   // coefficients: ixix  ixiy  iyiy
-  memset (coefficients, 0, sizeof (float) * 3);
+  memset (coefficients, 0, sizeof (double) * 3);
 
   int endx = std::min (width, x + half_window_width_);
   int endy = std::min (height, y + half_window_height_);
   for (int xx = std::max (0, x - half_window_width_); xx < endx; ++xx)
     for (int yy = std::max (0, y - half_window_height_); yy < endy; ++yy)
     {
-      const float& ix = derivatives_rows_ (xx,yy);
-      const float& iy = derivatives_cols_ (xx,yy);
+      const double& ix = derivatives_rows_ (xx,yy);
+      const double& iy = derivatives_cols_ (xx,yy);
       coefficients[0]+= ix * ix;
       coefficients[1]+= ix * iy;
       coefficients[2]+= iy * iy;
@@ -244,7 +244,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::detectKeypoints (PointCl
   {    
     std::sort (indices_->begin (), indices_->end (), 
                boost::bind (&HarrisKeypoint2D::greaterIntensityAtIndices, this, _1, _2));
-    float threshold = threshold_ * response_->points[indices_->front ()].intensity;
+    double threshold = threshold_ * response_->points[indices_->front ()].intensity;
     output.clear ();
     output.reserve (response_->size());
     std::vector<bool> occupency_map (response_->size (), false);    
@@ -292,7 +292,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::detectKeypoints (PointCl
 template <typename PointInT, typename PointOutT, typename IntensityT> void
 pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseHarris (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [3];
+  PCL_ALIGN (16) double covar [3];
   output.clear ();
   output.resize (input_->size ());
   const int output_size (output.size ());
@@ -311,10 +311,10 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseHarris (PointClo
     if (isFinite (in_point))
     {
       computeSecondMomentMatrix (index, covar);
-      float trace = covar [0] + covar [2];
-      if (trace != 0.f)
+      double trace = covar [0] + covar [2];
+      if (trace != 0.)
       {
-        float det = covar[0] * covar[2] - covar[1] * covar[1];
+        double det = covar[0] * covar[2] - covar[1] * covar[1];
         out_point.intensity = 0.04f + det - 0.04f * trace * trace;
       }
     }
@@ -328,7 +328,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseHarris (PointClo
 template <typename PointInT, typename PointOutT, typename IntensityT> void
 pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseNoble (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [3];
+  PCL_ALIGN (16) double covar [3];
   output.clear ();
   output.resize (input_->size ());
   const int output_size (output.size ());
@@ -347,10 +347,10 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseNoble (PointClou
     if (isFinite (in_point))
     {    
       computeSecondMomentMatrix (index, covar);
-      float trace = covar [0] + covar [2];
+      double trace = covar [0] + covar [2];
       if (trace != 0)
       {
-        float det = covar[0] * covar[2] - covar[1] * covar[1];
+        double det = covar[0] * covar[2] - covar[1] * covar[1];
         out_point.intensity = det / trace;
       }
     }    
@@ -364,7 +364,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseNoble (PointClou
 template <typename PointInT, typename PointOutT, typename IntensityT> void
 pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseLowe (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [3];
+  PCL_ALIGN (16) double covar [3];
   output.clear ();
   output.resize (input_->size ());
   const int output_size (output.size ());
@@ -383,10 +383,10 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseLowe (PointCloud
     if (isFinite (in_point))
     {    
       computeSecondMomentMatrix (index, covar);
-      float trace = covar [0] + covar [2];
+      double trace = covar [0] + covar [2];
       if (trace != 0)
       {
-        float det = covar[0] * covar[2] - covar[1] * covar[1];
+        double det = covar[0] * covar[2] - covar[1] * covar[1];
         out_point.intensity = det / (trace * trace);
       }
     }
@@ -400,7 +400,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseLowe (PointCloud
 template <typename PointInT, typename PointOutT, typename IntensityT> void
 pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseTomasi (PointCloudOut &output) const
 {
-  PCL_ALIGN (16) float covar [3];
+  PCL_ALIGN (16) double covar [3];
   output.clear ();
   output.resize (input_->size ());
   const int output_size (output.size ());
@@ -420,7 +420,7 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseTomasi (PointClo
     {      
       computeSecondMomentMatrix (index, covar);
       // min egenvalue
-      out_point.intensity = ((covar[0] + covar[2] - sqrt((covar[0] - covar[2])*(covar[0] - covar[2]) + 4 * covar[1] * covar[1])) /2.0f);
+      out_point.intensity = ((covar[0] + covar[2] - sqrt((covar[0] - covar[2])*(covar[0] - covar[2]) + 4 * covar[1] * covar[1])) /2.0);
     }    
   }
   
@@ -433,13 +433,13 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseTomasi (PointClo
 // pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::refineCorners (PointCloudOut &corners) const
 // {
 //   std::vector<int> nn_indices;
-//   std::vector<float> nn_dists;
+//   std::vector<double> nn_dists;
 
 //   Eigen::Matrix2f nnT;
 //   Eigen::Matrix2f NNT;
 //   Eigen::Matrix2f NNTInv;
-//   Eigen::Vector2f NNTp;
-//   float diff;
+//   Eigen::Vector2d NNTp;
+//   double diff;
 //   const unsigned max_iterations = 10;
 // #ifdef _OPENMP
 //   #pragma omp parallel for shared (corners) private (nnT, NNT, NNTInv, NNTp, diff, nn_indices, nn_dists) num_threads(threads_)
@@ -460,14 +460,14 @@ pcl::HarrisKeypoint2D<PointInT, PointOutT, IntensityT>::responseTomasi (PointClo
 //         if (!pcl_isfinite (normals_->points[*iIt].normal_x))
 //           continue;
 
-//         nnT = normals_->points[*iIt].getNormalVector3fMap () * normals_->points[*iIt].getNormalVector3fMap ().transpose();
+//         nnT = normals_->points[*iIt].getNormalVector3dMap () * normals_->points[*iIt].getNormalVector3dMap ().transpose();
 //         NNT += nnT;
-//         NNTp += nnT * surface_->points[*iIt].getVector3fMap ();
+//         NNTp += nnT * surface_->points[*iIt].getVector3dMap ();
 //       }
 //       if (invert3x3SymMatrix (NNT, NNTInv) != 0)
-//         corners[cIdx].getVector3fMap () = NNTInv * NNTp;
+//         corners[cIdx].getVector3dMap () = NNTInv * NNTp;
 
-//       diff = (corners[cIdx].getVector3fMap () - corner.getVector3fMap()).squaredNorm ();
+//       diff = (corners[cIdx].getVector3dMap () - corner.getVector3dMap()).squaredNorm ();
 //     } while (diff > 1e-6 && ++iterations < max_iterations);
 //   }
 // }

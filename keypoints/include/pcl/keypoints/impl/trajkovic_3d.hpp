@@ -93,10 +93,10 @@ pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::initCompute ()
 template <typename PointInT, typename PointOutT, typename NormalT> void
 pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCloudOut &output)
 {
-  response_.reset (new pcl::PointCloud<float> (input_->width, input_->height));
+  response_.reset (new pcl::PointCloud<double> (input_->width, input_->height));
   const Normals &normals = *normals_;
   const PointCloudIn &input = *input_;
-  pcl::PointCloud<float>& response = *response_;
+  pcl::PointCloud<double>& response = *response_;
   const int w = static_cast<int> (input_->width) - half_window_size_;
   const int h = static_cast<int> (input_->height) - half_window_size_;
 
@@ -121,22 +121,22 @@ pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCl
         // Get rid of isolated points
         if (!count) continue;
 
-        float sn1 = squaredNormalsDiff (up, center);
-        float sn2 = squaredNormalsDiff (down, center);
-        float r1 = sn1 + sn2;
-        float r2 = squaredNormalsDiff (right, center) + squaredNormalsDiff (left, center);
+        double sn1 = squaredNormalsDiff (up, center);
+        double sn2 = squaredNormalsDiff (down, center);
+        double r1 = sn1 + sn2;
+        double r2 = squaredNormalsDiff (right, center) + squaredNormalsDiff (left, center);
 
-        float d = std::min (r1, r2);
+        double d = std::min (r1, r2);
         if (d < first_threshold_) continue;
 
         sn1 = sqrt (sn1);
         sn2 = sqrt (sn2);
-        float b1 = normalsDiff (right, up) * sn1;
+        double b1 = normalsDiff (right, up) * sn1;
         b1+= normalsDiff (left, down) * sn2;
-        float b2 = normalsDiff (right, down) * sn2;
+        double b2 = normalsDiff (right, down) * sn2;
         b2+= normalsDiff (left, up) * sn1;
-        float B = std::min (b1, b2);
-        float A = r2 - r1 - 2*B;
+        double B = std::min (b1, b2);
+        double A = r2 - r1 - 2*B;
 
         response (i,j) = ((B < 0) && ((B + A) > 0)) ? r1 - ((B*B)/A) : d;
       }
@@ -167,7 +167,7 @@ pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCl
         // Get rid of isolated points
         if (!count) continue;
 
-        std::vector<float> r (4,0);
+        std::vector<double> r (4,0);
 
         r[0] = squaredNormalsDiff (up, center);
         r[0]+= squaredNormalsDiff (down, center);
@@ -181,13 +181,13 @@ pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCl
         r[3] = squaredNormalsDiff (downright, center);
         r[3]+= squaredNormalsDiff (upleft, center);
 
-        float d = *(std::min_element (r.begin (), r.end ()));
+        double d = *(std::min_element (r.begin (), r.end ()));
 
         if (d < first_threshold_) continue;
 
-        std::vector<float> B (4,0);
-        std::vector<float> A (4,0);
-        std::vector<float> sumAB (4,0);
+        std::vector<double> B (4,0);
+        std::vector<double> A (4,0);
+        std::vector<double> sumAB (4,0);
         B[0] = normalsDiff (upright, up) * normalsDiff (up, center);
         B[0]+= normalsDiff (downleft, down) * normalsDiff (down, center);
         B[1] = normalsDiff (right, upright) * normalsDiff (upright, center);
@@ -207,7 +207,7 @@ pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCl
         if ((*std::max_element (B.begin (), B.end ()) < 0) &&
             (*std::min_element (sumAB.begin (), sumAB.end ()) > 0))
         {
-          std::vector<float> D (4,0);
+          std::vector<double> D (4,0);
           D[0] = B[0] * B[0] / A[0];
           D[1] = B[1] * B[1] / A[1];
           D[2] = B[2] * B[2] / A[2];
@@ -241,7 +241,7 @@ pcl::TrajkovicKeypoint3D<PointInT, PointOutT, NormalT>::detectKeypoints (PointCl
       continue;
 
     PointOutT p;
-    p.getVector3fMap () = input_->points[idx].getVector3fMap ();
+    p.getVector3dMap () = input_->points[idx].getVector3dMap ();
     p.intensity = response_->points [idx];
 
 #ifdef _OPENMP

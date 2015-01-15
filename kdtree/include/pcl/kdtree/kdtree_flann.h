@@ -65,7 +65,7 @@ namespace pcl
     * \author Radu B. Rusu, Marius Muja
     * \ingroup kdtree 
     */
-  template <typename PointT, typename Dist = ::flann::L2_Simple<float> >
+  template <typename PointT, typename Dist = ::flann::L2_Simple<double> >
   class KdTreeFLANN : public pcl::KdTree<PointT>
   {
     public:
@@ -123,7 +123,7 @@ namespace pcl
         * \param[in] eps precision (error bound) for nearest neighbors searches
         */
       void
-      setEpsilon (float eps);
+      setEpsilon (double eps);
 
       void 
       setSortedResults (bool sorted);
@@ -161,7 +161,7 @@ namespace pcl
         */
       int 
       nearestKSearch (const PointT &point, int k, 
-                      std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
+                      std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const;
 
       /** \brief Search for all the nearest neighbors of the query point in a given radius.
         * 
@@ -181,7 +181,7 @@ namespace pcl
         */
       int 
       radiusSearch (const PointT &point, double radius, std::vector<int> &k_indices,
-                    std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const;
+                    std::vector<double> &k_sqr_distances, unsigned int max_nn = 0) const;
 
     private:
       /** \brief Internal cleanup method. */
@@ -212,7 +212,7 @@ namespace pcl
       boost::shared_ptr<FLANNIndex> flann_index_;
 
       /** \brief Internal pointer to data. */
-      boost::shared_array<float> cloud_;
+      boost::shared_array<double> cloud_;
       
       /** \brief mapping between internal and external indices. */
       std::vector<int> index_mapping_;

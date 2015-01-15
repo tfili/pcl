@@ -24,8 +24,8 @@ namespace pcl
 {
   namespace simulation
   {
-    /** \brief Implements a parallel summation of float arrays using GLSL.
-     * The input array is provided as a float texture and the summation
+    /** \brief Implements a parallel summation of double arrays using GLSL.
+     * The input array is provided as a double texture and the summation
      * is performed over set number of levels, where each level halfs each
      * dimension.
      *
@@ -49,7 +49,7 @@ namespace pcl
          *  \param[in] input_array name of the input texture.
          *  \param[out] a pointer to an array that can store the summation result.
          */
-        void sum (GLuint input_array, float* output_array);
+        void sum (GLuint input_array, double* output_array);
 
       private:
         GLuint fbo_;

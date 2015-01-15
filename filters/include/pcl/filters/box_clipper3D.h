@@ -61,7 +61,7 @@ namespace pcl
         * \brief Constructor taking an affine transformation matrix, which allows also shearing of the clipping area
         * \param[in] transformation the 3x3 affine transformation matrix that is used to describe the unit cube
         */
-      BoxClipper3D (const Eigen::Affine3f& transformation);
+      BoxClipper3D (const Eigen::Affine3d& transformation);
 
       /**
         * \brief creates a BoxClipper object with a scaled box in general pose
@@ -69,13 +69,13 @@ namespace pcl
         * \param[in] translation the position of the box center
         * \param[in] box_size the size of the box for each dimension
         */
-      BoxClipper3D (const Eigen::Vector3f& rodrigues, const Eigen::Vector3f& translation, const Eigen::Vector3f& box_size);
+      BoxClipper3D (const Eigen::Vector3d& rodrigues, const Eigen::Vector3d& translation, const Eigen::Vector3d& box_size);
 
       /**
         * \brief Set the affine transformation
         * \param[in] transformation
         */
-      void setTransformation (const Eigen::Affine3f& transformation);
+      void setTransformation (const Eigen::Affine3d& transformation);
 
       /**
         * \brief sets the box in general pose given by the orientation position and size
@@ -83,7 +83,7 @@ namespace pcl
         * \param[in] translation the position of the box center
         * \param[in] box_size the size of the box for each dimension
         */
-      void setTransformation (const Eigen::Vector3f& rodrigues, const Eigen::Vector3f& translation, const Eigen::Vector3f& box_size);
+      void setTransformation (const Eigen::Vector3d& rodrigues, const Eigen::Vector3d& translation, const Eigen::Vector3d& box_size);
 
       /**
         * \brief virtual destructor
@@ -109,13 +109,13 @@ namespace pcl
       clone () const;
 
     protected:
-      float getDistance (const PointT& point) const;
+      double getDistance (const PointT& point) const;
       void transformPoint (const PointT& pointIn, PointT& pointOut) const;
     private:
       /**
         * \brief the affine transformation that is applied before clipping is done on the unit cube.
         */
-      Eigen::Affine3f transformation_;
+      Eigen::Affine3d transformation_;
 
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

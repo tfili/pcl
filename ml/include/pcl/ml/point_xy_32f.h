@@ -46,12 +46,12 @@
 namespace pcl
 {
 
-  /** \brief 2D point with float x- and y-coordinates. */ 
+  /** \brief 2D point with double x- and y-coordinates. */ 
   class PCL_EXPORTS PointXY32f
   {
     public:
       /** \brief Constructor. */
-      inline PointXY32f () : x (0.0f), y (0.0f) {}
+      inline PointXY32f () : x (0.0), y (0.0) {}
       /** \brief Destructor. */
       inline virtual ~PointXY32f () {}
 
@@ -86,9 +86,9 @@ namespace pcl
 
     public:
       /** \brief The x-coordinate of the point. */
-      float x;
+      double x;
       /** \brief The y-coordinate of the point. */
-      float y;
+      double y;
   };
 
 }

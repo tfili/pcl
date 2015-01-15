@@ -93,10 +93,10 @@ main (int argc, char** argv)
     return (-1);
 
   // Compute the bounding box diagonal
-  float diag = static_cast<float> (sqrt (my_sqr (b[1]-b[0]) + my_sqr (b[3]-b[2]) + my_sqr (b[5]-b[4])));
+  double diag = static_cast<double> (sqrt (my_sqr (b[1]-b[0]) + my_sqr (b[3]-b[2]) + my_sqr (b[5]-b[4])));
 
   // Create the recognition object (we need it only for its hash table)
-  ObjRecRANSAC objrec (diag/8.0f, diag/60.0f);
+  ObjRecRANSAC objrec (diag/8.0, diag/60.0);
   objrec.addModel (points_in, normals_in, "test_model");
 
   // Start visualization (and the main VTK loop)
@@ -135,9 +135,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& points_in, 
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_points->GetPoint (i, p);
-    points_in[i].x = static_cast<float> (p[0]);
-    points_in[i].y = static_cast<float> (p[1]);
-    points_in[i].z = static_cast<float> (p[2]);
+    points_in[i].x = static_cast<double> (p[0]);
+    points_in[i].y = static_cast<double> (p[1]);
+    points_in[i].z = static_cast<double> (p[2]);
   }
 
   // Check if we have normals
@@ -149,9 +149,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& points_in, 
     for ( vtkIdType i = 0 ; i < num_points ; ++i )
     {
       vtk_normals->GetTuple (i, p);
-      normals_in[i].normal_x = static_cast<float> (p[0]);
-      normals_in[i].normal_y = static_cast<float> (p[1]);
-      normals_in[i].normal_z = static_cast<float> (p[2]);
+      normals_in[i].normal_x = static_cast<double> (p[0]);
+      normals_in[i].normal_y = static_cast<double> (p[1]);
+      normals_in[i].normal_z = static_cast<double> (p[2]);
     }
   }
 
@@ -169,7 +169,7 @@ visualize (const ModelLibrary::HashTable& hash_table)
   const ModelLibrary::HashTableCell* cells = hash_table.getVoxels ();
   size_t max_num_entries = 0;
   int i, id3[3], num_cells = hash_table.getNumberOfVoxels ();
-  float half_side, b[6], cell_center[3], spacing = hash_table.getVoxelSpacing ()[0];
+  double half_side, b[6], cell_center[3], spacing = hash_table.getVoxelSpacing ()[0];
   char cube_id[128];
 
   // Just get the maximal number of entries in the cells
@@ -186,7 +186,7 @@ visualize (const ModelLibrary::HashTable& hash_table)
 
   // Now, that we have the max. number of entries, we can compute the
   // right scale factor for the spheres
-  float s = (0.5f*spacing)/static_cast<float> (max_num_entries);
+  double s = (0.5*spacing)/static_cast<double> (max_num_entries);
 
   cout << "s = " << s << ", max_num_entries = " << max_num_entries << endl;
 
@@ -200,7 +200,7 @@ visualize (const ModelLibrary::HashTable& hash_table)
       hash_table.computeVoxelCenter (id3, cell_center);
 
       // That's half of the cube's side length
-      half_side = s*static_cast<float> ((*cells->begin ()).second.size ());
+      half_side = s*static_cast<double> ((*cells->begin ()).second.size ());
 
       // Adjust the bounds of the cube
       b[0] = cell_center[0] - half_side; b[1] = cell_center[0] + half_side;

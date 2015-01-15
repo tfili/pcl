@@ -98,10 +98,10 @@ TEST(PCL_FeaturesGPU, PrincipalCurvatures)
         PrincipalCurvatures& gpu = downloaded[i];
         PrincipalCurvatures& cpu = pc.points[i];        
 
-        ASSERT_NEAR(gpu.principal_curvature_x, cpu.principal_curvature_x, 0.01f);
-        ASSERT_NEAR(gpu.principal_curvature_y, cpu.principal_curvature_y, 0.01f);
-        ASSERT_NEAR(gpu.principal_curvature_z, cpu.principal_curvature_z, 0.01f);
-        ASSERT_NEAR(gpu.pc1, cpu.pc1, 0.01f);
-        ASSERT_NEAR(gpu.pc2, cpu.pc2, 0.01f);        
+        ASSERT_NEAR(gpu.principal_curvature_x, cpu.principal_curvature_x, 0.01);
+        ASSERT_NEAR(gpu.principal_curvature_y, cpu.principal_curvature_y, 0.01);
+        ASSERT_NEAR(gpu.principal_curvature_z, cpu.principal_curvature_z, 0.01);
+        ASSERT_NEAR(gpu.pc1, cpu.pc1, 0.01);
+        ASSERT_NEAR(gpu.pc2, cpu.pc2, 0.01);        
     }
 }

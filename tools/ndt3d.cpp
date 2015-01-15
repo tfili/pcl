@@ -58,7 +58,7 @@ main (int argc, char **argv)
   int iter = 35;
   pcl::console::parse_argument (argc, argv, "-i", iter);
 
-  float ndt_res = 1.0f;
+  double ndt_res = 1.0;
   pcl::console::parse_argument (argc, argv, "-r", ndt_res);
 
   double step_size = 0.1;
@@ -67,7 +67,7 @@ main (int argc, char **argv)
   double trans_eps = 0.01;
   pcl::console::parse_argument (argc, argv, "-t", trans_eps);
 
-  float filter_res = 0.2f;
+  double filter_res = 0.2f;
   pcl::console::parse_argument (argc, argv, "-f", filter_res);
 
   bool display_help = false;
@@ -103,7 +103,7 @@ main (int argc, char **argv)
   pcl::io::savePCDFile (result_filename.c_str (), *model);
   std::cout << "saving first model to " << result_filename << std::endl;
 
-  Eigen::Matrix4f t (Eigen::Matrix4f::Identity ());
+  Eigen::Matrix4d t (Eigen::Matrix4d::Identity ());
 
   pcl::ApproximateVoxelGrid<PointType> voxel_filter;
   voxel_filter.setLeafSize (filter_res, filter_res, filter_res);

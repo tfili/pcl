@@ -56,18 +56,18 @@ namespace pcl
   namespace geometry
   {
     /** @return the euclidean distance between 2 points */
-    template <typename PointT> inline float 
+    template <typename PointT> inline double 
     distance (const PointT& p1, const PointT& p2)
     {
-      Eigen::Vector3f diff = p1 -p2;
+      Eigen::Vector3d diff = p1 -p2;
       return (diff.norm ());
     }
 
     /** @return the squared euclidean distance between 2 points */
-    template<typename PointT> inline float 
+    template<typename PointT> inline double 
     squaredDistance (const PointT& p1, const PointT& p2)
     {
-      Eigen::Vector3f diff = p1 -p2;
+      Eigen::Vector3d diff = p1 -p2;
       return (diff.squaredNorm ());
     }
 
@@ -81,10 +81,10 @@ namespace pcl
     project (const PointT& point, const PointT &plane_origin, 
              const NormalT& plane_normal, PointT& projected)
     {
-      Eigen::Vector3f po = point - plane_origin;
-      const Eigen::Vector3f normal = plane_normal.getVector3fMapConst ();
-      float lambda = normal.dot(po);
-      projected.getVector3fMap () = point.getVector3fMapConst () - (lambda * normal);
+      Eigen::Vector3d po = point - plane_origin;
+      const Eigen::Vector3d normal = plane_normal.getVector3dMapConst ();
+      double lambda = normal.dot(po);
+      projected.getVector3dMap () = point.getVector3dMapConst () - (lambda * normal);
     }
 
     /** @return the point projection on a plane defined by its origin and normal vector 
@@ -94,11 +94,11 @@ namespace pcl
       * \param[out] projected The returned projected point
       */
     inline void 
-    project (const Eigen::Vector3f& point, const Eigen::Vector3f &plane_origin, 
-             const Eigen::Vector3f& plane_normal, Eigen::Vector3f& projected)
+    project (const Eigen::Vector3d& point, const Eigen::Vector3d &plane_origin, 
+             const Eigen::Vector3d& plane_normal, Eigen::Vector3d& projected)
     {
-      Eigen::Vector3f po = point - plane_origin;
-      float lambda = plane_normal.dot(po);
+      Eigen::Vector3d po = point - plane_origin;
+      double lambda = plane_normal.dot(po);
       projected = point - (lambda * plane_normal);
     }
   }

@@ -46,7 +46,7 @@
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::SampleConsensusModelParallelLine<PointT>::selectWithinDistance (
-      const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers)
+      const Eigen::VectorXd &model_coefficients, const double threshold, std::vector<int> &inliers)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -61,7 +61,7 @@ pcl::SampleConsensusModelParallelLine<PointT>::selectWithinDistance (
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> int
 pcl::SampleConsensusModelParallelLine<PointT>::countWithinDistance (
-      const Eigen::VectorXf &model_coefficients, const double threshold)
+      const Eigen::VectorXd &model_coefficients, const double threshold)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -73,7 +73,7 @@ pcl::SampleConsensusModelParallelLine<PointT>::countWithinDistance (
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::SampleConsensusModelParallelLine<PointT>::getDistancesToModel (
-      const Eigen::VectorXf &model_coefficients, std::vector<double> &distances)
+      const Eigen::VectorXd &model_coefficients, std::vector<double> &distances)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -87,7 +87,7 @@ pcl::SampleConsensusModelParallelLine<PointT>::getDistancesToModel (
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> bool
-pcl::SampleConsensusModelParallelLine<PointT>::isModelValid (const Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelParallelLine<PointT>::isModelValid (const Eigen::VectorXd &model_coefficients)
 {
   // Needs a valid model coefficients
   if (model_coefficients.size () != 6)
@@ -100,9 +100,9 @@ pcl::SampleConsensusModelParallelLine<PointT>::isModelValid (const Eigen::Vector
   if (eps_angle_ > 0.0)
   {
     // Obtain the line direction
-    Eigen::Vector4f line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
+    Eigen::Vector4d line_dir (model_coefficients[3], model_coefficients[4], model_coefficients[5], 0);
 
-    Eigen::Vector4f axis (axis_[0], axis_[1], axis_[2], 0);
+    Eigen::Vector4d axis (axis_[0], axis_[1], axis_[2], 0);
     double angle_diff = fabs (getAngle3D (axis, line_dir));
     //angle_diff = (std::min) (angle_diff, M_PI - angle_diff);
     angle_diff = fabs (angle_diff - (M_PI/2.0));

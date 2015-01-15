@@ -82,7 +82,7 @@ pcl::registration::CorrespondenceRejectorPoly<SourceT, TargetT>::getRemainingCor
   }
   
   // Check similarity
-  if (similarity_threshold_ < 0.0f || similarity_threshold_ > 1.0f)
+  if (similarity_threshold_ < 0.0 || similarity_threshold_ > 1.0)
   {
     PCL_ERROR ("[pcl::registration::%s::getRemainingCorrespondences] Invalid edge length similarity - must be in [0,1]!. Returning all input correspondences.\n",
                getClassName ().c_str() );
@@ -125,23 +125,23 @@ pcl::registration::CorrespondenceRejectorPoly<SourceT, TargetT>::getRemainingCor
   }
   
   // Now calculate the acceptance rate of each correspondence
-  std::vector<float> accept_rate (nr_correspondences, 0.0f);
+  std::vector<double> accept_rate (nr_correspondences, 0.0);
   for (int i = 0; i < nr_correspondences; ++i)
   {
     const int numsi = num_samples[i];
     if (numsi == 0)
-      accept_rate[i] = 0.0f;
+      accept_rate[i] = 0.0;
     else
-      accept_rate[i] = static_cast<float> (num_accepted[i]) / static_cast<float> (numsi);
+      accept_rate[i] = static_cast<double> (num_accepted[i]) / static_cast<double> (numsi);
   }
   
   // Compute a histogram in range [0,1] for acceptance rates
   const int hist_size = nr_correspondences / 2; // TODO: Optimize this
-  const std::vector<int> histogram = computeHistogram (accept_rate, 0.0f, 1.0f, hist_size);
+  const std::vector<int> histogram = computeHistogram (accept_rate, 0.0, 1.0, hist_size);
   
   // Find the cut point between outliers and inliers using Otsu's thresholding method
   const int cut_idx = findThresholdOtsu (histogram);
-  const float cut = static_cast<float> (cut_idx) / static_cast<float> (hist_size);
+  const double cut = static_cast<double> (cut_idx) / static_cast<double> (hist_size);
   
   // Threshold
   for (int i = 0; i < nr_correspondences; ++i)
@@ -151,18 +151,18 @@ pcl::registration::CorrespondenceRejectorPoly<SourceT, TargetT>::getRemainingCor
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename SourceT, typename TargetT> std::vector<int> 
-pcl::registration::CorrespondenceRejectorPoly<SourceT, TargetT>::computeHistogram (const std::vector<float>& data,
-                                                                         float lower, float upper, int bins)
+pcl::registration::CorrespondenceRejectorPoly<SourceT, TargetT>::computeHistogram (const std::vector<double>& data,
+                                                                         double lower, double upper, int bins)
 {
   // Result
   std::vector<int> result (bins, 0);
   
   // Last index into result and increment factor from data value --> index
   const int last_idx = bins - 1;
-  const float idx_per_val = static_cast<float> (bins) / (upper - lower);
+  const double idx_per_val = static_cast<double> (bins) / (upper - lower);
   
   // Accumulate
-  for (std::vector<float>::const_iterator it = data.begin (); it != data.end (); ++it)
+  for (std::vector<double>::const_iterator it = data.begin (); it != data.end (); ++it)
      ++result[ std::min (last_idx, int ((*it)*idx_per_val)) ];
   
   return (result);

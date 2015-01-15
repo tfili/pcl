@@ -111,7 +111,7 @@ pcl::EarClipping::triangulate (const Vertices& vertices, PolygonMesh& output)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
 {
     //if the polygon is projected onto the xy-plane, the area of the polygon is determined
@@ -120,30 +120,30 @@ pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
     //using Stoke's law: http://code.activestate.com/recipes/578276-3d-polygon-area/
 
     int n = static_cast<int> (vertices.size ());
-    float area = 0.0f;
-    Eigen::Vector3f prev_p, cur_p;
-    Eigen::Vector3f total (0,0,0);
-    Eigen::Vector3f unit_normal;
+    double area = 0.0;
+    Eigen::Vector3d prev_p, cur_p;
+    Eigen::Vector3d total (0,0,0);
+    Eigen::Vector3d unit_normal;
 
     if (n > 3)
     {
         for (int prev = n - 1, cur = 0; cur < n; prev = cur++)
         {
-            prev_p = points_->points[vertices[prev]].getVector3fMap();
-            cur_p = points_->points[vertices[cur]].getVector3fMap();
+            prev_p = points_->points[vertices[prev]].getVector3dMap();
+            cur_p = points_->points[vertices[cur]].getVector3dMap();
 
             total += prev_p.cross( cur_p );
         }
 
         //unit_normal is unit normal vector of plane defined by the first three points
-        prev_p = points_->points[vertices[1]].getVector3fMap() - points_->points[vertices[0]].getVector3fMap();
-        cur_p = points_->points[vertices[2]].getVector3fMap() - points_->points[vertices[0]].getVector3fMap();
+        prev_p = points_->points[vertices[1]].getVector3dMap() - points_->points[vertices[0]].getVector3dMap();
+        cur_p = points_->points[vertices[2]].getVector3dMap() - points_->points[vertices[0]].getVector3dMap();
         unit_normal = (prev_p.cross(cur_p)).normalized();
 
         area = total.dot( unit_normal );
     }
 
-    return area * 0.5f; 
+    return area * 0.5; 
 }
 
 
@@ -151,13 +151,13 @@ pcl::EarClipping::area (const std::vector<uint32_t>& vertices)
 bool
 pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& vertices)
 {
-  Eigen::Vector3f p_u, p_v, p_w;
-  p_u = points_->points[vertices[u]].getVector3fMap();
-  p_v = points_->points[vertices[v]].getVector3fMap();
-  p_w = points_->points[vertices[w]].getVector3fMap();
+  Eigen::Vector3d p_u, p_v, p_w;
+  p_u = points_->points[vertices[u]].getVector3dMap();
+  p_v = points_->points[vertices[v]].getVector3dMap();
+  p_w = points_->points[vertices[w]].getVector3dMap();
 
-  const float eps = 1e-15f;
-  Eigen::Vector3f p_uv, p_uw;
+  const double eps = 1e-15;
+  Eigen::Vector3d p_uv, p_uw;
   p_uv = p_v - p_u;
   p_uw = p_w - p_u;
 
@@ -165,13 +165,13 @@ pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& verti
   if ((p_uv.cross(p_uw)).norm() < eps)
     return (false);
 
-  Eigen::Vector3f p;
+  Eigen::Vector3d p;
   // Check if any other vertex is inside the triangle.
   for (int k = 0; k < static_cast<int> (vertices.size ()); k++)
   {
     if ((k == u) || (k == v) || (k == w))
       continue;
-    p = points_->points[vertices[k]].getVector3fMap();
+    p = points_->points[vertices[k]].getVector3dMap();
 
     if (isInsideTriangle (p_u, p_v, p_w, p))
       return (false);
@@ -181,28 +181,28 @@ pcl::EarClipping::isEar (int u, int v, int w, const std::vector<uint32_t>& verti
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::EarClipping::isInsideTriangle (const Eigen::Vector3f& u,
-                                    const Eigen::Vector3f& v,
-                                    const Eigen::Vector3f& w,
-                                    const Eigen::Vector3f& p)
+pcl::EarClipping::isInsideTriangle (const Eigen::Vector3d& u,
+                                    const Eigen::Vector3d& v,
+                                    const Eigen::Vector3d& w,
+                                    const Eigen::Vector3d& p)
 {
   // see http://www.blackpawn.com/texts/pointinpoly/default.html
   // Barycentric Coordinates
-  Eigen::Vector3f v0 = w - u;
-  Eigen::Vector3f v1 = v - u;
-  Eigen::Vector3f v2 = p - u;
+  Eigen::Vector3d v0 = w - u;
+  Eigen::Vector3d v1 = v - u;
+  Eigen::Vector3d v2 = p - u;
 
   // Compute dot products
-  float dot00 = v0.dot(v0);
-  float dot01 = v0.dot(v1);
-  float dot02 = v0.dot(v2);
-  float dot11 = v1.dot(v1);
-  float dot12 = v1.dot(v2);
+  double dot00 = v0.dot(v0);
+  double dot01 = v0.dot(v1);
+  double dot02 = v0.dot(v2);
+  double dot11 = v1.dot(v1);
+  double dot12 = v1.dot(v2);
 
   // Compute barycentric coordinates
-  float invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-  float a = (dot11 * dot02 - dot01 * dot12) * invDenom;
-  float b = (dot00 * dot12 - dot01 * dot02) * invDenom;
+  double invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+  double a = (dot11 * dot02 - dot01 * dot12) * invDenom;
+  double b = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
   // Check if point is in triangle
   return (a >= 0) && (b >= 0) && (a + b < 1);

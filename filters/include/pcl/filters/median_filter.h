@@ -68,7 +68,7 @@ namespace pcl
       /** \brief Empty constructor. */
       MedianFilter ()
         : window_size_ (5)
-        , max_allowed_movement_ (std::numeric_limits<float>::max ())
+        , max_allowed_movement_ (std::numeric_limits<double>::max ())
       { }
 
       /** \brief Set the window size of the filter.
@@ -89,13 +89,13 @@ namespace pcl
         * \param[in] max_allowed_movement maximum value a dexel is allowed to move during filtering
         */
       inline void
-      setMaxAllowedMovement (float max_allowed_movement)
+      setMaxAllowedMovement (double max_allowed_movement)
       { max_allowed_movement_ = max_allowed_movement; }
 
       /** \brief Get the maximum distance one point is allowed to move along the z-axis.
         * \returns the maximum distance a dexel is allowed to move
         */
-      inline float
+      inline double
       getMaxAllowedMovement () const
       { return max_allowed_movement_; }
 
@@ -107,7 +107,7 @@ namespace pcl
 
     protected:
       int window_size_;
-      float max_allowed_movement_;
+      double max_allowed_movement_;
   };
 }
 

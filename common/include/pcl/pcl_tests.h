@@ -90,13 +90,13 @@ namespace pcl
                                         const Point1T& p1,
                                         const Point2T& p2)
       {
-        if ((p1).getVector3fMap ().cwiseEqual ((p2).getVector3fMap ()).all ())
+        if ((p1).getVector3dMap ().cwiseEqual ((p2).getVector3dMap ()).all ())
           return ::testing::AssertionSuccess ();
         return ::testing::AssertionFailure ()
-               << "Value of: " << expr2 << ".getVector3fMap ()" << std::endl
-               << "  Actual: " << p2.getVector3fMap ().transpose () << std::endl
-               << "Expected: " << expr1 << ".getVector3fMap ()" << std::endl
-               << "Which is: " << p1.getVector3fMap ().transpose ();
+               << "Value of: " << expr2 << ".getVector3dMap ()" << std::endl
+               << "  Actual: " << p2.getVector3dMap ().transpose () << std::endl
+               << "Expected: " << expr1 << ".getVector3dMap ()" << std::endl
+               << "Which is: " << p1.getVector3dMap ().transpose ();
       }
 
       template <typename Point1T, typename Point2T>
@@ -107,18 +107,18 @@ namespace pcl
                                           const Point2T& p2,
                                           double abs_error)
       {
-        const Eigen::Vector3f diff = ((p1).getVector3fMap () -
-                                      (p2).getVector3fMap ()).cwiseAbs ();
+        const Eigen::Vector3d diff = ((p1).getVector3dMap () -
+                                      (p2).getVector3dMap ()).cwiseAbs ();
         if ((diff.array () < abs_error).all ())
           return ::testing::AssertionSuccess ();
         return ::testing::AssertionFailure ()
                << "Some of the element-wise differences exceed " << abs_error_expr
                << " (which evaluates to " << abs_error << ")" << std::endl
                << "Difference: " << diff.transpose () << std::endl
-               << "  Value of: " << expr2 << ".getVector3fMap ()" << std::endl
-               << "    Actual: " << p2.getVector3fMap ().transpose () << std::endl
-               << "  Expected: " << expr1 << ".getVector3fMap ()" << std::endl
-               << "  Which is: " << p1.getVector3fMap ().transpose ();
+               << "  Value of: " << expr2 << ".getVector3dMap ()" << std::endl
+               << "    Actual: " << p2.getVector3dMap ().transpose () << std::endl
+               << "  Expected: " << expr1 << ".getVector3dMap ()" << std::endl
+               << "  Which is: " << p1.getVector3dMap ().transpose ();
       }
 
       template <typename Point1T, typename Point2T>
@@ -127,13 +127,13 @@ namespace pcl
                                            const Point1T& p1,
                                            const Point2T& p2)
       {
-        if ((p1).getNormalVector3fMap ().cwiseEqual ((p2).getNormalVector3fMap ()).all ())
+        if ((p1).getNormalVector3dMap ().cwiseEqual ((p2).getNormalVector3dMap ()).all ())
           return ::testing::AssertionSuccess ();
         return ::testing::AssertionFailure ()
-               << "Value of: " << expr2 << ".getNormalVector3fMap ()" << std::endl
-               << "  Actual: " << p2.getNormalVector3fMap ().transpose () << std::endl
-               << "Expected: " << expr1 << ".getNormalVector3fMap ()" << std::endl
-               << "Which is: " << p1.getNormalVector3fMap ().transpose ();
+               << "Value of: " << expr2 << ".getNormalVector3dMap ()" << std::endl
+               << "  Actual: " << p2.getNormalVector3dMap ().transpose () << std::endl
+               << "Expected: " << expr1 << ".getNormalVector3dMap ()" << std::endl
+               << "Which is: " << p1.getNormalVector3dMap ().transpose ();
       }
 
       template <typename Point1T, typename Point2T>
@@ -144,18 +144,18 @@ namespace pcl
                                              const Point2T& p2,
                                              double abs_error)
       {
-        const Eigen::Vector3f diff = ((p1).getNormalVector3fMap () -
-                                      (p2).getNormalVector3fMap ()).cwiseAbs ();
+        const Eigen::Vector3d diff = ((p1).getNormalVector3dMap () -
+                                      (p2).getNormalVector3dMap ()).cwiseAbs ();
         if ((diff.array () < abs_error).all ())
           return ::testing::AssertionSuccess ();
         return ::testing::AssertionFailure ()
                << "Some of the element-wise differences exceed " << abs_error_expr
                << " (which evaluates to " << abs_error << ")" << std::endl
                << "Difference: " << diff.transpose () << std::endl
-               << "  Value of: " << expr2 << ".getNormalVector3fMap ()" << std::endl
-               << "    Actual: " << p2.getNormalVector3fMap ().transpose () << std::endl
-               << "  Expected: " << expr1 << ".getNormalVector3fMap ()" << std::endl
-               << "  Which is: " << p1.getNormalVector3fMap ().transpose ();
+               << "  Value of: " << expr2 << ".getNormalVector3dMap ()" << std::endl
+               << "    Actual: " << p2.getNormalVector3dMap ().transpose () << std::endl
+               << "  Expected: " << expr1 << ".getNormalVector3dMap ()" << std::endl
+               << "  Which is: " << p1.getNormalVector3dMap ().transpose ();
       }
 
       template <typename Point1T, typename Point2T>

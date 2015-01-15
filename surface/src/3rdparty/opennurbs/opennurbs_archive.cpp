@@ -887,7 +887,7 @@ ON_BinaryArchive::ReadLong( // Read a single 32 bit unsigned integer
 bool
 ON_BinaryArchive::ReadFloat(   // Read an array of floats
 		size_t count,       // number of unsigned chars to read
-		float* p
+		double* p
 		)
 {
   // 32 bit floats and 32 bit integers have same size and endian issues
@@ -895,8 +895,8 @@ ON_BinaryArchive::ReadFloat(   // Read an array of floats
 }
 
 bool
-ON_BinaryArchive::ReadFloat(   // Read a single float
-		float* p
+ON_BinaryArchive::ReadFloat(   // Read a single double
+		double* p
 		)
 {
   return ReadFloat( 1, p );
@@ -1922,7 +1922,7 @@ ON_BinaryArchive::ReadArray( ON_SimpleArray<int>& a )
 }
 
 bool
-ON_BinaryArchive::ReadArray( ON_SimpleArray<float>& a )
+ON_BinaryArchive::ReadArray( ON_SimpleArray<double>& a )
 {
   a.Empty();
   int count = 0;
@@ -2756,7 +2756,7 @@ ON_BinaryArchive::WriteLong( // Write a single unsigned long
 bool
 ON_BinaryArchive::WriteFloat(   // Write a number of IEEE floats
 		size_t count,       // number of doubles
-		const float* p
+		const double* p
 		)
 {
   // floats and integers have same size and endian issues
@@ -2764,8 +2764,8 @@ ON_BinaryArchive::WriteFloat(   // Write a number of IEEE floats
 }
 
 bool
-ON_BinaryArchive::WriteFloat(   // Write a single float
-		float f
+ON_BinaryArchive::WriteFloat(   // Write a single double
+		double f
 		)
 {
   return WriteFloat( 1, &f );
@@ -3174,7 +3174,7 @@ ON_BinaryArchive::WriteArray( const ON_SimpleArray<int>& a )
 }
 
 bool
-ON_BinaryArchive::WriteArray( const ON_SimpleArray<float>& a )
+ON_BinaryArchive::WriteArray( const ON_SimpleArray<double>& a )
 {
   int count = a.Count();
   if ( count < 0 )
@@ -3419,9 +3419,9 @@ ON_BinaryArchive::WriteObject( const ON_Object* o )
 static
 bool IsCriticalUserData( const ON_BinaryArchive& ar, const ON_UserData* ud )
 {
-  // {31F55AA3-71FB-49f5-A975-757584D937FF}
+  // {31F55AA3-71FB-495-A975-757584D937FF}
   static const ON_UUID ON_MeshNgonUserData_ID = 
-  { 0x31F55AA3, 0x71FB, 0x49f5, { 0xA9, 0x75, 0x75, 0x75, 0x84, 0xD9, 0x37, 0xFF } };
+  { 0x31F55AA3, 0x71FB, 0x495, { 0xA9, 0x75, 0x75, 0x75, 0x84, 0xD9, 0x37, 0xFF } };
 
   // Userdata that must be saved even when userdata saving is "off".
   // Please discuss any changes with Dale Lear.  In particular,
@@ -10776,9 +10776,9 @@ bool ON_BinaryArchive::ReadV1_TCODE_MESH_OBJECT(
       for ( i = 0; i < point_count; i++ ) {
         if ( !ReadShort(3,xyz) )
           break;
-        pt.x = (float)(dx*xyz[0] + bbox.m_min.x);
-        pt.y = (float)(dy*xyz[1] + bbox.m_min.y);
-        pt.z = (float)(dz*xyz[2] + bbox.m_min.z);
+        pt.x = (double)(dx*xyz[0] + bbox.m_min.x);
+        pt.y = (double)(dy*xyz[1] + bbox.m_min.y);
+        pt.z = (double)(dz*xyz[2] + bbox.m_min.z);
         mesh->m_V.Append(pt);
       }
     }
@@ -10819,9 +10819,9 @@ bool ON_BinaryArchive::ReadV1_TCODE_MESH_OBJECT(
       for ( i = 0; i < point_count; i++ ) {
         if ( !ReadChar(3,xyz) )
           break;
-        normal.x = (float)(((signed char)xyz[0])/127.0);
-        normal.y = (float)(((signed char)xyz[1])/127.0);
-        normal.z = (float)(((signed char)xyz[2])/127.0);
+        normal.x = (double)(((signed char)xyz[0])/127.0);
+        normal.y = (double)(((signed char)xyz[1])/127.0);
+        normal.z = (double)(((signed char)xyz[2])/127.0);
         mesh->m_N.Append(normal);
       }
       if ( mesh->m_N.Count() != mesh->m_V.Count() )
@@ -10834,8 +10834,8 @@ bool ON_BinaryArchive::ReadV1_TCODE_MESH_OBJECT(
       for ( i = 0; i < point_count; i++ ) {
         if ( !ReadShort(2,uv) )
           break;
-        t.x = (float)(uv[0]/65535.0);
-        t.y = (float)(uv[1]/65535.0);
+        t.x = (double)(uv[0]/65535.0);
+        t.y = (double)(uv[1]/65535.0);
         mesh->m_T.Append(t);
       }
       if ( mesh->m_T.Count() != mesh->m_V.Count() )

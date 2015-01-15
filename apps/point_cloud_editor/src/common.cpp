@@ -43,22 +43,22 @@
 #include <pcl/apps/point_cloud_editor/localTypes.h>
 
 void
-setIdentity(float* matrix)
+setIdentity(double* matrix)
 {
-  std::fill_n(matrix, MATRIX_SIZE, 0.0f);
+  std::fill_n(matrix, MATRIX_SIZE, 0.0);
   for (unsigned int i = 0; i < MATRIX_SIZE; i+=MATRIX_SIZE_DIM+1)
-    matrix[i] = 1.0f;
+    matrix[i] = 1.0;
 }
 
 void
-multMatrix(const float* left, const float* right, float* result)
+multMatrix(const double* left, const double* right, double* result)
 {
-  float r[MATRIX_SIZE];
+  double r[MATRIX_SIZE];
   for(unsigned int i = 0; i < MATRIX_SIZE_DIM; ++i)
   {
     for(unsigned int j = 0; j < MATRIX_SIZE_DIM; ++j)
     {
-      float sum = 0.0;
+      double sum = 0.0;
       for(unsigned int k = 0; k < MATRIX_SIZE_DIM; ++k)
         sum += left[i * MATRIX_SIZE_DIM + k] * right[k * MATRIX_SIZE_DIM + j];
       r[i * MATRIX_SIZE_DIM + j] = sum;
@@ -106,7 +106,7 @@ multMatrix(const float* left, const float* right, float* result)
 //AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 //CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-bool invertMatrix(const float* matrix, float* inverse)
+bool invertMatrix(const double* matrix, double* inverse)
 {
   double inv[16], det;
 

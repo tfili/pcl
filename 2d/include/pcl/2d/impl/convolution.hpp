@@ -60,7 +60,7 @@ pcl::Convolution<PointT>::filter (pcl::PointCloud<PointT> &output)
       {
         for (int j = 0; j < iw; j++)
         {
-          float intensity = 0;
+          double intensity = 0;
           for (int k = 0; k < kh; k++)
           {
             for (int l = 0; l < kw; l++)
@@ -95,7 +95,7 @@ pcl::Convolution<PointT>::filter (pcl::PointCloud<PointT> &output)
       {
         for (int j = 0; j < iw; j++)
         {
-          float intensity = 0;
+          double intensity = 0;
           for (int k = 0; k < kh; k++)
           {
             for (int l = 0; l < kw; l++)
@@ -130,7 +130,7 @@ pcl::Convolution<PointT>::filter (pcl::PointCloud<PointT> &output)
       {
         for (int j = 0; j < iw; j++)
         {
-          float intensity = 0;
+          double intensity = 0;
           for (int k = 0; k < kh; k++)
           {
             for (int l = 0; l < kw; l++)

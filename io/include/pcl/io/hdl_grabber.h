@@ -64,19 +64,19 @@ namespace pcl
        */
       typedef void (sig_cb_velodyne_hdl_scan_point_cloud_xyz) (
           const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&,
-          float, float);
+          double, double);
       /** \brief Signal used for a single sector
        *         Represents 1 corrected packet from the HDL Velodyne.  Each laser has a different RGB
        */
       typedef void (sig_cb_velodyne_hdl_scan_point_cloud_xyzrgb) (
           const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&,
-          float, float);
+          double, double);
       /** \brief Signal used for a single sector
        *         Represents 1 corrected packet from the HDL Velodyne with the returned intensity.
        */
       typedef void (sig_cb_velodyne_hdl_scan_point_cloud_xyzi) (
           const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&,
-          float startAngle, float);
+          double startAngle, double);
       /** \brief Signal used for a 360 degree sweep
        *         Represents multiple corrected packets from the HDL Velodyne
        *         This signal is sent when the Velodyne passes angle "0"
@@ -132,7 +132,7 @@ namespace pcl
 
       /** \brief Returns the number of frames per second.
        */
-      virtual float getFramesPerSecond () const;
+      virtual double getFramesPerSecond () const;
 
       /** \brief Allows one to filter packets based on the SOURCE IP address and PORT
        *         This can be used, for instance, if multiple HDL LIDARs are on the same network
@@ -148,22 +148,22 @@ namespace pcl
        *         This value is in meters
        *         Default: 0.0
        */
-      void setMinimumDistanceThreshold(float & minThreshold);
+      void setMinimumDistanceThreshold(double & minThreshold);
 
       /** \brief Any returns from the HDL with a distance greater than this are discarded.
        *         This value is in meters
        *         Default: 10000.0
        */
-      void setMaximumDistanceThreshold(float & maxThreshold);
+      void setMaximumDistanceThreshold(double & maxThreshold);
 
       /** \brief Returns the current minimum distance threshold, in meters
        */
 
-      float getMinimumDistanceThreshold();
+      double getMinimumDistanceThreshold();
 
       /** \brief Returns the current maximum distance threshold, in meters
        */
-      float getMaximumDistanceThreshold();
+      double getMaximumDistanceThreshold();
 
     protected:
       static const int HDL_DATA_PORT = 2368;
@@ -242,8 +242,8 @@ namespace pcl
       boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzrgb>* scan_xyzrgb_signal_;
       boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzi>* scan_xyzi_signal_;
       pcl::RGB laser_rgb_mapping_[HDL_MAX_NUM_LASERS];
-      float min_distance_threshold_;
-      float max_distance_threshold_;
+      double min_distance_threshold_;
+      double max_distance_threshold_;
 
       void processVelodynePackets ();
       void enqueueHDLPacket (const unsigned char *data,

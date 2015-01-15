@@ -51,9 +51,9 @@ pcl::MTLReader::MTLReader ()
 }
 
 inline void
-pcl::MTLReader::cie2rgb (const Eigen::Vector3f &xyz, pcl::TexMaterial::RGB& rgb) const
+pcl::MTLReader::cie2rgb (const Eigen::Vector3d &xyz, pcl::TexMaterial::RGB& rgb) const
 {
-  Eigen::Vector3f rgb_vec = xyz_to_rgb_matrix_ * xyz;
+  Eigen::Vector3d rgb_vec = xyz_to_rgb_matrix_ * xyz;
   rgb.r = rgb_vec[0]; rgb.g = rgb_vec[1]; rgb.b = rgb_vec[2];
 }
 
@@ -61,14 +61,14 @@ int
 pcl::MTLReader::fillRGBfromXYZ (const std::vector<std::string>& split_line,
                                 pcl::TexMaterial::RGB& rgb)
 {
-  Eigen::Vector3f xyz;
+  Eigen::Vector3d xyz;
   if (split_line.size () == 5)
   {
     try
     {
-      xyz[0] = boost::lexical_cast<float> (split_line[2]);
-      xyz[1] = boost::lexical_cast<float> (split_line[3]);
-      xyz[2] = boost::lexical_cast<float> (split_line[4]);
+      xyz[0] = boost::lexical_cast<double> (split_line[2]);
+      xyz[1] = boost::lexical_cast<double> (split_line[3]);
+      xyz[2] = boost::lexical_cast<double> (split_line[4]);
     }
     catch (boost::bad_lexical_cast &)
     {
@@ -80,7 +80,7 @@ pcl::MTLReader::fillRGBfromXYZ (const std::vector<std::string>& split_line,
     {
       try
       {
-        xyz[0] = xyz[1] = xyz[2] = boost::lexical_cast<float> (split_line[2]);
+        xyz[0] = xyz[1] = xyz[2] = boost::lexical_cast<double> (split_line[2]);
       }
       catch (boost::bad_lexical_cast &)
       {
@@ -102,9 +102,9 @@ pcl::MTLReader::fillRGBfromRGB (const std::vector<std::string>& split_line,
   {
     try
     {
-      rgb.r = boost::lexical_cast<float> (split_line[1]);
-      rgb.g = boost::lexical_cast<float> (split_line[2]);
-      rgb.b = boost::lexical_cast<float> (split_line[3]);
+      rgb.r = boost::lexical_cast<double> (split_line[1]);
+      rgb.g = boost::lexical_cast<double> (split_line[2]);
+      rgb.b = boost::lexical_cast<double> (split_line[3]);
     }
     catch (boost::bad_lexical_cast &)
     {
@@ -117,7 +117,7 @@ pcl::MTLReader::fillRGBfromRGB (const std::vector<std::string>& split_line,
     {
       try
       {
-        rgb.r = rgb.g = rgb.b = boost::lexical_cast<float> (split_line[1]);
+        rgb.r = rgb.g = rgb.b = boost::lexical_cast<double> (split_line[1]);
       }
       catch (boost::bad_lexical_cast &)
       {
@@ -279,7 +279,7 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
         {
           try
           {
-            materials_.back ().tex_d = boost::lexical_cast<float> (st[2]);
+            materials_.back ().tex_d = boost::lexical_cast<double> (st[2]);
           }
           catch (boost::bad_lexical_cast &)
           {
@@ -294,7 +294,7 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
         {
           try
           {
-            materials_.back ().tex_d = boost::lexical_cast<float> (st[1]);
+            materials_.back ().tex_d = boost::lexical_cast<double> (st[1]);
           }
           catch (boost::bad_lexical_cast &)
           {
@@ -312,7 +312,7 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
       {
         try
         {
-          materials_.back ().tex_d = boost::lexical_cast<float> (st[1]);
+          materials_.back ().tex_d = boost::lexical_cast<double> (st[1]);
         }
         catch (boost::bad_lexical_cast &)
         {
@@ -348,12 +348,12 @@ pcl::MTLReader::read (const std::string& mtl_file_path)
 
 int
 pcl::OBJReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                             int &file_version, int &data_type, unsigned int &data_idx,
                             const int offset)
 {
-  origin       = Eigen::Vector4f::Zero ();
-  orientation  = Eigen::Quaternionf::Identity ();
+  origin       = Eigen::Vector4d::Zero ();
+  orientation  = Eigen::Quaterniond::Identity ();
   file_version = 0;
   cloud.width  = cloud.height = cloud.point_step = cloud.row_step = 0;
   cloud.data.clear ();
@@ -506,14 +506,14 @@ int
 pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset)
 {
   int file_version;
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   return (read (file_name, cloud, origin, orientation, file_version, offset));
 }
 
 int
 pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &file_version, const int offset)
 {
   pcl::console::TicToc tt;
@@ -585,14 +585,14 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
         {
           for (int i = 1, f = 0; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&cloud.data[point_idx * cloud.point_step + cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++point_idx;
         }
-        catch (const boost::bad_lexical_cast &e)
+        catch (const boost::bad_lexical_cast &)
         {
           PCL_ERROR ("Unable to convert %s to vertex coordinates!", line.c_str ());
           return (-1);
@@ -607,14 +607,14 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
         {
           for (int i = 1, f = normal_x_field; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&cloud.data[normal_idx * cloud.point_step + cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++normal_idx;
         }
-        catch (const boost::bad_lexical_cast &e)
+        catch (const boost::bad_lexical_cast &)
         {
           PCL_ERROR ("Unable to convert line %s to vertex normal!", line.c_str ());
           return (-1);
@@ -642,14 +642,14 @@ int
 pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh, const int offset)
 {
   int file_version;
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   return (read (file_name, mesh, origin, orientation, file_version, offset));
 }
 
 int
 pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &file_version, const int offset)
 {
   pcl::console::TicToc tt;
@@ -692,7 +692,7 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
   std::size_t f_idx = 0;
   std::string line;
   std::vector<std::string> st;
-  std::vector<Eigen::Vector2f> coordinates;
+  std::vector<Eigen::Vector2d> coordinates;
   try
   {
     while (!fs.eof ())
@@ -719,14 +719,14 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
         {
           for (int i = 1, f = 0; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[v_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++v_idx;
         }
-        catch (const boost::bad_lexical_cast &e)
+        catch (const boost::bad_lexical_cast &)
         {
           PCL_ERROR ("Unable to convert %s to vertex coordinates!", line.c_str ());
           return (-1);
@@ -740,14 +740,14 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
         {
           for (int i = 1, f = normal_x_field; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[vn_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++vn_idx;
         }
-        catch (const boost::bad_lexical_cast &e)
+        catch (const boost::bad_lexical_cast &)
         {
           PCL_ERROR ("Unable to convert line %s to vertex normal!", line.c_str ());
           return (-1);
@@ -759,16 +759,16 @@ pcl::OBJReader::read (const std::string &file_name, pcl::TextureMesh &mesh,
       {
         try
         {
-          Eigen::Vector3f c (0, 0, 0);
+          Eigen::Vector3d c (0, 0, 0);
           for (std::size_t i = 1; i < st.size (); ++i)
-            c[i-1] = boost::lexical_cast<float> (st[i]);
+            c[i-1] = boost::lexical_cast<double> (st[i]);
           if (c[2] == 0)
-            coordinates.push_back (Eigen::Vector2f (c[0], c[1]));
+            coordinates.push_back (Eigen::Vector2d (c[0], c[1]));
           else
-            coordinates.push_back (Eigen::Vector2f (c[0]/c[2], c[1]/c[2]));
+            coordinates.push_back (Eigen::Vector2d (c[0]/c[2], c[1]/c[2]));
           ++vt_idx;
         }
-        catch (const boost::bad_lexical_cast &e)
+        catch (const boost::bad_lexical_cast &)
         {
           PCL_ERROR ("Unable to convert line %s to texture coordinates!", line.c_str ());
           return (-1);
@@ -833,14 +833,14 @@ int
 pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh, const int offset)
 {
   int file_version;
-  Eigen::Vector4f origin;
-  Eigen::Quaternionf orientation;
+  Eigen::Vector4d origin;
+  Eigen::Quaterniond orientation;
   return (read (file_name, mesh, origin, orientation, file_version, offset));
 }
 
 int
 pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
-                      Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                      Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                       int &file_version, const int offset)
 {
   pcl::console::TicToc tt;
@@ -908,14 +908,14 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
         {
           for (int i = 1, f = 0; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[v_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++v_idx;
         }
-        catch (const boost::bad_lexical_cast &e)
+        catch (const boost::bad_lexical_cast &)
         {
           PCL_ERROR ("Unable to convert %s to vertex coordinates!", line.c_str ());
           return (-1);
@@ -930,14 +930,14 @@ pcl::OBJReader::read (const std::string &file_name, pcl::PolygonMesh &mesh,
         {
           for (int i = 1, f = normal_x_field; i < 4; ++i, ++f)
           {
-            float value = boost::lexical_cast<float> (st[i]);
+            double value = boost::lexical_cast<double> (st[i]);
             memcpy (&mesh.cloud.data[vn_idx * mesh.cloud.point_step + mesh.cloud.fields[f].offset],
                 &value,
-                sizeof (float));
+                sizeof (double));
           }
           ++vn_idx;
         }
-        catch (const boost::bad_lexical_cast &e)
+        catch (const boost::bad_lexical_cast &)
         {
           PCL_ERROR ("Unable to convert line %s to vertex normal!", line.c_str ());
           return (-1);
@@ -1042,8 +1042,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
           fs << "v ";
           v_written = true;
         }
-        float value;
-        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -1083,8 +1083,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
           fs << "vn ";
           v_written = true;
     	  }
-        float value;
-        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &tex_mesh.cloud.data[i * point_size + tex_mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -1224,8 +1224,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
            // write vertices beginning with v
           fs << "v ";
 
-        float value;
-        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -1262,8 +1262,8 @@ pcl::io::saveOBJFile (const std::string &file_name,
             // write vertices beginning with vn
             fs << "vn ";
 
-          float value;
-          memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+          double value;
+          memcpy (&value, &mesh.cloud.data[i * point_size + mesh.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
           fs << value;
           if (++nxyz == 3)
             break;

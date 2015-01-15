@@ -118,7 +118,7 @@ pcl::Kmeans::computeCentroids()
     // if no point in the clusters, this goes to inf (correct!)
     for (i=0; i<num_dimensions_; i++)
     {
-      centroid[i] /= static_cast<float> (num_points_in_cluster);
+      centroid[i] /= static_cast<double> (num_points_in_cluster);
       //std::cout << centroid[i] << " ";
     }
     //std::cout << std::endl;
@@ -136,7 +136,7 @@ pcl::Kmeans::kMeans ()
   unsigned int num_iterations = 0;
   PointId pid;
   ClusterId cid, to_cluster;
-  float d, min;
+  double d, min;
 
   // Initial partition of points
   initialClusterPoints();
@@ -241,13 +241,13 @@ pcl::Kmeans::cluster (std::vector<PointIndices> &clusters)
     /*
     std::cout << "x index: " << x_index << std::endl;
     
-    float x = 0.0;
-    memcpy (&x, &input_->points[0] + fields[x_index].offset, sizeof(float));
+    double x = 0.0;
+    memcpy (&x, &input_->points[0] + fields[x_index].offset, sizeof(double));
     
     std::cout << "xxx: " << x << std::endl;
     */
 
-    //memcpy (&x, reinterpret_cast<float*> (&input_->points[0]) + x_index, sizeof (float));
+    //memcpy (&x, reinterpret_cast<double*> (&input_->points[0]) + x_index, sizeof (double));
     
 
     //int rgba_index = 1;

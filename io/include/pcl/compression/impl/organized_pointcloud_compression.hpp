@@ -72,11 +72,11 @@ namespace pcl
       uint32_t cloud_width = cloud_arg->width;
       uint32_t cloud_height = cloud_arg->height;
 
-      float maxDepth, focalLength, disparityShift, disparityScale;
+      double maxDepth, focalLength, disparityShift, disparityScale;
 
       // no disparity scaling/shifting required during decoding
-      disparityScale = 1.0f;
-      disparityShift = 0.0f;
+      disparityScale = 1.0;
+      disparityShift = 0.0;
 
       analyzeOrganizedCloud (cloud_arg, maxDepth, focalLength);
 
@@ -139,15 +139,15 @@ namespace pcl
       if (bShowStatistics_arg)
       {
         uint64_t pointCount = cloud_width * cloud_height;
-        float bytesPerPoint = static_cast<float> (compressedDisparitySize+compressedColorSize) / static_cast<float> (pointCount);
+        double bytesPerPoint = static_cast<double> (compressedDisparitySize+compressedColorSize) / static_cast<double> (pointCount);
 
         PCL_INFO("*** POINTCLOUD ENCODING ***\n");
         PCL_INFO("Number of encoded points: %ld\n", pointCount);
-        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<float> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0f);
-        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<float> (compressedDisparitySize+compressedColorSize) / 1024.0f);
-        PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<float> (bytesPerPoint));
-        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0f);
-        PCL_INFO("Compression ratio: %.2f\n\n", static_cast<float> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
+        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<double> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0);
+        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0);
+        PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<double> (bytesPerPoint));
+        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0);
+        PCL_INFO("Compression ratio: %.2f\n\n", static_cast<double> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
       }
 
       // flush output stream
@@ -165,11 +165,11 @@ namespace pcl
                                                                                   bool convertToMono,
                                                                                   bool bShowStatistics_arg,
                                                                                   int pngLevel_arg,
-                                                                                  float focalLength_arg,
-                                                                                  float disparityShift_arg,
-                                                                                  float disparityScale_arg)
+                                                                                  double focalLength_arg,
+                                                                                  double disparityShift_arg,
+                                                                                  double disparityScale_arg)
     {
-       float maxDepth = -1;
+       double maxDepth = -1;
 
        size_t cloud_size = width_arg*height_arg;
        assert (disparityMap_arg.size()==cloud_size);
@@ -234,9 +234,9 @@ namespace pcl
            // grayscale conversion
            for (i=0; i<size; ++i)
            {
-             uint8_t grayvalue = static_cast<uint8_t>(0.2989 * static_cast<float>(colorImage_arg[i*3+0]) +
-                                                      0.5870 * static_cast<float>(colorImage_arg[i*3+1]) +
-                                                      0.1140 * static_cast<float>(colorImage_arg[i*3+2]));
+             uint8_t grayvalue = static_cast<uint8_t>(0.2989 * static_cast<double>(colorImage_arg[i*3+0]) +
+                                                      0.5870 * static_cast<double>(colorImage_arg[i*3+1]) +
+                                                      0.1140 * static_cast<double>(colorImage_arg[i*3+2]));
              monoImage.push_back(grayvalue);
            }
            encodeMonoImageToPNG (monoImage, width_arg, height_arg, compressedColor, 1 /*Z_BEST_SPEED*/);
@@ -257,15 +257,15 @@ namespace pcl
        if (bShowStatistics_arg)
        {
          uint64_t pointCount = width_arg * height_arg;
-         float bytesPerPoint = static_cast<float> (compressedDisparitySize+compressedColorSize) / static_cast<float> (pointCount);
+         double bytesPerPoint = static_cast<double> (compressedDisparitySize+compressedColorSize) / static_cast<double> (pointCount);
 
          PCL_INFO("*** POINTCLOUD ENCODING ***\n");
          PCL_INFO("Number of encoded points: %ld\n", pointCount);
-         PCL_INFO("Size of uncompressed disparity map+color image: %.2f kBytes\n", (static_cast<float> (pointCount) * (sizeof(uint8_t)*3+sizeof(uint16_t))) / 1024.0f);
-         PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<float> (compressedDisparitySize+compressedColorSize) / 1024.0f);
-         PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<float> (bytesPerPoint));
-         PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (sizeof(uint8_t)*3+sizeof(uint16_t)) * 100.0f);
-         PCL_INFO("Compression ratio: %.2f\n\n", static_cast<float> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
+         PCL_INFO("Size of uncompressed disparity map+color image: %.2f kBytes\n", (static_cast<double> (pointCount) * (sizeof(uint8_t)*3+sizeof(uint16_t))) / 1024.0);
+         PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0);
+         PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<double> (bytesPerPoint));
+         PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (sizeof(uint8_t)*3+sizeof(uint16_t)) * 100.0);
+         PCL_INFO("Compression ratio: %.2f\n\n", static_cast<double> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
        }
 
        // flush output stream
@@ -280,10 +280,10 @@ namespace pcl
     {
       uint32_t cloud_width;
       uint32_t cloud_height;
-      float maxDepth;
-      float focalLength;
-      float disparityShift = 0.0f;
-      float disparityScale;
+      double maxDepth;
+      double focalLength;
+      double disparityShift = 0.0;
+      double disparityScale;
 
       // disparity and rgb image data
       std::vector<uint16_t> disparityData;
@@ -344,7 +344,7 @@ namespace pcl
         decodePNGToImage (compressedColor, colorData, png_width, png_height, png_channels);
       }
 
-      if (disparityShift==0.0f)
+      if (disparityShift==0.0)
       {
         // reconstruct point cloud
         OrganizedConversion<PointT>::convert (disparityData,
@@ -361,7 +361,7 @@ namespace pcl
 
         // we need to decode a raw shift image
         std::size_t size = disparityData.size();
-        std::vector<float> depthData;
+        std::vector<double> depthData;
         depthData.resize(size);
 
         // initialize shift-to-depth converter
@@ -385,15 +385,15 @@ namespace pcl
       if (bShowStatistics_arg)
       {
         uint64_t pointCount = cloud_width * cloud_height;
-        float bytesPerPoint = static_cast<float> (compressedDisparitySize+compressedColorSize) / static_cast<float> (pointCount);
+        double bytesPerPoint = static_cast<double> (compressedDisparitySize+compressedColorSize) / static_cast<double> (pointCount);
 
         PCL_INFO("*** POINTCLOUD DECODING ***\n");
         PCL_INFO("Number of encoded points: %ld\n", pointCount);
-        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<float> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0f);
-        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<float> (compressedDisparitySize+compressedColorSize) / 1024.0f);
-        PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<float> (bytesPerPoint));
-        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0f);
-        PCL_INFO("Compression ratio: %.2f\n\n", static_cast<float> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
+        PCL_INFO("Size of uncompressed point cloud: %.2f kBytes\n", (static_cast<double> (pointCount) * CompressionPointTraits<PointT>::bytesPerPoint) / 1024.0);
+        PCL_INFO("Size of compressed point cloud: %.2f kBytes\n", static_cast<double> (compressedDisparitySize+compressedColorSize) / 1024.0);
+        PCL_INFO("Total bytes per point: %.4f bytes\n", static_cast<double> (bytesPerPoint));
+        PCL_INFO("Total compression percentage: %.4f%%\n", (bytesPerPoint) / (CompressionPointTraits<PointT>::bytesPerPoint) * 100.0);
+        PCL_INFO("Compression ratio: %.2f\n\n", static_cast<double> (CompressionPointTraits<PointT>::bytesPerPoint) / bytesPerPoint);
       }
 
       return valid_stream;
@@ -402,14 +402,14 @@ namespace pcl
     //////////////////////////////////////////////////////////////////////////////////////////////
     template<typename PointT> void
     OrganizedPointCloudCompression<PointT>::analyzeOrganizedCloud (PointCloudConstPtr cloud_arg,
-                                                                   float& maxDepth_arg,
-                                                                   float& focalLength_arg) const
+                                                                   double& maxDepth_arg,
+                                                                   double& focalLength_arg) const
     {
       size_t width, height, it;
       int centerX, centerY;
       int x, y;
-      float maxDepth;
-      float focalLength;
+      double maxDepth;
+      double focalLength;
 
       width = cloud_arg->width;
       height = cloud_arg->height;
@@ -439,7 +439,7 @@ namespace pcl
               maxDepth = point.z;
 
               // Calculate focal length
-              focalLength = 2.0f / (point.x / (static_cast<float> (x) * point.z) + point.y / (static_cast<float> (y) * point.z));
+              focalLength = 2.0 / (point.x / (static_cast<double> (x) * point.z) + point.y / (static_cast<double> (y) * point.z));
             }
           }
         }

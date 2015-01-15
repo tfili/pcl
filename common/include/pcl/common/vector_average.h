@@ -108,9 +108,9 @@ namespace pcl
         Eigen::Matrix<real, dimension, dimension> covariance_;
   };
 
-  typedef VectorAverage<float, 2> VectorAverage2f;
-  typedef VectorAverage<float, 3> VectorAverage3f;
-  typedef VectorAverage<float, 4> VectorAverage4f;
+  typedef VectorAverage<double, 2> VectorAverage2f;
+  typedef VectorAverage<double, 3> VectorAverage3f;
+  typedef VectorAverage<double, 4> VectorAverage4f;
 }  // END namespace
 
 #include <pcl/common/impl/vector_average.hpp>

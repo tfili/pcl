@@ -36,9 +36,9 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
 
   typedef typename pcl::traits::fieldList<PointInT>::type FieldListM;
 
-  float rgb_m;
+  double rgb_m;
   bool exists_m;
-  pcl::for_each_type < FieldListM > (pcl::CopyIfFieldExists<PointInT, float> (scene_vis->points[0], "rgb", exists_m, rgb_m));
+  pcl::for_each_type < FieldListM > (pcl::CopyIfFieldExists<PointInT, double> (scene_vis->points[0], "rgb", exists_m, rgb_m));
 
   std::cout << "Color exists:" << static_cast<int> (exists_m) << std::endl;
   if (exists_m)
@@ -82,7 +82,7 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
 
   vis.addCoordinateSystem (0.1, "global");
 
-  std::vector<Eigen::VectorXf> heads;
+  std::vector<Eigen::VectorXd> heads;
   fdrf.getDetectedFaces (heads);
   face_detection_apps_utils::displayHeads (heads, vis);
 
@@ -92,14 +92,14 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
     std::string pose_file (filename);
     boost::replace_all (pose_file, ".pcd", "_pose.txt");
 
-    Eigen::Matrix4f pose_mat;
+    Eigen::Matrix4d pose_mat;
     pose_mat.setIdentity (4, 4);
     bool result = face_detection_apps_utils::readMatrixFromFile (pose_file, pose_mat);
 
     if (result)
     {
-      Eigen::Vector3f ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
-      Eigen::Vector3f trans_vector = Eigen::Vector3f (pose_mat (0, 3), pose_mat (1, 3), pose_mat (2, 3));
+      Eigen::Vector3d ea = pose_mat.block<3, 3> (0, 0).eulerAngles (0, 1, 2);
+      Eigen::Vector3d trans_vector = Eigen::Vector3d (pose_mat (0, 3), pose_mat (1, 3), pose_mat (2, 3));
       std::cout << ea << std::endl;
       std::cout << trans_vector << std::endl;
 
@@ -119,11 +119,11 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
       cylinder_coeff.values[4] = ea[1];
       cylinder_coeff.values[5] = ea[2];
 
-      Eigen::Vector3f vec = Eigen::Vector3f::UnitZ () * -1.f;
-      Eigen::Matrix3f matrixxx;
+      Eigen::Vector3d vec = Eigen::Vector3d::UnitZ () * -1.;
+      Eigen::Matrix3d matrixxx;
 
-      matrixxx = Eigen::AngleAxisf (ea[0], Eigen::Vector3f::UnitX ()) * Eigen::AngleAxisf (ea[1], Eigen::Vector3f::UnitY ())
-          * Eigen::AngleAxisf (ea[2], Eigen::Vector3f::UnitZ ());
+      matrixxx = Eigen::AngleAxisd (ea[0], Eigen::Vector3d::UnitX ()) * Eigen::AngleAxisd (ea[1], Eigen::Vector3d::UnitY ())
+          * Eigen::AngleAxisd (ea[2], Eigen::Vector3d::UnitZ ());
 
       //matrixxx = pose_mat.block<3,3>(0,0);
       vec = matrixxx * vec;
@@ -132,7 +132,7 @@ void run(pcl::RFFaceDetectorTrainer & fdrf, typename pcl::PointCloud<PointInT>::
       cylinder_coeff.values[4] = vec[1];
       cylinder_coeff.values[5] = vec[2];
 
-      cylinder_coeff.values[6] = 0.01f;
+      cylinder_coeff.values[6] = 0.01;
       vis.addCylinder (cylinder_coeff, "cylinder");
     }
   }
@@ -156,9 +156,9 @@ int main(int argc, char ** argv)
   int STRIDE_SW = 5;
   std::string forest_fn = "forest.txt";
   int use_normals = 0;
-  float trans_max_variance = 800.f;
+  double trans_max_variance = 800.;
   int min_votes_size = 400;
-  float face_threshold = 0.95f;
+  double face_threshold = 0.95;
   int heat_map = 1;
   int show_votes = 0;
   std::string test_directory;

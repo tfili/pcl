@@ -61,9 +61,9 @@ FittingSurfaceIM::computeMean () const
     if (pcl_isnan (point.x) || pcl_isnan (point.y) || pcl_isnan (point.z))
       continue;
 
-    u.x += point.x * float (ds);
-    u.y += point.y * float (ds);
-    u.z += point.z * float (ds);
+    u.x += point.x * double (ds);
+    u.y += point.y * double (ds);
+    u.z += point.z * double (ds);
   }
 
   return u;
@@ -116,7 +116,7 @@ FittingSurfaceIM::setCamera (const Eigen::Matrix3d &i)
 }
 
 void
-FittingSurfaceIM::setCamera (const Eigen::Matrix3f &i)
+FittingSurfaceIM::setCamera (const Eigen::Matrix3d &i)
 {
   printf("[FittingSurfaceIM::setCamera] Warning, this function is not tested!\n");
   m_intrinsic << i (0, 0), i (0, 1), i (0, 2), i (1, 0), i (1, 1), i (1, 2), i (2, 0), i (2, 1), i (2, 2);

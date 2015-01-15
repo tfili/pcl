@@ -50,7 +50,7 @@ pcl::NormalEstimation<PointInT, PointOutT>::computeFeature (PointCloudOut &outpu
   // Allocate enough space to hold the results
   // \note This resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices (k_);
-  std::vector<float> nn_dists (k_);
+  std::vector<double> nn_dists (k_);
 
   output.is_dense = true;
   // Save a few cycles by not checking every point for NaN/Inf values if the cloud is set to dense
@@ -61,7 +61,7 @@ pcl::NormalEstimation<PointInT, PointOutT>::computeFeature (PointCloudOut &outpu
     {
       if (this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
-        output.points[idx].normal[0] = output.points[idx].normal[1] = output.points[idx].normal[2] = output.points[idx].curvature = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].normal[0] = output.points[idx].normal[1] = output.points[idx].normal[2] = output.points[idx].curvature = std::numeric_limits<double>::quiet_NaN ();
 
         output.is_dense = false;
         continue;
@@ -83,7 +83,7 @@ pcl::NormalEstimation<PointInT, PointOutT>::computeFeature (PointCloudOut &outpu
       if (!isFinite ((*input_)[(*indices_)[idx]]) ||
           this->searchForNeighbors ((*indices_)[idx], search_parameter_, nn_indices, nn_dists) == 0)
       {
-        output.points[idx].normal[0] = output.points[idx].normal[1] = output.points[idx].normal[2] = output.points[idx].curvature = std::numeric_limits<float>::quiet_NaN ();
+        output.points[idx].normal[0] = output.points[idx].normal[1] = output.points[idx].normal[2] = output.points[idx].curvature = std::numeric_limits<double>::quiet_NaN ();
 
         output.is_dense = false;
         continue;

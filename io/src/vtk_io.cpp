@@ -63,7 +63,7 @@ pcl::io::saveVTKFile (const std::string &file_name,
   unsigned int point_size = static_cast<unsigned int> (triangles.cloud.data.size () / nr_points);
 
   // Write the header information
-  fs << "# vtk DataFile Version 3.0\nvtk output\nASCII\nDATASET POLYDATA\nPOINTS " << nr_points << " float" << std::endl;
+  fs << "# vtk DataFile Version 3.0\nvtk output\nASCII\nDATASET POLYDATA\nPOINTS " << nr_points << " double" << std::endl;
 
   // Iterate through the points
   for (unsigned int i = 0; i < nr_points; ++i)
@@ -80,8 +80,8 @@ pcl::io::saveVTKFile (const std::string &file_name,
            triangles.cloud.fields[d].name == "y" || 
            triangles.cloud.fields[d].name == "z"))
       {
-        float value;
-        memcpy (&value, &triangles.cloud.data[i * point_size + triangles.cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &triangles.cloud.data[i * point_size + triangles.cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -131,11 +131,11 @@ pcl::io::saveVTKFile (const std::string &file_name,
       if (triangles.cloud.fields[field_index].datatype == pcl::PCLPointField::FLOAT32)
       {
         pcl::RGB color;
-        memcpy (&color, &triangles.cloud.data[i * point_size + triangles.cloud.fields[field_index].offset + c * sizeof (float)], sizeof (RGB));
+        memcpy (&color, &triangles.cloud.data[i * point_size + triangles.cloud.fields[field_index].offset + c * sizeof (double)], sizeof (RGB));
         int r = color.r;
         int g = color.g;
         int b = color.b;
-        fs << static_cast<float> (r) / 255.0f << " " << static_cast<float> (g) / 255.0f << " " << static_cast<float> (b) / 255.0f;
+        fs << static_cast<double> (r) / 255.0 << " " << static_cast<double> (g) / 255.0 << " " << static_cast<double> (b) / 255.0;
       }
       fs << std::endl;
     }
@@ -166,7 +166,7 @@ pcl::io::saveVTKFile (const std::string &file_name,
   unsigned int point_size = static_cast<unsigned int> (cloud.data.size () / nr_points);
 
   // Write the header information
-  fs << "# vtk DataFile Version 3.0\nvtk output\nASCII\nDATASET POLYDATA\nPOINTS " << nr_points << " float" << std::endl;
+  fs << "# vtk DataFile Version 3.0\nvtk output\nASCII\nDATASET POLYDATA\nPOINTS " << nr_points << " double" << std::endl;
 
   // Iterate through the points
   for (unsigned int i = 0; i < nr_points; ++i)
@@ -183,8 +183,8 @@ pcl::io::saveVTKFile (const std::string &file_name,
            cloud.fields[d].name == "y" || 
            cloud.fields[d].name == "z"))
       {
-        float value;
-        memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (float)], sizeof (float));
+        double value;
+        memcpy (&value, &cloud.data[i * point_size + cloud.fields[d].offset + c * sizeof (double)], sizeof (double));
         fs << value;
         if (++xyz == 3)
           break;
@@ -218,11 +218,11 @@ pcl::io::saveVTKFile (const std::string &file_name,
       if (cloud.fields[field_index].datatype == pcl::PCLPointField::FLOAT32)
       {
         pcl::RGB color;
-        memcpy (&color, &cloud.data[i * point_size + cloud.fields[field_index].offset + c * sizeof (float)], sizeof (RGB));
+        memcpy (&color, &cloud.data[i * point_size + cloud.fields[field_index].offset + c * sizeof (double)], sizeof (RGB));
         int r = color.r;
         int g = color.g;
         int b = color.b;
-        fs << static_cast<float> (r) / 255.0f << " " << static_cast<float> (g) / 255.0f << " " << static_cast<float> (b) / 255.0f;
+        fs << static_cast<double> (r) / 255.0 << " " << static_cast<double> (g) / 255.0 << " " << static_cast<double> (b) / 255.0;
       }
       fs << std::endl;
     }

@@ -57,7 +57,7 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionMedianDistance)
   for (int i = 0; i <= 10; ++i)
   {
     pcl::Correspondence c;
-    c.distance = static_cast<float> (i * i);
+    c.distance = static_cast<double> (i * i);
     corresps->push_back (c);
   }
 
@@ -70,7 +70,7 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionMedianDistance)
 
   EXPECT_EQ (corresps_filtered.size (), 8);
   for (int i = 0; i < 8; ++i)
-    EXPECT_NEAR (corresps_filtered[i].distance, static_cast<float> (i * i), 1e-5);
+    EXPECT_NEAR (corresps_filtered[i].distance, static_cast<double> (i * i), 1e-5);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,8 +92,8 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
   
   // Transform the target
   pcl::PointCloud<pcl::PointXYZ> target;
-  Eigen::Vector3f t(0.1f, 0.2f, 0.3f);
-  Eigen::Quaternionf q (float (std::cos (0.5*M_PI_4)), 0.0f, 0.0f, float (std::sin (0.5*M_PI_4)));
+  Eigen::Vector3d t(0.1, 0.2f, 0.3f);
+  Eigen::Quaterniond q (double (std::cos (0.5*M_PI_4)), 0.0, 0.0, double (std::sin (0.5*M_PI_4)));
   pcl::transformPointCloud (cloud, target, t, q);
   
   // Noisify the target with a known seed and N(0, 0.005) using deterministic sampling
@@ -103,9 +103,9 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
   boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_nor (rng, nd);
   for (pcl::PointCloud<pcl::PointXYZ>::iterator it = target.begin (); it != target.end (); ++it)
   {
-    it->x += static_cast<float> (var_nor ());
-    it->y += static_cast<float> (var_nor ());
-    it->z += static_cast<float> (var_nor ());
+    it->x += static_cast<double> (var_nor ());
+    it->y += static_cast<double> (var_nor ());
+    it->z += static_cast<double> (var_nor ());
   }
   
   // Ensure deterministic sampling inside the rejector
@@ -115,7 +115,7 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
   pcl::registration::CorrespondenceRejectorPoly<pcl::PointXYZ, pcl::PointXYZ> reject;
   reject.setIterations (10000);
   reject.setCardinality (3);
-  reject.setSimilarityThreshold (0.75f);
+  reject.setSimilarityThreshold (0.75);
   reject.setInputSource (cloud.makeShared ());
   reject.setInputTarget (target.makeShared ());
   
@@ -124,15 +124,15 @@ TEST (CorrespondenceRejectors, CorrespondenceRejectionPoly)
   reject.getRemainingCorrespondences (corr, result);
   
   // Ground truth fraction of inliers and estimated fraction of inliers
-  const float ground_truth_frac = float (size-last) / float (size);
-  const float accepted_frac = float (result.size()) / float (size);
+  const double ground_truth_frac = double (size-last) / double (size);
+  const double accepted_frac = double (result.size()) / double (size);
 
   /*
    * Test criterion 1: verify that the method accepts at least 25 % of the input correspondences,
    * but not too many
    */
   EXPECT_GE(accepted_frac, ground_truth_frac);
-  EXPECT_LE(accepted_frac, 1.5f*ground_truth_frac);
+  EXPECT_LE(accepted_frac, 1.5*ground_truth_frac);
   
   /*
    * Test criterion 2: expect high precision/recall. The true positives are the unscrambled correspondences

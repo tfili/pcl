@@ -60,10 +60,10 @@ namespace pcl
     struct PoseMeasurement
     {
       VertexT v_start, v_end;
-      Eigen::Matrix4f relative_transformation;
+      Eigen::Matrix4d relative_transformation;
       InformationT information_matrix;
 
-      PoseMeasurement (const VertexT& v_s, const VertexT& v_e, const Eigen::Matrix4f& tr, const InformationT& mtx)
+      PoseMeasurement (const VertexT& v_s, const VertexT& v_e, const Eigen::Matrix4d& tr, const InformationT& mtx)
         : v_start (v_s), v_end (v_e), relative_transformation (tr), information_matrix (mtx) {}
     };
   }

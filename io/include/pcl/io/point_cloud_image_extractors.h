@@ -154,12 +154,12 @@ namespace pcl
         PointCloudImageExtractorWithScaling (const std::string& field_name, const ScalingMethod scaling_method)
           : field_name_ (field_name)
           , scaling_method_ (scaling_method)
-          , scaling_factor_ (1.0f)
+          , scaling_factor_ (1.0)
         {
         }
 
         /** \brief Constructor. */
-        PointCloudImageExtractorWithScaling (const std::string& field_name, const float scaling_factor)
+        PointCloudImageExtractorWithScaling (const std::string& field_name, const double scaling_factor)
           : field_name_ (field_name)
           , scaling_method_ (SCALING_FIXED_FACTOR)
           , scaling_factor_ (scaling_factor)
@@ -178,7 +178,7 @@ namespace pcl
 
         /** \brief Set fixed scaling factor. */
         inline void
-        setScalingFactor (const float scaling_factor)
+        setScalingFactor (const double scaling_factor)
         {
           scaling_factor_ = scaling_factor;
         }
@@ -190,7 +190,7 @@ namespace pcl
 
         std::string field_name_;
         ScalingMethod scaling_method_;
-        float scaling_factor_;
+        double scaling_factor_;
     };
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -325,7 +325,7 @@ namespace pcl
         /** \brief Constructor.
           * \param[in] scaling_factor a scaling factor to apply to each depth value (default 10000)
           */
-        PointCloudImageExtractorFromZField (const float scaling_factor = 10000)
+        PointCloudImageExtractorFromZField (const double scaling_factor = 10000)
           : PointCloudImageExtractorWithScaling<PointT> ("z", scaling_factor)
         {
         }
@@ -375,7 +375,7 @@ namespace pcl
         /** \brief Constructor.
           * \param[in] scaling_factor a scaling factor to apply to each curvature value
           */
-        PointCloudImageExtractorFromCurvatureField (const float scaling_factor)
+        PointCloudImageExtractorFromCurvatureField (const double scaling_factor)
           : PointCloudImageExtractorWithScaling<PointT> ("curvature", scaling_factor)
         {
         }
@@ -417,7 +417,7 @@ namespace pcl
         /** \brief Constructor.
           * \param[in] scaling_factor a scaling factor to apply to each intensity value
           */
-        PointCloudImageExtractorFromIntensityField (const float scaling_factor)
+        PointCloudImageExtractorFromIntensityField (const double scaling_factor)
           : PointCloudImageExtractorWithScaling<PointT> ("intensity", scaling_factor)
         {
         }

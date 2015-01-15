@@ -124,7 +124,7 @@ class OpenNIIntegralImageNormalEstimation
       if (new_cloud_)
       {
         viz.removePointCloud ("normalcloud");
-        viz.addPointCloudNormals<PointType, pcl::Normal> (temp_cloud, temp_normals, 100, 0.05f, "normalcloud");
+        viz.addPointCloudNormals<PointType, pcl::Normal> (temp_cloud, temp_normals, 100, 0.05, "normalcloud");
         new_cloud_ = false;
       }
     }

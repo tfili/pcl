@@ -56,7 +56,7 @@ namespace pcl
   template <typename PointT> void 
   extractLabeledEuclideanClusters (
       const PointCloud<PointT> &cloud, const boost::shared_ptr<search::Search<PointT> > &tree, 
-      float tolerance, std::vector<std::vector<PointIndices> > &labeled_clusters, 
+      double tolerance, std::vector<std::vector<PointIndices> > &labeled_clusters, 
       unsigned int min_pts_per_cluster = 1, unsigned int max_pts_per_cluster = std::numeric_limits<unsigned int>::max (), 
       unsigned int max_label = std::numeric_limits<unsigned int>::max ());
 

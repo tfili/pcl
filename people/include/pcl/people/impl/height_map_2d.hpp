@@ -52,7 +52,7 @@ pcl::people::HeightMap2D<PointT>::HeightMap2D ()
   bin_size_ = 0.06;
 
   // set flag values for mandatory parameters:
-  sqrt_ground_coeffs_ = std::numeric_limits<float>::quiet_NaN();
+  sqrt_ground_coeffs_ = std::numeric_limits<double>::quiet_NaN();
 }
 
 template <typename PointT> void
@@ -97,8 +97,8 @@ pcl::people::HeightMap2D<PointT>::compute (pcl::people::PersonCluster<PointT>& c
       std::cout << "Error: out of array - " << index << " of " << buckets_.size() << std::endl;
     else
     {
-      Eigen::Vector4f new_point(p->x, p->y, p->z, 1.0f);      // select point from cluster
-      float heightp = std::fabs(new_point.dot(ground_coeffs_)); // compute point height from the groundplane
+      Eigen::Vector4d new_point(p->x, p->y, p->z, 1.0);      // select point from cluster
+      double heightp = std::fabs(new_point.dot(ground_coeffs_)); // compute point height from the groundplane
       heightp /= sqrt_ground_coeffs_;
       if ((heightp * 60) > buckets_[index])   // compare the height of the new point with the existing one
       {
@@ -122,7 +122,7 @@ pcl::people::HeightMap2D<PointT>::searchLocalMaxima ()
   maxima_number_ = 0;
   int left = buckets_[0];         // current left element
   int right = 0;              // current right element
-  float offset = 0;           // used to center the maximum to the right place
+  double offset = 0;           // used to center the maximum to the right place
   maxima_indices_.resize(size_t(buckets_.size()), 0);
   maxima_cloud_indices_.resize(size_t(buckets_.size()), 0);
 
@@ -211,19 +211,19 @@ pcl::people::HeightMap2D<PointT>::filterMaxima ()
     for (int i = 0; i < maxima_number_; i++)
     {
       bool good_maximum = true;
-      float distance = 0;
+      double distance = 0;
 
       PointT* p_current = &cloud_->points[maxima_cloud_indices_[i]];  // pointcloud point referring to the current maximum
-      Eigen::Vector3f p_current_eigen(p_current->x, p_current->y, p_current->z);  // conversion to eigen
-      float t = p_current_eigen.dot(ground_coeffs_.head(3)) / std::pow(sqrt_ground_coeffs_, 2); // height from the ground
+      Eigen::Vector3d p_current_eigen(p_current->x, p_current->y, p_current->z);  // conversion to eigen
+      double t = p_current_eigen.dot(ground_coeffs_.head(3)) / std::pow(sqrt_ground_coeffs_, 2); // height from the ground
       p_current_eigen = p_current_eigen - ground_coeffs_.head(3) * t;       // projection of the point on the groundplane
 
       int j = i-1;
       while ((j >= 0) && (good_maximum))
       {
         PointT* p_previous = &cloud_->points[maxima_cloud_indices_[j]];         // pointcloud point referring to an already validated maximum
-        Eigen::Vector3f p_previous_eigen(p_previous->x, p_previous->y, p_previous->z);  // conversion to eigen
-        float t = p_previous_eigen.dot(ground_coeffs_.head(3)) / std::pow(sqrt_ground_coeffs_, 2); // height from the ground
+        Eigen::Vector3d p_previous_eigen(p_previous->x, p_previous->y, p_previous->z);  // conversion to eigen
+        double t = p_previous_eigen.dot(ground_coeffs_.head(3)) / std::pow(sqrt_ground_coeffs_, 2); // height from the ground
         p_previous_eigen = p_previous_eigen - ground_coeffs_.head(3) * t;         // projection of the point on the groundplane
 
         // distance of the projection of the points on the groundplane:
@@ -251,20 +251,20 @@ pcl::people::HeightMap2D<PointT>::setInputCloud (PointCloudPtr& cloud)
 }
 
 template <typename PointT>
-void pcl::people::HeightMap2D<PointT>::setGround(Eigen::VectorXf& ground_coeffs)
+void pcl::people::HeightMap2D<PointT>::setGround(Eigen::VectorXd& ground_coeffs)
 {
   ground_coeffs_ = ground_coeffs;
-  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4f(0.0f, 0.0f, 0.0f, ground_coeffs(3))).norm();
+  sqrt_ground_coeffs_ = (ground_coeffs - Eigen::Vector4d(0.0, 0.0, 0.0, ground_coeffs(3))).norm();
 }
 
 template <typename PointT> void
-pcl::people::HeightMap2D<PointT>::setBinSize (float bin_size)
+pcl::people::HeightMap2D<PointT>::setBinSize (double bin_size)
 {
   bin_size_ = bin_size;
 }
 
 template <typename PointT> void
-pcl::people::HeightMap2D<PointT>::setMinimumDistanceBetweenMaxima (float minimum_distance_between_maxima)
+pcl::people::HeightMap2D<PointT>::setMinimumDistanceBetweenMaxima (double minimum_distance_between_maxima)
 {
   min_dist_between_maxima_ = minimum_distance_between_maxima;
 }
@@ -281,13 +281,13 @@ pcl::people::HeightMap2D<PointT>::getHeightMap ()
   return (buckets_);
 }
 
-template <typename PointT> float
+template <typename PointT> double
 pcl::people::HeightMap2D<PointT>::getBinSize ()
 {
   return (bin_size_);
 }
 
-template <typename PointT> float
+template <typename PointT> double
 pcl::people::HeightMap2D<PointT>::getMinimumDistanceBetweenMaxima ()
 {
   return (min_dist_between_maxima_);

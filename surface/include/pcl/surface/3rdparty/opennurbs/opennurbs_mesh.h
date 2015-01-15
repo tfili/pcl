@@ -188,7 +188,7 @@ public:
                              //          "T" joints along seams between faces.
 
   bool m_bDoublePrecision;   // false - (default) the mesh vertices will be 
-                             //         float precision values in the m_V[] array.
+                             //         double precision values in the m_V[] array.
                              // true -  The mesh vertices will be double precision
                              //         values in the DoublePrecisionVertices()
                              //         array.  Float precision values will also
@@ -502,7 +502,7 @@ public:
     Compute the face normal
   Parameters:
     dV - [in] double precision vertex array for the mesh
-    fV - [in] float precision vertex array for the mesh
+    fV - [in] double precision vertex array for the mesh
     FN - [out] face normal
   Returns:
     true if FN is valid.
@@ -2170,7 +2170,7 @@ public:
   Description:
     Get single precision vertices.
   Returns:
-    Array of float precision vertices.  If you modify the
+    Array of double precision vertices.  If you modify the
     values in this array, you must make the same modifications
     to the double precision vertices, or call 
     UpdateSinglePrecisonVertices().
@@ -2375,10 +2375,10 @@ private:
 
 protected:
   // The bounding boxes are valid if m_?box[0][0] <= m_?box[0][1];
-  float m_vbox[2][3]; // 3d bounding box of all referenced vertices
-  float m_nbox[2][3]; // 3d bounding box of all referenced unit normals 
+  double m_vbox[2][3]; // 3d bounding box of all referenced vertices
+  double m_nbox[2][3]; // 3d bounding box of all referenced unit normals 
                       // (for estimation of Gauss map bounds)
-  float m_tbox[2][2]; // 2d bounding box of all referenced texture coordinates
+  double m_tbox[2][2]; // 2d bounding box of all referenced texture coordinates
   ON_MeshCurvatureStats* m_kstat[4]; // gaussian,mean,min,max,sectionx,sectiony,sectionz
 
   // sub-mesh information rendering large meshes

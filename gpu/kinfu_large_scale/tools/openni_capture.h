@@ -71,8 +71,8 @@ namespace pcl
       bool grab (PtrStepSz<const unsigned short>& depth, PtrStepSz<const RGB>& rgb24);
 
       //parameters taken from camera/oni
-      float depth_focal_length_VGA;
-      float baseline;         // mm
+      double depth_focal_length_VGA;
+      double baseline;         // mm
       int shadow_value;
       int no_sample_value;
       double pixelSize;         //mm

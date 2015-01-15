@@ -280,20 +280,20 @@ namespace pcl
           points->SetDataTypeToFloat ();
           points->SetNumberOfPoints (cloud_->points.size ());
 
-          float data;
+          double data;
           // Add all points
           double p[3];
           for (vtkIdType i = 0; i < static_cast<vtkIdType> (cloud_->points.size ()); ++i)
           {
             // Copy the value at the specified field
             const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&cloud_->points[i]);
-            memcpy (&data, pt_data + fields_[field_x_idx_].offset, sizeof (float));
+            memcpy (&data, pt_data + fields_[field_x_idx_].offset, sizeof (double));
             p[0] = data;
 
-            memcpy (&data, pt_data + fields_[field_y_idx_].offset, sizeof (float));
+            memcpy (&data, pt_data + fields_[field_y_idx_].offset, sizeof (double));
             p[1] = data;
 
-            memcpy (&data, pt_data + fields_[field_z_idx_].offset, sizeof (float));
+            memcpy (&data, pt_data + fields_[field_z_idx_].offset, sizeof (double));
             p[2] = data;
 
             points->SetPoint (i, p);
@@ -330,7 +330,7 @@ namespace pcl
         typedef boost::shared_ptr<const PointCloudGeometryHandler<PointCloud> > ConstPtr;
 
         /** \brief Constructor. */
-        PointCloudGeometryHandler (const PointCloudConstPtr &cloud, const Eigen::Vector4f & = Eigen::Vector4f::Zero ())
+        PointCloudGeometryHandler (const PointCloudConstPtr &cloud, const Eigen::Vector4d & = Eigen::Vector4d::Zero ())
           : cloud_ (cloud)
           , capable_ (false)
           , field_x_idx_ (-1)

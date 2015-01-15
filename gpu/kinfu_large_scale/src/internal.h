@@ -112,7 +112,7 @@ namespace pcl
         * \param[in] max_distance truncation threshold, values that are higher than the threshold are reset to zero (means not measurement)
         */
       void 
-      truncateDepth(DepthMap& depth, float max_distance);
+      truncateDepth(DepthMap& depth, double max_distance);
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       //   ICP 
@@ -131,7 +131,7 @@ namespace pcl
         */
       void 
       findCoresp (const MapArr& vmap_g_curr, const MapArr& nmap_g_curr, const Mat33& Rprev_inv, const float3& tprev, const Intr& intr, 
-                  const MapArr& vmap_g_prev, const MapArr& nmap_g_prev, float distThres, float angleThres, PtrStepSz<short2> coresp);
+                  const MapArr& vmap_g_prev, const MapArr& nmap_g_prev, double distThres, double angleThres, PtrStepSz<short2> coresp);
 
       /** \brief (now it's exra code) Computation Ax=b for ICP iteration
         * \param[in] v_dst destination vertex map (previous frame cloud)
@@ -145,7 +145,7 @@ namespace pcl
         */
       void 
       estimateTransform (const MapArr& v_dst, const MapArr& n_dst, const MapArr& v_src, const PtrStepSz<short2>& coresp,
-                        DeviceArray2D<float>& gbuf, DeviceArray<float>& mbuf, float* matrixA_host, float* vectorB_host);
+                        DeviceArray2D<double>& gbuf, DeviceArray<double>& mbuf, double* matrixA_host, double* vectorB_host);
 
 
       /** \brief Computation Ax=b for ICP iteration
@@ -167,8 +167,8 @@ namespace pcl
         */
       void 
       estimateCombined (const Mat33& Rcurr, const float3& tcurr, const MapArr& vmap_curr, const MapArr& nmap_curr, const Mat33& Rprev_inv, const float3& tprev, const Intr& intr, 
-                        const MapArr& vmap_g_prev, const MapArr& nmap_g_prev, float distThres, float angleThres, 
-                        DeviceArray2D<float>& gbuf, DeviceArray<float>& mbuf, float* matrixA_host, float* vectorB_host);
+                        const MapArr& vmap_g_prev, const MapArr& nmap_g_prev, double distThres, double angleThres, 
+                        DeviceArray2D<double>& gbuf, DeviceArray<double>& mbuf, double* matrixA_host, double* vectorB_host);
     
       /** \brief Computation Ax=b for ICP iteration
         * \param[in] Rcurr Rotation of current camera pose guess 
@@ -189,7 +189,7 @@ namespace pcl
         */
       void
       estimateCombined (const Mat33& Rcurr, const float3& tcurr, const MapArr& vmap_curr, const MapArr& nmap_curr, const Mat33& Rprev_inv, const float3& tprev, const Intr& intr,
-                        const MapArr& vmap_g_prev, const MapArr& nmap_g_prev, float distThres, float angleThres,
+                        const MapArr& vmap_g_prev, const MapArr& nmap_g_prev, double distThres, double angleThres,
                         DeviceArray2D<double>& gbuf, DeviceArray<double>& mbuf, double* matrixA_host, double* vectorB_host);
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,7 +213,7 @@ namespace pcl
         */
       void 
       integrateTsdfVolume (const PtrStepSz<ushort>& depth_raw, const Intr& intr, const float3& volume_size, 
-                          const Mat33& Rcurr_inv, const float3& tcurr, float tranc_dist, PtrStep<short2> volume);
+                          const Mat33& Rcurr_inv, const float3& tcurr, double tranc_dist, PtrStep<short2> volume);
 
       //second version
       /** \brief Function that integrates volume if volume element contains: 2 bytes for round(tsdf*SHORT_MAX) and 2 bytes for integer weight.
@@ -229,7 +229,7 @@ namespace pcl
         */
       PCL_EXPORTS void 
       integrateTsdfVolume (const PtrStepSz<ushort>& depth, const Intr& intr, const float3& volume_size, 
-                          const Mat33& Rcurr_inv, const float3& tcurr, float tranc_dist, PtrStep<short2> volume, const pcl::gpu::kinfuLS::tsdf_buffer* buffer, DeviceArray2D<float>& depthScaled);
+                          const Mat33& Rcurr_inv, const float3& tcurr, double tranc_dist, PtrStep<short2> volume, const pcl::gpu::kinfuLS::tsdf_buffer* buffer, DeviceArray2D<double>& depthScaled);
       
       /** \brief Function that clears the TSDF values. The clearing takes place from the origin (in indices) to an offset in X,Y,Z values accordingly
         * \param[in] volume Pointer to TSDF volume in GPU
@@ -259,7 +259,7 @@ namespace pcl
         * \param[in] max_weight max weight for running color average. Zero means not average, one means average with prev value, etc.
         */    
       void 
-      updateColorVolume(const Intr& intr, float tranc_dist, const Mat33& R_inv, const float3& t, const MapArr& vmap, 
+      updateColorVolume(const Intr& intr, double tranc_dist, const Mat33& R_inv, const float3& t, const MapArr& vmap, 
               const PtrStepSz<uchar3>& colors, const float3& volume_size, PtrStep<uchar4> color_volume, int max_weight = 1);
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -276,7 +276,7 @@ namespace pcl
         * \param[out] nmap output normals map
         */
       void 
-      raycast (const Intr& intr, const Mat33& Rcurr, const float3& tcurr, float tranc_dist, const float3& volume_size, 
+      raycast (const Intr& intr, const Mat33& Rcurr, const float3& tcurr, double tranc_dist, const float3& volume_size, 
               const PtrStep<short2>& volume, const pcl::gpu::kinfuLS::tsdf_buffer* buffer, MapArr& vmap, MapArr& nmap);
 
       /** \brief Renders 3D image of the scene
@@ -304,7 +304,7 @@ namespace pcl
         * \param[in] colors_weight weight for colors   
         */
       void 
-      paint3DView(const PtrStep<uchar3>& colors, PtrStepSz<uchar3> dst, float colors_weight = 0.5f);
+      paint3DView(const PtrStep<uchar3>& colors, PtrStepSz<uchar3> dst, double colors_weight = 0.5);
 
       /** \brief Performs resize of vertex map to next pyramid level by averaging each four points
         * \param[in] input vertext map
@@ -355,7 +355,7 @@ namespace pcl
         * \return number of point stored to passed buffer
         */ 
       PCL_EXPORTS size_t
-      extractSliceAsCloud (const PtrStep<short2>& volume, const float3& volume_size, const pcl::gpu::kinfuLS::tsdf_buffer* buffer, const int shiftX, const int shiftY, const int shiftZ, PtrSz<PointType> output_xyz, PtrSz<float> output_intensities);
+      extractSliceAsCloud (const PtrStep<short2>& volume, const float3& volume_size, const pcl::gpu::kinfuLS::tsdf_buffer* buffer, const int shiftX, const int shiftY, const int shiftZ, PtrSz<PointType> output_xyz, PtrSz<double> output_intensities);
 
       /** \brief Performs normals computation for given poins using tsdf volume
         * \param[in] volume tsdf volume
@@ -378,8 +378,8 @@ namespace pcl
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       // Utility
-      struct float8  { float x, y, z, w, c1, c2, c3, c4; };
-      struct float12 { float x, y, z, w, normal_x, normal_y, normal_z, n4, c1, c2, c3, c4; };
+      struct float8  { double x, y, z, w, c1, c2, c3, c4; };
+      struct float12 { double x, y, z, w, normal_x, normal_y, normal_z, n4, c1, c2, c3, c4; };
 
       /** \brief Conversion from SOA to AOS
         * \param[in] vmap SOA map
@@ -401,9 +401,9 @@ namespace pcl
         * \param[in] value
         */
       inline bool 
-      valid_host (float value)
+      valid_host (double value)
       {
-        return *reinterpret_cast<int*>(&value) != 0x7fffffff; //QNAN
+        return *reinterpret_cast<int*>(&value) != 0x7ffffff; //QNAN
       }
 
       /** \brief synchronizes CUDA execution */

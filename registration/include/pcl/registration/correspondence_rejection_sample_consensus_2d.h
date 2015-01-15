@@ -76,14 +76,14 @@ namespace pcl
           * and the maximum number of iterations to 1000. 
           */
         CorrespondenceRejectorSampleConsensus2D ()
-          : projection_matrix_ (Eigen::Matrix3f::Identity ())
+          : projection_matrix_ (Eigen::Matrix3d::Identity ())
         {
           rejection_name_ = "CorrespondenceRejectorSampleConsensus2D";
           // Put the projection matrix together
-          //projection_matrix_ (0, 0) = 525.f;
-          //projection_matrix_ (1, 1) = 525.f;
-          //projection_matrix_ (0, 2) = 320.f;
-          //projection_matrix_ (1, 2) = 240.f;
+          //projection_matrix_ (0, 0) = 525.;
+          //projection_matrix_ (1, 1) = 525.;
+          //projection_matrix_ (0, 2) = 320.;
+          //projection_matrix_ (1, 2) = 240.;
         }
 
         /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.
@@ -99,7 +99,7 @@ namespace pcl
           * \param[in] fy the focal length in pixels along the y-axis of the image
           */
         inline void
-        setFocalLengths (const float fx, const float fy)
+        setFocalLengths (const double fx, const double fy)
         { 
           projection_matrix_ (0, 0) = fx;
           projection_matrix_ (1, 1) = fy;
@@ -110,7 +110,7 @@ namespace pcl
           * \param[out] fy the focal length in pixels along the y-axis of the image
           */
         inline void
-        getFocalLengths (float &fx, float &fy) const
+        getFocalLengths (double &fx, double &fy) const
         { 
           fx = projection_matrix_ (0, 0); 
           fy = projection_matrix_ (1, 1); 
@@ -122,7 +122,7 @@ namespace pcl
           * \param[in] cy the y-coordinate of the camera center
           */
         inline void
-        setCameraCenters (const float cx, const float cy)
+        setCameraCenters (const double cx, const double cy)
         { 
           projection_matrix_ (0, 2) = cx;
           projection_matrix_ (1, 2) = cy;
@@ -133,7 +133,7 @@ namespace pcl
           * \param[out] cy the y-coordinate of the camera center
           */
         inline void
-        getCameraCenters (float &cx, float &cy) const
+        getCameraCenters (double &cx, double &cy) const
         {
           cx = projection_matrix_ (0, 2);
           cy = projection_matrix_ (1, 2);
@@ -151,7 +151,7 @@ namespace pcl
         }
 
         /** \brief Camera projection matrix. */
-        Eigen::Matrix3f projection_matrix_;
+        Eigen::Matrix3d projection_matrix_;
 
       public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW

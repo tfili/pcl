@@ -108,10 +108,10 @@ pcl::OrganizedEdgeBase<PointT, PointLT>::extractEdges (pcl::PointCloud<PointLT>&
         if (!pcl_isfinite (input_->points[curr_idx].z))
           continue;
 
-        float curr_depth = fabsf (input_->points[curr_idx].z);
+        double curr_depth = fabsf (input_->points[curr_idx].z);
 
         // Calculate depth distances between current point and neighboring points
-        std::vector<float> nghr_dist;
+        std::vector<double> nghr_dist;
         nghr_dist.resize (8);
         bool found_invalid_neighbor = false;
         for (int d_idx = 0; d_idx < num_of_ngbr; d_idx++)
@@ -129,15 +129,15 @@ pcl::OrganizedEdgeBase<PointT, PointLT>::extractEdges (pcl::PointCloud<PointLT>&
         if (!found_invalid_neighbor)
         {
           // Every neighboring points are valid
-          std::vector<float>::iterator min_itr = std::min_element (nghr_dist.begin (), nghr_dist.end ());
-          std::vector<float>::iterator max_itr = std::max_element (nghr_dist.begin (), nghr_dist.end ());
-          float nghr_dist_min = *min_itr;
-          float nghr_dist_max = *max_itr;
-          float dist_dominant = fabsf (nghr_dist_min) > fabsf (nghr_dist_max) ? nghr_dist_min : nghr_dist_max;
+          std::vector<double>::iterator min_itr = std::min_element (nghr_dist.begin (), nghr_dist.end ());
+          std::vector<double>::iterator max_itr = std::max_element (nghr_dist.begin (), nghr_dist.end ());
+          double nghr_dist_min = *min_itr;
+          double nghr_dist_max = *max_itr;
+          double dist_dominant = fabsf (nghr_dist_min) > fabsf (nghr_dist_max) ? nghr_dist_min : nghr_dist_max;
           if (fabsf (dist_dominant) > th_depth_discon_*fabsf (curr_depth))
           {
             // Found a depth discontinuity
-            if (dist_dominant > 0.f)
+            if (dist_dominant > 0.)
             {
               if (detecting_edge_types_ & EDGELABEL_OCCLUDED)
                 labels[curr_idx].label |= EDGELABEL_OCCLUDED;
@@ -171,15 +171,15 @@ pcl::OrganizedEdgeBase<PointT, PointLT>::extractEdges (pcl::PointCloud<PointLT>&
 
           // Search directions
           assert (num_of_invalid_pt > 0);
-          float f_dx = static_cast<float> (dx) / static_cast<float> (num_of_invalid_pt);
-          float f_dy = static_cast<float> (dy) / static_cast<float> (num_of_invalid_pt);
+          double f_dx = static_cast<double> (dx) / static_cast<double> (num_of_invalid_pt);
+          double f_dy = static_cast<double> (dy) / static_cast<double> (num_of_invalid_pt);
 
           // Search for corresponding point across invalid points
-          float corr_depth = std::numeric_limits<float>::quiet_NaN ();
+          double corr_depth = std::numeric_limits<double>::quiet_NaN ();
           for (int s_idx = 1; s_idx < max_search_neighbors_; s_idx++)
           {
-            int s_row = row + static_cast<int> (std::floor (f_dy*static_cast<float> (s_idx)));
-            int s_col = col + static_cast<int> (std::floor (f_dx*static_cast<float> (s_idx)));
+            int s_row = row + static_cast<int> (std::floor (f_dy*static_cast<double> (s_idx)));
+            int s_col = col + static_cast<int> (std::floor (f_dx*static_cast<double> (s_idx)));
 
             if (s_row < 0 || s_row >= int(input_->height) || s_col < 0 || s_col >= int(input_->width))
               break;
@@ -194,11 +194,11 @@ pcl::OrganizedEdgeBase<PointT, PointLT>::extractEdges (pcl::PointCloud<PointLT>&
           if (!pcl_isnan (corr_depth))
           {
             // Found a corresponding point
-            float dist = curr_depth - corr_depth;
+            double dist = curr_depth - corr_depth;
             if (fabsf (dist) > th_depth_discon_*fabsf (curr_depth))
             {
               // Found a depth discontinuity
-              if (dist > 0.f)
+              if (dist > 0.)
               {
                 if (detecting_edge_types_ & EDGELABEL_OCCLUDED)
                   labels[curr_idx].label |= EDGELABEL_OCCLUDED;
@@ -251,7 +251,7 @@ pcl::OrganizedEdgeFromRGB<PointT, PointLT>::extractEdges (pcl::PointCloud<PointL
     gray->resize (input_->height*input_->width);
 
     for (size_t i = 0; i < input_->size (); ++i)
-      (*gray)[i].intensity = float (((*input_)[i].r + (*input_)[i].g + (*input_)[i].b) / 3);
+      (*gray)[i].intensity = double (((*input_)[i].r + (*input_)[i].g + (*input_)[i].b) / 3);
 
     pcl::PointCloud<pcl::PointXYZIEdge> img_edge_rgb;
     pcl::Edge<PointXYZI, pcl::PointXYZIEdge> edge;
@@ -264,7 +264,7 @@ pcl::OrganizedEdgeFromRGB<PointT, PointLT>::extractEdges (pcl::PointCloud<PointL
     {
       for (uint32_t col=0; col<labels.width; col++)
       {
-        if (img_edge_rgb (col, row).magnitude == 255.f)
+        if (img_edge_rgb (col, row).magnitude == 255.)
           labels[row * labels.width + col].label |= EDGELABEL_RGB_CANNY;
       }
     }
@@ -322,7 +322,7 @@ pcl::OrganizedEdgeFromNormals<PointT, PointNT, PointLT>::extractEdges (pcl::Poin
     {
       for (uint32_t col=0; col<labels.width; col++)
       {
-        if (img_edge (col, row).magnitude == 255.f)
+        if (img_edge (col, row).magnitude == 255.)
           labels[row * labels.width + col].label |= EDGELABEL_HIGH_CURVATURE;
       }
     }

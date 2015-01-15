@@ -110,26 +110,26 @@ pcl::NormalSpaceSampling<PointT, NormalT>::isEntireBinSampled (boost::dynamic_bi
 
 ///////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename NormalT> unsigned int 
-pcl::NormalSpaceSampling<PointT, NormalT>::findBin (const float *normal, unsigned int)
+pcl::NormalSpaceSampling<PointT, NormalT>::findBin (const double *normal, unsigned int)
 {
   unsigned int bin_number = 0;
   // Holds the bin numbers for direction cosines in x,y,z directions
   unsigned int t[3] = {0,0,0};
   
   // dcos is the direction cosine.
-  float dcos = 0.0;
-  float bin_size = 0.0;
+  double dcos = 0.0;
+  double bin_size = 0.0;
   // max_cos and min_cos are the maximum and minimum values of cos(theta) respectively
-  float max_cos = 1.0;
-  float min_cos = -1.0;
+  double max_cos = 1.0;
+  double min_cos = -1.0;
 
-//  dcos = cosf (normal[0]);
+//  dcos = cos (normal[0]);
   dcos = normal[0];
-  bin_size = (max_cos - min_cos) / static_cast<float> (binsx_);
+  bin_size = (max_cos - min_cos) / static_cast<double> (binsx_);
 
   // Finding bin number for direction cosine in x direction
   unsigned int k = 0;
-  for (float i = min_cos; (i + bin_size) < (max_cos - bin_size); i += bin_size , k++)
+  for (double i = min_cos; (i + bin_size) < (max_cos - bin_size); i += bin_size , k++)
   {
     if (dcos >= i && dcos <= (i+bin_size))
     {
@@ -138,13 +138,13 @@ pcl::NormalSpaceSampling<PointT, NormalT>::findBin (const float *normal, unsigne
   }
   t[0] = k;
 
-//  dcos = cosf (normal[1]);
+//  dcos = cos (normal[1]);
   dcos = normal[1];
-  bin_size = (max_cos - min_cos) / static_cast<float> (binsy_);
+  bin_size = (max_cos - min_cos) / static_cast<double> (binsy_);
 
   // Finding bin number for direction cosine in y direction
   k = 0;
-  for (float i = min_cos; (i + bin_size) < (max_cos - bin_size); i += bin_size , k++)
+  for (double i = min_cos; (i + bin_size) < (max_cos - bin_size); i += bin_size , k++)
   {
     if (dcos >= i && dcos <= (i+bin_size))
     {
@@ -153,13 +153,13 @@ pcl::NormalSpaceSampling<PointT, NormalT>::findBin (const float *normal, unsigne
   }
   t[1] = k;
     
-//  dcos = cosf (normal[2]);
+//  dcos = cos (normal[2]);
   dcos = normal[2];
-  bin_size = (max_cos - min_cos) / static_cast<float> (binsz_);
+  bin_size = (max_cos - min_cos) / static_cast<double> (binsz_);
 
   // Finding bin number for direction cosine in z direction
   k = 0;
-  for (float i = min_cos; (i + bin_size) < (max_cos - bin_size); i += bin_size , k++)
+  for (double i = min_cos; (i + bin_size) < (max_cos - bin_size); i += bin_size , k++)
   {
     if (dcos >= i && dcos <= (i+bin_size))
     {

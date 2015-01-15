@@ -77,7 +77,7 @@ class SimpleOpenNIViewer
 
     void
     image_callback (const boost::shared_ptr<openni_wrapper::Image> &image,
-                    const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image, float)
+                    const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image, double)
     {
 
       vector<uint16_t> raw_shift_data;
@@ -133,7 +133,7 @@ class SimpleOpenNIViewer
 
       // define image callback
       boost::function<void
-      (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float)> image_cb =
+      (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double)> image_cb =
           boost::bind (&SimpleOpenNIViewer::image_callback, this, _1, _2, _3);
       boost::signals2::connection image_connection = grabber_->registerCallback (image_cb);
 
@@ -155,7 +155,7 @@ protected:
            std::vector<uint8_t>& rgbData_arg,
            size_t width_arg,
            size_t height_arg,
-           float focalLength_arg,
+           double focalLength_arg,
            pcl::PointCloud<PointXYZRGB>& cloud_arg) const
   {
     size_t i;
@@ -176,8 +176,8 @@ protected:
     centerX = static_cast<int> (width_arg / 2);
     centerY = static_cast<int> (height_arg / 2);
 
-    const float fl_const = 1.0f / focalLength_arg;
-    static const float bad_point = std::numeric_limits<float>::quiet_NaN ();
+    const double fl_const = 1.0 / focalLength_arg;
+    static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
     i = 0;
     for (y = -centerY; y < +centerY; ++y)
@@ -189,12 +189,12 @@ protected:
 
         if (pixel_depth)
         {
-          float depth = pixel_depth/1000.0f; // raw mm -> m
+          double depth = pixel_depth/1000.0; // raw mm -> m
 
           // Define point location
           newPoint.z = depth;
-          newPoint.x = static_cast<float> (x) * depth * fl_const;
-          newPoint.y = static_cast<float> (y) * depth * fl_const;
+          newPoint.x = static_cast<double> (x) * depth * fl_const;
+          newPoint.y = static_cast<double> (y) * depth * fl_const;
 
           const uint8_t& pixel_r = rgbData_arg[i * 3 + 0];
           const uint8_t& pixel_g = rgbData_arg[i * 3 + 1];
@@ -203,13 +203,13 @@ protected:
           // Define point color
           uint32_t rgb = (static_cast<uint32_t> (pixel_r) << 16 | static_cast<uint32_t> (pixel_g) << 8
               | static_cast<uint32_t> (pixel_b));
-          newPoint.rgb = *reinterpret_cast<float*> (&rgb);
+          newPoint.rgb = *reinterpret_cast<double*> (&rgb);
         }
         else
         {
           // Define bad point
           newPoint.x = newPoint.y = newPoint.z = bad_point;
-          newPoint.rgb = 0.0f;
+          newPoint.rgb = 0.0;
         }
 
         // Add point to cloud

@@ -145,7 +145,7 @@ testIndicesAndSearchSurface (const typename PointCloud<PointT>::Ptr & points,
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, PFHEstimation)
 {
-  float f1, f2, f3, f4;
+  double f1, f2, f3, f4;
 
   // Estimate normals first
   NormalEstimation<PointXYZ, Normal> n;
@@ -172,7 +172,7 @@ TEST (PCL, PFHEstimation)
 
   // computePointPFHSignature
   int nr_subdiv = 3;
-  Eigen::VectorXf pfh_histogram (nr_subdiv * nr_subdiv * nr_subdiv);
+  Eigen::VectorXd pfh_histogram (nr_subdiv * nr_subdiv * nr_subdiv);
   pfh.computePointPFHSignature (cloud, *normals, indices, nr_subdiv, pfh_histogram);
   EXPECT_NEAR (pfh_histogram[0],  0.932506, 1e-2);
   EXPECT_NEAR (pfh_histogram[1],  2.32429 , 1e-2);
@@ -249,7 +249,7 @@ TEST (PCL, PFHEstimation)
     EXPECT_NEAR (pfhs->points[i].histogram[25], 0.223902  , 1e-4);
     EXPECT_NEAR (pfhs->points[i].histogram[26], 0.07633   , 1e-4);
   }
-  //Eigen::Map<Eigen::VectorXf> h (&(pfhs->points[0].histogram[0]), 125);
+  //Eigen::Map<Eigen::VectorXd> h (&(pfhs->points[0].histogram[0]), 125);
   //std::cerr << h.head<27> () << std::endl;
 
   // Test results when setIndices and/or setSearchSurface are used
@@ -283,7 +283,7 @@ TEST (PCL, FPFHEstimation)
 
   // computePointSPFHSignature
   int nr_subdiv = 11; // use the same number of bins for all three angular features
-  Eigen::MatrixXf hist_f1 (indices.size (), nr_subdiv), hist_f2 (indices.size (), nr_subdiv), hist_f3 (indices.size (), nr_subdiv);
+  Eigen::MatrixXd hist_f1 (indices.size (), nr_subdiv), hist_f2 (indices.size (), nr_subdiv), hist_f3 (indices.size (), nr_subdiv);
   hist_f1.setZero (); hist_f2.setZero (); hist_f3.setZero ();
   for (int i = 0; i < static_cast<int> (indices.size ()); ++i)
     fpfh.computePointSPFHSignature (cloud, *normals, i, i, indices, hist_f1, hist_f2, hist_f3);
@@ -325,10 +325,10 @@ TEST (PCL, FPFHEstimation)
   EXPECT_NEAR (hist_f3 (0, 10), 5.55556, 1e-4);
 
   // weightPointSPFHSignature
-  Eigen::VectorXf fpfh_histogram (nr_subdiv + nr_subdiv + nr_subdiv);
+  Eigen::VectorXd fpfh_histogram (nr_subdiv + nr_subdiv + nr_subdiv);
   fpfh_histogram.setZero ();
-  vector<float> dists (indices.size ());
-  for (size_t i = 0; i < dists.size (); ++i) dists[i] = static_cast<float> (i);
+  vector<double> dists (indices.size ());
+  for (size_t i = 0; i < dists.size (); ++i) dists[i] = static_cast<double> (i);
   fpfh.weightPointSPFHSignature (hist_f1, hist_f2, hist_f3, indices, dists, fpfh_histogram);
 
   EXPECT_NEAR (fpfh_histogram[0],  1.9798 ,  1e-2);
@@ -553,9 +553,9 @@ TEST (PCL, GFPFH)
         unsigned label = 1 + (std::abs (x+y+z) % num_classes);
         PointXYZL p;
         p.label = label;
-        p.x = static_cast<float> (x);
-        p.y = static_cast<float> (y);
-        p.z = static_cast<float> (z);
+        p.x = static_cast<double> (x);
+        p.y = static_cast<double> (y);
+        p.z = static_cast<double> (z);
         cloud->points.push_back (p);
       }
   cloud->width = static_cast<uint32_t> (cloud->points.size ());
@@ -569,7 +569,7 @@ TEST (PCL, GFPFH)
   PointCloud<GFPFHSignature16> descriptor;
   gfpfh.compute (descriptor);
 
-  const float ref_values[] = { 3216, 7760, 8740, 26584, 4645, 2995, 3029, 4349, 6192, 5440, 9514, 47563, 21814, 22073, 5734, 1253 };
+  const double ref_values[] = { 3216, 7760, 8740, 26584, 4645, 2995, 3029, 4349, 6192, 5440, 9514, 47563, 21814, 22073, 5734, 1253 };
 
   EXPECT_EQ (descriptor.points.size (), 1);
   for (size_t i = 0; i < size_t (descriptor.points[0].descriptorSize ()); ++i)

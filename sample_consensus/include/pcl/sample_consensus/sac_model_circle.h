@@ -121,14 +121,14 @@ namespace pcl
         */
       bool 
       computeModelCoefficients (const std::vector<int> &samples, 
-                                Eigen::VectorXf &model_coefficients);
+                                Eigen::VectorXd &model_coefficients);
 
       /** \brief Compute all distances from the cloud data to a given 2D circle model.
         * \param[in] model_coefficients the coefficients of a 2D circle model that we need to compute distances to
         * \param[out] distances the resultant estimated distances
         */
       void 
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients, 
                            std::vector<double> &distances);
 
       /** \brief Compute all distances from the cloud data to a given 2D circle model.
@@ -137,7 +137,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void 
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients, 
                             const double threshold, 
                             std::vector<int> &inliers);
 
@@ -148,7 +148,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      countWithinDistance (const Eigen::VectorXd &model_coefficients, 
                            const double threshold);
 
        /** \brief Recompute the 2d circle coefficients using the given inlier set and return them to the user.
@@ -159,8 +159,8 @@ namespace pcl
         */
       void 
       optimizeModelCoefficients (const std::vector<int> &inliers, 
-                                 const Eigen::VectorXf &model_coefficients, 
-                                 Eigen::VectorXf &optimized_coefficients);
+                                 const Eigen::VectorXd &model_coefficients, 
+                                 Eigen::VectorXd &optimized_coefficients);
 
       /** \brief Create a new point cloud with inliers projected onto the 2d circle model.
         * \param[in] inliers the data inliers that we want to project on the 2d circle model
@@ -170,7 +170,7 @@ namespace pcl
         */
       void 
       projectPoints (const std::vector<int> &inliers, 
-                     const Eigen::VectorXf &model_coefficients, 
+                     const Eigen::VectorXd &model_coefficients, 
                      PointCloud &projected_points, 
                      bool copy_data_fields = true);
 
@@ -181,7 +181,7 @@ namespace pcl
         */
       bool 
       doSamplesVerifyModel (const std::set<int> &indices, 
-                            const Eigen::VectorXf &model_coefficients, 
+                            const Eigen::VectorXd &model_coefficients, 
                             const double threshold);
 
       /** \brief Return an unique id for this model (SACMODEL_CIRCLE2D). */
@@ -193,7 +193,7 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       bool 
-      isModelValid (const Eigen::VectorXf &model_coefficients);
+      isModelValid (const Eigen::VectorXd &model_coefficients);
 
       /** \brief Check if a sample of indices results in a good sample of points indices.
         * \param[in] samples the resultant index samples
@@ -209,7 +209,7 @@ namespace pcl
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
       /** \brief Functor for the optimization function */
-      struct OptimizationFunctor : pcl::Functor<float>
+      struct OptimizationFunctor : pcl::Functor<double>
       {
         /** \brief Functor constructor
           * \param[in] m_data_points the number of data points to evaluate
@@ -217,7 +217,7 @@ namespace pcl
           * \param[in] distance distance computation function pointer
           */
         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCircle2D<PointT> *model) : 
-          pcl::Functor<float>(m_data_points), model_ (model) {}
+          pcl::Functor<double>(m_data_points), model_ (model) {}
 
         /** Cost function to be minimized
           * \param[in] x the variables array
@@ -225,16 +225,16 @@ namespace pcl
           * \return 0
           */
         int 
-        operator() (const Eigen::VectorXf &x, Eigen::VectorXf &fvec) const
+        operator() (const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
         {
           for (int i = 0; i < values (); ++i)
           {
             // Compute the difference between the center of the circle and the datapoint X_i
-            float xt = model_->input_->points[(*model_->tmp_inliers_)[i]].x - x[0];
-            float yt = model_->input_->points[(*model_->tmp_inliers_)[i]].y - x[1];
+            double xt = model_->input_->points[(*model_->tmp_inliers_)[i]].x - x[0];
+            double yt = model_->input_->points[(*model_->tmp_inliers_)[i]].y - x[1];
             
             // g = sqrt ((x-a)^2 + (y-b)^2) - R
-            fvec[i] = sqrtf (xt * xt + yt * yt) - x[2];
+            fvec[i] = sqrt (xt * xt + yt * yt) - x[2];
           }
           return (0);
         }

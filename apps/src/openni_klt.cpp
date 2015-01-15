@@ -267,7 +267,7 @@ class OpenNIViewer
             points_mutex_.unlock ();
           }
 
-          std::vector<float> markers;
+          std::vector<double> markers;
           markers.reserve (keypoints_->size () * 2);
           for (std::size_t i = 0; i < keypoints_->size (); ++i)
           {

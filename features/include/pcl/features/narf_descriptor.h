@@ -67,8 +67,8 @@ namespace pcl
       // =====STRUCTS/CLASSES=====
       struct Parameters
       {
-        Parameters() : support_size(-1.0f), rotation_invariant(true) {}
-        float support_size;
+        Parameters() : support_size(-1.0), rotation_invariant(true) {}
+        double support_size;
         bool rotation_invariant;
       };
       

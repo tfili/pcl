@@ -145,7 +145,7 @@ class ManualRegistration : public QMainWindow
     pcl::PointCloud<pcl::PointXYZ>    src_pc_;
     pcl::PointCloud<pcl::PointXYZ>    dst_pc_;
 
-    Eigen::Matrix4f                   transform_;
+    Eigen::Matrix4d                   transform_;
 
   public slots:
     void 

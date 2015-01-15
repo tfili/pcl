@@ -91,10 +91,10 @@ namespace pcl
         */
       void 
       computeIntensitySpinImage (const PointCloudIn &cloud, 
-                                 float radius, float sigma, int k, 
+                                 double radius, double sigma, int k, 
                                  const std::vector<int> &indices, 
-                                 const std::vector<float> &squared_distances, 
-                                 Eigen::MatrixXf &intensity_spin_image);
+                                 const std::vector<double> &squared_distances, 
+                                 Eigen::MatrixXd &intensity_spin_image);
 
       /** \brief Set the number of bins to use in the distance dimension of the spin image
         * \param[in] nr_distance_bins the number of bins to use in the distance dimension of the spin image
@@ -120,10 +120,10 @@ namespace pcl
         * \param[in] sigma the standard deviation of the Gaussian smoothing kernel to use when constructing the spin images
         */
       inline void 
-      setSmoothingBandwith (float sigma) { sigma_ = sigma; };
+      setSmoothingBandwith (double sigma) { sigma_ = sigma; };
 
       /** \brief Returns the standard deviation of the Gaussian smoothing kernel used to construct the spin images.  */
-      inline float 
+      inline double 
       getSmoothingBandwith () { return (sigma_); };
 
 
@@ -141,7 +141,7 @@ namespace pcl
       int nr_intensity_bins_;
 
       /** \brief The standard deviation of the Gaussian smoothing kernel used to construct the spin images. */
-      float sigma_;
+      double sigma_;
   };
 }
 

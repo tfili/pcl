@@ -18,7 +18,7 @@ pcl::cloud_composer::SelectionEvent::findIndicesInItem (CloudItem* cloud_item, p
  // double dblpts[3];
  // PointXYZ pt;
  // std::vector<int> indices;
- // std::vector<float> distances;
+ // std::vector<double> distances;
   /*for (int i = 0; i < points->GetNumberOfPoints (); ++i)
   {
     points->GetPoint(i, dblpts);

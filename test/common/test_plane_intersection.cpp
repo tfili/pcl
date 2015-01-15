@@ -45,8 +45,8 @@ using namespace pcl;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, lineWithLineIntersection)
 {
-  Eigen::VectorXf line_a (6);
-  Eigen::VectorXf line_b (6);
+  Eigen::VectorXd line_a (6);
+  Eigen::VectorXd line_b (6);
 
   //case 1
   line_a[0] = 0.01;
@@ -63,17 +63,17 @@ TEST (PCL, lineWithLineIntersection)
   line_b[4] = 0.05;
   line_b[5] = 0.06;
 
-  Eigen::Vector4f p1, p2;
+  Eigen::Vector4d p1, p2;
   lineToLineSegment (line_a, line_b, p1, p2);
 
-  Eigen::Vector4f point_case_1;
+  Eigen::Vector4d point_case_1;
   bool result_case_1 = lineWithLineIntersection (line_a, line_b, point_case_1);
 
   double sqr_dist_case_1 = (p1 - p2).squaredNorm ();
 
   double default_sqr_eps = 1e-4;
   EXPECT_GT (sqr_dist_case_1, default_sqr_eps);
-  Eigen::Vector4f zero (0.0, 0.0, 0.0, 0.0);
+  Eigen::Vector4d zero (0.0, 0.0, 0.0, 0.0);
 
   EXPECT_EQ (point_case_1[0], zero[0]);
   EXPECT_EQ (point_case_1[1], zero[1]);
@@ -85,7 +85,7 @@ TEST (PCL, lineWithLineIntersection)
   pcl::ModelCoefficients line_a_mod;
   pcl::ModelCoefficients line_b_mod;
 
-  std::vector<float> values_a_case_1;
+  std::vector<double> values_a_case_1;
   values_a_case_1.push_back (line_a[0]);
   values_a_case_1.push_back (line_a[1]);
   values_a_case_1.push_back (line_a[2]);
@@ -93,7 +93,7 @@ TEST (PCL, lineWithLineIntersection)
   values_a_case_1.push_back (line_a[4]);
   values_a_case_1.push_back (line_a[5]);
 
-  std::vector<float> values_b_case_1;
+  std::vector<double> values_b_case_1;
   values_b_case_1.push_back (line_b[0]);
   values_b_case_1.push_back (line_b[1]);
   values_b_case_1.push_back (line_b[2]);
@@ -104,7 +104,7 @@ TEST (PCL, lineWithLineIntersection)
   line_a_mod.values = values_a_case_1;
   line_b_mod.values = values_b_case_1;
 
-  Eigen::Vector4f point_mod_1;
+  Eigen::Vector4d point_mod_1;
   EXPECT_FALSE (lineWithLineIntersection (line_a_mod, line_b_mod, point_mod_1));
   EXPECT_EQ (result_case_1, lineWithLineIntersection (line_a_mod, line_b_mod, point_mod_1));
 
@@ -130,7 +130,7 @@ TEST (PCL, lineWithLineIntersection)
 
   lineToLineSegment (line_a, line_b, p1, p2);
 
-  Eigen::Vector4f point_case_2;
+  Eigen::Vector4d point_case_2;
   double sqr_eps_case_2 = 1e-1;
   bool result_case_2 = lineWithLineIntersection (line_a, line_b, point_case_2, sqr_eps_case_2);
 
@@ -147,7 +147,7 @@ TEST (PCL, lineWithLineIntersection)
   pcl::ModelCoefficients line_a_mod_2;
   pcl::ModelCoefficients line_b_mod_2;
 
-  std::vector<float> values_a_case_2;
+  std::vector<double> values_a_case_2;
   values_a_case_2.push_back (0.1000);
   values_a_case_2.push_back (0.2000);
   values_a_case_2.push_back (0.3000);
@@ -155,7 +155,7 @@ TEST (PCL, lineWithLineIntersection)
   values_a_case_2.push_back (0.5000);
   values_a_case_2.push_back (0.6000);
 
-  std::vector<float> values_b_case_2;
+  std::vector<double> values_b_case_2;
   values_b_case_2.push_back (0.1001);
   values_b_case_2.push_back (0.2001);
   values_b_case_2.push_back (0.3001);
@@ -166,14 +166,14 @@ TEST (PCL, lineWithLineIntersection)
   line_a_mod_2.values = values_a_case_2;
   line_b_mod_2.values = values_b_case_2;
 
-  Eigen::Vector4f point_mod_2;
-  Eigen::Vector4f point_mod_case_2;
+  Eigen::Vector4d point_mod_2;
+  Eigen::Vector4d point_mod_case_2;
   double sqr_mod_case_2 = 1e-1;
 
-  Eigen::VectorXf coeff1 = Eigen::VectorXf::Map (&line_a_mod_2.values[0], line_a_mod_2.values.size ());
-  Eigen::VectorXf coeff2 = Eigen::VectorXf::Map (&line_b_mod_2.values[0], line_b_mod_2.values.size ());
+  Eigen::VectorXd coeff1 = Eigen::VectorXd::Map (&line_a_mod_2.values[0], line_a_mod_2.values.size ());
+  Eigen::VectorXd coeff2 = Eigen::VectorXd::Map (&line_b_mod_2.values[0], line_b_mod_2.values.size ());
 
-  Eigen::Vector4f p1_mod, p2_mod;
+  Eigen::Vector4d p1_mod, p2_mod;
   lineToLineSegment (coeff1, coeff2, p1_mod, p2_mod);
   double sqr_mod_act_2 = (p1_mod - p2_mod).squaredNorm ();
 
@@ -192,9 +192,9 @@ TEST (PCL, lineWithLineIntersection)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, planeWithPlaneIntersection)
 {
-  Eigen::Vector4f plane_a, plane_b;
+  Eigen::Vector4d plane_a, plane_b;
   Eigen::Vector4d plane_ad, plane_bd;
-  Eigen::VectorXf line;
+  Eigen::VectorXd line;
   Eigen::VectorXd lined;
 
   // Testing parallel planes, plane normal not normalized!
@@ -288,10 +288,10 @@ TEST (PCL, threePlanesIntersection)
   Eigen::Vector4d plane_c (0.0, 0.0, 1.0, -0.5);
   Eigen::Vector3d point (1.0, 2.0, 3.0);
 
-  Eigen::Vector4f fplane_a (1.0, 0.0, 0.0, -0.5);
-  Eigen::Vector4f fplane_b (1.0, 0.0, 0.0, 0.5);
-  Eigen::Vector4f fplane_c (0.0, 0.0, 1.0, -0.5);
-  Eigen::Vector3f fpoint (1.0, 2.0, 3.0);
+  Eigen::Vector4d fplane_a (1.0, 0.0, 0.0, -0.5);
+  Eigen::Vector4d fplane_b (1.0, 0.0, 0.0, 0.5);
+  Eigen::Vector4d fplane_c (0.0, 0.0, 1.0, -0.5);
+  Eigen::Vector3d fpoint (1.0, 2.0, 3.0);
 
   EXPECT_FALSE (threePlanesIntersection (plane_a, plane_b, plane_c, point, 1e-6));
   EXPECT_FALSE (threePlanesIntersection (fplane_a, fplane_b, fplane_c, fpoint, 1e-6));

@@ -42,14 +42,14 @@
 
 using namespace pcl::test;
 
-std::vector<float> v1, v2;
-Eigen::Vector3f ev1, ev2;
+std::vector<double> v1, v2;
+Eigen::Vector3d ev1, ev2;
 
 TEST(MACROS, expect_eq_vectors_macro)
 {
   for (size_t i = 0; i < 3; i++)
   {
-    float val = static_cast<float> (i) * 1.5f;
+    double val = static_cast<double> (i) * 1.5;
     v1.push_back (val);
     v2.push_back (val);
     ev1[i] = val;
@@ -60,17 +60,17 @@ TEST(MACROS, expect_eq_vectors_macro)
   EXPECT_EQ_VECTORS (ev1, ev2);
   EXPECT_EQ_VECTORS (v1, ev2);
   EXPECT_EQ_VECTORS (ev1, v2);
-//  equal_vectors<std::vector<float>, std::vector<float> >(v1, v2);
+//  equal_vectors<std::vector<double>, std::vector<double> >(v1, v2);
 }
 
 TEST(MACROS, expect_near_vectors_macro)
 {
   v1.clear ();
   v2.clear ();
-  const static float epsilon = 1e-5f;
+  const static double epsilon = 1e-5;
   for (size_t i = 0; i < 3; i++)
   {
-    float val = static_cast<float> (i) * 1.5f;
+    double val = static_cast<double> (i) * 1.5;
     v1.push_back (val);
     v2.push_back (val + epsilon);
     ev1[i] = val;

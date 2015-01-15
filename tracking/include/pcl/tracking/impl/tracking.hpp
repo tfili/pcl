@@ -17,12 +17,12 @@ namespace pcl
       {
         struct
         {
-          float roll;
-          float pitch;
-          float yaw;
-          float weight;
+          double roll;
+          double pitch;
+          double yaw;
+          double weight;
         };
-        float data_c[4];
+        double data_c[4];
       };
     };
 
@@ -32,21 +32,21 @@ namespace pcl
       inline ParticleXYZRPY ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYZRPY (float _x, float _y, float _z)
+      inline ParticleXYZRPY (double _x, double _y, double _z)
       {
         x = _x; y = _y; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYZRPY (float _x, float _y, float _z, float _roll, float _pitch, float _yaw)
+      inline ParticleXYZRPY (double _x, double _y, double _z, double _roll, double _pitch, double _yaw)
       {
         x = _x; y = _y; z = _z;
         roll = _roll; pitch = _pitch; yaw = _yaw;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -55,12 +55,12 @@ namespace pcl
       void
       sample (const std::vector<double>& mean, const std::vector<double>& cov)
       {
-        x     += static_cast<float> (sampleNormal (mean[0], cov[0]));
-        y     += static_cast<float> (sampleNormal (mean[1], cov[1]));
-        z     += static_cast<float> (sampleNormal (mean[2], cov[2]));
-        roll  += static_cast<float> (sampleNormal (mean[3], cov[3]));
-        pitch += static_cast<float> (sampleNormal (mean[4], cov[4]));
-        yaw   += static_cast<float> (sampleNormal (mean[5], cov[5]));
+        x     += static_cast<double> (sampleNormal (mean[0], cov[0]));
+        y     += static_cast<double> (sampleNormal (mean[1], cov[1]));
+        z     += static_cast<double> (sampleNormal (mean[2], cov[2]));
+        roll  += static_cast<double> (sampleNormal (mean[3], cov[3]));
+        pitch += static_cast<double> (sampleNormal (mean[4], cov[4]));
+        yaw   += static_cast<double> (sampleNormal (mean[5], cov[5]));
       }
 
       void
@@ -74,16 +74,16 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYZRPY
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
-        float trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
+        double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
                                       trans_x, trans_y, trans_z,
                                       trans_roll, trans_pitch, trans_yaw);
@@ -91,7 +91,7 @@ namespace pcl
       }
 
       // a[i]
-      inline float operator [] (unsigned int i)
+      inline double operator [] (unsigned int i)
       {
         switch (i)
         {
@@ -119,12 +119,12 @@ namespace pcl
     inline pcl::tracking::ParticleXYZRPY operator * (const ParticleXYZRPY& p, double val)
     {
       pcl::tracking::ParticleXYZRPY newp;
-      newp.x     = static_cast<float> (p.x * val);
-      newp.y     = static_cast<float> (p.y * val);
-      newp.z     = static_cast<float> (p.z * val);
-      newp.roll  = static_cast<float> (p.roll * val);
-      newp.pitch = static_cast<float> (p.pitch * val);
-      newp.yaw   = static_cast<float> (p.yaw * val);
+      newp.x     = static_cast<double> (p.x * val);
+      newp.y     = static_cast<double> (p.y * val);
+      newp.z     = static_cast<double> (p.z * val);
+      newp.roll  = static_cast<double> (p.roll * val);
+      newp.pitch = static_cast<double> (p.pitch * val);
+      newp.yaw   = static_cast<double> (p.yaw * val);
       return (newp);
     }
     
@@ -172,12 +172,12 @@ namespace pcl
       {
         struct
         {
-          float roll;
-          float pitch;
-          float yaw;
-          float weight;
+          double roll;
+          double pitch;
+          double yaw;
+          double weight;
         };
-        float data_c[4];
+        double data_c[4];
       };
     };
 
@@ -187,21 +187,21 @@ namespace pcl
       inline ParticleXYZR ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYZR (float _x, float _y, float _z)
+      inline ParticleXYZR (double _x, double _y, double _z)
       {
         x = _x; y = _y; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYZR (float _x, float _y, float _z, float, float _pitch, float)
+      inline ParticleXYZR (double _x, double _y, double _z, double, double _pitch, double)
       {
         x = _x; y = _y; z = _z;
         roll = 0; pitch = _pitch; yaw = 0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -210,11 +210,11 @@ namespace pcl
       void
       sample (const std::vector<double>& mean, const std::vector<double>& cov)
       {
-        x     += static_cast<float> (sampleNormal (mean[0], cov[0]));
-        y     += static_cast<float> (sampleNormal (mean[1], cov[1]));
-        z     += static_cast<float> (sampleNormal (mean[2], cov[2]));
+        x     += static_cast<double> (sampleNormal (mean[0], cov[0]));
+        y     += static_cast<double> (sampleNormal (mean[1], cov[1]));
+        z     += static_cast<double> (sampleNormal (mean[2], cov[2]));
         roll  = 0;
-        pitch += static_cast<float> (sampleNormal (mean[4], cov[4]));
+        pitch += static_cast<double> (sampleNormal (mean[4], cov[4]));
         yaw   = 0;
       }
 
@@ -229,16 +229,16 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYZR
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
-        float trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
+        double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
                                       trans_x, trans_y, trans_z,
                                       trans_roll, trans_pitch, trans_yaw);
@@ -246,7 +246,7 @@ namespace pcl
       }
 
       // a[i]
-      inline float operator [] (unsigned int i)
+      inline double operator [] (unsigned int i)
       {
         switch (i)
         {
@@ -274,12 +274,12 @@ namespace pcl
     inline pcl::tracking::ParticleXYZR operator * (const ParticleXYZR& p, double val)
     {
       pcl::tracking::ParticleXYZR newp;
-      newp.x     = static_cast<float> (p.x * val);
-      newp.y     = static_cast<float> (p.y * val);
-      newp.z     = static_cast<float> (p.z * val);
-      newp.roll  = static_cast<float> (p.roll * val);
-      newp.pitch = static_cast<float> (p.pitch * val);
-      newp.yaw   = static_cast<float> (p.yaw * val);
+      newp.x     = static_cast<double> (p.x * val);
+      newp.y     = static_cast<double> (p.y * val);
+      newp.z     = static_cast<double> (p.z * val);
+      newp.roll  = static_cast<double> (p.roll * val);
+      newp.pitch = static_cast<double> (p.pitch * val);
+      newp.yaw   = static_cast<double> (p.yaw * val);
       return (newp);
     }
     
@@ -327,12 +327,12 @@ namespace pcl
       {
         struct
         {
-          float roll;
-          float pitch;
-          float yaw;
-          float weight;
+          double roll;
+          double pitch;
+          double yaw;
+          double weight;
         };
-        float data_c[4];
+        double data_c[4];
       };
     };
 
@@ -342,21 +342,21 @@ namespace pcl
       inline ParticleXYRPY ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYRPY (float _x, float, float _z)
+      inline ParticleXYRPY (double _x, double, double _z)
       {
         x = _x; y = 0; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYRPY (float _x, float, float _z, float _roll, float _pitch, float _yaw)
+      inline ParticleXYRPY (double _x, double, double _z, double _roll, double _pitch, double _yaw)
       {
         x = _x; y = 0; z = _z;
         roll = _roll; pitch = _pitch; yaw = _yaw;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -365,12 +365,12 @@ namespace pcl
       void
       sample (const std::vector<double>& mean, const std::vector<double>& cov)
       {
-        x     += static_cast<float> (sampleNormal (mean[0], cov[0]));
+        x     += static_cast<double> (sampleNormal (mean[0], cov[0]));
         y     = 0;
-        z     += static_cast<float> (sampleNormal (mean[2], cov[2]));
-        roll  += static_cast<float> (sampleNormal (mean[3], cov[3]));
-        pitch += static_cast<float> (sampleNormal (mean[4], cov[4]));
-        yaw   += static_cast<float> (sampleNormal (mean[5], cov[5]));
+        z     += static_cast<double> (sampleNormal (mean[2], cov[2]));
+        roll  += static_cast<double> (sampleNormal (mean[3], cov[3]));
+        pitch += static_cast<double> (sampleNormal (mean[4], cov[4]));
+        yaw   += static_cast<double> (sampleNormal (mean[5], cov[5]));
       }
 
       void
@@ -384,16 +384,16 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYRPY
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
-        float trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
+        double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
                                       trans_x, trans_y, trans_z,
                                       trans_roll, trans_pitch, trans_yaw);
@@ -401,7 +401,7 @@ namespace pcl
       }
 
       // a[i]
-      inline float operator [] (unsigned int i)
+      inline double operator [] (unsigned int i)
       {
         switch (i)
         {
@@ -429,12 +429,12 @@ namespace pcl
     inline pcl::tracking::ParticleXYRPY operator * (const ParticleXYRPY& p, double val)
     {
       pcl::tracking::ParticleXYRPY newp;
-      newp.x     = static_cast<float> (p.x * val);
-      newp.y     = static_cast<float> (p.y * val);
-      newp.z     = static_cast<float> (p.z * val);
-      newp.roll  = static_cast<float> (p.roll * val);
-      newp.pitch = static_cast<float> (p.pitch * val);
-      newp.yaw   = static_cast<float> (p.yaw * val);
+      newp.x     = static_cast<double> (p.x * val);
+      newp.y     = static_cast<double> (p.y * val);
+      newp.z     = static_cast<double> (p.z * val);
+      newp.roll  = static_cast<double> (p.roll * val);
+      newp.pitch = static_cast<double> (p.pitch * val);
+      newp.yaw   = static_cast<double> (p.yaw * val);
       return (newp);
     }
     
@@ -480,12 +480,12 @@ namespace pcl
       {
         struct
         {
-          float roll;
-          float pitch;
-          float yaw;
-          float weight;
+          double roll;
+          double pitch;
+          double yaw;
+          double weight;
         };
-        float data_c[4];
+        double data_c[4];
       };
     };
 
@@ -495,21 +495,21 @@ namespace pcl
       inline ParticleXYRP ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYRP (float _x, float, float _z)
+      inline ParticleXYRP (double _x, double, double _z)
       {
         x = _x; y = 0; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYRP (float _x, float, float _z, float, float _pitch, float _yaw)
+      inline ParticleXYRP (double _x, double, double _z, double, double _pitch, double _yaw)
       {
         x = _x; y = 0; z = _z;
         roll = 0; pitch = _pitch; yaw = _yaw;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -518,12 +518,12 @@ namespace pcl
       void
       sample (const std::vector<double>& mean, const std::vector<double>& cov)
       {
-        x     += static_cast<float> (sampleNormal (mean[0], cov[0]));
+        x     += static_cast<double> (sampleNormal (mean[0], cov[0]));
         y     = 0;
-        z     += static_cast<float> (sampleNormal (mean[2], cov[2]));
+        z     += static_cast<double> (sampleNormal (mean[2], cov[2]));
         roll  = 0;
-        pitch += static_cast<float> (sampleNormal (mean[4], cov[4]));
-        yaw   += static_cast<float> (sampleNormal (mean[5], cov[5]));
+        pitch += static_cast<double> (sampleNormal (mean[4], cov[4]));
+        yaw   += static_cast<double> (sampleNormal (mean[5], cov[5]));
       }
 
       void
@@ -537,16 +537,16 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYRP
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
-        float trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
+        double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
                                       trans_x, trans_y, trans_z,
                                       trans_roll, trans_pitch, trans_yaw);
@@ -554,7 +554,7 @@ namespace pcl
       }
 
       // a[i]
-      inline float operator [] (unsigned int i)
+      inline double operator [] (unsigned int i)
       {
         switch (i)
         {
@@ -582,12 +582,12 @@ namespace pcl
     inline pcl::tracking::ParticleXYRP operator * (const ParticleXYRP& p, double val)
     {
       pcl::tracking::ParticleXYRP newp;
-      newp.x     = static_cast<float> (p.x * val);
-      newp.y     = static_cast<float> (p.y * val);
-      newp.z     = static_cast<float> (p.z * val);
-      newp.roll  = static_cast<float> (p.roll * val);
-      newp.pitch = static_cast<float> (p.pitch * val);
-      newp.yaw   = static_cast<float> (p.yaw * val);
+      newp.x     = static_cast<double> (p.x * val);
+      newp.y     = static_cast<double> (p.y * val);
+      newp.z     = static_cast<double> (p.z * val);
+      newp.roll  = static_cast<double> (p.roll * val);
+      newp.pitch = static_cast<double> (p.pitch * val);
+      newp.yaw   = static_cast<double> (p.yaw * val);
       return (newp);
     }
     
@@ -633,12 +633,12 @@ namespace pcl
       {
         struct
         {
-          float roll;
-          float pitch;
-          float yaw;
-          float weight;
+          double roll;
+          double pitch;
+          double yaw;
+          double weight;
         };
-        float data_c[4];
+        double data_c[4];
       };
     };
 
@@ -648,21 +648,21 @@ namespace pcl
       inline ParticleXYR ()
       {
         x = y = z = roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYR (float _x, float, float _z)
+      inline ParticleXYR (double _x, double, double _z)
       {
         x = _x; y = 0; z = _z;
         roll = pitch = yaw = 0.0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
-      inline ParticleXYR (float _x, float, float _z, float, float _pitch, float)
+      inline ParticleXYR (double _x, double, double _z, double, double _pitch, double)
       {
         x = _x; y = 0; z = _z;
         roll = 0; pitch = _pitch; yaw = 0;
-        data[3] = 1.0f;
+        data[3] = 1.0;
       }
 
       inline static int
@@ -671,11 +671,11 @@ namespace pcl
       void
       sample (const std::vector<double>& mean, const std::vector<double>& cov)
       {
-        x     += static_cast<float> (sampleNormal (mean[0], cov[0]));
+        x     += static_cast<double> (sampleNormal (mean[0], cov[0]));
         y     = 0;
-        z     += static_cast<float> (sampleNormal (mean[2], cov[2]));
+        z     += static_cast<double> (sampleNormal (mean[2], cov[2]));
         roll  = 0;
-        pitch += static_cast<float> (sampleNormal (mean[4], cov[4]));
+        pitch += static_cast<double> (sampleNormal (mean[4], cov[4]));
         yaw   = 0;
       }
 
@@ -690,16 +690,16 @@ namespace pcl
         yaw = 0.0;
       }
 
-      inline Eigen::Affine3f
+      inline Eigen::Affine3d
       toEigenMatrix () const
       {
         return getTransformation(x, y, z, roll, pitch, yaw);
       }
 
       static pcl::tracking::ParticleXYR
-      toState (const Eigen::Affine3f &trans)
+      toState (const Eigen::Affine3d &trans)
       {
-        float trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
+        double trans_x, trans_y, trans_z, trans_roll, trans_pitch, trans_yaw;
         getTranslationAndEulerAngles (trans,
                                       trans_x, trans_y, trans_z,
                                       trans_roll, trans_pitch, trans_yaw);
@@ -707,7 +707,7 @@ namespace pcl
       }
 
       // a[i]
-      inline float operator [] (unsigned int i)
+      inline double operator [] (unsigned int i)
       {
         switch (i)
         {
@@ -735,12 +735,12 @@ namespace pcl
     inline pcl::tracking::ParticleXYR operator * (const ParticleXYR& p, double val)
     {
       pcl::tracking::ParticleXYR newp;
-      newp.x     = static_cast<float> (p.x * val);
-      newp.y     = static_cast<float> (p.y * val);
-      newp.z     = static_cast<float> (p.z * val);
-      newp.roll  = static_cast<float> (p.roll * val);
-      newp.pitch = static_cast<float> (p.pitch * val);
-      newp.yaw   = static_cast<float> (p.yaw * val);
+      newp.x     = static_cast<double> (p.x * val);
+      newp.y     = static_cast<double> (p.y * val);
+      newp.z     = static_cast<double> (p.z * val);
+      newp.roll  = static_cast<double> (p.roll * val);
+      newp.pitch = static_cast<double> (p.pitch * val);
+      newp.yaw   = static_cast<double> (p.yaw * val);
       return (newp);
     }
     

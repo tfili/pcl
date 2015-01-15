@@ -51,7 +51,7 @@ main (int argc, char **argv)
   // Downsample
   pcl::console::print_highlight ("Downsampling...\n");
   pcl::VoxelGrid<PointNT> grid;
-  const float leaf = 0.005f;
+  const double leaf = 0.005;
   grid.setLeafSize (leaf, leaf, leaf);
   grid.setInputCloud (object);
   grid.filter (*object);
@@ -86,9 +86,9 @@ main (int argc, char **argv)
   align.setMaximumIterations (10000); // Number of RANSAC iterations
   align.setNumberOfSamples (3); // Number of points to sample for generating/prerejecting a pose
   align.setCorrespondenceRandomness (2); // Number of nearest features to use
-  align.setSimilarityThreshold (0.9f); // Polygonal edge length similarity threshold
-  align.setMaxCorrespondenceDistance (1.5f * leaf); // Inlier threshold
-  align.setInlierFraction (0.25f); // Required inlier fraction for accepting a pose hypothesis
+  align.setSimilarityThreshold (0.9); // Polygonal edge length similarity threshold
+  align.setMaxCorrespondenceDistance (1.5 * leaf); // Inlier threshold
+  align.setInlierFraction (0.25); // Required inlier fraction for accepting a pose hypothesis
   {
     pcl::ScopeTime t("Alignment");
     align.align (*object_aligned);
@@ -98,7 +98,7 @@ main (int argc, char **argv)
   {
     // Print results
     printf ("\n");
-    Eigen::Matrix4f transformation = align.getFinalTransformation ();
+    Eigen::Matrix4d transformation = align.getFinalTransformation ();
     pcl::console::print_info ("    | %6.3f %6.3f %6.3f | \n", transformation (0,0), transformation (0,1), transformation (0,2));
     pcl::console::print_info ("R = | %6.3f %6.3f %6.3f | \n", transformation (1,0), transformation (1,1), transformation (1,2));
     pcl::console::print_info ("    | %6.3f %6.3f %6.3f | \n", transformation (2,0), transformation (2,1), transformation (2,2));

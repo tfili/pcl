@@ -54,7 +54,7 @@ typedef PointXYZ PointType;
 typedef PointCloud<PointXYZ> Cloud;
 typedef const Cloud::ConstPtr ConstCloudPtr;
 
-float default_radius = 1.0f;
+double default_radius = 1.0;
 
 void
 printHelp (int, char **argv)
@@ -83,7 +83,7 @@ loadCloud (const std::string &filename, Cloud &cloud)
 }
 
 void
-compute (ConstCloudPtr &input, Cloud &output, float radius)
+compute (ConstCloudPtr &input, Cloud &output, double radius)
 {
   // Estimate
   TicToc tt;
@@ -115,7 +115,7 @@ saveCloud (const std::string &filename, const Cloud &output)
 
 int
 batchProcess (const vector<string> &pcd_files, string &output_dir,
-              float radius)
+              double radius)
 {
   vector<string> st;
   for (size_t i = 0; i < pcd_files.size (); ++i)
@@ -158,7 +158,7 @@ main (int argc, char** argv)
   bool batch_mode = false;
 
   // Command line parsing
-  float radius = default_radius;
+  double radius = default_radius;
   parse_argument (argc, argv, "-radius", radius);
   string input_dir, output_dir;
   if (parse_argument (argc, argv, "-input_dir", input_dir) != -1)

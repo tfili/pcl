@@ -109,19 +109,19 @@ class CloudTransformTool : public ToolInterface
 
     /// generate translate matrix for the xy plane
     void
-    getTranslateMatrix (int dx, int dy, float* matrix);
+    getTranslateMatrix (int dx, int dy, double* matrix);
 
     /// generate translate matrix for the z direction
     void
-    getZTranslateMatrix (int dy, float* matrix);
+    getZTranslateMatrix (int dy, double* matrix);
 
     /// generate scale matrix
     void
-    getScaleMatrix (int dy, float* matrix);
+    getScaleMatrix (int dy, double* matrix);
 
     /// the transform matrix to be used for updating the coordinates of all
     /// the points in the cloud
-    float transform_matrix_[MATRIX_SIZE];
+    double transform_matrix_[MATRIX_SIZE];
 
     /// a shared pointer pointing to the cloud object.
     CloudPtr cloud_ptr_;
@@ -134,16 +134,16 @@ class CloudTransformTool : public ToolInterface
 
     /// scaling factor used to control the speed which the display scales the
     /// point cloud
-    float scale_factor_;
+    double scale_factor_;
 
     /// scaling factor used to control the speed which the display translates
     /// the point cloud
-    float translate_factor_;
+    double translate_factor_;
 
     /// default scaling factor
-    static const float DEFAULT_SCALE_FACTOR_;
+    static const double DEFAULT_SCALE_FACTOR_;
 
     /// default translation factor
-    static const float DEFAULT_TRANSLATE_FACTOR_;
+    static const double DEFAULT_TRANSLATE_FACTOR_;
 };
 #endif  //CLOUD_TRANSFORM_TOOL_H_

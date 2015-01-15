@@ -83,7 +83,7 @@ namespace pcl
         * \param[in] radius the radius for normal estimation as well as for non maxima suppression
         * \param[in] threshold the threshold to filter out weak corners
         */
-      HarrisKeypoint3D (ResponseMethod method = HARRIS, float radius = 0.01f, float threshold = 0.0f)
+      HarrisKeypoint3D (ResponseMethod method = HARRIS, double radius = 0.01, double threshold = 0.0)
       : threshold_ (threshold)
       , refine_ (true)
       , nonmax_ (true)
@@ -113,14 +113,14 @@ namespace pcl
         * \param[in] radius
         */
       void 
-      setRadius (float radius);
+      setRadius (double radius);
 
       /** \brief Set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
         * \brief note non maxima suppression needs to be activated in order to use this feature.
         * \param[in] threshold
         */
       void 
-      setThreshold (float threshold);
+      setThreshold (double threshold);
 
       /** \brief Whether non maxima suppression should be applied or the response for each point should be returned
         * \note this value needs to be turned on in order to apply thresholding and refinement
@@ -169,9 +169,9 @@ namespace pcl
       void responseCurvature (PointCloudOut &output) const;
       void refineCorners (PointCloudOut &corners) const;
       /** \brief calculates the upper triangular part of unnormalized covariance matrix over the normals given by the indices.*/
-      void calculateNormalCovar (const std::vector<int>& neighbors, float* coefficients) const;
+      void calculateNormalCovar (const std::vector<int>& neighbors, double* coefficients) const;
     private:
-      float threshold_;
+      double threshold_;
       bool refine_;
       bool nonmax_;
       ResponseMethod method_;

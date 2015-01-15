@@ -90,12 +90,12 @@ pcl::IFSReader::readHeader (const std::string &file_name, pcl::PCLPointCloud2 &c
   delete[] magic;
 
   //Read IFS version
-  float version;
-  fs.read ((char*)&version, sizeof (float));
-  if (version == 1.0f)
+  double version;
+  fs.read ((char*)&version, sizeof (double));
+  if (version == 1.0)
     ifs_version = IFS_V1_0;
   else
-    if (version == 1.1f)
+    if (version == 1.1)
       ifs_version = IFS_V1_1;
     else
     {
@@ -334,10 +334,10 @@ pcl::IFSWriter::write (const std::string &file_name, const pcl::PCLPointCloud2 &
   }
 
   const std::string magic = "IFS";
-  const float version = 1.0f;
+  const double version = 1.0;
   const std::string vertices = "VERTICES";
   std::vector<char> header (sizeof (uint32_t) + magic.size () + 1 +
-                            sizeof (float) +
+                            sizeof (double) +
                             sizeof (uint32_t) + cloud_name.size () + 1 +
                             sizeof (uint32_t) + vertices.size () + 1 +
                             sizeof (uint32_t));
@@ -347,8 +347,8 @@ pcl::IFSWriter::write (const std::string &file_name, const pcl::PCLPointCloud2 &
   addr+= sizeof (uint32_t);
   memcpy (addr, magic.c_str (), magic_size * sizeof (char));
   addr+= magic_size * sizeof (char);
-  memcpy (addr, &version, sizeof (float));
-  addr+= sizeof (float);
+  memcpy (addr, &version, sizeof (double));
+  addr+= sizeof (double);
   const uint32_t cloud_name_size = static_cast<uint32_t> (cloud_name.size ()) + 1;
   memcpy (addr, &cloud_name_size, sizeof (uint32_t));
   addr+= sizeof (uint32_t);

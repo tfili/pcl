@@ -40,11 +40,11 @@ namespace pcl
 
         int tes_level_;
         int resolution_;
-        float radius_sphere_;
-        float view_angle_;
+        double radius_sphere_;
+        double view_angle_;
         bool gen_organized_;
         boost::function<bool
-        (const Eigen::Vector3f &)> campos_constraints_func_;
+        (const Eigen::Vector3d &)> campos_constraints_func_;
 
       public:
 
@@ -64,7 +64,7 @@ namespace pcl
 
         void
         setCamPosConstraints (boost::function<bool
-        (const Eigen::Vector3f &)> & bb)
+        (const Eigen::Vector3d &)> & bb)
         {
           campos_constraints_func_ = bb;
         }
@@ -76,13 +76,13 @@ namespace pcl
         }
 
         void
-        setRadiusSphere (float r)
+        setRadiusSphere (double r)
         {
           radius_sphere_ = r;
         }
 
         void
-        setViewAngle (float a)
+        setViewAngle (double a)
         {
           view_angle_ = a;
         }
@@ -95,8 +95,8 @@ namespace pcl
           bf::path trained_dir = pathmodel.str ();
 
           model.views_.reset (new std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr>);
-          model.poses_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
-          model.self_occlusions_.reset (new std::vector<float>);
+          model.poses_.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
+          model.self_occlusions_.reset (new std::vector<double>);
           model.assembled_.reset (new pcl::PointCloud<pcl::PointXYZ>);
           uniform_sampling (model_path, 100000, *model.assembled_, model_scale_);
 
@@ -160,7 +160,7 @@ namespace pcl
               std::stringstream pose_file;
               pose_file << pathmodel.str () << "/" << file_replaced1;
 
-              Eigen::Matrix4f pose;
+              Eigen::Matrix4d pose;
               PersistenceUtils::readMatrixFromFile (pose_file.str (), pose);
 
               model.poses_->push_back (pose);
@@ -168,7 +168,7 @@ namespace pcl
               //read entropy as well
               std::stringstream entropy_file;
               entropy_file << pathmodel.str () << "/" << file_replaced2;
-              float entropy = 0;
+              double entropy = 0;
               PersistenceUtils::readFloatFromFile (entropy_file.str (), entropy);
               model.self_occlusions_->push_back (entropy);
 
@@ -207,16 +207,16 @@ namespace pcl
             render_views.generateViews ();
 
             std::vector<typename PointCloud<PointInT>::Ptr> views_xyz_orig;
-            std::vector < Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > poses;
-            std::vector<float> entropies;
+            std::vector < Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > poses;
+            std::vector<double> entropies;
 
             render_views.getViews (views_xyz_orig);
             render_views.getPoses (poses);
             render_views.getEntropies (entropies);
 
             model.views_.reset (new std::vector<typename PointCloud<PointInT>::Ptr> ());
-            model.poses_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > ());
-            model.self_occlusions_.reset (new std::vector<float> ());
+            model.poses_.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > ());
+            model.self_occlusions_.reset (new std::vector<double> ());
 
             for (size_t i = 0; i < views_xyz_orig.size (); i++)
             {

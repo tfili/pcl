@@ -78,13 +78,13 @@ pcl::registration::LUM<PointT>::getMaxIterations () const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> void
-pcl::registration::LUM<PointT>::setConvergenceThreshold (float convergence_threshold)
+pcl::registration::LUM<PointT>::setConvergenceThreshold (double convergence_threshold)
 {
   convergence_threshold_ = convergence_threshold;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointT> inline float
+template<typename PointT> inline double
 pcl::registration::LUM<PointT>::getConvergenceThreshold () const
 {
   return (convergence_threshold_);
@@ -92,14 +92,14 @@ pcl::registration::LUM<PointT>::getConvergenceThreshold () const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> typename pcl::registration::LUM<PointT>::Vertex
-pcl::registration::LUM<PointT>::addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6f &pose)
+pcl::registration::LUM<PointT>::addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6 &pose)
 {
   Vertex v = add_vertex (*slam_graph_);
   (*slam_graph_)[v].cloud_ = cloud;
-  if (v == 0 && pose != Eigen::Vector6f::Zero ())
+  if (v == 0 && pose != Eigen::Vector6::Zero ())
   {
     PCL_WARN("[pcl::registration::LUM::addPointCloud] The pose estimate is ignored for the first cloud in the graph since that will become the reference pose.\n");
-    (*slam_graph_)[v].pose_ = Eigen::Vector6f::Zero ();
+    (*slam_graph_)[v].pose_ = Eigen::Vector6::Zero ();
     return (v);
   }
   (*slam_graph_)[v].pose_ = pose;
@@ -132,7 +132,7 @@ pcl::registration::LUM<PointT>::getPointCloud (const Vertex &vertex) const
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> inline void
-pcl::registration::LUM<PointT>::setPose (const Vertex &vertex, const Eigen::Vector6f &pose)
+pcl::registration::LUM<PointT>::setPose (const Vertex &vertex, const Eigen::Vector6 &pose)
 {
   if (vertex >= getNumVertices ())
   {
@@ -148,22 +148,22 @@ pcl::registration::LUM<PointT>::setPose (const Vertex &vertex, const Eigen::Vect
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointT> inline Eigen::Vector6f
+template<typename PointT> inline Eigen::Vector6
 pcl::registration::LUM<PointT>::getPose (const Vertex &vertex) const
 {
   if (vertex >= getNumVertices ())
   {
     PCL_ERROR("[pcl::registration::LUM::getPose] You are attempting to get a pose estimate from a non-existing graph vertex.\n");
-    return (Eigen::Vector6f::Zero ());
+    return (Eigen::Vector6::Zero ());
   }
   return ((*slam_graph_)[vertex].pose_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointT> inline Eigen::Affine3f
+template<typename PointT> inline Eigen::Affine3d
 pcl::registration::LUM<PointT>::getTransformation (const Vertex &vertex) const
 {
-  Eigen::Vector6f pose = getPose (vertex);
+  Eigen::Vector6 pose = getPose (vertex);
   return (pcl::getTransformation (pose (0), pose (1), pose (2), pose (3), pose (4), pose (5)));
 }
 
@@ -222,8 +222,8 @@ pcl::registration::LUM<PointT>::compute ()
       computeEdge (*e);
 
     // Declare matrices G and B
-    Eigen::MatrixXf G = Eigen::MatrixXf::Zero (6 * (n - 1), 6 * (n - 1));
-    Eigen::VectorXf B = Eigen::VectorXf::Zero (6 * (n - 1));
+    Eigen::MatrixXd G = Eigen::MatrixXd::Zero (6 * (n - 1), 6 * (n - 1));
+    Eigen::VectorXd B = Eigen::VectorXd::Zero (6 * (n - 1));
 
     // Start at 1 because 0 is the reference pose
     for (int vi = 1; vi != n; ++vi)
@@ -251,19 +251,19 @@ pcl::registration::LUM<PointT>::compute ()
 
     // Computation of the linear equation system: GX = B
     // TODO investigate accuracy vs. speed tradeoff and find the best solving method for our type of linear equation (sparse)
-    Eigen::VectorXf X = G.colPivHouseholderQr ().solve (B);
+    Eigen::VectorXd X = G.colPivHouseholderQr ().solve (B);
 
     // Update the poses
-    float sum = 0.0;
+    double sum = 0.0;
     for (int vi = 1; vi != n; ++vi)
     {
-      Eigen::Vector6f difference_pose = static_cast<Eigen::Vector6f> (-incidenceCorrection (getPose (vi)).inverse () * X.segment (6 * (vi - 1), 6));
+      Eigen::Vector6 difference_pose = static_cast<Eigen::Vector6> (-incidenceCorrection (getPose (vi)).inverse () * X.segment (6 * (vi - 1), 6));
       sum += difference_pose.norm ();
       setPose (vi, getPose (vi) + difference_pose);
     }
 
     // Convergence check
-    if (sum <= convergence_threshold_ * static_cast<float> (n - 1))
+    if (sum <= convergence_threshold_ * static_cast<double> (n - 1))
       return;
   }
 }
@@ -299,19 +299,19 @@ pcl::registration::LUM<PointT>::computeEdge (const Edge &e)
   // Get necessary local data from graph
   PointCloudPtr source_cloud = (*slam_graph_)[source (e, *slam_graph_)].cloud_;
   PointCloudPtr target_cloud = (*slam_graph_)[target (e, *slam_graph_)].cloud_;
-  Eigen::Vector6f source_pose = (*slam_graph_)[source (e, *slam_graph_)].pose_;
-  Eigen::Vector6f target_pose = (*slam_graph_)[target (e, *slam_graph_)].pose_;
+  Eigen::Vector6 source_pose = (*slam_graph_)[source (e, *slam_graph_)].pose_;
+  Eigen::Vector6 target_pose = (*slam_graph_)[target (e, *slam_graph_)].pose_;
   pcl::CorrespondencesPtr corrs = (*slam_graph_)[e].corrs_;
 
   // Build the average and difference vectors for all correspondences
-  std::vector <Eigen::Vector3f> corrs_aver (corrs->size ());
-  std::vector <Eigen::Vector3f> corrs_diff (corrs->size ());
+  std::vector <Eigen::Vector3d> corrs_aver (corrs->size ());
+  std::vector <Eigen::Vector3d> corrs_diff (corrs->size ());
   int oci = 0;  // oci = output correspondence iterator
   for (int ici = 0; ici != static_cast<int> (corrs->size ()); ++ici)  // ici = input correspondence iterator
   {
     // Compound the point pair onto the current pose
-    Eigen::Vector3f source_compounded = pcl::getTransformation (source_pose (0), source_pose (1), source_pose (2), source_pose (3), source_pose (4), source_pose (5)) * source_cloud->points[(*corrs)[ici].index_query].getVector3fMap ();
-    Eigen::Vector3f target_compounded = pcl::getTransformation (target_pose (0), target_pose (1), target_pose (2), target_pose (3), target_pose (4), target_pose (5)) * target_cloud->points[(*corrs)[ici].index_match].getVector3fMap ();
+    Eigen::Vector3d source_compounded = pcl::getTransformation (source_pose (0), source_pose (1), source_pose (2), source_pose (3), source_pose (4), source_pose (5)) * source_cloud->points[(*corrs)[ici].index_query].getVector3dMap ();
+    Eigen::Vector3d target_compounded = pcl::getTransformation (target_pose (0), target_pose (1), target_pose (2), target_pose (3), target_pose (4), target_pose (5)) * target_cloud->points[(*corrs)[ici].index_match].getVector3dMap ();
 
     // NaN points can not be passed to the remaining computational pipeline
     if (!pcl_isfinite (source_compounded (0)) || !pcl_isfinite (source_compounded (1)) || !pcl_isfinite (source_compounded (2)) || !pcl_isfinite (target_compounded (0)) || !pcl_isfinite (target_compounded (1)) || !pcl_isfinite (target_compounded (2)))
@@ -329,14 +329,14 @@ pcl::registration::LUM<PointT>::computeEdge (const Edge &e)
   if (oci < 3)
   {
     PCL_WARN("[pcl::registration::LUM::compute] The correspondences between vertex %d and %d do not contain enough valid correspondences to be considered for computation.\n", source (e, *slam_graph_), target (e, *slam_graph_));
-    (*slam_graph_)[e].cinv_ = Eigen::Matrix6f::Zero ();
-    (*slam_graph_)[e].cinvd_ = Eigen::Vector6f::Zero ();
+    (*slam_graph_)[e].cinv_ = Eigen::Matrix6::Zero ();
+    (*slam_graph_)[e].cinvd_ = Eigen::Vector6::Zero ();
     return;
   }
 
   // Build the matrices M'M and M'Z
-  Eigen::Matrix6f MM = Eigen::Matrix6f::Zero ();
-  Eigen::Vector6f MZ = Eigen::Vector6f::Zero ();
+  Eigen::Matrix6 MM = Eigen::Matrix6::Zero ();
+  Eigen::Vector6 MZ = Eigen::Vector6::Zero ();
   for (int ci = 0; ci != oci; ++ci)  // ci = correspondence iterator
   {
     // Fast computation of summation elements of M'M
@@ -362,7 +362,7 @@ pcl::registration::LUM<PointT>::computeEdge (const Edge &e)
     MZ (5) += corrs_aver[ci] (2) * corrs_diff[ci] (0) - corrs_aver[ci] (0) * corrs_diff[ci] (2);
   }
   // Remaining elements of M'M
-  MM (0, 0) = MM (1, 1) = MM (2, 2) = static_cast<float> (oci);
+  MM (0, 0) = MM (1, 1) = MM (2, 2) = static_cast<double> (oci);
   MM (4, 0) = MM (0, 4);
   MM (5, 0) = MM (0, 5);
   MM (3, 1) = MM (1, 3);
@@ -374,34 +374,34 @@ pcl::registration::LUM<PointT>::computeEdge (const Edge &e)
   MM (5, 4) = MM (4, 5);
 
   // Compute pose difference estimation
-  Eigen::Vector6f D = static_cast<Eigen::Vector6f> (MM.inverse () * MZ);
+  Eigen::Vector6 D = static_cast<Eigen::Vector6> (MM.inverse () * MZ);
 
   // Compute s^2
-  float ss = 0.0f;
+  double ss = 0.0;
   for (int ci = 0; ci != oci; ++ci)  // ci = correspondence iterator
-    ss += static_cast<float> (pow (corrs_diff[ci] (0) - (D (0) + corrs_aver[ci] (2) * D (5) - corrs_aver[ci] (1) * D (4)), 2.0f)
-                            + pow (corrs_diff[ci] (1) - (D (1) + corrs_aver[ci] (0) * D (4) - corrs_aver[ci] (2) * D (3)), 2.0f)
-                            + pow (corrs_diff[ci] (2) - (D (2) + corrs_aver[ci] (1) * D (3) - corrs_aver[ci] (0) * D (5)), 2.0f));
+    ss += static_cast<double> (pow (corrs_diff[ci] (0) - (D (0) + corrs_aver[ci] (2) * D (5) - corrs_aver[ci] (1) * D (4)), 2.0)
+                            + pow (corrs_diff[ci] (1) - (D (1) + corrs_aver[ci] (0) * D (4) - corrs_aver[ci] (2) * D (3)), 2.0)
+                            + pow (corrs_diff[ci] (2) - (D (2) + corrs_aver[ci] (1) * D (3) - corrs_aver[ci] (0) * D (5)), 2.0));
 
   // When reaching the limitations of computation due to linearization
   if (ss < 0.0000000000001 || !pcl_isfinite (ss))
   {
-    (*slam_graph_)[e].cinv_ = Eigen::Matrix6f::Zero ();
-    (*slam_graph_)[e].cinvd_ = Eigen::Vector6f::Zero ();
+    (*slam_graph_)[e].cinv_ = Eigen::Matrix6::Zero ();
+    (*slam_graph_)[e].cinvd_ = Eigen::Vector6::Zero ();
     return;
   }
 
   // Store the results in the slam graph
-  (*slam_graph_)[e].cinv_ = MM * (1.0f / ss);
-  (*slam_graph_)[e].cinvd_ = MZ * (1.0f / ss);
+  (*slam_graph_)[e].cinv_ = MM * (1.0 / ss);
+  (*slam_graph_)[e].cinvd_ = MZ * (1.0 / ss);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template<typename PointT> inline Eigen::Matrix6f
-pcl::registration::LUM<PointT>::incidenceCorrection (const Eigen::Vector6f &pose)
+template<typename PointT> inline Eigen::Matrix6
+pcl::registration::LUM<PointT>::incidenceCorrection (const Eigen::Vector6 &pose)
 {
-  Eigen::Matrix6f out = Eigen::Matrix6f::Identity ();
-  float cx = cosf (pose (3)), sx = sinf (pose (3)), cy = cosf (pose (4)), sy = sinf (pose (4));
+  Eigen::Matrix6 out = Eigen::Matrix6::Identity ();
+  double cx = cos (pose (3)), sx = sin (pose (3)), cy = cos (pose (4)), sy = sin (pose (4));
   out (0, 4) = pose (1) * sx - pose (2) * cx;
   out (0, 5) = pose (1) * cx * cy + pose (2) * sx * cy;
   out (1, 3) = pose (2);

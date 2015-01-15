@@ -443,7 +443,7 @@ The most notable overall changes are:
 * Added "PointXYZRGBA" callbacks for "OpenNIGrabber" and "PCLVisualizer".
 * Fixed two bugs where a segfault would occur in "addPolygonMesh" when the input cloud would be empty, as well as #563 : PCLVisualizer::addPolygonMesh crash (thanks Mourad!)
 * Fixed a bug where changing the point color using "setPointCloudRenderingProperties" would not update the actor's colors on screen
-* Fix for #532: "PCLVizualizer::addCoordinateSystem()" switch from "Eigen::Matrix4f" to "Eigen::Affine3f" (thanks Aurel!)
+* Fix for #532: "PCLVizualizer::addCoordinateSystem()" switch from "Eigen::Matrix4d" to "Eigen::Affine3d" (thanks Aurel!)
 * Fix for #524: ctrl problem with pcd_viewer (thanks Mourad!)
 * Adding opt in flag -use_vbos to pcl_visuzlier. It's still quite buggy, but shouldn't affect the visualizer unless this flag is passed. 
 * Added vtkVertexBufferObject/Mapper and moved pcl_image_canvas_source2d 
@@ -734,7 +734,7 @@ The most notable overall changes are:
 * added setFullScreen and setWindowBorders methods to allow an user to change the full screen/border properties of the PCLVisualizer GUI
 * fix for issue #519 (set the minimum number of cloud points to 1 in vtkLODActor)
 * fix for issue #524 (ctrl problem with pcd_viewer)
-* fix for issue #532 (PCLVizualizer::addCoordinateSystem() switch from Eigen::Matrix4f to Eigen::Affine3f)
+* fix for issue #532 (PCLVizualizer::addCoordinateSystem() switch from Eigen::Matrix4d to Eigen::Affine3d)
 * bug fix in pcd_grabber_viewer: now sorting the read .pcd file by name before showing them (was in random order before)
 * fixed issue #525 (pcd_viewer did not handle nan values correctly in fields other than x, y, z)
 * fixed a bug where changing the point color using setPointCloudRenderingProperties would not update the actor's colors on screen
@@ -1026,7 +1026,7 @@ pcl::OrganizedDataIndex -> pcl::search::OrganizedNeighbor
 
 ### `libpcl_features`
 
-* specialize std::vector for Eigen::Matrix4f (alignment issue with msvc 32bit) in `SHOTEstimation`
+* specialize std::vector for Eigen::Matrix4d (alignment issue with msvc 32bit) in `SHOTEstimation`
 * added a faster (eigen-based) integral image calculation => sped up normal estimation to 15Hz
 * added Unique Shape Context (USC) feature descriptor
 * added Shape Context 3D feature descriptor
@@ -1313,7 +1313,7 @@ pcl::OrganizedDataIndex -> pcl::search::OrganizedNeighbor
    * SACSegmentation now works with PROSAC too
    * PCDViewer now reads VTK files
    * new Mouse and Keyboard events for PCLVisualizer
-   * PCLVisualizer.{addText3D, addCoordinateSystem (Eigen::Matrix4f), deleteText3D, updatePointCloud, renderViewTesselatedSphere, resetCameraViewpoint, getCameras, getViewerPose}
+   * PCLVisualizer.{addText3D, addCoordinateSystem (Eigen::Matrix4d), deleteText3D, updatePointCloud, renderViewTesselatedSphere, resetCameraViewpoint, getCameras, getViewerPose}
    * ONIGrabber, DeviceONI
    * ImageRGB24, IRImage
    * generic FileReader + FileWriter
@@ -1680,7 +1680,7 @@ The version numbers below belong to the *perception_pcl* stack in ROS, which coo
 
 * [[pcl]]
 
- * changes needed for the eigen3 upgrade (_Eigen3::Transform3f_ -> _Eigen3::Affine3f_)
+ * changes needed for the eigen3 upgrade (_Eigen3::Transform3f_ -> _Eigen3::Affine3d_)
  * Added _SIFTKeypoint_ keypoint detection algorithm for use on xyz+intensity point clouds.
  * Fixed a bug in _Registration::FeatureContainer::isValid ()_ where the source and target feature clouds were required (incorrectly) to be the same size
  * added NARF features (descriptor) to features, updated NARF keypoints, made _RangeImageBorderExtractor_ derived from Feature.

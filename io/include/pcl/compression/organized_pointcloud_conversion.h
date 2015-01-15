@@ -56,7 +56,7 @@ namespace pcl
     {
         static const bool hasColor = false;
         static const unsigned int channels = 1;
-        static const size_t bytesPerPoint = 3 * sizeof(float);
+        static const size_t bytesPerPoint = 3 * sizeof(double);
     };
 
     template<>
@@ -64,7 +64,7 @@ namespace pcl
     {
         static const bool hasColor = true;
         static const unsigned int channels = 4;
-        static const size_t bytesPerPoint = 3 * sizeof(float) + 3 * sizeof(uint8_t);
+        static const size_t bytesPerPoint = 3 * sizeof(double) + 3 * sizeof(uint8_t);
     };
 
     template<>
@@ -72,7 +72,7 @@ namespace pcl
     {
         static const bool hasColor = true;
         static const unsigned int channels = 4;
-        static const size_t bytesPerPoint = 3 * sizeof(float) + 3 * sizeof(uint8_t);
+        static const size_t bytesPerPoint = 3 * sizeof(double) + 3 * sizeof(uint8_t);
     };
 
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,9 +94,9 @@ namespace pcl
         * \ingroup io
         */
       static void convert(const pcl::PointCloud<PointT>& cloud_arg,
-                          float focalLength_arg,
-                          float disparityShift_arg,
-                          float disparityScale_arg,
+                          double focalLength_arg,
+                          double disparityShift_arg,
+                          double disparityScale_arg,
                           bool ,
                           typename std::vector<uint16_t>& disparityData_arg,
                           typename std::vector<uint8_t>&)
@@ -144,9 +144,9 @@ namespace pcl
                           bool,
                           size_t width_arg,
                           size_t height_arg,
-                          float focalLength_arg,
-                          float disparityShift_arg,
-                          float disparityScale_arg,
+                          double focalLength_arg,
+                          double disparityShift_arg,
+                          double disparityScale_arg,
                           pcl::PointCloud<PointT>& cloud_arg)
       {
         size_t i;
@@ -168,8 +168,8 @@ namespace pcl
         centerX = static_cast<int> (width_arg / 2);
         centerY = static_cast<int> (height_arg / 2);
 
-        const float fl_const = 1.0f / focalLength_arg;
-        static const float bad_point = std::numeric_limits<float>::quiet_NaN ();
+        const double fl_const = 1.0 / focalLength_arg;
+        static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
         for (y = -centerY; y < +centerY; ++y)
@@ -182,11 +182,11 @@ namespace pcl
             if (pixel_disparity)
             {
               // Inverse depth decoding
-              float depth = focalLength_arg / (static_cast<float> (pixel_disparity) * disparityScale_arg + disparityShift_arg);
+              double depth = focalLength_arg / (static_cast<double> (pixel_disparity) * disparityScale_arg + disparityShift_arg);
 
               // Generate new points
-              newPoint.x = static_cast<float> (x) * depth * fl_const;
-              newPoint.y = static_cast<float> (y) * depth * fl_const;
+              newPoint.x = static_cast<double> (x) * depth * fl_const;
+              newPoint.y = static_cast<double> (y) * depth * fl_const;
               newPoint.z = depth;
 
             }
@@ -210,12 +210,12 @@ namespace pcl
         * \param[out] cloud_arg output point cloud
         * \ingroup io
         */
-      static void convert(typename std::vector<float>& depthData_arg,
+      static void convert(typename std::vector<double>& depthData_arg,
                           typename std::vector<uint8_t>&,
                           bool,
                           size_t width_arg,
                           size_t height_arg,
-                          float focalLength_arg,
+                          double focalLength_arg,
                           pcl::PointCloud<PointT>& cloud_arg)
       {
         size_t i;
@@ -237,25 +237,25 @@ namespace pcl
         centerX = static_cast<int> (width_arg / 2);
         centerY = static_cast<int> (height_arg / 2);
 
-        const float fl_const = 1.0f / focalLength_arg;
-        static const float bad_point = std::numeric_limits<float>::quiet_NaN ();
+        const double fl_const = 1.0 / focalLength_arg;
+        static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
         for (y = -centerY; y < +centerY; ++y)
           for (x = -centerX; x < +centerX; ++x)
           {
             PointT newPoint;
-            const float& pixel_depth = depthData_arg[i];
+            const double& pixel_depth = depthData_arg[i];
             ++i;
 
             if (pixel_depth)
             {
               // Inverse depth decoding
-              float depth = focalLength_arg / pixel_depth;
+              double depth = focalLength_arg / pixel_depth;
 
               // Generate new points
-              newPoint.x = static_cast<float> (x) * depth * fl_const;
-              newPoint.y = static_cast<float> (y) * depth * fl_const;
+              newPoint.x = static_cast<double> (x) * depth * fl_const;
+              newPoint.y = static_cast<double> (y) * depth * fl_const;
               newPoint.z = depth;
 
             }
@@ -289,9 +289,9 @@ namespace pcl
         * \ingroup io
         */
       static void convert(const pcl::PointCloud<PointT>& cloud_arg,
-                          float focalLength_arg,
-                          float disparityShift_arg,
-                          float disparityScale_arg,
+                          double focalLength_arg,
+                          double disparityShift_arg,
+                          double disparityScale_arg,
                           bool convertToMono,
                           typename std::vector<uint16_t>& disparityData_arg,
                           typename std::vector<uint8_t>& rgbData_arg)
@@ -325,9 +325,9 @@ namespace pcl
             {
               // Encode point color
               const uint32_t rgb = *reinterpret_cast<const int*> (&point.rgb);
-              uint8_t grayvalue = static_cast<uint8_t>(0.2989 * static_cast<float>((rgb >> 16) & 0x0000ff) +
-                                                       0.5870 * static_cast<float>((rgb >> 8)  & 0x0000ff) +
-                                                       0.1140 * static_cast<float>((rgb >> 0)  & 0x0000ff));
+              uint8_t grayvalue = static_cast<uint8_t>(0.2989 * static_cast<double>((rgb >> 16) & 0x0000f) +
+                                                       0.5870 * static_cast<double>((rgb >> 8)  & 0x0000f) +
+                                                       0.1140 * static_cast<double>((rgb >> 0)  & 0x0000f));
 
               rgbData_arg.push_back (grayvalue);
             } else
@@ -335,9 +335,9 @@ namespace pcl
               // Encode point color
               const uint32_t rgb = *reinterpret_cast<const int*> (&point.rgb);
 
-              rgbData_arg.push_back ( (rgb >> 16) & 0x0000ff);
-              rgbData_arg.push_back ( (rgb >> 8) & 0x0000ff);
-              rgbData_arg.push_back ( (rgb >> 0) & 0x0000ff);
+              rgbData_arg.push_back ( (rgb >> 16) & 0x0000f);
+              rgbData_arg.push_back ( (rgb >> 8) & 0x0000f);
+              rgbData_arg.push_back ( (rgb >> 0) & 0x0000f);
             }
 
 
@@ -385,9 +385,9 @@ namespace pcl
                           bool monoImage_arg,
                           size_t width_arg,
                           size_t height_arg,
-                          float focalLength_arg,
-                          float disparityShift_arg,
-                          float disparityScale_arg,
+                          double focalLength_arg,
+                          double disparityShift_arg,
+                          double disparityScale_arg,
                           pcl::PointCloud<PointT>& cloud_arg)
       {
         size_t i;
@@ -422,8 +422,8 @@ namespace pcl
         centerX = static_cast<int>(width_arg/2);
         centerY = static_cast<int>(height_arg/2);
 
-        const float fl_const = 1.0f/focalLength_arg;
-        static const float bad_point = std::numeric_limits<float>::quiet_NaN ();
+        const double fl_const = 1.0/focalLength_arg;
+        static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
         for (y=-centerY; y<+centerY; ++y )
@@ -435,12 +435,12 @@ namespace pcl
 
             if (pixel_disparity && (pixel_disparity!=0x7FF))
             {
-              float depth = focalLength_arg / (static_cast<float> (pixel_disparity) * disparityScale_arg + disparityShift_arg);
+              double depth = focalLength_arg / (static_cast<double> (pixel_disparity) * disparityScale_arg + disparityShift_arg);
 
               // Define point location
               newPoint.z = depth;
-              newPoint.x = static_cast<float> (x) * depth * fl_const;
-              newPoint.y = static_cast<float> (y) * depth * fl_const;
+              newPoint.x = static_cast<double> (x) * depth * fl_const;
+              newPoint.y = static_cast<double> (y) * depth * fl_const;
 
               if (hasColor)
               {
@@ -454,7 +454,7 @@ namespace pcl
                   uint32_t rgb = (static_cast<uint32_t>(pixel_r) << 16
                                 | static_cast<uint32_t>(pixel_g) << 8
                                 | static_cast<uint32_t>(pixel_b));
-                  newPoint.rgb = *reinterpret_cast<float*>(&rgb);
+                  newPoint.rgb = *reinterpret_cast<double*>(&rgb);
                 } else
                 {
                   const uint8_t& pixel_r = rgbData_arg[i*3+0];
@@ -465,7 +465,7 @@ namespace pcl
                   uint32_t rgb = (static_cast<uint32_t>(pixel_r) << 16
                                 | static_cast<uint32_t>(pixel_g) << 8
                                 | static_cast<uint32_t>(pixel_b));
-                  newPoint.rgb = *reinterpret_cast<float*>(&rgb);
+                  newPoint.rgb = *reinterpret_cast<double*>(&rgb);
                 }
 
               } else
@@ -474,13 +474,13 @@ namespace pcl
                 uint32_t rgb = (static_cast<uint32_t>(255) << 16
                               | static_cast<uint32_t>(255) << 8
                               | static_cast<uint32_t>(255));
-                newPoint.rgb = *reinterpret_cast<float*>(&rgb);
+                newPoint.rgb = *reinterpret_cast<double*>(&rgb);
               }
             } else
             {
               // Define bad point
               newPoint.x = newPoint.y = newPoint.z = bad_point;
-              newPoint.rgb = 0.0f;
+              newPoint.rgb = 0.0;
             }
 
             // Add point to cloud
@@ -500,12 +500,12 @@ namespace pcl
         * \param[out] cloud_arg output point cloud
         * \ingroup io
         */
-      static void convert(typename std::vector<float>& depthData_arg,
+      static void convert(typename std::vector<double>& depthData_arg,
                           typename std::vector<uint8_t>& rgbData_arg,
                           bool monoImage_arg,
                           size_t width_arg,
                           size_t height_arg,
-                          float focalLength_arg,
+                          double focalLength_arg,
                           pcl::PointCloud<PointT>& cloud_arg)
       {
         size_t i;
@@ -540,8 +540,8 @@ namespace pcl
         centerX = static_cast<int>(width_arg/2);
         centerY = static_cast<int>(height_arg/2);
 
-        const float fl_const = 1.0f/focalLength_arg;
-        static const float bad_point = std::numeric_limits<float>::quiet_NaN ();
+        const double fl_const = 1.0/focalLength_arg;
+        static const double bad_point = std::numeric_limits<double>::quiet_NaN ();
 
         i = 0;
         for (y=-centerY; y<+centerY; ++y )
@@ -549,16 +549,16 @@ namespace pcl
           {
             PointT newPoint;
 
-            const float& pixel_depth = depthData_arg[i];
+            const double& pixel_depth = depthData_arg[i];
 
             if (pixel_depth==pixel_depth)
             {
-              float depth = focalLength_arg / pixel_depth;
+              double depth = focalLength_arg / pixel_depth;
 
               // Define point location
               newPoint.z = depth;
-              newPoint.x = static_cast<float> (x) * depth * fl_const;
-              newPoint.y = static_cast<float> (y) * depth * fl_const;
+              newPoint.x = static_cast<double> (x) * depth * fl_const;
+              newPoint.y = static_cast<double> (y) * depth * fl_const;
 
               if (hasColor)
               {
@@ -572,7 +572,7 @@ namespace pcl
                   uint32_t rgb = (static_cast<uint32_t>(pixel_r) << 16
                                 | static_cast<uint32_t>(pixel_g) << 8
                                 | static_cast<uint32_t>(pixel_b));
-                  newPoint.rgb = *reinterpret_cast<float*>(&rgb);
+                  newPoint.rgb = *reinterpret_cast<double*>(&rgb);
                 } else
                 {
                   const uint8_t& pixel_r = rgbData_arg[i*3+0];
@@ -583,7 +583,7 @@ namespace pcl
                   uint32_t rgb = (static_cast<uint32_t>(pixel_r) << 16
                                 | static_cast<uint32_t>(pixel_g) << 8
                                 | static_cast<uint32_t>(pixel_b));
-                  newPoint.rgb = *reinterpret_cast<float*>(&rgb);
+                  newPoint.rgb = *reinterpret_cast<double*>(&rgb);
                 }
 
               } else
@@ -592,13 +592,13 @@ namespace pcl
                 uint32_t rgb = (static_cast<uint32_t>(255) << 16
                               | static_cast<uint32_t>(255) << 8
                               | static_cast<uint32_t>(255));
-                newPoint.rgb = *reinterpret_cast<float*>(&rgb);
+                newPoint.rgb = *reinterpret_cast<double*>(&rgb);
               }
             } else
             {
               // Define bad point
               newPoint.x = newPoint.y = newPoint.z = bad_point;
-              newPoint.rgb = 0.0f;
+              newPoint.rgb = 0.0;
             }
 
             // Add point to cloud

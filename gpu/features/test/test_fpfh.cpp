@@ -107,7 +107,7 @@ TEST(PCL_FeaturesGPU, fpfh_low_level)
         
         size_t FSize = sizeof(FPFHSignature33)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -115,7 +115,7 @@ TEST(PCL_FeaturesGPU, fpfh_low_level)
 
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }
-        ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+        ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -182,7 +182,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level1)
         
         size_t FSize = sizeof(FPFHSignature33)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -192,7 +192,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level1)
         }        
 
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -260,7 +260,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level2)
         
         size_t FSize = sizeof(FPFHSignature33)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -270,7 +270,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level2)
         }
         //cout << i << "->"<< norm_diff/norm << endl;
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -337,7 +337,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level3)
         
         size_t FSize = sizeof(FPFHSignature33)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -347,7 +347,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level3)
         }
         //cout << i << "->"<< norm_diff/norm << endl;
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }
 
@@ -415,7 +415,7 @@ TEST(PCL_FeaturesGPU, fpfh_high_level4)
         
         size_t FSize = sizeof(FPFHSignature33)/sizeof(gpu.histogram[0]);                                
         
-        float norm = 0, norm_diff = 0;
+        double norm = 0, norm_diff = 0;
         for(size_t j = 0; j < FSize; ++j)
         {
             norm_diff += (gpu.histogram[j] - cpu.histogram[j]) * (gpu.histogram[j] - cpu.histogram[j]);
@@ -424,6 +424,6 @@ TEST(PCL_FeaturesGPU, fpfh_high_level4)
             //ASSERT_NEAR(gpu.histogram[j], cpu.histogram[j], 0.03f);
         }            
         if (norm != 0)
-            ASSERT_EQ(norm_diff/norm < 0.01f/FSize, true);
+            ASSERT_EQ(norm_diff/norm < 0.01/FSize, true);
     }
 }

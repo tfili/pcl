@@ -56,7 +56,7 @@ class CameraPoseProcessor
 
     /// process the camera pose, this method is called at every frame.
     virtual void
-    processPose (const Eigen::Affine3f &pose)=0;
+    processPose (const Eigen::Affine3d &pose)=0;
 };
 
 /**
@@ -88,13 +88,13 @@ class CameraPoseWriter : public CameraPoseProcessor
     }
 
     void
-    processPose (const Eigen::Affine3f &pose)
+    processPose (const Eigen::Affine3d &pose)
     {
       if (out_stream_.good ())
       {
         // convert 3x4 affine transformation to quaternion and write to file
-        Eigen::Quaternionf q (pose.rotation ());
-        Eigen::Vector3f t (pose.translation ());
+        Eigen::Quaterniond q (pose.rotation ());
+        Eigen::Vector3d t (pose.translation ());
         // write translation , quaternion in a row
         out_stream_ << t[0] << "," << t[1] << "," << t[2]
                     << "," << q.w () << "," << q.x ()

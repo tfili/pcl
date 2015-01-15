@@ -34,8 +34,8 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
   size_t previous_cluster_size = 0;
   size_t previous_categories_size = 0;
 
-  float Z_DIST_ = 1.25f;
-  float text_scale = 0.015f;
+  double Z_DIST_ = 1.25;
+  double text_scale = 0.015;
 
   while (camera.isActive ())
   {
@@ -52,15 +52,15 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
     dps.setObjectMinHeight (0.005);
     dps.setMinClusterSize (1000);
     dps.setWSize (9);
-    dps.setDistanceBetweenClusters (0.1f);
+    dps.setDistanceBetweenClusters (0.1);
 
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clusters;
     std::vector<pcl::PointIndices> indices;
-    dps.setDownsamplingSize (0.02f);
+    dps.setDownsamplingSize (0.02);
     dps.compute_fast (clusters);
     dps.getIndicesClusters (indices);
-    Eigen::Vector4f table_plane_;
-    Eigen::Vector3f normal_plane_ = Eigen::Vector3f (table_plane_[0], table_plane_[1], table_plane_[2]);
+    Eigen::Vector4d table_plane_;
+    Eigen::Vector3d normal_plane_ = Eigen::Vector3d (table_plane_[0], table_plane_[1], table_plane_[2]);
     dps.getTableCoefficients (table_plane_);
 
     vis.removePointCloud ("frame");
@@ -84,7 +84,7 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
     }
 
     previous_categories_size = 0;
-    float dist_ = 0.03f;
+    double dist_ = 0.03f;
 
     for (size_t i = 0; i < clusters.size (); i++)
     {
@@ -98,21 +98,21 @@ segmentAndClassify (typename pcl::rec_3d_framework::GlobalNNPipeline<DistT, Poin
       global.classify ();
 
       std::vector < std::string > categories;
-      std::vector<float> conf;
+      std::vector<double> conf;
 
       global.getCategory (categories);
       global.getConfidence (conf);
 
       std::string category = categories[0];
-      Eigen::Vector4f centroid;
+      Eigen::Vector4d centroid;
       pcl::compute3DCentroid (*xyz_points, indices[i].indices, centroid);
       for (size_t kk = 0; kk < categories.size (); kk++)
       {
 
         pcl::PointXYZ pos;
-        pos.x = centroid[0] + normal_plane_[0] * static_cast<float> (kk + 1) * dist_;
-        pos.y = centroid[1] + normal_plane_[1] * static_cast<float> (kk + 1) * dist_;
-        pos.z = centroid[2] + normal_plane_[2] * static_cast<float> (kk + 1) * dist_;
+        pos.x = centroid[0] + normal_plane_[0] * static_cast<double> (kk + 1) * dist_;
+        pos.y = centroid[1] + normal_plane_[1] * static_cast<double> (kk + 1) * dist_;
+        pos.z = centroid[2] + normal_plane_[2] * static_cast<double> (kk + 1) * dist_;
 
         std::ostringstream prob_str;
         prob_str.precision (1);
@@ -154,9 +154,9 @@ main (int argc, char ** argv)
   mesh_source->setPath (path);
   mesh_source->setResolution (150);
   mesh_source->setTesselationLevel (1);
-  mesh_source->setViewAngle (57.f);
-  mesh_source->setRadiusSphere (1.5f);
-  mesh_source->setModelScale (1.f);
+  mesh_source->setViewAngle (57.);
+  mesh_source->setRadiusSphere (1.5);
+  mesh_source->setModelScale (1.);
   mesh_source->generate (training_dir);
 
   boost::shared_ptr<pcl::rec_3d_framework::Source<pcl::PointXYZ> > cast_source;

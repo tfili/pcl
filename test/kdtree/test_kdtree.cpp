@@ -59,7 +59,7 @@ PointCloud<PointXYZ>::Ptr cloud_in (new PointCloud<PointXYZ> ());
 
 struct MyPoint : public PointXYZ 
 {
-    MyPoint (float x, float y, float z) {this->x=x; this->y=y; this->z=z;}
+    MyPoint (double x, double y, double z) {this->x=x; this->y=y; this->z=z;}
 };
 
 PointCloud<MyPoint> cloud, cloud_big;
@@ -70,10 +70,10 @@ PointCloud<MyPoint> cloud, cloud_big;
 void 
 init ()
 {
-  float resolution = 0.1f;
-  for (float z = -0.5f; z <= 0.5f; z += resolution)
-    for (float y = -0.5f; y <= 0.5f; y += resolution)
-      for (float x = -0.5f; x <= 0.5f; x += resolution)
+  double resolution = 0.1;
+  for (double z = -0.5; z <= 0.5; z += resolution)
+    for (double y = -0.5; y <= 0.5; y += resolution)
+      for (double x = -0.5; x <= 0.5; x += resolution)
         cloud.points.push_back (MyPoint (x, y, z));
   cloud.width  = static_cast<uint32_t> (cloud.points.size ());
   cloud.height = 1;
@@ -83,9 +83,9 @@ init ()
   srand (static_cast<unsigned int> (time (NULL)));
   // Randomly create a new point cloud
   for (size_t i = 0; i < cloud_big.width * cloud_big.height; ++i)
-    cloud_big.points.push_back (MyPoint (static_cast<float> (1024 * rand () / (RAND_MAX + 1.0)),
-                                         static_cast<float> (1024 * rand () / (RAND_MAX + 1.0)),
-                                         static_cast<float> (1024 * rand () / (RAND_MAX + 1.0))));
+    cloud_big.points.push_back (MyPoint (static_cast<double> (1024 * rand () / (RAND_MAX + 1.0)),
+                                         static_cast<double> (1024 * rand () / (RAND_MAX + 1.0)),
+                                         static_cast<double> (1024 * rand () / (RAND_MAX + 1.0))));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,14 +93,14 @@ TEST (PCL, KdTreeFLANN_radiusSearch)
 {
   KdTreeFLANN<MyPoint> kdtree;
   kdtree.setInputCloud (cloud.makeShared ());
-  MyPoint test_point(0.0f, 0.0f, 0.0f);
+  MyPoint test_point(0.0, 0.0, 0.0);
   double max_dist = 0.15;
   set<int> brute_force_result;
   for (unsigned int i=0; i<cloud.points.size(); ++i)
     if (euclideanDistance(cloud.points[i], test_point) < max_dist)
       brute_force_result.insert(i);
   vector<int> k_indices;
-  vector<float> k_distances;
+  vector<double> k_distances;
   kdtree.radiusSearch (test_point, max_dist, k_indices, k_distances, 100);
   
   //cout << k_indices.size()<<"=="<<brute_force_result.size()<<"?\n";
@@ -162,17 +162,17 @@ TEST (PCL, KdTreeFLANN_nearestKSearch)
 {
   KdTreeFLANN<MyPoint> kdtree;
   kdtree.setInputCloud (cloud.makeShared ());
-  MyPoint test_point (0.01f, 0.01f, 0.01f);
+  MyPoint test_point (0.01, 0.01, 0.01);
   unsigned int no_of_neighbors = 20;
-  multimap<float, int> sorted_brute_force_result;
+  multimap<double, int> sorted_brute_force_result;
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {
-    float distance = euclideanDistance (cloud.points[i], test_point);
+    double distance = euclideanDistance (cloud.points[i], test_point);
     sorted_brute_force_result.insert (make_pair (distance, static_cast<int> (i)));
   }
-  float max_dist = 0.0f;
+  double max_dist = 0.0;
   unsigned int counter = 0;
-  for (multimap<float, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end () && counter < no_of_neighbors; ++it)
+  for (multimap<double, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end () && counter < no_of_neighbors; ++it)
   {
     max_dist = max (max_dist, it->first);
     ++counter;
@@ -180,7 +180,7 @@ TEST (PCL, KdTreeFLANN_nearestKSearch)
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
   kdtree.nearestKSearch (test_point, no_of_neighbors, k_indices, k_distances);
   //if (k_indices.size() != no_of_neighbors)  cerr << "Found "<<k_indices.size()<<" instead of "<<no_of_neighbors<<" neighbors.\n";
@@ -216,7 +216,7 @@ class MyPointRepresentationXY : public PointRepresentation<MyPoint>
       this->nr_dimensions_ = 2;
     }
 
-    void copyToFloatArray (const MyPoint &p, float *out) const
+    void copyToFloatArray (const MyPoint &p, double *out) const
     {
       out[0] = p.x;
       out[1] = p.y;
@@ -226,32 +226,32 @@ class MyPointRepresentationXY : public PointRepresentation<MyPoint>
 TEST (PCL, KdTreeFLANN_setPointRepresentation)
 {
   PointCloud<MyPoint>::Ptr random_cloud (new PointCloud<MyPoint> ());
-  random_cloud->points.push_back (MyPoint (86.6f, 42.1f, 92.4f));
-  random_cloud->points.push_back (MyPoint (63.1f, 18.4f, 22.3f));
-  random_cloud->points.push_back (MyPoint (35.5f, 72.5f, 37.3f));
-  random_cloud->points.push_back (MyPoint (99.7f, 37.0f,  8.7f));
-  random_cloud->points.push_back (MyPoint (22.4f, 84.1f, 64.0f));
-  random_cloud->points.push_back (MyPoint (65.2f, 73.4f, 18.0f));
-  random_cloud->points.push_back (MyPoint (60.4f, 57.1f,  4.5f));
-  random_cloud->points.push_back (MyPoint (38.7f, 17.6f, 72.3f));
-  random_cloud->points.push_back (MyPoint (14.2f, 95.7f, 34.7f));
-  random_cloud->points.push_back (MyPoint ( 2.5f, 26.5f, 66.0f));
+  random_cloud->points.push_back (MyPoint (86.6, 42.1, 92.4f));
+  random_cloud->points.push_back (MyPoint (63.1, 18.4f, 22.3f));
+  random_cloud->points.push_back (MyPoint (35.5, 72.5, 37.3f));
+  random_cloud->points.push_back (MyPoint (99.7, 37.0,  8.7));
+  random_cloud->points.push_back (MyPoint (22.4f, 84.1, 64.0));
+  random_cloud->points.push_back (MyPoint (65.2f, 73.4f, 18.0));
+  random_cloud->points.push_back (MyPoint (60.4f, 57.1,  4.5));
+  random_cloud->points.push_back (MyPoint (38.7, 17.6, 72.3f));
+  random_cloud->points.push_back (MyPoint (14.2f, 95.7, 34.7));
+  random_cloud->points.push_back (MyPoint ( 2.5, 26.5, 66.0));
 
   KdTreeFLANN<MyPoint> kdtree;
   kdtree.setInputCloud (random_cloud);
-  MyPoint p (50.0f, 50.0f, 50.0f);
+  MyPoint p (50.0, 50.0, 50.0);
   
   // Find k nearest neighbors
   const int k = 10;
   vector<int> k_indices (k);
-  vector<float> k_distances (k);
+  vector<double> k_distances (k);
   kdtree.nearestKSearch (p, k, k_indices, k_distances);
   for (int i = 0; i < k; ++i)
   {
     // Compare to ground truth values, computed independently
     static const int gt_indices[10] = {2, 7, 5, 1, 4, 6, 9, 0, 8, 3};
-    static const float gt_distances[10] =
-    {877.8f, 1674.7f, 1802.6f, 1937.5f, 2120.6f, 2228.8f, 3064.5f, 3199.7f, 3604.2f, 4344.8f};
+    static const double gt_distances[10] =
+    {877.8, 1674.7, 1802.6, 1937.5, 2120.6, 2228.8, 3064.5, 3199.7, 3604.2f, 4344.8};
     EXPECT_EQ (k_indices[i], gt_indices[i]);
     EXPECT_NEAR (k_distances[i], gt_distances[i], 0.1);
   }
@@ -264,15 +264,15 @@ TEST (PCL, KdTreeFLANN_setPointRepresentation)
   {
     // Compare to ground truth values, computed independently
     static const int gt_indices[10] = {6, 2, 5, 1, 7, 0, 4, 3, 9, 8};
-    static const float gt_distances[10] =
-    {158.6f, 716.5f, 778.6f, 1170.2f, 1177.5f, 1402.0f, 1924.6f, 2639.1f, 2808.5f, 3370.1f};
+    static const double gt_distances[10] =
+    {158.6, 716.5, 778.6, 1170.2f, 1177.5, 1402.0, 1924.6, 2639.1, 2808.5, 3370.1};
     EXPECT_EQ (k_indices[i], gt_indices[i]);
     EXPECT_NEAR (k_distances[i], gt_distances[i], 0.1);
   }
 
   // Go back to the default, this time with the values rescaled
   DefaultPointRepresentation<MyPoint> point_rep;
-  float alpha[3] = {1.0f, 2.0f, 3.0f};
+  double alpha[3] = {1.0, 2.0, 3.0};
   point_rep.setRescaleValues(alpha);
   kdtree.setPointRepresentation (point_rep.makeShared ());
   kdtree.nearestKSearch (p, k, k_indices, k_distances);
@@ -280,8 +280,8 @@ TEST (PCL, KdTreeFLANN_setPointRepresentation)
   {
     // Compare to ground truth values, computed independently
     static const int gt_indices[10] =  {2, 9, 4, 7, 1, 5, 8, 0, 3, 6};
-    static const float gt_distances[10] =
-    {3686.9f, 6769.2f, 7177.0f, 8802.3f, 11071.5f, 11637.3f, 11742.4f, 17769.0f, 18497.3f, 18942.0f};
+    static const double gt_distances[10] =
+    {3686.9, 6769.2f, 7177.0, 8802.3f, 11071.5, 11637.3f, 11742.4f, 17769.0, 18497.3f, 18942.0};
     EXPECT_EQ (k_indices[i], gt_indices[i]);
     EXPECT_NEAR (k_distances[i], gt_distances[i], 0.1);
   }
@@ -299,7 +299,7 @@ TEST (PCL, KdTreeFLANN_32_vs_64_bit)
     if (isFinite ((*cloud_in)[i]))
     {
       std::vector<int> nn_indices;
-      std::vector<float> nn_dists;
+      std::vector<double> nn_dists;
       tree.radiusSearch ((*cloud_in)[i], 0.02, nn_indices, nn_dists);
 
       nn_indices_vector.push_back (nn_indices);

@@ -133,10 +133,10 @@ namespace pcl
       {
         public:
           VoxelData ():
-            xyz_ (0.0f, 0.0f, 0.0f),
-            rgb_ (0.0f, 0.0f, 0.0f),
-            normal_ (0.0f, 0.0f, 0.0f, 0.0f),
-            curvature_ (0.0f),
+            xyz_ (0.0, 0.0, 0.0),
+            rgb_ (0.0, 0.0, 0.0),
+            normal_ (0.0, 0.0, 0.0, 0.0),
+            curvature_ (0.0),
             owner_ (0)
             {}
 
@@ -152,11 +152,11 @@ namespace pcl
           void
           getNormal (Normal &normal_arg) const;
 
-          Eigen::Vector3f xyz_;
-          Eigen::Vector3f rgb_;
-          Eigen::Vector4f normal_;
-          float curvature_;
-          float distance_;
+          Eigen::Vector3d xyz_;
+          Eigen::Vector3d rgb_;
+          Eigen::Vector4d normal_;
+          double curvature_;
+          double distance_;
           int idx_;
           SupervoxelHelper* owner_;
 
@@ -178,7 +178,7 @@ namespace pcl
       using PCLBase <PointT>::deinitCompute;
       using PCLBase <PointT>::input_;
 
-      typedef boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, uint32_t, float> VoxelAdjacencyList;
+      typedef boost::adjacency_list<boost::setS, boost::setS, boost::undirectedS, uint32_t, double> VoxelAdjacencyList;
       typedef VoxelAdjacencyList::vertex_descriptor VoxelID;
       typedef VoxelAdjacencyList::edge_descriptor EdgeID;
 
@@ -189,7 +189,7 @@ namespace pcl
        *  \param[in] seed_resolution The average size (in meters) of resulting supervoxels
        *  \param[in] use_single_camera_transform Set to true if point density in cloud falls off with distance from origin (such as with a cloud coming from one stationary camera), set false if input cloud is from multiple captures from multiple locations.
        */
-      SupervoxelClustering (float voxel_resolution, float seed_resolution, bool use_single_camera_transform = true);
+      SupervoxelClustering (double voxel_resolution, double seed_resolution, bool use_single_camera_transform = true);
 
       /** \brief This destructor destroys the cloud, normals and search method used for
         * finding neighbors. In other words it frees memory.
@@ -199,31 +199,31 @@ namespace pcl
 
       /** \brief Set the resolution of the octree voxels */
       void
-      setVoxelResolution (float resolution);
+      setVoxelResolution (double resolution);
 
       /** \brief Get the resolution of the octree voxels */
-      float 
+      double 
       getVoxelResolution () const;
 
       /** \brief Set the resolution of the octree seed voxels */
       void
-      setSeedResolution (float seed_resolution);
+      setSeedResolution (double seed_resolution);
 
       /** \brief Get the resolution of the octree seed voxels */
-      float 
+      double 
       getSeedResolution () const;
 
       /** \brief Set the importance of color for supervoxels */
       void
-      setColorImportance (float val);
+      setColorImportance (double val);
 
       /** \brief Set the importance of spatial distance for supervoxels */
       void
-      setSpatialImportance (float val);
+      setSpatialImportance (double val);
 
       /** \brief Set the importance of scalar normal product for supervoxels */
       void
-      setNormalImportance (float val);
+      setNormalImportance (double val);
 
       /** \brief This method launches the segmentation algorithm and returns the supervoxels that were
        * obtained during the segmentation.
@@ -358,13 +358,13 @@ namespace pcl
       makeSupervoxels (std::map<uint32_t,typename Supervoxel<PointT>::Ptr > &supervoxel_clusters);
 
       /** \brief Stores the resolution used in the octree */
-      float resolution_;
+      double resolution_;
 
       /** \brief Stores the resolution used to seed the superpixels */
-      float seed_resolution_;
+      double seed_resolution_;
 
       /** \brief Distance function used for comparing voxelDatas */
-      float
+      double
       voxelDataDistance (const VoxelData &v1, const VoxelData &v2) const;
 
       /** \brief Transform function used to normalize voxel density versus distance from camera */
@@ -384,11 +384,11 @@ namespace pcl
       typename NormalCloudT::ConstPtr input_normals_;
 
       /** \brief Importance of color in clustering */
-      float color_importance_;
+      double color_importance_;
       /** \brief Importance of distance from seed center in clustering */
-      float spatial_importance_;
+      double spatial_importance_;
       /** \brief Importance of similarity in normals for clustering */
-      float normal_importance_;
+      double normal_importance_;
 
       /** \brief Internal storage class for supervoxels 
        * \note Stores pointers to leaves of clustering internal octree, 
@@ -442,26 +442,26 @@ namespace pcl
           void 
           getNormals (typename pcl::PointCloud<Normal>::Ptr &normals) const;
 
-          typedef float (SupervoxelClustering::*DistFuncPtr)(const VoxelData &v1, const VoxelData &v2);
+          typedef double (SupervoxelClustering::*DistFuncPtr)(const VoxelData &v1, const VoxelData &v2);
 
           uint32_t
           getLabel () const 
           { return label_; }
 
-          Eigen::Vector4f 
+          Eigen::Vector4d 
           getNormal () const 
           { return centroid_.normal_; }
 
-          Eigen::Vector3f 
+          Eigen::Vector3d 
           getRGB () const 
           { return centroid_.rgb_; }
 
-          Eigen::Vector3f
+          Eigen::Vector3d
           getXYZ () const 
           { return centroid_.xyz_;}
 
           void
-          getXYZ (float &x, float &y, float &z) const
+          getXYZ (double &x, double &y, double &z) const
           { x=centroid_.xyz_[0]; y=centroid_.xyz_[1]; z=centroid_.xyz_[2]; }
 
           void

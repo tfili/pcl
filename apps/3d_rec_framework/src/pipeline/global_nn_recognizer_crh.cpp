@@ -9,7 +9,7 @@
 #include "pcl/apps/3d_rec_framework/utils/metrics.h"
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::Histogram<90>,
-    (float[90], histogram, histogram90)
+    (double[90], histogram, histogram90)
 )
 
 //Instantiation

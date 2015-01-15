@@ -141,7 +141,7 @@ namespace pcl
           */
         inline int
         nearestKSearch (const PointCloud &cloud, int index, int k, std::vector<int> &k_indices,
-                        std::vector<float> &k_sqr_distances) const
+                        std::vector<double> &k_sqr_distances) const
         {
           return (tree_->nearestKSearch (cloud, index, k, k_indices, k_sqr_distances));
         }
@@ -156,7 +156,7 @@ namespace pcl
           */
         inline int
         nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices,
-                        std::vector<float> &k_sqr_distances) const
+                        std::vector<double> &k_sqr_distances) const
         {
           return (tree_->nearestKSearch (point, k, k_indices, k_sqr_distances));
         }
@@ -173,7 +173,7 @@ namespace pcl
           * \return number of neighbors found
           */
         inline int
-        nearestKSearch (int index, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+        nearestKSearch (int index, int k, std::vector<int> &k_indices, std::vector<double> &k_sqr_distances) const
         {
           return (tree_->nearestKSearch (index, k, k_indices, k_sqr_distances));
         }
@@ -192,7 +192,7 @@ namespace pcl
                       int index, 
                       double radius,
                       std::vector<int> &k_indices, 
-                      std::vector<float> &k_sqr_distances, 
+                      std::vector<double> &k_sqr_distances, 
                       unsigned int max_nn = 0) const
         {
           tree_->radiusSearch (cloud, index, radius, k_indices, k_sqr_distances, max_nn);
@@ -213,7 +213,7 @@ namespace pcl
         radiusSearch (const PointT &p_q, 
                       double radius, 
                       std::vector<int> &k_indices,
-                      std::vector<float> &k_sqr_distances, 
+                      std::vector<double> &k_sqr_distances, 
                       unsigned int max_nn = 0) const
         {
           tree_->radiusSearch (p_q, radius, k_indices, k_sqr_distances, max_nn);
@@ -233,7 +233,7 @@ namespace pcl
          */
         inline int
         radiusSearch (int index, double radius, std::vector<int> &k_indices,
-                      std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+                      std::vector<double> &k_sqr_distances, unsigned int max_nn = 0) const
         {
           tree_->radiusSearch (index, radius, k_indices, k_sqr_distances, max_nn);
           if (sorted_results_)
@@ -251,7 +251,7 @@ namespace pcl
           */
         inline void
         approxNearestSearch (const PointCloudConstPtr &cloud, int query_index, int &result_index,
-                             float &sqr_distance)
+                             double &sqr_distance)
         {
           return (tree_->approxNearestSearch (cloud->points[query_index], result_index, sqr_distance));
         }
@@ -262,7 +262,7 @@ namespace pcl
           * \param[out] sqr_distance the resultant squared distance to the neighboring point
           */
         inline void
-        approxNearestSearch (const PointT &p_q, int &result_index, float &sqr_distance)
+        approxNearestSearch (const PointT &p_q, int &result_index, double &sqr_distance)
         {
           return (tree_->approxNearestSearch (p_q, result_index, sqr_distance));
         }
@@ -275,7 +275,7 @@ namespace pcl
           * \return number of neighbors found
           */
         inline void
-        approxNearestSearch (int query_index, int &result_index, float &sqr_distance)
+        approxNearestSearch (int query_index, int &result_index, double &sqr_distance)
         {
           return (tree_->approxNearestSearch (query_index, result_index, sqr_distance));
         }

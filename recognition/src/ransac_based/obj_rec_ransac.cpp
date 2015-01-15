@@ -43,18 +43,18 @@
 using namespace std;
 using namespace pcl::common;
 
-pcl::recognition::ObjRecRANSAC::ObjRecRANSAC (float pair_width, float voxel_size)
+pcl::recognition::ObjRecRANSAC::ObjRecRANSAC (double pair_width, double voxel_size)
 : pair_width_ (pair_width),
   voxel_size_ (voxel_size),
-  position_discretization_ (5.0f*voxel_size_),
-  rotation_discretization_ (5.0f*AUX_DEG_TO_RADIANS),
-  abs_zdist_thresh_ (1.5f*voxel_size_),
-  relative_obj_size_ (0.05f),
+  position_discretization_ (5.0*voxel_size_),
+  rotation_discretization_ (5.0*AUX_DEG_TO_RADIANS),
+  abs_zdist_thresh_ (1.5*voxel_size_),
+  relative_obj_size_ (0.05),
   visibility_ (0.2f),
   relative_num_of_illegal_pts_ (0.02f),
   intersection_fraction_ (0.03f),
-  max_coplanarity_angle_ (3.0f*AUX_DEG_TO_RADIANS),
-  scene_bounds_enlargement_factor_ (0.25f), // 25% enlargement
+  max_coplanarity_angle_ (3.0*AUX_DEG_TO_RADIANS),
+  scene_bounds_enlargement_factor_ (0.25), // 25% enlargement
   ignore_coplanar_opps_ (true),
   frac_of_points_for_icp_refinement_ (0.3f),
   do_icp_hypotheses_refinement_ (true),
@@ -85,7 +85,7 @@ pcl::recognition::ObjRecRANSAC::recognize (const PointCloudIn& scene, const Poin
   {
     // Build the ICP instance with the scene points as the target
     trimmed_icp_.init (scene_octree_points_);
-    trimmed_icp_.setNewToOldEnergyRatio (0.99f);
+    trimmed_icp_.setNewToOldEnergyRatio (0.99);
   }
 
   if ( success_probability >= 1.0 )
@@ -202,8 +202,8 @@ pcl::recognition::ObjRecRANSAC::sampleOrientedPointPairs (int num_iterations, co
     ids.erase (ids.begin() + rand_pos);
 
     // Get the leaf's point and normal
-    const float *p1 = leaf1->getData ()->getPoint ();
-    const float *n1 = leaf1->getData ()->getNormal ();
+    const double *p1 = leaf1->getData ()->getPoint ();
+    const double *n1 = leaf1->getData ()->getNormal ();
 
     // Randomly select a leaf at the right distance from 'leaf1'
     ORROctree::Node *leaf2 = scene_octree_.getRandomFullLeafOnSphere (p1, pair_width_);
@@ -211,8 +211,8 @@ pcl::recognition::ObjRecRANSAC::sampleOrientedPointPairs (int num_iterations, co
       continue;
 
     // Get the leaf's point and normal
-    const float *p2 = leaf2->getData ()->getPoint ();
-    const float *n2 = leaf2->getData ()->getNormal ();
+    const double *p2 = leaf2->getData ()->getPoint ();
+    const double *n2 = leaf2->getData ()->getNormal ();
 
     if ( ignore_coplanar_opps_ )
     {
@@ -244,16 +244,16 @@ pcl::recognition::ObjRecRANSAC::generateHypotheses (const list<OrientedPointPair
 
   // Only for 3D hash tables: this is the max number of neighbors a 3D hash table cell can have!
   ModelLibrary::HashTableCell *neigh_cells[27];
-  float hash_table_key[3];
+  double hash_table_key[3];
   int num_hypotheses = 0;
 
   for ( list<OrientedPointPair>::const_iterator pair = pairs.begin () ; pair != pairs.end () ; ++pair )
   {
     // Just to make the code more readable
-    const float *scene_p1 = (*pair).p1_;
-    const float *scene_n1 = (*pair).n1_;
-    const float *scene_p2 = (*pair).p2_;
-    const float *scene_n2 = (*pair).n2_;
+    const double *scene_p1 = (*pair).p1_;
+    const double *scene_n1 = (*pair).n1_;
+    const double *scene_p2 = (*pair).p2_;
+    const double *scene_n2 = (*pair).n2_;
 
     // Use normals and points to compute a hash table key
     this->compute_oriented_point_pair_signature (scene_p1, scene_n1, scene_p2, scene_n2, hash_table_key);
@@ -273,10 +273,10 @@ pcl::recognition::ObjRecRANSAC::generateHypotheses (const list<OrientedPointPair
         for ( ModelLibrary::node_data_pair_list::iterator model_pair_it = model_pairs.begin () ; model_pair_it != model_pairs.end () ; ++model_pair_it )
         {
           // Get the points and normals
-          const float *model_p1 = (*model_pair_it).first->getPoint ();
-          const float *model_n1 = (*model_pair_it).first->getNormal ();
-          const float *model_p2 = (*model_pair_it).second->getPoint ();
-          const float *model_n2 = (*model_pair_it).second->getNormal ();
+          const double *model_p1 = (*model_pair_it).first->getPoint ();
+          const double *model_n1 = (*model_pair_it).first->getNormal ();
+          const double *model_p2 = (*model_pair_it).second->getPoint ();
+          const double *model_n2 = (*model_pair_it).second->getNormal ();
 
           HypothesisBase hypothesis(obj_model);
           // Get the rigid transform from model to scene
@@ -306,8 +306,8 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
 #endif
 
   // Compute the bounds for the positional discretization
-  float b[6]; scene_octree_.getBounds (b);
-  float enlr = scene_bounds_enlargement_factor_*std::max (std::max (b[1]-b[0], b[3]-b[2]), b[5]-b[4]);
+  double b[6]; scene_octree_.getBounds (b);
+  double enlr = scene_bounds_enlargement_factor_*std::max (std::max (b[1]-b[0], b[3]-b[2]), b[5]-b[4]);
   b[0] -= enlr; b[1] += enlr;
   b[2] -= enlr; b[3] += enlr;
   b[4] -= enlr; b[5] += enlr;
@@ -318,7 +318,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
 
   // Build the rigid transform space
   transform_space.build (b, position_discretization_, rotation_discretization_);
-  float transformed_point[3];
+  double transformed_point[3];
 
   // Add all rigid transforms to the discrete rigid transform space
   for ( list<HypothesisBase>::iterator hypo_it = hypotheses.begin () ; hypo_it != hypotheses.end () ; ++hypo_it )
@@ -336,7 +336,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
 #ifdef OBJ_REC_RANSAC_VERBOSE
   printf("ObjRecRANSAC::%s(): done\n  testing the cluster representatives ...\n", __func__); fflush (stdout);
   // These are some variables needed when printing the recognition progress
-  float progress_factor = 100.0f/static_cast<float> (transform_space.getNumberOfOccupiedRotationSpaces ());
+  double progress_factor = 100.0/static_cast<double> (transform_space.getNumberOfOccupiedRotationSpaces ());
   int num_done = 0;
 #endif
 
@@ -345,7 +345,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
   {
     const map<string, ModelLibrary::Model*>& models = model_library_.getModels ();
     Hypothesis best_hypothesis;
-    best_hypothesis.match_confidence_ = 0.0f;
+    best_hypothesis.match_confidence_ = 0.0;
 
     // For each model in the library
     for ( map<string, ModelLibrary::Model*>::const_iterator model = models.begin () ; model != models.end () ; ++model )
@@ -361,9 +361,9 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
       this->testHypothesis (&hypothesis, int_match, penalty);
 
       // For better code readability
-      float num_full_leaves = static_cast<float> (hypothesis.obj_model_->getOctree ().getFullLeaves ().size ());
-      float match_thresh = num_full_leaves*visibility_;
-      int penalty_thresh = static_cast<int> (num_full_leaves*relative_num_of_illegal_pts_ + 0.5f);
+      double num_full_leaves = static_cast<double> (hypothesis.obj_model_->getOctree ().getFullLeaves ().size ());
+      double match_thresh = num_full_leaves*visibility_;
+      int penalty_thresh = static_cast<int> (num_full_leaves*relative_num_of_illegal_pts_ + 0.5);
 
       // Check if this hypothesis is OK
       if ( int_match >= match_thresh && penalty <= penalty_thresh )
@@ -371,12 +371,12 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
         if ( do_icp_hypotheses_refinement_ && int_match > 3 )
         {
           // Convert from array to 4x4 matrix
-          Eigen::Matrix<float, 4, 4> mat;
+          Eigen::Matrix<double, 4, 4> mat;
           aux::array12ToMatrix4x4 (hypothesis.rigid_transform_, mat);
           // Perform registration
           trimmed_icp_.align (
               hypothesis.obj_model_->getPointsForRegistration (),
-              static_cast<int> (static_cast<float> (int_match)*frac_of_points_for_icp_refinement_),
+              static_cast<int> (static_cast<double> (int_match)*frac_of_points_for_icp_refinement_),
               mat);
           aux::matrix4x4ToArray12 (mat, hypothesis.rigid_transform_);
 
@@ -388,9 +388,9 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
       }
     }
 
-    if ( best_hypothesis.match_confidence_ > 0.0f )
+    if ( best_hypothesis.match_confidence_ > 0.0 )
     {
-      const float *c = (*rs_it)->getCenter ();
+      const double *c = (*rs_it)->getCenter ();
       HypothesisOctree::Node* node = grouped_hypotheses.createLeaf (c[0], c[1], c[2]);
 
       node->setData (best_hypothesis);
@@ -399,7 +399,7 @@ pcl::recognition::ObjRecRANSAC::groupHypotheses(list<HypothesisBase>& hypotheses
 
 #ifdef OBJ_REC_RANSAC_VERBOSE
     // Update the progress
-    printf ("\r  %.1f%% ", (static_cast<float> (++num_done))*progress_factor); fflush (stdout);
+    printf ("\r  %.1%% ", (static_cast<double> (++num_done))*progress_factor); fflush (stdout);
 #endif
   }
 
@@ -511,7 +511,7 @@ pcl::recognition::ObjRecRANSAC::buildGraphOfConflictingHypotheses (const BVHH& b
     Hypothesis *hypo1 = (*obj)->getData ();
 
     // Get the bounds of the current hypothesis
-    float bounds[6];
+    double bounds[6];
     hypo1->computeBounds (bounds);
 
     // Check if these bounds intersect other hypotheses' bounds
@@ -553,8 +553,8 @@ pcl::recognition::ObjRecRANSAC::buildGraphOfConflictingHypotheses (const BVHH& b
                              std::inserter (id_intersection, id_intersection.begin ()));
 
       // Compute the intersection fractions
-      float frac_1 = static_cast<float> (id_intersection.size ())/static_cast <float> (hypo1->explained_pixels_.size ());
-      float frac_2 = static_cast<float> (id_intersection.size ())/static_cast <float> (hypo2->explained_pixels_.size ());
+      double frac_1 = static_cast<double> (id_intersection.size ())/static_cast <double> (hypo1->explained_pixels_.size ());
+      double frac_2 = static_cast<double> (id_intersection.size ())/static_cast <double> (hypo2->explained_pixels_.size ());
 
       // Check if the intersection set is large enough, i.e., if there is a conflict
       if ( frac_1 > intersection_fraction_ || frac_2 > intersection_fraction_ )
@@ -621,9 +621,9 @@ pcl::recognition::ObjRecRANSAC::testHypothesis (Hypothesis* hypothesis, int& mat
 
   // For better code readability
   const std::vector<ORROctree::Node*>& full_model_leaves = hypothesis->obj_model_->getOctree ().getFullLeaves ();
-  const float* rigid_transform = hypothesis->rigid_transform_;
+  const double* rigid_transform = hypothesis->rigid_transform_;
   const ORROctreeZProjection::Pixel* pixel;
-  float transformed_point[3];
+  double transformed_point[3];
 
   // The match/penalty loop
   for ( std::vector<ORROctree::Node*>::const_iterator leaf_it = full_model_leaves.begin () ; leaf_it != full_model_leaves.end () ; ++leaf_it )
@@ -647,20 +647,20 @@ pcl::recognition::ObjRecRANSAC::testHypothesis (Hypothesis* hypothesis, int& mat
     }
   }
 
-  hypothesis->match_confidence_ = static_cast<float> (match)/static_cast<float> (hypothesis->obj_model_->getOctree ().getFullLeaves ().size ());
+  hypothesis->match_confidence_ = static_cast<double> (match)/static_cast<double> (hypothesis->obj_model_->getOctree ().getFullLeaves ().size ());
 }
 
 //===============================================================================================================================================
 
 inline void
-pcl::recognition::ObjRecRANSAC::testHypothesisNormalBased (Hypothesis* hypothesis, float& match) const
+pcl::recognition::ObjRecRANSAC::testHypothesisNormalBased (Hypothesis* hypothesis, double& match) const
 {
-  match = 0.0f;
+  match = 0.0;
 
   // For better code readability
   const std::vector<ORROctree::Node*>& full_model_leaves = hypothesis->obj_model_->getOctree ().getFullLeaves ();
-  const float* rigid_transform = hypothesis->rigid_transform_;
-  float transformed_point[3];
+  const double* rigid_transform = hypothesis->rigid_transform_;
+  double transformed_point[3];
 
   // The match/penalty loop
   for ( std::vector<ORROctree::Node*>::const_iterator leaf_it = full_model_leaves.begin () ; leaf_it != full_model_leaves.end () ; ++leaf_it )
@@ -685,7 +685,7 @@ pcl::recognition::ObjRecRANSAC::testHypothesisNormalBased (Hypothesis* hypothesi
 
       set<ORROctree::Node*, bool(*)(ORROctree::Node*,ORROctree::Node*)>::const_iterator n = nodes->begin ();
       ORROctree::Node *closest_node = *n;
-      float sqr_dist, min_sqr_dist = aux::sqrDistance3 (closest_node->getData ()->getPoint (), transformed_point);
+      double sqr_dist, min_sqr_dist = aux::sqrDistance3 (closest_node->getData ()->getPoint (), transformed_point);
 
       for ( ++n ; n != nodes->end () ; ++n )
       {
@@ -697,14 +697,14 @@ pcl::recognition::ObjRecRANSAC::testHypothesisNormalBased (Hypothesis* hypothesi
         }
       }
 
-      float rotated_normal[3];
+      double rotated_normal[3];
       aux::mult3x3 (rigid_transform, closest_node->getData ()->getNormal (), rotated_normal);
 
       match += aux::dot3 (rotated_normal, (*leaf_it)->getData ()->getNormal ());
     }
   }
 
-  hypothesis->match_confidence_ = match/static_cast<float> (hypothesis->obj_model_->getOctree ().getFullLeaves ().size ());
+  hypothesis->match_confidence_ = match/static_cast<double> (hypothesis->obj_model_->getOctree ().getFullLeaves ().size ());
 }
 
 //===============================================================================================================================================

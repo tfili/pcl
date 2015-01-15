@@ -257,7 +257,7 @@ pcl::JointIterativeClosestPoint<PointSource, PointTarget, Scalar>::computeTransf
   }
   while (!converged_);
 
-  PCL_DEBUG ("Transformation is:\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n\t%5f\t%5f\t%5f\t%5f\n", 
+  PCL_DEBUG ("Transformation is:\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n\t%5\t%5\t%5\t%5\n", 
       final_transformation_ (0, 0), final_transformation_ (0, 1), final_transformation_ (0, 2), final_transformation_ (0, 3),
       final_transformation_ (1, 0), final_transformation_ (1, 1), final_transformation_ (1, 2), final_transformation_ (1, 3),
       final_transformation_ (2, 0), final_transformation_ (2, 1), final_transformation_ (2, 2), final_transformation_ (2, 3),

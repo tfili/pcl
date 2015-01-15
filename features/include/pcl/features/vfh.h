@@ -50,7 +50,7 @@ namespace pcl
     * dataset containing points and normals. The default VFH implementation uses 45 binning subdivisions for each of
     * the three extended FPFH values, plus another 45 binning subdivisions for the distances between each point and
     * the centroid and 128 binning subdivisions for the viewpoint component, which results in a
-    * 308-byte array of float values. These are stored in a pcl::VFHSignature308 point type.
+    * 308-byte array of double values. These are stored in a pcl::VFHSignature308 point type.
     * A major difference between the PFH/FPFH descriptors and VFH, is that for a given point cloud dataset, only a
     * single VFH descriptor will be estimated (vfhs->points.size() should be 1), while the resultant PFH/FPFH data
     * will have the same number of entries as the number of points in the cloud.
@@ -92,7 +92,7 @@ namespace pcl
         hist_f1_ (), hist_f2_ (), hist_f3_ (), hist_f4_ (), hist_vp_ (),
         normal_to_use_ (), centroid_to_use_ (), use_given_normal_ (false), use_given_centroid_ (false),
         normalize_bins_ (true), normalize_distances_ (false), size_component_ (false),
-        d_pi_ (1.0f / (2.0f * static_cast<float> (M_PI)))
+        d_pi_ (1.0 / (2.0 * static_cast<double> (M_PI)))
       {
         hist_f1_.setZero (nr_bins_f1_);
         hist_f2_.setZero (nr_bins_f2_);
@@ -112,7 +112,7 @@ namespace pcl
         * \param[in] indices the k-neighborhood point indices in the dataset
         */
       void
-      computePointSPFHSignature (const Eigen::Vector4f &centroid_p, const Eigen::Vector4f &centroid_n,
+      computePointSPFHSignature (const Eigen::Vector4d &centroid_p, const Eigen::Vector4d &centroid_n,
                                  const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
                                  const std::vector<int> &indices);
 
@@ -122,7 +122,7 @@ namespace pcl
         * \param[in] vpz the Z coordinate of the viewpoint
         */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -131,7 +131,7 @@ namespace pcl
 
       /** \brief Get the viewpoint. */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz)
+      getViewPoint (double &vpx, double &vpy, double &vpz)
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -152,9 +152,9 @@ namespace pcl
         * to build the Darboux Coordinate system.
         */
       inline void
-      setNormalToUse (const Eigen::Vector3f &normal)
+      setNormalToUse (const Eigen::Vector3d &normal)
       {
-        normal_to_use_ = Eigen::Vector4f (normal[0], normal[1], normal[2], 0);
+        normal_to_use_ = Eigen::Vector4d (normal[0], normal[1], normal[2], 0);
       }
 
       /** \brief Set use_given_centroid_
@@ -171,9 +171,9 @@ namespace pcl
         * from all points to this centroid.
         */
       inline void
-      setCentroidToUse (const Eigen::Vector3f &centroid)
+      setCentroidToUse (const Eigen::Vector3d &centroid)
       {
-        centroid_to_use_ = Eigen::Vector4f (centroid[0], centroid[1], centroid[2], 0);
+        centroid_to_use_ = Eigen::Vector4d (centroid[0], centroid[1], centroid[2], 0);
       }
 
       /** \brief set normalize_bins_
@@ -219,7 +219,7 @@ namespace pcl
       /** \brief Values describing the viewpoint ("pinhole" camera model assumed). For per point viewpoints, inherit
         * from VFHEstimation and provide your own computeFeature (). By default, the viewpoint is set to 0,0,0.
         */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** \brief Estimate the Viewpoint Feature Histograms (VFH) descriptors at a set of points given by
         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
@@ -235,20 +235,20 @@ namespace pcl
       initCompute ();
 
       /** \brief Placeholder for the f1 histogram. */
-      Eigen::VectorXf hist_f1_;
+      Eigen::VectorXd hist_f1_;
       /** \brief Placeholder for the f2 histogram. */
-      Eigen::VectorXf hist_f2_;
+      Eigen::VectorXd hist_f2_;
       /** \brief Placeholder for the f3 histogram. */
-      Eigen::VectorXf hist_f3_;
+      Eigen::VectorXd hist_f3_;
       /** \brief Placeholder for the f4 histogram. */
-      Eigen::VectorXf hist_f4_;
+      Eigen::VectorXd hist_f4_;
       /** \brief Placeholder for the vp histogram. */
-      Eigen::VectorXf hist_vp_;
+      Eigen::VectorXd hist_vp_;
 
       /** \brief Normal to be used to computed VFH. Default, the average normal of the whole point cloud */
-      Eigen::Vector4f normal_to_use_;
+      Eigen::Vector4d normal_to_use_;
       /** \brief Centroid to be used to computed VFH. Default, the centroid of the whole point cloud */
-      Eigen::Vector4f centroid_to_use_;
+      Eigen::Vector4d centroid_to_use_;
 
       // VFH configuration parameters because CVFH instantiates it. See constructor for default values.
 
@@ -265,7 +265,7 @@ namespace pcl
 
     private:
       /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-      float d_pi_;
+      double d_pi_;
   };
 }
 

@@ -69,7 +69,7 @@ pcl::cloud_composer::TransformClouds::performTemplatedAction (QList <const Cloud
     QVariant variant = input_item->data (ItemDataRole::CLOUD_TEMPLATED);
     typename PointCloud <PointT>::Ptr input_cloud = variant.value <typename PointCloud<PointT>::Ptr> ();
     
-    Eigen::Matrix4f transform;
+    Eigen::Matrix4d transform;
     if (transform_map_.contains ("AllSelectedClouds"))
       pcl::visualization::PCLVisualizer::convertToEigenMatrix (transform_map_.value ("AllSelectedClouds"), transform);
     else

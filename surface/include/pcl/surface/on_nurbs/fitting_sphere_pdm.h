@@ -75,7 +75,7 @@ namespace pcl
        * - for large point-clouds this is time consuming.
        * - should be done once before refinement to initialize the starting points for point inversion. */
       void
-      assemble (double smoothness = 0.000001f);
+      assemble (double smoothness = 0.000001);
 
       /** \brief Solve system of equations using Eigen or UmfPack (can be defined in on_nurbs.cmake),
        *  and updates B-Spline surface if a solution can be obtained. */

@@ -72,12 +72,12 @@ using namespace pcl::visualization;
 using namespace pcl::recognition;
 using namespace pcl::io;
 
-void run (const char *file_name, float voxel_size);
+void run (const char *file_name, double voxel_size);
 bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& points);
 void show_octree (ORROctree* octree, PCLVisualizer& viz);
 void show_octree_zproj (ORROctreeZProjection* zproj, PCLVisualizer& viz);
 void node_to_cube (ORROctree::Node* node, vtkAppendPolyData* additive_octree);
-void rectangle_to_vtk (float x1, float x2, float y1, float y2, float z, vtkAppendPolyData* additive_rectangle);
+void rectangle_to_vtk (double x1, double x2, double y1, double y2, double z, vtkAppendPolyData* additive_rectangle);
 
 //#define _SHOW_POINTS_
 
@@ -91,7 +91,7 @@ int main (int argc, char ** argv)
   }
 
   // Get the voxel size
-  float voxel_size = static_cast<float> (atof (argv[2]));
+  double voxel_size = static_cast<double> (atof (argv[2]));
   if ( voxel_size <= 0.0 )
   {
     fprintf(stderr, "ERROR: leaf_size has to be positive and not %lf\n", voxel_size);
@@ -103,7 +103,7 @@ int main (int argc, char ** argv)
 
 //===============================================================================================================================
 
-void run (const char* file_name, float voxel_size)
+void run (const char* file_name, double voxel_size)
 {
   PointCloud<PointXYZ>::Ptr points_in (new PointCloud<PointXYZ> ());
   PointCloud<PointXYZ>::Ptr points_out (new PointCloud<PointXYZ> ());
@@ -118,7 +118,7 @@ void run (const char* file_name, float voxel_size)
 
   // Now build the octree z-projection
   ORROctreeZProjection zproj;
-  zproj.build (octree, 0.15f*voxel_size, 0.15f*voxel_size);
+  zproj.build (octree, 0.15*voxel_size, 0.15*voxel_size);
 
   // The visualizer
   PCLVisualizer viz;
@@ -177,9 +177,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points)
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_points->GetPoint (i, p);
-    pcl_points[i].x = static_cast<float> (p[0]);
-    pcl_points[i].y = static_cast<float> (p[1]);
-    pcl_points[i].z = static_cast<float> (p[2]);
+    pcl_points[i].x = static_cast<double> (p[0]);
+    pcl_points[i].y = static_cast<double> (p[1]);
+    pcl_points[i].z = static_cast<double> (p[2]);
   }
 
   return true;
@@ -227,8 +227,8 @@ void show_octree_zproj (ORROctreeZProjection* zproj, PCLVisualizer& viz)
 
   vtkSmartPointer<vtkAppendPolyData> upper_bound = vtkSmartPointer<vtkAppendPolyData>::New (), lower_bound = vtkSmartPointer<vtkAppendPolyData>::New ();
   const ORROctreeZProjection::Pixel *pixel;
-  const float *b = zproj->getBounds ();
-  float x, y, psize = zproj->getPixelSize ();
+  const double *b = zproj->getBounds ();
+  double x, y, psize = zproj->getPixelSize ();
   int i, j, width, height;
 
   zproj->getNumberOfPixels (width, height);
@@ -280,7 +280,7 @@ void show_octree_zproj (ORROctreeZProjection* zproj, PCLVisualizer& viz)
 void node_to_cube (ORROctree::Node* node, vtkAppendPolyData* additive_octree)
 {
   // Define the cube representing the leaf
-  const float *b = node->getBounds ();
+  const double *b = node->getBounds ();
   vtkSmartPointer<vtkCubeSource> cube = vtkSmartPointer<vtkCubeSource>::New ();
   cube->SetBounds (b[0], b[1], b[2], b[3], b[4], b[5]);
   cube->Update ();
@@ -294,7 +294,7 @@ void node_to_cube (ORROctree::Node* node, vtkAppendPolyData* additive_octree)
 
 //===============================================================================================================================
 
-void rectangle_to_vtk (float x1, float x2, float y1, float y2, float z, vtkAppendPolyData* additive_rectangle)
+void rectangle_to_vtk (double x1, double x2, double y1, double y2, double z, vtkAppendPolyData* additive_rectangle)
 {
   // Define the cube representing the leaf
   vtkSmartPointer<vtkCubeSource> cube = vtkSmartPointer<vtkCubeSource>::New ();

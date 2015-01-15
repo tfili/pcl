@@ -65,8 +65,8 @@ namespace pcl
     * \ingroup surface
     */
   inline bool 
-  isVisible (const Eigen::Vector2f &X, const Eigen::Vector2f &S1, const Eigen::Vector2f &S2, 
-             const Eigen::Vector2f &R = Eigen::Vector2f::Zero ())
+  isVisible (const Eigen::Vector2d &X, const Eigen::Vector2d &S1, const Eigen::Vector2d &S2, 
+             const Eigen::Vector2d &R = Eigen::Vector2d::Zero ())
   {
     double a0 = S1[1] - S2[1];
     double b0 = S2[0] - S1[0];
@@ -74,7 +74,7 @@ namespace pcl
     double a1 = -X[1];
     double b1 = X[0];
     double c1 = 0;
-    if (R != Eigen::Vector2f::Zero())
+    if (R != Eigen::Vector2d::Zero())
     {
       a1 += R[1];
       b1 -= R[0];
@@ -85,7 +85,7 @@ namespace pcl
     double y = (a1*c0 - a0*c1) / div;
 
     bool intersection_outside_XR;
-    if (R == Eigen::Vector2f::Zero())
+    if (R == Eigen::Vector2d::Zero())
     {
       if (X[0] > 0)
         intersection_outside_XR = (x <= 0) || (x >= X[0]);
@@ -349,8 +349,8 @@ namespace pcl
       {
         doubleEdge () : index (0), first (), second () {}
         int index;
-        Eigen::Vector2f first;
-        Eigen::Vector2f second;
+        Eigen::Vector2d first;
+        Eigen::Vector2d second;
       };
 
       // Variables made global to decrease the number of parameters to helper functions
@@ -358,7 +358,7 @@ namespace pcl
       /** \brief Temporary variable to store a triangle (as a set of point indices) **/
       pcl::Vertices triangle_;
       /** \brief Temporary variable to store point coordinates **/
-      std::vector<Eigen::Vector3f> coords_;
+      std::vector<Eigen::Vector3d> coords_;
 
       /** \brief A list of angles to neighbors **/
       std::vector<nnAngle> angles_;
@@ -402,22 +402,22 @@ namespace pcl
       bool already_connected_; 
 
       /** \brief Point coordinates projected onto the plane defined by the point normal **/
-      Eigen::Vector3f proj_qp_;
+      Eigen::Vector3d proj_qp_;
       /** \brief First coordinate vector of the 2D coordinate frame **/
-      Eigen::Vector3f u_;
+      Eigen::Vector3d u_;
       /** \brief Second coordinate vector of the 2D coordinate frame **/
-      Eigen::Vector3f v_;
+      Eigen::Vector3d v_;
       /** \brief 2D coordinates of the first fringe neighbor **/
-      Eigen::Vector2f uvn_ffn_;
+      Eigen::Vector2d uvn_ffn_;
       /** \brief 2D coordinates of the second fringe neighbor **/
-      Eigen::Vector2f uvn_sfn_;
+      Eigen::Vector2d uvn_sfn_;
       /** \brief 2D coordinates of the first fringe neighbor of the next point **/
-      Eigen::Vector2f uvn_next_ffn_;
+      Eigen::Vector2d uvn_next_ffn_;
       /** \brief 2D coordinates of the second fringe neighbor of the next point **/
-      Eigen::Vector2f uvn_next_sfn_;
+      Eigen::Vector2d uvn_next_sfn_;
 
       /** \brief Temporary variable to store 3 coordiantes **/
-      Eigen::Vector3f tmp_;
+      Eigen::Vector3d tmp_;
 
       /** \brief The actual surface reconstruction method.
         * \param[out] output the resultant polygonal mesh
@@ -456,9 +456,9 @@ namespace pcl
                     const int prev_index, 
                     const int next_index, 
                     const int next_next_index, 
-                    const Eigen::Vector2f &uvn_current, 
-                    const Eigen::Vector2f &uvn_prev, 
-                    const Eigen::Vector2f &uvn_next);
+                    const Eigen::Vector2d &uvn_current, 
+                    const Eigen::Vector2d &uvn_prev, 
+                    const Eigen::Vector2d &uvn_next);
 
       /** \brief Whenever a query point is part of a boundary loop containing 3 points, that triangle is created
         * (called if angle constraints make it possible)
@@ -486,10 +486,10 @@ namespace pcl
         if (consistent_ordering_)
         {
           const PointInT p = input_->at (indices_->at (a));
-          const Eigen::Vector3f pv = p.getVector3fMap ();
-          if (p.getNormalVector3fMap ().dot (
-                (pv - input_->at (indices_->at (b)).getVector3fMap ()).cross (
-                 pv - input_->at (indices_->at (c)).getVector3fMap ()) ) > 0)
+          const Eigen::Vector3d pv = p.getVector3dMap ();
+          if (p.getNormalVector3dMap ().dot (
+                (pv - input_->at (indices_->at (b)).getVector3dMap ()).cross (
+                 pv - input_->at (indices_->at (c)).getVector3dMap ()) ) > 0)
           {
             triangle_.vertices[0] = a;
             triangle_.vertices[1] = b;

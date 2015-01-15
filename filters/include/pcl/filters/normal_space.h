@@ -187,7 +187,7 @@ namespace pcl
         * \param[in] nbins total number of bins
         */
       unsigned int 
-      findBin (const float *normal, unsigned int nbins);
+      findBin (const double *normal, unsigned int nbins);
 
       /** \brief Checks of the entire bin is sampled, returns true or false
         * \param[out] array flag which says whether a point is sampled or not

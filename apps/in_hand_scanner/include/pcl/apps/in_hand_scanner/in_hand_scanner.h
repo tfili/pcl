@@ -284,7 +284,7 @@ namespace pcl
         ICPPtr icp_;
 
         /** \brief Transformation that brings the data cloud into model coordinates. */
-        Eigen::Matrix4f transformation_;
+        Eigen::Matrix4d transformation_;
 
         /** \brief Integrate the data cloud into a common model. */
         IntegrationPtr integration_;

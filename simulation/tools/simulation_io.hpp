@@ -50,9 +50,9 @@ namespace pcl
     
         void doSim (Eigen::Isometry3d pose_in);
     
-        void write_score_image(const float* score_buffer,std::string fname);
-        void write_depth_image(const float* depth_buffer,std::string fname);
-        void write_depth_image_uint(const float* depth_buffer,std::string fname);
+        void write_score_image(const double* score_buffer,std::string fname);
+        void write_depth_image(const double* depth_buffer,std::string fname);
+        void write_depth_image_uint(const double* depth_buffer,std::string fname);
         void write_rgb_image(const uint8_t* rgb_buffer,std::string fname);
     
       private:

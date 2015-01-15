@@ -101,7 +101,7 @@ loadCloud (const std::string & filename, PointCloudXYZRGBA & cloud)
 
 std::vector<bool>
 maskForegroundPoints (const PointCloudXYZRGBA::ConstPtr & input,
-                      float min_depth, float max_depth, float max_height)
+                      double min_depth, double max_depth, double max_height)
 {
   std::vector<bool> foreground_mask (input->size (), false);
   
@@ -109,7 +109,7 @@ maskForegroundPoints (const PointCloudXYZRGBA::ConstPtr & input,
   pcl::IndicesPtr indices (new std::vector<int>);
   for (size_t i = 0; i < input->size (); ++i)
   {
-    const float z = input->points[i].z;
+    const double z = input->points[i].z;
     if (min_depth < z && z < max_depth)
     {
       foreground_mask[i] = true;
@@ -118,7 +118,7 @@ maskForegroundPoints (const PointCloudXYZRGBA::ConstPtr & input,
   }
 
   // Find the dominant plane between the specified near/far thresholds
-  const float distance_threshold = 0.02f;
+  const double distance_threshold = 0.02f;
   const int max_iterations = 500;
   pcl::SACSegmentation<pcl::PointXYZRGBA> seg;
   seg.setOptimizeCoefficients (true);
@@ -137,13 +137,13 @@ maskForegroundPoints (const PointCloudXYZRGBA::ConstPtr & input,
     foreground_mask[inliers->indices[i]] = false;
 
   // Mask off any foreground points that are too high above the detected plane
-  const std::vector<float> & c = coefficients->values;
+  const std::vector<double> & c = coefficients->values;
   for (size_t i = 0; i < input->size (); ++i)
   {
     if (foreground_mask[i])
     {
       const pcl::PointXYZRGBA & p = input->points[i];
-      float d = fabsf (c[0]*p.x + c[1]*p.y + c[2]*p.z + c[3]);
+      double d = fabsf (c[0]*p.x + c[1]*p.y + c[2]*p.z + c[3]);
       foreground_mask[i] = (d < max_height);
     }
   }
@@ -200,7 +200,7 @@ trainTemplate (const PointCloudXYZRGBA::ConstPtr & input, const std::vector<bool
 }
 
 void
-compute (const PointCloudXYZRGBA::ConstPtr & input, float min_depth, float max_depth, float max_height,
+compute (const PointCloudXYZRGBA::ConstPtr & input, double min_depth, double max_depth, double max_height,
          const std::string & template_pcd_filename, const std::string & template_sqmmt_filename)
 {
   // Segment the foreground object
@@ -213,7 +213,7 @@ compute (const PointCloudXYZRGBA::ConstPtr & input, float min_depth, float max_d
     if (!foreground_mask[i])
     {
       pcl::PointXYZRGBA & p = template_cloud.points[i];
-      p.x = p.y = p.z = std::numeric_limits<float>::quiet_NaN ();
+      p.x = p.y = p.z = std::numeric_limits<double>::quiet_NaN ();
     }
   }
   pcl::io::savePCDFile (template_pcd_filename, template_cloud);
@@ -252,13 +252,13 @@ main (int argc, char** argv)
   }
 
   // Parse the min_depth, max_depth, and max_height parameters
-  float min_depth = 0;
+  double min_depth = 0;
   parse_argument (argc, argv, "-min_depth", min_depth);
 
-  float max_depth = std::numeric_limits<float>::max ();
+  double max_depth = std::numeric_limits<double>::max ();
   parse_argument (argc, argv, "-max_depth", max_depth);
 
-  float max_height = std::numeric_limits<float>::max ();
+  double max_height = std::numeric_limits<double>::max ();
   parse_argument (argc, argv, "-max_height", max_height);
 
   // Segment and create templates for each input file

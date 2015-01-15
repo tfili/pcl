@@ -94,7 +94,7 @@ namespace pcl
         , samples_radius_ (0.0)
         , samples_radius_search_ ()
         , eps_angle_ (0.0)
-        , axis_ (Eigen::Vector3f::Zero ())
+        , axis_ (Eigen::Vector3d::Zero ())
         , max_iterations_ (50)
         , probability_ (0.99)
         , random_ (random)
@@ -220,10 +220,10 @@ namespace pcl
         * \param[in] ax the axis along which we need to search for a model perpendicular to
         */
       inline void 
-      setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
+      setAxis (const Eigen::Vector3d &ax) { axis_ = ax; }
 
       /** \brief Get the axis along which we need to search for a model perpendicular to. */
-      inline Eigen::Vector3f 
+      inline Eigen::Vector3d 
       getAxis () const { return (axis_); }
 
       /** \brief Set the angle epsilon (delta) threshold.
@@ -287,7 +287,7 @@ namespace pcl
       double eps_angle_;
 
       /** \brief The axis along which we need to search for a model perpendicular to. */
-      Eigen::Vector3f axis_;
+      Eigen::Vector3d axis_;
 
       /** \brief Maximum number of iterations before giving up (user given parameter). */
       int max_iterations_;

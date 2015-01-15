@@ -60,9 +60,9 @@ pcl::RegionGrowing<PointT, NormalT>::RegionGrowing () :
   smooth_mode_flag_ (true),
   curvature_flag_ (true),
   residual_flag_ (false),
-  theta_threshold_ (30.0f / 180.0f * static_cast<float> (M_PI)),
-  residual_threshold_ (0.05f),
-  curvature_threshold_ (0.05f),
+  theta_threshold_ (30.0 / 180.0 * static_cast<double> (M_PI)),
+  residual_threshold_ (0.05),
+  curvature_threshold_ (0.05),
   neighbour_number_ (30),
   search_ (),
   normals_ (),
@@ -167,7 +167,7 @@ pcl::RegionGrowing<PointT, NormalT>::setResidualTestFlag (bool value)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT, typename NormalT> float
+template <typename PointT, typename NormalT> double
 pcl::RegionGrowing<PointT, NormalT>::getSmoothnessThreshold () const
 {
   return (theta_threshold_);
@@ -175,13 +175,13 @@ pcl::RegionGrowing<PointT, NormalT>::getSmoothnessThreshold () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT> void
-pcl::RegionGrowing<PointT, NormalT>::setSmoothnessThreshold (float theta)
+pcl::RegionGrowing<PointT, NormalT>::setSmoothnessThreshold (double theta)
 {
   theta_threshold_ = theta;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT, typename NormalT> float
+template <typename PointT, typename NormalT> double
 pcl::RegionGrowing<PointT, NormalT>::getResidualThreshold () const
 {
   return (residual_threshold_);
@@ -189,13 +189,13 @@ pcl::RegionGrowing<PointT, NormalT>::getResidualThreshold () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT> void
-pcl::RegionGrowing<PointT, NormalT>::setResidualThreshold (float residual)
+pcl::RegionGrowing<PointT, NormalT>::setResidualThreshold (double residual)
 {
   residual_threshold_ = residual;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointT, typename NormalT> float
+template <typename PointT, typename NormalT> double
 pcl::RegionGrowing<PointT, NormalT>::getCurvatureThreshold () const
 {
   return (curvature_threshold_);
@@ -203,7 +203,7 @@ pcl::RegionGrowing<PointT, NormalT>::getCurvatureThreshold () const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT, typename NormalT> void
-pcl::RegionGrowing<PointT, NormalT>::setCurvatureThreshold (float curvature)
+pcl::RegionGrowing<PointT, NormalT>::setCurvatureThreshold (double curvature)
 {
   curvature_threshold_ = curvature;
 }
@@ -318,7 +318,7 @@ pcl::RegionGrowing<PointT, NormalT>::prepareForSegmentation ()
   // if residual test is on then we need to check if all needed parameters were correctly initialized
   if (residual_flag_)
   {
-    if (residual_threshold_ <= 0.0f)
+    if (residual_threshold_ <= 0.0)
       return (false);
   }
 
@@ -355,7 +355,7 @@ pcl::RegionGrowing<PointT, NormalT>::findPointNeighbours ()
 {
   int point_number = static_cast<int> (indices_->size ());
   std::vector<int> neighbours;
-  std::vector<float> distances;
+  std::vector<double> distances;
 
   point_neighbours_.resize (input_->points.size (), neighbours);
   if (input_->is_dense)
@@ -389,8 +389,8 @@ pcl::RegionGrowing<PointT, NormalT>::applySmoothRegionGrowingAlgorithm ()
   int num_of_pts = static_cast<int> (indices_->size ());
   point_labels_.resize (input_->points.size (), -1);
 
-  std::vector< std::pair<float, int> > point_residual;
-  std::pair<float, int> pair;
+  std::vector< std::pair<double, int> > point_residual;
+  std::pair<double, int> pair;
   point_residual.resize (num_of_pts, pair);
 
   if (normal_flag_ == true)
@@ -494,21 +494,21 @@ pcl::RegionGrowing<PointT, NormalT>::validatePoint (int initial_seed, int point,
 {
   is_a_seed = true;
 
-  float cosine_threshold = cosf (theta_threshold_);
-  float data[4];
+  double cosine_threshold = cos (theta_threshold_);
+  double data[4];
 
   data[0] = input_->points[point].data[0];
   data[1] = input_->points[point].data[1];
   data[2] = input_->points[point].data[2];
   data[3] = input_->points[point].data[3];
-  Eigen::Map<Eigen::Vector3f> initial_point (static_cast<float*> (data));
-  Eigen::Map<Eigen::Vector3f> initial_normal (static_cast<float*> (normals_->points[point].normal));
+  Eigen::Map<Eigen::Vector3d> initial_point (static_cast<double*> (data));
+  Eigen::Map<Eigen::Vector3d> initial_normal (static_cast<double*> (normals_->points[point].normal));
 
   //check the angle between normals
   if (smooth_mode_flag_ == true)
   {
-    Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<float*> (normals_->points[nghbr].normal));
-    float dot_product = fabsf (nghbr_normal.dot (initial_normal));
+    Eigen::Map<Eigen::Vector3d> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
+    double dot_product = fabsf (nghbr_normal.dot (initial_normal));
     if (dot_product < cosine_threshold)
     {
       return (false);
@@ -516,9 +516,9 @@ pcl::RegionGrowing<PointT, NormalT>::validatePoint (int initial_seed, int point,
   }
   else
   {
-    Eigen::Map<Eigen::Vector3f> nghbr_normal (static_cast<float*> (normals_->points[nghbr].normal));
-    Eigen::Map<Eigen::Vector3f> initial_seed_normal (static_cast<float*> (normals_->points[initial_seed].normal));
-    float dot_product = fabsf (nghbr_normal.dot (initial_seed_normal));
+    Eigen::Map<Eigen::Vector3d> nghbr_normal (static_cast<double*> (normals_->points[nghbr].normal));
+    Eigen::Map<Eigen::Vector3d> initial_seed_normal (static_cast<double*> (normals_->points[initial_seed].normal));
+    double dot_product = fabsf (nghbr_normal.dot (initial_seed_normal));
     if (dot_product < cosine_threshold)
       return (false);
   }
@@ -534,8 +534,8 @@ pcl::RegionGrowing<PointT, NormalT>::validatePoint (int initial_seed, int point,
   data[1] = input_->points[nghbr].data[1];
   data[2] = input_->points[nghbr].data[2];
   data[3] = input_->points[nghbr].data[3];
-  Eigen::Map<Eigen::Vector3f> nghbr_point (static_cast<float*> (data));
-  float residual = fabsf (initial_normal.dot (initial_point - nghbr_point));
+  Eigen::Map<Eigen::Vector3d> nghbr_point (static_cast<double*> (data));
+  double residual = fabsf (initial_normal.dot (initial_point - nghbr_point));
   if (residual_flag_ && residual > residual_threshold_)
     is_a_seed = false;
 

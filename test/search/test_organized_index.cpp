@@ -90,10 +90,10 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Nearest_K_Neighbour_Search)
   pcl::search::Search<PointXYZ>* organizedNeighborSearch = new pcl::search::OrganizedNeighbor<PointXYZ>();
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   // typical focal length from kinect
   const double oneOverFocalLength = 0.0018;
@@ -202,10 +202,10 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Nearest_K_Neighbour_Search_Kinec
   pcl::search::Search<PointXYZ>* organizedNeighborSearch = new pcl::search::OrganizedNeighbor<PointXYZ>();
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   // typical focal length from kinect
   pcl::PointCloud<PointXYZ>::Ptr cloudIn (new pcl::PointCloud<PointXYZ>);
@@ -289,10 +289,10 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Neighbours_Within_Radius_Search)
   pcl::search::Search<PointXYZ>* organizedNeighborSearch = new pcl::search::OrganizedNeighbor<PointXYZ>();
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   // typical focal length from kinect
   const double oneOverFocalLength = 0.0018;
@@ -361,7 +361,7 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Neighbours_Within_Radius_Search)
     }
 
     vector<int> cloudNWRSearch;
-    vector<float> cloudNWRRadius;
+    vector<double> cloudNWRRadius;
 
     organizedNeighborSearch->setInputCloud (cloudIn);
 
@@ -424,10 +424,10 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Neighbours_Within_Radius_Search_
   pcl::search::Search<PointXYZ>* organizedNeighborSearch = new pcl::search::OrganizedNeighbor<PointXYZ>();
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   // typical focal length from kinect
   const double oneOverFocalLength = 0.0018;
@@ -499,7 +499,7 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Neighbours_Within_Radius_Search_
 
 
     vector<int> cloudNWRSearch;
-    vector<float> cloudNWRRadius;
+    vector<double> cloudNWRRadius;
     
     double check_time = getTime();
     organizedNeighborSearch->setInputCloud (cloudIn);
@@ -536,10 +536,10 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Neighbours_Within_Radius_Search_
   pcl::search::Search<PointXYZ>* organizedNeighborSearch = new pcl::search::OrganizedNeighbor<PointXYZ>();
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   // typical focal length from kinect
   unsigned int randomIdx;
@@ -564,10 +564,10 @@ TEST (PCL, Organized_Neighbor_Search_Pointcloud_Neighbours_Within_Radius_Search_
     double sum_time = 0, sum_time2 = 0;
 
     vector<int> cloudNWRSearch;
-    vector<float> cloudNWRRadius;
+    vector<double> cloudNWRRadius;
 
     vector<int> cloudNWRSearch2;
-    vector<float> cloudNWRRadius2;
+    vector<double> cloudNWRRadius2;
 
     for (int iter = 0; iter < 100; iter++)
     {

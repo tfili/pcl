@@ -44,12 +44,12 @@
 TEST (UniformCloudGenerator, PointXYZ)
 {
   using namespace pcl::common;
-  CloudGenerator<pcl::PointXYZ,  UniformGenerator<float> > generator;
-  UniformGenerator<float>::Parameters x_params;
+  CloudGenerator<pcl::PointXYZ,  UniformGenerator<double> > generator;
+  UniformGenerator<double>::Parameters x_params;
   generator.setParametersForX (x_params);
-  UniformGenerator<float>::Parameters y_params (-1.f, 1.f);
+  UniformGenerator<double>::Parameters y_params (-1., 1.);
   generator.setParametersForY (y_params);
-  UniformGenerator<float>::Parameters z_params (-2.5, 1.5f);
+  UniformGenerator<double>::Parameters z_params (-2.5, 1.5);
   generator.setParametersForZ (z_params);
 
   pcl::PointCloud<pcl::PointXYZ> output;
@@ -74,10 +74,10 @@ TEST (UniformCloudGenerator, PointXYZ)
 TEST (UniformCloudGenerator, PointXY)
 {
   using namespace pcl::common;
-  CloudGenerator<pcl::PointXY,  UniformGenerator<float> > generator;
-  UniformGenerator<float>::Parameters x_params;
+  CloudGenerator<pcl::PointXY,  UniformGenerator<double> > generator;
+  UniformGenerator<double>::Parameters x_params;
   generator.setParametersForX (x_params);
-  UniformGenerator<float>::Parameters y_params (-1.f, 1.f);
+  UniformGenerator<double>::Parameters y_params (-1., 1.);
   generator.setParametersForY (y_params);
 
   pcl::PointCloud<pcl::PointXY> output;
@@ -100,8 +100,8 @@ TEST (UniformCloudGenerator, PointXY)
 TEST (UniformCloudGenerator, Cube)
 {
   using namespace pcl::common;
-  CloudGenerator<pcl::PointXYZ,  UniformGenerator<float> > generator;
-  UniformGenerator<float>::Parameters params (-3, 3, 1);
+  CloudGenerator<pcl::PointXYZ,  UniformGenerator<double> > generator;
+  UniformGenerator<double>::Parameters params (-3, 3, 1);
   generator.setParameters (params);
 
   pcl::PointCloud<pcl::PointXYZ> output;
@@ -126,8 +126,8 @@ TEST (UniformCloudGenerator, Cube)
 TEST (UniformCloudGenerator, Square)
 {
   using namespace pcl::common;
-  CloudGenerator<pcl::PointXY,  UniformGenerator<float> > generator;
-  UniformGenerator<float>::Parameters params (-3, 3, 1);
+  CloudGenerator<pcl::PointXY,  UniformGenerator<double> > generator;
+  UniformGenerator<double>::Parameters params (-3, 3, 1);
   generator.setParameters (params);
 
   pcl::PointCloud<pcl::PointXY> output;

@@ -35,12 +35,12 @@ namespace pcl
 
       public:
         boost::shared_ptr<std::vector<PointTPtr> > views_;
-        boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > poses_;
-        boost::shared_ptr<std::vector<float> > self_occlusions_;
+        boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > poses_;
+        boost::shared_ptr<std::vector<double> > self_occlusions_;
         std::string id_;
         std::string class_;
         PointTPtr assembled_;
-        typename std::map<float, PointTPtrConst> voxelized_assembled_;
+        typename std::map<double, PointTPtrConst> voxelized_assembled_;
 
         bool
         operator== (const Model &other) const
@@ -49,12 +49,12 @@ namespace pcl
         }
 
       PointTPtrConst
-      getAssembled (float resolution)
+      getAssembled (double resolution)
       {
         if(resolution <= 0)
           return assembled_;
 
-        typename std::map<float, PointTPtrConst>::iterator it = voxelized_assembled_.find (resolution);
+        typename std::map<double, PointTPtrConst>::iterator it = voxelized_assembled_.find (resolution);
         if (it == voxelized_assembled_.end ())
         {
           PointTPtr voxelized (new pcl::PointCloud<PointT>);
@@ -86,7 +86,7 @@ namespace pcl
       typedef Model<PointInT> ModelT;
       std::string path_;
       boost::shared_ptr<std::vector<ModelT> > models_;
-      float model_scale_;
+      double model_scale_;
       bool filter_duplicate_views_;
       bool load_views_;
 
@@ -146,14 +146,14 @@ namespace pcl
         load_views_ = true;
       }
 
-      float
+      double
       getScale ()
       {
         return model_scale_;
       }
 
       void
-      setModelScale (float s)
+      setModelScale (double s)
       {
         model_scale_ = s;
       }
@@ -209,7 +209,7 @@ namespace pcl
       }
 
       void
-      voxelizeAllModels (float resolution)
+      voxelizeAllModels (double resolution)
       {
         for (size_t i = 0; i < models_->size (); i++)
         {

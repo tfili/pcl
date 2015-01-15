@@ -64,14 +64,14 @@ namespace pcl
     * \ingroup features
     */
   PCL_EXPORTS bool 
-  computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, 
-                       const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, 
-                       float &f1, float &f2, float &f3, float &f4);
+  computePairFeatures (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1, 
+                       const Eigen::Vector4d &p2, const Eigen::Vector4d &n2, 
+                       double &f1, double &f2, double &f3, double &f4);
 
   PCL_EXPORTS bool
-  computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, const Eigen::Vector4i &colors1,
-                          const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, const Eigen::Vector4i &colors2,
-                          float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7);
+  computeRGBPairFeatures (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1, const Eigen::Vector4i &colors1,
+                          const Eigen::Vector4d &p2, const Eigen::Vector4d &n2, const Eigen::Vector4i &colors2,
+                          double &f1, double &f2, double &f3, double &f4, double &f5, double &f6, double &f7);
 
 }
 

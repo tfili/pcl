@@ -67,13 +67,13 @@ pcl::RandomSample<PointT>::applyFilter (PointCloud &output)
         offsets.push_back (fields[i].offset);
     }
     // For every "removed" point, set the x,y,z fields to user_filter_value_
-    const static float user_filter_value = user_filter_value_;
+    const static double user_filter_value = user_filter_value_;
     for (size_t rii = 0; rii < removed_indices_->size (); ++rii)
     {
       uint8_t* pt_data = reinterpret_cast<uint8_t*> (&output[(*removed_indices_)[rii]]);
       for (size_t i = 0; i < offsets.size (); ++i)
       {
-        memcpy (pt_data + offsets[i], &user_filter_value, sizeof (float));
+        memcpy (pt_data + offsets[i], &user_filter_value, sizeof (double));
       }
       if (!pcl_isfinite (user_filter_value_))
         output.is_dense = false;
@@ -121,15 +121,15 @@ pcl::RandomSample<PointT>::applyFilter (std::vector<int> &indices)
       added.resize (indices_->size (), false);
     for (size_t n = sample_size; n >= 2; n--)
     {
-      float V = unifRand ();
+      double V = unifRand ();
       unsigned S = 0;
-      float quot = static_cast<float> (top) / static_cast<float> (N);
+      double quot = static_cast<double> (top) / static_cast<double> (N);
       while (quot > V)
       {
         S++;
         top--;
         N--;
-        quot = quot * static_cast<float> (top) / static_cast<float> (N);
+        quot = quot * static_cast<double> (top) / static_cast<double> (N);
       }
       index += S;
       if (extract_removed_indices_)

@@ -50,8 +50,8 @@ using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
 
-float default_min = 0.0f,
-      default_max = 1.0f;
+double default_min = 0.0,
+      default_max = 1.0;
 bool default_inside = true;
 bool default_keep_organized = true;
 std::string default_field_name = "z";
@@ -90,7 +90,7 @@ loadCloud (const std::string &filename, pcl::PCLPointCloud2 &cloud)
 
 void
 compute (const pcl::PCLPointCloud2::ConstPtr &input, pcl::PCLPointCloud2 &output,
-         std::string field_name, float min, float max, bool inside, bool keep_organized)
+         std::string field_name, double min, double max, bool inside, bool keep_organized)
 {
   // Estimate
   TicToc tt;
@@ -125,7 +125,7 @@ saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output)
 
 int
 batchProcess (const vector<string> &pcd_files, string &output_dir,
-              std::string field_name, float min, float max, bool inside, bool keep_organized)
+              std::string field_name, double min, double max, bool inside, bool keep_organized)
 {
   vector<string> st;
   for (size_t i = 0; i < pcd_files.size (); ++i)
@@ -168,7 +168,7 @@ main (int argc, char** argv)
   bool batch_mode = false;
 
   // Command line parsing
-  float min = default_min, max = default_max;
+  double min = default_min, max = default_max;
   bool inside = default_inside;
   bool keep_organized = default_keep_organized;
   std::string field_name = default_field_name;

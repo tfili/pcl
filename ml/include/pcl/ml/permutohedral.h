@@ -86,18 +86,18 @@ namespace pcl
 
       /** \brief initialization */
       void
-      init (const std::vector<float> &feature, const int feature_dimension, const int N);
+      init (const std::vector<double> &feature, const int feature_dimension, const int N);
 
       void 
-      compute (std::vector<float> &out, const std::vector<float> &in, 
+      compute (std::vector<double> &out, const std::vector<double> &in, 
                int value_size, 
                int in_offset=0, int out_offset=0, 
                int in_size = -1, int out_size = -1) const;
       void
-      initOLD (const std::vector<float> &feature, const int feature_dimension, const int N);
+      initOLD (const std::vector<double> &feature, const int feature_dimension, const int N);
 
       void 
-      computeOLD (std::vector<float> &out, const std::vector<float> &in, 
+      computeOLD (std::vector<double> &out, const std::vector<double> &in, 
                   int value_size, 
                   int in_offset=0, int out_offset=0, 
                   int in_size = -1, int out_size = -1) const;
@@ -132,14 +132,14 @@ namespace pcl
       /** \brief dimension of feature */
       int d_;
 
-      std::vector<float> offset_;
-      std::vector<float> offsetTMP_;
-      std::vector<float> barycentric_;
+      std::vector<double> offset_;
+      std::vector<double> offsetTMP_;
+      std::vector<double> barycentric_;
 
       Neighbors * blur_neighborsOLD_;
       int * offsetOLD_;
-      float * barycentricOLD_;
-      std::vector<float> baryOLD_;
+      double * barycentricOLD_;
+      std::vector<double> baryOLD_;
       
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW      

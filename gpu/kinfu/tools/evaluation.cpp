@@ -41,10 +41,10 @@
 using namespace pcl::gpu;
 using namespace std;
 
-const float Evaluation::fx = 525.0f;
-const float Evaluation::fy = 525.0f;
-const float Evaluation::cx = 319.5f;
-const float Evaluation::cy = 239.5f;
+const double Evaluation::fx = 525.0;
+const double Evaluation::fy = 525.0;
+const double Evaluation::cx = 319.5;
+const double Evaluation::cy = 239.5;
 
 #ifndef HAVE_OPENCV
 
@@ -268,9 +268,9 @@ void Evaluation::saveAllPoses(const pcl::gpu::KinfuTracker& kinfu, int frame_num
   
   for(int i = 0; i < frame_number; ++i)
   {
-    Eigen::Affine3f pose = kinfu.getCameraPose(i);
-    Eigen::Quaternionf q(pose.rotation());
-    Eigen::Vector3f t = pose.translation();
+    Eigen::Affine3d pose = kinfu.getCameraPose(i);
+    Eigen::Quaterniond q(pose.rotation());
+    Eigen::Vector3d t = pose.translation();
 
     double stamp = accociations_.empty() ? depth_stamps_and_filenames_[i].first : accociations_[i].time1;
 

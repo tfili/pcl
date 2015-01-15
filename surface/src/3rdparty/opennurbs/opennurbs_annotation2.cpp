@@ -21,7 +21,7 @@
 #define BOZO_VACCINE_699FCC4262D4488c9109F1B7A37CE926
 
 // Added for v5 - 12-10-2009 LW
-ON_OBJECT_IMPLEMENT(ON_TextExtra,ON_UserData,"D90490A5-DB86-49f8-BDA1-9080B1F4E976");
+ON_OBJECT_IMPLEMENT(ON_TextExtra,ON_UserData,"D90490A5-DB86-498-BDA1-9080B1F4E976");
 
 ON_TextExtra::ON_TextExtra()
 {
@@ -196,7 +196,7 @@ void ON_TextExtra::SetMaskOffsetFactor(double offset)
 
 
 // Added for v5 - 4-20-07 LW
-ON_OBJECT_IMPLEMENT(ON_DimensionExtra,ON_UserData,"8AD5B9FC-0D5C-47fb-ADFD-74C28B6F661E");
+ON_OBJECT_IMPLEMENT(ON_DimensionExtra,ON_UserData,"8AD5B9FC-0D5C-47b-ADFD-74C28B6F661E");
 
 ON_DimensionExtra::ON_DimensionExtra()
 {

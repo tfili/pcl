@@ -75,17 +75,17 @@ pcl::PCA<PointT>::initCompute ()
   }
   
   // Compute mean
-  mean_ = Eigen::Vector4f::Zero ();
+  mean_ = Eigen::Vector4d::Zero ();
   compute3DCentroid (*input_, *indices_, mean_);  
   // Compute demeanished cloud
-  Eigen::MatrixXf cloud_demean;
+  Eigen::MatrixXd cloud_demean;
   demeanPointCloud (*input_, *indices_, mean_, cloud_demean);
   assert (cloud_demean.cols () == int (indices_->size ()));
   // Compute the product cloud_demean * cloud_demean^T
-  Eigen::Matrix3f alpha = static_cast<Eigen::Matrix3f> (cloud_demean.topRows<3> () * cloud_demean.topRows<3> ().transpose ());
+  Eigen::Matrix3d alpha = static_cast<Eigen::Matrix3d> (cloud_demean.topRows<3> () * cloud_demean.topRows<3> ().transpose ());
   
   // Compute eigen vectors and values
-  Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> evd (alpha);
+  Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> evd (alpha);
   // Organize eigenvectors and eigenvalues in ascendent order
   for (int i = 0; i < 3; ++i)
   {
@@ -109,41 +109,41 @@ pcl::PCA<PointT>::update (const PointT& input_point, FLAG flag)
   if (!compute_done_)
     PCL_THROW_EXCEPTION (InitFailedException, "[pcl::PCA::update] PCA initCompute failed");
 
-  Eigen::Vector3f input (input_point.x, input_point.y, input_point.z);
+  Eigen::Vector3d input (input_point.x, input_point.y, input_point.z);
   const size_t n = eigenvectors_.cols ();// number of eigen vectors
-  Eigen::VectorXf meanp = (float(n) * (mean_.head<3>() + input)) / float(n + 1);
-  Eigen::VectorXf a = eigenvectors_.transpose() * (input - mean_.head<3>());
-  Eigen::VectorXf y = (eigenvectors_ * a) + mean_.head<3>();
-  Eigen::VectorXf h = y - input;
+  Eigen::VectorXd meanp = (double(n) * (mean_.head<3>() + input)) / double(n + 1);
+  Eigen::VectorXd a = eigenvectors_.transpose() * (input - mean_.head<3>());
+  Eigen::VectorXd y = (eigenvectors_ * a) + mean_.head<3>();
+  Eigen::VectorXd h = y - input;
   if (h.norm() > 0) 
     h.normalize ();
   else
     h.setZero ();
-  float gamma = h.dot(input - mean_.head<3>());
-  Eigen::MatrixXf D = Eigen::MatrixXf::Zero (a.size() + 1, a.size() + 1);
+  double gamma = h.dot(input - mean_.head<3>());
+  Eigen::MatrixXd D = Eigen::MatrixXd::Zero (a.size() + 1, a.size() + 1);
   D.block(0,0,n,n) = a * a.transpose();
-  D /=  float(n)/float((n+1) * (n+1));
+  D /=  double(n)/double((n+1) * (n+1));
   for(std::size_t i=0; i < a.size(); i++) {
-    D(i,i)+= float(n)/float(n+1)*eigenvalues_(i);
-    D(D.rows()-1,i) = float(n) / float((n+1) * (n+1)) * gamma * a(i);
+    D(i,i)+= double(n)/double(n+1)*eigenvalues_(i);
+    D(D.rows()-1,i) = double(n) / double((n+1) * (n+1)) * gamma * a(i);
     D(i,D.cols()-1) = D(D.rows()-1,i);
-    D(D.rows()-1,D.cols()-1) = float(n)/float((n+1) * (n+1)) * gamma * gamma;
+    D(D.rows()-1,D.cols()-1) = double(n)/double((n+1) * (n+1)) * gamma * gamma;
   }
 
-  Eigen::MatrixXf R(D.rows(), D.cols());
-  Eigen::EigenSolver<Eigen::MatrixXf> D_evd (D, false);
-  Eigen::VectorXf alphap = D_evd.eigenvalues().real();
+  Eigen::MatrixXd R(D.rows(), D.cols());
+  Eigen::EigenSolver<Eigen::MatrixXd> D_evd (D, false);
+  Eigen::VectorXd alphap = D_evd.eigenvalues().real();
   eigenvalues_.resize(eigenvalues_.size() +1);
   for(std::size_t i=0;i<eigenvalues_.size();i++) {
     eigenvalues_(i) = alphap(eigenvalues_.size()-i-1);
     R.col(i) = D.col(D.cols()-i-1);
   }
-  Eigen::MatrixXf Up = Eigen::MatrixXf::Zero(eigenvectors_.rows(), eigenvectors_.cols()+1);
+  Eigen::MatrixXd Up = Eigen::MatrixXd::Zero(eigenvectors_.rows(), eigenvectors_.cols()+1);
   Up.topLeftCorner(eigenvectors_.rows(),eigenvectors_.cols()) = eigenvectors_;
   Up.rightCols<1>() = h;
   eigenvectors_ = Up*R;
   if (!basis_only_) {
-    Eigen::Vector3f etha = Up.transpose() * (mean_.head<3>() - meanp);
+    Eigen::Vector3d etha = Up.transpose() * (mean_.head<3>() - meanp);
     coefficients_.resize(coefficients_.rows()+1,coefficients_.cols()+1);
     for(std::size_t i=0; i < (coefficients_.cols() - 1); i++) {
       coefficients_(coefficients_.rows()-1,i) = 0;
@@ -179,8 +179,8 @@ pcl::PCA<PointT>::project (const PointT& input, PointT& projection)
   if (!compute_done_)
     PCL_THROW_EXCEPTION (InitFailedException, "[pcl::PCA::project] PCA initCompute failed");
   
-  Eigen::Vector3f demean_input = input.getVector3fMap () - mean_.head<3> ();
-  projection.getVector3fMap () = eigenvectors_.transpose() * demean_input;
+  Eigen::Vector3d demean_input = input.getVector3dMap () - mean_.head<3> ();
+  projection.getVector3dMap () = eigenvectors_.transpose() * demean_input;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -221,8 +221,8 @@ pcl::PCA<PointT>::reconstruct (const PointT& projection, PointT& input)
   if (!compute_done_)
     PCL_THROW_EXCEPTION (InitFailedException, "[pcl::PCA::reconstruct] PCA initCompute failed");
 
-  input.getVector3fMap ()= eigenvectors_ * projection.getVector3fMap ();
-  input.getVector3fMap ()+= mean_.head<3> ();
+  input.getVector3dMap ()= eigenvectors_ * projection.getVector3dMap ();
+  input.getVector3dMap ()+= mean_.head<3> ();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

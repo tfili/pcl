@@ -64,7 +64,7 @@ namespace pcl
     {
       Camera () : pose (), focal_length (), focal_length_w (-1), focal_length_h (-1),
         center_w (-1), center_h (-1), height (), width (), texture_file () {}
-      Eigen::Affine3f pose;
+      Eigen::Affine3d pose;
       double focal_length;
       double focal_length_w;  // optional
       double focal_length_h;  // optinoal
@@ -128,7 +128,7 @@ namespace pcl
         * \param[in] f
         */
       inline void
-      setF (float f)
+      setF (double f)
       {
         f_ = f;
       }
@@ -139,9 +139,9 @@ namespace pcl
         * \param[in] z data point z
         */
       inline void
-      setVectorField (float x, float y, float z)
+      setVectorField (double x, double y, double z)
       {
-        vector_field_ = Eigen::Vector3f (x, y, z);
+        vector_field_ = Eigen::Vector3d (x, y, z);
         // normalize vector field
         vector_field_ = vector_field_ / std::sqrt (vector_field_.dot (vector_field_));
       }
@@ -193,7 +193,7 @@ namespace pcl
         * \returns false if the point is not visible by the camera
         */
       inline bool
-      getPointUVCoordinates (const PointInT &pt, const Camera &cam, Eigen::Vector2f &UV_coordinates)
+      getPointUVCoordinates (const PointInT &pt, const Camera &cam, Eigen::Vector2d &UV_coordinates)
       {
         // if the point is in front of the camera
         if (pt.z > 0)
@@ -222,8 +222,8 @@ namespace pcl
             focal_y = cam.focal_length;
 
           // project point on image frame
-          UV_coordinates[0] = static_cast<float> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
-          UV_coordinates[1] = 1.0f - static_cast<float> (((focal_y * (pt.y / pt.z) + cy) / sizeY)); //vertical
+          UV_coordinates[0] = static_cast<double> ((focal_x * (pt.x / pt.z) + cx) / sizeX); //horizontal
+          UV_coordinates[1] = 1.0 - static_cast<double> (((focal_y * (pt.y / pt.z) + cy) / sizeY)); //vertical
 
           // point is visible!
           if (UV_coordinates[0] >= 0.0 && UV_coordinates[0] <= 1.0 && UV_coordinates[1] >= 0.0 && UV_coordinates[1]
@@ -335,10 +335,10 @@ namespace pcl
 
     protected:
       /** \brief mesh scale control. */
-      float f_;
+      double f_;
 
       /** \brief vector field */
-      Eigen::Vector3f vector_field_;
+      Eigen::Vector3d vector_field_;
 
       /** \brief list of texture files */
       std::vector<std::string> tex_files_;
@@ -351,8 +351,8 @@ namespace pcl
         * \param[in] p2 the second point
         * \param[in] p3 the third point
         */
-      std::vector<Eigen::Vector2f>
-      mapTexture2Face (const Eigen::Vector3f &p1, const Eigen::Vector3f &p2, const Eigen::Vector3f &p3);
+      std::vector<Eigen::Vector2d>
+      mapTexture2Face (const Eigen::Vector3d &p1, const Eigen::Vector3d &p2, const Eigen::Vector3d &p3);
 
       /** \brief Returns the circumcenter of a triangle and the circle's radius.
         * \details see http://en.wikipedia.org/wiki/Circumcenter for formulas.

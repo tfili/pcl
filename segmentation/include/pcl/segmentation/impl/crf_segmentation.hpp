@@ -57,7 +57,7 @@ pcl::CrfSegmentation<PointT>::CrfSegmentation () :
   filtered_cloud_ (new pcl::PointCloud<PointT>),
   filtered_anno_ (new pcl::PointCloud<pcl::PointXYZRGBL>),
   filtered_normal_ (new pcl::PointCloud<pcl::PointNormal>),
-  voxel_grid_leaf_size_ (Eigen::Vector4f (0.001f, 0.001f, 0.001f, 0.0f))
+  voxel_grid_leaf_size_ (Eigen::Vector4d (0.001, 0.001, 0.001, 0.0))
 {
 }
 
@@ -99,7 +99,7 @@ pcl::CrfSegmentation<PointT>::setNormalCloud (typename pcl::PointCloud<pcl::Poin
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::CrfSegmentation<PointT>::setVoxelGridLeafSize (const float x, const float y, const float z)
+pcl::CrfSegmentation<PointT>::setVoxelGridLeafSize (const double x, const double y, const double z)
 {
   voxel_grid_leaf_size_.x () = x;
   voxel_grid_leaf_size_.y () = y;
@@ -108,8 +108,8 @@ pcl::CrfSegmentation<PointT>::setVoxelGridLeafSize (const float x, const float y
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::CrfSegmentation<PointT>::setSmoothnessKernelParameters (const float sx, const float sy, const float sz, 
-                                                             const float w)
+pcl::CrfSegmentation<PointT>::setSmoothnessKernelParameters (const double sx, const double sy, const double sz, 
+                                                             const double w)
 {
   smoothness_kernel_param_[0] = sx;
   smoothness_kernel_param_[1] = sy;
@@ -119,9 +119,9 @@ pcl::CrfSegmentation<PointT>::setSmoothnessKernelParameters (const float sx, con
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::CrfSegmentation<PointT>::setAppearanceKernelParameters (float sx, float sy, float sz, 
-                                                             float sr, float sg, float sb,
-                                                             float w)
+pcl::CrfSegmentation<PointT>::setAppearanceKernelParameters (double sx, double sy, double sz, 
+                                                             double sr, double sg, double sb,
+                                                             double w)
 {
   appearance_kernel_param_[0] = sx;
   appearance_kernel_param_[1] = sy;
@@ -134,9 +134,9 @@ pcl::CrfSegmentation<PointT>::setAppearanceKernelParameters (float sx, float sy,
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::CrfSegmentation<PointT>::setSurfaceKernelParameters (float sx, float sy, float sz, 
-                                                          float snx, float sny, float snz,
-                                                          float w)
+pcl::CrfSegmentation<PointT>::setSurfaceKernelParameters (double sx, double sy, double sz, 
+                                                          double snx, double sny, double snz,
+                                                          double w)
 {
   surface_kernel_param_[0] = sx;
   surface_kernel_param_[1] = sy;
@@ -284,7 +284,7 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
   // fill the data vector
   for (size_t i = 0; i < filtered_cloud_->points.size (); i++)
   {
-    Eigen::Vector3f p (filtered_anno_->points[i].x,
+    Eigen::Vector3d p (filtered_anno_->points[i].x,
                        filtered_anno_->points[i].y,
                        filtered_anno_->points[i].z);
     Eigen::Vector3i c = voxel_grid_.getGridCoordinates (p.x (), p.y (), p.y ());
@@ -293,19 +293,19 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
     if (color_data)
     {    
       uint32_t rgb = *reinterpret_cast<int*>(&filtered_cloud_->points[i].rgba);
-      uint8_t r = (rgb >> 16) & 0x0000ff;
-      uint8_t g = (rgb >> 8)  & 0x0000ff;
-      uint8_t b = (rgb)       & 0x0000ff;
+      uint8_t r = (rgb >> 16) & 0x0000f;
+      uint8_t g = (rgb >> 8)  & 0x0000f;
+      uint8_t b = (rgb)       & 0x0000f;
       color_[i] = Eigen::Vector3i (r, g, b);
     }
 
 /*
     if (normal_data)
     {
-      float n_x = filtered_cloud_->points[i].normal_x;
-      float n_y = filtered_cloud_->points[i].normal_y;
-      float n_z = filtered_cloud_->points[i].normal_z;
-      normal_[i] = Eigen::Vector3f (n_x, n_y, n_z);
+      double n_x = filtered_cloud_->points[i].normal_x;
+      double n_y = filtered_cloud_->points[i].normal_y;
+      double n_z = filtered_cloud_->points[i].normal_z;
+      normal_[i] = Eigen::Vector3d (n_x, n_y, n_z);
     }
 */
   }
@@ -313,10 +313,10 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
   normal_.resize (filtered_normal_->points.size ());
   for (size_t i = 0; i < filtered_normal_->points.size (); i++)
   {
-    float n_x = filtered_normal_->points[i].normal_x;
-    float n_y = filtered_normal_->points[i].normal_y;
-    float n_z = filtered_normal_->points[i].normal_z;
-    normal_[i] = Eigen::Vector3f (n_x, n_y, n_z);
+    double n_x = filtered_normal_->points[i].normal_x;
+    double n_y = filtered_normal_->points[i].normal_y;
+    double n_z = filtered_normal_->points[i].normal_z;
+    normal_[i] = Eigen::Vector3d (n_x, n_y, n_z);
   }
   
 
@@ -324,7 +324,7 @@ pcl::CrfSegmentation<PointT>::createDataVectorFromVoxelGrid ()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::CrfSegmentation<PointT>::createUnaryPotentials (std::vector<float> &unary,
+pcl::CrfSegmentation<PointT>::createUnaryPotentials (std::vector<double> &unary,
                                                      std::vector<int> &labels,
                                                      unsigned int n_labels)
 {
@@ -333,10 +333,10 @@ pcl::CrfSegmentation<PointT>::createUnaryPotentials (std::vector<float> &unary,
   //srand ( time (NULL) );
 
   // Certainty that the groundtruth is correct
-  const float GT_PROB = 0.9f;
-  const float u_energy = -logf ( 1.0f / static_cast<float> (n_labels) );
-  const float n_energy = -logf ( (1.0f - GT_PROB) / static_cast<float>(n_labels - 1) );
-  const float p_energy = -logf ( GT_PROB );
+  const double GT_PROB = 0.9;
+  const double u_energy = -logf ( 1.0 / static_cast<double> (n_labels) );
+  const double n_energy = -logf ( (1.0 - GT_PROB) / static_cast<double>(n_labels - 1) );
+  const double p_energy = -logf ( GT_PROB );
 
   for (size_t k = 0; k < filtered_anno_->points.size (); k++)
   {
@@ -392,9 +392,9 @@ pcl::CrfSegmentation<PointT>::createUnaryPotentials (std::vector<float> &unary,
 
       if (label == 1)
       {
-        const float PROB = 0.2f;
-        const float n_energy2 = -logf ( (1.0f - PROB) / static_cast<float>(n_labels - 1) );
-        const float p_energy2 = -logf ( PROB );
+        const double PROB = 0.2f;
+        const double n_energy2 = -logf ( (1.0 - PROB) / static_cast<double>(n_labels - 1) );
+        const double p_energy2 = -logf ( PROB );
 
         for (size_t i = 0; i < n_labels; i++)
           unary[u_idx + i] = n_energy2;
@@ -429,7 +429,7 @@ pcl::CrfSegmentation<PointT>::segmentPoints (pcl::PointCloud<pcl::PointXYZRGBL> 
 
   // create unary potentials
   std::vector<int> labels;
-  std::vector<float> unary;
+  std::vector<double> unary;
   if (anno_cloud_->points.size () > 0)
   {
     unary.resize (N * n_labels);
@@ -453,12 +453,12 @@ pcl::CrfSegmentation<PointT>::segmentPoints (pcl::PointCloud<pcl::PointXYZRGBL> 
   // Setup the CRF model
 	DenseCRF2D crfOLD(N, 1, n_labels);
 
-  float * unaryORI = new float[N*n_labels];
+  double * unaryORI = new double[N*n_labels];
   for (int i = 0; i < N*n_labels; i++)
     unaryORI[i] = unary[i];
   crfOLD.setUnaryEnergy( unaryORI );
 
-  float * pos = new float[N*3];
+  double * pos = new double[N*3];
   for (int i = 0; i < N; i++)
   {
     pos[i * 3] = data_[i].x ();
@@ -467,7 +467,7 @@ pcl::CrfSegmentation<PointT>::segmentPoints (pcl::PointCloud<pcl::PointXYZRGBL> 
   }  
 	crfOLD.addPairwiseGaussian( pos, 3, 3, 3, 2.0 );
 
-  float * col = new float[N*3];
+  double * col = new double[N*3];
   for (int i = 0; i < N; i++)
   {
     col[i * 3] = color_[i].x ();
@@ -487,12 +487,12 @@ pcl::CrfSegmentation<PointT>::segmentPoints (pcl::PointCloud<pcl::PointXYZRGBL> 
 
 */
 
-  //float * resultOLD = new float[N*n_labels];
+  //double * resultOLD = new double[N*n_labels];
   //crfOLD.inference (10, resultOLD);
   
-  //std::vector<float> baryOLD;
+  //std::vector<double> baryOLD;
   //crfOLD.getBarycentric (0, baryOLD);
-  //std::vector<float> featuresOLD;
+  //std::vector<double> featuresOLD;
   //crfOLD.getFeature (1, featuresOLD);
   
 /*
@@ -560,12 +560,12 @@ pcl::CrfSegmentation<PointT>::segmentPoints (pcl::PointCloud<pcl::PointXYZRGBL> 
   std::vector<int> r (N);
   crf.mapInference (n_iterations_, r);
 
-  //std::vector<float> result (N*n_labels);
+  //std::vector<double> result (N*n_labels);
   //crf.inference (n_iterations_, result);
 
-  //std::vector<float> bary;
+  //std::vector<double> bary;
   //crf.getBarycentric (0, bary);
-  //std::vector<float> features;
+  //std::vector<double> features;
   //crf.getFeatures (1, features);
 
   std::cout << "Map inference - DONE" << std::endl;

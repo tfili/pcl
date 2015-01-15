@@ -23,7 +23,7 @@
 
 ON_OBJECT_IMPLEMENT(ON_Material,ON_Object,"60B5DBBC-E660-11d3-BFE4-0010830122F0");
 
-double ON_Material::m_max_shine = 255.0f;
+double ON_Material::m_max_shine = 255.0;
 
 double ON_Material::MaxShine()
 {
@@ -680,7 +680,7 @@ void ON_Material::SetShine( double shine )
   else if ( shine > m_max_shine)
     m_shine = m_max_shine;
   else
-    m_shine = (float)shine;
+    m_shine = (double)shine;
 }
 
   // Transparency values are in range 0.0 = opaque to 1.0 = transparent
@@ -692,11 +692,11 @@ double ON_Material::Transparency( ) const
 void ON_Material::SetTransparency( double transparency )
 {
   if ( transparency < 0.0 )
-    m_transparency = 0.0f;
+    m_transparency = 0.0;
   else if ( transparency > 1.0)
-    m_transparency = 1.0f;
+    m_transparency = 1.0;
   else
-    m_transparency = (float)transparency;
+    m_transparency = (double)transparency;
 }
 
 bool ON_Material::operator==( const ON_Material& src ) const
@@ -2453,7 +2453,7 @@ static
 bool GetSPTCHelper(
   const ON_Mesh& mesh,
   const ON_TextureMapping& mapping,
-  float* tc,
+  double* tc,
   int tc_stride
   )
 {
@@ -2541,8 +2541,8 @@ bool GetSPTCHelper(
 	    u = tex_udom.ParameterAt(a);
 	    v = tex_vdom.ParameterAt(b);
 
-	    tc[0] = (float)u;
-	    tc[1] = (float)v;
+	    tc[0] = (double)u;
+	    tc[1] = (double)v;
       tc += tc_stride;
     }
   }
@@ -2560,8 +2560,8 @@ bool GetSPTCHelper(
       // apply m_uvw transformation
       P = xform*P;
 
-      tc[0] = (float)P.x;
-      tc[1] = (float)P.y;
+      tc[0] = (double)P.x;
+      tc[1] = (double)P.y;
       tc += tc_stride;
     }
   }
@@ -2575,8 +2575,8 @@ bool GetSPTCHelper(
       a = srf_udom.NormalizedParameterAt( S[i].x );
       b = srf_vdom.NormalizedParameterAt( S[i].y );
 
-	    tc[0] = (float)a;
-	    tc[1] = (float)b;
+	    tc[0] = (double)a;
+	    tc[1] = (double)b;
       tc += tc_stride;
     }
   }
@@ -2626,7 +2626,7 @@ bool ON_TextureMapping::GetTextureCoordinates(
       {
         d->x = f->x;
         d->y = f->y;
-        d->z = 0.0f;
+        d->z = 0.0;
       }
       return true;
     }
@@ -2685,7 +2685,7 @@ bool ON_TextureMapping::GetTextureCoordinates(
       }
     }
 
-    const float* f;
+    const double* f;
     double w;
     int sd;
 
@@ -2907,7 +2907,7 @@ class ON__CMeshFaceTC
 public:
   int   fi;
   int   quad[4];
-  float Tx[4];
+  double Tx[4];
   bool  bSetT[4];
 };
 
@@ -2916,11 +2916,11 @@ class ON__CChangeTextureCoordinateHelper
   // DO NOT PUT THIS CLASS IN A HEADER FILE
   // IT IS A PRIVATE HELPER CLASS.
 public:
-  ON__CChangeTextureCoordinateHelper( ON_Mesh& mesh, int newvcnt, float*& mesh_T );
+  ON__CChangeTextureCoordinateHelper( ON_Mesh& mesh, int newvcnt, double*& mesh_T );
   ~ON__CChangeTextureCoordinateHelper();
 
   int DupVertex(int vi);
-  void ChangeTextureCoordinate(int* Fvi, int fvi, float x, float y, float* mesh_T, int mesh_T_stride );
+  void ChangeTextureCoordinate(int* Fvi, int fvi, double x, double y, double* mesh_T, int mesh_T_stride );
 
   int m_tci;
 
@@ -2952,11 +2952,11 @@ private:
   ON__CChangeTextureCoordinateHelper& operator=(const ON__CChangeTextureCoordinateHelper&);
 };
 
-void ON__CChangeTextureCoordinateHelper::ChangeTextureCoordinate(int* Fvi, int fvi, float x, float y,
-                                                             float* mesh_T, int mesh_T_stride )
+void ON__CChangeTextureCoordinateHelper::ChangeTextureCoordinate(int* Fvi, int fvi, double x, double y,
+                                                             double* mesh_T, int mesh_T_stride )
 {
   int oldvi = Fvi[fvi];
-  float* T = mesh_T+(oldvi*mesh_T_stride);
+  double* T = mesh_T+(oldvi*mesh_T_stride);
   if ( x != T[0] || (y != ON_UNSET_FLOAT && y != T[1]) )
   {
     int newvi = DupVertex(oldvi);
@@ -2981,7 +2981,7 @@ void ON__CChangeTextureCoordinateHelper::ChangeTextureCoordinate(int* Fvi, int f
 ON__CChangeTextureCoordinateHelper::ON__CChangeTextureCoordinateHelper( 
     ON_Mesh& mesh,
     int newvcnt,
-    float*& mesh_T ) 
+    double*& mesh_T ) 
 : m_mesh(mesh)
 , m_mesh_dV(0)
 , m_vuse_count(0)
@@ -3022,10 +3022,10 @@ ON__CChangeTextureCoordinateHelper::ON__CChangeTextureCoordinateHelper(
   m_bHasVertexTextures = m_mesh.HasTextureCoordinates();
   if ( m_bHasVertexTextures )
   {
-    float* p = (float*)m_mesh.m_T.Array();
+    double* p = (double*)m_mesh.m_T.Array();
     m_mesh.m_T.Reserve(vcnt+newvcnt);
     if ( p == mesh_T )
-      mesh_T = (float*)m_mesh.m_T.Array();
+      mesh_T = (double*)m_mesh.m_T.Array();
   }
 
   m_bHasVertexColors = m_mesh.HasVertexColors();
@@ -3055,10 +3055,10 @@ ON__CChangeTextureCoordinateHelper::ON__CChangeTextureCoordinateHelper(
     if ( vcnt == tc.m_T.Count() )
     {
       m_bHasCachedTextures = true;
-      float* p = (float*)tc.m_T.Array();
+      double* p = (double*)tc.m_T.Array();
       tc.m_T.Reserve(vcnt+newvcnt);
       if ( p == mesh_T )
-        mesh_T = (float*)tc.m_T.Array();
+        mesh_T = (double*)tc.m_T.Array();
       m_TC.Append( &tc );
     }
   }
@@ -3180,11 +3180,11 @@ int ON__CChangeTextureCoordinateHelper::DupVertex(int vi)
 
 
 static
-float PoleFix( float t0,  float t1 )
+double PoleFix( double t0,  double t1 )
 {
-  float t = ( ON_UNSET_FLOAT == t0 )
+  double t = ( ON_UNSET_FLOAT == t0 )
           ? t1
-          : ((ON_UNSET_FLOAT == t1 ) ? t0 : (0.5f*(t0+t1)));
+          : ((ON_UNSET_FLOAT == t1 ) ? t0 : (0.5*(t0+t1)));
   return t;
 }
 
@@ -3376,8 +3376,8 @@ bool EvBoxSideTextureCoordinateHelper1(
           int vi,
           int side,
           const ON_TextureMapping& box_mapping,
-          float* Tx,
-          float* Ty
+          double* Tx,
+          double* Ty
           )
 {
 	bool rc = false;
@@ -3410,7 +3410,7 @@ bool EvBoxSideTextureCoordinateHelper1(
     }
   }
 
-  const float* f;
+  const double* f;
   double w;
 
   if ( mesh_N && ON_TextureMapping::ray_projection == box_mapping.m_projection )
@@ -3464,8 +3464,8 @@ bool EvBoxSideTextureCoordinateHelper1(
     rc = tc.IsValid();
     if (rc)
     {
-      *Tx = (float)tc.x;
-      *Ty = (float)tc.y;
+      *Tx = (double)tc.x;
+      *Ty = (double)tc.y;
     }
   }
 	return rc;
@@ -3482,14 +3482,14 @@ public:
 };
 
 static
-float TcDistanceHelper(const ON_2fPoint& tc)
+double TcDistanceHelper(const ON_2fPoint& tc)
 {
-  float dx = (tc.x > 0.5f) ? (1.0f-tc.x) : tc.x;
-  if ( dx < 0.0f) 
-    return 0.0f;
-  float dy = (tc.y > 0.5f) ? (1.0f-tc.y) : tc.y;
-  if ( dy < 0.0f) 
-    return 0.0f;
+  double dx = (tc.x > 0.5) ? (1.0-tc.x) : tc.x;
+  if ( dx < 0.0) 
+    return 0.0;
+  double dy = (tc.y > 0.5) ? (1.0-tc.y) : tc.y;
+  if ( dy < 0.0) 
+    return 0.0;
   return (dx < dy) ? dx : dy;
 }
 
@@ -3497,7 +3497,7 @@ static
 void AdjustSingleBoxTextureCoordinatesHelper( 
           ON_Mesh& mesh, 
           const ON_Xform* mesh_xform,
-          float* mesh_T,
+          double* mesh_T,
           int    mesh_T_stride,
           const int* Tsd,
           const ON_TextureMapping& box_mapping
@@ -3513,7 +3513,7 @@ void AdjustSingleBoxTextureCoordinatesHelper(
   ON__CNewMeshFace mf;
   ON_2fPoint tc;
   ON_SimpleArray<ON__CNewMeshFace> mflist(512);
-  float d;
+  double d;
   for ( fi = 0; fi < fcnt; fi++ )
   {
     Fvi = mesh_F[fi].vi;
@@ -3539,7 +3539,7 @@ void AdjustSingleBoxTextureCoordinatesHelper(
     d = TcDistanceHelper(mf.tc[0]);
     for ( j = 1; j < fvicnt; j++ )
     {
-      float d1 = TcDistanceHelper(mf.tc[j]);
+      double d1 = TcDistanceHelper(mf.tc[j]);
       if (d1 > d)
       {
         side = sd[j];
@@ -3550,7 +3550,7 @@ void AdjustSingleBoxTextureCoordinatesHelper(
     // Jussi, 5th September 2011:
     // This 'continue' only works for faces having one or more of its tc's in (0,1)x(0,1).
     // I have commented it out as a fix to RR 90329.
-    //if ( d <= 0.0f )
+    //if ( d <= 0.0 )
     //  continue;
 
     for ( j = 0; j < fvicnt; j++ )
@@ -3611,7 +3611,7 @@ static
 void AdjustMeshPeriodicTextureCoordinatesHelper( 
           ON_Mesh& mesh, 
           const ON_Xform* mesh_xform,
-          float* mesh_T,
+          double* mesh_T,
           int    mesh_T_stride,
           const int* Tsd,
           double two_pi_tc,
@@ -3642,13 +3642,13 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
 
   ON_Workspace ws;
   int* quad = ws.GetIntMemory(vcnt); // ~ws will free quad memory
-  float* Tx = (float*)ws.GetMemory(vcnt*sizeof(Tx[0]));
-  float t;
+  double* Tx = (double*)ws.GetMemory(vcnt*sizeof(Tx[0]));
+  double t;
   int vi, ti, q=0;
   int ftc_count = 0;
 
-  const float ang0 = (float)(0.25*two_pi_tc);
-  const float ang1 = (float)(0.75*two_pi_tc);
+  const double ang0 = (double)(0.25*two_pi_tc);
+  const double ang1 = (double)(0.75*two_pi_tc);
 
 
   for ( vi = ti = 0; vi < vcnt; vi++, ti += mesh_T_stride )
@@ -3668,13 +3668,13 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
     else if ( bSphereCheck )
     {
       t = mesh_T[ti+1]; // t = "v" texture coordinate
-      if ( t < 0.001f )
+      if ( t < 0.001 )
       {
         quad[vi] = 8; q |= 8; // south pole point
         ftc_count++;
         continue;
       }
-      if ( t > 0.999f )
+      if ( t > 0.999 )
       {
         quad[vi] = 8; q |= 8; // north pole point
         ftc_count++;
@@ -3710,7 +3710,7 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
   int fi;
   ON__CMeshFaceTC ftc;
   memset(&ftc,0,sizeof(ftc));
-  float t0, t1;
+  double t0, t1;
 
   for ( fi = 0; fi < fcnt; fi++ )
   {
@@ -3800,10 +3800,10 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
       // The face has corners on both sides of the seam
       if ( two_pi_tc == 1.0 )
       {
-        if ( 1 == ftc.quad[0] ) {ftc.Tx[0] += 1.0f; ftc.fi = fi;}
-        if ( 1 == ftc.quad[1] ) {ftc.Tx[1] += 1.0f; ftc.fi = fi;}
-        if ( 1 == ftc.quad[2] ) {ftc.Tx[2] += 1.0f; ftc.fi = fi;}
-        if ( 1 == ftc.quad[3] ) {ftc.Tx[3] += 1.0f; ftc.fi = fi;}
+        if ( 1 == ftc.quad[0] ) {ftc.Tx[0] += 1.0; ftc.fi = fi;}
+        if ( 1 == ftc.quad[1] ) {ftc.Tx[1] += 1.0; ftc.fi = fi;}
+        if ( 1 == ftc.quad[2] ) {ftc.Tx[2] += 1.0; ftc.fi = fi;}
+        if ( 1 == ftc.quad[3] ) {ftc.Tx[3] += 1.0; ftc.fi = fi;}
       }
       else
       {
@@ -3814,7 +3814,7 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
         // map and clamp the tcs that hang over.  If the mesh
         // has edges near the texture seam, the picture will
         // still look ok.
-        float f0=0.0f, f1=0.0f, twopitc = (float)two_pi_tc;;
+        double f0=0.0, f1=0.0, twopitc = (double)two_pi_tc;;
         //int f0cnt=0, f1cnt=0;
         if ( 1 == ftc.quad[0] ) f0 += ftc.Tx[0]; else if ( 4 == ftc.quad[0] ) f1 += twopitc-ftc.Tx[0];
         if ( 1 == ftc.quad[1] ) f0 += ftc.Tx[1]; else if ( 4 == ftc.quad[1] ) f1 += twopitc-ftc.Tx[1];
@@ -3827,10 +3827,10 @@ void AdjustMeshPeriodicTextureCoordinatesHelper(
         {
           // "most" of the face is on the left side of the texture 
           // If a vertex is on the right side, clamp its tc to 0.
-          if ( 4 == ftc.quad[0] ) {ftc.Tx[0] = 0.0f; ftc.fi = fi;}
-          if ( 4 == ftc.quad[1] ) {ftc.Tx[1] = 0.0f; ftc.fi = fi;}
-          if ( 4 == ftc.quad[2] ) {ftc.Tx[2] = 0.0f; ftc.fi = fi;}
-          if ( 4 == ftc.quad[3] ) {ftc.Tx[3] = 0.0f; ftc.fi = fi;}
+          if ( 4 == ftc.quad[0] ) {ftc.Tx[0] = 0.0; ftc.fi = fi;}
+          if ( 4 == ftc.quad[1] ) {ftc.Tx[1] = 0.0; ftc.fi = fi;}
+          if ( 4 == ftc.quad[2] ) {ftc.Tx[2] = 0.0; ftc.fi = fi;}
+          if ( 4 == ftc.quad[3] ) {ftc.Tx[3] = 0.0; ftc.fi = fi;}
         }
         else
         {
@@ -4033,7 +4033,7 @@ const ON_TextureCoordinates* ON_Mesh::SetCachedTextureCoordinates(
 
   if ( bSeamCheck &&  m_F.Count() > 0 && TC->m_T.Count() == m_V.Count() )
   {
-    float* mesh_T = (float*)TC->m_T.Array();
+    double* mesh_T = (double*)TC->m_T.Array();
     int mesh_T_stride = sizeof(TC->m_T[0])/sizeof(mesh_T[0]);
     if ( Tsd && Tside.Count() != m_V.Count() )
       Tsd = 0;
@@ -4099,7 +4099,7 @@ bool ON_Mesh::SetTextureCoordinates(
 
   if ( rc && bSeamCheck && HasTextureCoordinates() && m_F.Count() > 0 )
   {
-    float* mesh_T = (float*)m_T.Array();
+    double* mesh_T = (double*)m_T.Array();
     int mesh_T_stride = sizeof(m_T[0])/sizeof(mesh_T[0]);
     if ( Tsd && Tside.Count() != m_V.Count() )
       Tsd = 0;
@@ -4118,8 +4118,8 @@ bool ON_Mesh::SetTextureCoordinates(
         T.y = meshT[vi].y;
         T.z = 0.0;
         T = mapping.m_uvw*T;
-        meshT[vi].x = (float)T.x;
-        meshT[vi].y = (float)T.y;
+        meshT[vi].x = (double)T.x;
+        meshT[vi].y = (double)T.y;
       }
     }
   }

@@ -155,7 +155,7 @@ namespace pcl
       /////////////////////////////////////////////////////////////////////////
       inline void
       bilinearInterpolation (const PointCloudInConstPtr &cloud, 
-                             float x, float y,
+                             double x, double y,
                              PointOutT &pt)
       {
         int u = int (x);
@@ -168,11 +168,11 @@ namespace pcl
         const PointInT &p3 = (*cloud)(u,   v+1);
         const PointInT &p4 = (*cloud)(u+1, v+1);
         
-        float fx = x - float (u), fy = y - float (v);
-        float fx1 = 1.0f - fx, fy1 = 1.0f - fy;
+        double fx = x - double (u), fy = y - double (v);
+        double fx1 = 1.0 - fx, fy1 = 1.0 - fy;
 
-        float w1 = fx1 * fy1, w2 = fx * fy1, w3 = fx1 * fy, w4 = fx * fy;
-        float weight = 0;
+        double w1 = fx1 * fy1, w2 = fx * fy1, w3 = fx1 * fy, w4 = fx * fy;
+        double weight = 0;
         
         if (pcl::isFinite (p1))
         {
@@ -204,10 +204,10 @@ namespace pcl
         }
 
         if (weight == 0)
-          pt.x = pt.y = pt.z = std::numeric_limits<float>::quiet_NaN ();
+          pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
         else
         {
-          weight = 1.0f / weight;
+          weight = 1.0 / weight;
           pt.x *= weight; pt.y *= weight; pt.z *= weight;
         }
       }
@@ -263,7 +263,7 @@ namespace pcl
             */
           Layer (const std::vector<unsigned char>& img, 
                  int width, int height, 
-                 float scale = 1.0f, float offset = 0.0f);
+                 double scale = 1.0, double offset = 0.0);
         
           /** \brief Copy constructor for deriving a layer.
             * \param[in] layer layer to derive from
@@ -300,7 +300,7 @@ namespace pcl
             * \param[in] scale the scale
             */
           uint8_t 
-          getAgastScore (float xf, float yf, uint8_t threshold, float scale = 1.0f);
+          getAgastScore (double xf, double yf, uint8_t threshold, double scale = 1.0);
 
           /** \brief Access gray values (smoothed/interpolated) 
             * \param[in] mat the image
@@ -312,7 +312,7 @@ namespace pcl
             */
           uint8_t 
           getValue (const std::vector<unsigned char>& mat, 
-                    int width, int height, float xf, float yf, float scale);
+                    int width, int height, double xf, double yf, double scale);
          
           /** \brief Get the image used. */
           const std::vector<unsigned char>&
@@ -336,14 +336,14 @@ namespace pcl
           }
 
           /** \brief Get the scale used. */
-          float
+          double
           getScale () const
           {
             return (scale_);
           }
 
           /** \brief Get the offset used. */
-          inline float
+          inline double
           getOffset () const
           {
             return (offset_);
@@ -380,8 +380,8 @@ namespace pcl
           std::vector<unsigned char> scores_;
 
           /** coordinate transformation */
-          float scale_;
-          float offset_;
+          double scale_;
+          double offset_;
 
           /** agast */
           boost::shared_ptr<pcl::keypoints::agast::OastDetector9_16> oast_detector_;
@@ -421,29 +421,29 @@ namespace pcl
           isMax2D (const uint8_t layer, const int x_layer, const int y_layer);
 
           /** 1D (scale axis) refinement: around octave */
-          inline float 
-          refine1D (const float s_05, const float s0, const float s05, float& max); 
+          inline double 
+          refine1D (const double s_05, const double s0, const double s05, double& max); 
 
           /** 1D (scale axis) refinement: around intra */
-          inline float 
-          refine1D_1 (const float s_05, const float s0, const float s05, float& max); 
+          inline double 
+          refine1D_1 (const double s_05, const double s0, const double s05, double& max); 
 
           /** 1D (scale axis) refinement: around octave 0 only */
-          inline float 
-          refine1D_2 (const float s_05, const float s0, const float s05, float& max); 
+          inline double 
+          refine1D_2 (const double s_05, const double s0, const double s05, double& max); 
 
           /** 2D maximum refinement */
-          inline float 
+          inline double 
           subpixel2D (const int s_0_0, const int s_0_1, const int s_0_2,
                       const int s_1_0, const int s_1_1, const int s_1_2,
                       const int s_2_0, const int s_2_1, const int s_2_2,
-                      float& delta_x, float& delta_y);
+                      double& delta_x, double& delta_y);
 
           /** 3D maximum refinement centered around (x_layer,y_layer) */
-          inline float 
+          inline double 
           refine3D (const uint8_t layer,
                     const int x_layer, const int y_layer,
-                    float& x, float& y, float& scale, bool& ismax);
+                    double& x, double& y, double& scale, bool& ismax);
 
           /** interpolated score access with recalculation when needed */
           inline int 
@@ -453,17 +453,17 @@ namespace pcl
           getScoreBelow (const uint8_t layer, const int x_layer, const int y_layer);
 
           /** return the maximum of score patches above or below */
-          inline float 
+          inline double 
           getScoreMaxAbove (const uint8_t layer,
                             const int x_layer, const int y_layer,
                             const int threshold, bool& ismax,
-                            float& dx, float& dy);
+                            double& dx, double& dy);
 
-          inline float 
+          inline double 
           getScoreMaxBelow (const uint8_t layer,
                             const int x_layer, const int y_layer,
                             const int threshold, bool& ismax,
-                            float& dx, float& dy);
+                            double& dx, double& dy);
 
           // the image pyramids
           uint8_t layers_;
@@ -474,8 +474,8 @@ namespace pcl
           uint8_t safe_threshold_;
 
           // some constant parameters
-          float safety_factor_;
-          float basic_size_;
+          double safety_factor_;
+          double basic_size_;
       };
     } // namespace brisk
   } // namespace keypoints

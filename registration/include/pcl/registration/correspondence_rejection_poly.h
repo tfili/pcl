@@ -83,8 +83,8 @@ namespace pcl
         CorrespondenceRejectorPoly ()
           : iterations_ (10000)
           , cardinality_ (3)
-          , similarity_threshold_ (0.75f)
-          , similarity_threshold_squared_ (0.75f * 0.75f)
+          , similarity_threshold_ (0.75)
+          , similarity_threshold_squared_ (0.75 * 0.75)
         {
           rejection_name_ = "CorrespondenceRejectorPoly";
         }
@@ -177,7 +177,7 @@ namespace pcl
           * \param similarity_threshold similarity threshold
           */
         inline void 
-        setSimilarityThreshold (float similarity_threshold)
+        setSimilarityThreshold (double similarity_threshold)
         {
           similarity_threshold_ = similarity_threshold;
           similarity_threshold_squared_ = similarity_threshold * similarity_threshold;
@@ -186,7 +186,7 @@ namespace pcl
         /** \brief Get the similarity threshold between edge lengths
           * \return similarity threshold
           */
-        inline float 
+        inline double 
         getSimilarityThreshold ()
         {
           return (similarity_threshold_);
@@ -306,12 +306,12 @@ namespace pcl
           * \param p2 second point
           * \return squared Euclidean distance
           */
-        inline float 
+        inline double 
         computeSquaredDistance (const SourceT& p1, const TargetT& p2)
         {
-          const float dx = p2.x - p1.x;
-          const float dy = p2.y - p1.y;
-          const float dz = p2.z - p1.z;
+          const double dx = p2.x - p1.x;
+          const double dy = p2.y - p1.y;
+          const double dz = p2.z - p1.z;
           
           return (dx*dx + dy*dy + dz*dz);
         }
@@ -329,14 +329,14 @@ namespace pcl
                              int index_query_2,
                              int index_match_1,
                              int index_match_2,
-                             float simsq)
+                             double simsq)
         {
           // Distance between source points
-          const float dist_src = computeSquaredDistance ((*input_)[index_query_1], (*input_)[index_query_2]);
+          const double dist_src = computeSquaredDistance ((*input_)[index_query_1], (*input_)[index_query_2]);
           // Distance between target points
-          const float dist_tgt = computeSquaredDistance ((*target_)[index_match_1], (*target_)[index_match_2]);
+          const double dist_tgt = computeSquaredDistance ((*target_)[index_match_1], (*target_)[index_match_2]);
           // Edge length similarity [0,1] where 1 is a perfect match
-          const float edge_sim = (dist_src < dist_tgt ? dist_src / dist_tgt : dist_tgt / dist_src);
+          const double edge_sim = (dist_src < dist_tgt ? dist_src / dist_tgt : dist_tgt / dist_src);
           
           return (edge_sim >= simsq);
         }
@@ -350,7 +350,7 @@ namespace pcl
           * \return linear histogram
           */
         std::vector<int> 
-        computeHistogram (const std::vector<float>& data, float lower, float upper, int bins);
+        computeHistogram (const std::vector<double>& data, double lower, double upper, int bins);
         
         /** \brief Find the optimal value for binary histogram thresholding using Otsu's method
           * \param histogram input histogram
@@ -372,10 +372,10 @@ namespace pcl
         int cardinality_;
         
         /** \brief Lower edge length threshold in [0,1] used for verifying polygon similarities, where 1 is a perfect match */
-        float similarity_threshold_;
+        double similarity_threshold_;
         
         /** \brief Squared value if \ref similarity_threshold_, only for internal use */
-        float similarity_threshold_squared_;
+        double similarity_threshold_squared_;
     };
   }
 }

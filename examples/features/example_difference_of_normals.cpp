@@ -96,14 +96,14 @@ int main (int argc, char *argv[])
 
 	  // Create downsampled point cloud for DoN NN search with small scale
 	  small_cloud_downsampled = PointCloud<PointT>::Ptr(new pcl::PointCloud<PointT>);
-	  float smalldownsample = static_cast<float> (scale1 / decimation);
+	  double smalldownsample = static_cast<double> (scale1 / decimation);
 	  sor.setLeafSize (smalldownsample, smalldownsample, smalldownsample);
 	  sor.filter (*small_cloud_downsampled);
 	  cout << "Using leaf size of " << smalldownsample << " for small scale, " << small_cloud_downsampled->size() << " points" << endl;
 
 	  // Create downsampled point cloud for DoN NN search with large scale
 	  large_cloud_downsampled = PointCloud<PointT>::Ptr(new pcl::PointCloud<PointT>);
-	  const float largedownsample = float (scale2/decimation);
+	  const double largedownsample = double (scale2/decimation);
 	  sor.setLeafSize (largedownsample, largedownsample, largedownsample);
 	  sor.filter (*large_cloud_downsampled);
 	  cout << "Using leaf size of " << largedownsample << " for large scale, " << large_cloud_downsampled->size() << " points" << endl;
@@ -118,7 +118,7 @@ int main (int argc, char *argv[])
 	 * NOTE: setting viewpoint is very important, so that we can ensure
 	 * normals are all pointed in the same direction!
 	 */
-	ne.setViewPoint(std::numeric_limits<float>::max(),std::numeric_limits<float>::max(),std::numeric_limits<float>::max());
+	ne.setViewPoint(std::numeric_limits<double>::max(),std::numeric_limits<double>::max(),std::numeric_limits<double>::max());
 
 	if(scale1 >= scale2){
 	  cerr << "Error: Large scale must be > small scale!" << endl;

@@ -45,15 +45,15 @@
 #include <pcl/features/rsd.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointInT, typename PointNT, typename PointOutT> Eigen::MatrixXf
+template <typename PointInT, typename PointNT, typename PointOutT> Eigen::MatrixXd
 pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointInT> > &surface, boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
 		 const std::vector<int> &indices, double max_dist,
 		 int nr_subdiv, double plane_radius, PointOutT &radii, bool compute_histogram)
 {
   // Check if the full histogram has to be saved or not
-  Eigen::MatrixXf histogram;
+  Eigen::MatrixXd histogram;
   if (compute_histogram)
-    histogram = Eigen::MatrixXf::Zero (nr_subdiv, nr_subdiv);
+    histogram = Eigen::MatrixXd::Zero (nr_subdiv, nr_subdiv);
 
   // Check if enough points are provided or not
   if (indices.size () < 2)
@@ -125,12 +125,12 @@ pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointInT> > &surface, b
       Amaxt_d += p_max * f;
     }
   }
-  float min_radius = Amint_Amin == 0.0f ? float (plane_radius) : float (std::min (Amint_d/Amint_Amin, plane_radius));
-  float max_radius = Amaxt_Amax == 0.0f ? float (plane_radius) : float (std::min (Amaxt_d/Amaxt_Amax, plane_radius));
+  double min_radius = Amint_Amin == 0.0 ? double (plane_radius) : double (std::min (Amint_d/Amint_Amin, plane_radius));
+  double max_radius = Amaxt_Amax == 0.0 ? double (plane_radius) : double (std::min (Amaxt_d/Amaxt_Amax, plane_radius));
 
   // Small correction of the systematic error of the estimation (based on analysis with nr_subdiv_ = 5)
-  min_radius *= 1.1f;
-  max_radius *= 0.9f;
+  min_radius *= 1.1;
+  max_radius *= 0.9;
   if (min_radius < max_radius)
   {
     radii.r_min = min_radius;
@@ -146,15 +146,15 @@ pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointInT> > &surface, b
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointNT, typename PointOutT> Eigen::MatrixXf
+template <typename PointNT, typename PointOutT> Eigen::MatrixXd
 pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
-		 const std::vector<int> &indices, const std::vector<float> &sqr_dists, double max_dist,
+		 const std::vector<int> &indices, const std::vector<double> &sqr_dists, double max_dist,
 		 int nr_subdiv, double plane_radius, PointOutT &radii, bool compute_histogram)
 {
   // Check if the full histogram has to be saved or not
-  Eigen::MatrixXf histogram;
+  Eigen::MatrixXd histogram;
   if (compute_histogram)
-    histogram = Eigen::MatrixXf::Zero (nr_subdiv, nr_subdiv);
+    histogram = Eigen::MatrixXd::Zero (nr_subdiv, nr_subdiv);
   
   // Check if enough points are provided or not
   if (indices.size () < 2)
@@ -224,12 +224,12 @@ pcl::computeRSD (boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
       Amaxt_d += p_max * f;
     }
   }
-  float min_radius = Amint_Amin == 0.0f ? float (plane_radius) : float (std::min (Amint_d/Amint_Amin, plane_radius));
-  float max_radius = Amaxt_Amax == 0.0f ? float (plane_radius) : float (std::min (Amaxt_d/Amaxt_Amax, plane_radius));
+  double min_radius = Amint_Amin == 0.0 ? double (plane_radius) : double (std::min (Amint_d/Amint_Amin, plane_radius));
+  double max_radius = Amaxt_Amax == 0.0 ? double (plane_radius) : double (std::min (Amaxt_d/Amaxt_Amax, plane_radius));
 
   // Small correction of the systematic error of the estimation (based on analysis with nr_subdiv_ = 5)
-  min_radius *= 1.1f;
-  max_radius *= 0.9f;
+  min_radius *= 1.1;
+  max_radius *= 0.9;
   if (min_radius < max_radius)
   {
     radii.r_min = min_radius;
@@ -260,13 +260,13 @@ pcl::RSDEstimation<PointInT, PointNT, PointOutT>::computeFeature (PointCloudOut 
   // List of indices and corresponding squared distances for a neighborhood
   // \note resize is irrelevant for a radiusSearch ().
   std::vector<int> nn_indices;
-  std::vector<float> nn_sqr_dists;
+  std::vector<double> nn_sqr_dists;
 
   // Check if the full histogram has to be saved or not
   if (save_histograms_)
   {
     // Reserve space for the output histogram dataset
-    histograms_.reset (new std::vector<Eigen::MatrixXf, Eigen::aligned_allocator<Eigen::MatrixXf> >);
+    histograms_.reset (new std::vector<Eigen::MatrixXd, Eigen::aligned_allocator<Eigen::MatrixXd> >);
     histograms_->reserve (output.points.size ());
     
     // Iterating over the entire index vector

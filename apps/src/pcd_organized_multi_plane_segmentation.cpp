@@ -53,7 +53,7 @@ class PCDOrganizedMultiPlaneSegmentation
     pcl::visualization::PCLVisualizer viewer;
     typename pcl::PointCloud<PointT>::ConstPtr cloud;
     bool refine_;
-    float threshold_;
+    double threshold_;
     bool depth_dependent_;
     bool polygon_refinement_;
   public:
@@ -61,7 +61,7 @@ class PCDOrganizedMultiPlaneSegmentation
     : viewer ("Viewer")
     , cloud (cloud_)
     , refine_ (refine)
-    , threshold_ (0.02f)
+    , threshold_ (0.02)
     , depth_dependent_ (true)
     , polygon_refinement_ (false)
     {
@@ -82,14 +82,14 @@ class PCDOrganizedMultiPlaneSegmentation
         {
           case 'b':
           case 'B':
-            if (threshold_ < 0.1f)
-              threshold_ += 0.001f;
+            if (threshold_ < 0.1)
+              threshold_ += 0.001;
             process ();
             break;
           case 'v':
           case 'V':
-            if (threshold_ > 0.001f)
-              threshold_ -= 0.001f;
+            if (threshold_ > 0.001)
+              threshold_ -= 0.001;
             process ();
             break;
             
@@ -119,8 +119,8 @@ class PCDOrganizedMultiPlaneSegmentation
 
       pcl::IntegralImageNormalEstimation<PointT, pcl::Normal> ne;
       ne.setNormalEstimationMethod (ne.COVARIANCE_MATRIX);
-      ne.setMaxDepthChangeFactor (0.02f);
-      ne.setNormalSmoothingSize (20.0f);
+      ne.setMaxDepthChangeFactor (0.02);
+      ne.setNormalSmoothingSize (20.0);
       
       typename pcl::PlaneRefinementComparator<PointT, pcl::Normal, pcl::Label>::Ptr refinement_compare (new pcl::PlaneRefinementComparator<PointT, pcl::Normal, pcl::Label> ());
       refinement_compare->setDistanceThreshold (threshold_, depth_dependent_);
@@ -165,12 +165,12 @@ class PCDOrganizedMultiPlaneSegmentation
       //Draw Visualization
       for (size_t i = 0; i < regions.size (); i++)
       {
-        Eigen::Vector3f centroid = regions[i].getCentroid ();
-        Eigen::Vector4f model = regions[i].getCoefficients ();
+        Eigen::Vector3d centroid = regions[i].getCentroid ();
+        Eigen::Vector4d model = regions[i].getCoefficients ();
         pcl::PointXYZ pt1 = pcl::PointXYZ (centroid[0], centroid[1], centroid[2]);
-        pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5f * model[0]),
-                                           centroid[1] + (0.5f * model[1]),
-                                           centroid[2] + (0.5f * model[2]));
+        pcl::PointXYZ pt2 = pcl::PointXYZ (centroid[0] + (0.5 * model[0]),
+                                           centroid[1] + (0.5 * model[1]),
+                                           centroid[2] + (0.5 * model[2]));
         sprintf (name, "normal_%d", unsigned (i));
         viewer.addArrow (pt2, pt1, 1.0, 0, 0, std::string (name));
 

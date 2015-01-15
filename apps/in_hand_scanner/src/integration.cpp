@@ -54,7 +54,7 @@
 pcl::ihs::Integration::Integration ()
   : kd_tree_              (new pcl::KdTreeFLANN <PointXYZ> ()),
     max_squared_distance_ (0.04f), // 0.2cm
-    max_angle_            (45.f),
+    max_angle_            (45.),
     min_weight_           (.3f),
     max_age_              (30),
     min_directions_       (5)
@@ -99,7 +99,7 @@ pcl::ihs::Integration::reconstructMesh (const CloudXYZRGBNormalConstPtr& cloud_d
   for (int c=0; c<width; ++c)
   {
     const PointXYZRGBNormal& pt_d = cloud_data->operator [] (c);
-    const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+    const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
     if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
     {
@@ -111,7 +111,7 @@ pcl::ihs::Integration::reconstructMesh (const CloudXYZRGBNormalConstPtr& cloud_d
     for (int c=0; c<2; ++c)
     {
       const PointXYZRGBNormal& pt_d = cloud_data->operator [] (r*width + c);
-      const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
       {
@@ -161,7 +161,7 @@ pcl::ihs::Integration::reconstructMesh (const CloudXYZRGBNormalConstPtr& cloud_d
       VertexIndex& vi_3 = vertex_indices [ind_3];
       VertexIndex& vi_4 = vertex_indices [ind_4];
 
-      const float weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d_0.x) && weight > min_weight_)
       {
@@ -184,7 +184,7 @@ pcl::ihs::Integration::reconstructMesh (const CloudXYZRGBNormalConstPtr& cloud_d
 bool
 pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
                               MeshPtr&                         mesh_model,
-                              const Eigen::Matrix4f&           T) const
+                              const Eigen::Matrix4d&           T) const
 {
   if (!cloud_data)
   {
@@ -220,7 +220,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   }
   kd_tree_->setInputCloud (xyz_model);
   std::vector <int>   index (1);
-  std::vector <float> squared_distance (1);
+  std::vector <double> squared_distance (1);
 
   mesh_model->reserveVertices (mesh_model->sizeVertices () + cloud_data->size ());
   mesh_model->reserveEdges    (mesh_model->sizeEdges    () + (width-1) * height + width * (height-1) + (width-1) * (height-1));
@@ -231,7 +231,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   cloud_data_transformed->resize (cloud_data->size ());
 
   // Sensor position in model coordinates
-  const Eigen::Vector4f& sensor_eye = T * Eigen::Vector4f (0.f, 0.f, 0.f, 1.f);
+  const Eigen::Vector4d& sensor_eye = T * Eigen::Vector4d (0., 0., 0., 1.);
 
   // Store which vertex is set at which position (initialized with invalid indices)
   VertexIndices vertex_indices (cloud_data->size (), VertexIndex ());
@@ -240,14 +240,14 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   for (int c=0; c<width; ++c)
   {
     const PointXYZRGBNormal& pt_d = cloud_data->operator [] (c);
-    const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+    const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
     if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
     {
       PointIHS& pt_d_t = cloud_data_transformed->operator [] (c);
       pt_d_t = PointIHS (pt_d, weight);
-      pt_d_t.getVector4fMap ()       = T * pt_d_t.getVector4fMap ();
-      pt_d_t.getNormalVector4fMap () = T * pt_d_t.getNormalVector4fMap ();
+      pt_d_t.getVector4dMap ()       = T * pt_d_t.getVector4dMap ();
+      pt_d_t.getNormalVector4dMap () = T * pt_d_t.getNormalVector4dMap ();
     }
   }
   for (int r=1; r<height; ++r)
@@ -255,14 +255,14 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
     for (int c=0; c<2; ++c)
     {
       const PointXYZRGBNormal& pt_d = cloud_data->operator [] (r*width + c);
-      const float weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d.x) && weight > min_weight_)
       {
         PointIHS& pt_d_t = cloud_data_transformed->operator [] (r*width + c);
         pt_d_t = PointIHS (pt_d, weight);
-        pt_d_t.getVector4fMap ()       = T * pt_d_t.getVector4fMap ();
-        pt_d_t.getNormalVector4fMap () = T * pt_d_t.getNormalVector4fMap ();
+        pt_d_t.getVector4dMap ()       = T * pt_d_t.getVector4dMap ();
+        pt_d_t.getNormalVector4dMap () = T * pt_d_t.getNormalVector4dMap ();
       }
     }
   }
@@ -279,7 +279,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
   const int offset_3 =        - 1;
   const int offset_4 = -width - 2;
 
-  const float dot_min = std::cos (max_angle_ * 17.45329252e-3); // deg to rad
+  const double dot_min = std::cos (max_angle_ * 17.45329252e-3); // deg to rad
 
   for (int r=1; r<height; ++r)
   {
@@ -310,15 +310,15 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
       VertexIndex& vi_3 = vertex_indices [ind_3];
       VertexIndex& vi_4 = vertex_indices [ind_4];
 
-      const float weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
+      const double weight = -pt_d_0.normal_z; // weight = -dot (normal, [0; 0; 1])
 
       if (!boost::math::isnan (pt_d_0.x) && weight > min_weight_)
       {
         pt_d_t_0 = PointIHS (pt_d_0, weight);
-        pt_d_t_0.getVector4fMap ()       = T * pt_d_t_0.getVector4fMap ();
-        pt_d_t_0.getNormalVector4fMap () = T * pt_d_t_0.getNormalVector4fMap ();
+        pt_d_t_0.getVector4dMap ()       = T * pt_d_t_0.getVector4dMap ();
+        pt_d_t_0.getNormalVector4dMap () = T * pt_d_t_0.getNormalVector4dMap ();
 
-        pcl::PointXYZ tmp; tmp.getVector4fMap () = pt_d_t_0.getVector4fMap ();
+        pcl::PointXYZ tmp; tmp.getVector4dMap () = pt_d_t_0.getVector4dMap ();
 
         // NN search
         if (!kd_tree_->nearestKSearch (tmp, 1, index, squared_distance))
@@ -332,24 +332,24 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
         {
           PointIHS& pt_m = mesh_model->getVertexDataCloud () [index [0]]; // Non-const reference!
 
-          if (pt_m.getNormalVector4fMap ().dot (pt_d_t_0.getNormalVector4fMap ()) >= dot_min)
+          if (pt_m.getNormalVector4dMap ().dot (pt_d_t_0.getNormalVector4dMap ()) >= dot_min)
           {
             vi_0 = VertexIndex (index [0]);
 
-            const float W   = pt_m.weight;         // Old accumulated weight
-            const float w   = pt_d_t_0.weight;     // Weight of new point
-            const float WW  = pt_m.weight = W + w; // New accumulated weight
+            const double W   = pt_m.weight;         // Old accumulated weight
+            const double w   = pt_d_t_0.weight;     // Weight of new point
+            const double WW  = pt_m.weight = W + w; // New accumulated weight
 
-            const float r_m = static_cast <float> (pt_m.r);
-            const float g_m = static_cast <float> (pt_m.g);
-            const float b_m = static_cast <float> (pt_m.b);
+            const double r_m = static_cast <double> (pt_m.r);
+            const double g_m = static_cast <double> (pt_m.g);
+            const double b_m = static_cast <double> (pt_m.b);
 
-            const float r_d = static_cast <float> (pt_d_t_0.r);
-            const float g_d = static_cast <float> (pt_d_t_0.g);
-            const float b_d = static_cast <float> (pt_d_t_0.b);
+            const double r_d = static_cast <double> (pt_d_t_0.r);
+            const double g_d = static_cast <double> (pt_d_t_0.g);
+            const double b_d = static_cast <double> (pt_d_t_0.b);
 
-            pt_m.getVector4fMap ()       = ( W*pt_m.getVector4fMap ()       + w*pt_d_t_0.getVector4fMap ())       / WW;
-            pt_m.getNormalVector4fMap () = ((W*pt_m.getNormalVector4fMap () + w*pt_d_t_0.getNormalVector4fMap ()) / WW).normalized ();
+            pt_m.getVector4dMap ()       = ( W*pt_m.getVector4dMap ()       + w*pt_d_t_0.getVector4dMap ())       / WW;
+            pt_m.getNormalVector4dMap () = ((W*pt_m.getNormalVector4dMap () + w*pt_d_t_0.getNormalVector4dMap ()) / WW).normalized ();
             pt_m.r                       = this->trimRGB ((W*r_m + w*r_d) / WW);
             pt_m.g                       = this->trimRGB ((W*g_m + w*g_d) / WW);
             pt_m.b                       = this->trimRGB ((W*b_m + w*b_d) / WW);
@@ -358,7 +358,7 @@ pcl::ihs::Integration::merge (const CloudXYZRGBNormalConstPtr& cloud_data,
             pt_m.age = 0;
 
             // Add a direction
-            pcl::ihs::addDirection (pt_m.getNormalVector4fMap (), sensor_eye-pt_m.getVector4fMap (), pt_m.directions);
+            pcl::ihs::addDirection (pt_m.getNormalVector4dMap (), sensor_eye-pt_m.getVector4dMap (), pt_m.directions);
 
           } // dot normals
         } // squared distance
@@ -440,12 +440,12 @@ pcl::ihs::Integration::removeUnfitVertices (const MeshPtr& mesh, const bool clea
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::Integration::setMaxSquaredDistance (const float squared_distance)
+pcl::ihs::Integration::setMaxSquaredDistance (const double squared_distance)
 {
   if (squared_distance > 0) max_squared_distance_ = squared_distance;
 }
 
-float
+double
 pcl::ihs::Integration::getMaxSquaredDistance () const
 {
   return (max_squared_distance_);
@@ -454,12 +454,12 @@ pcl::ihs::Integration::getMaxSquaredDistance () const
 ////////////////////////////////////////////////////////////////////////////////
 
 void
-pcl::ihs::Integration::setMaxAngle (const float angle)
+pcl::ihs::Integration::setMaxAngle (const double angle)
 {
-  max_angle_ = pcl::ihs::clamp (angle, 0.f, 180.f);
+  max_angle_ = pcl::ihs::clamp (angle, 0., 180.);
 }
 
-float
+double
 pcl::ihs::Integration::getMaxAngle () const
 {
   return (max_angle_);
@@ -496,9 +496,9 @@ pcl::ihs::Integration::getMinDirections () const
 ////////////////////////////////////////////////////////////////////////////////
 
 uint8_t
-pcl::ihs::Integration::trimRGB (const float val) const
+pcl::ihs::Integration::trimRGB (const double val) const
 {
-  return (static_cast <uint8_t> (val > 255.f ? 255 : val));
+  return (static_cast <uint8_t> (val > 255. ? 255 : val));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -578,9 +578,9 @@ pcl::ihs::Integration::distanceThreshold (const PointIHS& pt_0,
                                           const PointIHS& pt_1,
                                           const PointIHS& pt_2) const
 {
-  if ((pt_0.getVector3fMap () - pt_1.getVector3fMap ()).squaredNorm () > max_squared_distance_) return (false);
-  if ((pt_1.getVector3fMap () - pt_2.getVector3fMap ()).squaredNorm () > max_squared_distance_) return (false);
-  if ((pt_2.getVector3fMap () - pt_0.getVector3fMap ()).squaredNorm () > max_squared_distance_) return (false);
+  if ((pt_0.getVector3dMap () - pt_1.getVector3dMap ()).squaredNorm () > max_squared_distance_) return (false);
+  if ((pt_1.getVector3dMap () - pt_2.getVector3dMap ()).squaredNorm () > max_squared_distance_) return (false);
+  if ((pt_2.getVector3dMap () - pt_0.getVector3dMap ()).squaredNorm () > max_squared_distance_) return (false);
   return (true);
 }
 
@@ -592,10 +592,10 @@ pcl::ihs::Integration::distanceThreshold (const PointIHS& pt_0,
                                           const PointIHS& pt_2,
                                           const PointIHS& pt_3) const
 {
-  if ((pt_0.getVector3fMap () - pt_1.getVector3fMap ()).squaredNorm () > max_squared_distance_) return (false);
-  if ((pt_1.getVector3fMap () - pt_2.getVector3fMap ()).squaredNorm () > max_squared_distance_) return (false);
-  if ((pt_2.getVector3fMap () - pt_3.getVector3fMap ()).squaredNorm () > max_squared_distance_) return (false);
-  if ((pt_3.getVector3fMap () - pt_0.getVector3fMap ()).squaredNorm () > max_squared_distance_) return (false);
+  if ((pt_0.getVector3dMap () - pt_1.getVector3dMap ()).squaredNorm () > max_squared_distance_) return (false);
+  if ((pt_1.getVector3dMap () - pt_2.getVector3dMap ()).squaredNorm () > max_squared_distance_) return (false);
+  if ((pt_2.getVector3dMap () - pt_3.getVector3dMap ()).squaredNorm () > max_squared_distance_) return (false);
+  if ((pt_3.getVector3dMap () - pt_0.getVector3dMap ()).squaredNorm () > max_squared_distance_) return (false);
   return (true);
 }
 

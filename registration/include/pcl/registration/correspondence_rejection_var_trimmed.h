@@ -245,7 +245,7 @@ namespace pcl
 
         /** \brief finds the optimal inlier ratio. This is based on the paper 'Outlier Robust ICP for minimizing Fractional RMSD, J. M. Philips et al'
          */
-        inline float optimizeInlierRatio (std::vector <double> &dists);
+        inline double optimizeInlierRatio (std::vector <double> &dists);
     };
   }
 }

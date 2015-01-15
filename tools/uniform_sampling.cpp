@@ -49,8 +49,8 @@ using namespace pcl::console;
 
 double default_radius = 0.01;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)

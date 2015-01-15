@@ -102,7 +102,7 @@ PCLAPI(cJSON *) cJSON_CreateObject();
 
 /* These utilities create an Array of count items. */
 PCLAPI(cJSON *) cJSON_CreateIntArray(int *numbers,int count);
-PCLAPI(cJSON *) cJSON_CreateFloatArray(float *numbers,int count);
+PCLAPI(cJSON *) cJSON_CreateFloatArray(double *numbers,int count);
 PCLAPI(cJSON *) cJSON_CreateDoubleArray(double *numbers,int count);
 PCLAPI(cJSON *) cJSON_CreateStringArray(const char **strings,int count);
 

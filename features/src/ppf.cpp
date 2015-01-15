@@ -41,12 +41,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::computePPFPairFeature (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1,
-                            const Eigen::Vector4f &p2, const Eigen::Vector4f &n2,
-                            float &f1, float &f2, float &f3, float &f4)
+pcl::computePPFPairFeature (const Eigen::Vector4d &p1, const Eigen::Vector4d &n1,
+                            const Eigen::Vector4d &p2, const Eigen::Vector4d &n2,
+                            double &f1, double &f2, double &f3, double &f4)
 {
-  Eigen::Vector4f delta = p2 - p1;
-  delta[3] = 0.0f;
+  Eigen::Vector4d delta = p2 - p1;
+  delta[3] = 0.0;
   // f4 = ||delta||
   f4 = delta.norm ();
 

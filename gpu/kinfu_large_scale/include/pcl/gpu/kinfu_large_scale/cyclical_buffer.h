@@ -72,7 +72,7 @@ namespace pcl
             * \param[in] cube_size physical size (in meters) of the volume (here, a cube) represented by the TSDF buffer.
             * \param[in] nb_voxels_per_axis number of voxels per axis of the volume represented by the TSDF buffer.
             */
-          CyclicalBuffer (const double distance_threshold, const double cube_size = 3.f, const int nb_voxels_per_axis = 512)
+          CyclicalBuffer (const double distance_threshold, const double cube_size = 3., const int nb_voxels_per_axis = 512)
           {
             distance_threshold_ = distance_threshold;
             buffer_.volume_size.x = cube_size; 
@@ -115,7 +115,7 @@ namespace pcl
             * \param[in] force_shift if set to true, shifting is forced.
             * \return true is the cube needs to be or has been shifted.
             */
-          bool checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3f &cam_pose, const double distance_camera_target, const bool perform_shift = true, const bool last_shift = false, const bool force_shift = false);
+          bool checkForShift (const TsdfVolume::Ptr volume, const Eigen::Affine3d &cam_pose, const double distance_camera_target, const bool perform_shift = true, const bool last_shift = false, const bool force_shift = false);
           
           /** \brief Perform shifting operations:
               Compute offsets.
@@ -141,7 +141,7 @@ namespace pcl
           }
 
           /** \brief Returns the distance threshold between cube's center and target point that triggers a shift. */
-          float getDistanceThreshold () { return (distance_threshold_); }
+          double getDistanceThreshold () { return (distance_threshold_); }
 
           /** \brief get a pointer to the tsdf_buffer structure.
             * \return a pointer to the tsdf_buffer used by cyclical buffer object.
@@ -196,8 +196,8 @@ namespace pcl
           void resetBuffer (TsdfVolume::Ptr tsdf_volume)
           {
             buffer_.origin_GRID.x = 0; buffer_.origin_GRID.y = 0; buffer_.origin_GRID.z = 0;
-            buffer_.origin_GRID_global.x = 0.f; buffer_.origin_GRID_global.y = 0.f; buffer_.origin_GRID_global.z = 0.f;
-            buffer_.origin_metric.x = 0.f; buffer_.origin_metric.y = 0.f; buffer_.origin_metric.z = 0.f;
+            buffer_.origin_GRID_global.x = 0.; buffer_.origin_GRID_global.y = 0.; buffer_.origin_GRID_global.z = 0.;
+            buffer_.origin_metric.x = 0.; buffer_.origin_metric.y = 0.; buffer_.origin_metric.z = 0.;
             initBuffer (tsdf_volume);
           }
           
@@ -216,7 +216,7 @@ namespace pcl
           DeviceArray<PointXYZ> cloud_buffer_device_xyz_;
           
           /** \brief buffer used to extract Intensity values from GPU */
-          DeviceArray<float> cloud_buffer_device_intensities_;
+          DeviceArray<double> cloud_buffer_device_intensities_;
 
           /** \brief distance threshold (cube's center to target point) to trigger shift */
           double distance_threshold_;

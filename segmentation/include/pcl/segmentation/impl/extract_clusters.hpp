@@ -44,7 +44,7 @@
 template <typename PointT> void
 pcl::extractEuclideanClusters (const PointCloud<PointT> &cloud, 
                                const boost::shared_ptr<search::Search<PointT> > &tree,
-                               float tolerance, std::vector<PointIndices> &clusters,
+                               double tolerance, std::vector<PointIndices> &clusters,
                                unsigned int min_pts_per_cluster, 
                                unsigned int max_pts_per_cluster)
 {
@@ -59,7 +59,7 @@ pcl::extractEuclideanClusters (const PointCloud<PointT> &cloud,
   std::vector<bool> processed (cloud.points.size (), false);
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
   // Process all points in the indices vector
   for (int i = 0; i < static_cast<int> (cloud.points.size ()); ++i)
   {
@@ -118,7 +118,7 @@ template <typename PointT> void
 pcl::extractEuclideanClusters (const PointCloud<PointT> &cloud, 
                                const std::vector<int> &indices,
                                const boost::shared_ptr<search::Search<PointT> > &tree,
-                               float tolerance, std::vector<PointIndices> &clusters,
+                               double tolerance, std::vector<PointIndices> &clusters,
                                unsigned int min_pts_per_cluster, 
                                unsigned int max_pts_per_cluster)
 {
@@ -141,7 +141,7 @@ pcl::extractEuclideanClusters (const PointCloud<PointT> &cloud,
   std::vector<bool> processed (cloud.points.size (), false);
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
   // Process all points in the indices vector
   for (int i = 0; i < static_cast<int> (indices.size ()); ++i)
   {
@@ -228,7 +228,7 @@ pcl::EuclideanClusterExtraction<PointT>::extract (std::vector<PointIndices> &clu
 
   // Send the input dataset to the spatial locator
   tree_->setInputCloud (input_, indices_);
-  extractEuclideanClusters (*input_, *indices_, tree_, static_cast<float> (cluster_tolerance_), clusters, min_pts_per_cluster_, max_pts_per_cluster_);
+  extractEuclideanClusters (*input_, *indices_, tree_, static_cast<double> (cluster_tolerance_), clusters, min_pts_per_cluster_, max_pts_per_cluster_);
 
   //tree_->setInputCloud (input_);
   //extractEuclideanClusters (*input_, tree_, cluster_tolerance_, clusters, min_pts_per_cluster_, max_pts_per_cluster_);
@@ -240,7 +240,7 @@ pcl::EuclideanClusterExtraction<PointT>::extract (std::vector<PointIndices> &clu
 }
 
 #define PCL_INSTANTIATE_EuclideanClusterExtraction(T) template class PCL_EXPORTS pcl::EuclideanClusterExtraction<T>;
-#define PCL_INSTANTIATE_extractEuclideanClusters(T) template void PCL_EXPORTS pcl::extractEuclideanClusters<T>(const pcl::PointCloud<T> &, const boost::shared_ptr<pcl::search::Search<T> > &, float , std::vector<pcl::PointIndices> &, unsigned int, unsigned int);
-#define PCL_INSTANTIATE_extractEuclideanClusters_indices(T) template void PCL_EXPORTS pcl::extractEuclideanClusters<T>(const pcl::PointCloud<T> &, const std::vector<int> &, const boost::shared_ptr<pcl::search::Search<T> > &, float , std::vector<pcl::PointIndices> &, unsigned int, unsigned int);
+#define PCL_INSTANTIATE_extractEuclideanClusters(T) template void PCL_EXPORTS pcl::extractEuclideanClusters<T>(const pcl::PointCloud<T> &, const boost::shared_ptr<pcl::search::Search<T> > &, double , std::vector<pcl::PointIndices> &, unsigned int, unsigned int);
+#define PCL_INSTANTIATE_extractEuclideanClusters_indices(T) template void PCL_EXPORTS pcl::extractEuclideanClusters<T>(const pcl::PointCloud<T> &, const std::vector<int> &, const boost::shared_ptr<pcl::search::Search<T> > &, double , std::vector<pcl::PointIndices> &, unsigned int, unsigned int);
 
 #endif        // PCL_EXTRACT_CLUSTERS_IMPL_H_

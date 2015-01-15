@@ -101,7 +101,7 @@ public:
   }
 
   // Override the copyToFloatArray method to define our feature vector
-  virtual void copyToFloatArray (const PointNormalT &p, float * out) const
+  virtual void copyToFloatArray (const PointNormalT &p, double * out) const
   {
     // < x, y, z, curvature >
     out[0] = p.x;
@@ -199,7 +199,7 @@ void loadData (int argc, char **argv, std::vector<PCD, Eigen::aligned_allocator<
   * \param output the resultant aligned source PointCloud
   * \param final_transform the resultant transform between source and target
   */
-void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt, PointCloud::Ptr output, Eigen::Matrix4f &final_transform, bool downsample = false)
+void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt, PointCloud::Ptr output, Eigen::Matrix4d &final_transform, bool downsample = false)
 {
   //
   // Downsample for consistency and speed
@@ -244,7 +244,7 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
   // Instantiate our custom point representation (defined above) ...
   MyPointRepresentation point_representation;
   // ... and weight the 'curvature' dimension so that it is balanced against x, y, and z
-  float alpha[4] = {1.0, 1.0, 1.0, 1.0};
+  double alpha[4] = {1.0, 1.0, 1.0, 1.0};
   point_representation.setRescaleValues (alpha);
 
   //
@@ -264,7 +264,7 @@ void pairAlign (const PointCloud::Ptr cloud_src, const PointCloud::Ptr cloud_tgt
 
   //
   // Run the same optimization in a loop and visualize the results
-  Eigen::Matrix4f Ti = Eigen::Matrix4f::Identity (), prev, targetToSource;
+  Eigen::Matrix4d Ti = Eigen::Matrix4d::Identity (), prev, targetToSource;
   PointCloudWithNormals::Ptr reg_result = points_with_normals_src;
   reg.setMaximumIterations (2);
   for (int i = 0; i < 30; ++i)
@@ -344,7 +344,7 @@ int main (int argc, char** argv)
   p->createViewPort (0.5, 0, 1.0, 1.0, vp_2);
 
 	PointCloud::Ptr result (new PointCloud), source, target;
-  Eigen::Matrix4f GlobalTransform = Eigen::Matrix4f::Identity (), pairTransform;
+  Eigen::Matrix4d GlobalTransform = Eigen::Matrix4d::Identity (), pairTransform;
   
   for (size_t i = 1; i < data.size (); ++i)
   {

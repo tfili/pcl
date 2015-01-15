@@ -144,7 +144,7 @@ extern const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
 #endif
 
 #ifdef __50SERIES /* Prime/PRIMOS */
-#  define OS_CODE  0x0f
+#  define OS_CODE  0x0
 #endif
 
 #if defined(_BEOS_) || defined(RISCOS)

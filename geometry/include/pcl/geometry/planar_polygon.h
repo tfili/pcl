@@ -66,7 +66,7 @@ namespace pcl
         * \param[in] coefficients a vector of the plane's coefficients (a,b,c,d)
         */
       PlanarPolygon (typename pcl::PointCloud<PointT>::VectorType &contour,
-                     Eigen::Vector4f& coefficients) 
+                     Eigen::Vector4d& coefficients) 
         : contour_ (contour), coefficients_ (coefficients)
       {}
       
@@ -100,7 +100,7 @@ namespace pcl
         * \param[in] coefficients the new coefficients to be set 
         */
       void
-      setCoefficients (const Eigen::Vector4f &coefficients)
+      setCoefficients (const Eigen::Vector4d &coefficients)
       {
         coefficients_ = coefficients;
       }
@@ -116,14 +116,14 @@ namespace pcl
       }
 
       /** \brief Getter for the coefficients */
-      Eigen::Vector4f&
+      Eigen::Vector4d&
       getCoefficients ()
       {
         return (coefficients_);
       }
 
       /** \brief Getter for the coefficients */
-      const Eigen::Vector4f&
+      const Eigen::Vector4d&
       getCoefficients () const
       {
         return (coefficients_);
@@ -134,7 +134,7 @@ namespace pcl
       typename pcl::PointCloud<PointT>::VectorType contour_;
       
       /** \brief A list of model coefficients (a,b,c,d). */
-      Eigen::Vector4f coefficients_;
+      Eigen::Vector4d coefficients_;
     
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

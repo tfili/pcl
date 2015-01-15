@@ -56,23 +56,23 @@ KdTreePtr tree;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, computePointNormal)
 {
-  Eigen::Vector4f plane_parameters;
-  float curvature;
+  Eigen::Vector4d plane_parameters;
+  double curvature;
 
   PointCloud<PointXYZ> c;
   
-  PointXYZ p11 (706952.31f, 4087.6958f, 0.00000000f),
-           p21 (707002.31f, 6037.6958f, 0.00000000f),
-           p31 (706952.31f, 7937.6958f, 0.00000000f);
+  PointXYZ p11 (706952.31, 4087.6958, 0.00000000),
+           p21 (707002.31, 6037.6958, 0.00000000),
+           p31 (706952.31, 7937.6958, 0.00000000);
   c.push_back (p11); c.push_back (p21); c.push_back (p31);
 
   computePointNormal (cloud, plane_parameters, curvature);
 //  cerr << plane_parameters << "\n";
   
   c.clear ();
-  PointXYZ p12 (-439747.72f, -43597.250f, 0.0000000f),
-           p22 (-439847.72f, -41697.250f, 0.0000000f),
-           p32 (-439747.72f, -39797.250f, 0.0000000f);
+  PointXYZ p12 (-439747.72f, -43597.250, 0.0000000),
+           p22 (-439847.72f, -41697.250, 0.0000000),
+           p32 (-439747.72f, -39797.250, 0.0000000);
 
   c.push_back (p12); c.push_back (p22); c.push_back (p32);
 
@@ -80,9 +80,9 @@ TEST (PCL, computePointNormal)
 //  cerr << plane_parameters << "\n";
 
   c.clear ();
-  PointXYZ p13 (567011.56f, -7741.8179f, 0.00000000f),
-           p23 (567361.56f, -5841.8179f, 0.00000000f),
-           p33 (567011.56f, -3941.8179f, 0.00000000f);
+  PointXYZ p13 (567011.56, -7741.8179, 0.00000000),
+           p23 (567361.56, -5841.8179, 0.00000000),
+           p33 (567011.56, -3941.8179, 0.00000000);
 
   c.push_back (p13); c.push_back (p23); c.push_back (p33);
 
@@ -93,8 +93,8 @@ TEST (PCL, computePointNormal)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, NormalEstimation)
 {
-  Eigen::Vector4f plane_parameters;
-  float curvature;
+  Eigen::Vector4d plane_parameters;
+  double curvature;
 
   NormalEstimation<PointXYZ, Normal> n;
 
@@ -106,7 +106,7 @@ TEST (PCL, NormalEstimation)
   EXPECT_NEAR (fabs (plane_parameters[3]), 0.0622552, 1e-4);
   EXPECT_NEAR (curvature, 0.0693136, 1e-4);
 
-  float nx, ny, nz;
+  double nx, ny, nz;
   // computePointNormal (indices)
   n.computePointNormal (cloud, indices, nx, ny, nz, curvature);
   EXPECT_NEAR (fabs (nx), 0.035592, 1e-4);

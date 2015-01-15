@@ -66,7 +66,7 @@ void filterPassThrough (const CloudConstPtr &cloud, Cloud &result)
 void gridSampleApprox (const CloudConstPtr &cloud, Cloud &result, double leaf_size)
 {
   pcl::ApproximateVoxelGrid<pcl::PointXYZRGBA> grid;
-  grid.setLeafSize (static_cast<float> (leaf_size), static_cast<float> (leaf_size), static_cast<float> (leaf_size));
+  grid.setLeafSize (static_cast<double> (leaf_size), static_cast<double> (leaf_size), static_cast<double> (leaf_size));
   grid.setInputCloud (cloud);
   grid.filter (result);
 }
@@ -111,10 +111,10 @@ void
 drawResult (pcl::visualization::PCLVisualizer& viz)
 {
   ParticleXYZRPY result = tracker_->getResult ();
-  Eigen::Affine3f transformation = tracker_->toEigenMatrix (result);
+  Eigen::Affine3d transformation = tracker_->toEigenMatrix (result);
 
   //move close to camera a little for better visualization
-  transformation.translation () += Eigen::Vector3f (0.0f, 0.0f, -0.005f);
+  transformation.translation () += Eigen::Vector3d (0.0, 0.0, -0.005);
   CloudPtr result_cloud (new Cloud ());
   pcl::transformPointCloud<RefPointType> (*(tracker_->getReferenceCloud ()), *result_cloud, transformation);
 
@@ -213,12 +213,12 @@ main (int argc, char** argv)
     (new KLDAdaptiveParticleFilterOMPTracker<RefPointType, ParticleT> (8));
 
   ParticleT bin_size;
-  bin_size.x = 0.1f;
-  bin_size.y = 0.1f;
-  bin_size.z = 0.1f;
-  bin_size.roll = 0.1f;
-  bin_size.pitch = 0.1f;
-  bin_size.yaw = 0.1f;
+  bin_size.x = 0.1;
+  bin_size.y = 0.1;
+  bin_size.z = 0.1;
+  bin_size.roll = 0.1;
+  bin_size.pitch = 0.1;
+  bin_size.yaw = 0.1;
 
 
   //Set all parameters for  KLDAdaptiveParticleFilterOMPTracker
@@ -229,7 +229,7 @@ main (int argc, char** argv)
 
   //Set all parameters for  ParticleFilter
   tracker_ = tracker;
-  tracker_->setTrans (Eigen::Affine3f::Identity ());
+  tracker_->setTrans (Eigen::Affine3d::Identity ());
   tracker_->setStepNoiseCovariance (default_step_covariance);
   tracker_->setInitialNoiseCovariance (initial_noise_covariance);
   tracker_->setInitialNoiseMean (default_initial_mean);
@@ -254,13 +254,13 @@ main (int argc, char** argv)
   tracker_->setCloudCoherence (coherence);
 
   //prepare the model of tracker's target
-  Eigen::Vector4f c;
-  Eigen::Affine3f trans = Eigen::Affine3f::Identity ();
+  Eigen::Vector4d c;
+  Eigen::Affine3d trans = Eigen::Affine3d::Identity ();
   CloudPtr transed_ref (new Cloud);
   CloudPtr transed_ref_downsampled (new Cloud);
 
   pcl::compute3DCentroid<RefPointType> (*target_cloud, c);
-  trans.translation ().matrix () = Eigen::Vector3f (c[0], c[1], c[2]);
+  trans.translation ().matrix () = Eigen::Vector3d (c[0], c[1], c[2]);
   pcl::transformPointCloud<RefPointType> (*target_cloud, *transed_ref, trans.inverse());
   gridSampleApprox (transed_ref, *transed_ref_downsampled, downsampling_grid_size_);
 

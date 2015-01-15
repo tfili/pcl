@@ -119,7 +119,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::findSimila
 {
   // Allocate results
   corresponding_indices.resize (sample_indices.size ());
-  std::vector<float> nn_distances (k_correspondences_);
+  std::vector<double> nn_distances (k_correspondences_);
   
   // Loop over the sampled features
   for (size_t i = 0; i < sample_indices.size (); ++i)
@@ -141,7 +141,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::findSimila
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointTarget, typename FeatureT> void 
-pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4f& guess)
+pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4d& guess)
 {
   // Some sanity checks first
   if (!input_features_)
@@ -173,7 +173,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
     return;
   }
 
-  if (inlier_fraction_ < 0.0f || inlier_fraction_ > 1.0f)
+  if (inlier_fraction_ < 0.0 || inlier_fraction_ > 1.0)
   {
     PCL_ERROR ("[pcl::%s::computeTransformation] ", getClassName ().c_str ());
     PCL_ERROR ("Illegal inlier fraction %f, must be in [0,1]!\n",
@@ -181,8 +181,8 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
     return;
   }
   
-  const float similarity_threshold = correspondence_rejector_poly_->getSimilarityThreshold ();
-  if (similarity_threshold < 0.0f || similarity_threshold >= 1.0f)
+  const double similarity_threshold = correspondence_rejector_poly_->getSimilarityThreshold ();
+  if (similarity_threshold < 0.0 || similarity_threshold >= 1.0)
   {
     PCL_ERROR ("[pcl::%s::computeTransformation] ", getClassName ().c_str ());
     PCL_ERROR ("Illegal prerejection similarity threshold %f, must be in [0,1[!\n",
@@ -207,20 +207,20 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
   // Initialize results
   final_transformation_ = guess;
   inliers_.clear ();
-  float lowest_error = std::numeric_limits<float>::max ();
+  double lowest_error = std::numeric_limits<double>::max ();
   converged_ = false;
   
   // Temporaries
   std::vector<int> inliers;
-  float inlier_fraction;
-  float error;
+  double inlier_fraction;
+  double error;
   
   // If guess is not the Identity matrix we check it
-  if (!guess.isApprox (Eigen::Matrix4f::Identity (), 0.01f))
+  if (!guess.isApprox (Eigen::Matrix4d::Identity (), 0.01))
   {
     getFitness (inliers, error);
-    inlier_fraction = static_cast<float> (inliers.size ()) / static_cast<float> (input_->size ());
-    error /= static_cast<float> (inliers.size ());
+    inlier_fraction = static_cast<double> (inliers.size ()) / static_cast<double> (input_->size ());
+    error /= static_cast<double> (inliers.size ());
     
     if (inlier_fraction >= inlier_fraction_ && error < lowest_error)
     {
@@ -269,7 +269,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
     final_transformation_ = final_transformation_prev;
 
     // If the new fit is better, update results
-    inlier_fraction = static_cast<float> (inliers.size ()) / static_cast<float> (input_->size ());
+    inlier_fraction = static_cast<double> (inliers.size ()) / static_cast<double> (input_->size ());
 
     // Update result if pose hypothesis is better
     if (inlier_fraction >= inlier_fraction_ && error < lowest_error)
@@ -292,15 +292,15 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::computeTra
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointTarget, typename FeatureT> void 
-pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::getFitness (std::vector<int>& inliers, float& fitness_score)
+pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::getFitness (std::vector<int>& inliers, double& fitness_score)
 {
   // Initialize variables
   inliers.clear ();
   inliers.reserve (input_->size ());
-  fitness_score = 0.0f;
+  fitness_score = 0.0;
   
   // Use squared distance for comparison with NN search results
-  const float max_range = corr_dist_threshold_ * corr_dist_threshold_;
+  const double max_range = corr_dist_threshold_ * corr_dist_threshold_;
 
   // Transform the input dataset using the final transformation
   PointCloudSource input_transformed;
@@ -312,7 +312,7 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::getFitness
   {
     // Find its nearest neighbor in the target
     std::vector<int> nn_indices (1);
-    std::vector<float> nn_dists (1);
+    std::vector<double> nn_dists (1);
     tree_->nearestKSearch (input_transformed.points[i], 1, nn_indices, nn_dists);
     
     // Check if point is an inlier
@@ -328,9 +328,9 @@ pcl::SampleConsensusPrerejective<PointSource, PointTarget, FeatureT>::getFitness
 
   // Calculate MSE
   if (inliers.size () > 0)
-    fitness_score /= static_cast<float> (inliers.size ());
+    fitness_score /= static_cast<double> (inliers.size ());
   else
-    fitness_score = std::numeric_limits<float>::max ();
+    fitness_score = std::numeric_limits<double>::max ();
 }
 
 #endif

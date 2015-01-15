@@ -44,11 +44,11 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 bool
-pcl::lineWithLineIntersection (const Eigen::VectorXf &line_a, 
-                               const Eigen::VectorXf &line_b, 
-                               Eigen::Vector4f &point, double sqr_eps)
+pcl::lineWithLineIntersection (const Eigen::VectorXd &line_a, 
+                               const Eigen::VectorXd &line_b, 
+                               Eigen::Vector4d &point, double sqr_eps)
 {
-  Eigen::Vector4f p1, p2;
+  Eigen::Vector4d p1, p2;
   lineToLineSegment (line_a, line_b, p1, p2);
 
   // If the segment size is smaller than a pre-given epsilon...
@@ -65,10 +65,10 @@ pcl::lineWithLineIntersection (const Eigen::VectorXf &line_a,
 bool
 pcl::lineWithLineIntersection (const pcl::ModelCoefficients &line_a, 
                                const pcl::ModelCoefficients &line_b, 
-                               Eigen::Vector4f &point, double sqr_eps)
+                               Eigen::Vector4d &point, double sqr_eps)
 {
-  Eigen::VectorXf coeff1 = Eigen::VectorXf::Map (&line_a.values[0], line_a.values.size ());
-  Eigen::VectorXf coeff2 = Eigen::VectorXf::Map (&line_b.values[0], line_b.values.size ());
+  Eigen::VectorXd coeff1 = Eigen::VectorXd::Map (&line_a.values[0], line_a.values.size ());
+  Eigen::VectorXd coeff2 = Eigen::VectorXd::Map (&line_b.values[0], line_b.values.size ());
   return (lineWithLineIntersection (coeff1, coeff2, point, sqr_eps));
 }
 

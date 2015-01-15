@@ -143,9 +143,9 @@ namespace pcl
         * size descriptor which the user needs to accomodate in a new point type.
         */
       void
-      generateKernel (std::vector<float> &radius_list,
+      generateKernel (std::vector<double> &radius_list,
                       std::vector<int> &number_list, 
-                      float d_max = 5.85f, float d_min = 8.2f,
+                      double d_max = 5.85, double d_min = 8.2,
                       std::vector<int> index_change = std::vector<int> ());
 
       /** \brief Compute the smoothed intensity for a given x/y position in the image. */
@@ -153,14 +153,14 @@ namespace pcl
       smoothedIntensity (const std::vector<unsigned char>& image,
                          int image_width, int image_height,
 				                 const std::vector<int>& integral_image,
-                         const float key_x, const float key_y, const unsigned int scale,
+                         const double key_x, const double key_y, const unsigned int scale,
                          const unsigned int rot, const unsigned int point) const;
 
     private:
       /** \brief ROI predicate comparator. */
       bool 
-      RoiPredicate (const float min_x, const float min_y, 
-                    const float max_x, const float max_y, const KeypointT& key_pt);
+      RoiPredicate (const double min_x, const double min_y, 
+                    const double max_x, const double max_y, const KeypointT& key_pt);
 
       /** \brief Specifies whether rotation invariance is enabled. */
       bool rotation_invariance_enabled_;
@@ -169,7 +169,7 @@ namespace pcl
       bool scale_invariance_enabled_;
 
       /** \brief Specifies the scale of the pattern. */
-      const float pattern_scale_;
+      const double pattern_scale_;
   
       /** \brief the input cloud. */
       PointCloudInTConstPtr input_cloud_;
@@ -178,17 +178,17 @@ namespace pcl
       KeypointPointCloudTPtr keypoints_;
 
       // TODO: set
-      float scale_range_;
+      double scale_range_;
 
       // Some helper structures for the Brisk pattern representation
       struct BriskPatternPoint
       {
         /** x coordinate relative to center. */
-        float x;         
+        double x;         
         /** x coordinate relative to center. */
-        float y;
+        double y;
         /** Gaussian smoothing sigma. */
-        float sigma;
+        double sigma;
       };
 
       struct BriskShortPair
@@ -222,7 +222,7 @@ namespace pcl
 		  const unsigned int n_rot_;
       
       /** Lists the scaling per scale index [scale]. */
-      float* scale_list_;
+      double* scale_list_;
       
       /** Lists the total pattern size per scale index [scale]. */
       unsigned int* size_list_;
@@ -231,18 +231,18 @@ namespace pcl
       const unsigned int scales_;
       
       /** Span of sizes 40->4 Octaves - else, this needs to be adjusted... */
-      const float scalerange_;
+      const double scalerange_;
 
       // general
-      const float basic_size_;
+      const double basic_size_;
 
       // pairs
       /** Number of uchars the descriptor consists of. */
       int strings_;
       /** Short pair maximum distance. */
-      float d_max_;
+      double d_max_;
       /** Long pair maximum distance. */
-      float d_min_;
+      double d_min_;
       /** d<_d_max. */
       BriskShortPair* short_pairs_;
       /** d>_d_min. */

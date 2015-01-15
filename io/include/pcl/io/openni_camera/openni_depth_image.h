@@ -68,7 +68,7 @@ namespace openni_wrapper
         * \param[in] no_sample_value defines which values in the depth data are indicating that no depth (disparity) could be determined .
         * \attention The focal length may change, depending whether the depth stream is registered/mapped to the RGB stream or not.
         */
-      inline DepthImage (boost::shared_ptr<xn::DepthMetaData> depth_meta_data, float baseline, float focal_length, XnUInt64 shadow_value, XnUInt64 no_sample_value) throw ();
+      inline DepthImage (boost::shared_ptr<xn::DepthMetaData> depth_meta_data, double baseline, double focal_length, XnUInt64 shadow_value, XnUInt64 no_sample_value) throw ();
 
       /** \brief Destructor. Never throws an exception. */
       inline virtual ~DepthImage () throw ();
@@ -82,22 +82,22 @@ namespace openni_wrapper
       /** \brief fills a user given block of memory with the disparity values with additional nearest-neighbor down-scaling.
         * \param[in] width the width of the desired disparity image.
         * \param[in] height the height of the desired disparity image.
-        * \param[in,out] disparity_buffer the float pointer to the actual memory buffer to be filled with the disparity values.
+        * \param[in,out] disparity_buffer the double pointer to the actual memory buffer to be filled with the disparity values.
         * \param[in] line_step if only a rectangular sub region of the buffer needs to be filled, then line_step is the
         *        width in bytes (not floats) of the original width of the depth buffer.
         */
       void 
-      fillDisparityImage (unsigned width, unsigned height, float* disparity_buffer, unsigned line_step = 0) const;
+      fillDisparityImage (unsigned width, unsigned height, double* disparity_buffer, unsigned line_step = 0) const;
 
       /** \brief fills a user given block of memory with the disparity values with additional nearest-neighbor down-scaling.
         * \param[in] width width the width of the desired depth image.
         * \param[in] height height the height of the desired depth image.
-        * \param[in,out] depth_buffer the float pointer to the actual memory buffer to be filled with the depth values.
+        * \param[in,out] depth_buffer the double pointer to the actual memory buffer to be filled with the depth values.
         * \param[in] line_step if only a rectangular sub region of the buffer needs to be filled, then line_step is the
         *        width in bytes (not floats) of the original width of the depth buffer.
         */
       void 
-      fillDepthImage (unsigned width, unsigned height, float* depth_buffer, unsigned line_step = 0) const;
+      fillDepthImage (unsigned width, unsigned height, double* depth_buffer, unsigned line_step = 0) const;
 
       /** \brief fills a user given block of memory with the raw values with additional nearest-neighbor down-scaling.
         * \param[in] width width the width of the desired raw image.
@@ -112,13 +112,13 @@ namespace openni_wrapper
       /** \brief method to access the baseline of the "stereo" frame that was used to retrieve the depth image.
         * \return baseline in meters
         */
-      inline float 
+      inline double 
       getBaseline () const throw ();
 
       /** \brief method to access the focal length of the "stereo" frame that was used to retrieve the depth image.
         * \return focal length in pixels
         */
-      inline float 
+      inline double 
       getFocalLength () const throw ();
 
       /** \brief method to access the shadow value, that indicates pixels lying in shadow in the depth image.
@@ -156,13 +156,13 @@ namespace openni_wrapper
 
     protected:
       boost::shared_ptr<xn::DepthMetaData> depth_md_;
-      float baseline_;
-      float focal_length_;
+      double baseline_;
+      double focal_length_;
       XnUInt64 shadow_value_;
       XnUInt64 no_sample_value_;
   } ;
 
-  DepthImage::DepthImage (boost::shared_ptr<xn::DepthMetaData> depth_meta_data, float baseline, float focal_length, XnUInt64 shadow_value, XnUInt64 no_sample_value) throw ()
+  DepthImage::DepthImage (boost::shared_ptr<xn::DepthMetaData> depth_meta_data, double baseline, double focal_length, XnUInt64 shadow_value, XnUInt64 no_sample_value) throw ()
   : depth_md_ (depth_meta_data)
   , baseline_ (baseline)
   , focal_length_ (focal_length)
@@ -177,13 +177,13 @@ namespace openni_wrapper
     return *depth_md_;
   }
 
-  float
+  double
   DepthImage::getBaseline () const throw ()
   {
     return baseline_;
   }
 
-  float
+  double
   DepthImage::getFocalLength () const throw ()
   {
     return focal_length_;

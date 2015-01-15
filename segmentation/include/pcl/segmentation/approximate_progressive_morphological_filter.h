@@ -82,44 +82,44 @@ namespace pcl
       setMaxWindowSize (int max_window_size) { max_window_size_ = max_window_size; }
 
       /** \brief Get the slope value to be used in computing the height threshold. */
-      inline float
+      inline double
       getSlope () const { return (slope_); }
 
       /** \brief Set the slope value to be used in computing the height threshold. */
       inline void
-      setSlope (float slope) { slope_ = slope; }
+      setSlope (double slope) { slope_ = slope; }
 
       /** \brief Get the maximum height above the parameterized ground surface to be considered a ground return. */
-      inline float
+      inline double
       getMaxDistance () const { return (max_distance_); }
       
       /** \brief Set the maximum height above the parameterized ground surface to be considered a ground return. */
       inline void
-      setMaxDistance (float max_distance) { max_distance_ = max_distance; }
+      setMaxDistance (double max_distance) { max_distance_ = max_distance; }
 
       /** \brief Get the initial height above the parameterized ground surface to be considered a ground return. */
-      inline float
+      inline double
       getInitialDistance () const { return (initial_distance_); }
 
       /** \brief Set the initial height above the parameterized ground surface to be considered a ground return. */
       inline void
-      setInitialDistance (float initial_distance) { initial_distance_ = initial_distance; }
+      setInitialDistance (double initial_distance) { initial_distance_ = initial_distance; }
 
       /** \brief Get the cell size. */
-      inline float
+      inline double
       getCellSize () const { return (cell_size_); }
       
       /** \brief Set the cell size. */
       inline void
-      setCellSize (float cell_size) { cell_size_ = cell_size; }
+      setCellSize (double cell_size) { cell_size_ = cell_size; }
 
       /** \brief Get the base to be used in computing progressive window sizes. */
-      inline float
+      inline double
       getBase () const { return (base_); }
 
       /** \brief Set the base to be used in computing progressive window sizes. */
       inline void
-      setBase (float base) { base_ = base; }
+      setBase (double base) { base_ = base; }
 
       /** \brief Get flag indicating whether or not to exponentially grow window sizes? */
       inline bool
@@ -148,19 +148,19 @@ namespace pcl
       int max_window_size_;
 
       /** \brief Slope value to be used in computing the height threshold. */
-      float slope_;
+      double slope_;
 
       /** \brief Maximum height above the parameterized ground surface to be considered a ground return. */
-      float max_distance_;
+      double max_distance_;
 
       /** \brief Initial height above the parameterized ground surface to be considered a ground return. */
-      float initial_distance_;
+      double initial_distance_;
 
       /** \brief Cell size. */
-      float cell_size_;
+      double cell_size_;
 
       /** \brief Base to be used in computing progressive window sizes. */
-      float base_;
+      double base_;
 
       /** \brief Exponentially grow window sizes? */
       bool exponential_;

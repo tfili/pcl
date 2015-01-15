@@ -51,11 +51,11 @@
 template <typename PointT>
 pcl::ProgressiveMorphologicalFilter<PointT>::ProgressiveMorphologicalFilter () :
   max_window_size_ (33),
-  slope_ (0.7f),
-  max_distance_ (10.0f),
-  initial_distance_ (0.15f),
-  cell_size_ (1.0f),
-  base_ (2.0f),
+  slope_ (0.7),
+  max_distance_ (10.0),
+  initial_distance_ (0.15),
+  cell_size_ (1.0),
+  base_ (2.0),
   exponential_ (true)
 {
 }
@@ -78,19 +78,19 @@ pcl::ProgressiveMorphologicalFilter<PointT>::extract (std::vector<int>& ground)
   }
 
   // Compute the series of window sizes and height thresholds
-  std::vector<float> height_thresholds;
-  std::vector<float> window_sizes;
+  std::vector<double> height_thresholds;
+  std::vector<double> window_sizes;
   int iteration = 0;
-  float window_size = 0.0f;
-  float height_threshold = 0.0f;
+  double window_size = 0.0;
+  double height_threshold = 0.0;
 
   while (window_size < max_window_size_)
   {
     // Determine the initial window size.
     if (exponential_)
-      window_size = cell_size_ * (2.0f * std::pow (base_, iteration) + 1.0f);
+      window_size = cell_size_ * (2.0 * std::pow (base_, iteration) + 1.0);
     else
-      window_size = cell_size_ * (2.0f * (iteration+1) * base_ + 1.0f);
+      window_size = cell_size_ * (2.0 * (iteration+1) * base_ + 1.0);
 
     // Calculate the height threshold to be used in the next iteration.
     if (iteration == 0)
@@ -132,7 +132,7 @@ pcl::ProgressiveMorphologicalFilter<PointT>::extract (std::vector<int>& ground)
     std::vector<int> pt_indices;
     for (size_t p_idx = 0; p_idx < ground.size (); ++p_idx)
     {
-      float diff = cloud->points[p_idx].z - cloud_f->points[p_idx].z;
+      double diff = cloud->points[p_idx].z - cloud_f->points[p_idx].z;
       if (diff < height_thresholds[i])
         pt_indices.push_back (ground[p_idx]);
     }

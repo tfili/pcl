@@ -88,20 +88,20 @@ std::string scene_filename_;
 //Algorithm params 
 bool show_keypoints_ (false);
 bool use_hough_ (true);
-float model_ss_ (0.02f);
-float scene_ss_ (0.02f);
-float rf_rad_ (0.015f);
-float descr_rad_ (0.02f);
-float cg_size_ (0.01f);
-float cg_thresh_ (5.0f);
+double model_ss_ (0.02);
+double scene_ss_ (0.02);
+double rf_rad_ (0.015);
+double descr_rad_ (0.02);
+double cg_size_ (0.01);
+double cg_thresh_ (5.0);
 int icp_max_iter_ (5);
-float icp_corr_distance_ (0.005f);
-float hv_clutter_reg_ (5.0f);
-float hv_inlier_th_ (0.005f);
-float hv_occlusion_th_ (0.01f);
-float hv_rad_clutter_ (0.03f);
-float hv_regularizer_ (3.0f);
-float hv_rad_normals_ (0.05);
+double icp_corr_distance_ (0.005);
+double hv_clutter_reg_ (5.0);
+double hv_inlier_th_ (0.005);
+double hv_occlusion_th_ (0.01);
+double hv_rad_clutter_ (0.03);
+double hv_regularizer_ (3.0);
+double hv_rad_normals_ (0.05);
 bool hv_detect_clutter_ (true);
 
 /**
@@ -299,13 +299,13 @@ main (int argc,
   for (size_t i = 0; i < scene_descriptors->size (); ++i)
   {
     std::vector<int> neigh_indices (1);
-    std::vector<float> neigh_sqr_dists (1);
+    std::vector<double> neigh_sqr_dists (1);
     if (!pcl_isfinite (scene_descriptors->at (i).descriptor[0]))  //skipping NaNs
     {
       continue;
     }
     int found_neighs = match_search.nearestKSearch (scene_descriptors->at (i), 1, neigh_indices, neigh_sqr_dists);
-    if (found_neighs == 1 && neigh_sqr_dists[0] < 0.25f)
+    if (found_neighs == 1 && neigh_sqr_dists[0] < 0.25)
     {
       pcl::Correspondence corr (neigh_indices[0], static_cast<int> (i), neigh_sqr_dists[0]);
       model_scene_corrs->push_back (corr);
@@ -323,7 +323,7 @@ main (int argc,
   /**
    *  Clustering
    */
-  std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
+  std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > rototranslations;
   std::vector < pcl::Correspondences > clustered_corrs;
 
   if (use_hough_)
@@ -475,9 +475,9 @@ main (int argc,
   pcl::PointCloud<PointType>::Ptr off_scene_model_keypoints (new pcl::PointCloud<PointType> ());
 
   pcl::PointCloud<PointType>::Ptr off_model_good_kp (new pcl::PointCloud<PointType> ());
-  pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
-  pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
-  pcl::transformPointCloud (*model_good_kp, *off_model_good_kp, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
+  pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3d (-1, 0, 0), Eigen::Quaterniond (1, 0, 0, 0));
+  pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3d (-1, 0, 0), Eigen::Quaterniond (1, 0, 0, 0));
+  pcl::transformPointCloud (*model_good_kp, *off_model_good_kp, Eigen::Vector3d (-1, 0, 0), Eigen::Quaterniond (1, 0, 0, 0));
 
   if (show_keypoints_)
   {

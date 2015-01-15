@@ -223,9 +223,9 @@ namespace pcl
 
       public:
         NDTSingleGrid (PointCloudConstPtr cloud,
-                       const Eigen::Vector2f& about,
-                       const Eigen::Vector2f& extent,
-                       const Eigen::Vector2f& step)
+                       const Eigen::Vector2d& about,
+                       const Eigen::Vector2d& extent,
+                       const Eigen::Vector2d& step)
             : min_ (about - extent), max_ (min_ + 2*extent), step_ (step),
               cells_ ((max_[0]-min_[0]) / step_[0],
                       (max_[1]-min_[1]) / step_[1]),
@@ -275,9 +275,9 @@ namespace pcl
         normalDistForPoint (PointT const& p) const
         {
           // this would be neater in 3d...
-          Eigen::Vector2f idxf;
+          Eigen::Vector2d idxf;
           for (size_t i = 0; i < 2; i++)
-            idxf[i] = (p.getVector3fMap ()[i] - min_[i]) / step_[i];
+            idxf[i] = (p.getVector3dMap ()[i] - min_[i]) / step_[i];
           Eigen::Vector2i idxi = idxf.cast<int> ();
           for (size_t i = 0; i < 2; i++)
             if (idxi[i] >= cells_[i] || idxi[i] < 0)
@@ -287,9 +287,9 @@ namespace pcl
           return const_cast<NormalDist*> (&normal_distributions_.coeffRef (idxi[0], idxi[1]));
         }
 
-        Eigen::Vector2f min_;
-        Eigen::Vector2f max_;
-        Eigen::Vector2f step_;
+        Eigen::Vector2d min_;
+        Eigen::Vector2d max_;
+        Eigen::Vector2d step_;
         Eigen::Vector2i cells_;
 
         Eigen::Matrix<NormalDist, Eigen::Dynamic, Eigen::Dynamic> normal_distributions_;
@@ -316,12 +316,12 @@ namespace pcl
           * \param[in] step Size of region that each normal distribution will model
           */
         NDT2D (PointCloudConstPtr cloud,
-             const Eigen::Vector2f& about,
-             const Eigen::Vector2f& extent,
-             const Eigen::Vector2f& step)
+             const Eigen::Vector2d& about,
+             const Eigen::Vector2d& extent,
+             const Eigen::Vector2d& step)
         {
-          Eigen::Vector2f dx (step[0]/2, 0);
-          Eigen::Vector2f dy (0, step[1]/2);
+          Eigen::Vector2d dx (step[0]/2, 0);
+          Eigen::Vector2d dy (0, step[1]/2);
           single_grids_[0] = boost::make_shared<SingleGrid> (cloud, about,        extent, step);
           single_grids_[1] = boost::make_shared<SingleGrid> (cloud, about +dx,    extent, step);
           single_grids_[2] = boost::make_shared<SingleGrid> (cloud, about +dy,    extent, step);
@@ -373,11 +373,11 @@ namespace Eigen
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointTarget> void
-pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4f &guess)
+pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4d &guess)
 {
   PointCloudSource intm_cloud = output;
 
-  if (guess != Eigen::Matrix4f::Identity ())
+  if (guess != Eigen::Matrix4d::Identity ())
   {
     transformation_ = guess;
     transformPointCloud (output, intm_cloud, transformation_);
@@ -388,13 +388,13 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
   
   // can't seem to use .block<> () member function on transformation_
   // directly... gcc bug? 
-  Eigen::Matrix4f& transformation = transformation_;
+  Eigen::Matrix4d& transformation = transformation_;
 
 
   // work with x translation, y translation and z rotation: extending to 3D
   // would be some tricky maths, but not impossible.
-  const Eigen::Matrix3f initial_rot (transformation.block<3,3> (0,0));
-  const Eigen::Vector3f rot_x (initial_rot*Eigen::Vector3f::UnitX ());
+  const Eigen::Matrix3d initial_rot (transformation.block<3,3> (0,0));
+  const Eigen::Vector3d rot_x (initial_rot*Eigen::Vector3d::UnitX ());
   const double z_rotation = std::atan2 (rot_x[1], rot_x[0]);
 
   Eigen::Vector3d xytheta_transformation (
@@ -414,7 +414,7 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
       score += target_ndt.test (intm_cloud[i], cos_theta, sin_theta);
     
     PCL_DEBUG ("[pcl::NormalDistributionsTransform2D::computeTransformation] NDT score %f (x=%f,y=%f,r=%f)\n",
-      float (score.value), xytheta_transformation[0], xytheta_transformation[1], xytheta_transformation[2]
+      double (score.value), xytheta_transformation[0], xytheta_transformation[1], xytheta_transformation[2]
     );
 
     if (score.value != 0)
@@ -435,7 +435,7 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
         score.hessian += Eigen::Vector3d (-lambda, -lambda, -lambda).asDiagonal ();
         solver.compute (score.hessian, false);
         PCL_DEBUG ("[pcl::NormalDistributionsTransform2D::computeTransformation] adjust hessian: %f: new eigenvalues:%f %f %f\n",
-            float (lambda),
+            double (lambda),
             solver.eigenvalues ()[0].real (),
             solver.eigenvalues ()[1].real (),
             solver.eigenvalues ()[2].real ()
@@ -451,8 +451,8 @@ pcl::NormalDistributionsTransform2D<PointSource, PointTarget>::computeTransforma
       xytheta_transformation = new_transformation;
       
       // update transformation matrix from x, y, theta:
-      transformation.block<3,3> (0,0).matrix () = Eigen::Matrix3f (Eigen::AngleAxisf (static_cast<float> (xytheta_transformation[2]), Eigen::Vector3f::UnitZ ()));
-      transformation.block<3,1> (0,3).matrix () = Eigen::Vector3f (static_cast<float> (xytheta_transformation[0]), static_cast<float> (xytheta_transformation[1]), 0.0f);
+      transformation.block<3,3> (0,0).matrix () = Eigen::Matrix3d (Eigen::AngleAxisd (static_cast<double> (xytheta_transformation[2]), Eigen::Vector3d::UnitZ ()));
+      transformation.block<3,1> (0,3).matrix () = Eigen::Vector3d (static_cast<double> (xytheta_transformation[0]), static_cast<double> (xytheta_transformation[1]), 0.0);
 
       //std::cout << "new transformation:\n" << transformation << std::endl;
     }

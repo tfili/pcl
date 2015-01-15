@@ -114,7 +114,7 @@ public:
   }
 
   inline void
-  setClippingRange (float near_value = 0.0001f, float far_value = 100000.f)
+  setClippingRange (double near_value = 0.0001, double far_value = 100000.)
   {
     camera_->SetClippingRange (near_value, far_value);
   }

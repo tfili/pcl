@@ -131,7 +131,7 @@ unsigned start;         /* inflate()'s starting value for strm->avail_out */
         bits -= op;
         op = (unsigned)(this.op);
         if (op == 0) {                          /* literal */
-            Tracevv((stderr, this.val >= 0x20 && this.val < 0x7f ?
+            Tracevv((stderr, this.val >= 0x20 && this.val < 0x7 ?
                     "inflate:         literal '%c'\n" :
                     "inflate:         literal 0x%02x\n", this.val));
             PUP(out) = (unsigned char)(this.val);

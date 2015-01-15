@@ -38,7 +38,7 @@
 #include <pcl/filters/box_clipper3D.h>
 
 template<typename PointT>
-pcl::BoxClipper3D<PointT>::BoxClipper3D (const Eigen::Affine3f& transformation)
+pcl::BoxClipper3D<PointT>::BoxClipper3D (const Eigen::Affine3d& transformation)
 : transformation_ (transformation)
 {
   //inverse_transformation_ = transformation_.inverse ();
@@ -46,7 +46,7 @@ pcl::BoxClipper3D<PointT>::BoxClipper3D (const Eigen::Affine3f& transformation)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT>
-pcl::BoxClipper3D<PointT>::BoxClipper3D (const Eigen::Vector3f& rodrigues, const Eigen::Vector3f& translation, const Eigen::Vector3f& box_size)
+pcl::BoxClipper3D<PointT>::BoxClipper3D (const Eigen::Vector3d& rodrigues, const Eigen::Vector3d& translation, const Eigen::Vector3d& box_size)
 {
   setTransformation (rodrigues, translation, box_size);
 }
@@ -59,7 +59,7 @@ pcl::BoxClipper3D<PointT>::~BoxClipper3D () throw ()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> void
-pcl::BoxClipper3D<PointT>::setTransformation (const Eigen::Affine3f& transformation)
+pcl::BoxClipper3D<PointT>::setTransformation (const Eigen::Affine3d& transformation)
 {
   transformation_ = transformation;
   //inverse_transformation_ = transformation_.inverse ();
@@ -67,9 +67,9 @@ pcl::BoxClipper3D<PointT>::setTransformation (const Eigen::Affine3f& transformat
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT> void
-pcl::BoxClipper3D<PointT>::setTransformation (const Eigen::Vector3f& rodrigues, const Eigen::Vector3f& translation, const Eigen::Vector3f& box_size)
+pcl::BoxClipper3D<PointT>::setTransformation (const Eigen::Vector3d& rodrigues, const Eigen::Vector3d& translation, const Eigen::Vector3d& box_size)
 {
-  transformation_ = Eigen::Translation3f (translation) * Eigen::AngleAxisf(rodrigues.norm (), rodrigues.normalized ()) * Eigen::Scaling (box_size);
+  transformation_ = Eigen::Translation3d (translation) * Eigen::AngleAxisd(rodrigues.norm (), rodrigues.normalized ()) * Eigen::Scaling (box_size);
   //inverse_transformation_ = transformation_.inverse ();
 }
 
@@ -84,8 +84,8 @@ pcl::BoxClipper3D<PointT>::clone () const
 template<typename PointT> void
 pcl::BoxClipper3D<PointT>::transformPoint (const PointT& pointIn, PointT& pointOut) const
 {
-  const Eigen::Vector4f& point = pointIn.getVector4fMap ();
-  pointOut.getVector4fMap () = transformation_ * point;
+  const Eigen::Vector4d& point = pointIn.getVector4dMap ();
+  pointOut.getVector4dMap () = transformation_ * point;
 
   // homogeneous value might not be 1
   if (point [3] != 1)
@@ -107,7 +107,7 @@ pcl::BoxClipper3D<PointT>::transformPoint (const PointT& pointIn, PointT& pointO
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ToDo use product on point.getVector3fMap () and transformatio_.col (i) to use the SSE advantages of eigen
+// ToDo use product on point.getVector3dMap () and transformatio_.col (i) to use the SSE advantages of eigen
 template<typename PointT> bool
 pcl::BoxClipper3D<PointT>::clipPoint3D (const PointT& point) const
 {
@@ -147,7 +147,7 @@ pcl::BoxClipper3D<PointT>::clipLineSegment3D (PointT& point1, PointT& point2) co
   {
     PointT diff;
     PointT lambda;
-    diff.getVector3fMap () = pt2.getVector3fMap () - pt1.getVector3fMap ();
+    diff.getVector3dMap () = pt2.getVector3dMap () - pt1.getVector3dMap ();
 
     if (diff.x > 0)
       lambda.x = (1.0 - pt1.x) / diff.x;

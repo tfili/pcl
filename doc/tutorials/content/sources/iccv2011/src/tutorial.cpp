@@ -125,8 +125,8 @@ class ICCVTutorial
     std::vector<int> source2target_;
     std::vector<int> target2source_;
     pcl::CorrespondencesPtr correspondences_;
-    Eigen::Matrix4f initial_transformation_matrix_;
-    Eigen::Matrix4f transformation_matrix_;
+    Eigen::Matrix4d initial_transformation_matrix_;
+    Eigen::Matrix4d transformation_matrix_;
     bool show_source2target_;
     bool show_target2source_;
     bool show_correspondences;
@@ -292,7 +292,7 @@ void ICCVTutorial<FeatureType>::findCorrespondences (typename pcl::PointCloud<Fe
   // Find the index of the best match for each keypoint, and store it in "correspondences_out"
   const int k = 1;
   std::vector<int> k_indices (k);
-  std::vector<float> k_squared_distances (k);
+  std::vector<double> k_squared_distances (k);
   for (size_t i = 0; i < source->size (); ++i)
   {
     descriptor_kdtree.nearestKSearch (*source, i, k, k_indices, k_squared_distances);

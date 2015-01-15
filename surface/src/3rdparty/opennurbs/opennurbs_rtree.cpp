@@ -1818,13 +1818,13 @@ double CalcRectVolumeHelper(const ON_RTreeBBox* a_rect)
 #else
 
   // n-dim unit sphere volumes
-  //  0.000000f, 2.000000f, 3.141593f, // Dimension  0,1,2
-  //  4.188790f, 4.934802f, 5.263789f, // Dimension  3,4,5
-  //  5.167713f, 4.724766f, 4.058712f, // Dimension  6,7,8
-  //  3.298509f, 2.550164f, 1.884104f, // Dimension  9,10,11
-  //  1.335263f, 0.910629f, 0.599265f, // Dimension  12,13,14
-  //  0.381443f, 0.235331f, 0.140981f, // Dimension  15,16,17
-  //  0.082146f, 0.046622f, 0.025807f, // Dimension  18,19,20 
+  //  0.000000, 2.000000, 3.141593f, // Dimension  0,1,2
+  //  4.188790, 4.934802f, 5.263789, // Dimension  3,4,5
+  //  5.167713f, 4.724766, 4.058712f, // Dimension  6,7,8
+  //  3.298509, 2.550164f, 1.884104f, // Dimension  9,10,11
+  //  1.335263f, 0.910629, 0.599265, // Dimension  12,13,14
+  //  0.381443f, 0.235331, 0.140981, // Dimension  15,16,17
+  //  0.082146, 0.046622f, 0.025807, // Dimension  18,19,20 
   //return (unit_sphere_volume * radius^ON_RTree_NODE_DIM);
 
   // Faster rectangle volume calculation, but can cause poor merges

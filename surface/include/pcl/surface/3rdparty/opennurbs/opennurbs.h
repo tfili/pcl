@@ -49,7 +49,7 @@
 #include "opennurbs_color.h"          // R G B color
 #include "opennurbs_linestyle.h"      // line pattern, scale, and width
 #include "opennurbs_point.h"          // double precision 2d, 3d, 4d points and 2d, 3d vectors
-#include "opennurbs_fpoint.h"         // float precision 2d, 3d, 4d points and 2d, 3d vectors
+#include "opennurbs_fpoint.h"         // double precision 2d, 3d, 4d points and 2d, 3d vectors
 #include "opennurbs_array.h"          // dynamic array templates
 #include "opennurbs_base32.h"         // base32 encodeing and decoding
 #include "opennurbs_pluginlist.h"

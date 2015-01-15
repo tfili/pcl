@@ -76,8 +76,8 @@ namespace pcl
         */
       TrajkovicKeypoint2D (ComputationMethod method = FOUR_CORNERS,
                            int window_size = 3,
-                           float first_threshold = 0.1,
-                           float second_threshold = 100.0)
+                           double first_threshold = 0.1,
+                           double second_threshold = 100.0)
         : method_ (method)
         , window_size_ (window_size)
         , first_threshold_ (first_threshold)
@@ -110,10 +110,10 @@ namespace pcl
         * \param[in] threshold
         */
       inline void
-      setFirstThreshold (float threshold) { first_threshold_= threshold; }
+      setFirstThreshold (double threshold) { first_threshold_= threshold; }
 
       /// \brief \return first threshold
-      inline float
+      inline double
       getFirstThreshold () const { return (first_threshold_); }
 
       /** \brief set the second threshold to reject corners in the final cornerness
@@ -121,10 +121,10 @@ namespace pcl
         * \param[in] threshold
         */
       inline void
-      setSecondThreshold (float threshold) { second_threshold_= threshold; }
+      setSecondThreshold (double threshold) { second_threshold_= threshold; }
 
       /// \brief \return second threshold
-      inline float
+      inline double
       getSecondThreshold () const { return (second_threshold_); }
 
       /** \brief Initialize the scheduler and set the number of threads to use.
@@ -161,13 +161,13 @@ namespace pcl
       /// intensity field accessor
       IntensityT intensity_;
       /// first threshold for quick rejection
-      float first_threshold_;
+      double first_threshold_;
       /// second threshold for corner evaluation
-      float second_threshold_;
+      double second_threshold_;
       /// number of threads to be used
       unsigned int threads_;
       /// point cloud response
-      pcl::PointCloud<float>::Ptr response_;
+      pcl::PointCloud<double>::Ptr response_;
   };
 }
 

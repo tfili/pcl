@@ -250,7 +250,7 @@ namespace pcl
       * \return index of found argument or -1 if arguments do not appear in list
       */
     PCL_EXPORTS int
-    parse_x_arguments (int argc, char** argv, const char* str, std::vector<double>& v);
+    parse_x_arguments (int argc, char** argv, const char* str, std::vector<float>& v);
 
     /** \brief Parse for specific given command line arguments (N values comma
       * separated).
@@ -261,7 +261,7 @@ namespace pcl
       * \return index of found argument or -1 if arguments do not appear in list
       */
     PCL_EXPORTS int
-    parse_x_arguments (int argc, char** argv, const char* str, std::vector<float>& v);
+    parse_x_arguments (int argc, char** argv, const char* str, std::vector<double>& v);
 
     /** \brief Parse for specific given command line arguments (N values comma
       * separated).

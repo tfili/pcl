@@ -58,7 +58,7 @@ namespace pcl
     * \author Radu B. Rusu, Michael Dixon
     * \ingroup registration
     */
-  template <typename PointSource, typename PointTarget, typename Scalar = float>
+  template <typename PointSource, typename PointTarget, typename Scalar = double>
   class Registration : public PCLBase<PointSource>
   {
     public:
@@ -396,7 +396,7 @@ namespace pcl
         * \param[in] distances_b the second set of distances between correspondences
         */
       inline double 
-      getFitnessScore (const std::vector<float> &distances_a, const std::vector<float> &distances_b);
+      getFitnessScore (const std::vector<double> &distances_a, const std::vector<double> &distances_b);
 
       /** \brief Return the state of convergence after the last align run */
       inline bool 
@@ -584,7 +584,7 @@ namespace pcl
         */
       inline bool
       searchForNeighbors (const PointCloudSource &cloud, int index, 
-                          std::vector<int> &indices, std::vector<float> &distances)
+                          std::vector<int> &indices, std::vector<double> &distances)
       {
         int k = tree_->nearestKSearch (cloud, index, 1, indices, distances);
         if (k == 0)

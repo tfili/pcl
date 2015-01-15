@@ -54,11 +54,11 @@ namespace pcl
     {
       struct
       {
-        float L;
-        float a;
-        float b;
+        double L;
+        double a;
+        double b;
       };
-      float data_lab[4];
+      double data_lab[4];
     };
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -68,20 +68,20 @@ namespace pcl
   {
     inline PointXYZLAB ()
     {
-      x = y = z = 0.0f; data[3]     = 1.0f;  // important for homogeneous coordinates
-      L = a = b = 0.0f; data_lab[3] = 0.0f;
+      x = y = z = 0.0; data[3]     = 1.0;  // important for homogeneous coordinates
+      L = a = b = 0.0; data_lab[3] = 0.0;
     }
   };
 }
 
 // register the custom point type in PCL
 POINT_CLOUD_REGISTER_POINT_STRUCT(pcl::_PointXYZLAB,
-    (float, x, x)
-    (float, y, y)
-    (float, z, z)
-    (float, L, L)
-    (float, a, a)
-    (float, b, b)
+    (double, x, x)
+    (double, y, y)
+    (double, z, z)
+    (double, L, L)
+    (double, a, a)
+    (double, b, b)
 )
 POINT_CLOUD_REGISTER_POINT_WRAPPER(pcl::PointXYZLAB, pcl::_PointXYZLAB)
 
@@ -113,7 +113,7 @@ namespace pcl
        *
        * \param[in] lab_weight the color weight
        */
-      GeneralizedIterativeClosestPoint6D (float lab_weight = 0.032f);
+      GeneralizedIterativeClosestPoint6D (double lab_weight = 0.032f);
 
       /** \brief Provide a pointer to the input source
        * (e.g., the point cloud that we want to align to the target)
@@ -139,7 +139,7 @@ namespace pcl
        */
       void
       computeTransformation (PointCloudSource& output,
-          const Eigen::Matrix4f& guess);
+          const Eigen::Matrix4d& guess);
 
       /** \brief Search for the closest nearest neighbor of a given point.
        * \param query the point to search a nearest neighbour for
@@ -147,7 +147,7 @@ namespace pcl
        * \param distance vector of size 1 to store the distance to nearest neighbour found
        */
       inline bool
-      searchForNeighbors (const PointXYZLAB& query, std::vector<int>& index, std::vector<float>& distance);
+      searchForNeighbors (const PointXYZLAB& query, std::vector<int>& index, std::vector<double>& distance);
 
     protected:
       /** \brief Holds the converted (LAB) data cloud. */
@@ -160,7 +160,7 @@ namespace pcl
       KdTreeFLANN<PointXYZLAB> target_tree_lab_;
 
       /** \brief The color weight. */
-      float lab_weight_;
+      double lab_weight_;
 
       /**  \brief Custom point representation to perform kdtree searches in more than 3 (i.e. in all 6) dimensions. */
       class MyPointRepresentation : public PointRepresentation<PointXYZLAB>
@@ -190,7 +190,7 @@ namespace pcl
           }
 
           virtual void
-          copyToFloatArray (const PointXYZLAB &p, float * out) const
+          copyToFloatArray (const PointXYZLAB &p, double * out) const
           {
             // copy all of the six values
             out[0] = p.x;

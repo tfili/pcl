@@ -109,38 +109,38 @@ namespace pcl
 
         /** @{ */
         /** \brief Points outside of X - Y - Z - min / max are discarded. The unit is cm. The min values must be smaller than the max values. */
-        inline void setXMin (const float x_min) {if (x_min < x_max_) x_min_ = x_min;}
-        inline void setXMax (const float x_max) {if (x_max > x_min_) x_max_ = x_max;}
-        inline void setYMin (const float y_min) {if (y_min < y_max_) y_min_ = y_min;}
-        inline void setYMax (const float y_max) {if (y_max > y_min_) y_max_ = y_max;}
-        inline void setZMin (const float z_min) {if (z_min < z_max_) z_min_ = z_min;}
-        inline void setZMax (const float z_max) {if (z_max > z_min_) z_max_ = z_max;}
+        inline void setXMin (const double x_min) {if (x_min < x_max_) x_min_ = x_min;}
+        inline void setXMax (const double x_max) {if (x_max > x_min_) x_max_ = x_max;}
+        inline void setYMin (const double y_min) {if (y_min < y_max_) y_min_ = y_min;}
+        inline void setYMax (const double y_max) {if (y_max > y_min_) y_max_ = y_max;}
+        inline void setZMin (const double z_min) {if (z_min < z_max_) z_min_ = z_min;}
+        inline void setZMax (const double z_max) {if (z_max > z_min_) z_max_ = z_max;}
 
-        inline float getXMin () const {return (x_min_);}
-        inline float getXMax () const {return (x_max_);}
-        inline float getYMin () const {return (y_min_);}
-        inline float getYMax () const {return (y_max_);}
-        inline float getZMin () const {return (z_min_);}
-        inline float getZMax () const {return (z_max_);}
+        inline double getXMin () const {return (x_min_);}
+        inline double getXMax () const {return (x_max_);}
+        inline double getYMin () const {return (y_min_);}
+        inline double getYMax () const {return (y_max_);}
+        inline double getZMin () const {return (z_min_);}
+        inline double getZMax () const {return (z_max_);}
         /** @} */
 
         /** @{ */
         /** \brief Simple color segmentation in the HSV color space. Points inside of H - S - V min / max are discarded. H must be in the range 0 and 360, S and V in the range 0 and 1.
           * \note If you set values outside of the allowed range the member variables are clamped to the next best value. E.g. H is set to 0 if you pass -1.
           */
-        inline void setHMin (const float h_min) {h_min_ = pcl::ihs::clamp (h_min, 0.f, 360.f);}
-        inline void setHMax (const float h_max) {h_max_ = pcl::ihs::clamp (h_max, 0.f, 360.f);}
-        inline void setSMin (const float s_min) {s_min_ = pcl::ihs::clamp (s_min, 0.f,   1.f);}
-        inline void setSMax (const float s_max) {s_max_ = pcl::ihs::clamp (s_max, 0.f,   1.f);}
-        inline void setVMin (const float v_min) {v_min_ = pcl::ihs::clamp (v_min, 0.f,   1.f);}
-        inline void setVMax (const float v_max) {v_max_ = pcl::ihs::clamp (v_max, 0.f,   1.f);}
+        inline void setHMin (const double h_min) {h_min_ = pcl::ihs::clamp (h_min, 0., 360.);}
+        inline void setHMax (const double h_max) {h_max_ = pcl::ihs::clamp (h_max, 0., 360.);}
+        inline void setSMin (const double s_min) {s_min_ = pcl::ihs::clamp (s_min, 0.,   1.);}
+        inline void setSMax (const double s_max) {s_max_ = pcl::ihs::clamp (s_max, 0.,   1.);}
+        inline void setVMin (const double v_min) {v_min_ = pcl::ihs::clamp (v_min, 0.,   1.);}
+        inline void setVMax (const double v_max) {v_max_ = pcl::ihs::clamp (v_max, 0.,   1.);}
 
-        inline float getHMin () const {return (h_min_);}
-        inline float getHMax () const {return (h_max_);}
-        inline float getSMin () const {return (s_min_);}
-        inline float getSMax () const {return (s_max_);}
-        inline float getVMin () const {return (v_min_);}
-        inline float getVMax () const {return (v_max_);}
+        inline double getHMin () const {return (h_min_);}
+        inline double getHMax () const {return (h_max_);}
+        inline double getSMin () const {return (s_min_);}
+        inline double getSMax () const {return (s_max_);}
+        inline double getVMin () const {return (v_min_);}
+        inline double getVMax () const {return (v_max_);}
         /** @} */
 
         /** @{ */
@@ -207,9 +207,9 @@ namespace pcl
         RGBToHSV (const unsigned char r,
                   const unsigned char g,
                   const unsigned char b,
-                  float&              h,
-                  float&              s,
-                  float&              v) const;
+                  double&              h,
+                  double&              s,
+                  double&              v) const;
 
         ////////////////////////////////////////////////////////////////////////
         // Members
@@ -217,19 +217,19 @@ namespace pcl
 
         NormalEstimationPtr normal_estimation_;
 
-        float x_min_;
-        float x_max_;
-        float y_min_;
-        float y_max_;
-        float z_min_;
-        float z_max_;
+        double x_min_;
+        double x_max_;
+        double y_min_;
+        double y_max_;
+        double z_min_;
+        double z_max_;
 
-        float h_min_;
-        float h_max_;
-        float s_min_;
-        float s_max_;
-        float v_min_;
-        float v_max_;
+        double h_min_;
+        double h_max_;
+        double s_min_;
+        double s_max_;
+        double v_min_;
+        double v_max_;
 
         bool hsv_inverted_;
         bool hsv_enabled_;

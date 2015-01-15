@@ -20,7 +20,7 @@ class ConditionThresholdHSV : public pcl::ConditionBase<PointT>
   public:
     typedef typename boost::shared_ptr<ConditionThresholdHSV<PointT> > Ptr;
     
-    ConditionThresholdHSV (float min_h, float max_h, float min_s, float max_s, float min_v, float max_v) :
+    ConditionThresholdHSV (double min_h, double max_h, double min_s, double max_s, double min_v, double max_v) :
       min_h_(min_h), max_h_(max_h), min_s_(min_s), max_s_(max_s), min_v_(min_v), max_v_(max_v)
     {
       // Make min_h_ and max_h_ fall within [0, 360)
@@ -34,7 +34,7 @@ class ConditionThresholdHSV : public pcl::ConditionBase<PointT>
     // Evaluate whether the color of the given point falls within the specified thresholds
     virtual bool evaluate(const PointT & p) const
     {
-      float h, s, v;
+      double h, s, v;
       rgb2hsv (p.r, p.g, p.b, h, s, v);
       return (!pcl_isnan(h) && !pcl_isnan(s) && !pcl_isnan(v) && 
               ((min_h_ < max_h_) ? ((min_h_ <= h) && (h <= max_h_)) : ((min_h_ <= h) || (h <= max_h_))) &&
@@ -42,11 +42,11 @@ class ConditionThresholdHSV : public pcl::ConditionBase<PointT>
               (min_v_ <= v) && (v <= max_v_));
     }
     
-    void rgb2hsv (uint8_t r, uint8_t g, uint8_t b, float & h, float & s, float & v) const
+    void rgb2hsv (uint8_t r, uint8_t g, uint8_t b, double & h, double & s, double & v) const
     {
-      float maxval = (r > g) ? ((r > b) ? r : b) : ((g > b) ? g : b);
-      float minval = (r < g) ? ((r < b) ? r : b) : ((g < b) ? g : b);
-      float minmaxdiff = maxval - minval;
+      double maxval = (r > g) ? ((r > b) ? r : b) : ((g > b) ? g : b);
+      double minval = (r < g) ? ((r < b) ? r : b) : ((g < b) ? g : b);
+      double minmaxdiff = maxval - minval;
       
       if (maxval == minval)
       {
@@ -73,7 +73,7 @@ class ConditionThresholdHSV : public pcl::ConditionBase<PointT>
     }
 
   protected:
-    float min_h_, max_h_, min_s_, max_s_, min_v_, max_v_;
+    double min_h_, max_h_, min_s_, max_s_, min_v_, max_v_;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

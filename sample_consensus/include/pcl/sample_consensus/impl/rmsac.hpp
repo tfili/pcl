@@ -60,7 +60,7 @@ pcl::RandomizedMEstimatorSampleConsensus<PointT>::computeModel (int debug_verbos
 
   std::vector<int> best_model;
   std::vector<int> selection;
-  Eigen::VectorXf model_coefficients;
+  Eigen::VectorXd model_coefficients;
   std::vector<double> distances;
   std::set<int> indices_subset;
 

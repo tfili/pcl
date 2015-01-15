@@ -78,7 +78,7 @@ pcl::DecisionTreeEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, NodeTy
 
     while (node->sub_nodes.size () != 0)
     {
-      float feature_result = 0.0f;
+      double feature_result = 0.0;
       unsigned char flag = 0;
       unsigned char branch_index = 0;
 
@@ -110,7 +110,7 @@ pcl::DecisionTreeEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, NodeTy
 
     while (node->sub_nodes.size () != 0)
     {
-      float feature_result = 0.0f;
+      double feature_result = 0.0;
       unsigned char flag = 0;
       unsigned char branch_index = 0;
 
@@ -138,7 +138,7 @@ pcl::DecisionTreeEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, NodeTy
 
     while (node->sub_nodes.size () != 0)
     {
-      float feature_result = 0.0f;
+      double feature_result = 0.0;
       unsigned char flag = 0;
       unsigned char branch_index = 0;
 
@@ -170,7 +170,7 @@ pcl::DecisionTreeEvaluator<FeatureType, DataSet, LabelType, ExampleIndex, NodeTy
 
     while (node->sub_nodes.size () != 0)
     {
-      float feature_result = 0.0f;
+      double feature_result = 0.0;
       unsigned char flag = 0;
       unsigned char branch_index = 0;
 

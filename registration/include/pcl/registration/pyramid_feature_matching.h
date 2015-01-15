@@ -82,22 +82,22 @@ namespace pcl
        * \note Please check the PyramidHistogram class description for more details about this parameter.
        */
       inline void
-      setInputDimensionRange (std::vector<std::pair<float, float> > &dimension_range_input)
+      setInputDimensionRange (std::vector<std::pair<double, double> > &dimension_range_input)
       { dimension_range_input_ = dimension_range_input; }
 
       /** \brief Method for retrieving the input dimension range vector */
-      inline std::vector<std::pair<float, float> >
+      inline std::vector<std::pair<double, double> >
       getInputDimensionRange () { return dimension_range_input_; }
 
       /** \brief Method to set the target dimension range parameter.
        * \note Please check the PyramidHistogram class description for more details about this parameter.
        */
       inline void
-      setTargetDimensionRange (std::vector<std::pair<float, float> > &dimension_range_target)
+      setTargetDimensionRange (std::vector<std::pair<double, double> > &dimension_range_target)
       { dimension_range_target_ = dimension_range_target; }
 
       /** \brief Method for retrieving the target dimension range vector */
-      inline std::vector<std::pair<float, float> >
+      inline std::vector<std::pair<double, double> >
       getTargetDimensionRange () { return dimension_range_target_; }
 
       /** \brief Provide a pointer to the feature representation to use to convert features to k-D vectors.
@@ -123,14 +123,14 @@ namespace pcl
        * \param pyramid_a Pointer to the first pyramid to be compared (needs to be computed already).
        * \param pyramid_b Pointer to the second pyramid to be compared (needs to be computed already).
        */
-      static float
+      static double
       comparePyramidFeatureHistograms (const PyramidFeatureHistogramPtr &pyramid_a,
                                        const PyramidFeatureHistogramPtr &pyramid_b);
 
 
     private:
       size_t nr_dimensions, nr_levels, nr_features;
-      std::vector<std::pair<float, float> > dimension_range_input_, dimension_range_target_;
+      std::vector<std::pair<double, double> > dimension_range_input_, dimension_range_target_;
       FeatureRepresentationConstPtr feature_representation_;
       bool is_computed_;
 
@@ -143,11 +143,11 @@ namespace pcl
        */
       void
       convertFeatureToVector (const PointFeature &feature,
-                              std::vector<float> &feature_vector);
+                              std::vector<double> &feature_vector);
 
       /** \brief Adds a feature vector to its corresponding bin at each level in the pyramid */
       void
-      addFeature (std::vector<float> &feature);
+      addFeature (std::vector<double> &feature);
 
       /** \brief Access the pyramid bin given the position of the bin at the given pyramid level
        * and the pyramid level
@@ -163,7 +163,7 @@ namespace pcl
        * \param level the level in the pyramid
        */
       inline unsigned int&
-      at (std::vector<float> &feature,
+      at (std::vector<double> &feature,
           size_t &level);
 
       /** \brief Structure for representing a single pyramid histogram level */
@@ -176,7 +176,7 @@ namespace pcl
         {
         }
 
-        PyramidFeatureHistogramLevel (std::vector<size_t> &a_bins_per_dimension, std::vector<float> &a_bin_step) : 
+        PyramidFeatureHistogramLevel (std::vector<size_t> &a_bins_per_dimension, std::vector<double> &a_bin_step) : 
           hist (), 
           bins_per_dimension (a_bins_per_dimension),
           bin_step (a_bin_step)
@@ -189,7 +189,7 @@ namespace pcl
 
         std::vector<unsigned int> hist;
         std::vector<size_t> bins_per_dimension;
-        std::vector<float> bin_step;
+        std::vector<double> bin_step;
       };
       std::vector<PyramidFeatureHistogramLevel> hist_levels;
   };

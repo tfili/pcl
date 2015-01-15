@@ -67,7 +67,7 @@ using namespace visualization;
 
 class CallbackParameters;
 
-void run (float pair_width, float voxel_size, float max_coplanarity_angle);
+void run (double pair_width, double voxel_size, double max_coplanarity_angle);
 bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points, PointCloud<Normal>& pcl_normals);
 void update (CallbackParameters* params);
 
@@ -99,14 +99,14 @@ main (int argc, char** argv)
   printf ("\nUsage: ./pcl_obj_rec_ransac_scene_opps <pair_width> <voxel_size> <max_coplanarity_angle>\n\n");
 
   const int num_params = 3;
-  float parameters[num_params] = {40.0f/*pair width*/, 5.0f/*voxel size*/, 15.0f/*max co-planarity angle*/};
+  double parameters[num_params] = {40.0/*pair width*/, 5.0/*voxel size*/, 15.0/*max co-planarity angle*/};
   string parameter_names[num_params] = {"pair_width", "voxel_size", "max_coplanarity_angle"};
 
   // Read the user input if any
   for ( int i = 0 ; i < argc-1 && i < num_params ; ++i )
   {
-    parameters[i] = static_cast<float> (atof (argv[i+1]));
-    if ( parameters[i] <= 0.0f )
+    parameters[i] = static_cast<double> (atof (argv[i+1]));
+    if ( parameters[i] <= 0.0 )
     {
       fprintf(stderr, "ERROR: the %i-th parameter has to be positive and not %f\n", i+1, parameters[i]);
       return (-1);
@@ -173,7 +173,7 @@ void update (CallbackParameters* params)
 
   vtkSmartPointer<vtkHedgeHog> vtk_hh = vtkSmartPointer<vtkHedgeHog>::New ();
   vtk_hh->SetVectorModeToUseNormal ();
-  vtk_hh->SetScaleFactor (0.5f*params->objrec_.getPairWidth ());
+  vtk_hh->SetScaleFactor (0.5*params->objrec_.getPairWidth ());
 #if VTK_MAJOR_VERSION < 6
   vtk_hh->SetInput (vtk_opps);
 #else
@@ -196,7 +196,7 @@ void update (CallbackParameters* params)
 
 //===============================================================================================================================
 
-void run (float pair_width, float voxel_size, float max_coplanarity_angle)
+void run (double pair_width, double voxel_size, double max_coplanarity_angle)
 {
   PointCloud<PointXYZ>::Ptr scene_points (new PointCloud<PointXYZ> ());
   PointCloud<Normal>::Ptr scene_normals (new PointCloud<Normal> ());
@@ -236,7 +236,7 @@ void run (float pair_width, float voxel_size, float max_coplanarity_angle)
 #if defined _SHOW_OCTREE_NORMALS_ && defined _SHOW_OCTREE_POINTS_
   PointCloud<Normal>::Ptr octree_normals (new PointCloud<Normal> ());
   objrec.getSceneOctree ().getNormalsOfFullLeaves (*octree_normals);
-  viz.addPointCloudNormals<PointXYZ,Normal> (octree_points, octree_normals, 1, 6.0f, "normals out");
+  viz.addPointCloudNormals<PointXYZ,Normal> (octree_points, octree_normals, 1, 6.0, "normals out");
 #endif
 
   // Enter the main loop
@@ -276,9 +276,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points,
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_points->GetPoint (i, p);
-    pcl_points[i].x = static_cast<float> (p[0]);
-    pcl_points[i].y = static_cast<float> (p[1]);
-    pcl_points[i].z = static_cast<float> (p[2]);
+    pcl_points[i].x = static_cast<double> (p[0]);
+    pcl_points[i].y = static_cast<double> (p[1]);
+    pcl_points[i].z = static_cast<double> (p[2]);
   }
 
   // Check if we have normals
@@ -291,9 +291,9 @@ bool vtk_to_pointcloud (const char* file_name, PointCloud<PointXYZ>& pcl_points,
   for ( vtkIdType i = 0 ; i < num_points ; ++i )
   {
     vtk_normals->GetTuple (i, p);
-    pcl_normals[i].normal_x = static_cast<float> (p[0]);
-    pcl_normals[i].normal_y = static_cast<float> (p[1]);
-    pcl_normals[i].normal_z = static_cast<float> (p[2]);
+    pcl_normals[i].normal_x = static_cast<double> (p[0]);
+    pcl_normals[i].normal_y = static_cast<double> (p[1]);
+    pcl_normals[i].normal_z = static_cast<double> (p[2]);
   }
 
   return true;

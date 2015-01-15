@@ -116,7 +116,7 @@ class MultiRansac
     template <template <typename> class Storage> void 
     cloud_cb (const boost::shared_ptr<openni_wrapper::Image>& image,
               const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, 
-              float constant)
+              double constant)
     {
       static unsigned count = 0;
       static double last = pcl::cuda::getTime ();
@@ -148,8 +148,8 @@ class MultiRansac
       {
         ScopeTimeCPU time ("Normal Estimation");
         //normals = computeFastPointNormals<Storage> (data);
-        float focallength = 580/2.0;
-        //normals = computePointNormals<Storage> (data->points.begin (), data->points.end (), focallength, data, 0.11f, 36);
+        double focallength = 580/2.0;
+        //normals = computePointNormals<Storage> (data->points.begin (), data->points.end (), focallength, data, 0.11, 36);
         normals = computeFastPointNormals<Storage> (data);
       }
 
@@ -229,19 +229,19 @@ class MultiRansac
           //    if (logo_cloud_)
           //    {
           //      boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> > transformed_logo (new pcl::PointCloud<pcl::PointXYZRGB>);
-          //      Eigen::Affine3f transformation;
+          //      Eigen::Affine3d transformation;
 
-          //      Eigen::Vector3f plane_normal (coeffs[i].x, coeffs[i].y, coeffs[i].z);
+          //      Eigen::Vector3d plane_normal (coeffs[i].x, coeffs[i].y, coeffs[i].z);
           //      plane_normal.normalize ();
-          //      if (plane_normal.dot (Eigen::Vector3f::Zero()) - coeffs[i].w > 0)
+          //      if (plane_normal.dot (Eigen::Vector3d::Zero()) - coeffs[i].w > 0)
           //        plane_normal = -plane_normal;
 
-          //      Eigen::Vector3f logo_normal (0,0,-1);
+          //      Eigen::Vector3d logo_normal (0,0,-1);
 
-          //      Eigen::Vector3f trans (Eigen::Vector3f(centroids[i].x, centroids[i].y, centroids[i].z) * 0.97);
-          //      Eigen::AngleAxisf rot (acos (logo_normal.dot (plane_normal)), logo_normal.cross (plane_normal).normalized ());
+          //      Eigen::Vector3d trans (Eigen::Vector3d(centroids[i].x, centroids[i].y, centroids[i].z) * 0.97);
+          //      Eigen::AngleAxisd rot (acos (logo_normal.dot (plane_normal)), logo_normal.cross (plane_normal).normalized ());
 
-          //      transformation = Eigen::Affine3f::Identity();// = ....;
+          //      transformation = Eigen::Affine3d::Identity();// = ....;
           //      transformation.translate (trans);// = ....;
           //      transformation.rotate (rot);// = ....;
           //      transformation.scale (0.001 * sqrt (planes_inlier_counts[i]));// = ....;
@@ -301,13 +301,13 @@ class MultiRansac
       if (use_device)
       {
         std::cerr << "[RANSAC] Using GPU..." << std::endl;
-        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&MultiRansac::cloud_cb<Device>, this, _1, _2, _3);
+        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&MultiRansac::cloud_cb<Device>, this, _1, _2, _3);
         c = interface->registerCallback (f);
       }
       else
       {
         std::cerr << "[RANSAC] Using CPU..." << std::endl;
-        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, float)> f = boost::bind (&MultiRansac::cloud_cb<Host>, this, _1, _2, _3);
+        boost::function<void (const boost::shared_ptr<openni_wrapper::Image>& image, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image, double)> f = boost::bind (&MultiRansac::cloud_cb<Host>, this, _1, _2, _3);
         c = interface->registerCallback (f);
       }
 
@@ -319,7 +319,7 @@ class MultiRansac
       //--------------------- load pcl logo file
       //pcl::Grabber* filegrabber = 0;
 
-      //float frames_per_second = 1;
+      //double frames_per_second = 1;
       //bool repeat = false;
 
       //std::string path = "./pcl_logo.pcd";

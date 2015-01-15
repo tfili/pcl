@@ -56,13 +56,13 @@ namespace cuda
   {
     int    width, height;
     int    center_x, center_y;
-    float  constant;
-    float bad_point;
+    double  constant;
+    double bad_point;
 
-    ComputeXYZ (int w, int h, int cx, int cy, float con) : 
+    ComputeXYZ (int w, int h, int cx, int cy, double con) : 
       width(w), height(h), center_x(cx), center_y(cy), constant(con)
     {
-      bad_point = std::numeric_limits<float>::quiet_NaN ();
+      bad_point = std::numeric_limits<double>::quiet_NaN ();
     }
 
     template <typename Tuple> __inline__ __host__ __device__ PointXYZRGB
@@ -74,13 +74,13 @@ namespace cuda
   {
     int    width, height;
     int    center_x, center_y;
-    float  constant;
-    float bad_point;
+    double  constant;
+    double bad_point;
 
-    ComputeXYZRGB (int w, int h, int cx, int cy, float con) : 
+    ComputeXYZRGB (int w, int h, int cx, int cy, double con) : 
       width(w), height(h), center_x(cx), center_y(cy), constant(con) 
     {
-      bad_point = std::numeric_limits<float>::quiet_NaN ();
+      bad_point = std::numeric_limits<double>::quiet_NaN ();
     }
 
     template <typename Tuple> __inline__ __host__ __device__ PointXYZRGB
@@ -110,7 +110,7 @@ namespace cuda
       template <template <typename> class Storage> void
       compute (const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image,
                const boost::shared_ptr<openni_wrapper::Image>& image,
-               float constant, 
+               double constant, 
                typename PointCloudAOS<Storage>::Ptr &output,
                bool downsample = false, int stride = 2, int smoothing_nr_iterations = 0, int smoothing_filter_size = 2);
 
@@ -118,7 +118,7 @@ namespace cuda
       compute (const boost::uint16_t* depth_image,
                const OpenNIRGB* rgb_image,
                int width, int height,
-               float constant,
+               double constant,
                typename PointCloudAOS<Storage>::Ptr &output,
                int smoothing_nr_iterations = 0, int smoothing_filter_size = 2);
 
@@ -126,7 +126,7 @@ namespace cuda
 /*      void
       compute (const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image,
                const boost::shared_ptr<openni_wrapper::Image>& image,
-               float constant, 
+               double constant, 
                PointCloudAOS<Host>::Ptr &output);*/
       
       // ...
@@ -142,12 +142,12 @@ namespace cuda
 
       void
       compute (const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image,
-                float constant,
+                double constant,
                 PointCloudAOS<Device>::Ptr &output);
 
       void
       compute (const boost::shared_ptr<openni_wrapper::DepthImage>& depth_image,
-                float constant,
+                double constant,
                 PointCloudAOS<Host>::Ptr &output);
   };
 

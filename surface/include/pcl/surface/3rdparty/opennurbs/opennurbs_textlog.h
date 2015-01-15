@@ -91,7 +91,7 @@ public:
   */
   void Print( const wchar_t* format, ... );
 
-  void Print( float );
+  void Print( double );
   void Print( double );
   void Print( const ON_2dPoint& );
   void Print( const ON_3dPoint& );
@@ -180,7 +180,7 @@ public:
   ON_TextLog& operator<<( char );
   ON_TextLog& operator<<( short );
   ON_TextLog& operator<<( int );
-  ON_TextLog& operator<<( float );
+  ON_TextLog& operator<<( double );
   ON_TextLog& operator<<( double );
   ON_TextLog& operator<<( const ON_2dPoint& );
   ON_TextLog& operator<<( const ON_3dPoint& );

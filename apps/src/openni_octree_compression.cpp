@@ -182,7 +182,7 @@ class SimpleOpenNIViewer
 struct EventHelper
 {
   EventHelper (ostream& outputFile_arg, OctreePointCloudCompression<PointXYZRGBA>* octreeEncoder_arg,
-               const std::string& field_name = "z", float min_v = 0, float max_v = 3.0) :
+               const std::string& field_name = "z", double min_v = 0, double max_v = 3.0) :
     outputFile_ (outputFile_arg), octreeEncoder_ (octreeEncoder_arg)
   {
       pass_.setFilterFieldName (field_name);
@@ -242,7 +242,7 @@ main (int argc, char **argv)
 
   bool showStatistics;
   double pointResolution;
-  float octreeResolution;
+  double octreeResolution;
   bool doVoxelGridDownDownSampling;
   unsigned int iFrameRate;
   bool doColorEncoding;
@@ -253,7 +253,7 @@ main (int argc, char **argv)
   // default values
   showStatistics = false;
   pointResolution = 0.001;
-  octreeResolution = 0.01f;
+  octreeResolution = 0.01;
   doVoxelGridDownDownSampling = false;
   iFrameRate = 30;
   doColorEncoding = false;
@@ -273,7 +273,7 @@ main (int argc, char **argv)
   bServerFileMode = false;
   bEnDecode = false;
 
-  float min_v = 0.0f, max_v = 3.0f;
+  double min_v = 0.0, max_v = 3.0;
   pcl::console::parse_2x_arguments (argc, argv, "-minmax", min_v, max_v, false);
   std::string field_name ("z");
   pcl::console::parse_argument (argc, argv, "-field", field_name);
@@ -359,7 +359,7 @@ main (int argc, char **argv)
 
       // apply profile settings
       pointResolution = selectedProfile.pointResolution;
-      octreeResolution = float (selectedProfile.octreeResolution);
+      octreeResolution = double (selectedProfile.octreeResolution);
       doVoxelGridDownDownSampling = selectedProfile.doVoxelGridDownSampling;
       iFrameRate = selectedProfile.iFrameRate;
       doColorEncoding = selectedProfile.doColorEncoding;

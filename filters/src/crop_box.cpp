@@ -56,10 +56,10 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
   int indices_count = 0;
   int removed_indices_count = 0;
 
-  Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-  Eigen::Affine3f inverse_transform = Eigen::Affine3f::Identity();
+  Eigen::Affine3d transform = Eigen::Affine3d::Identity();
+  Eigen::Affine3d inverse_transform = Eigen::Affine3d::Identity();
 
-  if (rotation_ != Eigen::Vector3f::Zero ())
+  if (rotation_ != Eigen::Vector3d::Zero ())
   {
     pcl::getTransformation (0, 0, 0,
                             rotation_ (0), rotation_ (1), rotation_ (2),
@@ -68,14 +68,14 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
   }
 
   //PointXYZ local_pt;
-  Eigen::Vector3f local_pt (Eigen::Vector3f::Zero ());
+  Eigen::Vector3d local_pt (Eigen::Vector3d::Zero ());
 
   for (size_t index = 0; index < indices_->size (); ++index)
   {
     // Get local point
     int point_offset = ((*indices_)[index] * input_->point_step);
     int offset = point_offset + input_->fields[x_idx_].offset;
-    memcpy (&local_pt, &input_->data[offset], sizeof (float)*3);
+    memcpy (&local_pt, &input_->data[offset], sizeof (double)*3);
 
     // Check if the point is invalid
     if (!pcl_isfinite (local_pt.x ()) ||
@@ -87,7 +87,7 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (PCLPointCloud2 &output)
     if (!(transform_.matrix().isIdentity()))
       local_pt = transform_ * local_pt;
 
-    if (translation_ != Eigen::Vector3f::Zero ())
+    if (translation_ != Eigen::Vector3d::Zero ())
     {
       local_pt.x () = local_pt.x () - translation_ (0);
       local_pt.y () = local_pt.y () - translation_ (1);
@@ -142,10 +142,10 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (std::vector<int> &indices)
   int indices_count = 0;
   int removed_indices_count = 0;
 
-  Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-  Eigen::Affine3f inverse_transform = Eigen::Affine3f::Identity();
+  Eigen::Affine3d transform = Eigen::Affine3d::Identity();
+  Eigen::Affine3d inverse_transform = Eigen::Affine3d::Identity();
 
-  if (rotation_ != Eigen::Vector3f::Zero ())
+  if (rotation_ != Eigen::Vector3d::Zero ())
   {
     pcl::getTransformation (0, 0, 0,
                             rotation_ (0), rotation_ (1), rotation_ (2),
@@ -154,20 +154,20 @@ pcl::CropBox<pcl::PCLPointCloud2>::applyFilter (std::vector<int> &indices)
   }
 
   //PointXYZ local_pt;
-  Eigen::Vector3f local_pt (Eigen::Vector3f::Zero ());
+  Eigen::Vector3d local_pt (Eigen::Vector3d::Zero ());
 
   for (size_t index = 0; index < indices_->size (); index++)
   {
     // Get local point
     int point_offset = ((*indices_)[index] * input_->point_step);
     int offset = point_offset + input_->fields[x_idx_].offset;
-    memcpy (&local_pt, &input_->data[offset], sizeof (float)*3);
+    memcpy (&local_pt, &input_->data[offset], sizeof (double)*3);
 
     // Transform point to world space
     if (!(transform_.matrix().isIdentity()))
       local_pt = transform_ * local_pt;
 
-    if (translation_ != Eigen::Vector3f::Zero ())
+    if (translation_ != Eigen::Vector3d::Zero ())
     {
       local_pt.x () -= translation_ (0);
       local_pt.y () -= translation_ (1);

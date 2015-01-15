@@ -47,7 +47,7 @@ namespace pcl
 {
   namespace visualization
   {
-    /** @b Provide some gerneral functionalities regarding 2d float arrays, e.g., for visualization purposes
+    /** @b Provide some gerneral functionalities regarding 2d double arrays, e.g., for visualization purposes
       * \author Bastian Steder
       * \ingroup visualization
       */
@@ -55,19 +55,19 @@ namespace pcl
     {
       public:
         // =====STATIC METHODS=====
-        /** Get RGB color values for a given float in [0, 1] or special cases like -INFINITY(light green), INFINITY(light blue), NAN(light red) */
+        /** Get RGB color values for a given double in [0, 1] or special cases like -INFINITY(light green), INFINITY(light blue), NAN(light red) */
         static void 
-        getColorForFloat (float value, unsigned char& r, unsigned char& g, unsigned char& b);
+        getColorForFloat (double value, unsigned char& r, unsigned char& g, unsigned char& b);
         
-        /** Get RGB color values for a given float in [-PI, PI] or special cases like -INFINITY(light green), INFINITY(light blue), NAN(light red)
+        /** Get RGB color values for a given double in [-PI, PI] or special cases like -INFINITY(light green), INFINITY(light blue), NAN(light red)
           * The colors are black(-PI) -> blue(-PI/2) -> white(0) -> green(PI/2) -> black(PI) with accordant values in between */
         static void 
-        getColorForAngle (float value, unsigned char& r, unsigned char& g, unsigned char& b);
+        getColorForAngle (double value, unsigned char& r, unsigned char& g, unsigned char& b);
         
-        /** Get RGB color values for a given float in [0, PI] or special cases like -INFINITY(light green), INFINITY(light blue), NAN(light red)
+        /** Get RGB color values for a given double in [0, PI] or special cases like -INFINITY(light green), INFINITY(light blue), NAN(light red)
           * The colors are black(-PI/2) -> blue(-PI/4) -> white(0) -> green(PI/4) -> black(PI/2) with accordant values in between */
         static void 
-        getColorForHalfAngle (float value, unsigned char& r, unsigned char& g, unsigned char& b);
+        getColorForHalfAngle (double value, unsigned char& r, unsigned char& g, unsigned char& b);
         
         /** Use getColorForFloat for all elements of the given arrays, whereas the values are first normalized to [0,1],
          * either using the given min/max values or based on the actual minimal and maximal values existing in the array.
@@ -75,7 +75,7 @@ namespace pcl
          * If gray_scale is true, the outcome will still be an RGB image, but all colors apart for the special colors of
          * non-finite numbers, will be gray values */
         static unsigned char* 
-        getVisualImage (const float* float_image, int width, int height, float min_value=-std::numeric_limits<float>::infinity (), float max_value=std::numeric_limits<float>::infinity (), bool gray_scale=false);
+        getVisualImage (const double* float_image, int width, int height, double min_value=-std::numeric_limits<double>::infinity (), double max_value=std::numeric_limits<double>::infinity (), bool gray_scale=false);
         
         /** Use getColorForFloat for all elements of the given arrays, whereas the values are normalized to [0,1]
          *  with the given min/max values.
@@ -89,11 +89,11 @@ namespace pcl
         
         /** Use getColorForAngle for all elements of the given arrays. */
         static unsigned char* 
-        getVisualAngleImage (const float* angle_image, int width, int height);
+        getVisualAngleImage (const double* angle_image, int width, int height);
 
         /** Use getColorForHalfAngle for all elements of the given arrays. */
         static unsigned char* 
-        getVisualHalfAngleImage (const float* angle_image, int width, int height);
+        getVisualHalfAngleImage (const double* angle_image, int width, int height);
     };
 
   }  // namespace end

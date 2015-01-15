@@ -209,21 +209,21 @@ pcl::visualization::PCLVisualizerInteractorStyle::loadCameraParameters (const st
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::visualization::PCLVisualizerInteractorStyle::setCameraParameters (const Eigen::Matrix3f &intrinsics,
-                                                                       const Eigen::Matrix4f &extrinsics,
+pcl::visualization::PCLVisualizerInteractorStyle::setCameraParameters (const Eigen::Matrix3d &intrinsics,
+                                                                       const Eigen::Matrix4d &extrinsics,
                                                                        int viewport)
 {
   // Position = extrinsic translation
-  Eigen::Vector3f pos_vec = extrinsics.block<3, 1> (0, 3);
+  Eigen::Vector3d pos_vec = extrinsics.block<3, 1> (0, 3);
 
   // Rotate the view vector
-  Eigen::Matrix3f rotation = extrinsics.block<3, 3> (0, 0);
-  Eigen::Vector3f y_axis (0.f, 1.f, 0.f);
-  Eigen::Vector3f up_vec (rotation * y_axis);
+  Eigen::Matrix3d rotation = extrinsics.block<3, 3> (0, 0);
+  Eigen::Vector3d y_axis (0., 1., 0.);
+  Eigen::Vector3d up_vec (rotation * y_axis);
 
   // Compute the new focal point
-  Eigen::Vector3f z_axis (0.f, 0.f, 1.f);
-  Eigen::Vector3f focal_vec = pos_vec + rotation * z_axis;
+  Eigen::Vector3d z_axis (0., 0., 1.);
+  Eigen::Vector3d focal_vec = pos_vec + rotation * z_axis;
 
   // Get the width and height of the image - assume the calibrated centers are at the center of the image
   Eigen::Vector2i window_size;
@@ -883,9 +883,9 @@ pcl::visualization::PCLVisualizerInteractorStyle::OnKeyDown ()
           for (actor->InitPathTraversal (); vtkAssemblyPath* path = actor->GetNextPath (); )
           {
             vtkSmartPointer<vtkActor> apart = reinterpret_cast <vtkActor*> (path->GetLastNode ()->GetViewProp ());
-            float psize = apart->GetProperty ()->GetPointSize ();
-            if (psize < 63.0f)
-              apart->GetProperty ()->SetPointSize (psize + 1.0f);
+            double psize = apart->GetProperty ()->GetPointSize ();
+            if (psize < 63.0)
+              apart->GetProperty ()->SetPointSize (psize + 1.0);
           }
         }
       }
@@ -904,9 +904,9 @@ pcl::visualization::PCLVisualizerInteractorStyle::OnKeyDown ()
           for (actor->InitPathTraversal (); vtkAssemblyPath* path = actor->GetNextPath (); )
           {
             vtkSmartPointer<vtkActor> apart = static_cast<vtkActor*> (path->GetLastNode ()->GetViewProp ());
-            float psize = apart->GetProperty ()->GetPointSize ();
-            if (psize > 1.0f)
-              apart->GetProperty ()->SetPointSize (psize - 1.0f);
+            double psize = apart->GetProperty ()->GetPointSize ();
+            if (psize > 1.0)
+              apart->GetProperty ()->SetPointSize (psize - 1.0);
           }
         }
       }

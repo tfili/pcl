@@ -89,7 +89,7 @@ pcl::console::parse_argument (int argc, char** argv, const char* str, bool &val)
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_argument (int argc, char** argv, const char* str, double &val)
+pcl::console::parse_argument (int argc, char** argv, const char* str, float &val)
 {
   int index = find_argument (argc, argv, str) + 1;
 
@@ -101,12 +101,12 @@ pcl::console::parse_argument (int argc, char** argv, const char* str, double &va
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_argument (int argc, char** argv, const char* str, float &val)
+pcl::console::parse_argument (int argc, char** argv, const char* str, double &val)
 {
   int index = find_argument (argc, argv, str) + 1;
 
   if (index > 0 && index < argc )
-    val = static_cast<float> (atof (argv[index]));
+    val = static_cast<double> (atof (argv[index]));
 
   return (index - 1);
 }
@@ -332,7 +332,7 @@ pcl::console::parse_3x_arguments (int argc, char** argv, const char* str, int &f
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::vector<double>& v)
+pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::vector<float>& v)
 {
   for (int i = 1; i < argc; ++i)
   {
@@ -355,7 +355,7 @@ pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::ve
 
 ////////////////////////////////////////////////////////////////////////////////
 int
-pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::vector<float>& v)
+pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::vector<double>& v)
 {
   for (int i = 1; i < argc; ++i)
   {
@@ -368,7 +368,7 @@ pcl::console::parse_x_arguments (int argc, char** argv, const char* str, std::ve
 
       v.resize (values.size ());
       for (size_t j = 0; j < v.size (); ++j)
-        v[j] = static_cast<float> (atof (values.at (j).c_str ()));
+        v[j] = static_cast<double> (atof (values.at (j).c_str ()));
 
       return (i - 1);
     }
@@ -420,7 +420,7 @@ pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, 
 
 ////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<double> &values)
+pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<float> &values)
 {
   for (int i = 1; i < argc; ++i)
   {
@@ -439,14 +439,14 @@ pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, 
 
 ////////////////////////////////////////////////////////////////////////////////
 bool
-pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<float> &values)
+pcl::console::parse_multiple_arguments (int argc, char** argv, const char* str, std::vector<double> &values)
 {
   for (int i = 1; i < argc; ++i)
   {
     // Search for the string
     if ((strcmp (argv[i], str) == 0) && (++i < argc))
     {
-      float val = static_cast<float> (atof (argv[i]));
+      double val = static_cast<double> (atof (argv[i]));
       values.push_back (val);
     }
   }

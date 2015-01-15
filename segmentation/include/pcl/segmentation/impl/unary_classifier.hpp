@@ -50,8 +50,8 @@ template <typename PointT>
 pcl::UnaryClassifier<PointT>::UnaryClassifier () :
   input_cloud_ (new pcl::PointCloud<PointT>),
   label_field_ (false),
-  normal_radius_search_ (0.01f),
-  fpfh_radius_search_ (0.05f),
+  normal_radius_search_ (0.01),
+  fpfh_radius_search_ (0.05),
   feature_threshold_ (5.0)
 {
 }
@@ -204,8 +204,8 @@ pcl::UnaryClassifier<PointT>::getCloudWithLabel (typename pcl::PointCloud<PointT
 template <typename PointT> void
 pcl::UnaryClassifier<PointT>::computeFPFH (pcl::PointCloud<pcl::PointXYZ>::Ptr in,
                                            pcl::PointCloud<pcl::FPFHSignature33>::Ptr out,
-                                           float normal_radius_search,
-                                           float fpfh_radius_search)
+                                           double normal_radius_search,
+                                           double fpfh_radius_search)
 {
   pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal> ());
   pcl::search::KdTree<pcl::PointXYZ>::Ptr normals_tree (new pcl::search::KdTree<pcl::PointXYZ>);
@@ -241,7 +241,7 @@ pcl::UnaryClassifier<PointT>::kmeansClustering (pcl::PointCloud<pcl::FPFHSignatu
   // add points to the clustering
   for (size_t i = 0; i < in->points.size (); i++)
   {
-    std::vector<float> data (33);
+    std::vector<double> data (33);
     for (int idx = 0; idx < 33; idx++)
       data[idx] = in->points[i].histogram[idx];
     kmeans.addDataPoint (data);
@@ -273,7 +273,7 @@ template <typename PointT> void
 pcl::UnaryClassifier<PointT>::queryFeatureDistances (std::vector<pcl::PointCloud<pcl::FPFHSignature33>::Ptr> &trained_features,
                                                      pcl::PointCloud<pcl::FPFHSignature33>::Ptr query_features,
                                                      std::vector<int> &indi,
-                                                     std::vector<float> &dist)
+                                                     std::vector<double> &dist)
 {
   // estimate the total number of row's needed
   int n_row = 0;
@@ -282,7 +282,7 @@ pcl::UnaryClassifier<PointT>::queryFeatureDistances (std::vector<pcl::PointCloud
 
   // Convert data into FLANN format
   int n_col = 33;
-  flann::Matrix<float> data (new float[n_row * n_col], n_row, n_col);
+  flann::Matrix<double> data (new double[n_row * n_col], n_row, n_col);
   for (size_t k = 0; k < trained_features.size (); k++)
   {
     pcl::PointCloud<pcl::FPFHSignature33>::Ptr hist = trained_features[k];
@@ -293,11 +293,11 @@ pcl::UnaryClassifier<PointT>::queryFeatureDistances (std::vector<pcl::PointCloud
   }
 
   // build kd-tree given the training features
-  flann::Index<flann::ChiSquareDistance<float> > *index;
-  index = new flann::Index<flann::ChiSquareDistance<float> > (data, flann::LinearIndexParams ());
-  //flann::Index<flann::ChiSquareDistance<float> > index (data, flann::LinearIndexParams ());
-  //flann::Index<flann::ChiSquareDistance<float> > index (data, flann::KMeansIndexParams (5, -1));  
-  //flann::Index<flann::ChiSquareDistance<float> > index (data, flann::KDTreeIndexParams (4));
+  flann::Index<flann::ChiSquareDistance<double> > *index;
+  index = new flann::Index<flann::ChiSquareDistance<double> > (data, flann::LinearIndexParams ());
+  //flann::Index<flann::ChiSquareDistance<double> > index (data, flann::LinearIndexParams ());
+  //flann::Index<flann::ChiSquareDistance<double> > index (data, flann::KMeansIndexParams (5, -1));  
+  //flann::Index<flann::ChiSquareDistance<double> > index (data, flann::KDTreeIndexParams (4));
   index->buildIndex ();
 
   int k = 1;
@@ -307,11 +307,11 @@ pcl::UnaryClassifier<PointT>::queryFeatureDistances (std::vector<pcl::PointCloud
   for (size_t i = 0; i < query_features->points.size (); i++)
   {
     // Query point  
-    flann::Matrix<float> p = flann::Matrix<float>(new float[n_col], 1, n_col);
-    memcpy (&p.ptr ()[0], query_features->points[i].histogram, p.cols * p.rows * sizeof (float));
+    flann::Matrix<double> p = flann::Matrix<double>(new double[n_col], 1, n_col);
+    memcpy (&p.ptr ()[0], query_features->points[i].histogram, p.cols * p.rows * sizeof (double));
 
     flann::Matrix<int> indices (new int[k], 1, k);
-    flann::Matrix<float> distances (new float[k], 1, k);  
+    flann::Matrix<double> distances (new double[k], 1, k);  
     index->knnSearch (p, indices, distances, k, flann::SearchParams (512));
 
     indi[i] = indices[0][0];
@@ -328,20 +328,20 @@ pcl::UnaryClassifier<PointT>::queryFeatureDistances (std::vector<pcl::PointCloud
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::UnaryClassifier<PointT>::assignLabels (std::vector<int> &indi,
-                                            std::vector<float> &dist,
+                                            std::vector<double> &dist,
                                             int n_feature_means,
-                                            float feature_threshold,
+                                            double feature_threshold,
                                             pcl::PointCloud<pcl::PointXYZRGBL>::Ptr out)
                               
 {
-  float nfm = static_cast<float> (n_feature_means);
+  double nfm = static_cast<double> (n_feature_means);
   for (size_t i = 0; i < out->points.size (); i++)
   {
     if (dist[i] < feature_threshold)
     {
-      float l = static_cast<float> (indi[i]) / nfm;
-      float intpart;
-      //float fractpart = modf (l , &intpart);
+      double l = static_cast<double> (indi[i]) / nfm;
+      double intpart;
+      //double fractpart = modf (l , &intpart);
       std::modf (l , &intpart);
       int label = static_cast<int> (intpart);
       
@@ -416,7 +416,7 @@ pcl::UnaryClassifier<PointT>::segment (pcl::PointCloud<pcl::PointXYZRGBL>::Ptr &
 
     // query the distances from the input data features to all trained features
     std::vector<int> indices;
-    std::vector<float> distance;
+    std::vector<double> distance;
     queryFeatureDistances (trained_features_, input_cloud_features, indices, distance);
 
     // assign a label to each point of the input point cloud

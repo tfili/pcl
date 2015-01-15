@@ -48,7 +48,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 void
-pcl::keypoint::harrisCorner (ImageType &output, ImageType &input, const float sigma_d, const float sigma_i, const float alpha, const float thresh){
+pcl::keypoint::harrisCorner (ImageType &output, ImageType &input, const double sigma_d, const double sigma_i, const double alpha, const double thresh){
 
   /*creating the gaussian kernels*/
   ImageType kernel_d;
@@ -114,7 +114,7 @@ pcl::keypoint::harrisCorner (ImageType &output, ImageType &input, const float si
 
 //////////////////////////////////////////////////////////////////////////////
 void
-pcl::keypoint::hessianBlob (ImageType &output, ImageType &input, const float sigma, bool SCALED){
+pcl::keypoint::hessianBlob (ImageType &output, ImageType &input, const double sigma, bool SCALED){
   /*creating the gaussian kernels*/
   ImageType kernel, cornerness;
   conv_2d.gaussianKernel  (5, sigma, kernel);
@@ -136,8 +136,8 @@ pcl::keypoint::hessianBlob (ImageType &output, ImageType &input, const float sig
   /*Determinant of Hessian*/
   const size_t height = input.size ();
   const size_t width = input[0].size ();
-  float min = std::numeric_limits<float>::max();
-  float max = std::numeric_limits<float>::min();
+  double min = std::numeric_limits<double>::max();
+  double max = std::numeric_limits<double>::min();
   cornerness.resize (height);
   for (size_t i = 0; i < height; i++)
   {
@@ -173,11 +173,11 @@ pcl::keypoint::hessianBlob (ImageType &output, ImageType &input, const float sig
 
 //////////////////////////////////////////////////////////////////////////////
 void
-pcl::keypoint::hessianBlob (ImageType &output, ImageType &input, const float start_scale, const float scaling_factor, const int num_scales){
+pcl::keypoint::hessianBlob (ImageType &output, ImageType &input, const double start_scale, const double scaling_factor, const int num_scales){
   const size_t height = input.size();
   const size_t width = input[0].size();
   const int local_search_radius = 1;
-  float scale = start_scale;
+  double scale = start_scale;
   std::vector<ImageType> cornerness;
   cornerness.resize(num_scales);
   for(int i = 0;i < num_scales;i++){
@@ -185,10 +185,10 @@ pcl::keypoint::hessianBlob (ImageType &output, ImageType &input, const float sta
     scale *= scaling_factor;
   }
   bool non_max_flag = false;
-  float scale_max, local_max;
+  double scale_max, local_max;
   for(size_t i = 0;i < height;i++){
     for(size_t j = 0;j < width;j++){
-      scale_max = std::numeric_limits<float>::min();
+      scale_max = std::numeric_limits<double>::min();
       /*default output in case of no blob at the current point is 0*/
       output[i][j] = 0;
       for(int k = 0;k < num_scales;k++){

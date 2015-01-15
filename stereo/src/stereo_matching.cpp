@@ -169,7 +169,7 @@ pcl::StereoMatching::getVisualMap (pcl::PointCloud<pcl::RGB>::Ptr vMap)
   invalid_val.g = 255;
   invalid_val.b = 0;
 
-  float scale = 255.0f / (16.0f * static_cast<float> (max_disp_));
+  double scale = 255.0 / (16.0 * static_cast<double> (max_disp_));
 
   for (int y = 0; y<height_; y++)
   {
@@ -221,7 +221,7 @@ pcl::StereoMatching::leftRightCheck ()
 //////////////////////////////////////////////////////////////////////////////
 bool 
 pcl::StereoMatching::getPointCloud (
-    float u_c, float v_c, float focal, float baseline, 
+    double u_c, double v_c, double focal, double baseline, 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud, 
     pcl::PointCloud<pcl::RGB>::Ptr texture) 
 {
@@ -252,16 +252,16 @@ pcl::StereoMatching::getPointCloud (
   //Loop
   pcl::PointXYZRGB temp_point;
   /*pcl::PointXYZRGB nan_point;
-  nan_point.x = std::numeric_limits<float>::quiet_NaN();
-  nan_point.y = std::numeric_limits<float>::quiet_NaN();
-  nan_point.z = std::numeric_limits<float>::quiet_NaN();
+  nan_point.x = std::numeric_limits<double>::quiet_NaN();
+  nan_point.y = std::numeric_limits<double>::quiet_NaN();
+  nan_point.z = std::numeric_limits<double>::quiet_NaN();
   nan_point.r = std::numeric_limits<unsigned char>::quiet_NaN();
   nan_point.g = std::numeric_limits<unsigned char>::quiet_NaN();
   nan_point.b = std::numeric_limits<unsigned char>::quiet_NaN();*/
 
   //all disparities are multiplied by a constant equal to 16; 
   //this must be taken into account when computing z values
-  float depth_scale = baseline * focal * 16.0f;
+  double depth_scale = baseline * focal * 16.0;
 
   for (int j = 0; j < height_; j++)
   {
@@ -270,10 +270,10 @@ pcl::StereoMatching::getPointCloud (
       if (disp_map_[ j*width_ + i] > 0)
       {
         temp_point.z = (depth_scale) / (disp_map_[ j*width_ + i]);
-        temp_point.x = ((static_cast<float> (i) - u_c) * temp_point.z) / focal;
-        temp_point.y = ((static_cast<float> (j) - v_c) * temp_point.z) / focal;
+        temp_point.x = ((static_cast<double> (i) - u_c) * temp_point.z) / focal;
+        temp_point.y = ((static_cast<double> (j) - v_c) * temp_point.z) / focal;
 
-        //temp_point.intensity = ( texture->at(j*width_+i).r +texture->at(j*width_+i).g + texture->at(j*width_+i).b) / 3.0f;
+        //temp_point.intensity = ( texture->at(j*width_+i).r +texture->at(j*width_+i).g + texture->at(j*width_+i).b) / 3.0;
         temp_point.r = texture->at (j * width_ + i).r;
         temp_point.g = texture->at (j * width_ + i).g; 
         temp_point.b = texture->at (j * width_ + i).b; 
@@ -283,9 +283,9 @@ pcl::StereoMatching::getPointCloud (
       //adding NaN value
       else
       {
-        temp_point.x = std::numeric_limits<float>::quiet_NaN();
-        temp_point.y = std::numeric_limits<float>::quiet_NaN();
-        temp_point.z = std::numeric_limits<float>::quiet_NaN();
+        temp_point.x = std::numeric_limits<double>::quiet_NaN();
+        temp_point.y = std::numeric_limits<double>::quiet_NaN();
+        temp_point.z = std::numeric_limits<double>::quiet_NaN();
         temp_point.r = texture->at (j * width_ + i).r;
         temp_point.g = texture->at (j * width_ + i).g; 
         temp_point.b = texture->at (j * width_ + i).b; 
@@ -298,10 +298,10 @@ pcl::StereoMatching::getPointCloud (
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//const pcl::PointCloud<pcl::PointXYZRGBA>::Ptr pcl::StereoMatching::getPointCloud(float uC, float vC, float focal, float baseline)
+//const pcl::PointCloud<pcl::PointXYZRGBA>::Ptr pcl::StereoMatching::getPointCloud(double uC, double vC, double focal, double baseline)
 bool 
 pcl::StereoMatching::getPointCloud (
-    float u_c, float v_c, float focal, float baseline, 
+    double u_c, double v_c, double focal, double baseline, 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
   
@@ -331,14 +331,14 @@ pcl::StereoMatching::getPointCloud (
   //Loop
   pcl::PointXYZ temp_point;
   pcl::PointXYZ nan_point;
-  nan_point.x = std::numeric_limits<float>::quiet_NaN();
-  nan_point.y = std::numeric_limits<float>::quiet_NaN();
-  nan_point.z = std::numeric_limits<float>::quiet_NaN();
-  //nan_point.intensity = std::numeric_limits<float>::quiet_NaN();
+  nan_point.x = std::numeric_limits<double>::quiet_NaN();
+  nan_point.y = std::numeric_limits<double>::quiet_NaN();
+  nan_point.z = std::numeric_limits<double>::quiet_NaN();
+  //nan_point.intensity = std::numeric_limits<double>::quiet_NaN();
 
   //all disparities are multiplied by a constant equal to 16; 
   //this must be taken into account when computing z values
-  float depth_scale = baseline * focal * 16.0f;
+  double depth_scale = baseline * focal * 16.0;
 
   for ( int j=0; j<height_; j++)
   {
@@ -348,8 +348,8 @@ pcl::StereoMatching::getPointCloud (
       {
 
         temp_point.z = depth_scale / disp_map_[j * width_ + i];
-        temp_point.x = ((static_cast<float> (i) - u_c) * temp_point.z) / focal;
-        temp_point.y = ((static_cast<float> (j) - v_c) * temp_point.z) / focal;
+        temp_point.x = ((static_cast<double> (i) - u_c) * temp_point.z) / focal;
+        temp_point.y = ((static_cast<double> (j) - v_c) * temp_point.z) / focal;
         //temp_point.intensity = 255;
 
         (*cloud)[j * width_ + i] = temp_point;
@@ -493,13 +493,13 @@ pcl::GrayStereoMatching::compute (pcl::PointCloud<pcl::RGB> &ref, pcl::PointClou
     trg_img_ = new unsigned char[ref.width * ref.height];  
   }
 
-  float divider = 1.0f / 3.0f;
+  double divider = 1.0 / 3.0;
   for (unsigned int j = 0; j < ref.height; j++)
   {
     for (unsigned int i = 0; i < ref.width; i++)
     {
-      ref_img_[j*ref.width + i] = static_cast<unsigned char> (static_cast<float> (ref[j*ref.width + i].r + ref[j*ref.width + i].g + ref[j*ref.width + i].b) * divider);
-      trg_img_[j*ref.width + i] = static_cast<unsigned char> (static_cast<float> (trg[j*ref.width + i].r + trg[j*ref.width + i].g + trg[j*ref.width + i].b) * divider);
+      ref_img_[j*ref.width + i] = static_cast<unsigned char> (static_cast<double> (ref[j*ref.width + i].r + ref[j*ref.width + i].g + ref[j*ref.width + i].b) * divider);
+      trg_img_[j*ref.width + i] = static_cast<unsigned char> (static_cast<double> (trg[j*ref.width + i].r + trg[j*ref.width + i].g + trg[j*ref.width + i].b) * divider);
       //ref_img_[ j*ref.width + i] = ( ref(j,i).r + ref(j,i).g + ref(j,i).b) / 3;
       //trg_img_[ j*ref.width + i] = ( trg(j,i).r + trg(j,i).g + trg(j,i).b) / 3;
       

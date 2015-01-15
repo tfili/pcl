@@ -44,23 +44,23 @@
 
 namespace pcl
 {
-  inline float
-  normAngle (float alpha)
+  inline double
+  normAngle (double alpha)
   {
     return (alpha >= 0  ? 
-        fmodf (alpha + static_cast<float>(M_PI), 
-               2.0f * static_cast<float>(M_PI)) 
-        - static_cast<float>(M_PI) 
+        fmodf (alpha + static_cast<double>(M_PI), 
+               2.0 * static_cast<double>(M_PI)) 
+        - static_cast<double>(M_PI) 
         : 
-        -(fmodf (static_cast<float>(M_PI) - alpha, 
-                 2.0f * static_cast<float>(M_PI)) 
-        - static_cast<float>(M_PI)));
+        -(fmodf (static_cast<double>(M_PI) - alpha, 
+                 2.0 * static_cast<double>(M_PI)) 
+        - static_cast<double>(M_PI)));
   }
 
   inline float 
   rad2deg (float alpha)
   {
-    return (alpha * 57.29578f);
+    return (alpha * 57.29578);
   }
 
   inline float 

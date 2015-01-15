@@ -55,13 +55,13 @@ main (int, char**)
   CloudType::Ptr output_cloud (new CloudType);
 
   CloudType::PointType p_nan;
-  p_nan.x = std::numeric_limits<float>::quiet_NaN();
-  p_nan.y = std::numeric_limits<float>::quiet_NaN();
-  p_nan.z = std::numeric_limits<float>::quiet_NaN();
+  p_nan.x = std::numeric_limits<double>::quiet_NaN();
+  p_nan.y = std::numeric_limits<double>::quiet_NaN();
+  p_nan.z = std::numeric_limits<double>::quiet_NaN();
   cloud->push_back(p_nan);
 
   CloudType::PointType p_valid;
-  p_valid.x = 1.0f;
+  p_valid.x = 1.0;
   cloud->push_back(p_valid);
 
   std::cout << "size: " << cloud->points.size () << std::endl;

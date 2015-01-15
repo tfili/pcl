@@ -68,8 +68,8 @@ namespace pcl
 
       /** \brief Empty constructor. */
       FastBilateralFilter ()
-        : sigma_s_ (15.0f)
-        , sigma_r_ (0.05f)
+        : sigma_s_ (15.0)
+        , sigma_r_ (0.05)
         , early_division_ (false)
       { }
       
@@ -81,11 +81,11 @@ namespace pcl
         * \param[in] sigma_s the size of the Gaussian bilateral filter window to use
         */
       inline void
-      setSigmaS (float sigma_s)
+      setSigmaS (double sigma_s)
       { sigma_s_ = sigma_s; }
 
       /** \brief Get the size of the Gaussian bilateral filter window as set by the user. */
-      inline float
+      inline double
       getSigmaS () const
       { return sigma_s_; }
 
@@ -95,11 +95,11 @@ namespace pcl
         * \param[in] sigma_r the standard deviation of the Gaussian for the intensity difference
         */
       inline void
-      setSigmaR (float sigma_r)
+      setSigmaR (double sigma_r)
       { sigma_r_ = sigma_r; }
 
       /** \brief Get the standard deviation of the Gaussian for the intensity difference */
-      inline float
+      inline double
       getSigmaR () const
       { return sigma_r_; }
 
@@ -110,8 +110,8 @@ namespace pcl
       applyFilter (PointCloud &output);
 
     protected:
-      float sigma_s_;
-      float sigma_r_;
+      double sigma_s_;
+      double sigma_r_;
       bool early_division_;
 
       class Array3D
@@ -122,14 +122,14 @@ namespace pcl
             x_dim_ = width;
             y_dim_ = height;
             z_dim_ = depth;
-            v_ = std::vector<Eigen::Vector2f> (width*height*depth, Eigen::Vector2f (0.0f, 0.0f));
+            v_ = std::vector<Eigen::Vector2d> (width*height*depth, Eigen::Vector2d (0.0, 0.0));
           }
 
-          inline Eigen::Vector2f&
+          inline Eigen::Vector2d&
           operator () (const size_t x, const size_t y, const size_t z)
           { return v_[(x * y_dim_ + y) * z_dim_ + z]; }
 
-          inline const Eigen::Vector2f&
+          inline const Eigen::Vector2d&
           operator () (const size_t x, const size_t y, const size_t z) const
           { return v_[(x * y_dim_ + y) * z_dim_ + z]; }
 
@@ -142,10 +142,10 @@ namespace pcl
             v_.resize (x_dim_ * y_dim_ * z_dim_);
           }
 
-          Eigen::Vector2f
-          trilinear_interpolation (const float x,
-                                   const float y,
-                                   const float z);
+          Eigen::Vector2d
+          trilinear_interpolation (const double x,
+                                   const double y,
+                                   const double z);
 
           static inline size_t
           clamp (const size_t min_value,
@@ -164,24 +164,24 @@ namespace pcl
           z_size () const
           { return z_dim_; }
 
-          inline std::vector<Eigen::Vector2f >::iterator
+          inline std::vector<Eigen::Vector2d >::iterator
           begin ()
           { return v_.begin (); }
 
-          inline std::vector<Eigen::Vector2f >::iterator
+          inline std::vector<Eigen::Vector2d >::iterator
           end ()
           { return v_.end (); }
 
-          inline std::vector<Eigen::Vector2f >::const_iterator
+          inline std::vector<Eigen::Vector2d >::const_iterator
           begin () const
           { return v_.begin (); }
 
-          inline std::vector<Eigen::Vector2f >::const_iterator
+          inline std::vector<Eigen::Vector2d >::const_iterator
           end () const
           { return v_.end (); }
 
         private:
-          std::vector<Eigen::Vector2f > v_;
+          std::vector<Eigen::Vector2d > v_;
           size_t x_dim_, y_dim_, z_dim_;
       };
 

@@ -63,9 +63,9 @@ To estimate a covariance matrix from a set of points in PCL, you can use:
   :linenos:
 
     // Placeholder for the 3x3 covariance matrix at each surface patch
-    Eigen::Matrix3f covariance_matrix;
+    Eigen::Matrix3d covariance_matrix;
     // 16-bytes aligned placeholder for the XYZ centroid of a surface patch
-    Eigen::Vector4f xyz_centroid;
+    Eigen::Vector4d xyz_centroid;
 
     // Estimate the XYZ centroid
     compute3DCentroid (cloud, xyz_centroid);
@@ -119,7 +119,7 @@ To re-orient a given point normal manually in PCL, you can use:
 
 .. code-block:: cpp
 
-  flipNormalTowardsViewpoint (const PointT &point, float vp_x, float vp_y, float vp_z, Eigen::Vector4f &normal);
+  flipNormalTowardsViewpoint (const PointT &point, float vp_x, float vp_y, float vp_z, Eigen::Vector4d &normal);
 
 .. note::
 
@@ -228,7 +228,7 @@ To compute a single point normal, use:
 
 .. code-block:: cpp
 
-   computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices, Eigen::Vector4f &plane_parameters, float &curvature);
+   computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices, Eigen::Vector4d &plane_parameters, float &curvature);
 
 Where *cloud* is the input point cloud that contains the points, *indices*
 represents the set of k-nearest neighbors from *cloud*, and plane_parameters

@@ -41,7 +41,7 @@
 namespace pcl
 {
   // convert sRGB to CIELAB
-  Eigen::Vector3f
+  Eigen::Vector3d
   RGB2Lab (const Eigen::Vector3i& colorRGB)
   {
     // for sRGB   -> CIEXYZ see http://www.easyrgb.com/index.php?X=MATH&H=02#text2
@@ -101,10 +101,10 @@ namespace pcl
     else
       Z = 7.787 * Z + 16.0 / 116.0;
 
-    Eigen::Vector3f colorLab;
-    colorLab[0] = static_cast<float> (116.0 * Y - 16.0);
-    colorLab[1] = static_cast<float> (500.0 * (X - Y));
-    colorLab[2] = static_cast<float> (200.0 * (Y - Z));
+    Eigen::Vector3d colorLab;
+    colorLab[0] = static_cast<double> (116.0 * Y - 16.0);
+    colorLab[1] = static_cast<double> (500.0 * (X - Y));
+    colorLab[2] = static_cast<double> (200.0 * (Y - Z));
 
     return colorLab;
   }
@@ -122,18 +122,18 @@ namespace pcl
       out[i].z = in[i].z;
       out[i].data[3] = 1.0;  // important for homogeneous coordinates
 
-      Eigen::Vector3f lab = RGB2Lab (in[i].getRGBVector3i ());
+      Eigen::Vector3d lab = RGB2Lab (in[i].getRGBVector3i ());
       out[i].L = lab[0];
       out[i].a = lab[1];
       out[i].b = lab[2];
     }
   }
 
-  GeneralizedIterativeClosestPoint6D::GeneralizedIterativeClosestPoint6D (float lab_weight) :
+  GeneralizedIterativeClosestPoint6D::GeneralizedIterativeClosestPoint6D (double lab_weight) :
       cloud_lab_ (new pcl::PointCloud<PointXYZLAB>), target_lab_ (new pcl::PointCloud<PointXYZLAB>), lab_weight_ (lab_weight)
   {
     // set rescale mask (leave x,y,z unchanged, scale L,a,b by lab_weight)
-    float alpha[6] = { 1.0, 1.0, 1.0, lab_weight_, lab_weight_, lab_weight_ };
+    double alpha[6] = { 1.0, 1.0, 1.0, lab_weight_, lab_weight_, lab_weight_ };
     point_rep_.setRescaleValues (alpha);
   }
 
@@ -165,7 +165,7 @@ namespace pcl
 
   bool
   GeneralizedIterativeClosestPoint6D::searchForNeighbors (const PointXYZLAB& query, std::vector<int>& index,
-      std::vector<float>& distance)
+      std::vector<double>& distance)
   {
     int k = target_tree_lab_.nearestKSearch (query, 1, index, distance);
 
@@ -175,7 +175,7 @@ namespace pcl
 
 // taken from the original GICP class and modified slightly to make use of color values
   void
-  GeneralizedIterativeClosestPoint6D::computeTransformation (PointCloudSource& output, const Eigen::Matrix4f& guess)
+  GeneralizedIterativeClosestPoint6D::computeTransformation (PointCloudSource& output, const Eigen::Matrix4d& guess)
   {
     using namespace pcl;
     using namespace std;
@@ -201,7 +201,7 @@ namespace pcl
     converged_ = false;
     double dist_threshold = corr_dist_threshold_ * corr_dist_threshold_;
     std::vector<int> nn_indices (1);
-    std::vector<float> nn_dists (1);
+    std::vector<double> nn_dists (1);
 
     while (!converged_)
     {
@@ -223,8 +223,8 @@ namespace pcl
       {
         // MODIFICATION: take point from the CIELAB cloud instead
         PointXYZLAB query = (*cloud_lab_)[i];
-        query.getVector4fMap () = guess * query.getVector4fMap ();
-        query.getVector4fMap () = transformation_ * query.getVector4fMap ();
+        query.getVector4dMap () = guess * query.getVector4dMap ();
+        query.getVector4dMap () = transformation_ * query.getVector4dMap ();
 
         if (!searchForNeighbors (query, nn_indices, nn_dists))
         {

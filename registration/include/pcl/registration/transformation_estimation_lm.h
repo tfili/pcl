@@ -51,11 +51,11 @@ namespace pcl
     /** @b TransformationEstimationLM implements Levenberg Marquardt-based
       * estimation of the transformation aligning the given correspondences.
       *
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename MatScalar = float>
+    template <typename PointSource, typename PointTarget, typename MatScalar = double>
     class TransformationEstimationLM : public TransformationEstimation<PointSource, PointTarget, MatScalar>
     {
       typedef pcl::PointCloud<PointSource> PointCloudSource;
@@ -219,7 +219,7 @@ namespace pcl
         
         /** Base functor all the models that need non linear optimization must
           * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
-          * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
+          * or operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec) dependening on the choosen _Scalar
           */
         template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
         struct Functor

@@ -76,7 +76,7 @@ namespace pcl
     private:
       /// converts CIE XYZ to RGB
       inline void
-      cie2rgb (const Eigen::Vector3f& xyz, pcl::TexMaterial::RGB& rgb) const;
+      cie2rgb (const Eigen::Vector3d& xyz, pcl::TexMaterial::RGB& rgb) const;
       /// fill a pcl::TexMaterial::RGB from a split line containing CIE x y z values
       int
       fillRGBfromXYZ (const std::vector<std::string>& split_line, pcl::TexMaterial::RGB& rgb);
@@ -84,7 +84,7 @@ namespace pcl
       int
       fillRGBfromRGB (const std::vector<std::string>& split_line, pcl::TexMaterial::RGB& rgb);
       /// matrix to convert CIE to RGB
-      Eigen::Matrix3f xyz_to_rgb_matrix_;
+      Eigen::Matrix3d xyz_to_rgb_matrix_;
 
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
@@ -119,7 +119,7 @@ namespace pcl
         */
       int
       readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                  Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                   int &file_version, int &data_type, unsigned int &data_idx,
                   const int offset);
 
@@ -140,7 +140,7 @@ namespace pcl
         */
       int
       read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
             int &file_version, const int offset = 0);
 
 
@@ -173,7 +173,7 @@ namespace pcl
         */
       int
       read (const std::string &file_name, pcl::TextureMesh &mesh,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
             int &file_version, const int offset = 0);
 
       /** \brief Read a point cloud data from a FILE file and store it into a
@@ -202,7 +202,7 @@ namespace pcl
         */
       int
       read (const std::string &file_name, pcl::PolygonMesh &mesh,
-            Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+            Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
             int &file_version, const int offset = 0);
 
       /** \brief Read a point cloud data from a FILE file and store it into a
@@ -258,7 +258,7 @@ namespace pcl
       */
     inline int
     loadOBJFile (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
-                 Eigen::Vector4f &origin, Eigen::Quaternionf &orientation)
+                 Eigen::Vector4d &origin, Eigen::Quaterniond &orientation)
     {
       pcl::OBJReader p;
       int obj_version;

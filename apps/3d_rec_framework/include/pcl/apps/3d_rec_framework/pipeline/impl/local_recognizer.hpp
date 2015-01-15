@@ -51,7 +51,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
             std::stringstream dir_pose;
             dir_pose << path << "/pose_" << descr_model.view_id << ".txt";
 
-            Eigen::Matrix4f pose_matrix;
+            Eigen::Matrix4d pose_matrix;
             PersistenceUtils::readMatrixFromFile (dir_pose.str (), pose_matrix);
 
             std::pair<std::string, int> pair_model_view = std::make_pair (models->at (i).id_, descr_model.view_id);
@@ -66,14 +66,14 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           typename pcl::PointCloud<FeatureT>::Ptr signature (new pcl::PointCloud<FeatureT> ());
           pcl::io::loadPCDFile (full_file_name, *signature);
 
-          int size_feat = sizeof(signature->points[0].histogram) / sizeof(float);
+          int size_feat = sizeof(signature->points[0].histogram) / sizeof(double);
 
           for (size_t dd = 0; dd < signature->points.size (); dd++)
           {
             descr_model.keypoint_id = static_cast<int> (dd);
             descr_model.descr.resize (size_feat);
 
-            memcpy (&descr_model.descr[0], &signature->points[dd].histogram[0], size_feat * sizeof(float));
+            memcpy (&descr_model.descr[0], &signature->points[dd].histogram[0], size_feat * sizeof(double));
 
             flann_models_.push_back (descr_model);
           }
@@ -92,13 +92,13 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
   pcl::rec_3d_framework::LocalRecognitionPipeline<Distance, PointInT, FeatureT>::nearestKSearch (flann::Index<DistT> * index,
                                                                                                  const flann_model &model, int k,
                                                                                                  flann::Matrix<int> &indices,
-                                                                                                 flann::Matrix<float> &distances)
+                                                                                                 flann::Matrix<double> &distances)
   {
-    flann::Matrix<float> p = flann::Matrix<float> (new float[model.descr.size ()], 1, model.descr.size ());
-    memcpy (&p.ptr ()[0], &model.descr[0], p.cols * p.rows * sizeof(float));
+    flann::Matrix<double> p = flann::Matrix<double> (new double[model.descr.size ()], 1, model.descr.size ());
+    memcpy (&p.ptr ()[0], &model.descr[0], p.cols * p.rows * sizeof(double));
 
     indices = flann::Matrix<int> (new int[k], 1, k);
-    distances = flann::Matrix<float> (new float[k], 1, k);
+    distances = flann::Matrix<double> (new double[k], 1, k);
     index->knnSearch (p, indices, distances, k, flann::SearchParams (kdtree_splits_));
     delete[] p.ptr ();
   }
@@ -201,7 +201,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
   {
 
     models_.reset (new std::vector<ModelT>);
-    transforms_.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
+    transforms_.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
 
     PointInTPtr processed;
     typename pcl::PointCloud<FeatureT>::Ptr signatures (new pcl::PointCloud<FeatureT> ());
@@ -235,23 +235,23 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
     std::cout << "Number of keypoints:" << keypoints_pointcloud->points.size () << std::endl;
 
-    int size_feat = sizeof(signatures->points[0].histogram) / sizeof(float);
+    int size_feat = sizeof(signatures->points[0].histogram) / sizeof(double);
 
     //feature matching and object hypotheses
     std::map<std::string, ObjectHypothesis> object_hypotheses;
     {
       for (size_t idx = 0; idx < signatures->points.size (); idx++)
       {
-        float* hist = signatures->points[idx].histogram;
-        std::vector<float> std_hist (hist, hist + size_feat);
+        double* hist = signatures->points[idx].histogram;
+        std::vector<double> std_hist (hist, hist + size_feat);
         flann_model histogram;
         histogram.descr = std_hist;
         flann::Matrix<int> indices;
-        flann::Matrix<float> distances;
+        flann::Matrix<double> distances;
         nearestKSearch (flann_index_, histogram, 1, indices, distances);
 
         //read view pose and keypoint coordinates, transform keypoint coordinates to model coordinates
-        Eigen::Matrix4f homMatrixPose;
+        Eigen::Matrix4d homMatrixPose;
         getPose (flann_models_.at (indices[0][0]).model, flann_models_.at (indices[0][0]).view_id, homMatrixPose);
 
         typename pcl::PointCloud<PointInT>::Ptr keypoints (new pcl::PointCloud<PointInT> ());
@@ -259,7 +259,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
         PointInT view_keypoint = keypoints->points[flann_models_.at (indices[0][0]).keypoint_id];
         PointInT model_keypoint;
-        model_keypoint.getVector4fMap () = homMatrixPose.inverse () * view_keypoint.getVector4fMap ();
+        model_keypoint.getVector4dMap () = homMatrixPose.inverse () * view_keypoint.getVector4dMap ();
 
         typename std::map<std::string, ObjectHypothesis>::iterator it_map;
         if ((it_map = object_hypotheses.find (flann_models_.at (indices[0][0]).model.id_)) != object_hypotheses.end ())
@@ -289,7 +289,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
           oh.correspondences_to_inputcloud = corr;
           oh.correspondences_to_inputcloud->push_back (pcl::Correspondence (0, static_cast<int> (idx), distances[0][0]));
 
-          boost::shared_ptr < std::vector<float> > feat_dist (new std::vector<float>);
+          boost::shared_ptr < std::vector<double> > feat_dist (new std::vector<double>);
           feat_dist->push_back (distances[0][0]);
 
           oh.feature_distances_ = feat_dist;
@@ -300,7 +300,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
     typename std::map<std::string, ObjectHypothesis>::iterator it_map;
 
-    std::vector<float> feature_distance_avg;
+    std::vector<double> feature_distance_avg;
 
     {
       //pcl::ScopeTime t("Geometric verification, RANSAC and transform estimation");
@@ -315,7 +315,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         std::cout << "Instances:" << corresp_clusters.size () << " Total correspondences:" << (*it_map).second.correspondences_to_inputcloud->size () << " " << it_map->first << std::endl;
         std::vector<bool> good_indices_for_hypothesis (corresp_clusters.size (), true);
 
-        if (threshold_accept_model_hypothesis_ < 1.f)
+        if (threshold_accept_model_hypothesis_ < 1.)
         {
           //sort the hypotheses for each model according to their correspondences and take those that are threshold_accept_model_hypothesis_ over the max cardinality
           int max_cardinality = -1;
@@ -330,7 +330,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
           for (size_t i = 0; i < corresp_clusters.size (); i++)
           {
-            if (static_cast<float> ((corresp_clusters[i]).size ()) < (threshold_accept_model_hypothesis_ * static_cast<float> (max_cardinality)))
+            if (static_cast<double> ((corresp_clusters[i]).size ()) < (threshold_accept_model_hypothesis_ * static_cast<double> (max_cardinality)))
             {
               good_indices_for_hypothesis[i] = false;
             }
@@ -345,7 +345,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
           //drawCorrespondences (processed, it_map->second, keypoints_pointcloud, corresp_clusters[i]);
 
-          Eigen::Matrix4f best_trans;
+          Eigen::Matrix4d best_trans;
           typename pcl::registration::TransformationEstimationSVD < PointInT, PointInT > t_est;
           t_est.estimateRigidTransformation (*(*it_map).second.correspondences_pointcloud, *keypoints_pointcloud, corresp_clusters[i], best_trans);
 
@@ -388,7 +388,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
         rej->setInputTarget (cloud_voxelized_icp);
         rej->setMaximumIterations (1000);
-        rej->setInlierThreshold (0.005f);
+        rej->setInlierThreshold (0.005);
         rej->setInputSource (model_aligned);
 
         pcl::IterativeClosestPoint<PointInT, PointInT> reg;
@@ -396,12 +396,12 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
         reg.setInputTarget (cloud_voxelized_icp); //scene
         reg.setInputSource (model_aligned); //model
         reg.setMaximumIterations (ICP_iterations_);
-        reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 4.f);
+        reg.setMaxCorrespondenceDistance (VOXEL_SIZE_ICP_ * 4.);
 
         typename pcl::PointCloud<PointInT>::Ptr output_ (new pcl::PointCloud<PointInT> ());
         reg.align (*output_);
 
-        Eigen::Matrix4f icp_trans = reg.getFinalTransformation ();
+        Eigen::Matrix4d icp_trans = reg.getFinalTransformation ();
         transforms_->at (i) = icp_trans * transforms_->at (i);
       }
     }
@@ -419,7 +419,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
       aligned_models.resize (models_->size ());
       for (size_t i = 0; i < models_->size (); i++)
       {
-        ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.0025f);
+        ConstPointInTPtr model_cloud = models_->at (i).getAssembled (0.0025);
         //ConstPointInTPtr model_cloud = models_->at (i).getAssembled (VOXEL_SIZE_ICP_);
         PointInTPtr model_aligned (new pcl::PointCloud<PointInT>);
         pcl::transformPointCloud (*model_cloud, *model_aligned, transforms_->at (i));
@@ -433,10 +433,10 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
       hv_algorithm_->getMask (mask_hv);
 
       boost::shared_ptr < std::vector<ModelT> > models_temp;
-      boost::shared_ptr < std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms_temp;
+      boost::shared_ptr < std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms_temp;
 
       models_temp.reset (new std::vector<ModelT>);
-      transforms_temp.reset (new std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> >);
+      transforms_temp.reset (new std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> >);
 
       for (size_t i = 0; i < models_->size (); i++)
       {
@@ -455,7 +455,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
 
 template<template<class > class Distance, typename PointInT, typename FeatureT>
   void
-  pcl::rec_3d_framework::LocalRecognitionPipeline<Distance, PointInT, FeatureT>::getPose (ModelT & model, int view_id, Eigen::Matrix4f & pose_matrix)
+  pcl::rec_3d_framework::LocalRecognitionPipeline<Distance, PointInT, FeatureT>::getPose (ModelT & model, int view_id, Eigen::Matrix4d & pose_matrix)
   {
 
     if (use_cache_)
@@ -463,7 +463,7 @@ template<template<class > class Distance, typename PointInT, typename FeatureT>
       typedef std::pair<std::string, int> mv_pair;
       mv_pair pair_model_view = std::make_pair (model.id_, view_id);
 
-      std::map<mv_pair, Eigen::Matrix4f, std::less<mv_pair>, Eigen::aligned_allocator<std::pair<mv_pair, Eigen::Matrix4f> > >::iterator it =
+      std::map<mv_pair, Eigen::Matrix4d, std::less<mv_pair>, Eigen::aligned_allocator<std::pair<mv_pair, Eigen::Matrix4d> > >::iterator it =
           poses_cache_.find (pair_model_view);
 
       if (it != poses_cache_.end ())

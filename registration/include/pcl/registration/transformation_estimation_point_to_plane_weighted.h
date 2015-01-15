@@ -55,7 +55,7 @@ namespace pcl
       * \author Alexandru-Eugen Ichim
       * \ingroup registration
       */
-    template <typename PointSource, typename PointTarget, typename MatScalar = float>
+    template <typename PointSource, typename PointTarget, typename MatScalar = double>
     class TransformationEstimationPointToPlaneWeighted : public TransformationEstimationPointToPlane<PointSource, PointTarget, MatScalar>
     {
       typedef pcl::PointCloud<PointSource> PointCloudSource;
@@ -204,7 +204,7 @@ namespace pcl
         
         /** Base functor all the models that need non linear optimization must
           * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
-          * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
+          * or operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec) dependening on the choosen _Scalar
           */
         template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
         struct Functor

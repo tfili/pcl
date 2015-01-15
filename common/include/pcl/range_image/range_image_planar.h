@@ -88,11 +88,11 @@ namespace pcl
         *         lower than this value). The value is in radians per pixel. 
         */
       PCL_EXPORTS void
-      setDisparityImage (const float* disparity_image, int di_width, int di_height,
-                         float focal_length, float base_line, float desired_angular_resolution=-1);
+      setDisparityImage (const double* disparity_image, int di_width, int di_height,
+                         double focal_length, double base_line, double desired_angular_resolution=-1);
       
       /** Create the image from an existing depth image.
-        * \param depth_image the input depth image data as float values
+        * \param depth_image the input depth image data as double values
         * \param di_width the disparity image width 
         * \param di_height the disparity image height
         * \param di_center_x the x-coordinate of the camera's center of projection
@@ -104,8 +104,8 @@ namespace pcl
         *         lower than this value). The value is in radians per pixel.
         */
       PCL_EXPORTS void
-      setDepthImage (const float* depth_image, int di_width, int di_height, float di_center_x, float di_center_y,
-                     float di_focal_length_x, float di_focal_length_y, float desired_angular_resolution=-1);
+      setDepthImage (const double* depth_image, int di_width, int di_height, double di_center_x, double di_center_y,
+                     double di_focal_length_x, double di_focal_length_y, double desired_angular_resolution=-1);
       
       /** Create the image from an existing depth image.
         * \param depth_image the input disparity image data as short values describing millimeters
@@ -120,8 +120,8 @@ namespace pcl
         *         lower than this value). The value is in radians per pixel.
         */
       PCL_EXPORTS void
-      setDepthImage (const unsigned short* depth_image, int di_width, int di_height, float di_center_x, float di_center_y,
-                     float di_focal_length_x, float di_focal_length_y, float desired_angular_resolution=-1);
+      setDepthImage (const unsigned short* depth_image, int di_width, int di_height, double di_center_x, double di_center_y,
+                     double di_focal_length_x, double di_focal_length_y, double desired_angular_resolution=-1);
       
       /** Create the image from an existing point cloud.
         * \param point_cloud the source point cloud
@@ -138,11 +138,11 @@ namespace pcl
         */
       template <typename PointCloudType> void
       createFromPointCloudWithFixedSize (const PointCloudType& point_cloud,
-                                         int di_width, int di_height, float di_center_x, float di_center_y,
-                                         float di_focal_length_x, float di_focal_length_y,
-                                         const Eigen::Affine3f& sensor_pose,
-                                         CoordinateFrame coordinate_frame=CAMERA_FRAME, float noise_level=0.0f,
-                                         float min_range=0.0f);
+                                         int di_width, int di_height, double di_center_x, double di_center_y,
+                                         double di_focal_length_x, double di_focal_length_y,
+                                         const Eigen::Affine3d& sensor_pose,
+                                         CoordinateFrame coordinate_frame=CAMERA_FRAME, double noise_level=0.0,
+                                         double min_range=0.0);
       
       // Since we reimplement some of these overloaded functions, we have to do the following:
       using RangeImage::calculate3DPoint;
@@ -156,7 +156,7 @@ namespace pcl
         * \note Implementation according to planar range images (compared to spherical as in the original)
         */
       virtual inline void
-      calculate3DPoint (float image_x, float image_y, float range, Eigen::Vector3f& point) const;
+      calculate3DPoint (double image_x, double image_y, double range, Eigen::Vector3d& point) const;
       
       /** \brief Calculate the image point and range from the given 3D point
         * \param point the resulting 3D point
@@ -166,7 +166,7 @@ namespace pcl
         * \note Implementation according to planar range images (compared to spherical as in the original)
         */
       virtual inline void 
-      getImagePoint (const Eigen::Vector3f& point, float& image_x, float& image_y, float& range) const;
+      getImagePoint (const Eigen::Vector3d& point, double& image_x, double& image_y, double& range) const;
       
       /** Get a sub part of the complete image as a new range image.
         * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
@@ -190,26 +190,26 @@ namespace pcl
       getHalfImage (RangeImage& half_image) const;
       
       //! Getter for the focal length in X
-      inline float
+      inline double
       getFocalLengthX () const { return focal_length_x_; }
       
       //! Getter for the focal length in Y
-      inline float
+      inline double
       getFocalLengthY () const { return focal_length_y_; }
       
       //! Getter for the principal point in X
-      inline float
+      inline double
       getCenterX () const { return center_x_; }
       
       //! Getter for the principal point in Y
-      inline float
+      inline double
       getCenterY () const { return center_y_; }
 
 
     protected:
-      float focal_length_x_, focal_length_y_; //!< The focal length of the image in pixels
-      float focal_length_x_reciprocal_, focal_length_y_reciprocal_;  //!< 1/focal_length -> for internal use
-      float center_x_, center_y_;      //!< The principle point of the image
+      double focal_length_x_, focal_length_y_; //!< The focal length of the image in pixels
+      double focal_length_x_reciprocal_, focal_length_y_reciprocal_;  //!< 1/focal_length -> for internal use
+      double center_x_, center_y_;      //!< The principle point of the image
   };
 }  // namespace end
 

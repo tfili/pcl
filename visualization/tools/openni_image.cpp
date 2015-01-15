@@ -373,7 +373,7 @@ class Driver
     void
     image_callback (const boost::shared_ptr<openni_wrapper::Image> &image, 
                     const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image, 
-                    float)
+                    double)
     {
       boost::posix_time::ptime time = boost::posix_time::microsec_clock::local_time ();
       FPS_CALC_DRIVER ("driver       ", buf_write_, buf_vis_);
@@ -411,7 +411,7 @@ class Driver
     void 
     grabAndSend ()
     {
-      boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float) > image_cb = boost::bind (&Driver::image_callback, this, _1, _2, _3);
+      boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, double) > image_cb = boost::bind (&Driver::image_callback, this, _1, _2, _3);
       boost::signals2::connection image_connection = grabber_.registerCallback (image_cb);
 
       grabber_.start ();

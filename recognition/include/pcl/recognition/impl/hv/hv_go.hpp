@@ -43,8 +43,8 @@
 #include <pcl/point_types.h>
 
 template<typename PointT, typename NormalT>
-inline void extractEuclideanClustersSmooth(const typename pcl::PointCloud<PointT> &cloud, const typename pcl::PointCloud<NormalT> &normals, float tolerance,
-    const typename pcl::search::Search<PointT>::Ptr &tree, std::vector<pcl::PointIndices> &clusters, double eps_angle, float curvature_threshold,
+inline void extractEuclideanClustersSmooth(const typename pcl::PointCloud<PointT> &cloud, const typename pcl::PointCloud<NormalT> &normals, double tolerance,
+    const typename pcl::search::Search<PointT>::Ptr &tree, std::vector<pcl::PointIndices> &clusters, double eps_angle, double curvature_threshold,
     unsigned int min_pts_per_cluster, unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ())
 {
 
@@ -63,7 +63,7 @@ inline void extractEuclideanClustersSmooth(const typename pcl::PointCloud<PointT
   std::vector<bool> processed (cloud.points.size (), false);
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
   // Process all points in the indices vector
   int size = static_cast<int> (cloud.points.size ());
   for (int i = 0; i < size; ++i)
@@ -140,33 +140,33 @@ inline void extractEuclideanClustersSmooth(const typename pcl::PointCloud<PointT
 template<typename ModelT, typename SceneT>
 mets::gol_type pcl::GlobalHypothesesVerification<ModelT, SceneT>::evaluateSolution(const std::vector<bool> & active, int changed)
 {
-  float sign = 1.f;
+  double sign = 1.;
   //update explained_by_RM
   if (active[changed])
   {
     //it has been activated
     updateExplainedVector (recognition_models_[changed]->explained_, recognition_models_[changed]->explained_distances_, explained_by_RM_,
-        explained_by_RM_distance_weighted, 1.f);
+        explained_by_RM_distance_weighted, 1.);
     updateUnexplainedVector (recognition_models_[changed]->unexplained_in_neighborhood, recognition_models_[changed]->unexplained_in_neighborhood_weights,
-        unexplained_by_RM_neighboorhods, recognition_models_[changed]->explained_, explained_by_RM_, 1.f);
-    updateCMDuplicity(recognition_models_[changed]->complete_cloud_occupancy_indices_, complete_cloud_occupancy_by_RM_, 1.f);
+        unexplained_by_RM_neighboorhods, recognition_models_[changed]->explained_, explained_by_RM_, 1.);
+    updateCMDuplicity(recognition_models_[changed]->complete_cloud_occupancy_indices_, complete_cloud_occupancy_by_RM_, 1.);
   } else
   {
     //it has been deactivated
     updateExplainedVector (recognition_models_[changed]->explained_, recognition_models_[changed]->explained_distances_, explained_by_RM_,
-        explained_by_RM_distance_weighted, -1.f);
+        explained_by_RM_distance_weighted, -1.);
     updateUnexplainedVector (recognition_models_[changed]->unexplained_in_neighborhood, recognition_models_[changed]->unexplained_in_neighborhood_weights,
-        unexplained_by_RM_neighboorhods, recognition_models_[changed]->explained_, explained_by_RM_, -1.f);
-    updateCMDuplicity(recognition_models_[changed]->complete_cloud_occupancy_indices_, complete_cloud_occupancy_by_RM_, -1.f);
-    sign = -1.f;
+        unexplained_by_RM_neighboorhods, recognition_models_[changed]->explained_, explained_by_RM_, -1.);
+    updateCMDuplicity(recognition_models_[changed]->complete_cloud_occupancy_indices_, complete_cloud_occupancy_by_RM_, -1.);
+    sign = -1.;
   }
 
   int duplicity = getDuplicity ();
-  float good_info = getExplainedValue ();
+  double good_info = getExplainedValue ();
 
-  float unexplained_info = getPreviousUnexplainedValue ();
-  float bad_info = static_cast<float> (getPreviousBadInfo ())
-      + (recognition_models_[changed]->outliers_weight_ * static_cast<float> (recognition_models_[changed]->bad_information_)) * sign;
+  double unexplained_info = getPreviousUnexplainedValue ();
+  double bad_info = static_cast<double> (getPreviousBadInfo ())
+      + (recognition_models_[changed]->outliers_weight_ * static_cast<double> (recognition_models_[changed]->bad_information_)) * sign;
 
   setPreviousBadInfo (bad_info);
 
@@ -176,8 +176,8 @@ mets::gol_type pcl::GlobalHypothesesVerification<ModelT, SceneT>::evaluateSoluti
       n_active_hyp++;
   }
 
-  float duplicity_cm = static_cast<float> (getDuplicityCM ()) * w_occupied_multiple_cm_;
-  return static_cast<mets::gol_type> ((good_info - bad_info - static_cast<float> (duplicity) - unexplained_info - duplicity_cm - static_cast<float> (n_active_hyp)) * -1.f); //return the dual to our max problem
+  double duplicity_cm = static_cast<double> (getDuplicityCM ()) * w_occupied_multiple_cm_;
+  return static_cast<mets::gol_type> ((good_info - bad_info - static_cast<double> (duplicity) - unexplained_info - duplicity_cm - static_cast<double> (n_active_hyp)) * -1.); //return the dual to our max problem
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,8 +234,8 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::initialize()
   scene_cloud_downsampled_->height = 1;
 
   explained_by_RM_.resize (scene_cloud_downsampled_->points.size (), 0);
-  explained_by_RM_distance_weighted.resize (scene_cloud_downsampled_->points.size (), 0.f);
-  unexplained_by_RM_neighboorhods.resize (scene_cloud_downsampled_->points.size (), 0.f);
+  explained_by_RM_distance_weighted.resize (scene_cloud_downsampled_->points.size (), 0.);
+  unexplained_by_RM_neighboorhods.resize (scene_cloud_downsampled_->points.size (), 0.);
 
   //compute segmentation of the scene if detect_clutter_
   if (detect_clutter_)
@@ -247,9 +247,9 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::initialize()
     std::vector<pcl::PointIndices> clusters;
     double eps_angle_threshold = 0.2;
     int min_points = 20;
-    float curvature_threshold = 0.045f;
+    double curvature_threshold = 0.045;
 
-    extractEuclideanClustersSmooth<SceneT, pcl::Normal> (*scene_cloud_downsampled_, *scene_normals_, inliers_threshold_ * 2.f, scene_downsampled_tree_,
+    extractEuclideanClustersSmooth<SceneT, pcl::Normal> (*scene_cloud_downsampled_, *scene_normals_, inliers_threshold_ * 2., scene_downsampled_tree_,
         clusters, eps_angle_threshold, curvature_threshold, min_points);
 
     clusters_cloud_.reset (new pcl::PointCloud<pcl::PointXYZI>);
@@ -260,13 +260,13 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::initialize()
     for (size_t i = 0; i < scene_cloud_downsampled_->points.size (); i++)
     {
       pcl::PointXYZI p;
-      p.getVector3fMap () = scene_cloud_downsampled_->points[i].getVector3fMap ();
-      p.intensity = 0.f;
+      p.getVector3dMap () = scene_cloud_downsampled_->points[i].getVector3dMap ();
+      p.intensity = 0.;
       clusters_cloud_->points[i] = p;
     }
 
-    float intens_incr = 100.f / static_cast<float> (clusters.size ());
-    float intens = intens_incr;
+    double intens_incr = 100. / static_cast<double> (clusters.size ());
+    double intens = intens_incr;
     for (size_t i = 0; i < clusters.size (); i++)
     {
       for (size_t j = 0; j < clusters[i].indices.size (); j++)
@@ -299,8 +299,8 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::initialize()
 
   //compute the bounding boxes for the models
   ModelT min_pt_all, max_pt_all;
-  min_pt_all.x = min_pt_all.y = min_pt_all.z = std::numeric_limits<float>::max ();
-  max_pt_all.x = max_pt_all.y = max_pt_all.z = (std::numeric_limits<float>::max () - 0.001f) * -1;
+  min_pt_all.x = min_pt_all.y = min_pt_all.z = std::numeric_limits<double>::max ();
+  max_pt_all.x = max_pt_all.y = max_pt_all.z = (std::numeric_limits<double>::max () - 0.001) * -1;
 
   for (size_t i = 0; i < recognition_models_.size (); i++)
   {
@@ -416,14 +416,14 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::SAOptimize(std::vector<i
   //Define model SAModel, initial solution is all models activated
 
   int duplicity;
-  float good_information_ = getTotalExplainedInformation (explained_by_RM_, explained_by_RM_distance_weighted, &duplicity);
-  float bad_information_ = 0;
-  float unexplained_in_neighboorhod = getUnexplainedInformationInNeighborhood (unexplained_by_RM_neighboorhods, explained_by_RM_);
+  double good_information_ = getTotalExplainedInformation (explained_by_RM_, explained_by_RM_distance_weighted, &duplicity);
+  double bad_information_ = 0;
+  double unexplained_in_neighboorhod = getUnexplainedInformationInNeighborhood (unexplained_by_RM_neighboorhods, explained_by_RM_);
 
   for (size_t i = 0; i < initial_solution.size (); i++)
   {
     if (initial_solution[i])
-      bad_information_ += recognition_models_[i]->outliers_weight_ * static_cast<float> (recognition_models_[i]->bad_information_);
+      bad_information_ += recognition_models_[i]->outliers_weight_ * static_cast<double> (recognition_models_[i]->bad_information_);
   }
 
   setPreviousExplainedValue (good_information_);
@@ -433,10 +433,10 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::SAOptimize(std::vector<i
 
   SAModel model;
   model.cost_ = static_cast<mets::gol_type> ((good_information_ - bad_information_
-                                               - static_cast<float> (duplicity)
-                                               - static_cast<float> (occupied_multiple) * w_occupied_multiple_cm_
-                                               - static_cast<float> (recognition_models_.size ())
-                                               - unexplained_in_neighboorhod) * -1.f);
+                                               - static_cast<double> (duplicity)
+                                               - static_cast<double> (occupied_multiple) * w_occupied_multiple_cm_
+                                               - static_cast<double> (recognition_models_.size ())
+                                               - unexplained_in_neighboorhod) * -1.);
 
   model.setSolution (initial_solution);
   model.setOptimizer (this);
@@ -493,7 +493,7 @@ bool pcl::GlobalHypothesesVerification<ModelT, SceneT>::addModel(typename pcl::P
   recog_model->cloud_.reset (new pcl::PointCloud<ModelT> ());
   recog_model->complete_cloud_.reset (new pcl::PointCloud<ModelT> ());
 
-  float size_model = resolution_;
+  double size_model = resolution_;
   pcl::VoxelGrid<ModelT> voxel_grid;
   voxel_grid.setInputCloud (model);
   voxel_grid.setLeafSize (size_model, size_model, size_model);
@@ -561,15 +561,15 @@ bool pcl::GlobalHypothesesVerification<ModelT, SceneT>::addModel(typename pcl::P
   recog_model->cloud_->height = 1;
 
   std::vector<int> explained_indices;
-  std::vector<float> outliers_weight;
-  std::vector<float> explained_indices_distances;
-  std::vector<float> unexplained_indices_weights;
+  std::vector<double> outliers_weight;
+  std::vector<double> explained_indices_distances;
+  std::vector<double> unexplained_indices_weights;
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
 
-  std::map<int, boost::shared_ptr<std::vector<std::pair<int, float> > > > model_explains_scene_points; //which point i from the scene is explained by a points j_k with dist d_k from the model
-  std::map<int, boost::shared_ptr<std::vector<std::pair<int, float> > > >::iterator it;
+  std::map<int, boost::shared_ptr<std::vector<std::pair<int, double> > > > model_explains_scene_points; //which point i from the scene is explained by a points j_k with dist d_k from the model
+  std::map<int, boost::shared_ptr<std::vector<std::pair<int, double> > > >::iterator it;
 
   outliers_weight.resize (recog_model->cloud_->points.size ());
   recog_model->outlier_indices_.resize (recog_model->cloud_->points.size ());
@@ -587,11 +587,11 @@ bool pcl::GlobalHypothesesVerification<ModelT, SceneT>::addModel(typename pcl::P
     {
       for (size_t k = 0; k < nn_distances.size (); k++)
       {
-        std::pair<int, float> pair = std::make_pair (i, nn_distances[k]); //i is a index to a model point and then distance
+        std::pair<int, double> pair = std::make_pair (i, nn_distances[k]); //i is a index to a model point and then distance
         it = model_explains_scene_points.find (nn_indices[k]);
         if (it == model_explains_scene_points.end ())
         {
-          boost::shared_ptr < std::vector<std::pair<int, float> > > vec (new std::vector<std::pair<int, float> > ());
+          boost::shared_ptr < std::vector<std::pair<int, double> > > vec (new std::vector<std::pair<int, double> > ());
           vec->push_back (pair);
           model_explains_scene_points[nn_indices[k]] = vec;
         } else
@@ -605,9 +605,9 @@ bool pcl::GlobalHypothesesVerification<ModelT, SceneT>::addModel(typename pcl::P
   outliers_weight.resize (o);
   recog_model->outlier_indices_.resize (o);
 
-  recog_model->outliers_weight_ = (std::accumulate (outliers_weight.begin (), outliers_weight.end (), 0.f) / static_cast<float> (outliers_weight.size ()));
+  recog_model->outliers_weight_ = (std::accumulate (outliers_weight.begin (), outliers_weight.end (), 0.) / static_cast<double> (outliers_weight.size ()));
   if (outliers_weight.size () == 0)
-    recog_model->outliers_weight_ = 1.f;
+    recog_model->outliers_weight_ = 1.;
 
   pcl::IndicesPtr indices_scene (new std::vector<int>);
   //go through the map and keep the closest model point in case that several model points explain a scene point
@@ -617,7 +617,7 @@ bool pcl::GlobalHypothesesVerification<ModelT, SceneT>::addModel(typename pcl::P
   for (it = model_explains_scene_points.begin (); it != model_explains_scene_points.end (); it++, p++)
   {
     size_t closest = 0;
-    float min_d = std::numeric_limits<float>::min ();
+    double min_d = std::numeric_limits<double>::min ();
     for (size_t i = 0; i < it->second->size (); i++)
     {
       if (it->second->at (i).second > min_d)
@@ -627,17 +627,17 @@ bool pcl::GlobalHypothesesVerification<ModelT, SceneT>::addModel(typename pcl::P
       }
     }
 
-    float d = it->second->at (closest).second;
-    float d_weight = -(d * d / (inliers_threshold_)) + 1;
+    double d = it->second->at (closest).second;
+    double d_weight = -(d * d / (inliers_threshold_)) + 1;
 
     //it->first is index to scene point
     //using normals to weight inliers
-    Eigen::Vector3f scene_p_normal = scene_normals_->points[it->first].getNormalVector3fMap ();
-    Eigen::Vector3f model_p_normal = recog_model->normals_->points[it->second->at (closest).first].getNormalVector3fMap ();
-    float dotp = scene_p_normal.dot (model_p_normal) * 1.f; //[-1,1] from antiparallel trough perpendicular to parallel
+    Eigen::Vector3d scene_p_normal = scene_normals_->points[it->first].getNormalVector3dMap ();
+    Eigen::Vector3d model_p_normal = recog_model->normals_->points[it->second->at (closest).first].getNormalVector3dMap ();
+    double dotp = scene_p_normal.dot (model_p_normal) * 1.; //[-1,1] from antiparallel trough perpendicular to parallel
 
-    if (dotp < 0.f)
-      dotp = 0.f;
+    if (dotp < 0.)
+      dotp = 0.;
 
     explained_indices.push_back (it->first);
     explained_indices_distances.push_back (d_weight * dotp);
@@ -657,9 +657,9 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::computeClutterCue(boost:
   if (detect_clutter_)
   {
 
-    float rn_sqr = radius_neighborhood_GO_ * radius_neighborhood_GO_;
+    double rn_sqr = radius_neighborhood_GO_ * radius_neighborhood_GO_;
     std::vector<int> nn_indices;
-    std::vector<float> nn_distances;
+    std::vector<double> nn_distances;
 
     std::vector < std::pair<int, int> > neighborhood_indices; //first is indices to scene point and second is indices to explained_ scene points
     for (int i = 0; i < static_cast<int> (recog_model->explained_.size ()); i++)
@@ -705,7 +705,7 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::computeClutterCue(boost:
         //recog_model->unexplained_in_neighborhood.push_back(neighborhood_indices[i]);
         recog_model->unexplained_in_neighborhood[p] = neighborhood_indices[i].first;
 
-        if (clusters_cloud_->points[recog_model->explained_[neighborhood_indices[i].second]].intensity != 0.f
+        if (clusters_cloud_->points[recog_model->explained_[neighborhood_indices[i].second]].intensity != 0.
             && (clusters_cloud_->points[recog_model->explained_[neighborhood_indices[i].second]].intensity
                 == clusters_cloud_->points[neighborhood_indices[i].first].intensity))
         {
@@ -716,18 +716,18 @@ void pcl::GlobalHypothesesVerification<ModelT, SceneT>::computeClutterCue(boost:
         {
           //neighborhood_indices[i].first gives the index to the scene point and second to the explained scene point by the model causing this...
           //calculate weight of this clutter point based on the distance of the scene point and the model point causing it
-          float d = static_cast<float> (pow (
-              (scene_cloud_downsampled_->points[recog_model->explained_[neighborhood_indices[i].second]].getVector3fMap ()
-                  - scene_cloud_downsampled_->points[neighborhood_indices[i].first].getVector3fMap ()).norm (), 2));
-          float d_weight = -(d / rn_sqr) + 1; //points that are close have a strong weight*/
+          double d = static_cast<double> (pow (
+              (scene_cloud_downsampled_->points[recog_model->explained_[neighborhood_indices[i].second]].getVector3dMap ()
+                  - scene_cloud_downsampled_->points[neighborhood_indices[i].first].getVector3dMap ()).norm (), 2));
+          double d_weight = -(d / rn_sqr) + 1; //points that are close have a strong weight*/
 
           //using normals to weight clutter points
-          Eigen::Vector3f scene_p_normal = scene_normals_->points[neighborhood_indices[i].first].getNormalVector3fMap ();
-          Eigen::Vector3f model_p_normal = scene_normals_->points[recog_model->explained_[neighborhood_indices[i].second]].getNormalVector3fMap ();
-          float dotp = scene_p_normal.dot (model_p_normal); //[-1,1] from antiparallel trough perpendicular to parallel
+          Eigen::Vector3d scene_p_normal = scene_normals_->points[neighborhood_indices[i].first].getNormalVector3dMap ();
+          Eigen::Vector3d model_p_normal = scene_normals_->points[recog_model->explained_[neighborhood_indices[i].second]].getNormalVector3dMap ();
+          double dotp = scene_p_normal.dot (model_p_normal); //[-1,1] from antiparallel trough perpendicular to parallel
 
           if (dotp < 0)
-            dotp = 0.f;
+            dotp = 0.;
 
           recog_model->unexplained_in_neighborhood_weights[p] = d_weight * dotp;
         }

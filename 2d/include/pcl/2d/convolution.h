@@ -50,10 +50,10 @@ namespace pcl
   struct PointXYZIEdge
   {
     PCL_ADD_POINT4D;                    // preferred way of adding a XYZ+padding
-    float magnitude;
-    float direction;
-    float magnitude_x;
-    float magnitude_y;
+    double magnitude;
+    double direction;
+    double magnitude_x;
+    double magnitude_y;
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW     // make sure our new allocators are aligned
   } EIGEN_ALIGN16;                    // enforce SSE padding for correct memory alignment
 
@@ -148,12 +148,12 @@ namespace pcl
 #include <pcl/2d/impl/convolution.hpp>
 
 POINT_CLOUD_REGISTER_POINT_STRUCT (pcl::PointXYZIEdge,
-    (float, x, x)
-    (float, y, y)
-    (float, z, z)
-    (float, magnitude, magnitude)
-    (float, direction, direction)
-    (float, magnitude_x, magnitude_x)
-    (float, magnitude_y, magnitude_y)
+    (double, x, x)
+    (double, y, y)
+    (double, z, z)
+    (double, magnitude, magnitude)
+    (double, direction, direction)
+    (double, magnitude_x, magnitude_x)
+    (double, magnitude_y, magnitude_y)
 )
 #endif // PCL_2D_CONVOLUTION_2D_H

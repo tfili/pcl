@@ -52,10 +52,10 @@ PointCloud<PointXYZ> cloud, cloud_big;
 void
 init ()
 {
-  float resolution = 0.1;
-  for (float z = -0.5f; z <= 0.5f; z += resolution)
-    for (float y = -0.5f; y <= 0.5f; y += resolution)
-      for (float x = -0.5f; x <= 0.5f; x += resolution)
+  double resolution = 0.1;
+  for (double z = -0.5; z <= 0.5; z += resolution)
+    for (double y = -0.5; y <= 0.5; y += resolution)
+      for (double x = -0.5; x <= 0.5; x += resolution)
         cloud.points.push_back (PointXYZ (x, y, z));
   cloud.width  = cloud.points.size ();
   cloud.height = 1;
@@ -112,10 +112,10 @@ TEST (PCL, Octree_Pointcloud_Nearest_K_Neighbour_Search)
   pcl::search::Search<PointXYZ>* octree = new  pcl::search::AutotunedSearch<PointXYZ>(pcl::search::OCTREE);
 
   std::vector<int> k_indices;
-  std::vector<float> k_sqr_distances;
+  std::vector<double> k_sqr_distances;
 
   std::vector<int> k_indices_bruteforce;
-  std::vector<float> k_sqr_distances_bruteforce;
+  std::vector<double> k_sqr_distances_bruteforce;
 
   for (test_id = 0; test_id < test_runs; test_id++)
   {
@@ -249,7 +249,7 @@ TEST (PCL, Octree_Pointcloud_Approx_Nearest_Neighbour_Search)
     }
 
     int ANNindex;
-    float ANNdistance;
+    double ANNdistance;
 
     // octree approx. nearest neighbor search
   octree->setInputCloud (cloudIn);
@@ -273,17 +273,17 @@ TEST (PCL, KdTreeWrapper_nearestKSearch)
 
   pcl::search::Search<PointXYZ>* kdtree = new pcl::search::AutotunedSearch<PointXYZ>(pcl::search::KDTREE);
   kdtree->setInputCloud (cloud.makeShared ());
-  PointXYZ test_point (0.01f, 0.01f, 0.01f);
+  PointXYZ test_point (0.01, 0.01, 0.01);
   unsigned int no_of_neighbors = 20;
-  multimap<float, int> sorted_brute_force_result;
+  multimap<double, int> sorted_brute_force_result;
   for (size_t i = 0; i < cloud.points.size (); ++i)
   {
-    float distance = euclideanDistance (cloud.points[i], test_point);
+    double distance = euclideanDistance (cloud.points[i], test_point);
     sorted_brute_force_result.insert (make_pair (distance, (int) i));
   }
-  float max_dist = 0.0f;
+  double max_dist = 0.0;
   unsigned int counter = 0;
-  for (multimap<float, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end () && counter < no_of_neighbors; ++it)
+  for (multimap<double, int>::iterator it = sorted_brute_force_result.begin (); it != sorted_brute_force_result.end () && counter < no_of_neighbors; ++it)
   {
     max_dist = max (max_dist, it->first);
     ++counter;
@@ -291,7 +291,7 @@ TEST (PCL, KdTreeWrapper_nearestKSearch)
 
   vector<int> k_indices;
   k_indices.resize (no_of_neighbors);
-  vector<float> k_distances;
+  vector<double> k_distances;
   k_distances.resize (no_of_neighbors);
 
   kdtree->nearestKSearch (test_point, no_of_neighbors, k_indices, k_distances);

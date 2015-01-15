@@ -104,7 +104,7 @@ namespace pcl
   struct SVMDataPoint
   {
     int idx; // It's the feature index. It has to be an integer number greater or equal to zero.
-    float value; // The value assigned to the correspondent feature.
+    double value; // The value assigned to the correspondent feature.
 
     SVMDataPoint () : idx (-1), value (0)
     {

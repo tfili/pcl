@@ -151,11 +151,11 @@ pcl::FotonicGrabber::getName () const
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::FotonicGrabber::getFramesPerSecond () const
 {
-  //return (static_cast<float> (device_->getDepthOutputMode ().nFPS));
-  return 0.0f;
+  //return (static_cast<double> (device_->getDepthOutputMode ().nFPS));
+  return 0.0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,21 +240,21 @@ pcl::FotonicGrabber::processGrabbing ()
               pcl::PointXYZRGBA & point1 = (*cloud) (col, row_index);
               ++col;
 
-              float r,g,b,u,v,u1,v1,uv1;
+              double r,g,b,u,v,u1,v1,uv1;
 
-              u = p[col_index].u - 128.0f;
-              v = p[col_index].v - 128.0f;
+              u = p[col_index].u - 128.0;
+              v = p[col_index].v - 128.0;
               v1 = 1.13983f*v;
-              uv1 = -0.39465f*u - 0.58060f*v;
-              u1 = 0.03211f*u;
+              uv1 = -0.39465*u - 0.58060*v;
+              u1 = 0.03211*u;
 
               r = p[col_index].y1 + v1;
               g = p[col_index].y1 + uv1;
               b = p[col_index].y1 + u1;
 
-              r = std::min (255.0f, std::max (0.0f, r));
-              g = std::min (255.0f, std::max (0.0f, g));
-              b = std::min (255.0f, std::max (0.0f, b));
+              r = std::min (255.0, std::max (0.0, r));
+              g = std::min (255.0, std::max (0.0, g));
+              b = std::min (255.0, std::max (0.0, b));
 
               point0.r = unsigned(r);
               point0.g = unsigned(g);
@@ -264,9 +264,9 @@ pcl::FotonicGrabber::processGrabbing ()
               g = p[col_index].y2 + uv1;
               b = p[col_index].y2 + u1;
 
-              r = std::min (255.0f, std::max (0.0f, r));
-              g = std::min (255.0f, std::max (0.0f, g));
-              b = std::min (255.0f, std::max (0.0f, b));
+              r = std::min (255.0, std::max (0.0, r));
+              g = std::min (255.0, std::max (0.0, g));
+              b = std::min (255.0, std::max (0.0, b));
                
               point1.r = unsigned(r);
               point1.g = unsigned(g);
@@ -282,7 +282,7 @@ pcl::FotonicGrabber::processGrabbing ()
 
             short z = *ptr;
 
-            point.z = static_cast<float> (z) / 1000.0f;
+            point.z = static_cast<double> (z) / 1000.0;
 
             ++ptr;
           }
@@ -294,7 +294,7 @@ pcl::FotonicGrabber::processGrabbing ()
             short x = *ptr;
             ++ptr;
 
-            point.x = -static_cast<float> (x) / 1000.0f;
+            point.x = -static_cast<double> (x) / 1000.0;
           }
 
           for (int col_index = 0; col_index < width; ++col_index)
@@ -304,7 +304,7 @@ pcl::FotonicGrabber::processGrabbing ()
             short y = *ptr;
             ++ptr;
 
-            point.y = static_cast<float> (y) / 1000.0f;
+            point.y = static_cast<double> (y) / 1000.0;
           }
         }
 

@@ -82,9 +82,9 @@ pcl::registration::CorrespondenceEstimationOrganizedProjection<PointSource, Poin
   {
     if (isFinite (input_->points[*src_it]))
     {
-      Eigen::Vector4f p_src (src_to_tgt_transformation_ * input_->points[*src_it].getVector4fMap ());
-      Eigen::Vector3f p_src3 (p_src[0], p_src[1], p_src[2]);
-      Eigen::Vector3f uv (projection_matrix_ * p_src3);
+      Eigen::Vector4d p_src (src_to_tgt_transformation_ * input_->points[*src_it].getVector4dMap ());
+      Eigen::Vector3d p_src3 (p_src[0], p_src[1], p_src[2]);
+      Eigen::Vector3d uv (projection_matrix_ * p_src3);
 
       /// Check if the point was behind the camera
       if (uv[2] <= 0)
@@ -103,9 +103,9 @@ pcl::registration::CorrespondenceEstimationOrganizedProjection<PointSource, Poin
         if (fabs (uv[2] - pt_tgt.z) > depth_threshold_)
           continue;
 
-        double dist = (p_src3 - pt_tgt.getVector3fMap ()).norm ();
+        double dist = (p_src3 - pt_tgt.getVector3dMap ()).norm ();
         if (dist < max_distance)
-          correspondences[c_index++] =  pcl::Correspondence (*src_it, v * target_->width + u, static_cast<float> (dist));
+          correspondences[c_index++] =  pcl::Correspondence (*src_it, v * target_->width + u, static_cast<double> (dist));
       }
     }
   }

@@ -69,8 +69,8 @@ namespace pcl
         * \throws pcl::KernelWidthTooSmallException
         */
       void
-      compute (float sigma, 
-               Eigen::VectorXf &kernel,
+      compute (double sigma, 
+               Eigen::VectorXd &kernel,
                unsigned kernel_width = MAX_KERNEL_WIDTH) const;
 
       /** Computes the gaussian kernel and dervative assiociated to sigma.
@@ -82,12 +82,12 @@ namespace pcl
         * \throws pcl::KernelWidthTooSmallException
         */
       void
-      compute (float sigma, 
-               Eigen::VectorXf &kernel, 
-               Eigen::VectorXf &derivative, 
+      compute (double sigma, 
+               Eigen::VectorXd &kernel, 
+               Eigen::VectorXd &derivative, 
                unsigned kernel_width = MAX_KERNEL_WIDTH) const;
 
-      /** Convolve a float image rows by a given kernel.
+      /** Convolve a double image rows by a given kernel.
         * \param[in] kernel convolution kernel
         * \param[in] input the image to convolve
         * \param[out] output the convolved image
@@ -95,11 +95,11 @@ namespace pcl
         * output.cols () < input.cols () then output is resized to input sizes.
         */
       void
-      convolveRows (const pcl::PointCloud<float> &input,
-                    const Eigen::VectorXf &kernel,
-                    pcl::PointCloud<float> &output) const;
+      convolveRows (const pcl::PointCloud<double> &input,
+                    const Eigen::VectorXd &kernel,
+                    pcl::PointCloud<double> &output) const;
 
-      /** Convolve a float image rows by a given kernel.
+      /** Convolve a double image rows by a given kernel.
         * \param[in] input the image to convolve
         * \param[in] field_accessor a field accessor
         * \param[in] kernel convolution kernel
@@ -109,11 +109,11 @@ namespace pcl
         */
      template <typename PointT> void
      convolveRows (const pcl::PointCloud<PointT> &input,
-                   boost::function <float (const PointT& p)> field_accessor,
-                   const Eigen::VectorXf &kernel,
-                   pcl::PointCloud<float> &output) const;
+                   boost::function <double (const PointT& p)> field_accessor,
+                   const Eigen::VectorXd &kernel,
+                   pcl::PointCloud<double> &output) const;
 
-      /** Convolve a float image columns by a given kernel.
+      /** Convolve a double image columns by a given kernel.
         * \param[in] input the image to convolve
         * \param[in] kernel convolution kernel
         * \param[out] output the convolved image
@@ -121,11 +121,11 @@ namespace pcl
         * output.cols () < input.cols () then output is resized to input sizes.
         */
       void
-      convolveCols (const pcl::PointCloud<float> &input,
-                    const Eigen::VectorXf &kernel,
-                    pcl::PointCloud<float> &output) const;
+      convolveCols (const pcl::PointCloud<double> &input,
+                    const Eigen::VectorXd &kernel,
+                    pcl::PointCloud<double> &output) const;
 
-      /** Convolve a float image columns by a given kernel.
+      /** Convolve a double image columns by a given kernel.
         * \param[in] input the image to convolve
         * \param[in] field_accessor a field accessor
         * \param[in] kernel convolution kernel
@@ -135,11 +135,11 @@ namespace pcl
         */
       template <typename PointT> void
       convolveCols (const pcl::PointCloud<PointT> &input,
-                    boost::function <float (const PointT& p)> field_accessor,
-                    const Eigen::VectorXf &kernel,
-                    pcl::PointCloud<float> &output) const;
+                    boost::function <double (const PointT& p)> field_accessor,
+                    const Eigen::VectorXd &kernel,
+                    pcl::PointCloud<double> &output) const;
 
-      /** Convolve a float image in the 2 directions
+      /** Convolve a double image in the 2 directions
         * \param[in] horiz_kernel kernel for convolving rows
         * \param[in] vert_kernel kernel for convolving columns
         * \param[in] input image to convolve
@@ -148,19 +148,19 @@ namespace pcl
         * output.cols () < input.cols () then output is resized to input sizes.
         */
       inline void
-      convolve (const pcl::PointCloud<float> &input,
-                const Eigen::VectorXf &horiz_kernel,
-                const Eigen::VectorXf &vert_kernel,
-                pcl::PointCloud<float> &output) const
+      convolve (const pcl::PointCloud<double> &input,
+                const Eigen::VectorXd &horiz_kernel,
+                const Eigen::VectorXd &vert_kernel,
+                pcl::PointCloud<double> &output) const
       {
         std::cout << ">>> convolve cpp" << std::endl;
-        pcl::PointCloud<float> tmp (input.width, input.height) ;
+        pcl::PointCloud<double> tmp (input.width, input.height) ;
         convolveRows (input, horiz_kernel, tmp);        
         convolveCols (tmp, vert_kernel, output);
         std::cout << "<<< convolve cpp" << std::endl;
       }
 
-      /** Convolve a float image in the 2 directions
+      /** Convolve a double image in the 2 directions
         * \param[in] input image to convolve
         * \param[in] field_accessor a field accessor
         * \param[in] horiz_kernel kernel for convolving rows
@@ -171,19 +171,19 @@ namespace pcl
         */
       template <typename PointT> inline void
       convolve (const pcl::PointCloud<PointT> &input,
-                boost::function <float (const PointT& p)> field_accessor,
-                const Eigen::VectorXf &horiz_kernel,
-                const Eigen::VectorXf &vert_kernel,
-                pcl::PointCloud<float> &output) const
+                boost::function <double (const PointT& p)> field_accessor,
+                const Eigen::VectorXd &horiz_kernel,
+                const Eigen::VectorXd &vert_kernel,
+                pcl::PointCloud<double> &output) const
       {
         std::cout << ">>> convolve hpp" << std::endl;
-        pcl::PointCloud<float> tmp (input.width, input.height);
+        pcl::PointCloud<double> tmp (input.width, input.height);
         convolveRows<PointT>(input, field_accessor, horiz_kernel, tmp);
         convolveCols(tmp, vert_kernel, output);
         std::cout << "<<< convolve hpp" << std::endl;
       }
       
-      /** Computes float image gradients using a gaussian kernel and gaussian kernel
+      /** Computes double image gradients using a gaussian kernel and gaussian kernel
         * derivative.
         * \param[in] input image to compute gardients for
         * \param[in] gaussian_kernel the gaussian kernel to be used
@@ -194,17 +194,17 @@ namespace pcl
         * output.cols () < input.cols () then output is resized to input sizes.
         */
       inline void
-      computeGradients (const pcl::PointCloud<float> &input,
-                        const Eigen::VectorXf &gaussian_kernel,
-                        const Eigen::VectorXf &gaussian_kernel_derivative,
-                        pcl::PointCloud<float> &grad_x,
-                        pcl::PointCloud<float> &grad_y) const
+      computeGradients (const pcl::PointCloud<double> &input,
+                        const Eigen::VectorXd &gaussian_kernel,
+                        const Eigen::VectorXd &gaussian_kernel_derivative,
+                        pcl::PointCloud<double> &grad_x,
+                        pcl::PointCloud<double> &grad_y) const
       {
         convolve (input, gaussian_kernel_derivative, gaussian_kernel, grad_x);
         convolve (input, gaussian_kernel, gaussian_kernel_derivative, grad_y);
       }
 
-      /** Computes float image gradients using a gaussian kernel and gaussian kernel
+      /** Computes double image gradients using a gaussian kernel and gaussian kernel
         * derivative.
         * \param[in] input image to compute gardients for
         * \param[in] field_accessor a field accessor
@@ -217,11 +217,11 @@ namespace pcl
         */
       template <typename PointT> inline void
       computeGradients (const pcl::PointCloud<PointT> &input,
-                        boost::function <float (const PointT& p)> field_accessor,
-                        const Eigen::VectorXf &gaussian_kernel,
-                        const Eigen::VectorXf &gaussian_kernel_derivative,
-                        pcl::PointCloud<float> &grad_x,
-                        pcl::PointCloud<float> &grad_y) const
+                        boost::function <double (const PointT& p)> field_accessor,
+                        const Eigen::VectorXd &gaussian_kernel,
+                        const Eigen::VectorXd &gaussian_kernel_derivative,
+                        pcl::PointCloud<double> &grad_x,
+                        pcl::PointCloud<double> &grad_y) const
       {
         convolve<PointT> (input, field_accessor, gaussian_kernel_derivative, gaussian_kernel, grad_x);
         convolve<PointT> (input, field_accessor, gaussian_kernel, gaussian_kernel_derivative, grad_y);
@@ -235,9 +235,9 @@ namespace pcl
         * output.cols () < input.cols () then output is resized to input sizes.
         */
       inline void
-      smooth (const pcl::PointCloud<float> &input,
-              const Eigen::VectorXf &gaussian_kernel,
-              pcl::PointCloud<float> &output) const
+      smooth (const pcl::PointCloud<double> &input,
+              const Eigen::VectorXd &gaussian_kernel,
+              pcl::PointCloud<double> &output) const
       {
         convolve (input, gaussian_kernel, gaussian_kernel, output);
       }
@@ -252,9 +252,9 @@ namespace pcl
         */
       template <typename PointT> inline void
       smooth (const pcl::PointCloud<PointT> &input,
-              boost::function <float (const PointT& p)> field_accessor,
-              const Eigen::VectorXf &gaussian_kernel,
-              pcl::PointCloud<float> &output) const
+              boost::function <double (const PointT& p)> field_accessor,
+              const Eigen::VectorXd &gaussian_kernel,
+              pcl::PointCloud<double> &output) const
       {
         convolve<PointT> (input, field_accessor, gaussian_kernel, gaussian_kernel, output);
       }

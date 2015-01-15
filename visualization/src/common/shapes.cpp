@@ -95,7 +95,7 @@ pcl::visualization::createCube (const pcl::ModelCoefficients &coefficients)
   t->Identity ();
   t->Translate (coefficients.values[0], coefficients.values[1], coefficients.values[2]);
   
-  Eigen::AngleAxisf a (Eigen::Quaternionf (coefficients.values[6], coefficients.values[3],
+  Eigen::AngleAxisd a (Eigen::Quaterniond (coefficients.values[6], coefficients.values[3],
                                            coefficients.values[4], coefficients.values[5]));
   t->RotateWXYZ (pcl::rad2deg (a.angle ()), a.axis ()[0], a.axis ()[1], a.axis ()[2]);
   
@@ -114,7 +114,7 @@ pcl::visualization::createCube (const pcl::ModelCoefficients &coefficients)
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 vtkSmartPointer<vtkDataSet> 
-pcl::visualization::createCube (const Eigen::Vector3f &translation, const Eigen::Quaternionf &rotation,
+pcl::visualization::createCube (const Eigen::Vector3d &translation, const Eigen::Quaterniond &rotation,
                                 double width, double height, double depth)
 {
   // coefficients = [Tx, Ty, Tz, Qx, Qy, Qz, Qw, width, height, depth]
@@ -122,7 +122,7 @@ pcl::visualization::createCube (const Eigen::Vector3f &translation, const Eigen:
   t->Identity ();
   t->Translate (translation.x (), translation.y (), translation.z ());
   
-  Eigen::AngleAxisf a (rotation);
+  Eigen::AngleAxisd a (rotation);
   t->RotateWXYZ (pcl::rad2deg (a.angle ()), a.axis ()[0], a.axis ()[1], a.axis ()[2]);
   
   vtkSmartPointer<vtkCubeSource> cube = vtkSmartPointer<vtkCubeSource>::New ();
@@ -271,7 +271,7 @@ pcl::visualization::createCone (const pcl::ModelCoefficients &coefficients)
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 vtkSmartPointer<vtkDataSet> 
-pcl::visualization::createSphere (const Eigen::Vector4f &center, double radius, int res)
+pcl::visualization::createSphere (const Eigen::Vector4d &center, double radius, int res)
 {
   // Set the sphere origin
   vtkSmartPointer<vtkTransform> t = vtkSmartPointer<vtkTransform>::New ();
@@ -294,7 +294,7 @@ pcl::visualization::createSphere (const Eigen::Vector4f &center, double radius, 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 vtkSmartPointer<vtkDataSet>
-pcl::visualization::createLine (const Eigen::Vector4f &pt1, const Eigen::Vector4f &pt2)
+pcl::visualization::createLine (const Eigen::Vector4d &pt1, const Eigen::Vector4d &pt2)
 {
   vtkSmartPointer<vtkLineSource> line = vtkSmartPointer<vtkLineSource>::New ();
   line->SetPoint1 (pt1.x (), pt1.y (), pt1.z ());

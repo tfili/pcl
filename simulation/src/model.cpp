@@ -20,18 +20,18 @@ pcl::simulation::TriangleMeshModel::TriangleMeshModel (pcl::PolygonMesh::Ptr plg
     PCL_DEBUG("Mesh polygons: %ld", plg->polygons.size ());
     PCL_DEBUG("Mesh points: %ld", newcloud.points.size ());
 
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i=0; i< plg->polygons.size (); ++i)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
       for(size_t j = 0; j < apoly_in.vertices.size (); ++j)
       { // each point
         uint32_t pt = apoly_in.vertices[j];
-        tmp = newcloud.points[pt].getVector4fMap();
-        vertices.push_back (Vertex (Eigen::Vector3f (tmp (0), tmp (1), tmp (2)),
-                                    Eigen::Vector3f (newcloud.points[pt].r/255.0f,
-                                                     newcloud.points[pt].g/255.0f,
-                                                     newcloud.points[pt].b/255.0f)));
+        tmp = newcloud.points[pt].getVector4dMap();
+        vertices.push_back (Vertex (Eigen::Vector3d (tmp (0), tmp (1), tmp (2)),
+                                    Eigen::Vector3d (newcloud.points[pt].r/255.0,
+                                                     newcloud.points[pt].g/255.0,
+                                                     newcloud.points[pt].b/255.0)));
         indices.push_back (indices.size ());
       }
     }
@@ -40,16 +40,16 @@ pcl::simulation::TriangleMeshModel::TriangleMeshModel (pcl::PolygonMesh::Ptr plg
   {
     pcl::PointCloud<pcl::PointXYZ> newcloud;
     pcl::fromPCLPointCloud2 (plg->cloud, newcloud);
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i=0; i< plg->polygons.size (); i++)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
         uint32_t pt = apoly_in.vertices[j];
-        tmp = newcloud.points[pt].getVector4fMap();
-        vertices.push_back (Vertex (Eigen::Vector3f (tmp (0), tmp (1), tmp (2)),
-                                    Eigen::Vector3f (1.0, 1.0, 1.0)));
+        tmp = newcloud.points[pt].getVector4dMap();
+        vertices.push_back (Vertex (Eigen::Vector3d (tmp (0), tmp (1), tmp (2)),
+                                    Eigen::Vector3d (1.0, 1.0, 1.0)));
         indices.push_back (indices.size ());
       }
     }
@@ -123,28 +123,28 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
   {
     pcl::PointCloud<pcl::PointXYZRGB> newcloud;  
     pcl::fromPCLPointCloud2 (plg->cloud, newcloud);
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i = 0; i< plg->polygons.size (); i++)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
       SinglePoly apoly;
       apoly.nvertices_ = apoly_in.vertices.size ();
-      apoly.vertices_ = new float[3*apoly_in.vertices.size ()];
-      apoly.colors_ = new float[4*apoly_in.vertices.size ()]; 
+      apoly.vertices_ = new double[3*apoly_in.vertices.size ()];
+      apoly.colors_ = new double[4*apoly_in.vertices.size ()]; 
 
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
 	uint32_t pt = apoly_in.vertices[j];
-	tmp = newcloud.points[pt].getVector4fMap ();
+	tmp = newcloud.points[pt].getVector4dMap ();
 	// x,y,z
 	apoly.vertices_[3*j + 0] = tmp (0);
 	apoly.vertices_[3*j + 1] = tmp (1);
 	apoly.vertices_[3*j + 2] = tmp (2);
 	// r,g,b: input is ints 0->255, opengl wants floats 0->1
-	apoly.colors_[4*j + 0] = newcloud.points[pt].r/255.0f; // Red
-	apoly.colors_[4*j + 1] = newcloud.points[pt].g/255.0f; // Green
-	apoly.colors_[4*j + 2] = newcloud.points[pt].b/255.0f; // Blue
-	apoly.colors_[4*j + 3] = 1.0f; // transparancy? unnecessary?
+	apoly.colors_[4*j + 0] = newcloud.points[pt].r/255.0; // Red
+	apoly.colors_[4*j + 1] = newcloud.points[pt].g/255.0; // Green
+	apoly.colors_[4*j + 2] = newcloud.points[pt].b/255.0; // Blue
+	apoly.colors_[4*j + 3] = 1.0; // transparancy? unnecessary?
       }
       polygons.push_back (apoly);
     }
@@ -153,27 +153,27 @@ pcl::simulation::PolygonMeshModel::PolygonMeshModel (GLenum mode, pcl::PolygonMe
   {
     pcl::PointCloud<pcl::PointXYZ> newcloud;  
     pcl::fromPCLPointCloud2 (plg->cloud, newcloud);
-    Eigen::Vector4f tmp;
+    Eigen::Vector4d tmp;
     for(size_t i=0; i< plg->polygons.size (); i++)
     { // each triangle/polygon
       pcl::Vertices apoly_in = plg->polygons[i];
       SinglePoly apoly;
       apoly.nvertices_ = apoly_in.vertices.size ();
-      apoly.vertices_ = new float [3*apoly_in.vertices.size ()];
-      apoly.colors_ = new float [4*apoly_in.vertices.size ()];
+      apoly.vertices_ = new double [3*apoly_in.vertices.size ()];
+      apoly.colors_ = new double [4*apoly_in.vertices.size ()];
 
       for(size_t j=0; j< apoly_in.vertices.size (); j++)
       { // each point
 	uint32_t pt = apoly_in.vertices[j];
-	tmp = newcloud.points[pt].getVector4fMap ();
+	tmp = newcloud.points[pt].getVector4dMap ();
 	// x,y,z
 	apoly.vertices_[3*j + 0] = tmp (0);
 	apoly.vertices_[3*j + 1] = tmp (1);
 	apoly.vertices_[3*j + 2] = tmp (2);
 	// r,g,b: input is ints 0->255, opengl wants floats 0->1
-	apoly.colors_[4*j + 0] = 1.0f; // Red
-	apoly.colors_[4*j + 1] = 0.0f; // Green
-	apoly.colors_[4*j + 2] = 0.0f; // Blue
+	apoly.colors_[4*j + 0] = 1.0; // Red
+	apoly.colors_[4*j + 1] = 0.0; // Green
+	apoly.colors_[4*j + 2] = 0.0; // Blue
 	apoly.colors_[4*j + 3] = 1.0;
       }
       polygons.push_back (apoly);
@@ -213,8 +213,8 @@ pcl::simulation::PolygonMeshModel::draw ()
 pcl::simulation::PointCloudModel::PointCloudModel (GLenum mode, pcl::PointCloud<pcl::PointXYZRGB>::Ptr pc) : mode_ (mode)
 {
   nvertices_ = pc->points.size ();
-  vertices_ = new float[3*nvertices_];
-  colors_ = new float[4*nvertices_];
+  vertices_ = new double[3*nvertices_];
+  colors_ = new double[4*nvertices_];
 
   for (size_t i = 0; i < pc->points.size (); ++i)
   {
@@ -222,9 +222,9 @@ pcl::simulation::PointCloudModel::PointCloudModel (GLenum mode, pcl::PointCloud<
     vertices_[3*i + 1] = pc->points[i].y;
     vertices_[3*i + 2] = pc->points[i].z;
 
-    colors_[4*i + 0] = pc->points[i].r / 255.0f;
-    colors_[4*i + 1] = pc->points[i].g / 255.0f;
-    colors_[4*i + 2] = pc->points[i].b / 255.0f;
+    colors_[4*i + 0] = pc->points[i].r / 255.0;
+    colors_[4*i + 1] = pc->points[i].g / 255.0;
+    colors_[4*i + 2] = pc->points[i].b / 255.0;
     colors_[4*i + 3] = 1.0;
   }
 }
@@ -243,9 +243,9 @@ pcl::simulation::PointCloudModel::draw ()
   glEnableClientState (GL_VERTEX_ARRAY);
   glEnableClientState (GL_COLOR_ARRAY);
 
-  float att[3] = {0.0f, 0.25f, 0.0f};
-  glPointParameterf(GL_POINT_SIZE_MIN, 1.0f);
-  glPointParameterf(GL_POINT_SIZE_MAX, 500.0f); 
+  double att[3] = {0.0, 0.25, 0.0};
+  glPointParameterf(GL_POINT_SIZE_MIN, 1.0);
+  glPointParameterf(GL_POINT_SIZE_MAX, 500.0); 
   glPointParameterfv(GL_POINT_DISTANCE_ATTENUATION, att);
   glEnable(GL_POINT_SPRITE);
 
@@ -263,7 +263,7 @@ pcl::simulation::PointCloudModel::draw ()
 pcl::simulation::Quad::Quad ()
 {
   // vertex pos: xyz , texture coord: uv
-  const static float vertices[20] = {-1.0, -1.0, 0.0, 0.0, 0.0,
+  const static double vertices[20] = {-1.0, -1.0, 0.0, 0.0, 0.0,
                                      -1.0,  1.0, 0.0, 0.0, 1.0,
                                       1.0,  1.0, 0.0, 1.0, 1.0,
                                       1.0, -1.0, 0.0, 1.0, 0.0 };
@@ -285,8 +285,8 @@ pcl::simulation::Quad::render ()
   glBindBuffer (GL_ARRAY_BUFFER, quad_vbo_);
   glEnableVertexAttribArray (0);
   glEnableVertexAttribArray (1);
-  glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof (float)*5, 0);
-  glVertexAttribPointer (1, 2, GL_FLOAT, GL_FALSE, sizeof (float)*5, (const GLvoid*)12);
+  glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof (double)*5, 0);
+  glVertexAttribPointer (1, 2, GL_FLOAT, GL_FALSE, sizeof (double)*5, (const GLvoid*)12);
 
   glDrawArrays (GL_QUADS, 0, 4);
 
@@ -299,7 +299,7 @@ pcl::simulation::TexturedQuad::TexturedQuad (int width, int height) : width_ (wi
 {
   program_ = gllib::Program::loadProgramFromFile ("single_texture.vert", "single_texture.frag");
   program_->use ();
-  Eigen::Matrix<float, 4, 4> MVP;
+  Eigen::Matrix<double, 4, 4> MVP;
   MVP.setIdentity();
   program_->setUniform ("MVP", MVP);
   glUseProgram (0);

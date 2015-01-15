@@ -51,7 +51,7 @@ namespace pcl
   {
     public:
       /** \brief Empty constructor for Region3D. */
-      Region3D () : centroid_ (Eigen::Vector3f::Zero ()), covariance_ (Eigen::Matrix3f::Identity ()), count_ (0)
+      Region3D () : centroid_ (Eigen::Vector3d::Zero ()), covariance_ (Eigen::Matrix3d::Identity ()), count_ (0)
       {
       }
       
@@ -60,7 +60,7 @@ namespace pcl
         * \param[in] covariance The covariance of the region.
         * \param[in] count The number of points in the region.
         */
-      Region3D (Eigen::Vector3f& centroid, Eigen::Matrix3f& covariance, unsigned count) 
+      Region3D (Eigen::Vector3d& centroid, Eigen::Matrix3d& covariance, unsigned count) 
         : centroid_ (centroid), covariance_ (covariance), count_ (count)
       {
       }
@@ -69,14 +69,14 @@ namespace pcl
       virtual ~Region3D () {}
 
       /** \brief Get the centroid of the region. */
-      inline Eigen::Vector3f 
+      inline Eigen::Vector3d 
       getCentroid () const
       {
         return (centroid_);
       }
       
       /** \brief Get the covariance of the region. */
-      inline Eigen::Matrix3f
+      inline Eigen::Matrix3d
       getCovariance () const
       {
         return (covariance_);
@@ -90,7 +90,7 @@ namespace pcl
       }
 
       /** \brief Get the curvature of the region. */
-      float
+      double
       getCurvature () const
       {
         return (curvature_);
@@ -98,23 +98,23 @@ namespace pcl
 
       /** \brief Set the curvature of the region. */
       void
-      setCurvature (float curvature)
+      setCurvature (double curvature)
       {
         curvature_ = curvature;
       }
 
     protected:
       /** \brief The centroid of the region. */
-      Eigen::Vector3f centroid_;
+      Eigen::Vector3d centroid_;
       
       /** \brief The covariance of the region. */
-      Eigen::Matrix3f covariance_;
+      Eigen::Matrix3d covariance_;
       
       /** \brief The number of points in the region. */
       unsigned count_;
 
       /** \brief The mean curvature of the region. */
-      float curvature_;
+      double curvature_;
       
     public:
       EIGEN_MAKE_ALIGNED_OPERATOR_NEW

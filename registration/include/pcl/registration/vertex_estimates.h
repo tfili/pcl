@@ -61,10 +61,10 @@ namespace pcl
     template <typename PointT>
     struct PoseEstimate
     {
-      Eigen::Matrix4f pose;
+      Eigen::Matrix4d pose;
       typename pcl::PointCloud<PointT>::ConstPtr cloud;
 
-      PoseEstimate (const Eigen::Matrix4f& p = Eigen::Matrix4f::Identity(),
+      PoseEstimate (const Eigen::Matrix4d& p = Eigen::Matrix4d::Identity(),
                     const typename pcl::PointCloud<PointT>::ConstPtr& c = typename pcl::PointCloud<PointT>::ConstPtr())
         : pose (p), cloud (c) {}
     };

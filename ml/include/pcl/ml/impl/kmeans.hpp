@@ -115,13 +115,13 @@ pcl::Kmeans<PointT>::cluster (std::vector<PointIndices> &clusters)
 
     std::cout << "x index: " << x_index << std::endl;
     
-    float x = 0.0;
-    memcpy (&x, &input_->points[0] + fields[x_index].offset, sizeof(float));
+    double x = 0.0;
+    memcpy (&x, &input_->points[0] + fields[x_index].offset, sizeof(double));
     
     std::cout << "xxx: " << x << std::endl;
     
 
-    //memcpy (&x, reinterpret_cast<float*> (&input_->points[0]) + x_index, sizeof (float));
+    //memcpy (&x, reinterpret_cast<double*> (&input_->points[0]) + x_index, sizeof (double));
     
 
     //int rgba_index = 1;

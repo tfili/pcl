@@ -57,18 +57,18 @@ pcl::StatisticalMultiscaleInterestRegionExtraction<PointT>::generateCloudGraph (
   kdtree.setInputCloud (input_);
 
   using namespace boost;
-  typedef property<edge_weight_t, float> Weight;
+  typedef property<edge_weight_t, double> Weight;
   typedef adjacency_list<vecS, vecS, undirectedS, no_property, Weight> Graph;
   Graph cloud_graph;
 
   for (size_t point_i = 0; point_i < input_->points.size (); ++point_i)
   {
     std::vector<int> k_indices (16);
-    std::vector<float> k_distances (16);
+    std::vector<double> k_distances (16);
     kdtree.nearestKSearch (static_cast<int> (point_i), 16, k_indices, k_distances);
 
     for (int k_i = 0; k_i < static_cast<int> (k_indices.size ()); ++k_i)
-      add_edge (point_i, k_indices[k_i], Weight (sqrtf (k_distances[k_i])), cloud_graph);
+      add_edge (point_i, k_indices[k_i], Weight (sqrt (k_distances[k_i])), cloud_graph);
   }
 
   const size_t E = num_edges (cloud_graph),
@@ -77,7 +77,7 @@ pcl::StatisticalMultiscaleInterestRegionExtraction<PointT>::generateCloudGraph (
   geodesic_distances_.clear ();
   for (size_t i = 0; i < V; ++i)
   {
-    std::vector<float> aux (V);
+    std::vector<double> aux (V);
     geodesic_distances_.push_back (aux);
   }
   johnson_all_pairs_shortest_paths (cloud_graph, geodesic_distances_);
@@ -108,7 +108,7 @@ pcl::StatisticalMultiscaleInterestRegionExtraction<PointT>::initCompute ()
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::StatisticalMultiscaleInterestRegionExtraction<PointT>::geodesicFixedRadiusSearch (size_t &query_index,
-                                                                                       float &radius,
+                                                                                       double &radius,
                                                                                        std::vector<int> &result_indices)
 {
   for (size_t i = 0; i < geodesic_distances_[query_index].size (); ++i)
@@ -143,23 +143,23 @@ pcl::StatisticalMultiscaleInterestRegionExtraction<PointT>::computeF ()
 
   // declare and initialize data structure
   F_scales_.resize (scale_values_.size ());
-  std::vector<float> point_density (input_->points.size ()),
+  std::vector<double> point_density (input_->points.size ()),
           F (input_->points.size ());
-  std::vector<std::vector<float> > phi (input_->points.size ());
-  std::vector<float> phi_row (input_->points.size ());
+  std::vector<std::vector<double> > phi (input_->points.size ());
+  std::vector<double> phi_row (input_->points.size ());
 
   for (size_t scale_i = 0; scale_i < scale_values_.size (); ++scale_i)
   {
-    float scale_squared = scale_values_[scale_i] * scale_values_[scale_i];
+    double scale_squared = scale_values_[scale_i] * scale_values_[scale_i];
 
     // calculate point density for each point x_i
     for (size_t point_i = 0; point_i < input_->points.size (); ++point_i)
     {
-      float point_density_i = 0.0;
+      double point_density_i = 0.0;
       for (size_t point_j = 0; point_j < input_->points.size (); ++point_j)
       {
-        float d_g = geodesic_distances_[point_i][point_j];
-        float phi_i_j = 1.0f / sqrtf (2.0f * static_cast<float> (M_PI) * scale_squared) * expf ( (-1) * d_g*d_g / (2.0f * scale_squared));
+        double d_g = geodesic_distances_[point_i][point_j];
+        double phi_i_j = 1.0 / sqrt (2.0 * static_cast<double> (M_PI) * scale_squared) * exp ( (-1) * d_g*d_g / (2.0 * scale_squared));
 
         point_density_i += phi_i_j;
         phi_row[point_j] = phi_i_j;
@@ -171,11 +171,11 @@ pcl::StatisticalMultiscaleInterestRegionExtraction<PointT>::computeF ()
     // compute weights for each pair (x_i, x_j), evaluate the operator A_hat
     for (size_t point_i = 0; point_i < input_->points.size (); ++point_i)
     {
-      float A_hat_normalization = 0.0;
+      double A_hat_normalization = 0.0;
       PointT A_hat; A_hat.x = A_hat.y = A_hat.z = 0.0;
       for (size_t point_j = 0; point_j < input_->points.size (); ++point_j)
       {
-        float phi_hat_i_j = phi[point_i][point_j] / (point_density[point_i] * point_density[point_j]);
+        double phi_hat_i_j = phi[point_i][point_j] / (point_density[point_i] * point_density[point_j]);
         A_hat_normalization += phi_hat_i_j;
 
         PointT aux = input_->points[point_j];
@@ -186,8 +186,8 @@ pcl::StatisticalMultiscaleInterestRegionExtraction<PointT>::computeF ()
       A_hat.x /= A_hat_normalization; A_hat.y /= A_hat_normalization; A_hat.z /= A_hat_normalization;
 
       // compute the invariant F
-      float aux = 2.0f / scale_values_[scale_i] * euclideanDistance<PointT, PointT> (A_hat, input_->points[point_i]);
-      F[point_i] = aux * expf (-aux);
+      double aux = 2.0 / scale_values_[scale_i] * euclideanDistance<PointT, PointT> (A_hat, input_->points[point_i]);
+      F[point_i] = aux * exp (-aux);
     }
 
     F_scales_[scale_i] = F;

@@ -62,18 +62,18 @@ struct pcl::ImageGrabberBase::ImageGrabberImpl
   //! Implementation of ImageGrabber
   ImageGrabberImpl (pcl::ImageGrabberBase& grabber, 
                     const std::string& dir, 
-                    float frames_per_second, 
+                    double frames_per_second, 
                     bool repeat, 
                     bool pclzf_mode=false);
   //! For now, split rgb / depth folders only makes sense for VTK images
   ImageGrabberImpl (pcl::ImageGrabberBase& grabber, 
                     const std::string& rgb_dir, 
                     const std::string& depth_dir, 
-                    float frames_per_second, 
+                    double frames_per_second, 
                     bool repeat);
   ImageGrabberImpl (pcl::ImageGrabberBase& grabber, 
                     const std::vector<std::string>& depth_image_files, 
-                    float frames_per_second, 
+                    double frames_per_second, 
                     bool repeat);
   
   void 
@@ -84,15 +84,15 @@ struct pcl::ImageGrabberBase::ImageGrabberImpl
   
   //! Get cloud at a particular location
   bool
-  getCloudAt (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+  getCloudAt (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
               double &fx, double &fy, double &cx, double &cy) const;
   
   //! Get cloud at a particular location
   bool
-  getCloudVTK (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4f &origin, Eigen::Quaternionf &orientation) const;
+  getCloudVTK (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4d &origin, Eigen::Quaterniond &orientation) const;
   //! Get cloud at a particular location
   bool
-  getCloudPCLZF (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+  getCloudPCLZF (size_t idx, pcl::PCLPointCloud2 &blob, Eigen::Vector4d &origin, Eigen::Quaterniond &orientation,
                  double &fx, double &fy, double &cx, double &cy) const;
 
   //! Scrapes a directory for image files which contain "rgb" or "depth" and
@@ -132,7 +132,7 @@ struct pcl::ImageGrabberBase::ImageGrabberImpl
 #endif//PCL_BUILT_WITH_VTK
   
   pcl::ImageGrabberBase& grabber_;
-  float frames_per_second_;
+  double frames_per_second_;
   bool repeat_;
   bool running_;
   // VTK
@@ -151,15 +151,15 @@ struct pcl::ImageGrabberBase::ImageGrabberImpl
   //! Two cases, for depth only and depth+color
   pcl::PointCloud<pcl::PointXYZ> next_cloud_depth_;
   pcl::PointCloud<pcl::PointXYZRGBA> next_cloud_color_;
-  Eigen::Vector4f origin_;
-  Eigen::Quaternionf orientation_;
+  Eigen::Vector4d origin_;
+  Eigen::Quaterniond orientation_;
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   bool valid_;
   //! Flag to say if a user set the focal length by hand
   //  (so we don't attempt to adjust for QVGA, QQVGA, etc).
   bool pclzf_mode_;
 
-  float depth_image_units_;
+  double depth_image_units_;
 
   bool manual_intrinsics_;
   double focal_length_x_;
@@ -173,7 +173,7 @@ struct pcl::ImageGrabberBase::ImageGrabberImpl
 ///////////////////////////////////////////////////////////////////////////////////////////
 pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase& grabber, 
                                                            const std::string& dir, 
-                                                           float frames_per_second, 
+                                                           double frames_per_second, 
                                                            bool repeat, 
                                                            bool pclzf_mode)
   : grabber_ (grabber)
@@ -182,7 +182,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
   , running_ (false)
   , depth_image_files_ ()
   , rgb_image_files_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&ImageGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&ImageGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -211,7 +211,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
 pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase& grabber, 
                                                            const std::string& depth_dir, 
                                                            const std::string& rgb_dir, 
-                                                           float frames_per_second, 
+                                                           double frames_per_second, 
                                                            bool repeat)
   : grabber_ (grabber)
   , frames_per_second_ (frames_per_second)
@@ -219,7 +219,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
   , running_ (false)
   , depth_image_files_ ()
   , rgb_image_files_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&ImageGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&ImageGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -240,7 +240,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
 ///////////////////////////////////////////////////////////////////////////////////////////
 pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase& grabber, 
                                                            const std::vector<std::string>& depth_image_files, 
-                                                           float frames_per_second, 
+                                                           double frames_per_second, 
                                                            bool repeat)
   : grabber_ (grabber)
   , frames_per_second_ (frames_per_second)
@@ -248,7 +248,7 @@ pcl::ImageGrabberBase::ImageGrabberImpl::ImageGrabberImpl (pcl::ImageGrabberBase
   , running_ (false)
   , depth_image_files_ ()
   , rgb_image_files_ ()
-  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001f)), boost::bind (&ImageGrabberImpl::trigger, this))
+  , time_trigger_ (1.0 / static_cast<double> (std::max (frames_per_second, 0.001)), boost::bind (&ImageGrabberImpl::trigger, this))
   , next_cloud_ ()
   , origin_ ()
   , orientation_ ()
@@ -518,8 +518,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getTimestampFromFilepath (
 bool
 pcl::ImageGrabberBase::ImageGrabberImpl::getCloudAt (size_t idx, 
                                                      pcl::PCLPointCloud2 &blob,
-                                                     Eigen::Vector4f &origin, 
-                                                     Eigen::Quaternionf &orientation, 
+                                                     Eigen::Vector4d &origin, 
+                                                     Eigen::Quaterniond &orientation, 
                                                      double &fx, 
                                                      double &fy, 
                                                      double &cx, 
@@ -545,8 +545,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudAt (size_t idx,
 bool
 pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx, 
                                                       pcl::PCLPointCloud2 &blob,
-                                                      Eigen::Vector4f &origin, 
-                                                      Eigen::Quaternionf &orientation) const
+                                                      Eigen::Vector4d &origin, 
+                                                      Eigen::Quaterniond &orientation) const
 {
 #ifdef PCL_BUILT_WITH_VTK
   if (idx > depth_image_files_.size ())
@@ -578,21 +578,21 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
   depth_pixel = static_cast<unsigned short*>(depth_image->GetScalarPointer ());
   
   // Set up intrinsics
-  float scaleFactorX, scaleFactorY;
-  float centerX, centerY;
+  double scaleFactorX, scaleFactorY;
+  double centerX, centerY;
   if (manual_intrinsics_)
   {
-    scaleFactorX = 1.f / static_cast<float> (focal_length_x_);
-    scaleFactorY = 1.f / static_cast<float> (focal_length_y_);
-    centerX = static_cast<float> (principal_point_x_);
-    centerY = static_cast<float> (principal_point_y_);
+    scaleFactorX = 1. / static_cast<double> (focal_length_x_);
+    scaleFactorY = 1. / static_cast<double> (focal_length_y_);
+    centerX = static_cast<double> (principal_point_x_);
+    centerY = static_cast<double> (principal_point_y_);
   }
   else
   {
     // The 525 factor default is only true for VGA. If not, we should scale
-    scaleFactorX = scaleFactorY = 1/525.f * 640.f / static_cast<float> (dims[0]);
-    centerX = ((float)dims[0] - 1.f)/2.f;
-    centerY = ((float)dims[1] - 1.f)/2.f;
+    scaleFactorX = scaleFactorY = 1/525. * 640. / static_cast<double> (dims[0]);
+    centerX = ((double)dims[0] - 1.)/2.;
+    centerY = ((double)dims[1] - 1.)/2.;
   }
 
   if(rgb_image_files_.size() > 0)
@@ -608,13 +608,13 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
       for (int x = 0; x < dims[0]; ++x, ++depth_pixel)
       {
         pcl::PointXYZRGBA &pt = cloud_color.at (x,y);
-        float depth = static_cast<float> (*depth_pixel) * depth_image_units_;
-        if (depth == 0.0f) 
-          pt.x = pt.y = pt.z = std::numeric_limits<float>::quiet_NaN ();
+        double depth = static_cast<double> (*depth_pixel) * depth_image_units_;
+        if (depth == 0.0) 
+          pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
         else
         {
-          pt.x = (static_cast<float> (x) - centerX) * scaleFactorX * depth;
-          pt.y = (static_cast<float> (y) - centerY) * scaleFactorY * depth; 
+          pt.x = (static_cast<double> (x) - centerX) * scaleFactorX * depth;
+          pt.y = (static_cast<double> (y) - centerY) * scaleFactorY * depth; 
           pt.z = depth;
         }
 
@@ -645,13 +645,13 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
       for (int x = 0; x < dims[0]; ++x, ++depth_pixel)
       {
         pcl::PointXYZ &pt = cloud.at (x,y);
-        float depth = static_cast<float> (*depth_pixel) * depth_image_units_;
-        if (depth == 0.0f) 
-          pt.x = pt.y = pt.z = std::numeric_limits<float>::quiet_NaN ();
+        double depth = static_cast<double> (*depth_pixel) * depth_image_units_;
+        if (depth == 0.0) 
+          pt.x = pt.y = pt.z = std::numeric_limits<double>::quiet_NaN ();
         else
         {
-          pt.x = ((float)x - centerX) * scaleFactorX * depth;
-          pt.y = ((float)y - centerY) * scaleFactorY * depth; 
+          pt.x = ((double)x - centerX) * scaleFactorX * depth;
+          pt.y = ((double)y - centerY) * scaleFactorY * depth; 
           pt.z = depth;
         }
       }
@@ -666,8 +666,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
     pcl::toPCLPointCloud2 (cloud, blob);
   }
   // Origin 0, orientation is forward
-  origin = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  origin = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
 
   return (true);
 #else
@@ -680,8 +680,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudVTK (size_t idx,
 bool
 pcl::ImageGrabberBase::ImageGrabberImpl::getCloudPCLZF (size_t idx, 
                                                         pcl::PCLPointCloud2 &blob,
-                                                        Eigen::Vector4f &origin, 
-                                                        Eigen::Quaternionf &orientation, 
+                                                        Eigen::Vector4d &origin, 
+                                                        Eigen::Quaterniond &orientation, 
                                                         double &fx, 
                                                         double &fy, 
                                                         double &cx, 
@@ -798,8 +798,8 @@ pcl::ImageGrabberBase::ImageGrabberImpl::getCloudPCLZF (size_t idx,
   }
 
   // Origin 0, orientation is forward
-  origin = Eigen::Vector4f::Zero ();
-  orientation = Eigen::Quaternionf::Identity ();
+  origin = Eigen::Vector4d::Zero ();
+  orientation = Eigen::Quaterniond::Identity ();
   return (true);
 }     
    
@@ -873,19 +873,19 @@ pcl::ImageGrabberBase::ImageGrabberImpl::numFrames () const
 }
 
 //////////////////////// GrabberBase //////////////////////
-pcl::ImageGrabberBase::ImageGrabberBase (const std::string& directory, float frames_per_second, bool repeat, bool pclzf_mode)
+pcl::ImageGrabberBase::ImageGrabberBase (const std::string& directory, double frames_per_second, bool repeat, bool pclzf_mode)
   : impl_ (new ImageGrabberImpl (*this, directory, frames_per_second, repeat, pclzf_mode))
 {
 }
 
 //////////////////////////////////////////////////////////
-pcl::ImageGrabberBase::ImageGrabberBase (const std::string& rgb_dir, const std::string &depth_dir, float frames_per_second, bool repeat)
+pcl::ImageGrabberBase::ImageGrabberBase (const std::string& rgb_dir, const std::string &depth_dir, double frames_per_second, bool repeat)
   : impl_ (new ImageGrabberImpl (*this, rgb_dir, depth_dir, frames_per_second, repeat))
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-pcl::ImageGrabberBase::ImageGrabberBase (const std::vector<std::string>& depth_image_files, float frames_per_second, bool repeat)
+pcl::ImageGrabberBase::ImageGrabberBase (const std::vector<std::string>& depth_image_files, double frames_per_second, bool repeat)
   : impl_ (new ImageGrabberImpl (*this, depth_image_files, frames_per_second, repeat))
 {
 }
@@ -952,7 +952,7 @@ pcl::ImageGrabberBase::rewind ()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-float 
+double 
 pcl::ImageGrabberBase::getFramesPerSecond () const
 {
   return (impl_->frames_per_second_);
@@ -1010,7 +1010,7 @@ pcl::ImageGrabberBase::getCameraIntrinsics (double &focal_length_x,
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 void
-pcl::ImageGrabberBase::setDepthImageUnits (const float units)
+pcl::ImageGrabberBase::setDepthImageUnits (const double units)
 {
   impl_->depth_image_units_ = units;
 }
@@ -1025,8 +1025,8 @@ pcl::ImageGrabberBase::numFrames () const
 bool
 pcl::ImageGrabberBase::getCloudAt (size_t idx,
                                    pcl::PCLPointCloud2 &blob,
-                                   Eigen::Vector4f &origin, 
-                                   Eigen::Quaternionf &orientation) const
+                                   Eigen::Vector4d &origin, 
+                                   Eigen::Quaterniond &orientation) const
 {
   double fx, fy, cx, cy;
   return (impl_->getCloudAt (idx, blob, origin, orientation, fx, fy, cx, cy));

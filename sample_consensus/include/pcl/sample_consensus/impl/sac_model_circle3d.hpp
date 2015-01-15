@@ -65,7 +65,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::isSampleGood (
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> bool
-pcl::SampleConsensusModelCircle3D<PointT>::computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelCircle3D<PointT>::computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXd &model_coefficients)
 {
   // Need 3 samples
   if (samples.size () != 3)
@@ -102,20 +102,20 @@ pcl::SampleConsensusModelCircle3D<PointT>::computeModelCoefficients (const std::
   double circle_radius = circle_radiusVector.norm ();
   Eigen::Vector3d circle_normal = common_helper_vec.normalized (); 
 
-  model_coefficients[0] = static_cast<float> (circle_center[0]);
-  model_coefficients[1] = static_cast<float> (circle_center[1]);
-  model_coefficients[2] = static_cast<float> (circle_center[2]);
-  model_coefficients[3] = static_cast<float> (circle_radius);
-  model_coefficients[4] = static_cast<float> (circle_normal[0]);
-  model_coefficients[5] = static_cast<float> (circle_normal[1]);
-  model_coefficients[6] = static_cast<float> (circle_normal[2]);
+  model_coefficients[0] = static_cast<double> (circle_center[0]);
+  model_coefficients[1] = static_cast<double> (circle_center[1]);
+  model_coefficients[2] = static_cast<double> (circle_center[2]);
+  model_coefficients[3] = static_cast<double> (circle_radius);
+  model_coefficients[4] = static_cast<double> (circle_normal[0]);
+  model_coefficients[5] = static_cast<double> (circle_normal[1]);
+  model_coefficients[6] = static_cast<double> (circle_normal[2]);
    
  return (true);
 }
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
-pcl::SampleConsensusModelCircle3D<PointT>::getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances)
+pcl::SampleConsensusModelCircle3D<PointT>::getDistancesToModel (const Eigen::VectorXd &model_coefficients, std::vector<double> &distances)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -163,7 +163,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::getDistancesToModel (const Eigen::Vec
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::SampleConsensusModelCircle3D<PointT>::selectWithinDistance (
-    const Eigen::VectorXf &model_coefficients, const double threshold,
+    const Eigen::VectorXd &model_coefficients, const double threshold,
     std::vector<int> &inliers)
 {
   // Check if the model is valid given the user constraints
@@ -212,7 +212,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::selectWithinDistance (
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> int
 pcl::SampleConsensusModelCircle3D<PointT>::countWithinDistance (
-    const Eigen::VectorXf &model_coefficients, const double threshold)
+    const Eigen::VectorXd &model_coefficients, const double threshold)
 {
   // Check if the model is valid given the user constraints
   if (!isModelValid (model_coefficients))
@@ -254,8 +254,8 @@ pcl::SampleConsensusModelCircle3D<PointT>::countWithinDistance (
 template <typename PointT> void
 pcl::SampleConsensusModelCircle3D<PointT>::optimizeModelCoefficients (
       const std::vector<int> &inliers, 
-      const Eigen::VectorXf &model_coefficients, 
-      Eigen::VectorXf &optimized_coefficients)
+      const Eigen::VectorXd &model_coefficients, 
+      Eigen::VectorXd &optimized_coefficients)
 {
   optimized_coefficients = model_coefficients;
 
@@ -281,7 +281,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::optimizeModelCoefficients (
   Eigen::VectorXd coeff;
   int info = lm.minimize (coeff);
   for (int i = 0; i < coeff.size (); ++i)
-    optimized_coefficients[i] = static_cast<float> (coeff[i]);
+    optimized_coefficients[i] = static_cast<double> (coeff[i]);
 
   // Compute the L2 norm of the residuals
   PCL_DEBUG ("[pcl::SampleConsensusModelCircle3D::optimizeModelCoefficients] LM solver finished with exit code %i, having a residual norm of %g. \nInitial solution: %g %g %g %g %g %g %g \nFinal solution: %g %g %g %g %g %g %g\n",
@@ -291,7 +291,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::optimizeModelCoefficients (
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> void
 pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
-      const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients,
+      const std::vector<int> &inliers, const Eigen::VectorXd &model_coefficients,
       PointCloud &projected_points, bool copy_data_fields)
 {
   // Needs a valid set of model coefficients
@@ -333,7 +333,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
 
       Eigen::Vector3d helper_vectorPC = P - C;
       // 1.1. get line parameter
-      //float lambda = (helper_vectorPC.dot(N)) / N.squaredNorm() ;
+      //double lambda = (helper_vectorPC.dot(N)) / N.squaredNorm() ;
       double lambda = (-(helper_vectorPC.dot (N))) / N.dot (N);
       // Projected Point on plane
       Eigen::Vector3d P_proj = P + lambda * N;
@@ -342,9 +342,9 @@ pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
       // K : Point on Circle
       Eigen::Vector3d K = C + r * helper_vectorP_projC.normalized ();
 
-      projected_points.points[i].x = static_cast<float> (K[0]);
-      projected_points.points[i].y = static_cast<float> (K[1]);
-      projected_points.points[i].z = static_cast<float> (K[2]);
+      projected_points.points[i].x = static_cast<double> (K[0]);
+      projected_points.points[i].y = static_cast<double> (K[1]);
+      projected_points.points[i].z = static_cast<double> (K[2]);
     }
   }
   else
@@ -383,9 +383,9 @@ pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
       // K : Point on Circle
       Eigen::Vector3d K = C + r * helper_vectorP_projC.normalized ();
 
-      projected_points.points[i].x = static_cast<float> (K[0]);
-      projected_points.points[i].y = static_cast<float> (K[1]);
-      projected_points.points[i].z = static_cast<float> (K[2]);
+      projected_points.points[i].x = static_cast<double> (K[0]);
+      projected_points.points[i].y = static_cast<double> (K[1]);
+      projected_points.points[i].z = static_cast<double> (K[2]);
     }
   }
 }
@@ -394,7 +394,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::projectPoints (
 template <typename PointT> bool
 pcl::SampleConsensusModelCircle3D<PointT>::doSamplesVerifyModel (
       const std::set<int> &indices, 
-      const Eigen::VectorXf &model_coefficients, 
+      const Eigen::VectorXd &model_coefficients, 
       const double threshold)
 {
   // Needs a valid model coefficients
@@ -437,7 +437,7 @@ pcl::SampleConsensusModelCircle3D<PointT>::doSamplesVerifyModel (
 
 //////////////////////////////////////////////////////////////////////////
 template <typename PointT> bool
-pcl::SampleConsensusModelCircle3D<PointT>::isModelValid (const Eigen::VectorXf &model_coefficients)
+pcl::SampleConsensusModelCircle3D<PointT>::isModelValid (const Eigen::VectorXd &model_coefficients)
 {
   // Needs a valid model coefficients
   if (model_coefficients.size () != 7)

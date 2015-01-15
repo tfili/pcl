@@ -54,8 +54,8 @@ int    default_min = 100;
 int    default_max = 25000;
 double default_tolerance = 0.02;
 
-Eigen::Vector4f    translation;
-Eigen::Quaternionf orientation;
+Eigen::Vector4d    translation;
+Eigen::Quaterniond orientation;
 
 void
 printHelp (int, char **argv)

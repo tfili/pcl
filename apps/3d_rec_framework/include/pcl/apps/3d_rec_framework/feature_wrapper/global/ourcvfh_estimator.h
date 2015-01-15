@@ -25,15 +25,15 @@ namespace pcl
         typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
         using GlobalEstimator<PointInT, FeatureT>::normal_estimator_;
         using GlobalEstimator<PointInT, FeatureT>::normals_;
-        float eps_angle_threshold_;
-        float curvature_threshold_;
-        float cluster_tolerance_factor_;
+        double eps_angle_threshold_;
+        double curvature_threshold_;
+        double cluster_tolerance_factor_;
         bool normalize_bins_;
         bool adaptative_MLS_;
-        float refine_factor_;
+        double refine_factor_;
 
         std::vector<bool> valid_roll_transforms_;
-        std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > transforms_;
+        std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > transforms_;
         std::vector<pcl::PointIndices> cluster_indices_;
 
       public:
@@ -41,14 +41,14 @@ namespace pcl
         OURCVFHEstimator ()
         {
           eps_angle_threshold_ = 0.13f;
-          curvature_threshold_ = 0.035f;
+          curvature_threshold_ = 0.035;
           normalize_bins_ = true;
-          cluster_tolerance_factor_ = 3.f;
+          cluster_tolerance_factor_ = 3.;
           adaptative_MLS_ = false;
         }
 
         void
-        setCVFHParams (float p1, float p2, float p3)
+        setCVFHParams (double p1, double p2, double p3)
         {
           eps_angle_threshold_ = p1;
           curvature_threshold_ = p2;
@@ -62,7 +62,7 @@ namespace pcl
         }
 
         void
-        setRefineClustersParam (float p4)
+        setRefineClustersParam (double p4)
         {
           refine_factor_ = p4;
         }
@@ -74,14 +74,14 @@ namespace pcl
         }
 
         void
-        getTransformsVec (std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & trans)
+        getTransformsVec (std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > & trans)
         {
           trans = transforms_;
         }
 
         virtual void
         estimate (PointInTPtr & in, PointInTPtr & processed, typename pcl::PointCloud<FeatureT>::CloudVectorType & signatures,
-                  std::vector<Eigen::Vector3f> & centroids)
+                  std::vector<Eigen::Vector3d> & centroids)
         {
 
           valid_roll_transforms_.clear ();
@@ -97,10 +97,10 @@ namespace pcl
           if (adaptative_MLS_)
           {
             typename search::KdTree<PointInT>::Ptr tree;
-            Eigen::Vector4f centroid_cluster;
+            Eigen::Vector4d centroid_cluster;
             pcl::compute3DCentroid (*in, centroid_cluster);
-            float dist_to_sensor = centroid_cluster.norm ();
-            float sigma = dist_to_sensor * 0.01f;
+            double dist_to_sensor = centroid_cluster.norm ();
+            double sigma = dist_to_sensor * 0.01;
             mls.setSearchMethod (tree);
             mls.setSearchRadius (sigma);
             mls.setUpsamplingMethod (mls.SAMPLE_LOCAL_PLANE);
@@ -144,8 +144,8 @@ namespace pcl
           cvfh.setNormalizeBins (normalize_bins_);
           cvfh.setRefineClusters(refine_factor_);
 
-          float radius = normal_estimator_->normal_radius_;
-          float cluster_tolerance_radius = normal_estimator_->grid_resolution_ * cluster_tolerance_factor_;
+          double radius = normal_estimator_->normal_radius_;
+          double cluster_tolerance_radius = normal_estimator_->grid_resolution_ * cluster_tolerance_factor_;
 
           if (normal_estimator_->compute_mesh_resolution_)
           {

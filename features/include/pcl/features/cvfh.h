@@ -82,11 +82,11 @@ namespace pcl
       /** \brief Empty constructor. */
       CVFHEstimation () :
         vpx_ (0), vpy_ (0), vpz_ (0), 
-        leaf_size_ (0.005f), 
+        leaf_size_ (0.005), 
         normalize_bins_ (false),
         curv_threshold_ (0.03f), 
         cluster_tolerance_ (leaf_size_ * 3), 
-        eps_angle_threshold_ (0.125f), 
+        eps_angle_threshold_ (0.125), 
         min_points_ (50),
         radius_normals_ (leaf_size_ * 3),
         centroids_dominant_orientations_ (),
@@ -107,7 +107,7 @@ namespace pcl
         */
       void
       filterNormalsWithHighCurvature (const pcl::PointCloud<PointNT> & cloud, std::vector<int> & indices_to_use, std::vector<int> &indices_out,
-                                      std::vector<int> &indices_in, float threshold);
+                                      std::vector<int> &indices_in, double threshold);
 
       /** \brief Set the viewpoint.
         * \param[in] vpx the X coordinate of the viewpoint
@@ -115,7 +115,7 @@ namespace pcl
         * \param[in] vpz the Z coordinate of the viewpoint
         */
       inline void
-      setViewPoint (float vpx, float vpy, float vpz)
+      setViewPoint (double vpx, double vpy, double vpz)
       {
         vpx_ = vpx;
         vpy_ = vpy;
@@ -126,7 +126,7 @@ namespace pcl
         * \param[in] radius_normals the radius
         */
       inline void
-      setRadiusNormals (float radius_normals)
+      setRadiusNormals (double radius_normals)
       {
         radius_normals_ = radius_normals;
       }
@@ -137,7 +137,7 @@ namespace pcl
         * \param[out] vpz the Z coordinate of the viewpoint
         */
       inline void
-      getViewPoint (float &vpx, float &vpy, float &vpz)
+      getViewPoint (double &vpx, double &vpy, double &vpz)
       {
         vpx = vpx_;
         vpy = vpy_;
@@ -148,7 +148,7 @@ namespace pcl
         * \param[out] centroids vector to hold the centroids
         */
       inline void
-      getCentroidClusters (std::vector<Eigen::Vector3f> & centroids)
+      getCentroidClusters (std::vector<Eigen::Vector3d> & centroids)
       {
         for (size_t i = 0; i < centroids_dominant_orientations_.size (); ++i)
           centroids.push_back (centroids_dominant_orientations_[i]);
@@ -158,7 +158,7 @@ namespace pcl
         * \param[out] centroids vector to hold the normal centroids
         */
       inline void
-      getCentroidNormalClusters (std::vector<Eigen::Vector3f> & centroids)
+      getCentroidNormalClusters (std::vector<Eigen::Vector3d> & centroids)
       {
         for (size_t i = 0; i < dominant_normals_.size (); ++i)
           centroids.push_back (dominant_normals_[i]);
@@ -169,7 +169,7 @@ namespace pcl
         */
 
       inline void
-      setClusterTolerance (float d)
+      setClusterTolerance (double d)
       {
         cluster_tolerance_ = d;
       }
@@ -178,7 +178,7 @@ namespace pcl
         * \param[in] d the maximum deviation 
         */
       inline void
-      setEPSAngleThreshold (float d)
+      setEPSAngleThreshold (double d)
       {
         eps_angle_threshold_ = d;
       }
@@ -187,7 +187,7 @@ namespace pcl
         * \param[in] d the curvature threshold 
         */
       inline void
-      setCurvatureThreshold (float d)
+      setCurvatureThreshold (double d)
       {
         curv_threshold_ = d;
       }
@@ -220,24 +220,24 @@ namespace pcl
       /** \brief Values describing the viewpoint ("pinhole" camera model assumed). 
         * By default, the viewpoint is set to 0,0,0.
         */
-      float vpx_, vpy_, vpz_;
+      double vpx_, vpy_, vpz_;
 
       /** \brief Size of the voxels after voxel gridding. IMPORTANT: Must match the voxel 
         * size of the training data or the normalize_bins_ flag must be set to true.
         */
-      float leaf_size_;
+      double leaf_size_;
 
       /** \brief Wether to normalize the signatures or not. Default: false. */
       bool normalize_bins_;
 
       /** \brief Curvature threshold for removing normals. */
-      float curv_threshold_;
+      double curv_threshold_;
 
       /** \brief allowed Euclidean distance between points to be added to the cluster. */
-      float cluster_tolerance_;
+      double cluster_tolerance_;
 
       /** \brief deviation of the normals between two points so they can be clustered together. */
-      float eps_angle_threshold_;
+      double eps_angle_threshold_;
 
       /** \brief Minimum amount of points in a clustered region to be considered stable for CVFH
         * computation.
@@ -245,7 +245,7 @@ namespace pcl
       size_t min_points_;
 
       /** \brief Radius for the normals computation. */
-      float radius_normals_;
+      double radius_normals_;
 
       /** \brief Estimate the Clustered Viewpoint Feature Histograms (CVFH) descriptors at 
         * a set of points given by <setInputCloud (), setIndices ()> using the surface in
@@ -272,7 +272,7 @@ namespace pcl
         */
       void
       extractEuclideanClustersSmooth (const pcl::PointCloud<pcl::PointNormal> &cloud,
-                                      const pcl::PointCloud<pcl::PointNormal> &normals, float tolerance,
+                                      const pcl::PointCloud<pcl::PointNormal> &normals, double tolerance,
                                       const pcl::search::Search<pcl::PointNormal>::Ptr &tree,
                                       std::vector<pcl::PointIndices> &clusters, double eps_angle,
                                       unsigned int min_pts_per_cluster = 1,
@@ -280,9 +280,9 @@ namespace pcl
 
     protected:
       /** \brief Centroids that were used to compute different CVFH descriptors */
-      std::vector<Eigen::Vector3f> centroids_dominant_orientations_;
+      std::vector<Eigen::Vector3d> centroids_dominant_orientations_;
       /** \brief Normal centroids that were used to compute different CVFH descriptors */
-      std::vector<Eigen::Vector3f> dominant_normals_;
+      std::vector<Eigen::Vector3d> dominant_normals_;
   };
 }
 

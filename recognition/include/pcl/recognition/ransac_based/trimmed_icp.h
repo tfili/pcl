@@ -69,7 +69,7 @@ namespace pcl
 
       public:
         TrimmedICP ()
-        : new_to_old_energy_ratio_ (0.99f)
+        : new_to_old_energy_ratio_ (0.99)
         {}
 
         virtual ~TrimmedICP ()
@@ -114,8 +114,8 @@ namespace pcl
           // Some variables for the closest point search
           pcl::PointXYZ transformed_source_point;
           std::vector<int> target_index (1);
-          std::vector<float> sqr_dist_to_target (1);
-          float old_energy, energy = std::numeric_limits<float>::max ();
+          std::vector<double> sqr_dist_to_target (1);
+          double old_energy, energy = std::numeric_limits<double>::max ();
 
 //          printf ("\nalign\n");
 
@@ -140,7 +140,7 @@ namespace pcl
             std::sort (full_src_to_tgt.begin (), full_src_to_tgt.end (), TrimmedICP::compareCorrespondences);
 
             old_energy = energy;
-            energy = 0.0f;
+            energy = 0.0;
 
             // Now, setup the trimmed correspondences used for the transform estimation
             for ( int i = 0 ; i < num_trimmed_source_points ; ++i )
@@ -160,10 +160,10 @@ namespace pcl
         }
 
         inline void
-        setNewToOldEnergyRatio (float ratio)
+        setNewToOldEnergyRatio (double ratio)
         {
           if ( ratio >= 1 )
-            new_to_old_energy_ratio_ = 0.99f;
+            new_to_old_energy_ratio_ = 0.99;
           else
             new_to_old_energy_ratio_ = ratio;
         }
@@ -178,7 +178,7 @@ namespace pcl
       protected:
         PointCloudConstPtr target_points_;
         pcl::KdTreeFLANN<PointT> kdtree_;
-        float new_to_old_energy_ratio_;
+        double new_to_old_energy_ratio_;
     };
   } // namespace recognition
 } // namespace pcl

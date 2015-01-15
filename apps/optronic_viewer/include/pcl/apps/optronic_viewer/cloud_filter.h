@@ -180,9 +180,9 @@ namespace pcl
 
       protected:
         // filter parameters
-        float voxel_grid_size_x_;
-        float voxel_grid_size_y_;
-        float voxel_grid_size_z_;
+        double voxel_grid_size_x_;
+        double voxel_grid_size_y_;
+        double voxel_grid_size_z_;
 
         QLabel * voxel_grid_size_x_label_;
         QLabel * voxel_grid_size_y_label_;
@@ -219,8 +219,8 @@ namespace pcl
 
       protected:
         std::string filter_field_name_;
-        float filter_limits_min_;
-        float filter_limits_max_;
+        double filter_limits_min_;
+        double filter_limits_max_;
 
         QLabel * filter_field_name_label_;
         QLabel * filter_limits_min_label_;
@@ -256,7 +256,7 @@ namespace pcl
         }
 
       protected:
-        float search_radius_;
+        double search_radius_;
         int min_neighbors_in_radius_;
 
         QLabel * search_radius_label_;
@@ -290,8 +290,8 @@ namespace pcl
         }
 
       protected:
-        float sigma_s_;
-        float sigma_r_;
+        double sigma_s_;
+        double sigma_r_;
 
         QLabel * sigma_s_label_;
         QLabel * sigma_r_label_;
@@ -324,7 +324,7 @@ namespace pcl
         }
 
       protected:
-        float max_allowed_movement_;
+        double max_allowed_movement_;
         int window_size_;
 
         QLabel * max_allowed_movement_label_;

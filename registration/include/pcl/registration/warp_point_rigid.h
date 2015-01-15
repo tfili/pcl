@@ -49,11 +49,11 @@ namespace pcl
   {
     /** \brief Base warp point class. 
       * 
-      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., float or double). Default: float.
+      * \note The class is templated on the source and target point types as well as on the output scalar of the transformation matrix (i.e., double or double). Default: double.
       * \author Radu B. Rusu
       * \ingroup registration
       */
-    template <typename PointSourceT, typename PointTargetT, typename Scalar = float>
+    template <typename PointSourceT, typename PointTargetT, typename Scalar = double>
     class WarpPointRigid
     {
       public:
@@ -90,11 +90,11 @@ namespace pcl
         inline void 
         warpPoint (const PointSourceT& pnt_in, PointSourceT& pnt_out) const
         {
-          pnt_out.x = static_cast<float> (transform_matrix_ (0, 0) * pnt_in.x + transform_matrix_ (0, 1) * pnt_in.y + transform_matrix_ (0, 2) * pnt_in.z + transform_matrix_ (0, 3));
-          pnt_out.y = static_cast<float> (transform_matrix_ (1, 0) * pnt_in.x + transform_matrix_ (1, 1) * pnt_in.y + transform_matrix_ (1, 2) * pnt_in.z + transform_matrix_ (1, 3));
-          pnt_out.z = static_cast<float> (transform_matrix_ (2, 0) * pnt_in.x + transform_matrix_ (2, 1) * pnt_in.y + transform_matrix_ (2, 2) * pnt_in.z + transform_matrix_ (2, 3));
-          //pnt_out.getVector3fMap () = transform_matrix_.topLeftCorner (3, 3) * 
-          //                            pnt_in.getVector3fMap () + 
+          pnt_out.x = static_cast<double> (transform_matrix_ (0, 0) * pnt_in.x + transform_matrix_ (0, 1) * pnt_in.y + transform_matrix_ (0, 2) * pnt_in.z + transform_matrix_ (0, 3));
+          pnt_out.y = static_cast<double> (transform_matrix_ (1, 0) * pnt_in.x + transform_matrix_ (1, 1) * pnt_in.y + transform_matrix_ (1, 2) * pnt_in.z + transform_matrix_ (1, 3));
+          pnt_out.z = static_cast<double> (transform_matrix_ (2, 0) * pnt_in.x + transform_matrix_ (2, 1) * pnt_in.y + transform_matrix_ (2, 2) * pnt_in.z + transform_matrix_ (2, 3));
+          //pnt_out.getVector3dMap () = transform_matrix_.topLeftCorner (3, 3) * 
+          //                            pnt_in.getVector3dMap () + 
           //                            transform_matrix_.block (0, 3, 3, 1);
           //pnt_out.data[3] = pnt_in.data[3];
         }

@@ -65,8 +65,8 @@ namespace pcl
             Entry ()
             : num_transforms_ (0)
             {
-              aux::set3 (axis_angle_, 0.0f);
-              aux::set3 (translation_, 0.0f);
+              aux::set3 (axis_angle_, 0.0);
+              aux::set3 (translation_, 0.0);
             }
 
             Entry (const Entry& src)
@@ -86,7 +86,7 @@ namespace pcl
             }
 
             inline const Entry&
-            addRigidTransform (const float axis_angle[3], const float translation[3])
+            addRigidTransform (const double axis_angle[3], const double translation[3])
             {
               aux::add3 (this->axis_angle_, axis_angle);
               aux::add3 (this->translation_, translation);
@@ -96,11 +96,11 @@ namespace pcl
             }
 
             inline void
-            computeAverageRigidTransform (float *rigid_transform = NULL)
+            computeAverageRigidTransform (double *rigid_transform = NULL)
             {
               if ( num_transforms_ >= 2 )
               {
-                float factor = 1.0f/static_cast<float> (num_transforms_);
+                double factor = 1.0/static_cast<double> (num_transforms_);
                 aux::mult3 (axis_angle_, factor);
                 aux::mult3 (translation_, factor);
                 num_transforms_ = 1;
@@ -115,13 +115,13 @@ namespace pcl
               }
             }
 
-            inline const float*
+            inline const double*
             getAxisAngle () const
             {
               return (axis_angle_);
             }
 
-            inline const float*
+            inline const double*
             getTranslation () const
             {
               return (translation_);
@@ -134,7 +134,7 @@ namespace pcl
             }
 
           protected:
-            float axis_angle_[3], translation_[3];
+            double axis_angle_[3], translation_[3];
             int num_transforms_;
         };// class Entry
 
@@ -163,7 +163,7 @@ namespace pcl
         }
 
         inline const RotationSpaceCell::Entry&
-        addRigidTransform (const ModelLibrary::Model* model, const float axis_angle[3], const float translation[3])
+        addRigidTransform (const ModelLibrary::Model* model, const double axis_angle[3], const double translation[3])
         {
           return model_to_entry_[model].addRigidTransform (axis_angle, translation);
         }
@@ -178,13 +178,13 @@ namespace pcl
         RotationSpaceCellCreator (){}
         virtual ~RotationSpaceCellCreator (){}
 
-        RotationSpaceCell* create (const SimpleOctree<RotationSpaceCell, RotationSpaceCellCreator, float>::Node* )
+        RotationSpaceCell* create (const SimpleOctree<RotationSpaceCell, RotationSpaceCellCreator, double>::Node* )
         {
           return (new RotationSpaceCell ());
         }
     };
 
-    typedef SimpleOctree<RotationSpaceCell, RotationSpaceCellCreator, float> CellOctree;
+    typedef SimpleOctree<RotationSpaceCell, RotationSpaceCellCreator, double> CellOctree;
 
     /** \brief This is a class for a discrete representation of the rotation space based on the axis-angle representation.
       * This class is not supposed to be very general. That's why it is dependent on the class ModelLibrary.
@@ -197,10 +197,10 @@ namespace pcl
       public:
         /** \brief We use the axis-angle representation for rotations. The axis is encoded in the vector
           * and the angle is its magnitude. This is represented in an octree with bounds [-pi, pi]^3. */
-        RotationSpace (float discretization)
+        RotationSpace (double discretization)
         {
-          float min = -(AUX_PI_FLOAT + 0.000000001f), max = AUX_PI_FLOAT + 0.000000001f;
-          float bounds[6] = {min, max, min, max, min, max};
+          double min = -(AUX_PI_FLOAT + 0.000000001), max = AUX_PI_FLOAT + 0.000000001;
+          double bounds[6] = {min, max, min, max, min, max};
 
           // Build the voxel structure
           octree_.build (bounds, discretization, &cell_creator_);
@@ -212,18 +212,18 @@ namespace pcl
         }
 
         inline void
-        setCenter (const float* c)
+        setCenter (const double* c)
         {
           center_[0] = c[0];
           center_[1] = c[1];
           center_[2] = c[2];
         }
 
-        inline const float*
+        inline const double*
         getCenter () const { return center_;}
 
         inline bool
-        getTransformWithMostVotes (const ModelLibrary::Model* model, float rigid_transform[12]) const
+        getTransformWithMostVotes (const ModelLibrary::Model* model, double rigid_transform[12]) const
         {
           RotationSpaceCell::Entry with_most_votes;
           const std::vector<CellOctree::Node*>& full_leaves = octree_.getFullLeaves ();
@@ -266,13 +266,13 @@ namespace pcl
         }
 
         inline bool
-        addRigidTransform (const ModelLibrary::Model* model, const float axis_angle[3], const float translation[3])
+        addRigidTransform (const ModelLibrary::Model* model, const double axis_angle[3], const double translation[3])
         {
           CellOctree::Node* cell = octree_.createLeaf (axis_angle[0], axis_angle[1], axis_angle[2]);
 
           if ( !cell )
           {
-            const float *b = octree_.getBounds ();
+            const double *b = octree_.getBounds ();
             printf ("WARNING in 'RotationSpace::%s()': the provided axis-angle input (%f, %f, %f) is "
                     "out of the rotation space bounds ([%f, %f], [%f, %f], [%f, %f]).\n",
                     __func__, axis_angle[0], axis_angle[1], axis_angle[2], b[0], b[1], b[2], b[3], b[4], b[5]);
@@ -288,7 +288,7 @@ namespace pcl
       protected:
         CellOctree octree_;
         RotationSpaceCellCreator cell_creator_;
-        float center_[3];
+        double center_[3];
     };// class RotationSpace
 
     class RotationSpaceCreator
@@ -300,7 +300,7 @@ namespace pcl
 
         virtual ~RotationSpaceCreator(){}
 
-        RotationSpace* create(const SimpleOctree<RotationSpace, RotationSpaceCreator, float>::Node* leaf)
+        RotationSpace* create(const SimpleOctree<RotationSpace, RotationSpaceCreator, double>::Node* leaf)
         {
           RotationSpace *rot_space = new RotationSpace (discretization_);
           rot_space->setCenter (leaf->getCenter ());
@@ -312,7 +312,7 @@ namespace pcl
         }
 
         void
-        setDiscretization (float value){ discretization_ = value;}
+        setDiscretization (double value){ discretization_ = value;}
 
         int
         getNumberOfRotationSpaces () const { return (counter_);}
@@ -331,12 +331,12 @@ namespace pcl
         }
 
       protected:
-        float discretization_;
+        double discretization_;
         int counter_;
         std::list<RotationSpace*> rotation_spaces_;
     };
 
-    typedef SimpleOctree<RotationSpace, RotationSpaceCreator, float> RotationSpaceOctree;
+    typedef SimpleOctree<RotationSpace, RotationSpaceCreator, double> RotationSpaceOctree;
 
     class PCL_EXPORTS RigidTransformSpace
     {
@@ -345,7 +345,7 @@ namespace pcl
         virtual ~RigidTransformSpace (){ this->clear ();}
 
         inline void
-        build (const float* pos_bounds, float translation_cell_size, float rotation_cell_size)
+        build (const double* pos_bounds, double translation_cell_size, double rotation_cell_size)
         {
           this->clear ();
 
@@ -380,7 +380,7 @@ namespace pcl
         }
 
         inline bool
-        addRigidTransform (const ModelLibrary::Model* model, const float position[3], const float rigid_transform[12])
+        addRigidTransform (const ModelLibrary::Model* model, const double position[3], const double rigid_transform[12])
         {
           // Get the leaf 'position' ends up in
           RotationSpaceOctree::Node* leaf = pos_octree_.createLeaf (position[0], position[1], position[2]);
@@ -392,7 +392,7 @@ namespace pcl
             return (false);
           }
 
-          float rot_angle, axis_angle[3];
+          double rot_angle, axis_angle[3];
           // Extract the axis-angle representation from the rotation matrix
           aux::rotationMatrixToAxisAngle (rigid_transform, axis_angle, rot_angle);
           // Multiply the axis by the angle to get the final representation

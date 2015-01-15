@@ -103,7 +103,7 @@ namespace pcl
       isRunning () const = 0;
 
       /** \brief returns fps. 0 if trigger based. */
-      virtual float 
+      virtual double 
       getFramesPerSecond () const = 0;
 
     protected:

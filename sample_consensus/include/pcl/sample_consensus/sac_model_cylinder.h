@@ -86,7 +86,7 @@ namespace pcl
       SampleConsensusModelCylinder (const PointCloudConstPtr &cloud, bool random = false) 
         : SampleConsensusModel<PointT> (cloud, random)
         , SampleConsensusModelFromNormals<PointT, PointNT> ()
-        , axis_ (Eigen::Vector3f::Zero ())
+        , axis_ (Eigen::Vector3d::Zero ())
         , eps_angle_ (0)
         , tmp_inliers_ ()
       {
@@ -102,7 +102,7 @@ namespace pcl
                                     bool random = false) 
         : SampleConsensusModel<PointT> (cloud, indices, random)
         , SampleConsensusModelFromNormals<PointT, PointNT> ()
-        , axis_ (Eigen::Vector3f::Zero ())
+        , axis_ (Eigen::Vector3d::Zero ())
         , eps_angle_ (0)
         , tmp_inliers_ ()
       {
@@ -114,7 +114,7 @@ namespace pcl
       SampleConsensusModelCylinder (const SampleConsensusModelCylinder &source) :
         SampleConsensusModel<PointT> (),
         SampleConsensusModelFromNormals<PointT, PointNT> (), 
-        axis_ (Eigen::Vector3f::Zero ()),
+        axis_ (Eigen::Vector3d::Zero ()),
         eps_angle_ (0),
         tmp_inliers_ ()
       {
@@ -151,10 +151,10 @@ namespace pcl
         * \param[in] ax the axis along which we need to search for a cylinder direction
         */
       inline void 
-      setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
+      setAxis (const Eigen::Vector3d &ax) { axis_ = ax; }
 
       /** \brief Get the axis along which we need to search for a cylinder direction. */
-      inline Eigen::Vector3f 
+      inline Eigen::Vector3d 
       getAxis ()  { return (axis_); }
 
       /** \brief Check whether the given index samples can form a valid cylinder model, compute the model coefficients
@@ -165,14 +165,14 @@ namespace pcl
         */
       bool 
       computeModelCoefficients (const std::vector<int> &samples, 
-                                Eigen::VectorXf &model_coefficients);
+                                Eigen::VectorXd &model_coefficients);
 
       /** \brief Compute all distances from the cloud data to a given cylinder model.
         * \param[in] model_coefficients the coefficients of a cylinder model that we need to compute distances to
         * \param[out] distances the resultant estimated distances
         */
       void 
-      getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
+      getDistancesToModel (const Eigen::VectorXd &model_coefficients, 
                            std::vector<double> &distances);
 
       /** \brief Select all the points which respect the given model coefficients as inliers.
@@ -181,7 +181,7 @@ namespace pcl
         * \param[out] inliers the resultant model inliers
         */
       void 
-      selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      selectWithinDistance (const Eigen::VectorXd &model_coefficients, 
                             const double threshold, 
                             std::vector<int> &inliers);
 
@@ -192,7 +192,7 @@ namespace pcl
         * \return the resultant number of inliers
         */
       virtual int
-      countWithinDistance (const Eigen::VectorXf &model_coefficients, 
+      countWithinDistance (const Eigen::VectorXd &model_coefficients, 
                            const double threshold);
 
       /** \brief Recompute the cylinder coefficients using the given inlier set and return them to the user.
@@ -203,8 +203,8 @@ namespace pcl
         */
       void 
       optimizeModelCoefficients (const std::vector<int> &inliers, 
-                                 const Eigen::VectorXf &model_coefficients, 
-                                 Eigen::VectorXf &optimized_coefficients);
+                                 const Eigen::VectorXd &model_coefficients, 
+                                 Eigen::VectorXd &optimized_coefficients);
 
 
       /** \brief Create a new point cloud with inliers projected onto the cylinder model.
@@ -215,7 +215,7 @@ namespace pcl
         */
       void 
       projectPoints (const std::vector<int> &inliers, 
-                     const Eigen::VectorXf &model_coefficients, 
+                     const Eigen::VectorXd &model_coefficients, 
                      PointCloud &projected_points, 
                      bool copy_data_fields = true);
 
@@ -226,7 +226,7 @@ namespace pcl
         */
       bool 
       doSamplesVerifyModel (const std::set<int> &indices, 
-                            const Eigen::VectorXf &model_coefficients, 
+                            const Eigen::VectorXd &model_coefficients, 
                             const double threshold);
 
       /** \brief Return an unique id for this model (SACMODEL_CYLINDER). */
@@ -239,7 +239,7 @@ namespace pcl
         * \param[in] model_coefficients the line coefficients (a point on the line, line direction)
         */
       double 
-      pointToLineDistance (const Eigen::Vector4f &pt, const Eigen::VectorXf &model_coefficients);
+      pointToLineDistance (const Eigen::Vector4d &pt, const Eigen::VectorXd &model_coefficients);
 
       /** \brief Project a point onto a line given by a point and a direction vector
         * \param[in] pt the input point to project
@@ -248,12 +248,12 @@ namespace pcl
         * \param[out] pt_proj the resultant projected point
         */
       inline void
-      projectPointToLine (const Eigen::Vector4f &pt, 
-                          const Eigen::Vector4f &line_pt, 
-                          const Eigen::Vector4f &line_dir,
-                          Eigen::Vector4f &pt_proj)
+      projectPointToLine (const Eigen::Vector4d &pt, 
+                          const Eigen::Vector4d &line_pt, 
+                          const Eigen::Vector4d &line_dir,
+                          Eigen::Vector4d &pt_proj)
       {
-        float k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
+        double k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
         // Calculate the projection of the point on the line
         pt_proj = line_pt + k * line_dir;
       }
@@ -265,9 +265,9 @@ namespace pcl
         * \param[out] pt_proj the resultant projected point
         */
       void 
-      projectPointToCylinder (const Eigen::Vector4f &pt, 
-                              const Eigen::VectorXf &model_coefficients, 
-                              Eigen::Vector4f &pt_proj);
+      projectPointToCylinder (const Eigen::Vector4d &pt, 
+                              const Eigen::VectorXd &model_coefficients, 
+                              Eigen::Vector4d &pt_proj);
 
       /** \brief Get a string representation of the name of this class. */
       std::string 
@@ -278,7 +278,7 @@ namespace pcl
         * \param[in] model_coefficients the set of model coefficients
         */
       bool 
-      isModelValid (const Eigen::VectorXf &model_coefficients);
+      isModelValid (const Eigen::VectorXd &model_coefficients);
 
       /** \brief Check if a sample of indices results in a good sample of points
         * indices. Pure virtual.
@@ -289,7 +289,7 @@ namespace pcl
 
     private:
       /** \brief The axis along which we need to search for a plane perpendicular to. */
-      Eigen::Vector3f axis_;
+      Eigen::Vector3d axis_;
     
       /** \brief The maximum allowed difference between the plane normal and the given axis. */
       double eps_angle_;
@@ -301,7 +301,7 @@ namespace pcl
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
       /** \brief Functor for the optimization function */
-      struct OptimizationFunctor : pcl::Functor<float>
+      struct OptimizationFunctor : pcl::Functor<double>
       {
         /** Functor constructor
           * \param[in] m_data_points the number of data points to evaluate
@@ -309,7 +309,7 @@ namespace pcl
           * \param[in] distance distance computation function pointer
           */
         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCylinder<PointT, PointNT> *model) : 
-          pcl::Functor<float> (m_data_points), model_ (model) {}
+          pcl::Functor<double> (m_data_points), model_ (model) {}
 
         /** Cost function to be minimized
           * \param[in] x variables array
@@ -317,19 +317,19 @@ namespace pcl
           * \return 0
           */
         int 
-        operator() (const Eigen::VectorXf &x, Eigen::VectorXf &fvec) const
+        operator() (const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
         {
-          Eigen::Vector4f line_pt  (x[0], x[1], x[2], 0);
-          Eigen::Vector4f line_dir (x[3], x[4], x[5], 0);
+          Eigen::Vector4d line_pt  (x[0], x[1], x[2], 0);
+          Eigen::Vector4d line_dir (x[3], x[4], x[5], 0);
           
           for (int i = 0; i < values (); ++i)
           {
             // dist = f - r
-            Eigen::Vector4f pt (model_->input_->points[(*model_->tmp_inliers_)[i]].x,
+            Eigen::Vector4d pt (model_->input_->points[(*model_->tmp_inliers_)[i]].x,
                                 model_->input_->points[(*model_->tmp_inliers_)[i]].y,
                                 model_->input_->points[(*model_->tmp_inliers_)[i]].z, 0);
 
-            fvec[i] = static_cast<float> (pcl::sqrPointToLineDistance (pt, line_pt, line_dir) - x[6]*x[6]);
+            fvec[i] = static_cast<double> (pcl::sqrPointToLineDistance (pt, line_pt, line_dir) - x[6]*x[6]);
           }
           return (0);
         }

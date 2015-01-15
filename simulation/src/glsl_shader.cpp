@@ -47,45 +47,45 @@ pcl::simulation::gllib::Program::getUniformLocation (const std::string& name)
 }
 
 void
-pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Vector2f& v)
+pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Vector2d& v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
   glUniform2f(loc, v (0), v (1));
 }
 
 void
-pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Vector3f& v)
+pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Vector3d& v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
   glUniform3f(loc, v (0), v (1), v (2));
 }
 
 void
-pcl::simulation::gllib::Program::setUniform(const std::string& name, const Eigen::Vector4f& v)
+pcl::simulation::gllib::Program::setUniform(const std::string& name, const Eigen::Vector4d& v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
   glUniform4f (loc, v (0), v (1), v (2), v (4));
 }
 
 void
-pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Matrix3f& v)
+pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Matrix3d& v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
-  glUniformMatrix3fv (loc, 1, false, v.data ());
+  glUniformMatrix3dv (loc, 1, false, v.data ());
 }
 
 void
-pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Matrix4f& v)
+pcl::simulation::gllib::Program::setUniform (const std::string& name, const Eigen::Matrix4d& v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
-  glUniformMatrix4fv (loc, 1, false, v.data ());
+  glUniformMatrix4dv (loc, 1, false, v.data ());
 }
 
 void
-pcl::simulation::gllib::Program::setUniform (const std::string& name, float v)
+pcl::simulation::gllib::Program::setUniform (const std::string& name, double v)
 {
   GLuint loc = getUniformLocation (name.c_str ());
-  glUniform1f (loc, v);
+  glUniform1 (loc, v);
 }
 
 void

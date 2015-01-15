@@ -91,10 +91,10 @@ namespace pcl
        * \param scale_values vector of scales to determine the size of each scaling step
        */
       inline void
-      setScalesVector (std::vector<float> &scale_values) { scale_values_ = scale_values; }
+      setScalesVector (std::vector<double> &scale_values) { scale_values_ = scale_values; }
 
       /** \brief Method for getting the scale parameters vector */
-      inline std::vector<float>
+      inline std::vector<double>
       getScalesVector () { return scale_values_; }
 
 
@@ -105,7 +105,7 @@ namespace pcl
 
       void
       geodesicFixedRadiusSearch (size_t &query_index,
-                                 float &radius,
+                                 double &radius,
                                  std::vector<int> &result_indices);
 
       void
@@ -116,9 +116,9 @@ namespace pcl
 
       using PCLBase<PointT>::initCompute;
       using PCLBase<PointT>::input_;
-      std::vector<float> scale_values_;
-      std::vector<std::vector<float> > geodesic_distances_;
-      std::vector<std::vector<float> > F_scales_;
+      std::vector<double> scale_values_;
+      std::vector<std::vector<double> > geodesic_distances_;
+      std::vector<std::vector<double> > F_scales_;
   };
 }
 

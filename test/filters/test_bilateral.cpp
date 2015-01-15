@@ -58,38 +58,38 @@ TEST (FastBilateralFilter, Filters_Bilateral)
   PointCloud<PointXYZ>::Ptr cloud_filtered (new PointCloud<PointXYZ> ());
   fbf.filter (*cloud_filtered);
 
-  Eigen::Vector3f p_65558 (-0.058448f, -0.189095f, 0.723415f),
-      p_84737 (-0.088929f, -0.152957f, 0.746095f),
-      p_57966 (0.123646f, -0.397528f, 1.393187f),
-      p_39543 (0.560287f, -0.545020f, 1.602833f),
-      p_17766 (0.557854f, -0.711976f, 1.762013f),
-      p_70202 (0.150500f, -0.160329f, 0.646596f),
-      p_102219 (0.175637f, -0.101353f, 0.661631f),
-      p_81765 (0.223189f, -0.151714f, 0.708332f);
+  Eigen::Vector3d p_65558 (-0.058448, -0.189095, 0.723415),
+      p_84737 (-0.088929, -0.152957, 0.746095),
+      p_57966 (0.123646, -0.397528, 1.393187),
+      p_39543 (0.560287, -0.545020, 1.602833f),
+      p_17766 (0.557854f, -0.711976, 1.762013f),
+      p_70202 (0.150500, -0.160329, 0.646596),
+      p_102219 (0.175637, -0.101353f, 0.661631),
+      p_81765 (0.223189, -0.151714f, 0.708332f);
 
   for (size_t dim = 0; dim < 3; ++dim)
   {
-    EXPECT_NEAR (p_84737[dim], (*cloud_filtered)[84737].getVector3fMap ()[dim], 1e-3);
-    EXPECT_NEAR (p_57966[dim], (*cloud_filtered)[57966].getVector3fMap ()[dim], 1e-3);
-    EXPECT_NEAR (p_39543[dim], (*cloud_filtered)[39543].getVector3fMap ()[dim], 1e-3);
-    EXPECT_NEAR (p_17766[dim], (*cloud_filtered)[17766].getVector3fMap ()[dim], 1e-3);
-    EXPECT_NEAR (p_70202[dim], (*cloud_filtered)[70202].getVector3fMap ()[dim], 1e-3);
-    EXPECT_NEAR (p_102219[dim], (*cloud_filtered)[102219].getVector3fMap ()[dim], 1e-3);
-    EXPECT_NEAR (p_81765[dim], (*cloud_filtered)[81765].getVector3fMap ()[dim], 1e-3);
+    EXPECT_NEAR (p_84737[dim], (*cloud_filtered)[84737].getVector3dMap ()[dim], 1e-3);
+    EXPECT_NEAR (p_57966[dim], (*cloud_filtered)[57966].getVector3dMap ()[dim], 1e-3);
+    EXPECT_NEAR (p_39543[dim], (*cloud_filtered)[39543].getVector3dMap ()[dim], 1e-3);
+    EXPECT_NEAR (p_17766[dim], (*cloud_filtered)[17766].getVector3dMap ()[dim], 1e-3);
+    EXPECT_NEAR (p_70202[dim], (*cloud_filtered)[70202].getVector3dMap ()[dim], 1e-3);
+    EXPECT_NEAR (p_102219[dim], (*cloud_filtered)[102219].getVector3dMap ()[dim], 1e-3);
+    EXPECT_NEAR (p_81765[dim], (*cloud_filtered)[81765].getVector3dMap ()[dim], 1e-3);
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (FastBilateralFilterOMP, Filters_Bilateral)
 {
-  std::vector<float> sigma_s; 
-  sigma_s.push_back (2.341f);
+  std::vector<double> sigma_s; 
+  sigma_s.push_back (2.341);
   sigma_s.push_back (5.2342f);
-  sigma_s.push_back (10.29380f);
-  std::vector<float> sigma_r; 
+  sigma_s.push_back (10.29380);
+  std::vector<double> sigma_r; 
   sigma_r.push_back (0.0123f);
   sigma_r.push_back (0.023f);
-  sigma_r.push_back (0.0345f);
+  sigma_r.push_back (0.0345);
   pcl::console::TicToc tt;
   for (size_t i = 0; i < 3; i++)
   {

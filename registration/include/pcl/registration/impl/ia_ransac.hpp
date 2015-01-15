@@ -71,7 +71,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::setTar
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointTarget, typename FeatureT> void 
 pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::selectSamples (
-    const PointCloudSource &cloud, int nr_samples, float min_sample_distance, 
+    const PointCloudSource &cloud, int nr_samples, double min_sample_distance, 
     std::vector<int> &sample_indices)
 {
   if (nr_samples > static_cast<int> (cloud.points.size ()))
@@ -95,7 +95,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::select
     bool valid_sample = true;
     for (size_t i = 0; i < sample_indices.size (); ++i)
     {
-      float distance_between_samples = euclideanDistance (cloud.points[sample_index], cloud.points[sample_indices[i]]);
+      double distance_between_samples = euclideanDistance (cloud.points[sample_index], cloud.points[sample_indices[i]]);
 
       if (sample_index == sample_indices[i] || distance_between_samples < min_sample_distance)
       {
@@ -120,7 +120,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::select
       PCL_WARN ("No valid sample found after %d iterations. Relaxing min_sample_distance_ to %f\n",
                 iterations_without_a_sample, 0.5*min_sample_distance);
 
-      min_sample_distance_ *= 0.5f;
+      min_sample_distance_ *= 0.5;
       min_sample_distance = min_sample_distance_;
       iterations_without_a_sample = 0;
     }
@@ -134,7 +134,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::findSi
     std::vector<int> &corresponding_indices)
 {
   std::vector<int> nn_indices (k_correspondences_);
-  std::vector<float> nn_distances (k_correspondences_);
+  std::vector<double> nn_distances (k_correspondences_);
 
   corresponding_indices.resize (sample_indices.size ());
   for (size_t i = 0; i < sample_indices.size (); ++i)
@@ -149,15 +149,15 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::findSi
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointSource, typename PointTarget, typename FeatureT> float 
+template <typename PointSource, typename PointTarget, typename FeatureT> double 
 pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::computeErrorMetric (
-    const PointCloudSource &cloud, float)
+    const PointCloudSource &cloud, double)
 {
   std::vector<int> nn_index (1);
-  std::vector<float> nn_distance (1);
+  std::vector<double> nn_distance (1);
 
   const ErrorFunctor & compute_error = *error_functor_;
-  float error = 0;
+  double error = 0;
 
   for (int i = 0; i < static_cast<int> (cloud.points.size ()); ++i)
   {
@@ -172,7 +172,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::comput
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointTarget, typename FeatureT> void 
-pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4f& guess)
+pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::computeTransformation (PointCloudSource &output, const Eigen::Matrix4d& guess)
 {
   // Some sanity checks first
   if (!input_features_)
@@ -205,22 +205,22 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::comput
   }
 
   if (!error_functor_)
-    error_functor_.reset (new TruncatedError (static_cast<float> (corr_dist_threshold_)));
+    error_functor_.reset (new TruncatedError (static_cast<double> (corr_dist_threshold_)));
 
 
   std::vector<int> sample_indices (nr_samples_);
   std::vector<int> corresponding_indices (nr_samples_);
   PointCloudSource input_transformed;
-  float error, lowest_error (0);
+  double error, lowest_error (0);
 
   final_transformation_ = guess;
   int i_iter = 0;
   converged_ = false;
-  if (!guess.isApprox (Eigen::Matrix4f::Identity (), 0.01f)) 
+  if (!guess.isApprox (Eigen::Matrix4d::Identity (), 0.01)) 
   {
     // If guess is not the Identity matrix we check it.
     transformPointCloud (*input_, input_transformed, final_transformation_);
-    lowest_error = computeErrorMetric (input_transformed, static_cast<float> (corr_dist_threshold_));
+    lowest_error = computeErrorMetric (input_transformed, static_cast<double> (corr_dist_threshold_));
     i_iter = 1;
   }
 
@@ -237,7 +237,7 @@ pcl::SampleConsensusInitialAlignment<PointSource, PointTarget, FeatureT>::comput
 
     // Tranform the data and compute the error
     transformPointCloud (*input_, input_transformed, transformation_);
-    error = computeErrorMetric (input_transformed, static_cast<float> (corr_dist_threshold_));
+    error = computeErrorMetric (input_transformed, static_cast<double> (corr_dist_threshold_));
 
     // If the new error is lower, update the final transformation
     if (i_iter == 0 || error < lowest_error)

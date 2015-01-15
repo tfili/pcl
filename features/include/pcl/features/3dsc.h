@@ -174,7 +174,7 @@ namespace pcl
         * (e.g. the nearest neighbor didn't return any neighbors)
         */
       bool
-      computePoint (size_t index, const pcl::PointCloud<PointNT> &normals, float rf[9], std::vector<float> &desc);
+      computePoint (size_t index, const pcl::PointCloud<PointNT> &normals, double rf[9], std::vector<double> &desc);
 
       /** \brief Estimate the actual feature.
         * \param[out] output the resultant feature
@@ -183,16 +183,16 @@ namespace pcl
       computeFeature (PointCloudOut &output);
 
       /** \brief Values of the radii interval */
-      std::vector<float> radii_interval_;
+      std::vector<double> radii_interval_;
 
       /** \brief Theta divisions interval */
-      std::vector<float> theta_divisions_;
+      std::vector<double> theta_divisions_;
 
       /** \brief Phi divisions interval */
-      std::vector<float> phi_divisions_;
+      std::vector<double> phi_divisions_;
 
       /** \brief Volumes look up table */
-      std::vector<float> volume_lut_;
+      std::vector<double> volume_lut_;
 
       /** \brief Bins along the azimuth dimension */
       size_t azimuth_bins_;
@@ -224,7 +224,7 @@ namespace pcl
        *  shifted descriptor resized descriptor_length_ * azimuth_bins_
        */
       //void
-      //shiftAlongAzimuth (size_t block_size, std::vector<float>& desc);
+      //shiftAlongAzimuth (size_t block_size, std::vector<double>& desc);
 
       /** \brief Boost-based random number generator. */
       inline double

@@ -45,10 +45,10 @@
 void
 pcl::seededHueSegmentation (const PointCloud<PointXYZRGB>                         &cloud, 
                             const boost::shared_ptr<search::Search<PointXYZRGB> > &tree,
-                            float                                                 tolerance, 
+                            double                                                 tolerance, 
                             PointIndices                                          &indices_in,
                             PointIndices                                          &indices_out,
-                            float                                                 delta_hue)
+                            double                                                 delta_hue)
 {
   if (tree->getInputCloud ()->points.size () != cloud.points.size ())
   {
@@ -59,7 +59,7 @@ pcl::seededHueSegmentation (const PointCloud<PointXYZRGB>                       
   std::vector<bool> processed (cloud.points.size (), false);
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
 
   // Process all points in the indices vector
   for (size_t k = 0; k < indices_in.indices.size (); ++k)
@@ -121,10 +121,10 @@ pcl::seededHueSegmentation (const PointCloud<PointXYZRGB>                       
 void
 pcl::seededHueSegmentation (const PointCloud<PointXYZRGB>                           &cloud, 
                             const boost::shared_ptr<search::Search<PointXYZRGBL> >  &tree,
-                            float                                                   tolerance, 
+                            double                                                   tolerance, 
                             PointIndices                                            &indices_in,
                             PointIndices                                            &indices_out,
-                            float                                                   delta_hue)
+                            double                                                   delta_hue)
 {
   if (tree->getInputCloud ()->points.size () != cloud.points.size ())
   {
@@ -135,7 +135,7 @@ pcl::seededHueSegmentation (const PointCloud<PointXYZRGB>                       
   std::vector<bool> processed (cloud.points.size (), false);
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
 
   // Process all points in the indices vector
   for (size_t k = 0; k < indices_in.indices.size (); ++k)
@@ -217,7 +217,7 @@ pcl::SeededHueSegmentation::segment (PointIndices &indices_in, PointIndices &ind
 
   // Send the input dataset to the spatial locator
   tree_->setInputCloud (input_);
-  seededHueSegmentation (*input_, tree_, static_cast<float> (cluster_tolerance_), indices_in, indices_out, delta_hue_);
+  seededHueSegmentation (*input_, tree_, static_cast<double> (cluster_tolerance_), indices_in, indices_out, delta_hue_);
   deinitCompute ();
 }
 

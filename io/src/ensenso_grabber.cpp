@@ -232,7 +232,7 @@ bool
 pcl::EnsensoGrabber::configureCapture (const bool auto_exposure,
                                        const bool auto_gain,
                                        const int bining,
-                                       const float exposure,
+                                       const double exposure,
                                        const bool front_light,
                                        const int gain,
                                        const bool gain_boost,
@@ -276,9 +276,9 @@ pcl::EnsensoGrabber::configureCapture (const bool auto_exposure,
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool
 pcl::EnsensoGrabber::setExtrinsicCalibration (const std::string target,
-                                              const float euler_angle,
-                                              const Eigen::Vector3f rotation_axis,
-                                              const Eigen::Vector3f translation)
+                                              const double euler_angle,
+                                              const Eigen::Vector3d rotation_axis,
+                                              const Eigen::Vector3d translation)
 {
   if (!device_open_)
     return (false);
@@ -304,7 +304,7 @@ pcl::EnsensoGrabber::setExtrinsicCalibration (const std::string target,
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::EnsensoGrabber::getFramesPerSecond () const
 {
   boost::mutex::scoped_lock lock (fps_mutex_);
@@ -501,7 +501,7 @@ pcl::EnsensoGrabber::processGrabbing ()
         NxLibCommand (cmdComputePointMap).execute ();
 
         // Get info about the computed point map and copy it into a std::vector
-        std::vector<float> pointMap;
+        std::vector<double> pointMap;
         int width, height;
         camera_[itmImages][itmPointMap].getBinaryDataInfo (&width, &height, 0, 0, 0, 0);
         camera_[itmImages][itmPointMap].getBinaryData (pointMap, 0);

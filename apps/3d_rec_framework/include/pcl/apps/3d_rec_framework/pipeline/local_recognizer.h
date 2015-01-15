@@ -43,7 +43,7 @@ namespace pcl
         typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
         typedef typename pcl::PointCloud<PointInT>::ConstPtr ConstPointInTPtr;
 
-        typedef Distance<float> DistT;
+        typedef Distance<double> DistT;
         typedef Model<PointInT> ModelT;
 
         /** \brief Directory where the trained structure will be saved */
@@ -78,28 +78,28 @@ namespace pcl
           ModelT model;
           int view_id;
           int keypoint_id;
-          std::vector<float> descr;
+          std::vector<double> descr;
         };
 
-        flann::Matrix<float> flann_data_;
+        flann::Matrix<double> flann_data_;
         flann::Index<DistT> * flann_index_;
         std::vector<flann_model> flann_models_;
 
         std::vector<int> indices_;
 
         bool use_cache_;
-        std::map<std::pair<std::string, int>, Eigen::Matrix4f, std::less<std::pair<std::string, int> >, Eigen::aligned_allocator<std::pair<std::pair<
-            std::string, int>, Eigen::Matrix4f> > > poses_cache_;
+        std::map<std::pair<std::string, int>, Eigen::Matrix4d, std::less<std::pair<std::string, int> >, Eigen::aligned_allocator<std::pair<std::pair<
+            std::string, int>, Eigen::Matrix4d> > > poses_cache_;
         std::map<std::pair<std::string, int>, typename pcl::PointCloud<PointInT>::Ptr> keypoints_cache_;
 
-        float threshold_accept_model_hypothesis_;
+        double threshold_accept_model_hypothesis_;
         int ICP_iterations_;
 
         boost::shared_ptr<std::vector<ModelT> > models_;
-        boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > > transforms_;
+        boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > > transforms_;
 
         int kdtree_splits_;
-        float VOXEL_SIZE_ICP_;
+        double VOXEL_SIZE_ICP_;
 
         PointInTPtr keypoints_input_;
         PointInTPtr processed_;
@@ -110,12 +110,12 @@ namespace pcl
         loadFeaturesAndCreateFLANN ();
 
         inline void
-        convertToFLANN (const std::vector<flann_model> &models, flann::Matrix<float> &data)
+        convertToFLANN (const std::vector<flann_model> &models, flann::Matrix<double> &data)
         {
           data.rows = models.size ();
           data.cols = models[0].descr.size (); // number of histogram bins
 
-          flann::Matrix<float> flann_data (new float[models.size () * models[0].descr.size ()], models.size (), models[0].descr.size ());
+          flann::Matrix<double> flann_data (new double[models.size () * models[0].descr.size ()], models.size (), models[0].descr.size ());
 
           for (size_t i = 0; i < data.rows; ++i)
             for (size_t j = 0; j < data.cols; ++j)
@@ -127,19 +127,19 @@ namespace pcl
         }
 
         void
-        nearestKSearch (flann::Index<DistT> * index, const flann_model &model, int k, flann::Matrix<int> &indices, flann::Matrix<float> &distances);
+        nearestKSearch (flann::Index<DistT> * index, const flann_model &model, int k, flann::Matrix<int> &indices, flann::Matrix<double> &distances);
 
         class ObjectHypothesis
         {
         public:
           ModelT model_;
           typename pcl::PointCloud<PointInT>::Ptr correspondences_pointcloud; //points in model coordinates
-          boost::shared_ptr<std::vector<float> > feature_distances_;
+          boost::shared_ptr<std::vector<double> > feature_distances_;
           pcl::CorrespondencesPtr correspondences_to_inputcloud; //indices between correspondences_pointcloud and scene cloud
         };
 
         void
-        getPose (ModelT & model, int view_id, Eigen::Matrix4f & pose_matrix);
+        getPose (ModelT & model, int view_id, Eigen::Matrix4d & pose_matrix);
 
         void
         getKeypoints (ModelT & model, int view_id, typename pcl::PointCloud<PointInT>::Ptr & keypoints_cloud);
@@ -153,7 +153,7 @@ namespace pcl
           vis_corresp_.addPointCloud<PointInT> (cloud, random_handler, "points");
 
           typename pcl::PointCloud<PointInT>::ConstPtr cloud_sampled;
-          cloud_sampled = oh.model_.getAssembled (0.0025f);
+          cloud_sampled = oh.model_.getAssembled (0.0025);
 
           pcl::visualization::PointCloudColorHandlerCustom<PointInT> random_handler_sampled (cloud_sampled, 0, 0, 255);
           vis_corresp_.addPointCloud<PointInT> (cloud_sampled, random_handler_sampled, "sampled");
@@ -161,9 +161,9 @@ namespace pcl
           for (size_t kk = 0; kk < correspondences.size (); kk++)
           {
             pcl::PointXYZ p;
-            p.getVector4fMap () = oh.correspondences_pointcloud->points[correspondences[kk].index_query].getVector4fMap ();
+            p.getVector4dMap () = oh.correspondences_pointcloud->points[correspondences[kk].index_query].getVector4dMap ();
             pcl::PointXYZ p_scene;
-            p_scene.getVector4fMap () = keypoints_pointcloud->points[correspondences[kk].index_match].getVector4fMap ();
+            p_scene.getVector4dMap () = keypoints_pointcloud->points[correspondences[kk].index_match].getVector4dMap ();
 
             std::stringstream line_name;
             line_name << "line_" << kk;
@@ -186,7 +186,7 @@ namespace pcl
           ICP_iterations_ = 30;
           kdtree_splits_ = 512;
           search_model_ = "";
-          VOXEL_SIZE_ICP_ = 0.0025f;
+          VOXEL_SIZE_ICP_ = 0.0025;
           compute_table_plane_ = false;
         }
 
@@ -197,7 +197,7 @@ namespace pcl
           processed_ = p;
         }
 
-        void setVoxelSizeICP(float s) {
+        void setVoxelSizeICP(double s) {
           VOXEL_SIZE_ICP_ = s;
         }
         void
@@ -207,7 +207,7 @@ namespace pcl
         }
 
         void
-        setThresholdAcceptHyp (float t)
+        setThresholdAcceptHyp (double t)
         {
           threshold_accept_model_hypothesis_ = t;
         }
@@ -247,7 +247,7 @@ namespace pcl
           return models_;
         }
 
-        boost::shared_ptr<std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > >
+        boost::shared_ptr<std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d> > >
         getTransforms ()
         {
           return transforms_;

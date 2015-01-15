@@ -101,10 +101,10 @@ pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::computeFeaturesAtA
     features_at_scale_[scale_i] = feature_cloud;
 
     // Vectorize each feature and insert it into the vectorized feature storage
-    std::vector<std::vector<float> > feature_cloud_vectorized (feature_cloud->points.size ());
+    std::vector<std::vector<double> > feature_cloud_vectorized (feature_cloud->points.size ());
     for (size_t feature_i = 0; feature_i < feature_cloud->points.size (); ++feature_i)
     {
-      std::vector<float> feature_vectorized (feature_representation_->getNumberOfDimensions ());
+      std::vector<double> feature_vectorized (feature_representation_->getNumberOfDimensions ());
       feature_representation_->vectorize (feature_cloud->points[feature_i], feature_vectorized);
       feature_cloud_vectorized[feature_i] = feature_vectorized;
     }
@@ -115,7 +115,7 @@ pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::computeFeaturesAtA
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointSource, typename PointFeature> void
-pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::computeFeatureAtScale (float &scale,
+pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::computeFeatureAtScale (double &scale,
                                                                                      FeatureCloudPtr &features)
 {
    feature_estimator_->setRadiusSearch (scale);
@@ -124,11 +124,11 @@ pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::computeFeatureAtSc
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-template <typename PointSource, typename PointFeature> float
-pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::distanceBetweenFeatures (const std::vector<float> &a,
-                                                                                       const std::vector<float> &b)
+template <typename PointSource, typename PointFeature> double
+pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::distanceBetweenFeatures (const std::vector<double> &a,
+                                                                                       const std::vector<double> &b)
 {
-  return (pcl::selectNorm<std::vector<float> > (a, b, static_cast<int> (a.size ()), distance_metric_));
+  return (pcl::selectNorm<std::vector<double> > (a, b, static_cast<int> (a.size ()), distance_metric_));
 }
 
 
@@ -138,12 +138,12 @@ pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::calculateMeanFeatu
 {
   // Reset mean feature
   for (int i = 0; i < feature_representation_->getNumberOfDimensions (); ++i)
-    mean_feature_[i] = 0.0f;
+    mean_feature_[i] = 0.0;
 
-  float normalization_factor = 0.0f;
-  for (std::vector<std::vector<std::vector<float> > >::iterator scale_it = features_at_scale_vectorized_.begin (); scale_it != features_at_scale_vectorized_.end(); ++scale_it) {
-    normalization_factor += static_cast<float> (scale_it->size ());
-    for (std::vector<std::vector<float> >::iterator feature_it = scale_it->begin (); feature_it != scale_it->end (); ++feature_it)
+  double normalization_factor = 0.0;
+  for (std::vector<std::vector<std::vector<double> > >::iterator scale_it = features_at_scale_vectorized_.begin (); scale_it != features_at_scale_vectorized_.end(); ++scale_it) {
+    normalization_factor += static_cast<double> (scale_it->size ());
+    for (std::vector<std::vector<double> >::iterator feature_it = scale_it->begin (); feature_it != scale_it->end (); ++feature_it)
       for (int dim_i = 0; dim_i < feature_representation_->getNumberOfDimensions (); ++dim_i)
         mean_feature_[dim_i] += (*feature_it)[dim_i];
   }
@@ -162,15 +162,15 @@ pcl::MultiscaleFeaturePersistence<PointSource, PointFeature>::extractUniqueFeatu
   for (size_t scale_i = 0; scale_i < features_at_scale_vectorized_.size (); ++scale_i)
   {
     // Calculate standard deviation within the scale
-    float standard_dev = 0.0;
-    std::vector<float> diff_vector (features_at_scale_vectorized_[scale_i].size ());
+    double standard_dev = 0.0;
+    std::vector<double> diff_vector (features_at_scale_vectorized_[scale_i].size ());
     for (size_t point_i = 0; point_i < features_at_scale_vectorized_[scale_i].size (); ++point_i)
     {
-      float diff = distanceBetweenFeatures (features_at_scale_vectorized_[scale_i][point_i], mean_feature_);
+      double diff = distanceBetweenFeatures (features_at_scale_vectorized_[scale_i][point_i], mean_feature_);
       standard_dev += diff * diff;
       diff_vector[point_i] = diff;
     }
-    standard_dev = sqrtf (standard_dev / static_cast<float> (features_at_scale_vectorized_[scale_i].size ()));
+    standard_dev = sqrt (standard_dev / static_cast<double> (features_at_scale_vectorized_[scale_i].size ()));
     PCL_DEBUG ("[pcl::MultiscaleFeaturePersistence::extractUniqueFeatures] Standard deviation for scale %f is %f\n", scale_values_[scale_i], standard_dev);
 
     // Select only points outside (mean +/- alpha * standard_dev)

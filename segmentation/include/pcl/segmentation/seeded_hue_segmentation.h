@@ -60,10 +60,10 @@ namespace pcl
   void 
   seededHueSegmentation (const PointCloud<PointXYZRGB>                           &cloud, 
                          const boost::shared_ptr<search::Search<PointXYZRGB> >   &tree, 
-                         float                                                   tolerance, 
+                         double                                                   tolerance, 
                          PointIndices                                            &indices_in, 
                          PointIndices                                            &indices_out, 
-                         float                                                   delta_hue = 0.0);
+                         double                                                   delta_hue = 0.0);
 
   /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
     * \param[in] cloud the point cloud message
@@ -79,10 +79,10 @@ namespace pcl
   void 
   seededHueSegmentation (const PointCloud<PointXYZRGB>                           &cloud, 
                          const boost::shared_ptr<search::Search<PointXYZRGBL> >  &tree, 
-                         float                                                   tolerance, 
+                         double                                                   tolerance, 
                          PointIndices                                            &indices_in, 
                          PointIndices                                            &indices_out, 
-                         float                                                   delta_hue = 0.0);
+                         double                                                   delta_hue = 0.0);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,10 +135,10 @@ namespace pcl
         * \param[in] delta_hue the new delta hue
         */
       inline void 
-      setDeltaHue (float delta_hue) { delta_hue_ = delta_hue; }
+      setDeltaHue (double delta_hue) { delta_hue_ = delta_hue; }
 
       /** \brief Get the tolerance on the hue */
-      inline float 
+      inline double 
       getDeltaHue () const { return (delta_hue_); }
 
       /** \brief Cluster extraction in a PointCloud given by <setInputCloud (), setIndices ()>
@@ -162,7 +162,7 @@ namespace pcl
       double cluster_tolerance_;
 
       /** \brief The allowed difference on the hue*/
-      float delta_hue_;
+      double delta_hue_;
 
       /** \brief Class getName method. */
       virtual std::string getClassName () const { return ("seededHueSegmentation"); }

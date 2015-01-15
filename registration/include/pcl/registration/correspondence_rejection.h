@@ -337,7 +337,7 @@ namespace pcl
             tree_->setInputCloud (target_);
           }
           std::vector<int> indices (1);
-          std::vector<float> distances (1);
+          std::vector<double> distances (1);
           if (tree_->nearestKSearch (input_->points[index], 1, indices, distances))
             return (distances[0]);
           else
@@ -354,7 +354,7 @@ namespace pcl
           const PointT &src = input_->points[corr.index_query];
           const PointT &tgt = target_->points[corr.index_match];
 
-          return ((src.getVector4fMap () - tgt.getVector4fMap ()).squaredNorm ());
+          return ((src.getVector4dMap () - tgt.getVector4dMap ()).squaredNorm ());
         }
         
         /** \brief Get the correspondence score for a given pair of correspondent points based on 

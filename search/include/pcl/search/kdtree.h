@@ -121,10 +121,10 @@ namespace pcl
           * \param[in] eps precision (error bound) for nearest neighbors searches
           */
         void
-        setEpsilon (float eps);
+        setEpsilon (double eps);
 
         /** \brief Get the search epsilon precision (error bound) for nearest neighbors searches. */
-        inline float
+        inline double
         getEpsilon () const
         {
           return (tree_->getEpsilon ());
@@ -149,7 +149,7 @@ namespace pcl
         int
         nearestKSearch (const PointT &point, int k, 
                         std::vector<int> &k_indices, 
-                        std::vector<float> &k_sqr_distances) const;
+                        std::vector<double> &k_sqr_distances) const;
 
         /** \brief Search for all the nearest neighbors of the query point in a given radius.
           * \param[in] point the given query point
@@ -164,7 +164,7 @@ namespace pcl
         int
         radiusSearch (const PointT& point, double radius, 
                       std::vector<int> &k_indices, 
-                      std::vector<float> &k_sqr_distances,
+                      std::vector<double> &k_sqr_distances,
                       unsigned int max_nn = 0) const;
       protected:
         /** \brief A pointer to the internal KdTree object. */

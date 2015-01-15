@@ -139,12 +139,12 @@ namespace pcl
         * point of interest - linked to the smoothing scale of the input cloud
         */
       inline void
-      setScale (float scale) { scale_h_ = scale; }
+      setScale (double scale) { scale_h_ = scale; }
 
       /** \brief Returns the scale parameter - used to determine the radius of the sampling disc around the
         * point of interest - linked to the smoothing scale of the input cloud
         */
-      inline float
+      inline double
       getScale () { return scale_h_; }
 
 
@@ -153,7 +153,7 @@ namespace pcl
       computeFeature (FeatureCloud &output);
 
     private:
-      float scale_h_;
+      double scale_h_;
       size_t N_, M_, N_prime_, M_prime_;
   };
 }

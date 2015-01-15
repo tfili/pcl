@@ -84,7 +84,7 @@ namespace pcl
 
       /** \brief Constructor        
         */
-      StandaloneMarchingCubes (int voxels_x = 512, int voxels_y = 512, int voxels_z = 512, float volume_size = 3.0f);
+      StandaloneMarchingCubes (int voxels_x = 512, int voxels_y = 512, int voxels_z = 512, double volume_size = 3.0);
       
       /** \brief Destructor
         */
@@ -102,7 +102,7 @@ namespace pcl
         * \param[in] tsdf_offsets Vector of the offsets for every pointcloud in TsdfClouds. This offset (in indices) indicates the position of the cloud with respect to the absolute origin of the world model
         */
       void
-      getMeshesFromTSDFVector (const std::vector<PointCloudPtr> &tsdf_clouds, const std::vector<Eigen::Vector3f> &tsdf_offsets);
+      getMeshesFromTSDFVector (const std::vector<PointCloudPtr> &tsdf_clouds, const std::vector<Eigen::Vector3d> &tsdf_offsets);
       
       /** \brief Returns the associated Tsdf Volume buffer in GPU 
         * \return pointer to the Tsdf Volume buffer in GPU
@@ -158,7 +158,7 @@ namespace pcl
       int voxels_z_;
 
       /** Tsdf volume size in meters. Should match the ones in internal.h */
-      float volume_size_;
+      double volume_size_;
       
       /** Mesh counter used to name the output meshes */
       int mesh_counter_;

@@ -343,8 +343,8 @@ pcl::visualization::ImageViewer::showMonoImage (
 //////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::ImageViewer::addFloatImage (
-    const float* float_image, unsigned int width, unsigned int height,
-    float min_value, float max_value, bool grayscale,
+    const double* float_image, unsigned int width, unsigned int height,
+    double min_value, double max_value, bool grayscale,
     const std::string &layer_id, double opacity)
 {
   unsigned char* rgb_image = FloatImageUtils::getVisualImage (float_image, width, height,
@@ -356,8 +356,8 @@ pcl::visualization::ImageViewer::addFloatImage (
 //////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::ImageViewer::showFloatImage (
-    const float* float_image, unsigned int width, unsigned int height,
-    float min_value, float max_value, bool grayscale,
+    const double* float_image, unsigned int width, unsigned int height,
+    double min_value, double max_value, bool grayscale,
     const std::string &layer_id, double opacity)
 {
   addFloatImage (float_image, width, height, min_value, max_value, grayscale, layer_id, opacity);
@@ -367,7 +367,7 @@ pcl::visualization::ImageViewer::showFloatImage (
 //////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::ImageViewer::addAngleImage (
-    const float* angle_image, unsigned int width, unsigned int height,
+    const double* angle_image, unsigned int width, unsigned int height,
     const std::string &layer_id, double opacity)
 {
   unsigned char* rgb_image = FloatImageUtils::getVisualAngleImage (angle_image, width, height);
@@ -378,7 +378,7 @@ pcl::visualization::ImageViewer::addAngleImage (
 //////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::ImageViewer::showAngleImage (
-    const float* angle_image, unsigned int width, unsigned int height,
+    const double* angle_image, unsigned int width, unsigned int height,
     const std::string &layer_id, double opacity)
 {
   addAngleImage (angle_image, width, height, layer_id, opacity);
@@ -388,7 +388,7 @@ pcl::visualization::ImageViewer::showAngleImage (
 //////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::ImageViewer::addHalfAngleImage (
-    const float* angle_image, unsigned int width, unsigned int height,
+    const double* angle_image, unsigned int width, unsigned int height,
     const std::string &layer_id, double opacity)
 {
   unsigned char* rgb_image = FloatImageUtils::getVisualHalfAngleImage (angle_image, width, height);
@@ -399,7 +399,7 @@ pcl::visualization::ImageViewer::addHalfAngleImage (
 //////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::ImageViewer::showHalfAngleImage (
-    const float* angle_image, unsigned int width, unsigned int height,
+    const double* angle_image, unsigned int width, unsigned int height,
     const std::string &layer_id, double opacity)
 {
   addHalfAngleImage (angle_image, width, height, layer_id, opacity);
@@ -619,7 +619,7 @@ pcl::visualization::ImageViewer::createLayer (
     vtkSmartPointer<context_items::FilledRectangle> rect = vtkSmartPointer<context_items::FilledRectangle>::New ();
     rect->setColors (0,0,0);
     rect->setOpacity (opacity);
-    rect->set (0, 0, static_cast<float> (width), static_cast<float> (height));
+    rect->set (0, 0, static_cast<double> (width), static_cast<double> (height));
     l.actor->GetScene ()->AddItem (rect);
   }
 #if VTK_MAJOR_VERSION < 6
@@ -693,9 +693,9 @@ pcl::visualization::ImageViewer::addCircle (
                      static_cast<unsigned char> (255.0 * b));
   circle->setOpacity (opacity);
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION > 10))
-  circle->set (static_cast<float> (x), static_cast<float> (y), static_cast<float> (radius));
+  circle->set (static_cast<double> (x), static_cast<double> (y), static_cast<double> (radius));
 #else
-  circle->set (static_cast<float> (x), static_cast<float> (getSize ()[1] - y), static_cast<float> (radius));
+  circle->set (static_cast<double> (x), static_cast<double> (getSize ()[1] - y), static_cast<double> (radius));
 #endif
   am_it->actor->GetScene ()->AddItem (circle);
 
@@ -733,11 +733,11 @@ pcl::visualization::ImageViewer::addFilledRectangle (
                    static_cast<unsigned char> (255.0 * b));
   rect->setOpacity (opacity);
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION > 10))
-  rect->set (static_cast<float> (x_min), static_cast<float> (y_min),
-             static_cast<float> (x_max - x_min), static_cast<float> (y_max - y_min));
+  rect->set (static_cast<double> (x_min), static_cast<double> (y_min),
+             static_cast<double> (x_max - x_min), static_cast<double> (y_max - y_min));
 #else
-  rect->set (static_cast<float> (x_min), static_cast<float> (getSize ()[1] - y_min),
-             static_cast<float> (x_max - x_min), static_cast<float> (y_max - y_min));
+  rect->set (static_cast<double> (x_min), static_cast<double> (getSize ()[1] - y_min),
+             static_cast<double> (x_max - x_min), static_cast<double> (y_max - y_min));
 #endif
   am_it->actor->GetScene ()->AddItem (rect);
 
@@ -776,11 +776,11 @@ pcl::visualization::ImageViewer::addRectangle (
                    static_cast<unsigned char> (255.0 * b));
   rect->setOpacity (opacity);
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION > 7))
-  rect->set (static_cast<float> (x_min), static_cast<float> (y_min),
-             static_cast<float> (x_max), static_cast<float> (y_max));
+  rect->set (static_cast<double> (x_min), static_cast<double> (y_min),
+             static_cast<double> (x_max), static_cast<double> (y_max));
 #else
-  rect->set (static_cast<float> (x_min), static_cast<float> (getSize ()[1] - y_min),
-             static_cast<float> (x_max), static_cast<float> (getSize ()[1] - y_max));
+  rect->set (static_cast<double> (x_min), static_cast<double> (getSize ()[1] - y_min),
+             static_cast<double> (x_max), static_cast<double> (getSize ()[1] - y_max));
 #endif
   am_it->actor->GetScene ()->AddItem (rect);
 
@@ -821,7 +821,7 @@ pcl::visualization::ImageViewer::addRectangle (
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION > 7))
   rect->set (min_pt.x, min_pt.y, max_pt.x, max_pt.y);
 #else
-  rect->set (min_pt.x, static_cast<float> (getSize ()[1]) - min_pt.y, max_pt.x, max_pt.y);
+  rect->set (min_pt.x, static_cast<double> (getSize ()[1]) - min_pt.y, max_pt.x, max_pt.y);
 #endif
   am_it->actor->GetScene ()->AddItem (rect);
 
@@ -861,11 +861,11 @@ pcl::visualization::ImageViewer::addLine (unsigned int x_min, unsigned int y_min
                    static_cast<unsigned char> (255.0 * b));
   line->setOpacity (opacity);
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION > 10))
-  line->set (static_cast<float> (x_min), static_cast<float> (y_min),
-             static_cast<float> (x_max), static_cast<float> (y_max));
+  line->set (static_cast<double> (x_min), static_cast<double> (y_min),
+             static_cast<double> (x_max), static_cast<double> (y_max));
 #else
-  line->set (static_cast<float> (x_min), static_cast<float> (getSize ()[1] - y_min),
-             static_cast<float> (x_max), static_cast<float> (getSize ()[1] - y_max));
+  line->set (static_cast<double> (x_min), static_cast<double> (getSize ()[1] - y_min),
+             static_cast<double> (x_max), static_cast<double> (getSize ()[1] - y_max));
 #endif
   am_it->actor->GetScene ()->AddItem (line);
 
@@ -905,9 +905,9 @@ pcl::visualization::ImageViewer::addText (unsigned int x, unsigned int y,
                    static_cast<unsigned char> (255.0 * b));
   text->setOpacity (opacity);
 #if ((VTK_MAJOR_VERSION == 5) && (VTKOR_VERSION > 10))
-  text->set (static_cast<float> (x), static_cast<float> (y), text_string);
+  text->set (static_cast<double> (x), static_cast<double> (y), text_string);
 #else
-  text->set (static_cast<float> (x), static_cast<float> (getSize ()[1] - y), text_string);
+  text->set (static_cast<double> (x), static_cast<double> (getSize ()[1] - y), text_string);
 #endif
   am_it->actor->GetScene ()->AddItem (text);
 
@@ -948,11 +948,11 @@ pcl::visualization::ImageViewer::markPoint (
   disk->setOpacity (opacity);
 
 #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION > 10))
-  point->set (static_cast<float> (u), static_cast<float> (v));
-  disk->set (static_cast<float> (u), static_cast<float> (v), static_cast<float> (radius));
+  point->set (static_cast<double> (u), static_cast<double> (v));
+  disk->set (static_cast<double> (u), static_cast<double> (v), static_cast<double> (radius));
 #else
-  point->set (static_cast<float> (u), static_cast<float> (getSize ()[1] - v));
-  disk->set (static_cast<float> (u), static_cast<float> (getSize ()[1] - v), static_cast<float> (radius));
+  point->set (static_cast<double> (u), static_cast<double> (getSize ()[1] - v));
+  disk->set (static_cast<double> (u), static_cast<double> (getSize ()[1] - v), static_cast<double> (radius));
 #endif
 
   am_it->actor->GetScene ()->AddItem (disk);
@@ -968,16 +968,16 @@ pcl::visualization::ImageViewer::markPoints (
   if (uv.size () == 0)
     return;
 
-  std::vector<float> float_uv (uv.size ());
+  std::vector<double> float_uv (uv.size ());
   for (std::size_t i = 0; i < uv.size (); ++i)
-    float_uv[i] = static_cast<float> (uv[i]);
+    float_uv[i] = static_cast<double> (uv[i]);
   return (markPoints (float_uv, fg_color, bg_color, size, layer_id, opacity));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 void
 pcl::visualization::ImageViewer::markPoints (
-    const std::vector<float>& uv, Vector3ub fg_color, Vector3ub bg_color, double size,
+    const std::vector<double>& uv, Vector3ub fg_color, Vector3ub bg_color, double size,
     const std::string &layer_id, double opacity)
 {
   if (uv.size () == 0)
@@ -1000,7 +1000,7 @@ pcl::visualization::ImageViewer::markPoints (
   markers->set (uv);
 #else
   // translate v which is on odd indices
-  std::vector<float> points = uv;
+  std::vector<double> points = uv;
   for (std::size_t i = 1; i < points.size (); i+=2)
     points[i] = getSize ()[1] - points[i];
   markers->set (points);

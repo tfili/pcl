@@ -96,10 +96,10 @@ namespace pcl
        * \param scale_values vector of scales to determine the characteristic of each scaling step
        */
       inline void
-      setScalesVector (std::vector<float> &scale_values) { scale_values_ = scale_values; }
+      setScalesVector (std::vector<double> &scale_values) { scale_values_ = scale_values; }
 
       /** \brief Method for getting the scale parameters vector */
-      inline std::vector<float>
+      inline std::vector<double>
       getScalesVector () { return scale_values_; }
 
       /** \brief Setter method for the feature estimator
@@ -128,10 +128,10 @@ namespace pcl
        * \param alpha value to replace the current alpha with
        */
       inline void
-      setAlpha (float alpha) { alpha_ = alpha; }
+      setAlpha (double alpha) { alpha_ = alpha; }
 
       /** \brief Get the value of the alpha parameter */
-      inline float
+      inline double
       getAlpha () { return alpha_; }
 
       /** \brief Method for setting the distance metric that will be used for computing the difference between feature vectors
@@ -153,16 +153,16 @@ namespace pcl
 
       /** \brief Method to compute the features for the point cloud at the given scale */
       virtual void
-      computeFeatureAtScale (float &scale,
+      computeFeatureAtScale (double &scale,
                              FeatureCloudPtr &features);
 
 
       /** \brief Function that calculates the scalar difference between two features
        * \return the difference as a floating point type
        */
-      float
-      distanceBetweenFeatures (const std::vector<float> &a,
-                               const std::vector<float> &b);
+      double
+      distanceBetweenFeatures (const std::vector<double> &a,
+                               const std::vector<double> &b);
 
       /** \brief Method that averages all the features at all scales in order to obtain the global mean feature;
        * this value is stored in the mean_feature field
@@ -178,10 +178,10 @@ namespace pcl
 
 
       /** \brief The general parameter for determining each scale level */
-      std::vector<float> scale_values_;
+      std::vector<double> scale_values_;
 
       /** \brief Parameter that determines if a feature is to be considered unique or not */
-      float alpha_;
+      double alpha_;
 
       /** \brief Parameter that determines which distance metric is to be usedto calculate the difference between feature vectors */
       NormType distance_metric_;
@@ -190,8 +190,8 @@ namespace pcl
       FeatureEstimatorPtr feature_estimator_;
 
       std::vector<FeatureCloudPtr> features_at_scale_;
-      std::vector<std::vector<std::vector<float> > > features_at_scale_vectorized_;
-      std::vector<float> mean_feature_;
+      std::vector<std::vector<std::vector<double> > > features_at_scale_vectorized_;
+      std::vector<double> mean_feature_;
       FeatureRepresentationConstPtr feature_representation_;
 
       /** \brief Two structures in which to hold the results of the unique feature extraction process.

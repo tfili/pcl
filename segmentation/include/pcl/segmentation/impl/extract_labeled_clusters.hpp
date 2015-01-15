@@ -43,7 +43,7 @@
 template <typename PointT> void
 pcl::extractLabeledEuclideanClusters (const PointCloud<PointT> &cloud, 
                                       const boost::shared_ptr<search::Search<PointT> > &tree,
-                                      float tolerance, 
+                                      double tolerance, 
                                       std::vector<std::vector<PointIndices> > &labeled_clusters,
                                       unsigned int min_pts_per_cluster, 
                                       unsigned int max_pts_per_cluster,
@@ -58,7 +58,7 @@ pcl::extractLabeledEuclideanClusters (const PointCloud<PointT> &cloud,
   std::vector<bool> processed (cloud.points.size (), false);
 
   std::vector<int> nn_indices;
-  std::vector<float> nn_distances;
+  std::vector<double> nn_distances;
 
   // Process all points in the indices vector
   for (int i = 0; i < static_cast<int> (cloud.points.size ()); ++i)
@@ -141,7 +141,7 @@ pcl::LabeledEuclideanClusterExtraction<PointT>::extract (std::vector<std::vector
 
   // Send the input dataset to the spatial locator
   tree_->setInputCloud (input_);
-  extractLabeledEuclideanClusters (*input_, tree_, static_cast<float> (cluster_tolerance_), labeled_clusters, min_pts_per_cluster_, max_pts_per_cluster_, max_label_);
+  extractLabeledEuclideanClusters (*input_, tree_, static_cast<double> (cluster_tolerance_), labeled_clusters, min_pts_per_cluster_, max_pts_per_cluster_, max_label_);
 
   // Sort the clusters based on their size (largest one first)
   for (int i = 0; i < static_cast<int> (labeled_clusters.size ()); i++)
@@ -151,6 +151,6 @@ pcl::LabeledEuclideanClusterExtraction<PointT>::extract (std::vector<std::vector
 }
 
 #define PCL_INSTANTIATE_LabeledEuclideanClusterExtraction(T) template class PCL_EXPORTS pcl::LabeledEuclideanClusterExtraction<T>;
-#define PCL_INSTANTIATE_extractLabeledEuclideanClusters(T) template void PCL_EXPORTS pcl::extractLabeledEuclideanClusters<T>(const pcl::PointCloud<T> &, const boost::shared_ptr<pcl::search::Search<T> > &, float , std::vector<std::vector<pcl::PointIndices> > &, unsigned int, unsigned int, unsigned int);
+#define PCL_INSTANTIATE_extractLabeledEuclideanClusters(T) template void PCL_EXPORTS pcl::extractLabeledEuclideanClusters<T>(const pcl::PointCloud<T> &, const boost::shared_ptr<pcl::search::Search<T> > &, double , std::vector<std::vector<pcl::PointIndices> > &, unsigned int, unsigned int, unsigned int);
 
 #endif        // PCL_EXTRACT_CLUSTERS_IMPL_H_

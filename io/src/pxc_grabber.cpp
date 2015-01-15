@@ -57,7 +57,7 @@
 pcl::PXCGrabber::PXCGrabber ()
   : pp_ ()
   , running_ (false)
-  , fps_ (0.0f)
+  , fps_ (0.0)
 {
   point_cloud_signal_      = createSignal<sig_cb_pxc_point_cloud> ();
   point_cloud_rgb_signal_  = createSignal<sig_cb_pxc_point_cloud_rgb> ();
@@ -128,11 +128,11 @@ pcl::PXCGrabber::getName () const
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float
+double
 pcl::PXCGrabber::getFramesPerSecond () const
 {
   fps_mutex_.lock ();
-  float fps = fps_;
+  double fps = fps_;
   fps_mutex_.unlock ();
 
   return (fps);
@@ -166,7 +166,7 @@ pcl::PXCGrabber::processGrabbing ()
 
   pcl::StopWatch stop_watch;
   std::queue<double> capture_time_queue;
-  double total_time = 0.0f;
+  double total_time = 0.0;
 
   stop_watch.reset ();
 
@@ -204,17 +204,17 @@ pcl::PXCGrabber::processGrabbing ()
     const int image_height = rgb_image_info.height;
 
     // convert to point cloud
-    const float nan_value = std::numeric_limits<float>::quiet_NaN ();
+    const double nan_value = std::numeric_limits<double>::quiet_NaN ();
 
     int dwidth2 = ddata.pitches[0] / sizeof (pxcU16);
-    float *uvmap = (float*)ddata.planes[2];
+    double *uvmap = (double*)ddata.planes[2];
     pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA> (w, h));
     for (int j = 0, k = 0; j < h; j++)
     {
       for (int i = 0; i < w; i++, k++)
       {
-        int xx = (int) (uvmap[(j*w+i)*2+0]*image_width+0.5f);
-        int yy = (int) (uvmap[(j*w+i)*2+1]*image_height+0.5f);
+        int xx = (int) (uvmap[(j*w+i)*2+0]*image_width+0.5);
+        int yy = (int) (uvmap[(j*w+i)*2+1]*image_height+0.5);
 
         unsigned int idx = 3*(j*w + i);
         short x = vertices[idx];
@@ -252,9 +252,9 @@ pcl::PXCGrabber::processGrabbing ()
         else
         {
           // normalize vertices to meters
-          cloud->points[k].x = x / 1000.0f;
-          cloud->points[k].y = y / 1000.0f;
-          cloud->points[k].z = z / 1000.0f;
+          cloud->points[k].x = x / 1000.0;
+          cloud->points[k].y = y / 1000.0;
+          cloud->points[k].z = z / 1000.0;
           cloud->points[k].r = r;
           cloud->points[k].g = g;
           cloud->points[k].b = b;
@@ -312,7 +312,7 @@ pcl::PXCGrabber::processGrabbing ()
     }
 
     fps_mutex_.lock ();
-    fps_ = static_cast<float> (total_time / capture_time_queue.size ());
+    fps_ = static_cast<double> (total_time / capture_time_queue.size ());
     fps_mutex_.unlock ();
   }
 }

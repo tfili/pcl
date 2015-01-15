@@ -61,21 +61,21 @@ namespace pcl
       //! Parameters used in this class
       struct PCL_EXPORTS Parameters
       {
-        Parameters() : max_correspondence_distance_error(0.2f) {}
-        float max_correspondence_distance_error;  // As a fraction
+        Parameters() : max_correspondence_distance_error(0.2) {}
+        double max_correspondence_distance_error;  // As a fraction
       };
 
       //! A result of the pose estimation process
       struct PoseEstimate
       {
         PoseEstimate () : 
-          transformation (Eigen::Affine3f::Identity ()),
+          transformation (Eigen::Affine3d::Identity ()),
           score (0),
           correspondence_indices (0) 
         {}
 
-        Eigen::Affine3f transformation;   //!< The estimated transformation between the two coordinate systems
-        float score;                         //!< An estimate in [0,1], how good the estimated pose is 
+        Eigen::Affine3d transformation;   //!< The estimated transformation between the two coordinate systems
+        double score;                         //!< An estimate in [0,1], how good the estimated pose is 
         std::vector<int> correspondence_indices;  //!< The indices of the used correspondences
 
         struct IsBetter 

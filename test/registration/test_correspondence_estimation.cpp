@@ -48,9 +48,9 @@ TEST (CorrespondenceEstimation, CorrespondenceEstimationNormalShooting)
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2 (new pcl::PointCloud<pcl::PointXYZ> ());
 
   // Defining two parallel planes differing only by the y co-ordinate
-  for (float i = 0.0f; i < 10.0f; i += 0.2f)
+  for (double i = 0.0; i < 10.0; i += 0.2f)
   {
-    for (float z = 0.0f; z < 5.0f; z += 0.2f)
+    for (double z = 0.0; z < 5.0; z += 0.2f)
     {
       cloud1->points.push_back (pcl::PointXYZ (i, 0, z));
       cloud2->points.push_back (pcl::PointXYZ (i, 2, z)); // Ideally this should be the corresponding point to the point defined in the previous line
@@ -90,8 +90,8 @@ TEST (CorrespondenceEstimation, CorrespondenceEstimationSetSearchMethod)
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud2 (new pcl::PointCloud<pcl::PointXYZ> ());
   for ( size_t i = 0; i < 50; i++ )
   {
-    cloud1->points.push_back(pcl::PointXYZ(float (rand()), float (rand()), float (rand())));
-    cloud2->points.push_back(pcl::PointXYZ(float (rand()), float (rand()), float (rand())));
+    cloud1->points.push_back(pcl::PointXYZ(double (rand()), double (rand()), double (rand())));
+    cloud2->points.push_back(pcl::PointXYZ(double (rand()), double (rand()), double (rand())));
   }
   // Build a KdTree for each
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree1 (new pcl::search::KdTree<pcl::PointXYZ> ());

@@ -324,9 +324,9 @@ pcl::PackedHSIComparison<PointT>::evaluate (const PointT &point) const
     b_ = static_cast <uint8_t> (rgb_val_);
 
     // definitions taken from http://en.wikipedia.org/wiki/HSL_and_HSI
-    float hx = (2.0f * r_ - g_ - b_) / 4.0f;  // hue x component -127 to 127
-    float hy = static_cast<float> (g_ - b_) * 111.0f / 255.0f; // hue y component -111 to 111
-    h_ = static_cast<int8_t> (atan2(hy, hx) * 128.0f / M_PI);
+    double hx = (2.0 * r_ - g_ - b_) / 4.0;  // hue x component -127 to 127
+    double hy = static_cast<double> (g_ - b_) * 111.0 / 255.0; // hue y component -111 to 111
+    h_ = static_cast<int8_t> (atan2(hy, hx) * 128.0 / M_PI);
 
     int32_t i = (r_+g_+b_)/3; // 0 to 255
     i_ = static_cast<uint8_t> (i);
@@ -338,18 +338,18 @@ pcl::PackedHSIComparison<PointT>::evaluate (const PointT &point) const
     s_ = static_cast<uint8_t> ((i == 0) ? 0 : 255 - (m * 255) / i); // saturation 0 to 255
   }
 
-  float my_val = 0;
+  double my_val = 0;
 
   switch (component_id_) 
   {
     case H:
-      my_val = static_cast <float> (h_);
+      my_val = static_cast <double> (h_);
       break;
     case S:
-      my_val = static_cast <float> (s_);
+      my_val = static_cast <double> (s_);
       break;
     case I:
-      my_val = static_cast <float> (i_);
+      my_val = static_cast <double> (i_);
       break;
     default:
       assert (false);
@@ -441,10 +441,10 @@ pcl::TfQuadraticXYZComparison<PointT>::TfQuadraticXYZComparison () :
 //////////////////////////////////////////////////////////////////////////
 template<typename PointT>
 pcl::TfQuadraticXYZComparison<PointT>::TfQuadraticXYZComparison (const pcl::ComparisonOps::CompareOp op,
-                                                                 const Eigen::Matrix3f &comparison_matrix,
-                                                                 const Eigen::Vector3f &comparison_vector,
-                                                                 const float &comparison_scalar,
-                                                                 const Eigen::Affine3f &comparison_transform) :
+                                                                 const Eigen::Matrix3d &comparison_matrix,
+                                                                 const Eigen::Vector3d &comparison_vector,
+                                                                 const double &comparison_scalar,
+                                                                 const Eigen::Affine3d &comparison_transform) :
   comp_matr_ (), comp_vect_ (), comp_scalar_ (comparison_scalar)
 {
   // get all the fields
@@ -508,10 +508,10 @@ template<typename PointT>
 bool
 pcl::TfQuadraticXYZComparison<PointT>::evaluate (const PointT &point) const
 {
-  Eigen::Vector4f pointAffine;
+  Eigen::Vector4d pointAffine;
   pointAffine << point.x, point.y, point.z, 1; 
   
-  float myVal = static_cast<float>(2.0f * tf_comp_vect_.transpose () * pointAffine) + static_cast<float>(pointAffine.transpose () * tf_comp_matr_ * pointAffine) + comp_scalar_ - 3.0f;
+  double myVal = static_cast<double>(2.0 * tf_comp_vect_.transpose () * pointAffine) + static_cast<double>(pointAffine.transpose () * tf_comp_matr_ * pointAffine) + comp_scalar_ - 3.0;
   
   // now do the comparison
   switch (this->op_)
@@ -584,9 +584,9 @@ pcl::PointDataAtOffset<PointT>::compare (const PointT& p, const double& val)
     }
     case pcl::PCLPointField::FLOAT32 :
     {
-      float pt_val;
-      memcpy (&pt_val, pt_data + this->offset_, sizeof (float));
-      return (pt_val > static_cast<float> (val)) - (pt_val < static_cast<float> (val));
+      double pt_val;
+      memcpy (&pt_val, pt_data + this->offset_, sizeof (double));
+      return (pt_val > static_cast<double> (val)) - (pt_val < static_cast<double> (val));
     }
     case pcl::PCLPointField::FLOAT64 :
     {
@@ -764,7 +764,7 @@ pcl::ConditionalRemoval<PointT>::applyFilter (PointCloud &output)
 
         if (!condition_->evaluate (input_->points[cp]))
         {
-          output.points[cp].getVector4fMap ().setConstant (user_filter_value_);
+          output.points[cp].getVector4dMap ().setConstant (user_filter_value_);
           removed_p = true;
 
           if (extract_removed_indices_)
@@ -776,7 +776,7 @@ pcl::ConditionalRemoval<PointT>::applyFilter (PointCloud &output)
       }
       else
       {
-        output.points[cp].getVector4fMap ().setConstant (user_filter_value_);
+        output.points[cp].getVector4dMap ().setConstant (user_filter_value_);
         removed_p = true;
         //as for !keep_organized_: removed points due to setIndices are not considered as removed_indices_
       }

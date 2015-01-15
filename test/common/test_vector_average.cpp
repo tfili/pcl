@@ -45,17 +45,17 @@ using namespace pcl;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TEST (PCL, VectorAverage_mean)
 {
-  std::vector<Eigen::Vector3f> points;
-  std::vector<Eigen::Vector3f::Scalar> weights;
-  points.push_back (Eigen::Vector3f (-0.558191f, 0.180822f, -0.809769f));
+  std::vector<Eigen::Vector3d> points;
+  std::vector<Eigen::Vector3d::Scalar> weights;
+  points.push_back (Eigen::Vector3d (-0.558191, 0.180822f, -0.809769));
   weights.push_back (0.160842f);
-  points.push_back (Eigen::Vector3f (-0.510641f, 0.290673f, -0.809169f));
+  points.push_back (Eigen::Vector3d (-0.510641, 0.290673f, -0.809169));
   weights.push_back (0.526732f);
-  points.push_back (Eigen::Vector3f (-0.440713f, 0.385624f, -0.810597f));
-  weights.push_back (0.312427f);
+  points.push_back (Eigen::Vector3d (-0.440713f, 0.385624f, -0.810597));
+  weights.push_back (0.312427);
   
-  Eigen::Vector3f correct_mean (0.0f, 0.0f, 0.0f);
-  float weigth_sum = 0.0f;
+  Eigen::Vector3d correct_mean (0.0, 0.0, 0.0);
+  double weigth_sum = 0.0;
   for (unsigned int i = 0; i < points.size (); ++i)
   {
     correct_mean += weights[i]*points[i];
@@ -63,12 +63,12 @@ TEST (PCL, VectorAverage_mean)
   }
   correct_mean /= weigth_sum;
   
-  pcl::VectorAverage<float, 3> va;
+  pcl::VectorAverage<double, 3> va;
   for (unsigned int i=0; i<points.size(); ++i)
     va.add(points[i], weights[i]);
-  Eigen::Vector3f mean = va.getMean();
+  Eigen::Vector3d mean = va.getMean();
   //std::cout << "Correct: "<<correct_mean <<"\n"<< "Result: "<<mean<<"\n";
-  EXPECT_NEAR ((mean-correct_mean).norm(), 0.0f, 1e-4);
+  EXPECT_NEAR ((mean-correct_mean).norm(), 0.0, 1e-4);
 }
 
 /* ---[ */

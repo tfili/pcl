@@ -141,34 +141,34 @@ namespace pcl
       setResidualTestFlag (bool value);
 
       /** \brief Returns smoothness threshold. */
-      float
+      double
       getSmoothnessThreshold () const;
 
       /** \brief Allows to set smoothness threshold used for testing the points.
         * \param[in] theta new threshold value for the angle between normals
         */
       void
-      setSmoothnessThreshold (float theta);
+      setSmoothnessThreshold (double theta);
 
       /** \brief Returns residual threshold. */
-      float
+      double
       getResidualThreshold () const;
 
       /** \brief Allows to set residual threshold used for testing the points.
         * \param[in] residual new threshold value for residual testing
         */
       void
-      setResidualThreshold (float residual);
+      setResidualThreshold (double residual);
 
       /** \brief Returns curvature threshold. */
-      float
+      double
       getCurvatureThreshold () const;
 
       /** \brief Allows to set curvature threshold used for testing the points.
         * \param[in] curvature new threshold value for curvature testing
         */
       void
-      setCurvatureThreshold (float curvature);
+      setCurvatureThreshold (double curvature);
 
       /** \brief Returns the number of nearest neighbours used for KNN. */
       unsigned int
@@ -295,13 +295,13 @@ namespace pcl
       bool residual_flag_;
 
       /** \brief Thershold used for testing the smoothness between points. */
-      float theta_threshold_;
+      double theta_threshold_;
 
       /** \brief Thershold used in residual test. */
-      float residual_threshold_;
+      double residual_threshold_;
 
       /** \brief Thershold used in curvature test. */
-      float curvature_threshold_;
+      double curvature_threshold_;
 
       /** \brief Number of neighbours to find. */
       unsigned int neighbour_number_;
@@ -338,7 +338,7 @@ namespace pcl
 
   /** \brief This function is used as a comparator for sorting. */
   inline bool
-  comparePair (std::pair<float, int> i, std::pair<float, int> j)
+  comparePair (std::pair<double, int> i, std::pair<double, int> j)
   {
     return (i.first < j.first);
   }

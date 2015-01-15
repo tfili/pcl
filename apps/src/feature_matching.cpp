@@ -118,8 +118,8 @@ class ICCVTutorial
     std::vector<int> source2target_;
     std::vector<int> target2source_;
     pcl::CorrespondencesPtr correspondences_;
-    Eigen::Matrix4f initial_transformation_matrix_;
-    Eigen::Matrix4f transformation_matrix_;
+    Eigen::Matrix4d initial_transformation_matrix_;
+    Eigen::Matrix4d transformation_matrix_;
     bool show_source2target_;
     bool show_target2source_;
     bool show_correspondences;
@@ -284,7 +284,7 @@ void ICCVTutorial<FeatureType>::findCorrespondences (typename pcl::PointCloud<Fe
   // Find the index of the best match for each keypoint, and store it in "correspondences_out"
   const int k = 1;
   std::vector<int> k_indices (k);
-  std::vector<float> k_squared_distances (k);
+  std::vector<double> k_squared_distances (k);
   for (int i = 0; i < static_cast<int> (source->size ()); ++i)
   {
     descriptor_kdtree.nearestKSearch (*source, i, k, k_indices, k_squared_distances);
@@ -358,7 +358,7 @@ void ICCVTutorial<FeatureType>::reconstructSurface ()
   // apply grid filtering to reduce amount of points as well as to make them uniform distributed
   pcl::VoxelGrid<pcl::PointXYZRGB> voxel_grid;
   voxel_grid.setInputCloud(merged);
-  voxel_grid.setLeafSize (0.002f, 0.002f, 0.002f);
+  voxel_grid.setLeafSize (0.002, 0.002, 0.002);
   voxel_grid.setDownsampleAllData(true);
   voxel_grid.filter(*merged);
 
@@ -537,7 +537,7 @@ main (int argc, char ** argv)
   if (keypoint_type == 1)
   {
     pcl::SIFTKeypoint<pcl::PointXYZRGB, pcl::PointXYZI>* sift3D = new pcl::SIFTKeypoint<pcl::PointXYZRGB, pcl::PointXYZI>;
-    sift3D->setScales (0.01f, 3, 2);
+    sift3D->setScales (0.01, 3, 2);
     sift3D->setMinimumContrast (0.0);
     keypoint_detector.reset (sift3D);
   }
@@ -545,8 +545,8 @@ main (int argc, char ** argv)
   {
     pcl::HarrisKeypoint3D<pcl::PointXYZRGB,pcl::PointXYZI>* harris3D = new pcl::HarrisKeypoint3D<pcl::PointXYZRGB,pcl::PointXYZI> (pcl::HarrisKeypoint3D<pcl::PointXYZRGB,pcl::PointXYZI>::HARRIS);
     harris3D->setNonMaxSupression (true);
-    harris3D->setRadius (0.01f);
-    harris3D->setRadiusSearch (0.01f);
+    harris3D->setRadius (0.01);
+    harris3D->setRadiusSearch (0.01);
     keypoint_detector.reset (harris3D);
     switch (keypoint_type)
     {
@@ -598,7 +598,7 @@ main (int argc, char ** argv)
   else if (surface_type == 2)
   {
     pcl::MarchingCubes<pcl::PointXYZRGBNormal>* mc = new pcl::MarchingCubesHoppe<pcl::PointXYZRGBNormal>;
-    mc->setIsoLevel (0.001f);
+    mc->setIsoLevel (0.001);
     mc->setGridResolution (50, 50, 50);
     surface_reconstruction.reset(mc);
   }

@@ -44,7 +44,7 @@ loadLocalDescriptors (std::string filename)
 void
 find_feature_correspondences (const LocalDescriptorsPtr & source_descriptors, 
                               const LocalDescriptorsPtr & target_descriptors,
-                              std::vector<int> & correspondences_out, std::vector<float> & correspondence_scores_out)
+                              std::vector<int> & correspondences_out, std::vector<double> & correspondence_scores_out)
 {
   // Resize the output vector
   correspondences_out.resize (source_descriptors->size ());
@@ -57,7 +57,7 @@ find_feature_correspondences (const LocalDescriptorsPtr & source_descriptors,
   // Find the index of the best match for each keypoint, and store it in "correspondences_out"
   const int k = 1;
   std::vector<int> k_indices (k);
-  std::vector<float> k_squared_distances (k);
+  std::vector<double> k_squared_distances (k);
   for (size_t i = 0; i < source_descriptors->size (); ++i)
   {
     descriptor_kdtree.nearestKSearch (*source_descriptors, i, k, k_indices, k_squared_distances);
@@ -71,7 +71,7 @@ void
 visualize_correspondences (const PointCloudPtr points1, const PointCloudPtr keypoints1,
                            const PointCloudPtr points2, const PointCloudPtr keypoints2,
                            const std::vector<int> &correspondences,
-                           const std::vector<float> &correspondence_scores, int max_to_display)
+                           const std::vector<double> &correspondence_scores, int max_to_display)
 { 
   // We want to visualize two clouds side-by-side, so do to this, we'll make copies of the clouds and transform them
   // by shifting one to the left and the other to the right.  Then we'll draw lines between the corresponding points
@@ -83,9 +83,9 @@ visualize_correspondences (const PointCloudPtr points1, const PointCloudPtr keyp
   PointCloudPtr keypoints_right (new PointCloud);
 
   // Shift the first clouds' points to the left
-  //const Eigen::Vector3f translate (0.0, 0.0, 0.3);
-  const Eigen::Vector3f translate (0.4, 0.0, 0.0);
-  const Eigen::Quaternionf no_rotation (0, 0, 0, 0);
+  //const Eigen::Vector3d translate (0.0, 0.0, 0.3);
+  const Eigen::Vector3d translate (0.4, 0.0, 0.0);
+  const Eigen::Quaterniond no_rotation (0, 0, 0, 0);
   pcl::transformPointCloud (*points1, *points_left, -translate, no_rotation);
   pcl::transformPointCloud (*keypoints1, *keypoints_left, -translate, no_rotation);
 
@@ -99,11 +99,11 @@ visualize_correspondences (const PointCloudPtr points1, const PointCloudPtr keyp
   vis.addPointCloud (points_right, "points_right");
 
   // Compute the weakest correspondence score to display
-  std::vector<float> temp (correspondence_scores);
+  std::vector<double> temp (correspondence_scores);
   std::sort (temp.begin (), temp.end ());
   if (max_to_display >= temp.size ())
     max_to_display = temp.size () - 1;
-  float threshold = temp[max_to_display];
+  double threshold = temp[max_to_display];
 
   std::cout << max_to_display << std::endl;
 
@@ -164,7 +164,7 @@ main (int argc, char ** argv)
   pcl::console::parse_argument (argc, argv, "-n", nr_correspondences);
 
   std::vector<int> correspondences;
-  std::vector<float> correspondence_scores;
+  std::vector<double> correspondence_scores;
   find_feature_correspondences (source_descriptors, target_descriptors, correspondences, correspondence_scores);
   
   visualize_correspondences (source_points, source_keypoints, target_points, target_keypoints, 

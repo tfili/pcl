@@ -50,7 +50,7 @@
 #include <pcl/ml/svm.h>
 #include <iostream>
 int libsvm_version = LIBSVM_VERSION;
-typedef float Qfloat;
+typedef double Qfloat;
 typedef signed char schar;
 #ifndef min
 template <class T> static inline T min (T x, T y)

@@ -73,7 +73,7 @@ namespace pcl
        * @param radius the radius for normal estimation as well as for non maxima suppression
        * @param threshold the threshold to filter out weak corners
        */
-      HarrisKeypoint6D (float radius = 0.01, float threshold = 0.0)
+      HarrisKeypoint6D (double radius = 0.01, double threshold = 0.0)
       : threshold_ (threshold)
       , refine_ (true)
       , nonmax_ (true)
@@ -92,14 +92,14 @@ namespace pcl
        * @brief set the radius for normal estimation and non maxima supression.
        * @param radius
        */
-      void setRadius (float radius);
+      void setRadius (double radius);
 
       /**
        * @brief set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
        * @brief note non maxima suppression needs to be activated in order to use this feature.
        * @param threshold
        */
-      void setThreshold (float threshold);
+      void setThreshold (double threshold);
 
       /**
        * @brief whether non maxima suppression should be applied or the response for each point should be returned
@@ -127,9 +127,9 @@ namespace pcl
       void detectKeypoints (PointCloudOut &output);
       void responseTomasi (PointCloudOut &output) const;
       void refineCorners (PointCloudOut &corners) const;
-      void calculateCombinedCovar (const std::vector<int>& neighbors, float* coefficients) const;
+      void calculateCombinedCovar (const std::vector<int>& neighbors, double* coefficients) const;
     private:
-      float threshold_;
+      double threshold_;
       bool refine_;
       bool nonmax_;
       unsigned int threads_;    

@@ -140,7 +140,7 @@ namespace pcl
       /** \brief Mean accessor
         * \throw InitFailedException
         */
-      inline Eigen::Vector4f& 
+      inline Eigen::Vector4d& 
       getMean () 
       {
         if (!compute_done_)
@@ -154,7 +154,7 @@ namespace pcl
       /** Eigen Vectors accessor
         * \throw InitFailedException
         */
-      inline Eigen::Matrix3f& 
+      inline Eigen::Matrix3d& 
       getEigenVectors () 
       {
         if (!compute_done_)
@@ -168,7 +168,7 @@ namespace pcl
       /** Eigen Values accessor
         * \throw InitFailedException
         */
-      inline Eigen::Vector3f& 
+      inline Eigen::Vector3d& 
       getEigenValues ()
       {
         if (!compute_done_)
@@ -182,7 +182,7 @@ namespace pcl
       /** Coefficients accessor
         * \throw InitFailedException
         */
-      inline Eigen::MatrixXf& 
+      inline Eigen::MatrixXd& 
       getCoefficients () 
       {
         if (!compute_done_)
@@ -239,10 +239,10 @@ namespace pcl
 
       bool compute_done_;
       bool basis_only_;
-      Eigen::Matrix3f eigenvectors_;
-      Eigen::MatrixXf coefficients_;
-      Eigen::Vector4f mean_;
-      Eigen::Vector3f eigenvalues_;
+      Eigen::Matrix3d eigenvectors_;
+      Eigen::MatrixXd coefficients_;
+      Eigen::Vector4d mean_;
+      Eigen::Vector3d eigenvalues_;
   }; // class PCA
 } // namespace pcl
 

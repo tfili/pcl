@@ -77,7 +77,7 @@ namespace pcl_cuda
         * \param model a Sample Consensus model
         * \param threshold distance to model threshold
         */
-      MEstimatorSampleConsensus (const SampleConsensusModelPtr &model, float threshold) : 
+      MEstimatorSampleConsensus (const SampleConsensusModelPtr &model, double threshold) : 
         SampleConsensus<Storage> (model, threshold)
       {
         // Maximum number of trials before we give up.

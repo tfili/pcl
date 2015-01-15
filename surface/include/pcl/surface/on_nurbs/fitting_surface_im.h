@@ -100,7 +100,7 @@ namespace pcl
       setCamera (const Eigen::Matrix3d &i);
 
       void
-      setCamera (const Eigen::Matrix3f &i);
+      setCamera (const Eigen::Matrix3d &i);
 
       static std::vector<double>
       getElementVector (const ON_NurbsSurface &nurbs, int dim);

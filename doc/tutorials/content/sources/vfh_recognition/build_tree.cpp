@@ -8,7 +8,7 @@
 #include <flann/io/hdf5.h>
 #include <fstream>
 
-typedef std::pair<std::string, std::vector<float> > vfh_model;
+typedef std::pair<std::string, std::vector<double> > vfh_model;
 
 /** \brief Loads an n-D histogram file as a VFH signature
   * \param path the input file name
@@ -23,8 +23,8 @@ loadHist (const boost::filesystem::path &path, vfh_model &vfh)
   {
     pcl::PCLPointCloud2 cloud;
     int version;
-    Eigen::Vector4f origin;
-    Eigen::Quaternionf orientation;
+    Eigen::Vector4d origin;
+    Eigen::Quaterniond orientation;
     pcl::PCDReader r;
     int type; unsigned int idx;
     r.readHeader (path.string (), cloud, origin, orientation, version, type, idx);
@@ -111,7 +111,7 @@ main (int argc, char** argv)
       (int)models.size (), training_data_h5_file_name.c_str (), training_data_list_file_name.c_str ());
 
   // Convert data into FLANN format
-  flann::Matrix<float> data (new float[models.size () * models[0].second.size ()], models.size (), models[0].second.size ());
+  flann::Matrix<double> data (new double[models.size () * models[0].second.size ()], models.size (), models[0].second.size ());
 
   for (size_t i = 0; i < data.rows; ++i)
     for (size_t j = 0; j < data.cols; ++j)
@@ -127,8 +127,8 @@ main (int argc, char** argv)
  
   // Build the tree index and save it to disk
   pcl::console::print_error ("Building the kdtree index (%s) for %d elements...\n", kdtree_idx_file_name.c_str (), (int)data.rows);
-  flann::Index<flann::ChiSquareDistance<float> > index (data, flann::LinearIndexParams ());
-  //flann::Index<flann::ChiSquareDistance<float> > index (data, flann::KDTreeIndexParams (4));
+  flann::Index<flann::ChiSquareDistance<double> > index (data, flann::LinearIndexParams ());
+  //flann::Index<flann::ChiSquareDistance<double> > index (data, flann::KDTreeIndexParams (4));
   index.buildIndex ();
   index.save (kdtree_idx_file_name);
   delete[] data.ptr ();

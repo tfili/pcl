@@ -54,7 +54,7 @@ main (int, char**)
   PointType p;
   for (unsigned int i = 0; i < 5; ++i)
   {
-    p.x = p.y = p.z = static_cast<float> (i);
+    p.x = p.y = p.z = static_cast<double> (i);
     cloud->push_back (p);
   }
 

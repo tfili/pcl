@@ -63,67 +63,67 @@ namespace pcl
       bool head_centroid_;
 
       /** \brief Minimum x coordinate of the cluster points. */
-      float min_x_;
+      double min_x_;
       /** \brief Minimum y coordinate of the cluster points. */
-      float min_y_;
+      double min_y_;
       /** \brief Minimum z coordinate of the cluster points. */
-      float min_z_;
+      double min_z_;
 
       /** \brief Maximum x coordinate of the cluster points. */
-      float max_x_;
+      double max_x_;
       /** \brief Maximum y coordinate of the cluster points. */
-      float max_y_;
+      double max_y_;
       /** \brief Maximum z coordinate of the cluster points. */
-      float max_z_;
+      double max_z_;
 
       /** \brief Sum of x coordinates of the cluster points. */
-      float sum_x_;
+      double sum_x_;
       /** \brief Sum of y coordinates of the cluster points. */
-      float sum_y_;
+      double sum_y_;
       /** \brief Sum of z coordinates of the cluster points. */
-      float sum_z_;
+      double sum_z_;
 
       /** \brief Number of cluster points. */
       int n_;
 
       /** \brief x coordinate of the cluster centroid. */
-      float c_x_;
+      double c_x_;
       /** \brief y coordinate of the cluster centroid. */
-      float c_y_;
+      double c_y_;
       /** \brief z coordinate of the cluster centroid. */
-      float c_z_;
+      double c_z_;
 
       /** \brief Cluster height from the ground plane. */
-      float height_;
+      double height_;
 
       /** \brief Cluster distance from the sensor. */
-      float distance_;
+      double distance_;
       /** \brief Cluster centroid horizontal angle with respect to z axis. */
-      float angle_;
+      double angle_;
 
       /** \brief Maximum angle of the cluster points. */
-      float angle_max_;
+      double angle_max_;
       /** \brief Minimum angle of the cluster points. */
-      float angle_min_;
+      double angle_min_;
       
       /** \brief Cluster top point. */
-      Eigen::Vector3f top_;
+      Eigen::Vector3d top_;
       /** \brief Cluster bottom point. */
-      Eigen::Vector3f bottom_;
+      Eigen::Vector3d bottom_;
       /** \brief Cluster centroid. */
-      Eigen::Vector3f center_;
+      Eigen::Vector3d center_;
       
       /** \brief Theoretical cluster top. */
-      Eigen::Vector3f ttop_;
+      Eigen::Vector3d ttop_;
       /** \brief Theoretical cluster bottom (lying on the ground plane). */
-      Eigen::Vector3f tbottom_;
+      Eigen::Vector3d tbottom_;
       /** \brief Theoretical cluster center (between ttop_ and tbottom_). */
-      Eigen::Vector3f tcenter_;
+      Eigen::Vector3d tcenter_;
 
       /** \brief Vector containing the minimum coordinates of the cluster. */
-      Eigen::Vector3f min_;
+      Eigen::Vector3d min_;
       /** \brief Vector containing the maximum coordinates of the cluster. */
-      Eigen::Vector3f max_;
+      Eigen::Vector3d max_;
 
       /** \brief Point cloud indices of the cluster points. */
       pcl::PointIndices points_indices_;
@@ -131,7 +131,7 @@ namespace pcl
       /** \brief If true, the sensor is considered to be vertically placed (portrait mode). */
       bool vertical_;
       /** \brief PersonCluster HOG confidence. */
-      float person_confidence_;
+      double person_confidence_;
 
     public:
 
@@ -143,8 +143,8 @@ namespace pcl
       PersonCluster (
           const PointCloudPtr& input_cloud,
           const pcl::PointIndices& indices,
-          const Eigen::VectorXf& ground_coeffs,
-          float sqrt_ground_coeffs,
+          const Eigen::VectorXd& ground_coeffs,
+          double sqrt_ground_coeffs,
           bool head_centroid,
           bool vertical = false);
 
@@ -155,7 +155,7 @@ namespace pcl
        * \brief Returns the height of the cluster.
        * \return the height of the cluster.
        */
-      float
+      double
       getHeight ();
 
       /**
@@ -163,8 +163,8 @@ namespace pcl
        * \param[in] ground_coeffs The coefficients of the ground plane.
        * \return the height of the cluster.
        */
-      float
-      updateHeight (const Eigen::VectorXf& ground_coeffs);
+      double
+      updateHeight (const Eigen::VectorXd& ground_coeffs);
 
       /**
        * \brief Update the height of the cluster.
@@ -173,36 +173,36 @@ namespace pcl
        * three coefficients of the ground plane (ax + by + cz + d = 0).
        * \return the height of the cluster.
        */
-      float
-      updateHeight (const Eigen::VectorXf& ground_coeffs, float sqrt_ground_coeffs);
+      double
+      updateHeight (const Eigen::VectorXd& ground_coeffs, double sqrt_ground_coeffs);
 
       /**
        * \brief Returns the distance of the cluster from the sensor.
        * \return the distance of the cluster (its centroid) from the sensor without considering the
        * y dimension.
        */
-      float
+      double
       getDistance ();
 
       /**
        * \brief Returns the angle formed by the cluster's centroid with respect to the sensor (in radians).
        * \return the angle formed by the cluster's centroid with respect to the sensor (in radians).
        */
-      float
+      double
       getAngle ();
 
       /**
        * \brief Returns the minimum angle formed by the cluster with respect to the sensor (in radians).
        * \return the minimum angle formed by the cluster with respect to the sensor (in radians).
        */
-      float
+      double
       getAngleMin ();
 
       /**
        * \brief Returns the maximum angle formed by the cluster with respect to the sensor (in radians).
        * \return the maximum angle formed by the cluster with respect to the sensor (in radians).
        */
-      float
+      double
       getAngleMax ();
 
       /**
@@ -216,65 +216,65 @@ namespace pcl
        * \brief Returns the theoretical top point.
        * \return the theoretical top point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTTop ();
 
       /**
        * \brief Returns the theoretical bottom point.
        * \return the theoretical bottom point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTBottom ();
 
       /**
        * \brief Returns the theoretical centroid (at half height).
        * \return the theoretical centroid (at half height).
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTCenter ();
 
       /**
        * \brief Returns the top point.
        * \return the top point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getTop ();
 
       /**
        * \brief Returns the bottom point.
        * \return the bottom point.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getBottom ();
 
       /**
        * \brief Returns the centroid.
        * \return the centroid.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getCenter ();  
 
-      //Eigen::Vector3f& getTMax();
+      //Eigen::Vector3d& getTMax();
 
       /**
        * \brief Returns the point formed by min x, min y and min z.
        * \return the point formed by min x, min y and min z.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getMin ();
 
       /**
        * \brief Returns the point formed by max x, max y and max z.
        * \return the point formed by max x, max y and max z.
        */
-      Eigen::Vector3f&
+      Eigen::Vector3d&
       getMax ();
 
       /**
        * \brief Returns the HOG confidence.
        * \return the HOG confidence.
        */
-      float
+      double
       getPersonConfidence ();
 
       /**
@@ -289,14 +289,14 @@ namespace pcl
        * \param[in] height
        */
       void
-      setHeight (float height);
+      setHeight (double height);
 
       /**
        * \brief Sets the HOG confidence.
        * \param[in] confidence
        */
       void
-      setPersonConfidence (float confidence);
+      setPersonConfidence (double confidence);
 
       /**
        * \brief Draws the theoretical 3D bounding box of the cluster in the PCL visualizer.
@@ -319,8 +319,8 @@ namespace pcl
       void init(
           const PointCloudPtr& input_cloud,
           const pcl::PointIndices& indices,
-          const Eigen::VectorXf& ground_coeffs,
-          float sqrt_ground_coeffs,
+          const Eigen::VectorXd& ground_coeffs,
+          double sqrt_ground_coeffs,
           bool head_centroid,
           bool vertical);
 

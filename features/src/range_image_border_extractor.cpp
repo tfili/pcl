@@ -131,7 +131,7 @@ RangeImageBorderExtractor::extractLocalSurfaceStructure ()
       if (!range_image_->isValid(index))
         continue;
       local_surface = new LocalSurface;
-      Eigen::Vector3f point;
+      Eigen::Vector3d point;
       range_image_->getPoint(x, y, point);
       //cout << PVARN(point);
       if (!range_image_->getSurfaceInformation(x, y, parameters_.pixel_radius_plane_extraction, point,
@@ -163,21 +163,21 @@ RangeImageBorderExtractor::extractBorderScoreImages ()
   int width  = range_image_->width,
       height = range_image_->height,
       size   = width*height;
-  border_scores_left_   = new float[size];
-  border_scores_right_  = new float[size];
-  border_scores_top_    = new float[size];
-  border_scores_bottom_ = new float[size];
+  border_scores_left_   = new double[size];
+  border_scores_right_  = new double[size];
+  border_scores_top_    = new double[size];
+  border_scores_bottom_ = new double[size];
   
 # pragma omp parallel for num_threads(parameters_.max_no_of_threads) default(shared) schedule(dynamic, 10)
   for (int y=0; y<height; ++y) {
     for (int x=0; x<width; ++x) {
       int index = y*width + x;
-      float& left=border_scores_left_[index]; float& right=border_scores_right_[index];
-      float& top=border_scores_top_[index]; float& bottom=border_scores_bottom_[index]; 
+      double& left=border_scores_left_[index]; double& right=border_scores_right_[index];
+      double& top=border_scores_top_[index]; double& bottom=border_scores_bottom_[index]; 
       LocalSurface* local_surface_ptr = surface_structure_[index];
       if (local_surface_ptr==NULL)
       {
-        left=right=top=bottom = 0.0f;
+        left=right=top=bottom = 0.0;
         continue;
       }
       
@@ -190,11 +190,11 @@ RangeImageBorderExtractor::extractBorderScoreImages ()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float* 
-RangeImageBorderExtractor::updatedScoresAccordingToNeighborValues (const float* border_scores) const
+double* 
+RangeImageBorderExtractor::updatedScoresAccordingToNeighborValues (const double* border_scores) const
 {
-  float* new_scores = new float[range_image_->width*range_image_->height];
-  float* new_scores_ptr = new_scores;
+  double* new_scores = new double[range_image_->width*range_image_->height];
+  double* new_scores_ptr = new_scores;
   for (int y=0; y < static_cast<int> (range_image_->height); ++y) 
     for (int x=0; x < static_cast<int> (range_image_->width); ++x) 
       *(new_scores_ptr++) = updatedScoreAccordingToNeighborValues(x, y, border_scores);
@@ -209,16 +209,16 @@ RangeImageBorderExtractor::updateScoresAccordingToNeighborValues ()
   
   //MEASURE_FUNCTION_TIME;
   
-  float* left_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_left_);
+  double* left_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_left_);
   delete[] border_scores_left_;
   border_scores_left_ = left_with_propagated_neighbors;
-  float* right_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_right_);
+  double* right_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_right_);
   delete[] border_scores_right_;
   border_scores_right_ = right_with_propagated_neighbors;
-  float* top_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_top_);
+  double* top_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_top_);
   delete[] border_scores_top_;
   border_scores_top_ = top_with_propagated_neighbors;
-  float* bottom_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_bottom_);
+  double* bottom_with_propagated_neighbors = updatedScoresAccordingToNeighborValues(border_scores_bottom_);
   delete[] border_scores_bottom_;
   border_scores_bottom_ = bottom_with_propagated_neighbors;
 }
@@ -274,7 +274,7 @@ RangeImageBorderExtractor::findAndEvaluateShadowBorders ()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float* 
+double* 
 RangeImageBorderExtractor::getAnglesImageForBorderDirections ()
 {
   calculateBorderDirections();
@@ -282,34 +282,34 @@ RangeImageBorderExtractor::getAnglesImageForBorderDirections ()
   int width  = range_image_->width,
       height = range_image_->height,
       array_size = width*height;
-  float* angles_image = new float[array_size];
+  double* angles_image = new double[array_size];
   
   for (int y=0; y<height; ++y)
   {
     for (int x=0; x<width; ++x)
     {
       int index = y*width + x;
-      float& angle = angles_image[index];
-      angle = -std::numeric_limits<float>::infinity ();
-      const Eigen::Vector3f* border_direction_ptr = border_directions_[index];
+      double& angle = angles_image[index];
+      angle = -std::numeric_limits<double>::infinity ();
+      const Eigen::Vector3d* border_direction_ptr = border_directions_[index];
       if (border_direction_ptr == NULL)
         continue;
-      const Eigen::Vector3f& border_direction = *border_direction_ptr;
+      const Eigen::Vector3d& border_direction = *border_direction_ptr;
       const PointWithRange& point = range_image_->getPoint(index);
       
-      float border_direction_in_image_x, border_direction_in_image_y;
-      float tmp_factor = point.range*range_image_->getAngularResolution();
+      double border_direction_in_image_x, border_direction_in_image_y;
+      double tmp_factor = point.range*range_image_->getAngularResolution();
       range_image_->getImagePoint(point.x+tmp_factor*border_direction[0], point.y+tmp_factor*border_direction[1], point.z+tmp_factor*border_direction[2],
                                 border_direction_in_image_x, border_direction_in_image_y);
-      border_direction_in_image_x -= static_cast<float> (x);  border_direction_in_image_y -= static_cast<float> (y);
-      angle = atan2f (border_direction_in_image_y, border_direction_in_image_x);
+      border_direction_in_image_x -= static_cast<double> (x);  border_direction_in_image_y -= static_cast<double> (y);
+      angle = atan2 (border_direction_in_image_y, border_direction_in_image_x);
     }
   }
   return angles_image;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float* 
+double* 
 RangeImageBorderExtractor::getAnglesImageForSurfaceChangeDirections ()
 {
   //MEASURE_FUNCTION_TIME;
@@ -319,31 +319,31 @@ RangeImageBorderExtractor::getAnglesImageForSurfaceChangeDirections ()
   int width  = range_image_->width,
       height = range_image_->height,
       array_size = width*height;
-  float* angles_image = new float[array_size];
+  double* angles_image = new double[array_size];
   
   for (int y=0; y<height; ++y)
   {
     for (int x=0; x<width; ++x)
     {
       int index = y*width + x;
-      float& angle = angles_image[index];
-      angle = -std::numeric_limits<float>::infinity ();
-      float surface_change_score = surface_change_scores_[index];
-      if (surface_change_score <= 0.1f)
+      double& angle = angles_image[index];
+      angle = -std::numeric_limits<double>::infinity ();
+      double surface_change_score = surface_change_scores_[index];
+      if (surface_change_score <= 0.1)
         continue;
-      const Eigen::Vector3f& direction = surface_change_directions_[index];
+      const Eigen::Vector3d& direction = surface_change_directions_[index];
       const PointWithRange& point = range_image_->getPoint(index);
       
-      float border_direction_in_image_x, border_direction_in_image_y;
-      float tmp_factor = point.range*range_image_->getAngularResolution();
+      double border_direction_in_image_x, border_direction_in_image_y;
+      double tmp_factor = point.range*range_image_->getAngularResolution();
       range_image_->getImagePoint(point.x+tmp_factor*direction[0], point.y+tmp_factor*direction[1], point.z+tmp_factor*direction[2],
                                 border_direction_in_image_x, border_direction_in_image_y);
-      border_direction_in_image_x -= static_cast<float> (x);  border_direction_in_image_y -= static_cast<float> (y);
-      angle = atan2f (border_direction_in_image_y, border_direction_in_image_x);
-      if (angle <= deg2rad (-90.0f))
-        angle += static_cast<float> (M_PI);
-      else if (angle > deg2rad (90.0f))
-        angle -= static_cast<float> (M_PI);
+      border_direction_in_image_x -= static_cast<double> (x);  border_direction_in_image_y -= static_cast<double> (y);
+      angle = atan2 (border_direction_in_image_y, border_direction_in_image_x);
+      if (angle <= deg2rad (-90.0))
+        angle += static_cast<double> (M_PI);
+      else if (angle > deg2rad (90.0))
+        angle -= static_cast<double> (M_PI);
     }
   }
   return (angles_image);
@@ -470,7 +470,7 @@ RangeImageBorderExtractor::calculateBorderDirections ()
   int width  = range_image_->width,
       height = range_image_->height,
       size   = width*height;
-  border_directions_ = new Eigen::Vector3f*[size];
+  border_directions_ = new Eigen::Vector3d*[size];
   for (int y=0; y<height; ++y)
   {
     for (int x=0; x<width; ++x)
@@ -479,48 +479,48 @@ RangeImageBorderExtractor::calculateBorderDirections ()
     }
   }
   
-  Eigen::Vector3f** average_border_directions = new Eigen::Vector3f*[size];
+  Eigen::Vector3d** average_border_directions = new Eigen::Vector3d*[size];
   int radius = parameters_.pixel_radius_border_direction;
   int minimum_weight = radius+1;
-  float min_cos_angle=cosf(deg2rad(120.0f));
+  double min_cos_angle=cos(deg2rad(120.0));
   for (int y=0; y<height; ++y)
   {
     for (int x=0; x<width; ++x)
     {
       int index = y*width + x;
-      Eigen::Vector3f*& average_border_direction = average_border_directions[index];
+      Eigen::Vector3d*& average_border_direction = average_border_directions[index];
       average_border_direction = NULL;
-      const Eigen::Vector3f* border_direction = border_directions_[index];
+      const Eigen::Vector3d* border_direction = border_directions_[index];
       if (border_direction==NULL)
         continue;
-      average_border_direction = new Eigen::Vector3f(*border_direction);
-      float weight_sum = 1.0f;
+      average_border_direction = new Eigen::Vector3d(*border_direction);
+      double weight_sum = 1.0;
       for (int y2=(std::max)(0, y-radius); y2<=(std::min)(y+radius, height-1); ++y2)
       {
         for (int x2=(std::max)(0, x-radius); x2<=(std::min)(x+radius, width-1); ++x2)
         {
           int index2 = y2*width + x2;
-          const Eigen::Vector3f* neighbor_border_direction = border_directions_[index2];
+          const Eigen::Vector3d* neighbor_border_direction = border_directions_[index2];
           if (neighbor_border_direction==NULL || index2==index)
             continue;
           
           // Oposite directions?
-          float cos_angle = neighbor_border_direction->dot(*border_direction);
+          double cos_angle = neighbor_border_direction->dot(*border_direction);
           if (cos_angle<min_cos_angle)
           {
-            //cout << "Reject. "<<PVARC(min_cos_angle)<<PVARC(cos_angle)<<PVARAN(acosf(cos_angle));
+            //cout << "Reject. "<<PVARC(min_cos_angle)<<PVARC(cos_angle)<<PVARAN(acos(cos_angle));
             continue;
           }
           //else
             //cout << "No reject\n";
           
           // Border in between?
-          float border_between_points_score = getNeighborDistanceChangeScore(*surface_structure_[index], x, y, x2-x,  y2-y, 1);
-          if (fabsf(border_between_points_score) >= 0.95f*parameters_.minimum_border_probability)
+          double border_between_points_score = getNeighborDistanceChangeScore(*surface_structure_[index], x, y, x2-x,  y2-y, 1);
+          if (fabsf(border_between_points_score) >= 0.95*parameters_.minimum_border_probability)
             continue;
           
           *average_border_direction += *neighbor_border_direction;
-          weight_sum += 1.0f;
+          weight_sum += 1.0;
         }
       }
       if (pcl_lrint (weight_sum) < minimum_weight)
@@ -553,17 +553,17 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
   int width  = range_image_->width,
       height = range_image_->height,
       size   = width*height;
-  surface_change_scores_ = new float[size];
-  surface_change_directions_ = new Eigen::Vector3f[size];
+  surface_change_scores_ = new double[size];
+  surface_change_directions_ = new Eigen::Vector3d[size];
 # pragma omp parallel for num_threads(parameters_.max_no_of_threads) default(shared) schedule(dynamic, 10)
   for (int y=0; y<height; ++y)
   {
     for (int x=0; x<width; ++x)
     {
       int index = y*width + x;
-      float& surface_change_score = surface_change_scores_[index];
-      surface_change_score = 0.0f;
-      Eigen::Vector3f& surface_change_direction = surface_change_directions_[index];
+      double& surface_change_score = surface_change_scores_[index];
+      surface_change_score = 0.0;
+      Eigen::Vector3d& surface_change_direction = surface_change_directions_[index];
       surface_change_direction.setZero();
       
       const BorderTraits& border_traits = border_descriptions_->points[index].traits;
@@ -571,7 +571,7 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
         continue;
       if (border_directions_[index]!=NULL)
       {
-        surface_change_score = 1.0f;
+        surface_change_score = 1.0;
         surface_change_direction = *border_directions_[index];
       }
       else
@@ -579,7 +579,7 @@ RangeImageBorderExtractor::calculateSurfaceChanges ()
         if (!calculateMainPrincipalCurvature(x, y, parameters_.pixel_radius_principal_curvature,
                                              surface_change_score, surface_change_direction))
         {
-          surface_change_score = 0.0f;
+          surface_change_score = 0.0;
           continue;
         }
       }
@@ -598,24 +598,24 @@ RangeImageBorderExtractor::blurSurfaceChanges ()
   
   const RangeImage& range_image = *range_image_;
   
-  Eigen::Vector3f* blurred_directions = new Eigen::Vector3f[range_image.width*range_image.height];
-  float* blurred_scores = new float[range_image.width*range_image.height];
+  Eigen::Vector3d* blurred_directions = new Eigen::Vector3d[range_image.width*range_image.height];
+  double* blurred_scores = new double[range_image.width*range_image.height];
   for (int y=0; y<int(range_image.height); ++y)
   {
     for (int x=0; x<int(range_image.width); ++x)
     {
       int index = y*range_image.width + x;
-      Eigen::Vector3f& new_point = blurred_directions[index];
+      Eigen::Vector3d& new_point = blurred_directions[index];
       new_point.setZero();
-      float& new_score = blurred_scores[index];
-      new_score = 0.0f;
+      double& new_score = blurred_scores[index];
+      new_score = 0.0;
       if (!range_image.isValid(index))
         continue;
       const BorderTraits& border_traits = border_descriptions_->points[index].traits;
       if (border_traits[BORDER_TRAIT__VEIL_POINT] || border_traits[BORDER_TRAIT__SHADOW_BORDER])
         continue;
-      const Eigen::Vector3f& point = surface_change_directions_[index];
-      float counter = 0.0f;
+      const Eigen::Vector3d& point = surface_change_directions_[index];
+      double counter = 0.0;
       for (int y2=y-blur_radius; y2<y+blur_radius; ++y2)
       {
         for (int x2=x-blur_radius; x2<x+blur_radius; ++x2)
@@ -623,25 +623,25 @@ RangeImageBorderExtractor::blurSurfaceChanges ()
           if (!range_image.isInImage(x2,y2))
             continue;
           int index2 = y2*range_image.width + x2;
-          float score = surface_change_scores_[index2];
-          //if (score == 0.0f)
+          double score = surface_change_scores_[index2];
+          //if (score == 0.0)
             //continue;
             //
-          if (score > 0.0f)
+          if (score > 0.0)
           {
-            Eigen::Vector3f& neighbor = surface_change_directions_[index2];
+            Eigen::Vector3d& neighbor = surface_change_directions_[index2];
             //if (fabs(neighbor.norm()-1) > 1e-4)
               //cerr<<PVARN(neighbor)<<PVARN(score);
-            if (point.dot(neighbor)<0.0f)
-              neighbor *= -1.0f;
+            if (point.dot(neighbor)<0.0)
+              neighbor *= -1.0;
             new_point += score*neighbor;
           }
           new_score += score;
-          counter += 1.0f;
+          counter += 1.0;
         }
       }
       new_point.normalize();
-      if (counter > 0.0f)
+      if (counter > 0.0)
         new_score /= counter;
     }
   }
